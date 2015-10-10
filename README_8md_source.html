@@ -152,10 +152,10 @@ $(document).ready(function(){initNavTree('README_8md.html','');});
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;|Accelerator Back-end|Lib/API|Devices|Execution strategy grid-blocks|Execution strategy block-threads|</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;|---|---|---|---|---|</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;|Serial|n/a|Host CPU (single core)|sequential|sequential (1 thread/block)|</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;|OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (1 thread/block)|</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;|Serial|n/a|Host CPU (single core)|sequential|sequential (only 1 thread per block)|</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;|OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;|OpenMP 2.0 threads|OpenMP 2.0|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;|OpenMP 4.0|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;|OpenMP 4.0 (CPU)|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;| std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;| Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;|CUDA 7.0|CUDA 7.0|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|</div>
@@ -166,15 +166,15 @@ $(document).ready(function(){initNavTree('README_8md.html','');});
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;This library uses C++11 (or newer when available).</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;|Accelerator Back-end|gcc 4.9.2|gcc 5.2|clang 3.5/3.6|clang 3.7|MSVC 2015|icc 15.0+ (untested)|</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;|---|---|---|---|---|---|---|</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;|OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|:white_check_mark:|</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;|Accelerator Back-end|gcc 4.9.2|gcc 5.2|clang 3.5/3.6|clang 3.7|MSVC 2015|</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;|---|---|---|---|---|---|</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;|OpenMP 4.0 (CPU)|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;**NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the NVIDIA nvcc compiler :bangbang:</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
@@ -202,37 +202,34 @@ $(document).ready(function(){initNavTree('README_8md.html','');});
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;-----</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;The library is header only so nothing has to be build.</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `&lt;PATH-TO-ALPAKA-LIB&gt;/include/`.</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;This allows to include the whole alpaka library with: `#include &lt;alpaka/alpaka.hpp&gt;`</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;Code not intended to be utilized by users is hidden in the `detail` namespace.</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;If you are building with the *CUDA accelerator back-end* enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;When the *CUDA accelerator back-end* is disabled, this is not required and a `.cpp` extension is enough.</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include &lt;PATH/TO/IMPL.cpp&gt;` to forward to the implementation.</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;The build system then has to use the `.cu` files when the *CUDA accelerator back-end* is enabled and the `.cpp` files else.</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;Examples how to do this with CMake can be found in the `examples` folder.</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;CMake 3.3.0+ is required to provide the correct defines and include paths.</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compier in handling `.cu` and `.cpp` files is automatically taken care of.</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;Examples how to utilize alpaka within CMake can be found in the `examples` folder.</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;Source files do not need any special file ending.</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;The whole alpaka library can be included with: `#include &lt;alpaka/alpaka.hpp&gt;`</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;Code not intended to be utilized by users is hidden in the `detail` namespace.</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;Authors</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;-------</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;Authors</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;-------</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;### Maintainers and core developers</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;- Benjamin Worpitz</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;### Participants, Former Members and Thanks</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;- Dr. Michael Bussmann</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;- Rene Widera</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;- Axel Huebl</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;### Maintainers and core developers</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;- Benjamin Worpitz</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;### Participants, Former Members and Thanks</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;- Dr. Michael Bussmann</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;- Rene Widera</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;- Axel Huebl</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="README_8md.html">README.md</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:48 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:16 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

@@ -121,9 +121,9 @@ $(document).ready(function(){initNavTree('classalpaka_1_1core_1_1detail_1_1Concu
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0ac5b366d97c6a148f8eeaf903e81f0d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_6fbd04dc5392bacedfc07f52ec824725.html#a0ac5b366d97c6a148f8eeaf903e81f0d">ConcurrentExecPool</a> (TSize uiConcurrentExecutionCount, TSize uiQueueSize=128u)</td></tr>
-<tr class="memdesc:a0ac5b366d97c6a148f8eeaf903e81f0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a0ac5b366d97c6a148f8eeaf903e81f0d">More...</a><br /></td></tr>
-<tr class="separator:a0ac5b366d97c6a148f8eeaf903e81f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7627dc3df3f2ce2fd9c9cde0d6a26775"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_6fbd04dc5392bacedfc07f52ec824725.html#a7627dc3df3f2ce2fd9c9cde0d6a26775">ConcurrentExecPool</a> (TSize concurrentExecutionCount, TSize queueSize=128u)</td></tr>
+<tr class="memdesc:a7627dc3df3f2ce2fd9c9cde0d6a26775"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a7627dc3df3f2ce2fd9c9cde0d6a26775">More...</a><br /></td></tr>
+<tr class="separator:a7627dc3df3f2ce2fd9c9cde0d6a26775"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afef0060ba8324f7cd1b5b4e99b91a713"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_6fbd04dc5392bacedfc07f52ec824725.html#afef0060ba8324f7cd1b5b4e99b91a713">ConcurrentExecPool</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> const &amp;)=delete</td></tr>
 <tr class="memdesc:afef0060ba8324f7cd1b5b4e99b91a713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#afef0060ba8324f7cd1b5b4e99b91a713">More...</a><br /></td></tr>
 <tr class="separator:afef0060ba8324f7cd1b5b4e99b91a713"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,9 +164,9 @@ class alpaka::core::detail::ConcurrentExecPool&lt;                              
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00480">480</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00483">483</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a0ac5b366d97c6a148f8eeaf903e81f0d"></a>
+<a class="anchor" id="a7627dc3df3f2ce2fd9c9cde0d6a26775"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -179,13 +179,13 @@ template&lt;typename TSize , typename TConcurrentExec , template&lt; typename TF
           <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt;                                                                                                                  TSize,                                                                                                           TConcurrentExec,                                                                                                           TPromise,                                                                                                           TYield,                                                                                                           TMutex,                                                                                                           TCondVar,                                                                                                           false &gt;::<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
           <td>(</td>
           <td class="paramtype">TSize&#160;</td>
-          <td class="paramname"><em>uiConcurrentExecutionCount</em>, </td>
+          <td class="paramname"><em>concurrentExecutionCount</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">TSize&#160;</td>
-          <td class="paramname"><em>uiQueueSize</em> = <code>128u</code>&#160;</td>
+          <td class="paramname"><em>queueSize</em> = <code>128u</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -204,13 +204,13 @@ template&lt;typename TSize , typename TConcurrentExec , template&lt; typename TF
 <p>Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiConcurrentExecutionCount</td><td>The guaranteed number of concurrent executors used in the pool. This is also the maximum number of tasks worked on concurrently. </td></tr>
-    <tr><td class="paramname">uiQueueSize</td><td>The maximum number of tasks that can be queued for completion. Currently running tasks do not belong to the queue anymore. </td></tr>
+    <tr><td class="paramname">concurrentExecutionCount</td><td>The guaranteed number of concurrent executors used in the pool. This is also the maximum number of tasks worked on concurrently. </td></tr>
+    <tr><td class="paramname">queueSize</td><td>The maximum number of tasks that can be queued for completion. Currently running tasks do not belong to the queue anymore. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00500">500</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00505">505</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -296,7 +296,7 @@ template&lt;typename TSize , typename TConcurrentExec , template&lt; typename TF
 <p>Destructor. </p>
 <p>Completes any currently running task as normal. Signals a std::runtime_error exception to any other tasks that were not able to run. </p>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00540">540</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00545">545</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -365,7 +365,7 @@ template&lt;typename TFnObj , typename... TArgs&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Signals when the task has completed with either success or an exception. Also results in an exception if the pool is destroyed before execution has begun. </dd></dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00579">579</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00584">584</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -394,7 +394,7 @@ template&lt;typename TSize , typename TConcurrentExec , template&lt; typename TF
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The number of concurrent executors available. </dd></dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00607">607</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00612">612</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -423,7 +423,7 @@ template&lt;typename TSize , typename TConcurrentExec , template&lt; typename TF
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>If the work queue is empty. </dd></dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00615">615</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00620">620</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
@@ -492,7 +492,7 @@ template&lt;typename TSize , typename TConcurrentExec , template&lt; typename TF
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_6fbd04dc5392bacedfc07f52ec824725.html">ConcurrentExecPool&lt;                                                                                                                  TSize,                                                                                                           TConcurrentExec,                                                                                                           TPromise,                                                                                                           TYield,                                                                                                           TMutex,                                                                                                           TCondVar,                                                                                                           false &gt;</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:52 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:20 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

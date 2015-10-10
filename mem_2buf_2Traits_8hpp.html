@@ -146,7 +146,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
-<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
+<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1mem"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html">alpaka::mem</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1mem"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory specifics. <br /></td></tr>
@@ -167,10 +167,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8ac1f72272ec831cec5ba91c590633f7"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TSize , typename TExtents , typename TDev &gt; </td></tr>
-<tr class="memitem:a8ac1f72272ec831cec5ba91c590633f7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1buf.html#a8ac1f72272ec831cec5ba91c590633f7">alpaka::mem::buf::alloc</a> (TDev const &amp;dev, TExtents const &amp;extents=TExtents()) -&gt; decltype(                                                           traits::Alloc&lt;                                                                              TElem,                                                                           dim::Dim&lt; TExtents &gt;,                                                                           TSize,                                                                           TDev &gt;                                                           ::alloc(                                                                           dev,                                                                           extents))                                        </td></tr>
-<tr class="memdesc:a8ac1f72272ec831cec5ba91c590633f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="namespacealpaka_1_1mem_1_1buf.html#a8ac1f72272ec831cec5ba91c590633f7">More...</a><br /></td></tr>
-<tr class="separator:a8ac1f72272ec831cec5ba91c590633f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af12b7a3fd0deccf54ae80b6b9850e236"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TSize , typename TExtent , typename TDev &gt; </td></tr>
+<tr class="memitem:af12b7a3fd0deccf54ae80b6b9850e236"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1buf.html#af12b7a3fd0deccf54ae80b6b9850e236">alpaka::mem::buf::alloc</a> (TDev const &amp;dev, TExtent const &amp;extent=TExtent()) -&gt; decltype(                                                           traits::Alloc&lt;                                                                              TElem,                                                                           dim::Dim&lt; TExtent &gt;,                                                                           TSize,                                                                           TDev &gt;                                                           ::alloc(                                                                           dev,                                                                           extent))                                        </td></tr>
+<tr class="memdesc:af12b7a3fd0deccf54ae80b6b9850e236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="namespacealpaka_1_1mem_1_1buf.html#af12b7a3fd0deccf54ae80b6b9850e236">More...</a><br /></td></tr>
+<tr class="separator:af12b7a3fd0deccf54ae80b6b9850e236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6809ca55dca184bde0538bfac602bf66"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
 <tr class="memitem:a6809ca55dca184bde0538bfac602bf66"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1buf.html#a6809ca55dca184bde0538bfac602bf66">alpaka::mem::buf::isPinned</a> (TBuf const &amp;buf) -&gt; bool                                        </td></tr>
 <tr class="memdesc:a6809ca55dca184bde0538bfac602bf66"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pin state of the buffer.  <a href="namespacealpaka_1_1mem_1_1buf.html#a6809ca55dca184bde0538bfac602bf66">More...</a><br /></td></tr>
@@ -206,7 +206,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:49 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:16 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

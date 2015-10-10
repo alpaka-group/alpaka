@@ -6,6 +6,5 @@ var classalpaka_1_1acc_1_1AccCpuFibers =
     [ "getBlockSharedExternMem", "classalpaka_1_1acc_1_1AccCpuFibers.html#abde3d7dfaf457230bcdc8b989fec309d", null ],
     [ "operator=", "classalpaka_1_1acc_1_1AccCpuFibers.html#af53ac55740630dd100fa1d8207ef14bd", null ],
     [ "operator=", "classalpaka_1_1acc_1_1AccCpuFibers.html#af1f8c039a855af4e089083ac1549daec", null ],
-    [ "syncBlockThreads", "classalpaka_1_1acc_1_1AccCpuFibers.html#a1fd6191596ce26011bca7ad7f2d734fb", null ],
-    [ "::alpaka::exec::fibers::detail::ExecCpuFibersImpl< TDim, TSize >", "classalpaka_1_1acc_1_1AccCpuFibers.html#a4d98bbc9aaa8e6025128833e39116ed3", null ]
+    [ "::alpaka::exec::ExecCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#a7d3093a91dd5191591cd7a63fbf09782", null ]
 ];

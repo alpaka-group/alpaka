@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01b3a5404cf7a74a44906361664c588ad7 =
+[
+    [ "taskCopy", "structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01b3a5404cf7a74a44906361664c588ad7.html#af0c98b160c3689dd23a265ff13658190", null ]
+];

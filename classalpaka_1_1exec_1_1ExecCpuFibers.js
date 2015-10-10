@@ -1,11 +1,10 @@
 var classalpaka_1_1exec_1_1ExecCpuFibers =
 [
-    [ "ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a4f1878288e2e6c663dcbffb0fc6f5404", null ],
-    [ "ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a8ca9fd5fb92e2c682ea1744a5c15e3a0", null ],
-    [ "ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a9dc65c8a0404da8e89f8759f578cc5e5", null ],
-    [ "~ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#aba967c78ee367450de3e45d56e8be186", null ],
-    [ "operator()", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a6ad960513012e567783429c9183fbad0", null ],
-    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a98ea06f7f10f960f313928c51ba0799d", null ],
-    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a88a6fe67d3ff7d1b59e02135f46c7aff", null ],
-    [ "m_Stream", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a3c282c79cf89b806e01cb94bfa88dc8a", null ]
+    [ "ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a00b6fc95c4734ae70bb02be70f73773a", null ],
+    [ "ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#aca27198f6ff9ee6a6b43272010f09b8e", null ],
+    [ "ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a2cf43546e646c5880bb46a14be5448b0", null ],
+    [ "~ExecCpuFibers", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a81fe34d190da2ded787fd1332620d2f4", null ],
+    [ "operator()", "classalpaka_1_1exec_1_1ExecCpuFibers.html#a4e6f66e243006c76f3652bfedeac9466", null ],
+    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuFibers.html#af40eff05af36ce65b09c904722622281", null ],
+    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuFibers.html#ae3a4bf82980cbe6b6bfee5b4fa25718d", null ]
 ];

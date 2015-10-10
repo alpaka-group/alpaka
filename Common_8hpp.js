@@ -10,7 +10,5 @@ var Common_8hpp =
     [ "ALPAKA_FN_HOST", "Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575", null ],
     [ "ALPAKA_FN_HOST_ACC", "Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3", null ],
     [ "ALPAKA_NO_HOST_ACC_WARNING", "Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c", null ],
-    [ "ALPAKA_UNROLL", "Common_8hpp.html#a57dd84fb3aa4dccb871fa74c30a4fe2f", null ],
-    [ "ALPAKA_VECTORIZE", "Common_8hpp.html#abe0515552c26c174217648f9fccedf6e", null ],
     [ "_Pragma", "Common_8hpp.html#af0c58add613237c86c5dd8549e64d5f4", null ]
 ];

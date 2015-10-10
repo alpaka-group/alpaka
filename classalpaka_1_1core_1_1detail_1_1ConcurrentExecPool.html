@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>alpaka: alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt; Class Template Reference</title>
+<title>alpaka: alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1core_1_1detail_1_1Concu
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
+<div class="title">alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt; Class Template Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -121,36 +121,36 @@ $(document).ready(function(){initNavTree('classalpaka_1_1core_1_1detail_1_1Concu
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac67bc73643fe6cc54e9b751fdea5aa46"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac67bc73643fe6cc54e9b751fdea5aa46">ConcurrentExecPool</a> (TSize uiConcurrentExecutionCount, TSize uiQueueSize=128u)</td></tr>
-<tr class="memdesc:ac67bc73643fe6cc54e9b751fdea5aa46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ac67bc73643fe6cc54e9b751fdea5aa46">More...</a><br /></td></tr>
-<tr class="separator:ac67bc73643fe6cc54e9b751fdea5aa46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a550ac4656ede385ec813c1d8417a445d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a550ac4656ede385ec813c1d8417a445d">ConcurrentExecPool</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> const &amp;)=delete</td></tr>
-<tr class="memdesc:a550ac4656ede385ec813c1d8417a445d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a550ac4656ede385ec813c1d8417a445d">More...</a><br /></td></tr>
-<tr class="separator:a550ac4656ede385ec813c1d8417a445d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af30a8b1da6c97bfa62818ab846ff25e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#af30a8b1da6c97bfa62818ab846ff25e1">ConcurrentExecPool</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;&amp;)=delete</td></tr>
-<tr class="memdesc:af30a8b1da6c97bfa62818ab846ff25e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#af30a8b1da6c97bfa62818ab846ff25e1">More...</a><br /></td></tr>
-<tr class="separator:af30a8b1da6c97bfa62818ab846ff25e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b6d0cc1ef808731bfb9af8a4f4b178c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a8b6d0cc1ef808731bfb9af8a4f4b178c">~ConcurrentExecPool</a> ()</td></tr>
-<tr class="memdesc:a8b6d0cc1ef808731bfb9af8a4f4b178c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a8b6d0cc1ef808731bfb9af8a4f4b178c">More...</a><br /></td></tr>
-<tr class="separator:a8b6d0cc1ef808731bfb9af8a4f4b178c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5611f995aebf574ef26afe721271c6bf"><td class="memTemplParams" colspan="2">template&lt;typename TFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a5611f995aebf574ef26afe721271c6bf"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a5611f995aebf574ef26afe721271c6bf">enqueueTask</a> (TFnObj &amp;&amp;task, TArgs &amp;&amp;...args) -&gt; typename std::result_of&lt; decltype(&amp;TPromise&lt; typename std::result_of&lt; TFnObj(TArgs...)&gt;::type &gt;::get_future)(TPromise&lt; typename std::result_of&lt; TFnObj(TArgs...)&gt;::type &gt;) &gt;::type                                                        </td></tr>
-<tr class="memdesc:a5611f995aebf574ef26afe721271c6bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the given function on one of the pool in First In First Out (FIFO) order.  <a href="#a5611f995aebf574ef26afe721271c6bf">More...</a><br /></td></tr>
-<tr class="separator:a5611f995aebf574ef26afe721271c6bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1d96a8760c64051cc83600f71604d5c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ad1d96a8760c64051cc83600f71604d5c">getConcurrentExecutionCount</a> () const  -&gt; TSize                                                        </td></tr>
-<tr class="separator:ad1d96a8760c64051cc83600f71604d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab626d6e16db5f17bb3ac492a167eee2a"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ab626d6e16db5f17bb3ac492a167eee2a">isQueueEmpty</a> () const  -&gt; bool                                                        </td></tr>
-<tr class="separator:ab626d6e16db5f17bb3ac492a167eee2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae54f3d581ce7207256eb701f147183e4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ae54f3d581ce7207256eb701f147183e4">operator=</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td></tr>
-<tr class="memdesc:ae54f3d581ce7207256eb701f147183e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#ae54f3d581ce7207256eb701f147183e4">More...</a><br /></td></tr>
-<tr class="separator:ae54f3d581ce7207256eb701f147183e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fa6faa571d95150b395bd0e1e399e28"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a4fa6faa571d95150b395bd0e1e399e28">operator=</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td></tr>
-<tr class="memdesc:a4fa6faa571d95150b395bd0e1e399e28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#a4fa6faa571d95150b395bd0e1e399e28">More...</a><br /></td></tr>
-<tr class="separator:a4fa6faa571d95150b395bd0e1e399e28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a182175b52ad9e4c01032952cb22695a3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a182175b52ad9e4c01032952cb22695a3">ConcurrentExecPool</a> (TSize concurrentExecutionCount, TSize queueSize=128u)</td></tr>
+<tr class="memdesc:a182175b52ad9e4c01032952cb22695a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a182175b52ad9e4c01032952cb22695a3">More...</a><br /></td></tr>
+<tr class="separator:a182175b52ad9e4c01032952cb22695a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af60a04e04b263dcbba33edca5892cd0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#af60a04e04b263dcbba33edca5892cd0b">ConcurrentExecPool</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> const &amp;)=delete</td></tr>
+<tr class="memdesc:af60a04e04b263dcbba33edca5892cd0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#af60a04e04b263dcbba33edca5892cd0b">More...</a><br /></td></tr>
+<tr class="separator:af60a04e04b263dcbba33edca5892cd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac15ff8f5e52a2eabce9daafd37ffab16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac15ff8f5e52a2eabce9daafd37ffab16">ConcurrentExecPool</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;&amp;)=delete</td></tr>
+<tr class="memdesc:ac15ff8f5e52a2eabce9daafd37ffab16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#ac15ff8f5e52a2eabce9daafd37ffab16">More...</a><br /></td></tr>
+<tr class="separator:ac15ff8f5e52a2eabce9daafd37ffab16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53f56a191d7122bf6fb72f076c7d9093"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a53f56a191d7122bf6fb72f076c7d9093">~ConcurrentExecPool</a> ()</td></tr>
+<tr class="memdesc:a53f56a191d7122bf6fb72f076c7d9093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a53f56a191d7122bf6fb72f076c7d9093">More...</a><br /></td></tr>
+<tr class="separator:a53f56a191d7122bf6fb72f076c7d9093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0967e6bc19b3eeb82f9e22b929a3b9bd"><td class="memTemplParams" colspan="2">template&lt;typename TFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a0967e6bc19b3eeb82f9e22b929a3b9bd"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a0967e6bc19b3eeb82f9e22b929a3b9bd">enqueueTask</a> (TFnObj &amp;&amp;task, TArgs &amp;&amp;...args) -&gt; typename std::result_of&lt; decltype(&amp;TPromise&lt; typename std::result_of&lt; TFnObj(TArgs...)&gt;::type &gt;::get_future)(TPromise&lt; typename std::result_of&lt; TFnObj(TArgs...)&gt;::type &gt;) &gt;::type                                                        </td></tr>
+<tr class="memdesc:a0967e6bc19b3eeb82f9e22b929a3b9bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the given function on one of the pool in First In First Out (FIFO) order.  <a href="#a0967e6bc19b3eeb82f9e22b929a3b9bd">More...</a><br /></td></tr>
+<tr class="separator:a0967e6bc19b3eeb82f9e22b929a3b9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5275d07ab8017632354f88c58212fa1a"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a5275d07ab8017632354f88c58212fa1a">getConcurrentExecutionCount</a> () const  -&gt; TSize                                                        </td></tr>
+<tr class="separator:a5275d07ab8017632354f88c58212fa1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a137d25eded6e66c7cc6e51ad4162ff51"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a137d25eded6e66c7cc6e51ad4162ff51">isQueueEmpty</a> () const  -&gt; bool                                                        </td></tr>
+<tr class="separator:a137d25eded6e66c7cc6e51ad4162ff51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af12b44410c0070b4bfab6b2183d96a53"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#af12b44410c0070b4bfab6b2183d96a53">operator=</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td></tr>
+<tr class="memdesc:af12b44410c0070b4bfab6b2183d96a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#af12b44410c0070b4bfab6b2183d96a53">More...</a><br /></td></tr>
+<tr class="separator:af12b44410c0070b4bfab6b2183d96a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad52e59e4926907a07e9239ae46f71bb4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ad52e59e4926907a07e9239ae46f71bb4">operator=</a> (<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td></tr>
+<tr class="memdesc:ad52e59e4926907a07e9239ae46f71bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#ad52e59e4926907a07e9239ae46f71bb4">More...</a><br /></td></tr>
+<tr class="separator:ad52e59e4926907a07e9239ae46f71bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt;<br />
-class alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt;<br />
+class alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;</h3>
 
 <p><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html" title="ConcurrentExecPool using yield. ">ConcurrentExecPool</a> using yield. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
@@ -160,33 +160,33 @@ class alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TProm
     <tr><td class="paramname">TYield</td><td>The type is required to have a static method "void yield()" to yield the current thread if there is no work. </td></tr>
     <tr><td class="paramname">TMutex</td><td>Unused. The mutex type used for locking threads. </td></tr>
     <tr><td class="paramname">TCondVar</td><td>Unused. The condition variable type used to make the threads wait if there is no work. </td></tr>
-    <tr><td class="paramname">TbYield</td><td>Boolean value if the threads should yield instead of wait for a condition variable. </td></tr>
+    <tr><td class="paramname">TisYielding</td><td>Boolean value if the threads should yield instead of wait for a condition variable. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00280">280</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00281">281</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ac67bc73643fe6cc54e9b751fdea5aa46"></a>
+<a class="anchor" id="a182175b52ad9e4c01032952cb22695a3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
+          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
           <td>(</td>
           <td class="paramtype">TSize&#160;</td>
-          <td class="paramname"><em>uiConcurrentExecutionCount</em>, </td>
+          <td class="paramname"><em>concurrentExecutionCount</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">TSize&#160;</td>
-          <td class="paramname"><em>uiQueueSize</em> = <code>128u</code>&#160;</td>
+          <td class="paramname"><em>queueSize</em> = <code>128u</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -205,29 +205,29 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 <p>Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiConcurrentExecutionCount</td><td>The guaranteed number of concurrent executors used in the pool. This is also the maximum number of tasks worked on concurrently. </td></tr>
-    <tr><td class="paramname">uiQueueSize</td><td>The maximum number of tasks that can be queued for completion. Currently running tasks do not belong to the queue anymore. </td></tr>
+    <tr><td class="paramname">concurrentExecutionCount</td><td>The guaranteed number of concurrent executors used in the pool. This is also the maximum number of tasks worked on concurrently. </td></tr>
+    <tr><td class="paramname">queueSize</td><td>The maximum number of tasks that can be queued for completion. Currently running tasks do not belong to the queue anymore. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00293">293</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00296">296</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a550ac4656ede385ec813c1d8417a445d"></a>
+<a class="anchor" id="af60a04e04b263dcbba33edca5892cd0b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
+          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -243,19 +243,19 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 
 </div>
 </div>
-<a class="anchor" id="af30a8b1da6c97bfa62818ab846ff25e1"></a>
+<a class="anchor" id="ac15ff8f5e52a2eabce9daafd37ffab16"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
+          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -271,17 +271,17 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 
 </div>
 </div>
-<a class="anchor" id="a8b6d0cc1ef808731bfb9af8a4f4b178c"></a>
+<a class="anchor" id="a53f56a191d7122bf6fb72f076c7d9093"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::~<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
+          <td class="memname"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::~<a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -297,16 +297,16 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 <p>Destructor. </p>
 <p>Completes any currently running task as normal. Signals a std::runtime_error exception to any other tasks that were not able to run. </p>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00331">331</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00334">334</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a5611f995aebf574ef26afe721271c6bf"></a>
+<a class="anchor" id="a0967e6bc19b3eeb82f9e22b929a3b9bd"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <div class="memtemplate">
 template&lt;typename TFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
@@ -314,7 +314,7 @@ template&lt;typename TFnObj , typename... TArgs&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::enqueueTask </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::enqueueTask </td>
           <td>(</td>
           <td class="paramtype">TFnObj &amp;&amp;&#160;</td>
           <td class="paramname"><em>task</em>, </td>
@@ -366,21 +366,21 @@ template&lt;typename TFnObj , typename... TArgs&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Signals when the task has completed with either success or an exception. Also results in an exception if the pool is destroyed before execution has begun. </dd></dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00364">364</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00367">367</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad1d96a8760c64051cc83600f71604d5c"></a>
+<a class="anchor" id="a5275d07ab8017632354f88c58212fa1a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::getConcurrentExecutionCount </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::getConcurrentExecutionCount </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const -&gt; TSize
@@ -395,21 +395,21 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The number of concurrent executors available. </dd></dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00390">390</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00393">393</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab626d6e16db5f17bb3ac492a167eee2a"></a>
+<a class="anchor" id="a137d25eded6e66c7cc6e51ad4162ff51"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::isQueueEmpty </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::isQueueEmpty </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const -&gt; bool
@@ -424,23 +424,23 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>If the work queue is empty. </dd></dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00398">398</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00401">401</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae54f3d581ce7207256eb701f147183e4"></a>
+<a class="anchor" id="af12b44410c0070b4bfab6b2183d96a53"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::operator= </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td>
         </tr>
@@ -456,19 +456,19 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 
 </div>
 </div>
-<a class="anchor" id="a4fa6faa571d95150b395bd0e1e399e28"></a>
+<a class="anchor" id="ad52e59e4926907a07e9239ae46f71bb4"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TbYield = true&gt; </div>
+template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnObjReturn &gt; class TPromise, typename TYield, typename TMutex = void, typename TCondVar = void, bool TisYielding = true&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;::operator= </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">alpaka::core::detail::ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a>&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a> &amp;=delete</td>
         </tr>
@@ -493,7 +493,7 @@ template&lt;typename TSize, typename TConcurrentExec, template&lt; typename TFnO
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core.html">core</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1core_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html">ConcurrentExecPool</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:52 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:20 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

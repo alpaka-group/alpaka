@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>alpaka: alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt; Class Template Reference</title>
+<title>alpaka: alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1exec_1_1ExecCpuOmp2Bloc
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt; Class Template Reference</div>  </div>
+<div class="title">alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -120,47 +120,49 @@ $(document).ready(function(){initNavTree('classalpaka_1_1exec_1_1ExecCpuOmp2Bloc
 
 <p><code>#include &lt;<a class="el" href="AccCpuOmp2Blocks_8hpp_source.html">AccCpuOmp2Blocks.hpp</a>&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;:</div>
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt;:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
  <div class="center">
-  <img src="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.png" usemap="#alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;_map" alt=""/>
-  <map id="alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;_map" name="alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;_map">
-<area href="classalpaka_1_1workdiv_1_1WorkDivMembers.html" title="A basic class holding the work division as grid block extents and block thread extents. " alt="alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;" shape="rect" coords="0,0,301,24"/>
+  <img src="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.png" usemap="#alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt;_map" alt=""/>
+  <map id="alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt;_map" name="alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt;_map">
+<area href="classalpaka_1_1workdiv_1_1WorkDivMembers.html" title="A basic class holding the work division as grid block extent, block thread and thread element extent..." alt="alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;" shape="rect" coords="0,0,432,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3986379b2b5e4fc7c3386832c32c1d00"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:a3986379b2b5e4fc7c3386832c32c1d00"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a3986379b2b5e4fc7c3386832c32c1d00">ExecCpuOmp2Blocks</a> (TWorkDiv const &amp;workDiv, <a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a> &amp;stream)</td></tr>
-<tr class="memdesc:a3986379b2b5e4fc7c3386832c32c1d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a3986379b2b5e4fc7c3386832c32c1d00">More...</a><br /></td></tr>
-<tr class="separator:a3986379b2b5e4fc7c3386832c32c1d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c052ea1967f170991329ea41a231cfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a0c052ea1967f170991329ea41a231cfa">ExecCpuOmp2Blocks</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> const &amp;)=default</td></tr>
-<tr class="memdesc:a0c052ea1967f170991329ea41a231cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a0c052ea1967f170991329ea41a231cfa">More...</a><br /></td></tr>
-<tr class="separator:a0c052ea1967f170991329ea41a231cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed99846f27d2c19b79854b3e75155ec9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#aed99846f27d2c19b79854b3e75155ec9">ExecCpuOmp2Blocks</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;&amp;)=default</td></tr>
-<tr class="memdesc:aed99846f27d2c19b79854b3e75155ec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#aed99846f27d2c19b79854b3e75155ec9">More...</a><br /></td></tr>
-<tr class="separator:aed99846f27d2c19b79854b3e75155ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae6f0421d886c68c7cc4024520db335"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a8ae6f0421d886c68c7cc4024520db335">~ExecCpuOmp2Blocks</a> ()=default</td></tr>
-<tr class="memdesc:a8ae6f0421d886c68c7cc4024520db335"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a8ae6f0421d886c68c7cc4024520db335">More...</a><br /></td></tr>
-<tr class="separator:a8ae6f0421d886c68c7cc4024520db335"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9189407d5025eb73a550d0c1f275d501"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a9189407d5025eb73a550d0c1f275d501"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a9189407d5025eb73a550d0c1f275d501">operator()</a> (TKernelFnObj const &amp;kernelFnObj, TArgs const &amp;...args) const  -&gt; void                                        </td></tr>
-<tr class="memdesc:a9189407d5025eb73a550d0c1f275d501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enqueues the kernel function object.  <a href="#a9189407d5025eb73a550d0c1f275d501">More...</a><br /></td></tr>
-<tr class="separator:a9189407d5025eb73a550d0c1f275d501"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfd916cbe40e227b063228fbc0fc7116"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#abfd916cbe40e227b063228fbc0fc7116">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;=default</td></tr>
-<tr class="memdesc:abfd916cbe40e227b063228fbc0fc7116"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#abfd916cbe40e227b063228fbc0fc7116">More...</a><br /></td></tr>
-<tr class="separator:abfd916cbe40e227b063228fbc0fc7116"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a661de21223d87c2c6fe8df37eeb2a53d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a661de21223d87c2c6fe8df37eeb2a53d">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;=default</td></tr>
-<tr class="memdesc:a661de21223d87c2c6fe8df37eeb2a53d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#a661de21223d87c2c6fe8df37eeb2a53d">More...</a><br /></td></tr>
-<tr class="separator:a661de21223d87c2c6fe8df37eeb2a53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89c6850c64ce12c390fd1035776cb909"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a89c6850c64ce12c390fd1035776cb909"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a89c6850c64ce12c390fd1035776cb909">ExecCpuOmp2Blocks</a> (TWorkDiv &amp;&amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs const &amp;...args)</td></tr>
+<tr class="memdesc:a89c6850c64ce12c390fd1035776cb909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a89c6850c64ce12c390fd1035776cb909">More...</a><br /></td></tr>
+<tr class="separator:a89c6850c64ce12c390fd1035776cb909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa62eed0c3aad343a40c7f696985ec249"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#aa62eed0c3aad343a40c7f696985ec249">ExecCpuOmp2Blocks</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> const &amp;)=default</td></tr>
+<tr class="memdesc:aa62eed0c3aad343a40c7f696985ec249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#aa62eed0c3aad343a40c7f696985ec249">More...</a><br /></td></tr>
+<tr class="separator:aa62eed0c3aad343a40c7f696985ec249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8468278ff73c83706da7b2f1d3437f3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a8468278ff73c83706da7b2f1d3437f3b">ExecCpuOmp2Blocks</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:a8468278ff73c83706da7b2f1d3437f3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#a8468278ff73c83706da7b2f1d3437f3b">More...</a><br /></td></tr>
+<tr class="separator:a8468278ff73c83706da7b2f1d3437f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44abe19257aa694339c83ef516230e1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a44abe19257aa694339c83ef516230e1f">~ExecCpuOmp2Blocks</a> ()=default</td></tr>
+<tr class="memdesc:a44abe19257aa694339c83ef516230e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a44abe19257aa694339c83ef516230e1f">More...</a><br /></td></tr>
+<tr class="separator:a44abe19257aa694339c83ef516230e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a139cdcbe36fefb7ecbc2f8afa9065093"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a139cdcbe36fefb7ecbc2f8afa9065093">operator()</a> () const  -&gt; void                                        </td></tr>
+<tr class="memdesc:a139cdcbe36fefb7ecbc2f8afa9065093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the kernel function object.  <a href="#a139cdcbe36fefb7ecbc2f8afa9065093">More...</a><br /></td></tr>
+<tr class="separator:a139cdcbe36fefb7ecbc2f8afa9065093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4fb79569056e586c65e8812418e17d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#aff4fb79569056e586c65e8812418e17d">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;=default</td></tr>
+<tr class="memdesc:aff4fb79569056e586c65e8812418e17d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#aff4fb79569056e586c65e8812418e17d">More...</a><br /></td></tr>
+<tr class="separator:aff4fb79569056e586c65e8812418e17d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac830515c1a96e349683e0ce38302cb3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#ac830515c1a96e349683e0ce38302cb3e">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;=default</td></tr>
+<tr class="memdesc:ac830515c1a96e349683e0ce38302cb3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#ac830515c1a96e349683e0ce38302cb3e">More...</a><br /></td></tr>
+<tr class="separator:ac830515c1a96e349683e0ce38302cb3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a></td></tr>
-<tr class="memitem:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplParams" colspan="2">template&lt;typename TGridBlockExtents , typename TBlockThreadExtents &gt; </td></tr>
-<tr class="memitem:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a0ba45045245b70797e790ccb7ea9d178">WorkDivMembers</a> (TGridBlockExtents const &amp;gridBlockExtents=TGridBlockExtents(), TBlockThreadExtents const &amp;blockThreadExtents=TBlockThreadExtents())</td></tr>
-<tr class="memdesc:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a0ba45045245b70797e790ccb7ea9d178">More...</a><br /></td></tr>
-<tr class="separator:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85285d7c2997448f9bedd274e1359e52 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a85285d7c2997448f9bedd274e1359e52">WorkDivMembers</a> ()=delete</td></tr>
+<tr class="memdesc:a85285d7c2997448f9bedd274e1359e52 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a85285d7c2997448f9bedd274e1359e52">More...</a><br /></td></tr>
+<tr class="separator:a85285d7c2997448f9bedd274e1359e52 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplParams" colspan="2">template&lt;typename TGridBlockExtent , typename TBlockThreadExtent , typename TThreadElemExtent &gt; </td></tr>
+<tr class="memitem:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a8d4889ce0b063e88424b30465fc4c308">WorkDivMembers</a> (TGridBlockExtent const &amp;gridBlockExtent=TGridBlockExtent(), TBlockThreadExtent const &amp;blockThreadExtent=TBlockThreadExtent(), TThreadElemExtent const &amp;threadElemExtent=TThreadElemExtent())</td></tr>
+<tr class="memdesc:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from values.  <a href="#a8d4889ce0b063e88424b30465fc4c308">More...</a><br /></td></tr>
+<tr class="separator:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7728226a894f8fc525d182f30cf9ffc0 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a7728226a894f8fc525d182f30cf9ffc0">WorkDivMembers</a> (<a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a> const &amp;other)</td></tr>
 <tr class="memdesc:a7728226a894f8fc525d182f30cf9ffc0 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a7728226a894f8fc525d182f30cf9ffc0">More...</a><br /></td></tr>
 <tr class="separator:a7728226a894f8fc525d182f30cf9ffc0 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,13 +189,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:afb1f2c07ebda492b985350766a72da36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#afb1f2c07ebda492b985350766a72da36">m_Stream</a></td></tr>
-<tr class="separator:afb1f2c07ebda492b985350766a72da36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d692f9a3f3fc11a697e1aba80c4b004"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; TArgs... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a3d692f9a3f3fc11a697e1aba80c4b004">m_args</a></td></tr>
+<tr class="separator:a3d692f9a3f3fc11a697e1aba80c4b004"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275154425c66d89e9b3824dd57affd5c"><td class="memItemLeft" align="right" valign="top">TKernelFnObj&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a275154425c66d89e9b3824dd57affd5c">m_kernelFnObj</a></td></tr>
+<tr class="separator:a275154425c66d89e9b3824dd57affd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a></td></tr>
-<tr class="memitem:a11149d4db13272541b5fc8c6e2ccb606 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a11149d4db13272541b5fc8c6e2ccb606">m_vuiBlockThreadExtents</a></td></tr>
-<tr class="separator:a11149d4db13272541b5fc8c6e2ccb606 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6942dbc4fe0af1e729ce8ed574399fcf inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a6942dbc4fe0af1e729ce8ed574399fcf">m_vuiGridBlockExtents</a></td></tr>
-<tr class="separator:a6942dbc4fe0af1e729ce8ed574399fcf inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609880b0802cef5f1c7bb4b32e478829 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a609880b0802cef5f1c7bb4b32e478829">m_blockThreadExtent</a></td></tr>
+<tr class="separator:a609880b0802cef5f1c7bb4b32e478829 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adea062461f3bc410e0043c295ff81ef1 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#adea062461f3bc410e0043c295ff81ef1">m_gridBlockExtent</a></td></tr>
+<tr class="separator:adea062461f3bc410e0043c295ff81ef1 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066aa716d802404b6ce2f4b96cf75eea inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a066aa716d802404b6ce2f4b96cf75eea">m_threadElemExtent</a></td></tr>
+<tr class="separator:a066aa716d802404b6ce2f4b96cf75eea inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -202,18 +208,18 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a6d859d3cdafaca826089e64fb43fefd0 inherit pub_types_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TDim, typename TSize&gt;<br />
-class alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TDim, typename TSize, typename TKernelFnObj, typename... TArgs&gt;<br />
+class alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</h3>
 
 <p>The CPU OpenMP 2.0 block accelerator executor. </p>
 
-<p>Definition at line <a class="el" href="AccCpuOmp2Blocks_8hpp_source.html#l00055">55</a> of file <a class="el" href="AccCpuOmp2Blocks_8hpp_source.html">AccCpuOmp2Blocks.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccCpuOmp2Blocks_8hpp_source.html#l00059">59</a> of file <a class="el" href="AccCpuOmp2Blocks_8hpp_source.html">AccCpuOmp2Blocks.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a3986379b2b5e4fc7c3386832c32c1d00"></a>
+<a class="anchor" id="a89c6850c64ce12c390fd1035776cb909"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <div class="memtemplate">
 template&lt;typename TWorkDiv &gt; </div>
 <table class="mlabels">
@@ -221,16 +227,22 @@ template&lt;typename TWorkDiv &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
           <td>(</td>
-          <td class="paramtype">TWorkDiv const &amp;&#160;</td>
+          <td class="paramtype">TWorkDiv &amp;&amp;&#160;</td>
           <td class="paramname"><em>workDiv</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a> &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>&#160;</td>
+          <td class="paramtype">TKernelFnObj const &amp;&#160;</td>
+          <td class="paramname"><em>kernelFnObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs const &amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,23 +259,23 @@ template&lt;typename TWorkDiv &gt; </div>
 
 <p>Constructor. </p>
 
-<p>Definition at line <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html#l00218">218</a> of file <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html">ExecCpuOmp2Blocks.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html#l00072">72</a> of file <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html">ExecCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0c052ea1967f170991329ea41a231cfa"></a>
+<a class="anchor" id="aa62eed0c3aad343a40c7f696985ec249"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -279,19 +291,19 @@ template&lt;typename TDim, typename TSize&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aed99846f27d2c19b79854b3e75155ec9"></a>
+<a class="anchor" id="a8468278ff73c83706da7b2f1d3437f3b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -307,17 +319,17 @@ template&lt;typename TDim, typename TSize&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a8ae6f0421d886c68c7cc4024520db335"></a>
+<a class="anchor" id="a44abe19257aa694339c83ef516230e1f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::~<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::~<a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -335,33 +347,20 @@ template&lt;typename TDim, typename TSize&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a9189407d5025eb73a550d0c1f275d501"></a>
+<a class="anchor" id="a139cdcbe36fefb7ecbc2f8afa9065093"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
-<div class="memtemplate">
-template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::operator() </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype">TKernelFnObj const &amp;&#160;</td>
-          <td class="paramname"><em>kernelFnObj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TArgs const &amp;...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const -&gt; void
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; void
             </td>
         </tr>
       </table>
@@ -372,25 +371,25 @@ template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Enqueues the kernel function object. </p>
+<p>Executes the kernel function object. </p>
 
-<p>Definition at line <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html#l00257">257</a> of file <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html">ExecCpuOmp2Blocks.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html#l00109">109</a> of file <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html">ExecCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="abfd916cbe40e227b063228fbc0fc7116"></a>
+<a class="anchor" id="aff4fb79569056e586c65e8812418e17d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::operator= </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;=default</td>
         </tr>
@@ -406,19 +405,19 @@ template&lt;typename TDim, typename TSize&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a661de21223d87c2c6fe8df37eeb2a53d"></a>
+<a class="anchor" id="ac830515c1a96e349683e0ce38302cb3e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::operator= </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a> &amp;=default</td>
         </tr>
@@ -435,19 +434,35 @@ template&lt;typename TDim, typename TSize&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="afb1f2c07ebda492b985350766a72da36"></a>
+<a class="anchor" id="a3d692f9a3f3fc11a697e1aba80c4b004"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize &gt;::m_Stream</td>
+          <td class="memname">std::tuple&lt;TArgs...&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::m_args</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html#l00278">278</a> of file <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html">ExecCpuOmp2Blocks.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html#l00220">220</a> of file <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html">ExecCpuOmp2Blocks.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a275154425c66d89e9b3824dd57affd5c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">TKernelFnObj <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">alpaka::exec::ExecCpuOmp2Blocks</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::m_kernelFnObj</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html#l00219">219</a> of file <a class="el" href="ExecCpuOmp2Blocks_8hpp_source.html">ExecCpuOmp2Blocks.hpp</a>.</p>
 
 </div>
 </div>
@@ -461,7 +476,7 @@ template&lt;typename TDim, typename TSize&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1exec.html">exec</a></li><li class="navelem"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html">ExecCpuOmp2Blocks</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:55 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

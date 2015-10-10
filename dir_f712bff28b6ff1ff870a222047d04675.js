@@ -6,6 +6,7 @@ var dir_f712bff28b6ff1ff870a222047d04675 =
     [ "core", "dir_cfa240ccb1fbe815dea98e3774bff08a.html", "dir_cfa240ccb1fbe815dea98e3774bff08a" ],
     [ "dev", "dir_978fff6d009a0eab698f51257fa3760a.html", "dir_978fff6d009a0eab698f51257fa3760a" ],
     [ "dim", "dir_b5a8ec4893e1f83a89980c2613a4602b.html", "dir_b5a8ec4893e1f83a89980c2613a4602b" ],
+    [ "elem", "dir_d702fbb0df18a148b8a95578d6319a6f.html", "dir_d702fbb0df18a148b8a95578d6319a6f" ],
     [ "event", "dir_cb41fd9734833cacff31b3343158f46b.html", "dir_cb41fd9734833cacff31b3343158f46b" ],
     [ "exec", "dir_033bcb260c90e1932516a449243ee2a2.html", "dir_033bcb260c90e1932516a449243ee2a2" ],
     [ "extent", "dir_66e792f3497a1da76ece4e164463459b.html", "dir_66e792f3497a1da76ece4e164463459b" ],
@@ -17,6 +18,7 @@ var dir_f712bff28b6ff1ff870a222047d04675 =
     [ "rand", "dir_192cbe7214f78dcbefe56af07355e2bc.html", "dir_192cbe7214f78dcbefe56af07355e2bc" ],
     [ "size", "dir_b5fc82727090c7226f32d5f4130216a5.html", "dir_b5fc82727090c7226f32d5f4130216a5" ],
     [ "stream", "dir_a6bf17d418b363d6fddcc972eecee6e1.html", "dir_a6bf17d418b363d6fddcc972eecee6e1" ],
+    [ "vec", "dir_7056b9f7cd8b764aedbfcd44587c0438.html", "dir_7056b9f7cd8b764aedbfcd44587c0438" ],
     [ "wait", "dir_e5cf12aa6bf98e3330032dc34c918fca.html", "dir_e5cf12aa6bf98e3330032dc34c918fca" ],
     [ "workdiv", "dir_43271bcfd261ba185a35bd5280ac7ea9.html", "dir_43271bcfd261ba185a35bd5280ac7ea9" ],
     [ "alpaka.hpp", "alpaka_8hpp.html", "alpaka_8hpp" ]

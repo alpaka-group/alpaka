@@ -7,5 +7,5 @@ var classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl =
     [ "operator=", "classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#a9e61523b710311d30cb0bf094ca42ee1", null ],
     [ "operator=", "classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#ac7c63d87d0ebbff0b8870b415e0a3836", null ],
     [ "m_CudaEvent", "classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#a9878d8bf7a7180fef586902ce9bea46d", null ],
-    [ "m_Dev", "classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#aab5d459f1c6d23cec373fef2496187f9", null ]
+    [ "m_dev", "classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#ab852ce59cc6e960c2739e39cd05f9276", null ]
 ];

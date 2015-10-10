@@ -114,15 +114,15 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1workdiv_1_1detail.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af8b36142ab0601f598a25498e8ac1293"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </td></tr>
-<tr class="memitem:af8b36142ab0601f598a25498e8ac1293"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#af8b36142ab0601f598a25498e8ac1293">allDivisorsLessOrEqual</a> (T const &amp;uiVal, T const &amp;uiMaxDivisor) -&gt; std::set&lt; T &gt;                                        </td></tr>
-<tr class="separator:af8b36142ab0601f598a25498e8ac1293"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af56715d4c7eca8c7c6277b3621fa32df"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </td></tr>
-<tr class="memitem:af56715d4c7eca8c7c6277b3621fa32df"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#af56715d4c7eca8c7c6277b3621fa32df">nextDivisorLowerOrEqual</a> (T const &amp;uiMaxDivisor, T const &amp;uiDividend) -&gt; T                                        </td></tr>
-<tr class="separator:af56715d4c7eca8c7c6277b3621fa32df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e8ffdc6a8b4eec68f82db7011c061da"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a6e8ffdc6a8b4eec68f82db7011c061da"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#a6e8ffdc6a8b4eec68f82db7011c061da">allDivisorsLessOrEqual</a> (T const &amp;val, T const &amp;maxDivisor) -&gt; std::set&lt; T &gt;                                        </td></tr>
+<tr class="separator:a6e8ffdc6a8b4eec68f82db7011c061da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0061cc0af2c363fa953b547559bb223"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:ac0061cc0af2c363fa953b547559bb223"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#ac0061cc0af2c363fa953b547559bb223">nextDivisorLowerOrEqual</a> (T const &amp;maxDivisor, T const &amp;dividend) -&gt; T                                        </td></tr>
+<tr class="separator:ac0061cc0af2c363fa953b547559bb223"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="af8b36142ab0601f598a25498e8ac1293"></a>
+<a class="anchor" id="a6e8ffdc6a8b4eec68f82db7011c061da"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -132,13 +132,13 @@ template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::detail::allDivisorsLessOrEqual </td>
           <td>(</td>
           <td class="paramtype">T const &amp;&#160;</td>
-          <td class="paramname"><em>uiVal</em>, </td>
+          <td class="paramname"><em>val</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">T const &amp;&#160;</td>
-          <td class="paramname"><em>uiMaxDivisor</em>&#160;</td>
+          <td class="paramname"><em>maxDivisor</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -150,8 +150,8 @@ template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiVal</td><td>The value to find divisors of. </td></tr>
-    <tr><td class="paramname">uiMaxDivisor</td><td>The maximum. </td></tr>
+    <tr><td class="paramname">val</td><td>The value to find divisors of. </td></tr>
+    <tr><td class="paramname">maxDivisor</td><td>The maximum. </td></tr>
   </table>
   </dd>
 </dl>
@@ -161,7 +161,7 @@ template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral
 
 </div>
 </div>
-<a class="anchor" id="af56715d4c7eca8c7c6277b3621fa32df"></a>
+<a class="anchor" id="ac0061cc0af2c363fa953b547559bb223"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -171,13 +171,13 @@ template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::detail::nextDivisorLowerOrEqual </td>
           <td>(</td>
           <td class="paramtype">T const &amp;&#160;</td>
-          <td class="paramname"><em>uiMaxDivisor</em>, </td>
+          <td class="paramname"><em>maxDivisor</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">T const &amp;&#160;</td>
-          <td class="paramname"><em>uiDividend</em>&#160;</td>
+          <td class="paramname"><em>dividend</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -189,12 +189,12 @@ template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiMaxDivisor</td><td>The maximum divisor. </td></tr>
-    <tr><td class="paramname">uiDividend</td><td>The dividend. </td></tr>
+    <tr><td class="paramname">maxDivisor</td><td>The maximum divisor. </td></tr>
+    <tr><td class="paramname">dividend</td><td>The dividend. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The biggest number that satisfies the following conditions: 1) uiDividend/ret==0 2) ret&lt;=uiMaxDivisor </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The biggest number that satisfies the following conditions: 1) dividend/ret==0 2) ret&lt;=maxDivisor </dd></dl>
 
 <p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00068">68</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
@@ -206,7 +206,7 @@ template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv.html">workdiv</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:04 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

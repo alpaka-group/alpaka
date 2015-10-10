@@ -1,0 +1,4 @@
+var structalpaka_1_1stream_1_1traits_1_1Empty_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0332a70fb6662aaf685a8132ba6c3e788 =
+[
+    [ "empty", "structalpaka_1_1stream_1_1traits_1_1Empty_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0332a70fb6662aaf685a8132ba6c3e788.html#ae115465e44009bb26baebf0a65fbe09b", null ]
+];

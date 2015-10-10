@@ -1,0 +1,4 @@
+var structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01_01_01_01_01_01_01_01_01_01_01_01_01_9efedcd0e7ae6226716303a791fc603b =
+[
+    [ "currentThreadWaitFor", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01_01_01_01_01_01_01_01_01_01_01_01_01_9efedcd0e7ae6226716303a791fc603b.html#a45e698d460d3f5be134cf12f33a22620", null ]
+];

@@ -142,9 +142,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aea4d25e320373dbba8b5255b44b709e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#abdd6790bfd7b8850c72cfb0a15834195">ALPAKA_FN_ACC_NO_CUDA</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#aea4d25e320373dbba8b5255b44b709e9">BlockSharedAllocMasterSync</a> (std::function&lt; void()&gt; funcSync, std::function&lt; bool()&gt; funcIsMasterThread)</td></tr>
-<tr class="memdesc:aea4d25e320373dbba8b5255b44b709e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#aea4d25e320373dbba8b5255b44b709e9">More...</a><br /></td></tr>
-<tr class="separator:aea4d25e320373dbba8b5255b44b709e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fd6a132cd9c90a550660bd06771a696"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#abdd6790bfd7b8850c72cfb0a15834195">ALPAKA_FN_ACC_NO_CUDA</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a5fd6a132cd9c90a550660bd06771a696">BlockSharedAllocMasterSync</a> (std::function&lt; void()&gt; fnSync, std::function&lt; bool()&gt; fnIsMasterThread)</td></tr>
+<tr class="memdesc:a5fd6a132cd9c90a550660bd06771a696"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a5fd6a132cd9c90a550660bd06771a696">More...</a><br /></td></tr>
+<tr class="separator:a5fd6a132cd9c90a550660bd06771a696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae82076adbc49cf19ab518f2c088c9c2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#abdd6790bfd7b8850c72cfb0a15834195">ALPAKA_FN_ACC_NO_CUDA</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#ae82076adbc49cf19ab518f2c088c9c2e">BlockSharedAllocMasterSync</a> (<a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html">BlockSharedAllocMasterSync</a> const &amp;)=delete</td></tr>
 <tr class="memdesc:ae82076adbc49cf19ab518f2c088c9c2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#ae82076adbc49cf19ab518f2c088c9c2e">More...</a><br /></td></tr>
 <tr class="separator:ae82076adbc49cf19ab518f2c088c9c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,13 +163,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0b3fdbacb3277c39a5454c88235a9587"><td class="memItemLeft" align="right" valign="top">std::function&lt; bool()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a0b3fdbacb3277c39a5454c88235a9587">m_funcIsMasterThread</a></td></tr>
-<tr class="separator:a0b3fdbacb3277c39a5454c88235a9587"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac8ceff0d53cb674d2d97a3233a47f5e"><td class="memItemLeft" align="right" valign="top">std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#aac8ceff0d53cb674d2d97a3233a47f5e">m_funcSync</a></td></tr>
-<tr class="separator:aac8ceff0d53cb674d2d97a3233a47f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a588c1c2a1ad9b0d6132948fcb3227bb0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; uint8_t, boost::alignment::aligned_delete &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a588c1c2a1ad9b0d6132948fcb3227bb0">m_vvuiSharedMem</a></td></tr>
-<tr class="memdesc:a588c1c2a1ad9b0d6132948fcb3227bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block shared memory.  <a href="#a588c1c2a1ad9b0d6132948fcb3227bb0">More...</a><br /></td></tr>
-<tr class="separator:a588c1c2a1ad9b0d6132948fcb3227bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af672973a2eda06c45e8d7108cda2c815"><td class="memItemLeft" align="right" valign="top">std::function&lt; bool()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#af672973a2eda06c45e8d7108cda2c815">m_isMasterThreadFn</a></td></tr>
+<tr class="separator:af672973a2eda06c45e8d7108cda2c815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82ca99aa1917db7f0ef17d61d049dfb2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; uint8_t, boost::alignment::aligned_delete &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a82ca99aa1917db7f0ef17d61d049dfb2">m_sharedAllocs</a></td></tr>
+<tr class="separator:a82ca99aa1917db7f0ef17d61d049dfb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b2cd51ccf2af066d0eed0428a50f97a"><td class="memItemLeft" align="right" valign="top">std::function&lt; void()&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a7b2cd51ccf2af066d0eed0428a50f97a">m_syncFn</a></td></tr>
+<tr class="separator:a7b2cd51ccf2af066d0eed0428a50f97a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The block shared memory allocator allocating memory with synchronization on the master thread. </p>
@@ -191,7 +190,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aea4d25e320373dbba8b5255b44b709e9"></a>
+<a class="anchor" id="a5fd6a132cd9c90a550660bd06771a696"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -202,13 +201,13 @@ Public Attributes</h2></td></tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#abdd6790bfd7b8850c72cfb0a15834195">ALPAKA_FN_ACC_NO_CUDA</a> alpaka::block::shared::BlockSharedAllocMasterSync::BlockSharedAllocMasterSync </td>
           <td>(</td>
           <td class="paramtype">std::function&lt; void()&gt;&#160;</td>
-          <td class="paramname"><em>funcSync</em>, </td>
+          <td class="paramname"><em>fnSync</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::function&lt; bool()&gt;&#160;</td>
-          <td class="paramname"><em>funcIsMasterThread</em>&#160;</td>
+          <td class="paramname"><em>fnIsMasterThread</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -360,12 +359,12 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a0b3fdbacb3277c39a5454c88235a9587"></a>
+<a class="anchor" id="af672973a2eda06c45e8d7108cda2c815"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::function&lt;bool()&gt; alpaka::block::shared::BlockSharedAllocMasterSync::m_funcIsMasterThread</td>
+          <td class="memname">std::function&lt;bool()&gt; alpaka::block::shared::BlockSharedAllocMasterSync::m_isMasterThreadFn</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -374,21 +373,7 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aac8ceff0d53cb674d2d97a3233a47f5e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::function&lt;void()&gt; alpaka::block::shared::BlockSharedAllocMasterSync::m_funcSync</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html#l00087">87</a> of file <a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html">BlockSharedAllocMasterSync.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a588c1c2a1ad9b0d6132948fcb3227bb0"></a>
+<a class="anchor" id="a82ca99aa1917db7f0ef17d61d049dfb2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -396,7 +381,7 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::unique_ptr&lt; uint8_t, boost::alignment::aligned_delete&gt; &gt; alpaka::block::shared::BlockSharedAllocMasterSync::m_vvuiSharedMem</td>
+          <td class="memname">std::vector&lt; std::unique_ptr&lt; uint8_t, boost::alignment::aligned_delete&gt; &gt; alpaka::block::shared::BlockSharedAllocMasterSync::m_sharedAllocs</td>
         </tr>
       </table>
   </td>
@@ -406,9 +391,21 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Block shared memory. </p>
-
 <p>Definition at line <a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html#l00085">85</a> of file <a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html">BlockSharedAllocMasterSync.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7b2cd51ccf2af066d0eed0428a50f97a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::function&lt;void()&gt; alpaka::block::shared::BlockSharedAllocMasterSync::m_syncFn</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html#l00087">87</a> of file <a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html">BlockSharedAllocMasterSync.hpp</a>.</p>
 
 </div>
 </div>
@@ -421,7 +418,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block.html">block</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block_1_1shared.html">shared</a></li><li class="navelem"><a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html">BlockSharedAllocMasterSync</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:52 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:20 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

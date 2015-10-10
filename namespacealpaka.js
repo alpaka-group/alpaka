@@ -8,6 +8,7 @@ var namespacealpaka =
     [ "detail", "namespacealpaka_1_1detail.html", "namespacealpaka_1_1detail" ],
     [ "dev", "namespacealpaka_1_1dev.html", "namespacealpaka_1_1dev" ],
     [ "dim", "namespacealpaka_1_1dim.html", "namespacealpaka_1_1dim" ],
+    [ "elem", "namespacealpaka_1_1elem.html", "namespacealpaka_1_1elem" ],
     [ "event", "namespacealpaka_1_1event.html", "namespacealpaka_1_1event" ],
     [ "exec", "namespacealpaka_1_1exec.html", "namespacealpaka_1_1exec" ],
     [ "extent", "namespacealpaka_1_1extent.html", "namespacealpaka_1_1extent" ],
@@ -19,6 +20,7 @@ var namespacealpaka =
     [ "rand", "namespacealpaka_1_1rand.html", "namespacealpaka_1_1rand" ],
     [ "size", "namespacealpaka_1_1size.html", "namespacealpaka_1_1size" ],
     [ "stream", "namespacealpaka_1_1stream.html", "namespacealpaka_1_1stream" ],
+    [ "vec", "namespacealpaka_1_1vec.html", "namespacealpaka_1_1vec" ],
     [ "wait", "namespacealpaka_1_1wait.html", "namespacealpaka_1_1wait" ],
     [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ]

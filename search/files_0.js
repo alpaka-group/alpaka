@@ -2,7 +2,6 @@ var searchData=
 [
   ['abscudabuiltin_2ehpp',['AbsCudaBuiltIn.hpp',['../AbsCudaBuiltIn_8hpp.html',1,'']]],
   ['absstl_2ehpp',['AbsStl.hpp',['../AbsStl_8hpp.html',1,'']]],
-  ['abstraction_2emd',['Abstraction.md',['../Abstraction_8md.html',1,'']]],
   ['acccpufibers_2ehpp',['AccCpuFibers.hpp',['../AccCpuFibers_8hpp.html',1,'']]],
   ['acccpuomp2blocks_2ehpp',['AccCpuOmp2Blocks.hpp',['../AccCpuOmp2Blocks_8hpp.html',1,'']]],
   ['acccpuomp2threads_2ehpp',['AccCpuOmp2Threads.hpp',['../AccCpuOmp2Threads_8hpp.html',1,'']]],
@@ -17,6 +16,7 @@ var searchData=
   ['alloccpuboostaligned_2ehpp',['AllocCpuBoostAligned.hpp',['../AllocCpuBoostAligned_8hpp.html',1,'']]],
   ['alloccpunew_2ehpp',['AllocCpuNew.hpp',['../AllocCpuNew_8hpp.html',1,'']]],
   ['alpaka_2ehpp',['alpaka.hpp',['../alpaka_8hpp.html',1,'']]],
+  ['applytuple_2ehpp',['ApplyTuple.hpp',['../ApplyTuple_8hpp.html',1,'']]],
   ['asincudabuiltin_2ehpp',['AsinCudaBuiltIn.hpp',['../AsinCudaBuiltIn_8hpp.html',1,'']]],
   ['asinstl_2ehpp',['AsinStl.hpp',['../AsinStl_8hpp.html',1,'']]],
   ['atan2cudabuiltin_2ehpp',['Atan2CudaBuiltIn.hpp',['../Atan2CudaBuiltIn_8hpp.html',1,'']]],

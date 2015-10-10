@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Trunc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_ce2f0d9c51612681f49ddfaf80ae16d8 =
 [
-    [ "trunc", "structalpaka_1_1math_1_1traits_1_1Trunc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_ce2f0d9c51612681f49ddfaf80ae16d8.html#af27306728ea09b229620cacc578c3c42", null ]
+    [ "trunc", "structalpaka_1_1math_1_1traits_1_1Trunc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_ce2f0d9c51612681f49ddfaf80ae16d8.html#ab27a4f53e1b36638eee0ace96bfe3c80", null ]
 ];

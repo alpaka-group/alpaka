@@ -133,13 +133,45 @@ $(document).ready(function(){initNavTree('OpenMp_8hpp_source.html','');});
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;omp.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp.html">   28</a></span>&#160;    <span class="keyword">namespace </span>omp</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">        //! \return The maximum number of threads the OpenMP 2.0 runtime is capable of.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp.html#a8d9002e29ae7c32193840d7ad5d9058b">   33</a></span>&#160;        <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1omp.html#a8d9002e29ae7c32193840d7ad5d9058b">getMaxOmpThreads</a>()</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        -&gt; <span class="keywordtype">int</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="comment">// NOTE: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP 2.0 runtime at any time:</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="comment">// &#39;The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team,</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="comment">// if an active parallel region without a num_threads clause were to be encountered at that point in the program.&#39;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="comment">// How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -&gt; omp_get_max_threads()?</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="comment">// Get the current thread number. This is OMP_NUM_THREADS if it has not been changed up to here.</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> maxThreadsOld(::omp_get_max_threads());</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            ::omp_set_num_threads(1024);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keyword">auto</span> <span class="keyword">const</span> maxThreadsReal(::omp_get_max_threads());</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="comment">// Reset the max threads.</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            ::omp_set_num_threads(maxThreadsOld);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> maxThreadsReal;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="ttc" id="namespacealpaka_1_1omp_html_a8d9002e29ae7c32193840d7ad5d9058b"><div class="ttname"><a href="namespacealpaka_1_1omp.html#a8d9002e29ae7c32193840d7ad5d9058b">alpaka::omp::getMaxOmpThreads</a></div><div class="ttdeci">ALPAKA_FN_HOST auto getMaxOmpThreads() -&gt; int                        </div><div class="ttdef"><b>Definition:</b> <a href="OpenMp_8hpp_source.html#l00033">OpenMp.hpp:33</a></div></div>
+<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler. </div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00052">AccCpuFibers.hpp:52</a></div></div>
+<div class="ttc" id="Common_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00044">Common.hpp:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="OpenMp_8hpp.html">OpenMp.hpp</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:47 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:15 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

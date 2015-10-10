@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['equalextents',['EqualExtents',['../namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a670593ce76066f5d5228f90cec0431bf',1,'alpaka::workdiv']]]
+  ['equalextent',['EqualExtent',['../namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010ae79087692afdec020e4de5e524f6b8e4',1,'alpaka::workdiv']]]
 ];

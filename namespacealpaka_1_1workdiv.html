@@ -132,31 +132,37 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator work division.  <a href="classalpaka_1_1workdiv_1_1WorkDivCudaBuiltIn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A basic class holding the work division as grid block extents and block thread extents.  <a href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A basic class holding the work division as grid block extent, block thread and thread element extent.  <a href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:aa8f3416178f53f4063087ecae0fd7990"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990">GridBlockExtentsSubDivRestrictions</a> { <br />
-&#160;&#160;<a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a670593ce76066f5d5228f90cec0431bf">GridBlockExtentsSubDivRestrictions::EqualExtents</a>, 
+<tr class="memitem:a2c1867744ccffdf8be1e07a50d9c0010"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a> { <br />
+&#160;&#160;<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010ae79087692afdec020e4de5e524f6b8e4">GridBlockExtentSubDivRestrictions::EqualExtent</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a3c514f37efb118ef80d00172d20d2175">GridBlockExtentsSubDivRestrictions::CloseToEqualExtents</a>, 
+&#160;&#160;<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a9cb04f2b32708185e3d3cb6b812912ec">GridBlockExtentSubDivRestrictions::CloseToEqualExtent</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a89c6caacc7047b0a535412d7f939f870">GridBlockExtentsSubDivRestrictions::Unrestricted</a>
+&#160;&#160;<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>
 <br />
- }<tr class="memdesc:aa8f3416178f53f4063087ecae0fd7990"><td class="mdescLeft">&#160;</td><td class="mdescRight">The grid block extents subdivision restrictions.  <a href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990">More...</a><br /></td></tr>
-<tr class="separator:aa8f3416178f53f4063087ecae0fd7990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+ }<tr class="memdesc:a2c1867744ccffdf8be1e07a50d9c0010"><td class="mdescLeft">&#160;</td><td class="mdescRight">The grid block extent subdivision restrictions.  <a href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">More...</a><br /></td></tr>
+<tr class="separator:a2c1867744ccffdf8be1e07a50d9c0010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa8f117b2683ab39d56bad0561deab974"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TExtents , typename TDev &gt; </td></tr>
-<tr class="memitem:aa8f117b2683ab39d56bad0561deab974"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#aa8f117b2683ab39d56bad0561deab974">getValidWorkDiv</a> (TDev const &amp;dev, TExtents const &amp;gridThreadExtents=TExtents(), bool bRequireBlockThreadExtentsToDivideGridThreadExtents=true, <a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990">GridBlockExtentsSubDivRestrictions</a> eGridBlockExtentsSubDivRestrictions=<a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a89c6caacc7047b0a535412d7f939f870">GridBlockExtentsSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TExtents &gt;, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TAcc &gt;&gt;                        </td></tr>
-<tr class="separator:aa8f117b2683ab39d56bad0561deab974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68c307ff7098e018d0ce3d3499abe118"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TWorkDiv  = void&gt; </td></tr>
+<tr class="memitem:a3e355993e5b7f59ccaa7cacbd5a77f1a"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TGridElemExtent , typename TThreadElemExtent , typename TDev &gt; </td></tr>
+<tr class="memitem:a3e355993e5b7f59ccaa7cacbd5a77f1a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a3e355993e5b7f59ccaa7cacbd5a77f1a">getValidWorkDiv</a> (TDev const &amp;dev, TGridElemExtent const &amp;gridElemExtent=TGridElemExtent(), TThreadElemExtent const &amp;threadElemExtents=TThreadElemExtent(), bool requireBlockThreadExtentToDivideGridThreadExtent=true, <a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TGridElemExtent &gt;, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TGridElemExtent &gt;&gt;                        </td></tr>
+<tr class="separator:a3e355993e5b7f59ccaa7cacbd5a77f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68c307ff7098e018d0ce3d3499abe118"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TWorkDiv &gt; </td></tr>
 <tr class="memitem:a68c307ff7098e018d0ce3d3499abe118"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a68c307ff7098e018d0ce3d3499abe118">getWorkDiv</a> (TWorkDiv const &amp;workDiv) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TWorkDiv &gt;&gt;                        </td></tr>
-<tr class="memdesc:a68c307ff7098e018d0ce3d3499abe118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the extents requested.  <a href="#a68c307ff7098e018d0ce3d3499abe118">More...</a><br /></td></tr>
+<tr class="memdesc:a68c307ff7098e018d0ce3d3499abe118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the extent requested.  <a href="#a68c307ff7098e018d0ce3d3499abe118">More...</a><br /></td></tr>
 <tr class="separator:a68c307ff7098e018d0ce3d3499abe118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63115ebfce000fde756b8289fb47b733"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TSize &gt; </td></tr>
+<tr class="memitem:a63115ebfce000fde756b8289fb47b733"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a63115ebfce000fde756b8289fb47b733">isValidAccDevProps</a> (<a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TSize &gt; const &amp;accDevProps) -&gt; bool                        </td></tr>
+<tr class="separator:a63115ebfce000fde756b8289fb47b733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a845c3e12e246a3b1b8f5b5368b38c13f"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TSize , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a845c3e12e246a3b1b8f5b5368b38c13f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a845c3e12e246a3b1b8f5b5368b38c13f">isValidWorkDiv</a> (<a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TSize &gt; const &amp;accDevProps, TWorkDiv const &amp;workDiv) -&gt; bool                        </td></tr>
+<tr class="separator:a845c3e12e246a3b1b8f5b5368b38c13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed0e6d7cf680b84a2d21fc8509dc8be5"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </td></tr>
 <tr class="memitem:aed0e6d7cf680b84a2d21fc8509dc8be5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#aed0e6d7cf680b84a2d21fc8509dc8be5">isValidWorkDiv</a> (TDev const &amp;dev, TWorkDiv const &amp;workDiv) -&gt; bool                        </td></tr>
 <tr class="separator:aed0e6d7cf680b84a2d21fc8509dc8be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,15 +170,15 @@ Functions</h2></td></tr>
 <tr class="memitem:af3a96b100852b7a8b4375baef23af1d0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#af3a96b100852b7a8b4375baef23af1d0">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TSize &gt; const &amp;workDiv) -&gt; std::ostream &amp;                        </td></tr>
 <tr class="memdesc:af3a96b100852b7a8b4375baef23af1d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream out operator.  <a href="#af3a96b100852b7a8b4375baef23af1d0">More...</a><br /></td></tr>
 <tr class="separator:af3a96b100852b7a8b4375baef23af1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4013c65310bae9b5b0b17138cbeb99c5"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TSize &gt; </td></tr>
-<tr class="memitem:a4013c65310bae9b5b0b17138cbeb99c5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a4013c65310bae9b5b0b17138cbeb99c5">subDivideGridThreads</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;vuiGridThreadExtents, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;vuiMaxBlockThreadExtents, TSize const &amp;uiMaxBlockThreadsCount, bool bRequireBlockThreadExtentsToDivideGridThreadExtents=true, <a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990">GridBlockExtentsSubDivRestrictions</a> eGridBlockExtentsSubDivRestrictions=<a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a89c6caacc7047b0a535412d7f939f870">GridBlockExtentsSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;                        </td></tr>
-<tr class="memdesc:a4013c65310bae9b5b0b17138cbeb99c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extents into blocks restricted by:  <a href="#a4013c65310bae9b5b0b17138cbeb99c5">More...</a><br /></td></tr>
-<tr class="separator:a4013c65310bae9b5b0b17138cbeb99c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac49b94449627b94401c8cbea97efb772"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TSize &gt; </td></tr>
+<tr class="memitem:ac49b94449627b94401c8cbea97efb772"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#ac49b94449627b94401c8cbea97efb772">subDivideGridElems</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;gridElemExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; threadElemExtent, <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TSize &gt; const &amp;accDevProps, bool requireBlockThreadExtentToDivideGridThreadExtent=true, <a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;                        </td></tr>
+<tr class="memdesc:ac49b94449627b94401c8cbea97efb772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extent into blocks restricted by the maxima allowed.  <a href="#ac49b94449627b94401c8cbea97efb772">More...</a><br /></td></tr>
+<tr class="separator:ac49b94449627b94401c8cbea97efb772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The work division traits specifics. </p>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="aa8f3416178f53f4063087ecae0fd7990"></a>
+<a class="anchor" id="a2c1867744ccffdf8be1e07a50d9c0010"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -180,7 +186,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990">alpaka::workdiv::GridBlockExtentsSubDivRestrictions</a></td>
+          <td class="memname">enum <a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">alpaka::workdiv::GridBlockExtentSubDivRestrictions</a></td>
         </tr>
       </table>
   </td>
@@ -190,15 +196,15 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The grid block extents subdivision restrictions. </p>
+<p>The grid block extent subdivision restrictions. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="aa8f3416178f53f4063087ecae0fd7990a670593ce76066f5d5228f90cec0431bf"></a>EqualExtents&#160;</td><td class="fielddoc">
-<p>The block thread extents will be equal in all dimensions. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a2c1867744ccffdf8be1e07a50d9c0010ae79087692afdec020e4de5e524f6b8e4"></a>EqualExtent&#160;</td><td class="fielddoc">
+<p>The block thread extent will be equal in all dimensions. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa8f3416178f53f4063087ecae0fd7990a3c514f37efb118ef80d00172d20d2175"></a>CloseToEqualExtents&#160;</td><td class="fielddoc">
-<p>The block thread extents will be as close to equal as possible in all dimensions. </p>
+<tr><td class="fieldname"><a class="anchor" id="a2c1867744ccffdf8be1e07a50d9c0010a9cb04f2b32708185e3d3cb6b812912ec"></a>CloseToEqualExtent&#160;</td><td class="fielddoc">
+<p>The block thread extent will be as close to equal as possible in all dimensions. </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa8f3416178f53f4063087ecae0fd7990a89c6caacc7047b0a535412d7f939f870"></a>Unrestricted&#160;</td><td class="fielddoc">
+<tr><td class="fieldname"><a class="anchor" id="a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870"></a>Unrestricted&#160;</td><td class="fielddoc">
 </td></tr>
 </table>
 
@@ -207,11 +213,11 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aa8f117b2683ab39d56bad0561deab974"></a>
+<a class="anchor" id="a3e355993e5b7f59ccaa7cacbd5a77f1a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TExtents , typename TDev &gt; </div>
+template&lt;typename TAcc , typename TGridElemExtent , typename TThreadElemExtent , typename TDev &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::getValidWorkDiv </td>
@@ -222,25 +228,31 @@ template&lt;typename TAcc , typename TExtents , typename TDev &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>gridThreadExtents</em> = <code>TExtents()</code>, </td>
+          <td class="paramtype">TGridElemExtent const &amp;&#160;</td>
+          <td class="paramname"><em>gridElemExtent</em> = <code>TGridElemExtent()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TThreadElemExtent const &amp;&#160;</td>
+          <td class="paramname"><em>threadElemExtents</em> = <code>TThreadElemExtent()</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bRequireBlockThreadExtentsToDivideGridThreadExtents</em> = <code>true</code>, </td>
+          <td class="paramname"><em>requireBlockThreadExtentToDivideGridThreadExtent</em> = <code>true</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990">GridBlockExtentsSubDivRestrictions</a>&#160;</td>
-          <td class="paramname"><em>eGridBlockExtentsSubDivRestrictions</em> = <code><a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a89c6caacc7047b0a535412d7f939f870">GridBlockExtentsSubDivRestrictions::Unrestricted</a></code>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a>&#160;</td>
+          <td class="paramname"><em>gridBlockExtentSubDivRestrictions</em> = <code><a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TExtents&gt;, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TAcc&gt;&gt;
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TGridElemExtent&gt;, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TGridElemExtent&gt;&gt;
         </td>
         </tr>
       </table>
@@ -248,21 +260,25 @@ template&lt;typename TAcc , typename TExtents , typename TDev &gt; </div>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TAcc</td><td>The accelerator for which this work division has to be valid. </td></tr>
+    <tr><td class="paramname">TGridElemExtent</td><td>The type of the grid element extent. </td></tr>
+    <tr><td class="paramname">TThreadElemExtent</td><td>The type of the thread element extent. </td></tr>
+    <tr><td class="paramname">TDev</td><td>The type of the device. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dev</td><td>The device for which this work division has to be valid. </td></tr>
-    <tr><td class="paramname">gridThreadExtents</td><td>The full extents of threads in the grid. </td></tr>
-    <tr><td class="paramname">bRequireBlockThreadExtentsToDivideGridThreadExtents</td><td>If the grid thread extents have to be a multiple of the block thread extents. </td></tr>
-    <tr><td class="paramname">eGridBlockExtentsSubDivRestrictions</td><td>The grid block extent subdivision restrictions. </td></tr>
+    <tr><td class="paramname">dev</td><td>The device the work division should be valid for. </td></tr>
+    <tr><td class="paramname">gridElemExtent</td><td>The full extent of elements in the grid. </td></tr>
+    <tr><td class="paramname">threadElemExtents</td><td>the number of elements computed per thread. </td></tr>
+    <tr><td class="paramname">requireBlockThreadExtentToDivideGridThreadExtent</td><td>If this is true, the grid thread extent will be multiples of the corresponding block thread extent. NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension. </td></tr>
+    <tr><td class="paramname">gridBlockExtentSubDivRestrictions</td><td>The grid block extent subdivision restrictions. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The work division. </dd></dl>
 
-<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00323">323</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00411">411</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -270,7 +286,7 @@ template&lt;typename TAcc , typename TExtents , typename TDev &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TOrigin , typename TUnit , typename TWorkDiv  = void&gt; </div>
+template&lt;typename TOrigin , typename TUnit , typename TWorkDiv &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::workdiv::getWorkDiv </td>
@@ -283,9 +299,91 @@ template&lt;typename TOrigin , typename TUnit , typename TWorkDiv  = void&gt; </
       </table>
 </div><div class="memdoc">
 
-<p>Get the extents requested. </p>
+<p>Get the extent requested. </p>
 
 <p>Definition at line <a class="el" href="workdiv_2Traits_8hpp_source.html#l00064">64</a> of file <a class="el" href="workdiv_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a63115ebfce000fde756b8289fb47b733"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TSize &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::isValidAccDevProps </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>accDevProps</em></td><td>)</td>
+          <td> -&gt; bool
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TDim</td><td>The dimensionality of the accelerator device properties. </td></tr>
+    <tr><td class="paramname">TSize</td><td>The size type of the accelerator device properties. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">accDevProps</td><td>The maxima for the work division. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If the accelerator device properties are valid. </dd></dl>
+
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00126">126</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a845c3e12e246a3b1b8f5b5368b38c13f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TSize , typename TWorkDiv &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::isValidWorkDiv </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>accDevProps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TWorkDiv const &amp;&#160;</td>
+          <td class="paramname"><em>workDiv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; bool
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TDim</td><td>The dimensionality of the accelerator device properties. </td></tr>
+    <tr><td class="paramname">TSize</td><td>The size type of the accelerator device properties. </td></tr>
+    <tr><td class="paramname">TWorkDiv</td><td>The type of the work division. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">accDevProps</td><td>The maxima for the work division. </td></tr>
+    <tr><td class="paramname">workDiv</td><td>The work division to test for validity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If the work division is valid for the given accelerator device properties. </dd></dl>
+
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00452">452</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -323,14 +421,14 @@ template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </div>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dev</td><td>The device to test the work div to for validity on. </td></tr>
-    <tr><td class="paramname">workDiv</td><td>The work div to test for validity. </td></tr>
+    <tr><td class="paramname">dev</td><td>The device to test the work division for validity on. </td></tr>
+    <tr><td class="paramname">workDiv</td><td>The work division to test for validity. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the work division is valid on this accelerator. </dd></dl>
 
-<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00357">357</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00508">508</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -363,45 +461,45 @@ template&lt;typename TDim , typename TSize &gt; </div>
 
 <p>Stream out operator. </p>
 
-<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00131">131</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00138">138</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4013c65310bae9b5b0b17138cbeb99c5"></a>
+<a class="anchor" id="ac49b94449627b94401c8cbea97efb772"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TDim , typename TSize &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::subDivideGridThreads </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::subDivideGridElems </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>vuiGridThreadExtents</em>, </td>
+          <td class="paramname"><em>gridElemExtent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>vuiMaxBlockThreadExtents</em>, </td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td>
+          <td class="paramname"><em>threadElemExtent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TSize const &amp;&#160;</td>
-          <td class="paramname"><em>uiMaxBlockThreadsCount</em>, </td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>accDevProps</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bRequireBlockThreadExtentsToDivideGridThreadExtents</em> = <code>true</code>, </td>
+          <td class="paramname"><em>requireBlockThreadExtentToDivideGridThreadExtent</em> = <code>true</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990">GridBlockExtentsSubDivRestrictions</a>&#160;</td>
-          <td class="paramname"><em>eGridBlockExtentsSubDivRestrictions</em> = <code><a class="el" href="namespacealpaka_1_1workdiv.html#aa8f3416178f53f4063087ecae0fd7990a89c6caacc7047b0a535412d7f939f870">GridBlockExtentsSubDivRestrictions::Unrestricted</a></code>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a>&#160;</td>
+          <td class="paramname"><em>gridBlockExtentSubDivRestrictions</em> = <code><a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -412,25 +510,24 @@ template&lt;typename TDim , typename TSize &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Subdivides the given grid thread extents into blocks restricted by: </p>
+<p>Subdivides the given grid thread extent into blocks restricted by the maxima allowed. </p>
 <ol type="1">
-<li>The maximum block thread extents</li>
-<li>The maximum block thread count</li>
-<li>The requirement of the block thread extents to divide the grid thread extents without remainder</li>
-<li>The requirement of the block extents.</li>
+<li>The the maxima block, thread and element extent and counts</li>
+<li>The requirement of the block thread extent to divide the grid thread extent without remainder</li>
+<li>The requirement of the block extent.</li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">vuiGridThreadExtents</td><td>The full extents of threads in the grid. </td></tr>
-    <tr><td class="paramname">vuiMaxBlockThreadExtents</td><td>The maximum extents of threads in a block. </td></tr>
-    <tr><td class="paramname">uiMaxBlockThreadsCount</td><td>The maximum number of threads in a block. </td></tr>
-    <tr><td class="paramname">bRequireBlockThreadExtentsToDivideGridThreadExtents</td><td>If this is true, the grid thread extents will be multiples of the corresponding block thread extents. NOTE: If this is true and vuiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension. </td></tr>
-    <tr><td class="paramname">eGridBlockExtentsSubDivRestrictions</td><td>The grid block extent subdivision restrictions. </td></tr>
+    <tr><td class="paramname">gridElemExtent</td><td>The full extent of elements in the grid. </td></tr>
+    <tr><td class="paramname">threadElemExtents</td><td>the number of elements computed per thread. </td></tr>
+    <tr><td class="paramname">accDevProps</td><td>The maxima for the work division. </td></tr>
+    <tr><td class="paramname">requireBlockThreadExtentToDivideGridThreadExtent</td><td>If this is true, the grid thread extent will be multiples of the corresponding block thread extent. NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension. </td></tr>
+    <tr><td class="paramname">gridBlockExtentSubDivRestrictions</td><td>The grid block extent subdivision restrictions. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00139">139</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00179">179</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -440,7 +537,7 @@ template&lt;typename TDim , typename TSize &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv.html">workdiv</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:04 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

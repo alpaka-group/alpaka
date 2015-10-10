@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1block_1_1shared.htm
 </div><!--header-->
 <div class="contents">
 
-<p>The block shared memory operation traits specifics.  
+<p>The block shared memory operation specifics.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -137,7 +137,7 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a73e14e8439ed038971814d5549cae2a3"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t TuiNumElements, typename TBlockSharedAlloc &gt; </td></tr>
+<tr class="memitem:a73e14e8439ed038971814d5549cae2a3"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t TnumElements, typename TBlockSharedAlloc &gt; </td></tr>
 <tr class="memitem:a73e14e8439ed038971814d5549cae2a3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1block_1_1shared.html#a73e14e8439ed038971814d5549cae2a3">allocArr</a> (TBlockSharedAlloc const &amp;blockSharedAlloc) -&gt; T *                                        </td></tr>
 <tr class="memdesc:a73e14e8439ed038971814d5549cae2a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates an array in block shared memory.  <a href="#a73e14e8439ed038971814d5549cae2a3">More...</a><br /></td></tr>
 <tr class="separator:a73e14e8439ed038971814d5549cae2a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,13 +151,13 @@ Functions</h2></td></tr>
 <tr class="separator:a48edf6062776b2bfc5a994c6638b4771"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The block shared memory operation traits specifics. </p>
+<div class="textblock"><p>The block shared memory operation specifics. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a73e14e8439ed038971814d5549cae2a3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , std::size_t TuiNumElements, typename TBlockSharedAlloc &gt; </div>
+template&lt;typename T , std::size_t TnumElements, typename TBlockSharedAlloc &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::block::shared::allocArr </td>
@@ -174,7 +174,7 @@ template&lt;typename T , std::size_t TuiNumElements, typename TBlockSharedAlloc 
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The element type. </td></tr>
-    <tr><td class="paramname">TuiNumElements</td><td>The Number of elements. </td></tr>
+    <tr><td class="paramname">TnumElements</td><td>The Number of elements. </td></tr>
     <tr><td class="paramname">TBlockSharedAlloc</td><td>The block shared allocator implementation type. </td></tr>
   </table>
   </dd>
@@ -186,7 +186,7 @@ template&lt;typename T , std::size_t TuiNumElements, typename TBlockSharedAlloc 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="block_2shared_2Traits_8hpp_source.html#l00106">106</a> of file <a class="el" href="block_2shared_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="block_2shared_2Traits_8hpp_source.html#l00107">107</a> of file <a class="el" href="block_2shared_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -257,7 +257,7 @@ template&lt;typename TBlockSharedAlloc &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="block_2shared_2Traits_8hpp_source.html#l00131">131</a> of file <a class="el" href="block_2shared_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="block_2shared_2Traits_8hpp_source.html#l00133">133</a> of file <a class="el" href="block_2shared_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -267,7 +267,7 @@ template&lt;typename TBlockSharedAlloc &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block.html">block</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block_1_1shared.html">shared</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:52 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:20 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

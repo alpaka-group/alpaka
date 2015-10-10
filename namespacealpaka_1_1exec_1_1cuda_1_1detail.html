@@ -114,13 +114,13 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1exec_1_1cuda_1_1det
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adcfdb9b338929f14a9a0b557ce1f43c7"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:adcfdb9b338929f14a9a0b557ce1f43c7"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1cuda_1_1detail.html#adcfdb9b338929f14a9a0b557ce1f43c7">cudaKernel</a> (TKernelFnObj kernelFnObj, TArgs...args)</td></tr>
-<tr class="memdesc:adcfdb9b338929f14a9a0b557ce1f43c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA kernel entry point.  <a href="#adcfdb9b338929f14a9a0b557ce1f43c7">More...</a><br /></td></tr>
-<tr class="separator:adcfdb9b338929f14a9a0b557ce1f43c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42589f499b121735fb8678979bfe563a"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a42589f499b121735fb8678979bfe563a"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1cuda_1_1detail.html#a42589f499b121735fb8678979bfe563a">cudaKernel</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs...args)</td></tr>
+<tr class="memdesc:a42589f499b121735fb8678979bfe563a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA kernel entry point.  <a href="#a42589f499b121735fb8678979bfe563a">More...</a><br /></td></tr>
+<tr class="separator:a42589f499b121735fb8678979bfe563a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="adcfdb9b338929f14a9a0b557ce1f43c7"></a>
+<a class="anchor" id="a42589f499b121735fb8678979bfe563a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -129,7 +129,13 @@ template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename...
         <tr>
           <td class="memname">__global__ void alpaka::exec::cuda::detail::cudaKernel </td>
           <td>(</td>
-          <td class="paramtype">TKernelFnObj&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const&#160;</td>
+          <td class="paramname"><em>threadElemExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TKernelFnObj const&#160;</td>
           <td class="paramname"><em>kernelFnObj</em>, </td>
         </tr>
         <tr>
@@ -148,7 +154,7 @@ template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename...
 
 <p>The GPU CUDA kernel entry point. </p>
 
-<p>Definition at line <a class="el" href="ExecGpuCudaRt_8hpp_source.html#l00068">68</a> of file <a class="el" href="ExecGpuCudaRt_8hpp_source.html">ExecGpuCudaRt.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ExecGpuCudaRt_8hpp_source.html#l00077">77</a> of file <a class="el" href="ExecGpuCudaRt_8hpp_source.html">ExecGpuCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -158,7 +164,7 @@ template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename...
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1exec.html">exec</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1exec_1_1cuda.html">cuda</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1exec_1_1cuda_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:55 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

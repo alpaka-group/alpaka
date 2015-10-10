@@ -1,4 +1,4 @@
 var structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_7273dd7fb8161cbdb3d0b5d1bc496c22 =
 [
-    [ "alloc", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_7273dd7fb8161cbdb3d0b5d1bc496c22.html#ac82757aff6a6fcff923b42d626d5b889", null ]
+    [ "alloc", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_7273dd7fb8161cbdb3d0b5d1bc496c22.html#aba2b88d1a1537852199ecb35454335f3", null ]
 ];

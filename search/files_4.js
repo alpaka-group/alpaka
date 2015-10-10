@@ -2,8 +2,7 @@ var searchData=
 [
   ['erfcudabuiltin_2ehpp',['ErfCudaBuiltIn.hpp',['../ErfCudaBuiltIn_8hpp.html',1,'']]],
   ['erfstl_2ehpp',['ErfStl.hpp',['../ErfStl_8hpp.html',1,'']]],
-  ['eventcpuasync_2ehpp',['EventCpuAsync.hpp',['../EventCpuAsync_8hpp.html',1,'']]],
-  ['eventcpusync_2ehpp',['EventCpuSync.hpp',['../EventCpuSync_8hpp.html',1,'']]],
+  ['eventcpu_2ehpp',['EventCpu.hpp',['../EventCpu_8hpp.html',1,'']]],
   ['eventcudart_2ehpp',['EventCudaRt.hpp',['../EventCudaRt_8hpp.html',1,'']]],
   ['execcpufibers_2ehpp',['ExecCpuFibers.hpp',['../ExecCpuFibers_8hpp.html',1,'']]],
   ['execcpuomp2blocks_2ehpp',['ExecCpuOmp2Blocks.hpp',['../ExecCpuOmp2Blocks_8hpp.html',1,'']]],

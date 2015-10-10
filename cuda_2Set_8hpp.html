@@ -112,11 +112,11 @@ $(document).ready(function(){initNavTree('cuda_2Set_8hpp.html','');});
 <div class="title">Set.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="DevCudaRt_8hpp_source.html">alpaka/dev/DevCudaRt.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DimIntegralConst_8hpp_source.html">alpaka/dim/DimIntegralConst.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="extent_2Traits_8hpp_source.html">alpaka/extent/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mem_2view_2Traits_8hpp_source.html">alpaka/mem/view/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="StreamCudaRt_8hpp_source.html">alpaka/stream/StreamCudaRt.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="stream_2Traits_8hpp_source.html">alpaka/stream/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Cuda_8hpp_source.html">alpaka/core/Cuda.hpp</a>&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 </div>
@@ -124,20 +124,38 @@ $(document).ready(function(){initNavTree('cuda_2Set_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1Set_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0ef9adf4c3f803c3b9d0a6c373dbca1ff.html">alpaka::mem::view::traits::Set&lt;                                                                                                                                                  dim::DimInt&lt; 1u &gt;,                                                                                                                                           dev::DevCudaRt &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA 1D memory set trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1Set_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0ef9adf4c3f803c3b9d0a6c373dbca1ff.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskSet.html">alpaka::mem::view::cuda::detail::TaskSet&lt; TDim, TBuf, TExtent &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA memory copy trait.  <a href="structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskSet.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1Set_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0559f8803470ad6b770e20ecce258ae07.html">alpaka::mem::view::traits::Set&lt;                                                                                                                                                  dim::DimInt&lt; 2u &gt;,                                                                                                                                           dev::DevCudaRt &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA 2D memory set trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1Set_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0559f8803470ad6b770e20ecce258ae07.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1TaskSet_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_e4723af134df0b5bb8d68010683ddca7.html">alpaka::mem::view::traits::TaskSet&lt;                                                                                                                                                  TDim,                                                                                                                                           dev::DevCudaRt &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device memory set trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1TaskSet_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_e4723af134df0b5bb8d68010683ddca7.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1Set_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_045a98116e37c5dcb278b42c513445807.html">alpaka::mem::view::traits::Set&lt;                                                                                                                                                  dim::DimInt&lt; 3u &gt;,                                                                                                                                           dev::DevCudaRt &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA 3D memory set trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1Set_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_045a98116e37c5dcb278b42c513445807.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_016a3e48c2ab09954dbc57f2e3098a98df.html">alpaka::stream::traits::Enqueue&lt;                                                                                                                  stream::StreamCudaRtAsync,                                                                                                           mem::view::cuda::detail::TaskSet&lt; dim::DimInt&lt; 1u &gt;, TBuf, TExtent &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA async device stream 1D set enqueue trait specialization.  <a href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_016a3e48c2ab09954dbc57f2e3098a98df.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01ccecc1322c56be5c095a9a03fb28349c.html">alpaka::stream::traits::Enqueue&lt;                                                                                                                  stream::StreamCudaRtAsync,                                                                                                           mem::view::cuda::detail::TaskSet&lt; dim::DimInt&lt; 2u &gt;, TBuf, TExtent &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA async device stream 2D set enqueue trait specialization.  <a href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01ccecc1322c56be5c095a9a03fb28349c.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_018ea3f07380a3e9181651174c28f02c29.html">alpaka::stream::traits::Enqueue&lt;                                                                                                                  stream::StreamCudaRtAsync,                                                                                                           mem::view::cuda::detail::TaskSet&lt; dim::DimInt&lt; 3u &gt;, TBuf, TExtent &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA async device stream 3D set enqueue trait specialization.  <a href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_018ea3f07380a3e9181651174c28f02c29.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_019ba6a497d7931fe35e44d3b80629ecff.html">alpaka::stream::traits::Enqueue&lt;                                                                                                                  stream::StreamCudaRtSync,                                                                                                           mem::view::cuda::detail::TaskSet&lt; dim::DimInt&lt; 1u &gt;, TBuf, TExtent &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA sync device stream 1D set enqueue trait specialization.  <a href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_019ba6a497d7931fe35e44d3b80629ecff.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01e727940984e6a71db35e7c9ef80d93fd.html">alpaka::stream::traits::Enqueue&lt;                                                                                                                  stream::StreamCudaRtSync,                                                                                                           mem::view::cuda::detail::TaskSet&lt; dim::DimInt&lt; 2u &gt;, TBuf, TExtent &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA sync device stream 2D set enqueue trait specialization.  <a href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01e727940984e6a71db35e7c9ef80d93fd.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0157f6f2f1e81ce263d9ba2b2087e0175d.html">alpaka::stream::traits::Enqueue&lt;                                                                                                                  stream::StreamCudaRtSync,                                                                                                           mem::view::cuda::detail::TaskSet&lt; dim::DimInt&lt; 3u &gt;, TBuf, TExtent &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA sync device stream 3D set enqueue trait specialization.  <a href="structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0157f6f2f1e81ce263d9ba2b2087e0175d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
-<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
+<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1dev"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html">alpaka::dev</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dev"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1mem"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html">alpaka::mem</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1mem"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory specifics. <br /></td></tr>
@@ -145,11 +163,21 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1mem_1_1view"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html">alpaka::mem::view</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1mem_1_1view"><td class="mdescLeft">&#160;</td><td class="mdescRight">The buffer specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1mem_1_1view_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1cuda.html">alpaka::mem::view::cuda</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1mem_1_1view_1_1cuda_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1cuda_1_1detail.html">alpaka::mem::view::cuda::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1mem_1_1view_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1traits.html">alpaka::mem::view::traits</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1stream"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html">alpaka::stream</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1stream"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stream specifics. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1stream_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream_1_1traits.html">alpaka::stream::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1stream_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stream traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
+<div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz, Rene Widera</p>
 <p>This file is part of alpaka.</p>
 <p>alpaka is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 <p>alpaka is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.</p>
@@ -162,7 +190,7 @@ Namespaces</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="dir_a0dbd0278ff86814bb42c371df605ec2.html">cuda</a></li><li class="navelem"><a class="el" href="cuda_2Set_8hpp.html">Set.hpp</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:50 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:18 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

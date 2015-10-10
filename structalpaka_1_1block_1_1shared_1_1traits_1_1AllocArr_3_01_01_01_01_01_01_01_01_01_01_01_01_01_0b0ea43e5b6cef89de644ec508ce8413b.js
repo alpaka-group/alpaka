@@ -1,0 +1,4 @@
+var structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01_01_01_01_01_01_01_01_01_01_01_01_01_0b0ea43e5b6cef89de644ec508ce8413b =
+[
+    [ "allocArr", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01_01_01_01_01_01_01_01_01_01_01_01_01_0b0ea43e5b6cef89de644ec508ce8413b.html#a6d845fc2b5b30d22df10eb75ab15a53a", null ]
+];

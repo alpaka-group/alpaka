@@ -121,9 +121,9 @@ $(document).ready(function(){initNavTree('structalpaka_1_1mem_1_1buf_1_1traits_1
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7425de51af4c330150675b83489feea7"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
-<tr class="memitem:a7425de51af4c330150675b83489feea7"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_58b41bfb363b87af1bd103597f892173.html#a7425de51af4c330150675b83489feea7">alloc</a> (<a class="el" href="classalpaka_1_1dev_1_1DevCudaRt.html">dev::DevCudaRt</a> const &amp;dev, TExtents const &amp;extents) -&gt; <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html">mem::buf::BufCudaRt</a>&lt; T, <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; 3u &gt;, TSize &gt;                                                                        </td></tr>
-<tr class="separator:a7425de51af4c330150675b83489feea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a92984a5cc1825921a0fc616c07265"><td class="memTemplParams" colspan="2">template&lt;typename TExtent &gt; </td></tr>
+<tr class="memitem:ad0a92984a5cc1825921a0fc616c07265"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_58b41bfb363b87af1bd103597f892173.html#ad0a92984a5cc1825921a0fc616c07265">alloc</a> (<a class="el" href="classalpaka_1_1dev_1_1DevCudaRt.html">dev::DevCudaRt</a> const &amp;dev, TExtent const &amp;extent) -&gt; <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html">mem::buf::BufCudaRt</a>&lt; T, <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; 3u &gt;, TSize &gt;                                                                        </td></tr>
+<tr class="separator:ad0a92984a5cc1825921a0fc616c07265"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T, typename TSize&gt;<br />
@@ -131,15 +131,15 @@ struct alpaka::mem::buf::traits::Alloc&lt;                                      
 
 <p>The CUDA 3D memory allocation trait specialization. </p>
 
-<p>Definition at line <a class="el" href="BufCudaRt_8hpp_source.html#l00483">483</a> of file <a class="el" href="BufCudaRt_8hpp_source.html">BufCudaRt.hpp</a>.</p>
+<p>Definition at line <a class="el" href="BufCudaRt_8hpp_source.html#l00496">496</a> of file <a class="el" href="BufCudaRt_8hpp_source.html">BufCudaRt.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a7425de51af4c330150675b83489feea7"></a>
+<a class="anchor" id="ad0a92984a5cc1825921a0fc616c07265"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T , typename TSize &gt; </div>
 <div class="memtemplate">
-template&lt;typename TExtents &gt; </div>
+template&lt;typename TExtent &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -153,8 +153,8 @@ template&lt;typename TExtents &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extents</em>&#160;</td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -170,7 +170,7 @@ template&lt;typename TExtents &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="BufCudaRt_8hpp_source.html#l00494">494</a> of file <a class="el" href="BufCudaRt_8hpp_source.html">BufCudaRt.hpp</a>.</p>
+<p>Definition at line <a class="el" href="BufCudaRt_8hpp_source.html#l00507">507</a> of file <a class="el" href="BufCudaRt_8hpp_source.html">BufCudaRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +183,7 @@ template&lt;typename TExtents &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1buf.html">buf</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1buf_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_58b41bfb363b87af1bd103597f892173.html">Alloc&lt;                                                                                                                                                  T,                                                                                                                                           dim::DimInt&lt; 3u &gt;,                                                                                                                                           TSize,                                                                                                                                           dev::DevCudaRt &gt;</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:00 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:30 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

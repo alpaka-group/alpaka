@@ -124,14 +124,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a779e3c0a57b8de7caf5be9fcdd5fd527"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFnObj , typename TAcc , typename TDim , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a779e3c0a57b8de7caf5be9fcdd5fd527"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1kernel.html#a779e3c0a57b8de7caf5be9fcdd5fd527">getBlockSharedExternMemSizeBytes</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TAcc &gt;&gt; const &amp;vuiBlockThreadExtents, TArgs const &amp;...args) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TAcc &gt;                        </td></tr>
-<tr class="separator:a779e3c0a57b8de7caf5be9fcdd5fd527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a4d07c9de8db5587d234a35b769098d"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFnObj , typename TAcc , typename TDim , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a1a4d07c9de8db5587d234a35b769098d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1kernel.html#a1a4d07c9de8db5587d234a35b769098d">getBlockSharedExternMemSizeBytes</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TAcc &gt;&gt; const &amp;blockElemExtent, TArgs const &amp;...args) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TAcc &gt;                        </td></tr>
+<tr class="separator:a1a4d07c9de8db5587d234a35b769098d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c152ca9ab67bb36a583beb2f105e1f4"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFnObj &gt; </td></tr>
+<tr class="memitem:a8c152ca9ab67bb36a583beb2f105e1f4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1kernel.html#a8c152ca9ab67bb36a583beb2f105e1f4">supportsVectorization</a> () -&gt; bool                        </td></tr>
+<tr class="separator:a8c152ca9ab67bb36a583beb2f105e1f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The kernel specifics. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a779e3c0a57b8de7caf5be9fcdd5fd527"></a>
+<a class="anchor" id="a1a4d07c9de8db5587d234a35b769098d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -141,7 +144,7 @@ template&lt;typename TKernelFnObj , typename TAcc , typename TDim , typename... 
           <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::kernel::getBlockSharedExternMemSizeBytes </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TAcc &gt;&gt; const &amp;&#160;</td>
-          <td class="paramname"><em>vuiBlockThreadExtents</em>, </td>
+          <td class="paramname"><em>blockElemExtent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -159,7 +162,7 @@ template&lt;typename TKernelFnObj , typename TAcc , typename TDim , typename... 
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">vuiBlockThreadExtents</td><td>The size of the blocks for which the block shared memory size should be calculated. </td></tr>
+    <tr><td class="paramname">blockElemExtent</td><td>The block element extent for which the block shared memory size should be calculated. </td></tr>
   </table>
   </dd>
 </dl>
@@ -175,9 +178,30 @@ template&lt;typename TKernelFnObj , typename TAcc , typename TDim , typename... 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The size of the shared memory allocated for a block in bytes. The default version always returns zero. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The size of the shared memory allocated for a block in bytes. The default implementation always returns zero. </dd></dl>
 
-<p>Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00095">95</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00114">114</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8c152ca9ab67bb36a583beb2f105e1f4"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TKernelFnObj &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::kernel::supportsVectorization </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; bool
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>If the kernel supports vectorization. The default implementation always returns false. </dd></dl>
+
+<p>Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00134">134</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -187,7 +211,7 @@ template&lt;typename TKernelFnObj , typename TAcc , typename TDim , typename... 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1kernel.html">kernel</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:57 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

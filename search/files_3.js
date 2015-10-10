@@ -5,6 +5,5 @@ var searchData=
   ['devcudart_2ehpp',['DevCudaRt.hpp',['../DevCudaRt_8hpp.html',1,'']]],
   ['dimarithmetic_2ehpp',['DimArithmetic.hpp',['../DimArithmetic_8hpp.html',1,'']]],
   ['dimintegralconst_2ehpp',['DimIntegralConst.hpp',['../DimIntegralConst_8hpp.html',1,'']]],
-  ['distinction_2emd',['Distinction.md',['../Distinction_8md.html',1,'']]],
   ['dummy_2ecpp',['Dummy.cpp',['../Dummy_8cpp.html',1,'']]]
 ];

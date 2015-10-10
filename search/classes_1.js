@@ -1,9 +1,16 @@
 var searchData=
 [
+  ['barrierfiber',['BarrierFiber',['../classalpaka_1_1core_1_1fibers_1_1BarrierFiber.html',1,'alpaka::core::fibers']]],
+  ['barrierthread',['BarrierThread',['../classalpaka_1_1core_1_1threads_1_1BarrierThread.html',1,'alpaka::core::threads']]],
   ['blocksharedalloccudabuiltin',['BlockSharedAllocCudaBuiltIn',['../classalpaka_1_1block_1_1shared_1_1BlockSharedAllocCudaBuiltIn.html',1,'alpaka::block::shared']]],
   ['blocksharedallocmastersync',['BlockSharedAllocMasterSync',['../classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html',1,'alpaka::block::shared']]],
   ['blocksharedallocnosync',['BlockSharedAllocNoSync',['../classalpaka_1_1block_1_1shared_1_1BlockSharedAllocNoSync.html',1,'alpaka::block::shared']]],
   ['blocksharedexternmemsizebytes',['BlockSharedExternMemSizeBytes',['../structalpaka_1_1kernel_1_1traits_1_1BlockSharedExternMemSizeBytes.html',1,'alpaka::kernel::traits']]],
+  ['blocksynccudabuiltin',['BlockSyncCudaBuiltIn',['../classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html',1,'alpaka::block::sync']]],
+  ['blocksyncfiberidmapbarrier',['BlockSyncFiberIdMapBarrier',['../classalpaka_1_1block_1_1sync_1_1BlockSyncFiberIdMapBarrier.html',1,'alpaka::block::sync']]],
+  ['blocksyncnoop',['BlockSyncNoOp',['../classalpaka_1_1block_1_1sync_1_1BlockSyncNoOp.html',1,'alpaka::block::sync']]],
+  ['blocksyncompbarrier',['BlockSyncOmpBarrier',['../classalpaka_1_1block_1_1sync_1_1BlockSyncOmpBarrier.html',1,'alpaka::block::sync']]],
+  ['blocksyncthreadidmapbarrier',['BlockSyncThreadIdMapBarrier',['../classalpaka_1_1block_1_1sync_1_1BlockSyncThreadIdMapBarrier.html',1,'alpaka::block::sync']]],
   ['bufcpu',['BufCpu',['../classalpaka_1_1mem_1_1buf_1_1BufCpu.html',1,'alpaka::mem::buf']]],
   ['bufcpuimpl',['BufCpuImpl',['../classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html',1,'alpaka::mem::buf::cpu::detail']]],
   ['bufcudart',['BufCudaRt',['../classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html',1,'alpaka::mem::buf']]],

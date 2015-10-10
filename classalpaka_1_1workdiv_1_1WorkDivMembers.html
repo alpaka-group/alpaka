@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1workdiv_1_1WorkDivMembe
 </div><!--header-->
 <div class="contents">
 
-<p>A basic class holding the work division as grid block extents and block thread extents.  
+<p>A basic class holding the work division as grid block extent, block thread and thread element extent.  
  <a href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>&gt;</code></p>
@@ -128,19 +128,19 @@ $(document).ready(function(){initNavTree('classalpaka_1_1workdiv_1_1WorkDivMembe
  <div class="center">
   <img src="classalpaka_1_1workdiv_1_1WorkDivMembers.png" usemap="#alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;_map" alt=""/>
   <map id="alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;_map" name="alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;_map">
-<area href="classalpaka_1_1acc_1_1AccCpuFibers.html" title="The CPU fibers accelerator. " alt="alpaka::acc::AccCpuFibers&lt; TDim, TSize &gt;" shape="rect" coords="320,56,630,80"/>
-<area href="classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html" title="The CPU OpenMP 2.0 block accelerator. " alt="alpaka::acc::AccCpuOmp2Blocks&lt; TDim, TSize &gt;" shape="rect" coords="320,112,630,136"/>
-<area href="classalpaka_1_1acc_1_1AccCpuOmp2Threads.html" title="The CPU OpenMP 2.0 thread accelerator. " alt="alpaka::acc::AccCpuOmp2Threads&lt; TDim, TSize &gt;" shape="rect" coords="320,168,630,192"/>
-<area href="classalpaka_1_1acc_1_1AccCpuOmp4.html" title="The CPU OpenMP 4.0 accelerator. " alt="alpaka::acc::AccCpuOmp4&lt; TDim, TSize &gt;" shape="rect" coords="320,224,630,248"/>
-<area href="classalpaka_1_1acc_1_1AccCpuSerial.html" title="The CPU serial accelerator. " alt="alpaka::acc::AccCpuSerial&lt; TDim, TSize &gt;" shape="rect" coords="320,280,630,304"/>
-<area href="classalpaka_1_1acc_1_1AccCpuThreads.html" title="The CPU threads accelerator. " alt="alpaka::acc::AccCpuThreads&lt; TDim, TSize &gt;" shape="rect" coords="320,336,630,360"/>
-<area href="classalpaka_1_1exec_1_1ExecCpuFibers.html" title="The CPU fibers accelerator executor. " alt="alpaka::exec::ExecCpuFibers&lt; TDim, TSize &gt;" shape="rect" coords="320,392,630,416"/>
-<area href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html" title="The CPU OpenMP 2.0 block accelerator executor. " alt="alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;" shape="rect" coords="320,448,630,472"/>
-<area href="classalpaka_1_1exec_1_1ExecCpuOmp2Threads.html" title="The CPU OpenMP 2.0 thread accelerator executor. " alt="alpaka::exec::ExecCpuOmp2Threads&lt; TDim, TSize &gt;" shape="rect" coords="320,504,630,528"/>
-<area href="classalpaka_1_1exec_1_1ExecCpuOmp4.html" title="The CPU OpenMP 4.0 accelerator executor. " alt="alpaka::exec::ExecCpuOmp4&lt; TDim, TSize &gt;" shape="rect" coords="320,560,630,584"/>
-<area href="classalpaka_1_1exec_1_1ExecCpuSerial.html" title="The CPU serial executor. " alt="alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;" shape="rect" coords="320,616,630,640"/>
-<area href="classalpaka_1_1exec_1_1ExecCpuThreads.html" title="The CPU threads executor. " alt="alpaka::exec::ExecCpuThreads&lt; TDim, TSize &gt;" shape="rect" coords="320,672,630,696"/>
-<area href="classalpaka_1_1exec_1_1ExecGpuCudaRt.html" title="The GPU CUDA accelerator executor. " alt="alpaka::exec::ExecGpuCudaRt&lt; TDim, TSize &gt;" shape="rect" coords="320,728,630,752"/>
+<area href="classalpaka_1_1acc_1_1AccCpuFibers.html" title="The CPU fibers accelerator. " alt="alpaka::acc::AccCpuFibers&lt; TDim, TSize &gt;" shape="rect" coords="451,56,892,80"/>
+<area href="classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html" title="The CPU OpenMP 2.0 block accelerator. " alt="alpaka::acc::AccCpuOmp2Blocks&lt; TDim, TSize &gt;" shape="rect" coords="451,112,892,136"/>
+<area href="classalpaka_1_1acc_1_1AccCpuOmp2Threads.html" title="The CPU OpenMP 2.0 thread accelerator. " alt="alpaka::acc::AccCpuOmp2Threads&lt; TDim, TSize &gt;" shape="rect" coords="451,168,892,192"/>
+<area href="classalpaka_1_1acc_1_1AccCpuOmp4.html" title="The CPU OpenMP 4.0 accelerator. " alt="alpaka::acc::AccCpuOmp4&lt; TDim, TSize &gt;" shape="rect" coords="451,224,892,248"/>
+<area href="classalpaka_1_1acc_1_1AccCpuSerial.html" title="The CPU serial accelerator. " alt="alpaka::acc::AccCpuSerial&lt; TDim, TSize &gt;" shape="rect" coords="451,280,892,304"/>
+<area href="classalpaka_1_1acc_1_1AccCpuThreads.html" title="The CPU threads accelerator. " alt="alpaka::acc::AccCpuThreads&lt; TDim, TSize &gt;" shape="rect" coords="451,336,892,360"/>
+<area href="classalpaka_1_1exec_1_1ExecCpuFibers.html" title="The CPU fibers accelerator executor. " alt="alpaka::exec::ExecCpuFibers&lt; TDim, TSize, TKernelFnObj, TArgs &gt;" shape="rect" coords="451,392,892,416"/>
+<area href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html" title="The CPU OpenMP 2.0 block accelerator executor. " alt="alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt;" shape="rect" coords="451,448,892,472"/>
+<area href="classalpaka_1_1exec_1_1ExecCpuOmp2Threads.html" title="The CPU OpenMP 2.0 thread accelerator executor. " alt="alpaka::exec::ExecCpuOmp2Threads&lt; TDim, TSize, TKernelFnObj, TArgs &gt;" shape="rect" coords="451,504,892,528"/>
+<area href="classalpaka_1_1exec_1_1ExecCpuOmp4.html" title="The CPU OpenMP 4.0 accelerator executor. " alt="alpaka::exec::ExecCpuOmp4&lt; TDim, TSize, TKernelFnObj, TArgs &gt;" shape="rect" coords="451,560,892,584"/>
+<area href="classalpaka_1_1exec_1_1ExecCpuSerial.html" title="The CPU serial executor implementation. " alt="alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt;" shape="rect" coords="451,616,892,640"/>
+<area href="classalpaka_1_1exec_1_1ExecCpuThreads.html" title="The CPU threads executor. " alt="alpaka::exec::ExecCpuThreads&lt; TDim, TSize, TKernelFnObj, TArgs &gt;" shape="rect" coords="451,672,892,696"/>
+<area href="classalpaka_1_1exec_1_1ExecGpuCudaRt.html" title="The GPU CUDA accelerator executor. " alt="alpaka::exec::ExecGpuCudaRt&lt; TDim, TSize, TKernelFnObj, TArgs &gt;" shape="rect" coords="451,728,892,752"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -151,10 +151,13 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0ba45045245b70797e790ccb7ea9d178"><td class="memTemplParams" colspan="2">template&lt;typename TGridBlockExtents , typename TBlockThreadExtents &gt; </td></tr>
-<tr class="memitem:a0ba45045245b70797e790ccb7ea9d178"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a0ba45045245b70797e790ccb7ea9d178">WorkDivMembers</a> (TGridBlockExtents const &amp;gridBlockExtents=TGridBlockExtents(), TBlockThreadExtents const &amp;blockThreadExtents=TBlockThreadExtents())</td></tr>
-<tr class="memdesc:a0ba45045245b70797e790ccb7ea9d178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a0ba45045245b70797e790ccb7ea9d178">More...</a><br /></td></tr>
-<tr class="separator:a0ba45045245b70797e790ccb7ea9d178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85285d7c2997448f9bedd274e1359e52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a85285d7c2997448f9bedd274e1359e52">WorkDivMembers</a> ()=delete</td></tr>
+<tr class="memdesc:a85285d7c2997448f9bedd274e1359e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a85285d7c2997448f9bedd274e1359e52">More...</a><br /></td></tr>
+<tr class="separator:a85285d7c2997448f9bedd274e1359e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d4889ce0b063e88424b30465fc4c308"><td class="memTemplParams" colspan="2">template&lt;typename TGridBlockExtent , typename TBlockThreadExtent , typename TThreadElemExtent &gt; </td></tr>
+<tr class="memitem:a8d4889ce0b063e88424b30465fc4c308"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a8d4889ce0b063e88424b30465fc4c308">WorkDivMembers</a> (TGridBlockExtent const &amp;gridBlockExtent=TGridBlockExtent(), TBlockThreadExtent const &amp;blockThreadExtent=TBlockThreadExtent(), TThreadElemExtent const &amp;threadElemExtent=TThreadElemExtent())</td></tr>
+<tr class="memdesc:a8d4889ce0b063e88424b30465fc4c308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from values.  <a href="#a8d4889ce0b063e88424b30465fc4c308">More...</a><br /></td></tr>
+<tr class="separator:a8d4889ce0b063e88424b30465fc4c308"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7728226a894f8fc525d182f30cf9ffc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a7728226a894f8fc525d182f30cf9ffc0">WorkDivMembers</a> (<a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a> const &amp;other)</td></tr>
 <tr class="memdesc:a7728226a894f8fc525d182f30cf9ffc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a7728226a894f8fc525d182f30cf9ffc0">More...</a><br /></td></tr>
 <tr class="separator:a7728226a894f8fc525d182f30cf9ffc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,16 +184,18 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a11149d4db13272541b5fc8c6e2ccb606"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a11149d4db13272541b5fc8c6e2ccb606">m_vuiBlockThreadExtents</a></td></tr>
-<tr class="separator:a11149d4db13272541b5fc8c6e2ccb606"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6942dbc4fe0af1e729ce8ed574399fcf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a6942dbc4fe0af1e729ce8ed574399fcf">m_vuiGridBlockExtents</a></td></tr>
-<tr class="separator:a6942dbc4fe0af1e729ce8ed574399fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609880b0802cef5f1c7bb4b32e478829"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a609880b0802cef5f1c7bb4b32e478829">m_blockThreadExtent</a></td></tr>
+<tr class="separator:a609880b0802cef5f1c7bb4b32e478829"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adea062461f3bc410e0043c295ff81ef1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#adea062461f3bc410e0043c295ff81ef1">m_gridBlockExtent</a></td></tr>
+<tr class="separator:adea062461f3bc410e0043c295ff81ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066aa716d802404b6ce2f4b96cf75eea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a066aa716d802404b6ce2f4b96cf75eea">m_threadElemExtent</a></td></tr>
+<tr class="separator:a066aa716d802404b6ce2f4b96cf75eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TDim, typename TSize&gt;<br />
 class alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</h3>
 
-<p>A basic class holding the work division as grid block extents and block thread extents. </p>
+<p>A basic class holding the work division as grid block extent, block thread and thread element extent. </p>
 
 <p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00042">42</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
@@ -211,13 +216,11 @@ template&lt;typename TDim, typename TSize&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a0ba45045245b70797e790ccb7ea9d178"></a>
+<a class="anchor" id="a85285d7c2997448f9bedd274e1359e52"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TDim, typename TSize&gt; </div>
-<div class="memtemplate">
-template&lt;typename TGridBlockExtents , typename TBlockThreadExtents &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -225,14 +228,49 @@ template&lt;typename TGridBlockExtents , typename TBlockThreadExtents &gt; </div
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a> </td>
           <td>(</td>
-          <td class="paramtype">TGridBlockExtents const &amp;&#160;</td>
-          <td class="paramname"><em>gridBlockExtents</em> = <code>TGridBlockExtents()</code>, </td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default constructor. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8d4889ce0b063e88424b30465fc4c308"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim, typename TSize&gt; </div>
+<div class="memtemplate">
+template&lt;typename TGridBlockExtent , typename TBlockThreadExtent , typename TThreadElemExtent &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a> </td>
+          <td>(</td>
+          <td class="paramtype">TGridBlockExtent const &amp;&#160;</td>
+          <td class="paramname"><em>gridBlockExtent</em> = <code>TGridBlockExtent()</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TBlockThreadExtents const &amp;&#160;</td>
-          <td class="paramname"><em>blockThreadExtents</em> = <code>TBlockThreadExtents()</code>&#160;</td>
+          <td class="paramtype">TBlockThreadExtent const &amp;&#160;</td>
+          <td class="paramname"><em>blockThreadExtent</em> = <code>TBlockThreadExtent()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TThreadElemExtent const &amp;&#160;</td>
+          <td class="paramname"><em>threadElemExtent</em> = <code>TThreadElemExtent()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,10 +285,9 @@ template&lt;typename TGridBlockExtents , typename TBlockThreadExtents &gt; </div
 </table>
 </div><div class="memdoc">
 
-<p>Default constructor. </p>
 <p>Constructor from values. </p>
 
-<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00059">59</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00060">60</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -280,7 +317,7 @@ template&lt;typename TDim, typename TSize&gt; </div>
 
 <p>Copy constructor. </p>
 
-<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00069">69</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00072">72</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -312,7 +349,7 @@ template&lt;typename TWorkDiv &gt; </div>
 
 <p>Copy constructor. </p>
 
-<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00080">80</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00084">84</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -457,40 +494,56 @@ template&lt;typename TWorkDiv &gt; </div>
 
 <p>Copy assignment operator. </p>
 
-<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00106">106</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00111">111</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a11149d4db13272541b5fc8c6e2ccb606"></a>
+<a class="anchor" id="a609880b0802cef5f1c7bb4b32e478829"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TDim, typename TSize&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TSize&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;::m_vuiBlockThreadExtents</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TSize&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;::m_blockThreadExtent</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00122">122</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00128">128</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6942dbc4fe0af1e729ce8ed574399fcf"></a>
+<a class="anchor" id="adea062461f3bc410e0043c295ff81ef1"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TDim, typename TSize&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TSize&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;::m_vuiGridBlockExtents</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TSize&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;::m_gridBlockExtent</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00121">121</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00127">127</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a066aa716d802404b6ce2f4b96cf75eea"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim, typename TSize&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TSize&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers</a>&lt; TDim, TSize &gt;::m_threadElemExtent</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00129">129</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -503,7 +556,7 @@ template&lt;typename TDim, typename TSize&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv.html">workdiv</a></li><li class="navelem"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:04 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

@@ -121,25 +121,25 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6ebcee5a281ee76578cb5d42f07382b7"><td class="memTemplParams" colspan="2">template&lt;typename TExtents , size_t... TIndices&gt; </td></tr>
-<tr class="memitem:a6ebcee5a281ee76578cb5d42f07382b7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1detail.html#a6ebcee5a281ee76578cb5d42f07382b7">getProductOfExtentsInternal</a> (TExtents const &amp;extents, <a class="el" href="namespacealpaka_1_1core_1_1detail.html#a0f985fc2b25f72c04abb63a581e3d008">alpaka::core::detail::index_sequence</a>&lt; TIndices... &gt; const &amp;indices) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TExtents &gt;                                        </td></tr>
-<tr class="separator:a6ebcee5a281ee76578cb5d42f07382b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8b6050fe5b16ced06ed238f5f6ddce6"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , size_t... TIndices&gt; </td></tr>
+<tr class="memitem:ad8b6050fe5b16ced06ed238f5f6ddce6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1detail.html#ad8b6050fe5b16ced06ed238f5f6ddce6">getProductOfExtentInternal</a> (TExtent const &amp;extent, <a class="el" href="namespacealpaka_1_1core_1_1detail.html#a0f985fc2b25f72c04abb63a581e3d008">alpaka::core::detail::index_sequence</a>&lt; TIndices... &gt; const &amp;indices) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TExtent &gt;                                        </td></tr>
+<tr class="separator:ad8b6050fe5b16ced06ed238f5f6ddce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a6ebcee5a281ee76578cb5d42f07382b7"></a>
+<a class="anchor" id="ad8b6050fe5b16ced06ed238f5f6ddce6"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TExtents , size_t... TIndices&gt; </div>
+template&lt;typename TExtent , size_t... TIndices&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::extent::detail::getProductOfExtentsInternal </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::extent::detail::getProductOfExtentInternal </td>
           <td>(</td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extents</em>, </td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -150,7 +150,7 @@ template&lt;typename TExtents , size_t... TIndices&gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TExtents&gt;
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TExtent&gt;
             </td>
         </tr>
       </table>
@@ -161,7 +161,7 @@ template&lt;typename TExtents , size_t... TIndices&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="extent_2Traits_8hpp_source.html#l00142">142</a> of file <a class="el" href="extent_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="extent_2Traits_8hpp_source.html#l00143">143</a> of file <a class="el" href="extent_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -171,7 +171,7 @@ template&lt;typename TExtents , size_t... TIndices&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1extent.html">extent</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1extent_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:56 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

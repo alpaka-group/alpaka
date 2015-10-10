@@ -6,6 +6,5 @@ var classalpaka_1_1acc_1_1AccCpuOmp2Threads =
     [ "getBlockSharedExternMem", "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#ad35b2dd6a419d82db41d331b74c10714", null ],
     [ "operator=", "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a35ce9fdf62680f009fc86c1e1db8a148", null ],
     [ "operator=", "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#aaec80f93e849df2e52c6c62ee01e45fc", null ],
-    [ "syncBlockThreads", "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a62eb624b025ef1ff3aacc071039c62e3", null ],
-    [ "::alpaka::exec::omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl< TDim, TSize >", "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#ad23d4efa8c2760f6ccd32a9232c1d32f", null ]
+    [ "::alpaka::exec::ExecCpuOmp2Threads", "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a3995a77df8fb7d6e9883bc46e7ffee59", null ]
 ];

@@ -5,5 +5,6 @@ var namespacealpaka_1_1stream =
     [ "traits", "namespacealpaka_1_1stream_1_1traits.html", "namespacealpaka_1_1stream_1_1traits" ],
     [ "StreamCpuAsync", "classalpaka_1_1stream_1_1StreamCpuAsync.html", "classalpaka_1_1stream_1_1StreamCpuAsync" ],
     [ "StreamCpuSync", "classalpaka_1_1stream_1_1StreamCpuSync.html", "classalpaka_1_1stream_1_1StreamCpuSync" ],
-    [ "StreamCudaRt", "classalpaka_1_1stream_1_1StreamCudaRt.html", "classalpaka_1_1stream_1_1StreamCudaRt" ]
+    [ "StreamCudaRtAsync", "classalpaka_1_1stream_1_1StreamCudaRtAsync.html", "classalpaka_1_1stream_1_1StreamCudaRtAsync" ],
+    [ "StreamCudaRtSync", "classalpaka_1_1stream_1_1StreamCudaRtSync.html", "classalpaka_1_1stream_1_1StreamCudaRtSync" ]
 ];

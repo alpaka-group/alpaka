@@ -118,6 +118,8 @@ $(document).ready(function(){initNavTree('AccCpuOmp4_8hpp.html','');});
 <code>#include &lt;<a class="el" href="AtomicOmpCritSec_8hpp_source.html">alpaka/atomic/AtomicOmpCritSec.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="MathStl_8hpp_source.html">alpaka/math/MathStl.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html">alpaka/block/shared/BlockSharedAllocMasterSync.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSyncOmpBarrier_8hpp_source.html">alpaka/block/sync/BlockSyncOmpBarrier.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="RandStl_8hpp_source.html">alpaka/rand/RandStl.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="acc_2Traits_8hpp_source.html">alpaka/acc/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="exec_2Traits_8hpp_source.html">alpaka/exec/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
@@ -153,14 +155,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_013fa21942dc212d1d41710504aa72f954.html">alpaka::dim::traits::DimType&lt;                                                                                                                  acc::AccCpuOmp4&lt; TDim, TSize &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 4.0 accelerator dimension getter trait specialization.  <a href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_013fa21942dc212d1d41710504aa72f954.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp4.html">alpaka::exec::ExecCpuOmp4&lt; TDim, TSize &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp4.html">alpaka::exec::ExecCpuOmp4&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 4.0 accelerator executor.  <a href="classalpaka_1_1exec_1_1ExecCpuOmp4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1ExecCpuOmp4Impl.html">alpaka::exec::omp::omp4::cpu::detail::ExecCpuOmp4Impl&lt; TDim, TSize &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 4.0 accelerator executor implementation.  <a href="classalpaka_1_1exec_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1ExecCpuOmp4Impl.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1exec_1_1traits_1_1ExecType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_79ce9274dcf99a60a96c95f4090b231e.html">alpaka::exec::traits::ExecType&lt;                                                                                                                  acc::AccCpuOmp4&lt; TDim, TSize &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 4.0 accelerator executor type trait specialization.  <a href="structalpaka_1_1exec_1_1traits_1_1ExecType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_79ce9274dcf99a60a96c95f4090b231e.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1exec_1_1traits_1_1ExecType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_80a8bda328ad4a1f4b2149ad813187e0.html">alpaka::exec::traits::ExecType&lt;                                                                                                                  acc::AccCpuOmp4&lt; TDim, TSize &gt;,                                                                                                           TKernelFnObj,                                                                                                           TArgs... &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 4.0 accelerator executor type trait specialization.  <a href="structalpaka_1_1exec_1_1traits_1_1ExecType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_80a8bda328ad4a1f4b2149ad813187e0.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1size_1_1traits_1_1SizeType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a8688384d51b503da92e9c346fee7ed5.html">alpaka::size::traits::SizeType&lt;                                                                                                                  acc::AccCpuOmp4&lt; TDim, TSize &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 4.0 accelerator size type trait specialization.  <a href="structalpaka_1_1size_1_1traits_1_1SizeType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a8688384d51b503da92e9c346fee7ed5.html#details">More...</a><br /></td></tr>
@@ -169,7 +168,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
-<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
+<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1acc"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1acc.html">alpaka::acc</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator specifics. <br /></td></tr>
@@ -191,14 +190,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1exec"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec.html">alpaka::exec</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1exec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The executor specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1omp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1omp.html">alpaka::exec::omp</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1omp_1_1omp4"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1omp_1_1omp4.html">alpaka::exec::omp::omp4</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1omp_1_1omp4_1_1cpu"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1omp_1_1omp4_1_1cpu.html">alpaka::exec::omp::omp4::cpu</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1omp_1_1omp4_1_1cpu_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1omp_1_1omp4_1_1cpu_1_1detail.html">alpaka::exec::omp::omp4::cpu::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1exec_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1traits.html">alpaka::exec::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1exec_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The execution traits. <br /></td></tr>
@@ -224,7 +215,7 @@ Namespaces</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccCpuOmp4_8hpp.html">AccCpuOmp4.hpp</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:48 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:16 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

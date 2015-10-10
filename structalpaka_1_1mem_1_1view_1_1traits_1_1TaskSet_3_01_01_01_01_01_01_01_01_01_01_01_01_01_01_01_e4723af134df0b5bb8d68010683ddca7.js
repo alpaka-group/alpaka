@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1TaskSet_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_e4723af134df0b5bb8d68010683ddca7 =
+[
+    [ "taskSet", "structalpaka_1_1mem_1_1view_1_1traits_1_1TaskSet_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_e4723af134df0b5bb8d68010683ddca7.html#acc975fefbfcf4de0437b7821a03e6a94", null ]
+];

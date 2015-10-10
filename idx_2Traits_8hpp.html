@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('idx_2Traits_8hpp.html','');});
 <code>#include &lt;<a class="el" href="size_2Traits_8hpp_source.html">alpaka/size/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="workdiv_2Traits_8hpp_source.html">alpaka/workdiv/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Positioning_8hpp_source.html">alpaka/core/Positioning.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 </div>
@@ -142,7 +142,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
-<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
+<tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1idx"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html">alpaka::idx</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1idx"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index specifics. <br /></td></tr>
@@ -161,6 +161,18 @@ Functions</h2></td></tr>
 <tr class="memitem:acce59d97b3a148333ebb8aeb83ac6430"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#acce59d97b3a148333ebb8aeb83ac6430">alpaka::idx::getIdx</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; Vec&lt; dim::Dim&lt; TIdxWorkDiv &gt;, size::Size&lt; TIdxWorkDiv &gt;&gt;                        </td></tr>
 <tr class="memdesc:acce59d97b3a148333ebb8aeb83ac6430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices requested.  <a href="namespacealpaka_1_1idx.html#acce59d97b3a148333ebb8aeb83ac6430">More...</a><br /></td></tr>
 <tr class="separator:acce59d97b3a148333ebb8aeb83ac6430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45d65f34ab1a4ccc5dbb14a3f223e996"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv , typename TGridThreadIdx , typename TThreadElemExtent &gt; </td></tr>
+<tr class="memitem:a45d65f34ab1a4ccc5dbb14a3f223e996"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a45d65f34ab1a4ccc5dbb14a3f223e996">alpaka::idx::getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv, TGridThreadIdx const &amp;gridThreadIdx, TThreadElemExtent const &amp;threadElemExtent) -&gt; Vec&lt; dim::Dim&lt; TIdxWorkDiv &gt;, size::Size&lt; TIdxWorkDiv &gt;&gt;                        </td></tr>
+<tr class="memdesc:a45d65f34ab1a4ccc5dbb14a3f223e996"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="namespacealpaka_1_1idx.html#a45d65f34ab1a4ccc5dbb14a3f223e996">More...</a><br /></td></tr>
+<tr class="separator:a45d65f34ab1a4ccc5dbb14a3f223e996"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2eaba407a7ed37a01e2e7c14b014916"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv , typename TGridThreadIdx &gt; </td></tr>
+<tr class="memitem:ad2eaba407a7ed37a01e2e7c14b014916"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#ad2eaba407a7ed37a01e2e7c14b014916">alpaka::idx::getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv, TGridThreadIdx const &amp;gridThreadIdx) -&gt; Vec&lt; dim::Dim&lt; TIdxWorkDiv &gt;, size::Size&lt; TIdxWorkDiv &gt;&gt;                        </td></tr>
+<tr class="memdesc:ad2eaba407a7ed37a01e2e7c14b014916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="namespacealpaka_1_1idx.html#ad2eaba407a7ed37a01e2e7c14b014916">More...</a><br /></td></tr>
+<tr class="separator:ad2eaba407a7ed37a01e2e7c14b014916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7350d6fee28d8fa07296d041b2ae55a"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv &gt; </td></tr>
+<tr class="memitem:aa7350d6fee28d8fa07296d041b2ae55a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#aa7350d6fee28d8fa07296d041b2ae55a">alpaka::idx::getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; Vec&lt; dim::Dim&lt; TIdxWorkDiv &gt;, size::Size&lt; TIdxWorkDiv &gt;&gt;                        </td></tr>
+<tr class="memdesc:aa7350d6fee28d8fa07296d041b2ae55a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="namespacealpaka_1_1idx.html#aa7350d6fee28d8fa07296d041b2ae55a">More...</a><br /></td></tr>
+<tr class="separator:aa7350d6fee28d8fa07296d041b2ae55a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -176,7 +188,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_63175fb06e2ac2c38e054d658b38e2c2.html">idx</a></li><li class="navelem"><a class="el" href="idx_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:49 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:16 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

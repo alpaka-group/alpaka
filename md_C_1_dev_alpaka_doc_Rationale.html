@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Rationale.html',
 </ol>
 <h3>Implementation notes</h3>
 <p>Currently we implement version 2.</p>
-<p>A kernel executor can be obtained by calling <code><a class="el" href="namespacealpaka_1_1exec.html#acf1c2ed4119887a6d4f873fe2df1fdad">alpaka::exec::create</a>&lt;TAcc&gt;(TWorkDiv, TStream)</code> with the execution attributes (grid/block-extents, stream). This separates the kernel execution attributes (grid/block-extents, stream) from the invocation arguments. The returned executor can then be called with the <code>operator()</code> leading to <code><a class="el" href="namespacealpaka_1_1exec.html#acf1c2ed4119887a6d4f873fe2df1fdad">alpaka::exec::create</a>&lt;TAcc&gt;(TWorkDiv, TStream)(invocation-args ...)</code> for a complete kernel invocation.</p>
+<p>A kernel executor can be obtained by calling <code><a class="el" href="namespacealpaka_1_1exec.html#a16417814491915165903a552c660b424">alpaka::exec::create</a>&lt;TAcc&gt;(TWorkDiv, TStream)</code> with the execution attributes (grid/block-extents, stream). This separates the kernel execution attributes (grid/block-extents, stream) from the invocation arguments. The returned executor can then be called with the <code>operator()</code> leading to <code><a class="el" href="namespacealpaka_1_1exec.html#a16417814491915165903a552c660b424">alpaka::exec::create</a>&lt;TAcc&gt;(TWorkDiv, TStream)(invocation-args ...)</code> for a complete kernel invocation.</p>
 <h2>Block Shared Memory </h2>
 <h3>Internal Block Shared Memory</h3>
 <p>The size of block shared memory that is allocated inside the kernel is required to be given as compile time constant. This is due to CUDA not allowing to allocate block shared memory inside a kernel at runtime.</p>
@@ -212,7 +212,7 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Rationale.html',
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:50 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:18 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

@@ -131,8 +131,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:ac1cdee868f20a6d6bd0149e35f4db88b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52209ed2e08629c3d4003b73bed4b486"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html#a52209ed2e08629c3d4003b73bed4b486">getOffset</a> (TOffsets const &amp;offsets) -&gt; decltype(offsets.w)                                                        </td></tr>
 <tr class="separator:a52209ed2e08629c3d4003b73bed4b486"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30dfb3bd6cab5067dd391831278fa2bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html#a30dfb3bd6cab5067dd391831278fa2bf">getOffset</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;offsets) -&gt; TVal                                                        </td></tr>
-<tr class="separator:a30dfb3bd6cab5067dd391831278fa2bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03571d913fe179e7614efad337ee7d35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html#a03571d913fe179e7614efad337ee7d35">getOffset</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;offsets) -&gt; TSize                                                        </td></tr>
+<tr class="separator:a03571d913fe179e7614efad337ee7d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TIdx, typename TOffsets, typename TSfinae = void&gt;<br />
@@ -140,10 +140,10 @@ template&lt;typename TOffsets&gt;<br />
 struct alpaka::offset::traits::GetOffset&lt; TIdx, TOffsets, TSfinae &gt;::type&lt; TOffsets &gt;</h3>
 
 <p>The CUDA vectors offset get trait specialization. </p>
-<p>The ViewBasic x offset get trait specialization.</p>
-<p>The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector. ">Vec</a> offset get trait specialization. </p>
+<p>The <a class="el" href="classalpaka_1_1Vec.html" title="A n-dimensional vector. ">Vec</a> offset get trait specialization.</p>
+<p>The ViewBasic x offset get trait specialization. </p>
 
-<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00521">521</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00543">543</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ae3179591991a497bef93e3b006e1df44"></a>
 <div class="memitem">
@@ -172,7 +172,7 @@ template&lt;typename TOffsets &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00529">529</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00551">551</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -203,7 +203,7 @@ template&lt;typename TOffsets &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00549">549</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00571">571</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -234,7 +234,7 @@ template&lt;typename TOffsets &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="ViewBasic_8hpp_source.html#l00561">561</a> of file <a class="el" href="ViewBasic_8hpp_source.html">ViewBasic.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ViewBasic_8hpp_source.html#l00577">577</a> of file <a class="el" href="ViewBasic_8hpp_source.html">ViewBasic.hpp</a>.</p>
 
 </div>
 </div>
@@ -265,7 +265,7 @@ template&lt;typename TOffsets &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00569">569</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00591">591</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -296,11 +296,11 @@ template&lt;typename TOffsets &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00589">589</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Cuda_8hpp_source.html#l00611">611</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a30dfb3bd6cab5067dd391831278fa2bf"></a>
+<a class="anchor" id="a03571d913fe179e7614efad337ee7d35"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -314,9 +314,9 @@ template&lt;typename TOffsets &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset.html">alpaka::offset::traits::GetOffset</a>&lt; TIdx, TOffsets, TSfinae &gt;::<a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html">type</a>&lt; TOffsets &gt;::getOffset </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em></td><td>)</td>
-          <td> -&gt; TVal
+          <td> -&gt; TSize
                 </td>
         </tr>
       </table>
@@ -327,14 +327,14 @@ template&lt;typename TOffsets &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l01078">1078</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l01075">1075</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
 <li>C:/dev/alpaka/include/alpaka/core/<a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a></li>
-<li>C:/dev/alpaka/include/alpaka/core/<a class="el" href="Vec_8hpp_source.html">Vec.hpp</a></li>
 <li>C:/dev/alpaka/include/alpaka/mem/view/<a class="el" href="ViewBasic_8hpp_source.html">ViewBasic.hpp</a></li>
+<li>C:/dev/alpaka/include/alpaka/vec/<a class="el" href="Vec_8hpp_source.html">Vec.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -342,7 +342,7 @@ template&lt;typename TOffsets &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1offset.html">offset</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1offset_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset.html">GetOffset</a></li><li class="navelem"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html">type</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:01 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:32 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

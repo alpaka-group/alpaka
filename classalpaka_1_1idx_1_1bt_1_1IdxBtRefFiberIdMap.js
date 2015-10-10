@@ -8,5 +8,5 @@ var classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap =
     [ "~IdxBtRefFiberIdMap", "classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#abee7934a862f3cce5cbbbe95690fd76e", null ],
     [ "operator=", "classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#ab29648ad9d302778870c1593ce5dc93f", null ],
     [ "operator=", "classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#a51aa621058559ece91880e21bf32772f", null ],
-    [ "m_mFibersToIndices", "classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#a3cdcc923845bcf60978c7a7ff2e255f4", null ]
+    [ "m_fibersToIndices", "classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#ac39645c528d5c4682e2a88d2dbad3061", null ]
 ];

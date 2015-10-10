@@ -1,11 +1,12 @@
 var classalpaka_1_1exec_1_1ExecCpuSerial =
 [
-    [ "ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#ac3b3299d9346ee7e9fb2af17d27cfe14", null ],
-    [ "ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a7569bc301028b66ddc917660e850dd0c", null ],
-    [ "ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a31d039383b8ea1ac5ac889aab1ac9143", null ],
-    [ "~ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#ae84d4f0c9d15025a238956b3d3dccdb0", null ],
-    [ "operator()", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a35442dcc23dbb216973d2e783af6d4d7", null ],
-    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuSerial.html#ad0cdf6563a1b94a9213338bcacb10104", null ],
-    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a531da0625934933c6de7a52ef28194b3", null ],
-    [ "m_Stream", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a4b252f884f826f5b47b93d824ab83a33", null ]
+    [ "ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a6b780a5964015ea3a043d22d8dfcc949", null ],
+    [ "ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a969ebe25fb8c288f794002d7e2579ebf", null ],
+    [ "ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#ab06443c1823a1d3b5c25d665c78654fd", null ],
+    [ "~ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html#aeb8ab62230a9c10756fff9969a20bbe1", null ],
+    [ "operator()", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a38744fa6582a7205cbd716749b337a17", null ],
+    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuSerial.html#ae80d7b5ada67e44d7ad94dbd6eedfdf4", null ],
+    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a678328c0567c46059bc462eab4ee34aa", null ],
+    [ "m_args", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a18b7101d4b27e9eb550c075f9e6f98f6", null ],
+    [ "m_kernelFnObj", "classalpaka_1_1exec_1_1ExecCpuSerial.html#a25c838058994b14c7da11b617fc3a1be", null ]
 ];

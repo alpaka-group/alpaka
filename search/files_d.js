@@ -8,9 +8,7 @@ var searchData=
   ['sqrtstl_2ehpp',['SqrtStl.hpp',['../SqrtStl_8hpp.html',1,'']]],
   ['streamcpuasync_2ehpp',['StreamCpuAsync.hpp',['../StreamCpuAsync_8hpp.html',1,'']]],
   ['streamcpusync_2ehpp',['StreamCpuSync.hpp',['../StreamCpuSync_8hpp.html',1,'']]],
-  ['streamcudart_2ehpp',['StreamCudaRt.hpp',['../StreamCudaRt_8hpp.html',1,'']]],
-  ['streameventtraits_2ehpp',['StreamEventTraits.hpp',['../cuda_2StreamEventTraits_8hpp.html',1,'']]],
-  ['streameventtraits_2ehpp',['StreamEventTraits.hpp',['../cpu_2async_2StreamEventTraits_8hpp.html',1,'']]],
-  ['streameventtraits_2ehpp',['StreamEventTraits.hpp',['../cpu_2sync_2StreamEventTraits_8hpp.html',1,'']]],
+  ['streamcudartasync_2ehpp',['StreamCudaRtAsync.hpp',['../StreamCudaRtAsync_8hpp.html',1,'']]],
+  ['streamcudartsync_2ehpp',['StreamCudaRtSync.hpp',['../StreamCudaRtSync_8hpp.html',1,'']]],
   ['sysinfo_2ehpp',['SysInfo.hpp',['../SysInfo_8hpp.html',1,'']]]
 ];

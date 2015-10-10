@@ -1,0 +1,25 @@
+var structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy =
+[
+    [ "Size", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a275a081c91b3ea84151d2b4e36af95f8", null ],
+    [ "TaskCopy", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#adf0199d6059b7caaa2d75324c82d7cee", null ],
+    [ "operator()", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a38b562cfe4b89c83895d5dd233663879", null ],
+    [ "printDebug", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a0e41b5d45dd18d45075fe246eb45f4de", null ],
+    [ "m_dstBufHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a2289adfa94df0c6733b596a4289fee37", null ],
+    [ "m_dstBufWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a4d277b84292f721dc28de23609b1bf51", null ],
+    [ "m_dstDepth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a5f5521819f14f619428128f04142378e", null ],
+    [ "m_dstHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a1505064fe17538350da0eea3b99e7f4e", null ],
+    [ "m_dstMemNative", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a9ae4477bab29a3691c20f45ff4f380b0", null ],
+    [ "m_dstPitchBytes", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a0566b1997fa9c7201ba36c83df01c25e", null ],
+    [ "m_dstWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#ab842cde2bede71865b030c61743a44d9", null ],
+    [ "m_extentDepth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#acb6efcacb0e43646683e0e38bbf7e287", null ],
+    [ "m_extentHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a4d703cad85c78f208a48cdfdbd68b2ca", null ],
+    [ "m_extentWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a9273bbbe6890b1df1fd353461de2bf5f", null ],
+    [ "m_extentWidthBytes", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a5478d4841ada4cce1de6fae9b6ba6184", null ],
+    [ "m_srcBufHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#aaeedc9cbad5b2ee7574c3da2c19ee760", null ],
+    [ "m_srcBufWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a9f16a7e5b6ddb05a52a7865da1c68084", null ],
+    [ "m_srcDepth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a74536848e63ad6783525fc2a84e5edd2", null ],
+    [ "m_srcHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#ac0b5cb15213664d8275ba18f51808987", null ],
+    [ "m_srcMemNative", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a36ad595053599ff11aa1a0345d048b33", null ],
+    [ "m_srcPitchBytes", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a7193633f903a96d6d7ea92b8f3f9fef5", null ],
+    [ "m_srcWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a4c589512d1a905ed39a423998a674f27", null ]
+];

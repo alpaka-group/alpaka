@@ -1,0 +1,15 @@
+var structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae =
+[
+    [ "Size", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#aab9b418802868f59a4b03dc7d85b1b75", null ],
+    [ "TaskCopy", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a605b71e62d60bbc23616ab410f23358f", null ],
+    [ "printDebug", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#aed54affc63e176192701878428ddda02", null ],
+    [ "m_cudaMemCpyKind", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a125c6ceadfc893d3c196dc5f111afe8e", null ],
+    [ "m_dstMemNative", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a5cdeca2749846c4ec7ce05e2cb2fd788", null ],
+    [ "m_dstWidth", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a78c8414a9a16da93abbb8eac99b27c35", null ],
+    [ "m_extentWidth", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a5ea16b94183f48a25fa049898dce4205", null ],
+    [ "m_extentWidthBytes", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a8920a4d31473854c80de16eef359c878", null ],
+    [ "m_iDstDevice", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a1c0dd3174d246c38ad774226866be563", null ],
+    [ "m_iSrcDevice", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#aabe5aa5eabe1c773c16b366cf43fd560", null ],
+    [ "m_srcMemNative", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#ac49de89c147e427ba7e0d7385ddf0415", null ],
+    [ "m_srcWidth", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_a0d6e72ad72515553b564a1a788774ae.html#a65afa78a35dcd7ed7f0b839f7c54f125", null ]
+];

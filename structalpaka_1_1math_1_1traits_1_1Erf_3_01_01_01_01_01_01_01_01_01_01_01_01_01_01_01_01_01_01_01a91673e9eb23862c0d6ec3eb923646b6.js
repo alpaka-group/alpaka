@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Erf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01a91673e9eb23862c0d6ec3eb923646b6 =
 [
-    [ "erf", "structalpaka_1_1math_1_1traits_1_1Erf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01a91673e9eb23862c0d6ec3eb923646b6.html#ab8d04b29cf3dd46cb528c734b4f9c004", null ]
+    [ "erf", "structalpaka_1_1math_1_1traits_1_1Erf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01a91673e9eb23862c0d6ec3eb923646b6.html#a6f9629f2394fd6e0000d74da80a3e388", null ]
 ];

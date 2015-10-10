@@ -1,7 +1,5 @@
 var namespacealpaka_1_1acc =
 [
-    [ "fibers", "namespacealpaka_1_1acc_1_1fibers.html", "namespacealpaka_1_1acc_1_1fibers" ],
-    [ "threads", "namespacealpaka_1_1acc_1_1threads.html", "namespacealpaka_1_1acc_1_1threads" ],
     [ "traits", "namespacealpaka_1_1acc_1_1traits.html", "namespacealpaka_1_1acc_1_1traits" ],
     [ "AccCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html", "classalpaka_1_1acc_1_1AccCpuFibers" ],
     [ "AccCpuOmp2Blocks", "classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html", "classalpaka_1_1acc_1_1AccCpuOmp2Blocks" ],

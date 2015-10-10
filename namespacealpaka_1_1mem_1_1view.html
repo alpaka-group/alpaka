@@ -120,6 +120,8 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1mem_1_1view.html','
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespacealpaka_1_1mem_1_1view_1_1cpu"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1cpu.html">cpu</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1mem_1_1view_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1cuda.html">cuda</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1mem_1_1view_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1detail.html">detail</a></td></tr>
@@ -135,10 +137,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a75cb83525d44182b8eee6d22e5b7e369"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:a75cb83525d44182b8eee6d22e5b7e369"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a> = typename std::remove_volatile&lt; typename <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1ElemType.html">traits::ElemType</a>&lt; TView &gt;::type &gt;::type</td></tr>
-<tr class="memdesc:a75cb83525d44182b8eee6d22e5b7e369"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory element type trait alias template to remove the ::type.  <a href="#a75cb83525d44182b8eee6d22e5b7e369">More...</a><br /></td></tr>
-<tr class="separator:a75cb83525d44182b8eee6d22e5b7e369"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb57012d2a4295c64edbc87808069b66"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TDim , typename TSize &gt; </td></tr>
 <tr class="memitem:abb57012d2a4295c64edbc87808069b66"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#abb57012d2a4295c64edbc87808069b66">View</a> = typename <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1ViewType.html">traits::ViewType</a>&lt; TDev, TElem, TDim, TSize &gt;::type</td></tr>
 <tr class="memdesc:abb57012d2a4295c64edbc87808069b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer view type trait alias template to remove the ::type.  <a href="#abb57012d2a4295c64edbc87808069b66">More...</a><br /></td></tr>
@@ -146,91 +144,73 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4eb6e32b53b7c10ba52399a0d99ea065"><td class="memTemplParams" colspan="2">template&lt;typename TBufDst , typename TBufSrc , typename TExtents &gt; </td></tr>
-<tr class="memitem:a4eb6e32b53b7c10ba52399a0d99ea065"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a4eb6e32b53b7c10ba52399a0d99ea065">copy</a> (TBufDst &amp;bufDst, TBufSrc const &amp;bufSrc, TExtents const &amp;extents) -&gt; void                                        </td></tr>
-<tr class="memdesc:a4eb6e32b53b7c10ba52399a0d99ea065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies memory possibly between different memory spaces.  <a href="#a4eb6e32b53b7c10ba52399a0d99ea065">More...</a><br /></td></tr>
-<tr class="separator:a4eb6e32b53b7c10ba52399a0d99ea065"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90e8dccdffc0742387a6634da516a778"><td class="memTemplParams" colspan="2">template&lt;typename TBufDst , typename TBufSrc , typename TExtents , typename TStream &gt; </td></tr>
-<tr class="memitem:a90e8dccdffc0742387a6634da516a778"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a90e8dccdffc0742387a6634da516a778">copy</a> (TBufDst &amp;bufDst, TBufSrc const &amp;bufSrc, TExtents const &amp;extents, TStream const &amp;stream) -&gt; void                                        </td></tr>
-<tr class="memdesc:a90e8dccdffc0742387a6634da516a778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies memory possibly between different memory spaces asynchronously.  <a href="#a90e8dccdffc0742387a6634da516a778">More...</a><br /></td></tr>
-<tr class="separator:a90e8dccdffc0742387a6634da516a778"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e810b86a5fb0469854bd466f2e85c6"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf &gt; </td></tr>
-<tr class="memitem:ae2e810b86a5fb0469854bd466f2e85c6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#ae2e810b86a5fb0469854bd466f2e85c6">createView</a> (TBuf const &amp;buf) -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt; TView &gt;::createView(buf))                                        </td></tr>
-<tr class="memdesc:ae2e810b86a5fb0469854bd466f2e85c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ae2e810b86a5fb0469854bd466f2e85c6">More...</a><br /></td></tr>
-<tr class="separator:ae2e810b86a5fb0469854bd466f2e85c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88ca95d6c070aba3abe8b50b92034e8a"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf &gt; </td></tr>
-<tr class="memitem:a88ca95d6c070aba3abe8b50b92034e8a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a88ca95d6c070aba3abe8b50b92034e8a">createView</a> (TBuf &amp;buf) -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt; TView &gt;::createView(buf))                                        </td></tr>
-<tr class="memdesc:a88ca95d6c070aba3abe8b50b92034e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a88ca95d6c070aba3abe8b50b92034e8a">More...</a><br /></td></tr>
-<tr class="separator:a88ca95d6c070aba3abe8b50b92034e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95315158a4c03cdd45fc4c856eb9c5cd"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf , typename TExtents , typename TOffsets &gt; </td></tr>
-<tr class="memitem:a95315158a4c03cdd45fc4c856eb9c5cd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a95315158a4c03cdd45fc4c856eb9c5cd">createView</a> (TBuf const &amp;buf, TExtents const &amp;extentsElements, TOffsets const &amp;relativeOffsetsElements=TOffsets()) -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt; TView &gt;::createView(buf, extentsElements, relativeOffsetsElements))                                        </td></tr>
-<tr class="memdesc:a95315158a4c03cdd45fc4c856eb9c5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a95315158a4c03cdd45fc4c856eb9c5cd">More...</a><br /></td></tr>
-<tr class="separator:a95315158a4c03cdd45fc4c856eb9c5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad930de8eb248a9864f0fb6ad91a1d26a"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf , typename TExtents , typename TOffsets &gt; </td></tr>
-<tr class="memitem:ad930de8eb248a9864f0fb6ad91a1d26a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#ad930de8eb248a9864f0fb6ad91a1d26a">createView</a> (TBuf &amp;buf, TExtents const &amp;extentsElements, TOffsets const &amp;relativeOffsetsElements=TOffsets()) -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt; TView &gt;::createView(buf, extentsElements, relativeOffsetsElements))                                        </td></tr>
-<tr class="memdesc:ad930de8eb248a9864f0fb6ad91a1d26a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ad930de8eb248a9864f0fb6ad91a1d26a">More...</a><br /></td></tr>
-<tr class="separator:ad930de8eb248a9864f0fb6ad91a1d26a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad27f60022a372d2d95bb4c08015c78b9"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:ad27f60022a372d2d95bb4c08015c78b9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#ad27f60022a372d2d95bb4c08015c78b9">getBuf</a> (TView const &amp;view) -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt; TView &gt;::getBuf(view))                                        </td></tr>
-<tr class="memdesc:ad27f60022a372d2d95bb4c08015c78b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the memory buffer.  <a href="#ad27f60022a372d2d95bb4c08015c78b9">More...</a><br /></td></tr>
-<tr class="separator:ad27f60022a372d2d95bb4c08015c78b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec4cda8eed085d4d7fd8911c7f9acf3b"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:aec4cda8eed085d4d7fd8911c7f9acf3b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#aec4cda8eed085d4d7fd8911c7f9acf3b">getBuf</a> (TView &amp;view) -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt; TView &gt;::getBuf(view))                                        </td></tr>
-<tr class="memdesc:aec4cda8eed085d4d7fd8911c7f9acf3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the memory buffer.  <a href="#aec4cda8eed085d4d7fd8911c7f9acf3b">More...</a><br /></td></tr>
-<tr class="separator:aec4cda8eed085d4d7fd8911c7f9acf3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cb302ab229483e1f9183090f2ad52e0"><td class="memTemplParams" colspan="2">template&lt;std::size_t TuiIdx, typename TView &gt; </td></tr>
+<tr class="memitem:a30c3224bf6d8ac994456b6eb856d623e"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TBufSrc , typename TBufDst , typename TStream &gt; </td></tr>
+<tr class="memitem:a30c3224bf6d8ac994456b6eb856d623e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a30c3224bf6d8ac994456b6eb856d623e">copy</a> (TStream &amp;stream, TBufDst &amp;bufDst, TBufSrc const &amp;bufSrc, TExtent const &amp;extent) -&gt; void                                        </td></tr>
+<tr class="memdesc:a30c3224bf6d8ac994456b6eb856d623e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies memory possibly between different memory spaces asynchronously.  <a href="#a30c3224bf6d8ac994456b6eb856d623e">More...</a><br /></td></tr>
+<tr class="separator:a30c3224bf6d8ac994456b6eb856d623e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7740c8870195e13bb6004adc0536cc8"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf &gt; </td></tr>
+<tr class="memitem:aa7740c8870195e13bb6004adc0536cc8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#aa7740c8870195e13bb6004adc0536cc8">createView</a> (TBuf const &amp;buf) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;                                                                              TView &gt;                                                           ::createView(                                                                           buf))                                        </td></tr>
+<tr class="memdesc:aa7740c8870195e13bb6004adc0536cc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#aa7740c8870195e13bb6004adc0536cc8">More...</a><br /></td></tr>
+<tr class="separator:aa7740c8870195e13bb6004adc0536cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4582367522cbbb369746ff06bd1ae789"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf &gt; </td></tr>
+<tr class="memitem:a4582367522cbbb369746ff06bd1ae789"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a4582367522cbbb369746ff06bd1ae789">createView</a> (TBuf &amp;buf) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;                                                                              TView &gt;                                                           ::createView(                                                                           buf))                                        </td></tr>
+<tr class="memdesc:a4582367522cbbb369746ff06bd1ae789"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a4582367522cbbb369746ff06bd1ae789">More...</a><br /></td></tr>
+<tr class="separator:a4582367522cbbb369746ff06bd1ae789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db0a77c995a9548539096f9e59b57bb"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf , typename TExtent , typename TOffsets &gt; </td></tr>
+<tr class="memitem:a5db0a77c995a9548539096f9e59b57bb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a5db0a77c995a9548539096f9e59b57bb">createView</a> (TBuf const &amp;buf, TExtent const &amp;extentElements, TOffsets const &amp;relativeOffsetsElements=TOffsets()) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;                                                                              TView &gt;                                                           ::createView(                                                                           buf,                                                                           extentElements,                                                                           relativeOffsetsElements))                                        </td></tr>
+<tr class="memdesc:a5db0a77c995a9548539096f9e59b57bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a5db0a77c995a9548539096f9e59b57bb">More...</a><br /></td></tr>
+<tr class="separator:a5db0a77c995a9548539096f9e59b57bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19a8cb6b74b199ee411b64b136887918"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TBuf , typename TExtent , typename TOffsets &gt; </td></tr>
+<tr class="memitem:a19a8cb6b74b199ee411b64b136887918"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a19a8cb6b74b199ee411b64b136887918">createView</a> (TBuf &amp;buf, TExtent const &amp;extentElements, TOffsets const &amp;relativeOffsetsElements=TOffsets()) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;                                                                              TView &gt;                                                           ::createView(                                                                           buf,                                                                           extentElements,                                                                           relativeOffsetsElements))                                        </td></tr>
+<tr class="memdesc:a19a8cb6b74b199ee411b64b136887918"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a19a8cb6b74b199ee411b64b136887918">More...</a><br /></td></tr>
+<tr class="separator:a19a8cb6b74b199ee411b64b136887918"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a261490e4dc21184f8f8ba73b8013bc6e"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:a261490e4dc21184f8f8ba73b8013bc6e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a261490e4dc21184f8f8ba73b8013bc6e">getBuf</a> (TView const &amp;view) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt;                                                                              TView &gt;                                                           ::getBuf(                                                                           view))                                        </td></tr>
+<tr class="memdesc:a261490e4dc21184f8f8ba73b8013bc6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the memory buffer.  <a href="#a261490e4dc21184f8f8ba73b8013bc6e">More...</a><br /></td></tr>
+<tr class="separator:a261490e4dc21184f8f8ba73b8013bc6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1636d765faf245fc220edcfe8cd64a9"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:ac1636d765faf245fc220edcfe8cd64a9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#ac1636d765faf245fc220edcfe8cd64a9">getBuf</a> (TView &amp;view) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt;                                                                              TView &gt;                                                           ::getBuf(                                                                           view))                                        </td></tr>
+<tr class="memdesc:ac1636d765faf245fc220edcfe8cd64a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the memory buffer.  <a href="#ac1636d765faf245fc220edcfe8cd64a9">More...</a><br /></td></tr>
+<tr class="separator:ac1636d765faf245fc220edcfe8cd64a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cb302ab229483e1f9183090f2ad52e0"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TView &gt; </td></tr>
 <tr class="memitem:a4cb302ab229483e1f9183090f2ad52e0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a4cb302ab229483e1f9183090f2ad52e0">getPitchBytes</a> (TView const &amp;buf) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TView &gt;                                        </td></tr>
 <tr class="separator:a4cb302ab229483e1f9183090f2ad52e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e481c435f3d6354708f5f6f242fc665"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
-<tr class="memitem:a2e481c435f3d6354708f5f6f242fc665"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a2e481c435f3d6354708f5f6f242fc665">getPtrDev</a> (TBuf const &amp;buf, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt; TBuf &gt; const *                                        </td></tr>
-<tr class="memdesc:a2e481c435f3d6354708f5f6f242fc665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the buffer on the given device.  <a href="#a2e481c435f3d6354708f5f6f242fc665">More...</a><br /></td></tr>
-<tr class="separator:a2e481c435f3d6354708f5f6f242fc665"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eb560f4ccc66e046ca0227a8fae6a6f"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
-<tr class="memitem:a9eb560f4ccc66e046ca0227a8fae6a6f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a9eb560f4ccc66e046ca0227a8fae6a6f">getPtrDev</a> (TBuf &amp;buf, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt; TBuf &gt; *                                        </td></tr>
-<tr class="memdesc:a9eb560f4ccc66e046ca0227a8fae6a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the buffer on the given device.  <a href="#a9eb560f4ccc66e046ca0227a8fae6a6f">More...</a><br /></td></tr>
-<tr class="separator:a9eb560f4ccc66e046ca0227a8fae6a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19e7dc4993de19bbff38cb4e9a5de1a3"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a19e7dc4993de19bbff38cb4e9a5de1a3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a19e7dc4993de19bbff38cb4e9a5de1a3">getPtrNative</a> (TBuf const &amp;buf) -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt; TBuf &gt; const *                                        </td></tr>
-<tr class="memdesc:a19e7dc4993de19bbff38cb4e9a5de1a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory buffer.  <a href="#a19e7dc4993de19bbff38cb4e9a5de1a3">More...</a><br /></td></tr>
-<tr class="separator:a19e7dc4993de19bbff38cb4e9a5de1a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d8c05d1a65d645286d595ae91a51528"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a2d8c05d1a65d645286d595ae91a51528"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a2d8c05d1a65d645286d595ae91a51528">getPtrNative</a> (TBuf &amp;buf) -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt; TBuf &gt; *                                        </td></tr>
-<tr class="memdesc:a2d8c05d1a65d645286d595ae91a51528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory buffer.  <a href="#a2d8c05d1a65d645286d595ae91a51528">More...</a><br /></td></tr>
-<tr class="separator:a2d8c05d1a65d645286d595ae91a51528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af01522a13c0b660912659b92e2b6a728"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
+<tr class="memitem:af01522a13c0b660912659b92e2b6a728"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#af01522a13c0b660912659b92e2b6a728">getPtrDev</a> (TBuf const &amp;buf, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt; TBuf &gt; const *                                        </td></tr>
+<tr class="memdesc:af01522a13c0b660912659b92e2b6a728"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the buffer on the given device.  <a href="#af01522a13c0b660912659b92e2b6a728">More...</a><br /></td></tr>
+<tr class="separator:af01522a13c0b660912659b92e2b6a728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45fd141bbd7e8c85cc05e192b332aba5"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
+<tr class="memitem:a45fd141bbd7e8c85cc05e192b332aba5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a45fd141bbd7e8c85cc05e192b332aba5">getPtrDev</a> (TBuf &amp;buf, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt; TBuf &gt; *                                        </td></tr>
+<tr class="memdesc:a45fd141bbd7e8c85cc05e192b332aba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the buffer on the given device.  <a href="#a45fd141bbd7e8c85cc05e192b332aba5">More...</a><br /></td></tr>
+<tr class="separator:a45fd141bbd7e8c85cc05e192b332aba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fd636715263b147db029b6bfcead6f"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
+<tr class="memitem:a24fd636715263b147db029b6bfcead6f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a24fd636715263b147db029b6bfcead6f">getPtrNative</a> (TBuf const &amp;buf) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt; TBuf &gt; const *                                        </td></tr>
+<tr class="memdesc:a24fd636715263b147db029b6bfcead6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory buffer.  <a href="#a24fd636715263b147db029b6bfcead6f">More...</a><br /></td></tr>
+<tr class="separator:a24fd636715263b147db029b6bfcead6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46972e5bbc05a552eef20cda0c0858ae"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
+<tr class="memitem:a46972e5bbc05a552eef20cda0c0858ae"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a46972e5bbc05a552eef20cda0c0858ae">getPtrNative</a> (TBuf &amp;buf) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt; TBuf &gt; *                                        </td></tr>
+<tr class="memdesc:a46972e5bbc05a552eef20cda0c0858ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory buffer.  <a href="#a46972e5bbc05a552eef20cda0c0858ae">More...</a><br /></td></tr>
+<tr class="separator:a46972e5bbc05a552eef20cda0c0858ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a908e451555f779dd033cf2ce5ee096aa"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
 <tr class="memitem:a908e451555f779dd033cf2ce5ee096aa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a908e451555f779dd033cf2ce5ee096aa">print</a> (TView const &amp;view, std::ostream &amp;os, std::string const &amp;elementSeparator=&quot;, &quot;, std::string const &amp;rowSeparator=&quot;\n&quot;, std::string const &amp;rowPrefix=&quot;[&quot;, std::string const &amp;rowSuffix=&quot;]&quot;) -&gt; void                                        </td></tr>
 <tr class="memdesc:a908e451555f779dd033cf2ce5ee096aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the content of the view to the given stream.  <a href="#a908e451555f779dd033cf2ce5ee096aa">More...</a><br /></td></tr>
 <tr class="separator:a908e451555f779dd033cf2ce5ee096aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8567157f167a1bacca72372f8dbf2557"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TExtents &gt; </td></tr>
-<tr class="memitem:a8567157f167a1bacca72372f8dbf2557"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a8567157f167a1bacca72372f8dbf2557">set</a> (TView &amp;buf, std::uint8_t const &amp;byte, TExtents const &amp;extents) -&gt; void                                        </td></tr>
-<tr class="memdesc:a8567157f167a1bacca72372f8dbf2557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the memory to the given value.  <a href="#a8567157f167a1bacca72372f8dbf2557">More...</a><br /></td></tr>
-<tr class="separator:a8567157f167a1bacca72372f8dbf2557"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad37a7c8f16b5919b4dbdcd4bd0ebcd4b"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TExtents , typename TStream &gt; </td></tr>
-<tr class="memitem:ad37a7c8f16b5919b4dbdcd4bd0ebcd4b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#ad37a7c8f16b5919b4dbdcd4bd0ebcd4b">set</a> (TView &amp;buf, std::uint8_t const &amp;byte, TExtents const &amp;extents, TStream const &amp;stream) -&gt; void                                        </td></tr>
-<tr class="memdesc:ad37a7c8f16b5919b4dbdcd4bd0ebcd4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the memory to the given value asynchronously.  <a href="#ad37a7c8f16b5919b4dbdcd4bd0ebcd4b">More...</a><br /></td></tr>
-<tr class="separator:ad37a7c8f16b5919b4dbdcd4bd0ebcd4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add12a05a98d56d06e1e1df642b4be29f"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TView , typename TStream &gt; </td></tr>
+<tr class="memitem:add12a05a98d56d06e1e1df642b4be29f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#add12a05a98d56d06e1e1df642b4be29f">set</a> (TStream &amp;stream, TView &amp;buf, std::uint8_t const &amp;byte, TExtent const &amp;extent) -&gt; void                                        </td></tr>
+<tr class="memdesc:add12a05a98d56d06e1e1df642b4be29f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the memory to the given value asynchronously.  <a href="#add12a05a98d56d06e1e1df642b4be29f">More...</a><br /></td></tr>
+<tr class="separator:add12a05a98d56d06e1e1df642b4be29f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e520bb4b64609765c39fb8447023160"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TBufSrc , typename TBufDst &gt; </td></tr>
+<tr class="memitem:a9e520bb4b64609765c39fb8447023160"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a9e520bb4b64609765c39fb8447023160">taskCopy</a> (TBufDst &amp;bufDst, TBufSrc const &amp;bufSrc, TExtent const &amp;extent) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy.html">traits::TaskCopy</a>&lt;                                                                              <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TBufDst &gt;,                                                                           <a class="el" href="namespacealpaka_1_1dev.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">dev::Dev</a>&lt; TBufDst &gt;,                                                                           <a class="el" href="namespacealpaka_1_1dev.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">dev::Dev</a>&lt; TBufSrc &gt;&gt;                                                           ::taskCopy(                                                                           bufDst,                                                                           bufSrc,                                                                           extent))                                        </td></tr>
+<tr class="memdesc:a9e520bb4b64609765c39fb8447023160"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a memory copy task.  <a href="#a9e520bb4b64609765c39fb8447023160">More...</a><br /></td></tr>
+<tr class="separator:a9e520bb4b64609765c39fb8447023160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55e0ddb6ef2026f19492a329bf16fb88"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TView &gt; </td></tr>
+<tr class="memitem:a55e0ddb6ef2026f19492a329bf16fb88"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a55e0ddb6ef2026f19492a329bf16fb88">taskSet</a> (TView &amp;buf, std::uint8_t const &amp;byte, TExtent const &amp;extent) -&gt; decltype(                                                           <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1TaskSet.html">traits::TaskSet</a>&lt;                                                                              <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TView &gt;,                                                                           <a class="el" href="namespacealpaka_1_1dev.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">dev::Dev</a>&lt; TView &gt;&gt;                                                           ::taskSet(                                                                           buf,                                                                           byte,                                                                           extent))                                        </td></tr>
+<tr class="memdesc:a55e0ddb6ef2026f19492a329bf16fb88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a memory set task.  <a href="#a55e0ddb6ef2026f19492a329bf16fb88">More...</a><br /></td></tr>
+<tr class="separator:a55e0ddb6ef2026f19492a329bf16fb88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The buffer specifics. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a75cb83525d44182b8eee6d22e5b7e369"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TView &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">alpaka::mem::view::Elem</a> = typedef typename std::remove_volatile&lt;typename <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1ElemType.html">traits::ElemType</a>&lt;TView&gt;::type&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The memory element type trait alias template to remove the ::type. </p>
-
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00170">170</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="abb57012d2a4295c64edbc87808069b66"></a>
 <div class="memitem">
 <div class="memproto">
@@ -245,20 +225,26 @@ template&lt;typename TDev , typename TElem , typename TDim , typename TSize &gt;
 
 <p>The memory buffer view type trait alias template to remove the ::type. </p>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00180">180</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00167">167</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a4eb6e32b53b7c10ba52399a0d99ea065"></a>
+<a class="anchor" id="a30c3224bf6d8ac994456b6eb856d623e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TBufDst , typename TBufSrc , typename TExtents &gt; </div>
+template&lt;typename TExtent , typename TBufSrc , typename TBufDst , typename TStream &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::copy </td>
           <td>(</td>
+          <td class="paramtype">TStream &amp;&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">TBufDst &amp;&#160;</td>
           <td class="paramname"><em>bufDst</em>, </td>
         </tr>
@@ -271,61 +257,8 @@ template&lt;typename TBufDst , typename TBufSrc , typename TExtents &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extents</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; void
-            </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Copies memory possibly between different memory spaces. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bufDst</td><td>The destination memory buffer. </td></tr>
-    <tr><td class="paramname">bufSrc</td><td>The source memory buffer. </td></tr>
-    <tr><td class="paramname">extents</td><td>The extents of the buffer to copy. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00354">354</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a90e8dccdffc0742387a6634da516a778"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TBufDst , typename TBufSrc , typename TExtents , typename TStream &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::copy </td>
-          <td>(</td>
-          <td class="paramtype">TBufDst &amp;&#160;</td>
-          <td class="paramname"><em>bufDst</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TBufSrc const &amp;&#160;</td>
-          <td class="paramname"><em>bufSrc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extents</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TStream const &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>&#160;</td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -341,17 +274,17 @@ template&lt;typename TBufDst , typename TBufSrc , typename TExtents , typename T
   <table class="params">
     <tr><td class="paramname">bufDst</td><td>The destination memory buffer. </td></tr>
     <tr><td class="paramname">bufSrc</td><td>The source memory buffer. </td></tr>
-    <tr><td class="paramname">extents</td><td>The extents of the buffer to copy. </td></tr>
+    <tr><td class="paramname">extent</td><td>The extent of the buffer to copy. </td></tr>
     <tr><td class="paramname">stream</td><td>The stream to enqueue the buffer copy task into. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00393">393</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00394">394</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae2e810b86a5fb0469854bd466f2e85c6"></a>
+<a class="anchor" id="aa7740c8870195e13bb6004adc0536cc8"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -362,7 +295,11 @@ template&lt;typename TView , typename TBuf &gt; </div>
           <td>(</td>
           <td class="paramtype">TBuf const &amp;&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;TView&gt;::createView(buf))
+          <td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;
+                    TView&gt;
+                ::createView(
+                    buf))
             </td>
         </tr>
       </table>
@@ -376,11 +313,11 @@ template&lt;typename TView , typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00428">428</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00416">416</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a88ca95d6c070aba3abe8b50b92034e8a"></a>
+<a class="anchor" id="a4582367522cbbb369746ff06bd1ae789"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -391,7 +328,11 @@ template&lt;typename TView , typename TBuf &gt; </div>
           <td>(</td>
           <td class="paramtype">TBuf &amp;&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;TView&gt;::createView(buf))
+          <td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;
+                    TView&gt;
+                ::createView(
+                    buf))
             </td>
         </tr>
       </table>
@@ -405,15 +346,15 @@ template&lt;typename TView , typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00444">444</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00437">437</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a95315158a4c03cdd45fc4c856eb9c5cd"></a>
+<a class="anchor" id="a5db0a77c995a9548539096f9e59b57bb"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TView , typename TBuf , typename TExtents , typename TOffsets &gt; </div>
+template&lt;typename TView , typename TBuf , typename TExtent , typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::createView </td>
@@ -424,8 +365,8 @@ template&lt;typename TView , typename TBuf , typename TExtents , typename TOffse
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extentsElements</em>, </td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extentElements</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -436,7 +377,13 @@ template&lt;typename TView , typename TBuf , typename TExtents , typename TOffse
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;TView&gt;::createView(buf, extentsElements, relativeOffsetsElements))
+          <td></td><td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;
+                    TView&gt;
+                ::createView(
+                    buf,
+                    extentElements,
+                    relativeOffsetsElements))
             </td>
         </tr>
       </table>
@@ -446,21 +393,21 @@ template&lt;typename TView , typename TBuf , typename TExtents , typename TOffse
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buf</td><td>This can be either a memory buffer or a memory view. </td></tr>
-    <tr><td class="paramname">extentsElements</td><td>The extents in elements. </td></tr>
+    <tr><td class="paramname">extentElements</td><td>The extent in elements. </td></tr>
     <tr><td class="paramname">relativeOffsetsElements</td><td>The offsets in elements. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00464">464</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00462">462</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad930de8eb248a9864f0fb6ad91a1d26a"></a>
+<a class="anchor" id="a19a8cb6b74b199ee411b64b136887918"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TView , typename TBuf , typename TExtents , typename TOffsets &gt; </div>
+template&lt;typename TView , typename TBuf , typename TExtent , typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::createView </td>
@@ -471,8 +418,8 @@ template&lt;typename TView , typename TBuf , typename TExtents , typename TOffse
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extentsElements</em>, </td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extentElements</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -483,7 +430,13 @@ template&lt;typename TView , typename TBuf , typename TExtents , typename TOffse
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;TView&gt;::createView(buf, extentsElements, relativeOffsetsElements))
+          <td></td><td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView.html">traits::CreateView</a>&lt;
+                    TView&gt;
+                ::createView(
+                    buf,
+                    extentElements,
+                    relativeOffsetsElements))
             </td>
         </tr>
       </table>
@@ -493,17 +446,17 @@ template&lt;typename TView , typename TBuf , typename TExtents , typename TOffse
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buf</td><td>This can be either a memory buffer or a memory view. </td></tr>
-    <tr><td class="paramname">extentsElements</td><td>The extents in elements. </td></tr>
+    <tr><td class="paramname">extentElements</td><td>The extent in elements. </td></tr>
     <tr><td class="paramname">relativeOffsetsElements</td><td>The offsets in elements. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00488">488</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00493">493</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad27f60022a372d2d95bb4c08015c78b9"></a>
+<a class="anchor" id="a261490e4dc21184f8f8ba73b8013bc6e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -514,7 +467,11 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView const &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt;TView&gt;::getBuf(view))
+          <td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt;
+                    TView&gt;
+                ::getBuf(
+                    view))
             </td>
         </tr>
       </table>
@@ -529,11 +486,11 @@ template&lt;typename TView &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The memory buffer. </dd></dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00510">510</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00522">522</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aec4cda8eed085d4d7fd8911c7f9acf3b"></a>
+<a class="anchor" id="ac1636d765faf245fc220edcfe8cd64a9"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -544,7 +501,11 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt;TView&gt;::getBuf(view))
+          <td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf.html">traits::GetBuf</a>&lt;
+                    TView&gt;
+                ::getBuf(
+                    view))
             </td>
         </tr>
       </table>
@@ -559,7 +520,7 @@ template&lt;typename TView &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The memory buffer. </dd></dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00527">527</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00544">544</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -567,7 +528,7 @@ template&lt;typename TView &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t TuiIdx, typename TView &gt; </div>
+template&lt;std::size_t Tidx, typename TView &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::getPitchBytes </td>
@@ -581,11 +542,11 @@ template&lt;std::size_t TuiIdx, typename TView &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The pitch in bytes. This is the distance between two consecutive rows. </dd></dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00268">268</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00259">259</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2e481c435f3d6354708f5f6f242fc665"></a>
+<a class="anchor" id="af01522a13c0b660912659b92e2b6a728"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -606,7 +567,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt;TBuf&gt; const *
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt;TBuf&gt; const *
             </td>
         </tr>
       </table>
@@ -622,11 +583,11 @@ template&lt;typename TBuf , typename TDev &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The pointer on the device. </dd></dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00227">227</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00216">216</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9eb560f4ccc66e046ca0227a8fae6a6f"></a>
+<a class="anchor" id="a45fd141bbd7e8c85cc05e192b332aba5"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -647,7 +608,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt;TBuf&gt; *
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt;TBuf&gt; *
             </td>
         </tr>
       </table>
@@ -663,11 +624,11 @@ template&lt;typename TBuf , typename TDev &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The pointer on the device. </dd></dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00249">249</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00239">239</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a19e7dc4993de19bbff38cb4e9a5de1a3"></a>
+<a class="anchor" id="a24fd636715263b147db029b6bfcead6f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -678,7 +639,7 @@ template&lt;typename TBuf &gt; </div>
           <td>(</td>
           <td class="paramtype">TBuf const &amp;&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt;TBuf&gt; const *
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt;TBuf&gt; const *
             </td>
         </tr>
       </table>
@@ -693,11 +654,11 @@ template&lt;typename TBuf &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The native pointer. </dd></dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00190">190</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00177">177</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2d8c05d1a65d645286d595ae91a51528"></a>
+<a class="anchor" id="a46972e5bbc05a552eef20cda0c0858ae"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -708,7 +669,7 @@ template&lt;typename TBuf &gt; </div>
           <td>(</td>
           <td class="paramtype">TBuf &amp;&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a75cb83525d44182b8eee6d22e5b7e369">Elem</a>&lt;TBuf&gt; *
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a71efa9bddab4bea605d7aa90d0a722f3">elem::Elem</a>&lt;TBuf&gt; *
             </td>
         </tr>
       </table>
@@ -723,7 +684,7 @@ template&lt;typename TBuf &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The native pointer. </dd></dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00207">207</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00195">195</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -780,19 +741,25 @@ template&lt;typename TView &gt; </div>
 
 <p>Prints the content of the view to the given stream. </p>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00633">633</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00655">655</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8567157f167a1bacca72372f8dbf2557"></a>
+<a class="anchor" id="add12a05a98d56d06e1e1df642b4be29f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TView , typename TExtents &gt; </div>
+template&lt;typename TExtent , typename TView , typename TStream &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::set </td>
           <td>(</td>
+          <td class="paramtype">TStream &amp;&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">TView &amp;&#160;</td>
           <td class="paramname"><em>buf</em>, </td>
         </tr>
@@ -805,61 +772,8 @@ template&lt;typename TView , typename TExtents &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extents</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; void
-            </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the memory to the given value. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buf</td><td>The memory buffer to fill. </td></tr>
-    <tr><td class="paramname">byte</td><td>Value to set for each element of the specified buffer. </td></tr>
-    <tr><td class="paramname">extents</td><td>The extents of the buffer to fill. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00290">290</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad37a7c8f16b5919b4dbdcd4bd0ebcd4b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TView , typename TExtents , typename TStream &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::set </td>
-          <td>(</td>
-          <td class="paramtype">TView &amp;&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::uint8_t const &amp;&#160;</td>
-          <td class="paramname"><em>byte</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extents</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TStream const &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>&#160;</td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -875,13 +789,122 @@ template&lt;typename TView , typename TExtents , typename TStream &gt; </div>
   <table class="params">
     <tr><td class="paramname">buf</td><td>The memory buffer to fill. </td></tr>
     <tr><td class="paramname">byte</td><td>Value to set for each element of the specified buffer. </td></tr>
-    <tr><td class="paramname">extents</td><td>The extents of the buffer to fill. </td></tr>
+    <tr><td class="paramname">extent</td><td>The extent of the buffer to fill. </td></tr>
     <tr><td class="paramname">stream</td><td>The stream to enqueue the buffer fill task into. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00321">321</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00320">320</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9e520bb4b64609765c39fb8447023160"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TExtent , typename TBufSrc , typename TBufDst &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::taskCopy </td>
+          <td>(</td>
+          <td class="paramtype">TBufDst &amp;&#160;</td>
+          <td class="paramname"><em>bufDst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TBufSrc const &amp;&#160;</td>
+          <td class="paramname"><em>bufSrc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy.html">traits::TaskCopy</a>&lt;
+                    <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TBufDst&gt;,
+                    <a class="el" href="namespacealpaka_1_1dev.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">dev::Dev</a>&lt;TBufDst&gt;,
+                    <a class="el" href="namespacealpaka_1_1dev.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">dev::Dev</a>&lt;TBufSrc&gt;&gt;
+                ::taskCopy(
+                    bufDst,
+                    bufSrc,
+                    extent))
+            </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a memory copy task. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bufDst</td><td>The destination memory buffer. </td></tr>
+    <tr><td class="paramname">bufSrc</td><td>The source memory buffer. </td></tr>
+    <tr><td class="paramname">extent</td><td>The extent of the buffer to copy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00346">346</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a55e0ddb6ef2026f19492a329bf16fb88"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TExtent , typename TView &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::mem::view::taskSet </td>
+          <td>(</td>
+          <td class="paramtype">TView &amp;&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint8_t const &amp;&#160;</td>
+          <td class="paramname"><em>byte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TExtent const &amp;&#160;</td>
+          <td class="paramname"><em>extent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; decltype(
+                <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1TaskSet.html">traits::TaskSet</a>&lt;
+                    <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TView&gt;,
+                    <a class="el" href="namespacealpaka_1_1dev.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">dev::Dev</a>&lt;TView&gt;&gt;
+                ::taskSet(
+                    buf,
+                    byte,
+                    extent))
+            </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a memory set task. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>The memory buffer to fill. </td></tr>
+    <tr><td class="paramname">byte</td><td>Value to set for each element of the specified buffer. </td></tr>
+    <tr><td class="paramname">extent</td><td>The extent of the buffer to fill. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00281">281</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -891,7 +914,7 @@ template&lt;typename TView , typename TExtents , typename TStream &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view.html">view</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:00 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

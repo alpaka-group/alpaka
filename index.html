@@ -117,13 +117,13 @@ $(document).ready(function(){initNavTree('index.html','');});
 <tr>
 <th>Accelerator Back-end</th><th>Lib/API</th><th>Devices</th><th>Execution strategy grid-blocks</th><th>Execution strategy block-threads  </th></tr>
 <tr>
-<td>Serial</td><td>n/a</td><td>Host CPU (single core)</td><td>sequential</td><td>sequential (1 thread/block) </td></tr>
+<td>Serial</td><td>n/a</td><td>Host CPU (single core)</td><td>sequential</td><td>sequential (only 1 thread per block) </td></tr>
 <tr>
-<td>OpenMP 2.0 blocks</td><td>OpenMP 2.0</td><td>Host CPU (multi core)</td><td>parallel (preemptive multitasking)</td><td>sequential (1 thread/block) </td></tr>
+<td>OpenMP 2.0 blocks</td><td>OpenMP 2.0</td><td>Host CPU (multi core)</td><td>parallel (preemptive multitasking)</td><td>sequential (only 1 thread per block) </td></tr>
 <tr>
 <td>OpenMP 2.0 threads</td><td>OpenMP 2.0</td><td>Host CPU (multi core)</td><td>sequential</td><td>parallel (preemptive multitasking) </td></tr>
 <tr>
-<td>OpenMP 4.0</td><td>OpenMP 4.0</td><td>Host CPU (multi core)</td><td>parallel (undefined)</td><td>parallel (preemptive multitasking) </td></tr>
+<td>OpenMP 4.0 (CPU)</td><td>OpenMP 4.0</td><td>Host CPU (multi core)</td><td>parallel (undefined)</td><td>parallel (preemptive multitasking) </td></tr>
 <tr>
 <td>std::thread </td><td>std::thread </td><td>Host CPU (multi core)</td><td>sequential</td><td>parallel (preemptive multitasking) </td></tr>
 <tr>
@@ -135,21 +135,21 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>This library uses C++11 (or newer when available).</p>
 <table class="doxtable">
 <tr>
-<th>Accelerator Back-end</th><th>gcc 4.9.2</th><th>gcc 5.2</th><th>clang 3.5/3.6</th><th>clang 3.7</th><th>MSVC 2015</th><th>icc 15.0+ (untested)  </th></tr>
+<th>Accelerator Back-end</th><th>gcc 4.9.2</th><th>gcc 5.2</th><th>clang 3.5/3.6</th><th>clang 3.7</th><th>MSVC 2015  </th></tr>
 <tr>
-<td>Serial</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
+<td>Serial</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
 <tr>
-<td>OpenMP 2.0 blocks</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:x:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
+<td>OpenMP 2.0 blocks</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:x:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
 <tr>
-<td>OpenMP 2.0 threads</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:x:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
+<td>OpenMP 2.0 threads</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:x:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
 <tr>
-<td>OpenMP 4.0</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:white_check_mark: </td></tr>
+<td>OpenMP 4.0 (CPU)</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:x:</td><td>:x:</td><td>:x: </td></tr>
 <tr>
-<td>std::thread </td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
+<td>std::thread </td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
 <tr>
-<td>Boost.Fiber </td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:x:</td><td>:white_check_mark: </td></tr>
+<td>Boost.Fiber </td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark:</td><td>:white_check_mark: </td></tr>
 <tr>
-<td>CUDA 7.0</td><td>:white_check_mark:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:white_check_mark: </td></tr>
+<td>CUDA 7.0</td><td>:white_check_mark:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x: </td></tr>
 </table>
 <p><b>NOTE</b>: :bangbang: Currently the <em>CUDA accelerator back-end</em> can not be enabled together with the <em>std::thread accelerator back-end</em> or the <em>Boost.Fiber accelerator back-end</em> due to bugs in the NVIDIA nvcc compiler :bangbang:</p>
 <p>Build status master branch: <a href="https://travis-ci.org/ComputationalRadiationPhysics/alpaka">![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)</a></p>
@@ -160,9 +160,8 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>When an accelerator back-end using <em>CUDA</em> is enabled, version <em>7.0</em> of the <em>CUDA SDK</em> is the minimum requirement.</p>
 <p>When an accelerator back-end using <em>OpenMP 2.0/4.0</em> is enabled, the compiler and the platform have to support the corresponding <em>OpenMP</em> version.</p>
 <h2>Usage </h2>
-<p>The library is header only so nothing has to be build. Only the include path (<code>-I</code> or <code>export CPLUS_INCLUDE_PATH=</code>) has to be set to <code>&lt;PATH-TO-ALPAKA-LIB&gt;/include/</code>. This allows to include the whole alpaka library with: <code>#include &lt;<a class="el" href="alpaka_8hpp.html">alpaka/alpaka.hpp</a>&gt;</code></p>
-<p>Code not intended to be utilized by users is hidden in the <code>detail</code> namespace.</p>
-<p>If you are building with the <em>CUDA accelerator back-end</em> enabled, your source files are required to have the ending <code>.cu</code> to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA. When the <em>CUDA accelerator back-end</em> is disabled, this is not required and a <code>.cpp</code> extension is enough. To allow both use-cases, it is desirable to have both, a <code>.cpp</code> file with the implementation and a <code>.cu</code> file containing only <code>#include &lt;PATH/TO/IMPL.cpp&gt;</code> to forward to the implementation. The build system then has to use the <code>.cu</code> files when the <em>CUDA accelerator back-end</em> is enabled and the <code>.cpp</code> files else. Examples how to do this with CMake can be found in the <code>examples</code> folder.</p>
+<p>The library is header only so nothing has to be build. CMake 3.3.0+ is required to provide the correct defines and include paths. Just call <code>ALPAKA_ADD_EXECUTABLE</code> instead of <code>CUDA_ADD_EXECUTABLE</code> or <code>ADD_EXECUTABLE</code> and the difficulties of the CUDA nvcc compier in handling <code>.cu</code> and <code>.cpp</code> files is automatically taken care of. Examples how to utilize alpaka within CMake can be found in the <code>examples</code> folder.</p>
+<p>Source files do not need any special file ending. The whole alpaka library can be included with: <code>#include &lt;<a class="el" href="alpaka_8hpp.html">alpaka/alpaka.hpp</a>&gt;</code> Code not intended to be utilized by users is hidden in the <code>detail</code> namespace.</p>
 <h2>Authors </h2>
 <h3>Maintainers and core developers</h3>
 <ul>
@@ -179,7 +178,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:04 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

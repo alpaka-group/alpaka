@@ -3,15 +3,15 @@ var indexSectionsWithContent =
   0: ":_abcdefgilmnoprstuvwxz~",
   1: "abcdefgilmnoprstuvwx",
   2: "a",
-  3: "abcdefilmnoprstvw",
+  3: "abcdefilmnoprstuvw",
   4: "_abcdefgilmnoprstuvwxz~",
-  5: "ms",
-  6: "abcdefgilmprstvw",
+  5: "msv",
+  6: "abcdefilmprstvw",
   7: "g",
   8: "ceu",
   9: ":ad",
   10: "a",
-  11: "adrt"
+  11: "r"
 };
 
 var indexSectionNames =

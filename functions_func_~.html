@@ -178,6 +178,12 @@ $(document).ready(function(){initNavTree('functions_func_~.html','');});
 <li>~AtomicStlLock()
 : <a class="el" href="classalpaka_1_1atomic_1_1AtomicStlLock.html#a4a62ffa177d499b1d6c285457ab08bfa">alpaka::atomic::AtomicStlLock</a>
 </li>
+<li>~BarrierFiber()
+: <a class="el" href="classalpaka_1_1core_1_1fibers_1_1BarrierFiber.html#a5a41148a9ac204e0e7e3262204842c55">alpaka::core::fibers::BarrierFiber&lt; TSize &gt;</a>
+</li>
+<li>~BarrierThread()
+: <a class="el" href="classalpaka_1_1core_1_1threads_1_1BarrierThread.html#ae7431f9328be7536d8e9a31912821982">alpaka::core::threads::BarrierThread&lt; TSize &gt;</a>
+</li>
 <li>~BlockSharedAllocCudaBuiltIn()
 : <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocCudaBuiltIn.html#a97d8d1bbba7dde871cad91600a0f4833">alpaka::block::shared::BlockSharedAllocCudaBuiltIn</a>
 </li>
@@ -187,6 +193,21 @@ $(document).ready(function(){initNavTree('functions_func_~.html','');});
 <li>~BlockSharedAllocNoSync()
 : <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocNoSync.html#abc68d6224e47964ad14dc5f3f6f25039">alpaka::block::shared::BlockSharedAllocNoSync</a>
 </li>
+<li>~BlockSyncCudaBuiltIn()
+: <a class="el" href="classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#aa40c40381f2d9a956b39b8a4ccd83e0e">alpaka::block::sync::BlockSyncCudaBuiltIn</a>
+</li>
+<li>~BlockSyncFiberIdMapBarrier()
+: <a class="el" href="classalpaka_1_1block_1_1sync_1_1BlockSyncFiberIdMapBarrier.html#a7a6408194f10fd29cc46bc0706a70162">alpaka::block::sync::BlockSyncFiberIdMapBarrier&lt; TSize &gt;</a>
+</li>
+<li>~BlockSyncNoOp()
+: <a class="el" href="classalpaka_1_1block_1_1sync_1_1BlockSyncNoOp.html#aa5bfd62b6b2d9aa818a365111dc53a7b">alpaka::block::sync::BlockSyncNoOp</a>
+</li>
+<li>~BlockSyncOmpBarrier()
+: <a class="el" href="classalpaka_1_1block_1_1sync_1_1BlockSyncOmpBarrier.html#aa6068cd22367b1b4b5b385579ff853ab">alpaka::block::sync::BlockSyncOmpBarrier</a>
+</li>
+<li>~BlockSyncThreadIdMapBarrier()
+: <a class="el" href="classalpaka_1_1block_1_1sync_1_1BlockSyncThreadIdMapBarrier.html#a89544a003c6896acd176c77ab7834ba3">alpaka::block::sync::BlockSyncThreadIdMapBarrier&lt; TSize &gt;</a>
+</li>
 <li>~BufCpuImpl()
 : <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a617cc460c82353b571598ea916d91f05">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt;</a>
 </li>
@@ -194,7 +215,7 @@ $(document).ready(function(){initNavTree('functions_func_~.html','');});
 : <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#a512aba4d22c8f2662737aa80be89ce16">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a>
 </li>
 <li>~ConcurrentExecPool()
-: <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a8b6d0cc1ef808731bfb9af8a4f4b178c">alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;</a>
+: <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a53f56a191d7122bf6fb72f076c7d9093">alpaka::core::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;</a>
 , <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_6fbd04dc5392bacedfc07f52ec824725.html#a0a4e5a0bd784c541b8782a636b66c87b">alpaka::core::detail::ConcurrentExecPool&lt;                                                                                                                  TSize,                                                                                                           TConcurrentExec,                                                                                                           TPromise,                                                                                                           TYield,                                                                                                           TMutex,                                                                                                           TCondVar,                                                                                                           false &gt;</a>
 </li>
 <li>~DevCpu()
@@ -203,11 +224,8 @@ $(document).ready(function(){initNavTree('functions_func_~.html','');});
 <li>~DevCpuImpl()
 : <a class="el" href="classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#af709997246661b51926205c723bc6e53">alpaka::dev::cpu::detail::DevCpuImpl</a>
 </li>
-<li>~EventCpuAsyncImpl()
-: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#aa804b982069d3c5de675a8e94e2c7f37">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
-</li>
-<li>~EventCpuSyncImpl()
-: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuSyncImpl.html#af5f961890905b5829ef4cb897576c49f">alpaka::event::cpu::detail::EventCpuSyncImpl</a>
+<li>~EventCpuImpl()
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#aeb5769e3d04bb90cc34591dd298ab026">alpaka::event::cpu::detail::EventCpuImpl</a>
 </li>
 <li>~EventCudaImpl()
 : <a class="el" href="classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#af0f7bfc2b2fceb111b07882054623b2f">alpaka::event::cuda::detail::EventCudaImpl</a>
@@ -216,46 +234,25 @@ $(document).ready(function(){initNavTree('functions_func_~.html','');});
 : <a class="el" href="classalpaka_1_1event_1_1EventCudaRt.html#aa1c016bfe7c982d4c60191acc365eb1e">alpaka::event::EventCudaRt</a>
 </li>
 <li>~ExecCpuFibers()
-: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuFibers.html#aba967c78ee367450de3e45d56e8be186">alpaka::exec::ExecCpuFibers&lt; TDim, TSize &gt;</a>
-</li>
-<li>~ExecCpuFibersImpl()
-: <a class="el" href="classalpaka_1_1exec_1_1fibers_1_1detail_1_1ExecCpuFibersImpl.html#ae16247c89f4c53af8e818fb36141b81b">alpaka::exec::fibers::detail::ExecCpuFibersImpl&lt; TDim, TSize &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuFibers.html#a81fe34d190da2ded787fd1332620d2f4">alpaka::exec::ExecCpuFibers&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~ExecCpuOmp2Blocks()
-: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a8ae6f0421d886c68c7cc4024520db335">alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;</a>
-</li>
-<li>~ExecCpuOmp2BlocksImpl()
-: <a class="el" href="classalpaka_1_1exec_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1ExecCpuOmp2BlocksImpl.html#ad6d480da9264746b21db040c11531798">alpaka::exec::omp::omp2::blocks::detail::ExecCpuOmp2BlocksImpl&lt; TDim, TSize &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#a44abe19257aa694339c83ef516230e1f">alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~ExecCpuOmp2Threads()
-: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Threads.html#abf0108f5da5c088e612df2ac62095e88">alpaka::exec::ExecCpuOmp2Threads&lt; TDim, TSize &gt;</a>
-</li>
-<li>~ExecCpuOmp2ThreadsImpl()
-: <a class="el" href="classalpaka_1_1exec_1_1omp_1_1omp2_1_1threads_1_1detail_1_1ExecCpuOmp2ThreadsImpl.html#af66c7eb9a043d025c5af5d08e77fde91">alpaka::exec::omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl&lt; TDim, TSize &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Threads.html#a58cc0d3d9cfc022bdcd5faf3031752e1">alpaka::exec::ExecCpuOmp2Threads&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~ExecCpuOmp4()
-: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp4.html#ac0b4a0180561630380aab4932800a3cf">alpaka::exec::ExecCpuOmp4&lt; TDim, TSize &gt;</a>
-</li>
-<li>~ExecCpuOmp4Impl()
-: <a class="el" href="classalpaka_1_1exec_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1ExecCpuOmp4Impl.html#a8c35772c1c5f3069651596b7caaa287d">alpaka::exec::omp::omp4::cpu::detail::ExecCpuOmp4Impl&lt; TDim, TSize &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp4.html#aa3aba49068cf70360d6e3792d78d5f91">alpaka::exec::ExecCpuOmp4&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~ExecCpuSerial()
-: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#ae84d4f0c9d15025a238956b3d3dccdb0">alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;</a>
-</li>
-<li>~ExecCpuSerialImpl()
-: <a class="el" href="classalpaka_1_1exec_1_1serial_1_1detail_1_1ExecCpuSerialImpl.html#a7970af204a426e9dd7b41cb334868ac2">alpaka::exec::serial::detail::ExecCpuSerialImpl&lt; TDim, TSize &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#aeb8ab62230a9c10756fff9969a20bbe1">alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~ExecCpuThreads()
-: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuThreads.html#a555b3127b59d5e24e3939588e519b82c">alpaka::exec::ExecCpuThreads&lt; TDim, TSize &gt;</a>
-</li>
-<li>~ExecCpuThreadsImpl()
-: <a class="el" href="classalpaka_1_1exec_1_1threads_1_1detail_1_1ExecCpuThreadsImpl.html#a94304464317bd6344103313d52fd830f">alpaka::exec::threads::detail::ExecCpuThreadsImpl&lt; TDim, TSize &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuThreads.html#a9c1b483f7167a84f0bb745c80ce2774e">alpaka::exec::ExecCpuThreads&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~ExecGpuCudaRt()
-: <a class="el" href="classalpaka_1_1exec_1_1ExecGpuCudaRt.html#a6365c2d0b8bb4df277d87030c2056f35">alpaka::exec::ExecGpuCudaRt&lt; TDim, TSize &gt;</a>
-</li>
-<li>~FiberBarrier()
-: <a class="el" href="classalpaka_1_1acc_1_1fibers_1_1FiberBarrier.html#ac62c50aa2f6377177ff1fb5a45046e6a">alpaka::acc::fibers::FiberBarrier&lt; TSize &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecGpuCudaRt.html#a6e35d27448a94035821ff4e215d1494b">alpaka::exec::ExecGpuCudaRt&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~IdxBtCudaBuiltIn()
 : <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtCudaBuiltIn.html#aae8cec337ea9a1c577e8c37a3d3be8fa">alpaka::idx::bt::IdxBtCudaBuiltIn&lt; TDim, TSize &gt;</a>
@@ -293,17 +290,20 @@ $(document).ready(function(){initNavTree('functions_func_~.html','');});
 <li>~StreamCpuSyncImpl()
 : <a class="el" href="classalpaka_1_1stream_1_1cpu_1_1detail_1_1StreamCpuSyncImpl.html#a71cd14d1f0d1c9b58af434da6304fdc2">alpaka::stream::cpu::detail::StreamCpuSyncImpl</a>
 </li>
-<li>~StreamCudaImpl()
-: <a class="el" href="classalpaka_1_1stream_1_1cuda_1_1detail_1_1StreamCudaImpl.html#a5e538cf95062da0d97fdd2b68f1aeb99">alpaka::stream::cuda::detail::StreamCudaImpl</a>
+<li>~StreamCudaRtAsync()
+: <a class="el" href="classalpaka_1_1stream_1_1StreamCudaRtAsync.html#a370ceaa1ca97d3f2793d22a70f43fd1d">alpaka::stream::StreamCudaRtAsync</a>
 </li>
-<li>~StreamCudaRt()
-: <a class="el" href="classalpaka_1_1stream_1_1StreamCudaRt.html#a10ad865cef786d6263f730802dbd9847">alpaka::stream::StreamCudaRt</a>
+<li>~StreamCudaRtAsyncImpl()
+: <a class="el" href="classalpaka_1_1stream_1_1cuda_1_1detail_1_1StreamCudaRtAsyncImpl.html#a07a0a7783f05f1199fc4739c7fa336a6">alpaka::stream::cuda::detail::StreamCudaRtAsyncImpl</a>
 </li>
-<li>~ThreadBarrier()
-: <a class="el" href="classalpaka_1_1acc_1_1threads_1_1ThreadBarrier.html#af8b75cdf286de8a57abd6b7aff8b30e2">alpaka::acc::threads::ThreadBarrier&lt; TSize &gt;</a>
+<li>~StreamCudaRtSync()
+: <a class="el" href="classalpaka_1_1stream_1_1StreamCudaRtSync.html#a5b94fded94e92d3733a9c485602ac2da">alpaka::stream::StreamCudaRtSync</a>
+</li>
+<li>~StreamCudaRtSyncImpl()
+: <a class="el" href="classalpaka_1_1stream_1_1cuda_1_1detail_1_1StreamCudaRtSyncImpl.html#aff08a586708f81c439ecebe9a914cbce">alpaka::stream::cuda::detail::StreamCudaRtSyncImpl</a>
 </li>
 <li>~Vec()
-: <a class="el" href="classalpaka_1_1Vec.html#a88e66f65fd471ecdc55b4116e19d84a8">alpaka::Vec&lt; TDim, TVal &gt;</a>
+: <a class="el" href="classalpaka_1_1Vec.html#acfc086b6c7d80c527c1654cf30dbb921">alpaka::Vec&lt; TDim, TSize &gt;</a>
 </li>
 <li>~WorkDivCudaBuiltIn()
 : <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivCudaBuiltIn.html#a54c3fcb3e8f3ca714e32a9bec77bbf9a">alpaka::workdiv::WorkDivCudaBuiltIn&lt; TDim, TSize &gt;</a>
@@ -317,7 +317,7 @@ $(document).ready(function(){initNavTree('functions_func_~.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:05 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:37 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

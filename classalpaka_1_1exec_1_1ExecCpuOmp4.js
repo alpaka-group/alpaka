@@ -1,11 +1,12 @@
 var classalpaka_1_1exec_1_1ExecCpuOmp4 =
 [
-    [ "ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a7a60f0908e60e35a5d60eb6135311821", null ],
-    [ "ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#ae340b292e0b04ffabb646947fed0858c", null ],
-    [ "ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a70dd81425f24c94f81caef7e10efda9a", null ],
-    [ "~ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#ac0b4a0180561630380aab4932800a3cf", null ],
-    [ "operator()", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#acfe3b199c9a4f83c179a04cdf1a566db", null ],
-    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a0e21f40f97bec733332d370c272689ae", null ],
-    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a2e97f36922f60bde47e2b9737de99726", null ],
-    [ "m_Stream", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#ac74fb2e4d0772d5942a089ef5d0948f1", null ]
+    [ "ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#aadcf82315bf308df0c18bcdc79e403f6", null ],
+    [ "ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a5a77e354eca7e52c269a3ddec877eba7", null ],
+    [ "ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a28c0e0eecbf4fbd8f825f5099bf0f5ac", null ],
+    [ "~ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#aa3aba49068cf70360d6e3792d78d5f91", null ],
+    [ "operator()", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a11fda0fb3ff64be0bce387ea57ac7f29", null ],
+    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#af7ab9db9c7fb3bd28a7d4fcd5aa22d14", null ],
+    [ "operator=", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a4c4dc80f874beaba9d32fbc07a937804", null ],
+    [ "m_args", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a483bfcf404356185c643f4142d467b29", null ],
+    [ "m_kernelFnObj", "classalpaka_1_1exec_1_1ExecCpuOmp4.html#a1e8be3decf45e8ebd3d03e1be204eec1", null ]
 ];

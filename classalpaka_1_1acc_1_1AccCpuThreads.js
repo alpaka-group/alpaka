@@ -6,6 +6,5 @@ var classalpaka_1_1acc_1_1AccCpuThreads =
     [ "getBlockSharedExternMem", "classalpaka_1_1acc_1_1AccCpuThreads.html#a676d31881724a8110efbb46b03ecc146", null ],
     [ "operator=", "classalpaka_1_1acc_1_1AccCpuThreads.html#aeae839435f15a9d4998032e19cfc4ed9", null ],
     [ "operator=", "classalpaka_1_1acc_1_1AccCpuThreads.html#ae16b97e8a3ddc6e1b3ff3fd08e736ab5", null ],
-    [ "syncBlockThreads", "classalpaka_1_1acc_1_1AccCpuThreads.html#a335bc6dc6ced3d8dce76502e2bb2b421", null ],
-    [ "::alpaka::exec::threads::detail::ExecCpuThreadsImpl< TDim, TSize >", "classalpaka_1_1acc_1_1AccCpuThreads.html#a3a01d04b7dedfec9133a057b7ae97693", null ]
+    [ "::alpaka::exec::ExecCpuThreads", "classalpaka_1_1acc_1_1AccCpuThreads.html#a4430b06383623c0fe234daba654cd968", null ]
 ];

@@ -134,6 +134,16 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html','');});
 <code>#include &lt;<a class="el" href="AtomicStlLock_8hpp_source.html">alpaka/atomic/AtomicStlLock.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Op_8hpp_source.html">alpaka/atomic/Op.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="atomic_2Traits_8hpp_source.html">alpaka/atomic/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSharedAllocCudaBuiltIn_8hpp_source.html">alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSharedAllocMasterSync_8hpp_source.html">alpaka/block/shared/BlockSharedAllocMasterSync.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSharedAllocNoSync_8hpp_source.html">alpaka/block/shared/BlockSharedAllocNoSync.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="block_2shared_2Traits_8hpp_source.html">alpaka/block/shared/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSyncCudaBuiltIn_8hpp_source.html">alpaka/block/sync/BlockSyncCudaBuiltIn.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSyncFiberIdMapBarrier_8hpp_source.html">alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSyncNoOp_8hpp_source.html">alpaka/block/sync/BlockSyncNoOp.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSyncOmpBarrier_8hpp_source.html">alpaka/block/sync/BlockSyncOmpBarrier.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="BlockSyncThreadIdMapBarrier_8hpp_source.html">alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="block_2sync_2Traits_8hpp_source.html">alpaka/block/sync/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevCudaRt_8hpp_source.html">alpaka/dev/DevCudaRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevCpu_8hpp_source.html">alpaka/dev/DevCpu.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
@@ -141,8 +151,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html','');});
 <code>#include &lt;<a class="el" href="DimIntegralConst_8hpp_source.html">alpaka/dim/DimIntegralConst.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="EventCudaRt_8hpp_source.html">alpaka/event/EventCudaRt.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="EventCpuAsync_8hpp_source.html">alpaka/event/EventCpuAsync.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="EventCpuSync_8hpp_source.html">alpaka/event/EventCpuSync.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="EventCpu_8hpp_source.html">alpaka/event/EventCpu.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="event_2Traits_8hpp_source.html">alpaka/event/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="exec_2Traits_8hpp_source.html">alpaka/exec/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="extent_2Traits_8hpp_source.html">alpaka/extent/Traits.hpp</a>&gt;</code><br />
@@ -171,13 +180,18 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html','');});
 <code>#include &lt;<a class="el" href="RandCuRand_8hpp_source.html">alpaka/rand/RandCuRand.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="RandStl_8hpp_source.html">alpaka/rand/RandStl.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="rand_2Traits_8hpp_source.html">alpaka/rand/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="StreamCudaRt_8hpp_source.html">alpaka/stream/StreamCudaRt.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="size_2Traits_8hpp_source.html">alpaka/size/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="StreamCudaRtAsync_8hpp_source.html">alpaka/stream/StreamCudaRtAsync.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="StreamCudaRtSync_8hpp_source.html">alpaka/stream/StreamCudaRtSync.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="StreamCpuAsync_8hpp_source.html">alpaka/stream/StreamCpuAsync.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="StreamCpuSync_8hpp_source.html">alpaka/stream/StreamCpuSync.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="stream_2Traits_8hpp_source.html">alpaka/stream/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="wait_2Traits_8hpp_source.html">alpaka/wait/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="WorkDivMembers_8hpp_source.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="workdiv_2Traits_8hpp_source.html">alpaka/workdiv/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="WorkDivHelpers_8hpp_source.html">alpaka/workdiv/WorkDivHelpers.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="vec_2Traits_8hpp_source.html">alpaka/vec/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Align_8hpp_source.html">alpaka/core/Align.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Fold_8hpp_source.html">alpaka/core/Fold.hpp</a>&gt;</code><br />
@@ -185,14 +199,14 @@ $(document).ready(function(){initNavTree('alpaka_8hpp.html','');});
 <code>#include &lt;<a class="el" href="MapIdx_8hpp_source.html">alpaka/core/MapIdx.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="NdLoop_8hpp_source.html">alpaka/core/NdLoop.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Positioning_8hpp_source.html">alpaka/core/Positioning.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="WorkDivHelpers_8hpp_source.html">alpaka/core/WorkDivHelpers.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Unroll_8hpp_source.html">alpaka/core/Unroll.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Vectorize_8hpp_source.html">alpaka/core/Vectorize.hpp</a>&gt;</code><br />
 </div>
 <p><a href="alpaka_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a9639bc6e4b859663f62c4c64a8855ff0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0">ALPAKA_VERSION</a>&#160;&#160;&#160;BOOST_VERSION_NUMBER(1, 1, 0)</td></tr>
+<tr class="memitem:a9639bc6e4b859663f62c4c64a8855ff0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0">ALPAKA_VERSION</a>&#160;&#160;&#160;BOOST_VERSION_NUMBER(2, 0, 0)</td></tr>
 <tr class="memdesc:a9639bc6e4b859663f62c4c64a8855ff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library version number.  <a href="#a9639bc6e4b859663f62c4c64a8855ff0">More...</a><br /></td></tr>
 <tr class="separator:a9639bc6e4b859663f62c4c64a8855ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -210,7 +224,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define ALPAKA_VERSION&#160;&#160;&#160;BOOST_VERSION_NUMBER(1, 1, 0)</td>
+          <td class="memname">#define ALPAKA_VERSION&#160;&#160;&#160;BOOST_VERSION_NUMBER(2, 0, 0)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -227,7 +241,7 @@ Macros</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="alpaka_8hpp.html">alpaka.hpp</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:49 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:17 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

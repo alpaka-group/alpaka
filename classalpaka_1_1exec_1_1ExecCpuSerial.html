@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>alpaka: alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt; Class Template Reference</title>
+<title>alpaka: alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,56 +111,58 @@ $(document).ready(function(){initNavTree('classalpaka_1_1exec_1_1ExecCpuSerial.h
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classalpaka_1_1exec_1_1ExecCpuSerial-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt; Class Template Reference</div>  </div>
+<div class="title">alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The CPU serial executor.  
+<p>The CPU serial executor implementation.  
  <a href="classalpaka_1_1exec_1_1ExecCpuSerial.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="AccCpuSerial_8hpp_source.html">AccCpuSerial.hpp</a>&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;:</div>
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt;:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
  <div class="center">
-  <img src="classalpaka_1_1exec_1_1ExecCpuSerial.png" usemap="#alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;_map" alt=""/>
-  <map id="alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;_map" name="alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;_map">
-<area href="classalpaka_1_1workdiv_1_1WorkDivMembers.html" title="A basic class holding the work division as grid block extents and block thread extents. " alt="alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;" shape="rect" coords="0,0,297,24"/>
+  <img src="classalpaka_1_1exec_1_1ExecCpuSerial.png" usemap="#alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt;_map" alt=""/>
+  <map id="alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt;_map" name="alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt;_map">
+<area href="classalpaka_1_1workdiv_1_1WorkDivMembers.html" title="A basic class holding the work division as grid block extent, block thread and thread element extent..." alt="alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;" shape="rect" coords="0,0,395,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac3b3299d9346ee7e9fb2af17d27cfe14"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:ac3b3299d9346ee7e9fb2af17d27cfe14"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#ac3b3299d9346ee7e9fb2af17d27cfe14">ExecCpuSerial</a> (TWorkDiv const &amp;workDiv, <a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a> &amp;stream)</td></tr>
-<tr class="memdesc:ac3b3299d9346ee7e9fb2af17d27cfe14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ac3b3299d9346ee7e9fb2af17d27cfe14">More...</a><br /></td></tr>
-<tr class="separator:ac3b3299d9346ee7e9fb2af17d27cfe14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7569bc301028b66ddc917660e850dd0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a7569bc301028b66ddc917660e850dd0c">ExecCpuSerial</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> const &amp;)=default</td></tr>
-<tr class="memdesc:a7569bc301028b66ddc917660e850dd0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a7569bc301028b66ddc917660e850dd0c">More...</a><br /></td></tr>
-<tr class="separator:a7569bc301028b66ddc917660e850dd0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31d039383b8ea1ac5ac889aab1ac9143"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a31d039383b8ea1ac5ac889aab1ac9143">ExecCpuSerial</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;&amp;)=default</td></tr>
-<tr class="memdesc:a31d039383b8ea1ac5ac889aab1ac9143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#a31d039383b8ea1ac5ac889aab1ac9143">More...</a><br /></td></tr>
-<tr class="separator:a31d039383b8ea1ac5ac889aab1ac9143"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae84d4f0c9d15025a238956b3d3dccdb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#ae84d4f0c9d15025a238956b3d3dccdb0">~ExecCpuSerial</a> ()=default</td></tr>
-<tr class="memdesc:ae84d4f0c9d15025a238956b3d3dccdb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ae84d4f0c9d15025a238956b3d3dccdb0">More...</a><br /></td></tr>
-<tr class="separator:ae84d4f0c9d15025a238956b3d3dccdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35442dcc23dbb216973d2e783af6d4d7"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a35442dcc23dbb216973d2e783af6d4d7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a35442dcc23dbb216973d2e783af6d4d7">operator()</a> (TKernelFnObj const &amp;kernelFnObj, TArgs const &amp;...args) const  -&gt; void                                        </td></tr>
-<tr class="memdesc:a35442dcc23dbb216973d2e783af6d4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enqueues the kernel function object.  <a href="#a35442dcc23dbb216973d2e783af6d4d7">More...</a><br /></td></tr>
-<tr class="separator:a35442dcc23dbb216973d2e783af6d4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0cdf6563a1b94a9213338bcacb10104"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#ad0cdf6563a1b94a9213338bcacb10104">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;=default</td></tr>
-<tr class="memdesc:ad0cdf6563a1b94a9213338bcacb10104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#ad0cdf6563a1b94a9213338bcacb10104">More...</a><br /></td></tr>
-<tr class="separator:ad0cdf6563a1b94a9213338bcacb10104"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a531da0625934933c6de7a52ef28194b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a531da0625934933c6de7a52ef28194b3">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;=default</td></tr>
-<tr class="memdesc:a531da0625934933c6de7a52ef28194b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#a531da0625934933c6de7a52ef28194b3">More...</a><br /></td></tr>
-<tr class="separator:a531da0625934933c6de7a52ef28194b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b780a5964015ea3a043d22d8dfcc949"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a6b780a5964015ea3a043d22d8dfcc949"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a6b780a5964015ea3a043d22d8dfcc949">ExecCpuSerial</a> (TWorkDiv &amp;&amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs const &amp;...args)</td></tr>
+<tr class="memdesc:a6b780a5964015ea3a043d22d8dfcc949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a6b780a5964015ea3a043d22d8dfcc949">More...</a><br /></td></tr>
+<tr class="separator:a6b780a5964015ea3a043d22d8dfcc949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a969ebe25fb8c288f794002d7e2579ebf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a969ebe25fb8c288f794002d7e2579ebf">ExecCpuSerial</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> const &amp;)=default</td></tr>
+<tr class="memdesc:a969ebe25fb8c288f794002d7e2579ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a969ebe25fb8c288f794002d7e2579ebf">More...</a><br /></td></tr>
+<tr class="separator:a969ebe25fb8c288f794002d7e2579ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab06443c1823a1d3b5c25d665c78654fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#ab06443c1823a1d3b5c25d665c78654fd">ExecCpuSerial</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:ab06443c1823a1d3b5c25d665c78654fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#ab06443c1823a1d3b5c25d665c78654fd">More...</a><br /></td></tr>
+<tr class="separator:ab06443c1823a1d3b5c25d665c78654fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb8ab62230a9c10756fff9969a20bbe1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#aeb8ab62230a9c10756fff9969a20bbe1">~ExecCpuSerial</a> ()=default</td></tr>
+<tr class="memdesc:aeb8ab62230a9c10756fff9969a20bbe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#aeb8ab62230a9c10756fff9969a20bbe1">More...</a><br /></td></tr>
+<tr class="separator:aeb8ab62230a9c10756fff9969a20bbe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38744fa6582a7205cbd716749b337a17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a38744fa6582a7205cbd716749b337a17">operator()</a> () const  -&gt; void                                        </td></tr>
+<tr class="memdesc:a38744fa6582a7205cbd716749b337a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the kernel function object.  <a href="#a38744fa6582a7205cbd716749b337a17">More...</a><br /></td></tr>
+<tr class="separator:a38744fa6582a7205cbd716749b337a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae80d7b5ada67e44d7ad94dbd6eedfdf4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#ae80d7b5ada67e44d7ad94dbd6eedfdf4">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;=default</td></tr>
+<tr class="memdesc:ae80d7b5ada67e44d7ad94dbd6eedfdf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#ae80d7b5ada67e44d7ad94dbd6eedfdf4">More...</a><br /></td></tr>
+<tr class="separator:ae80d7b5ada67e44d7ad94dbd6eedfdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678328c0567c46059bc462eab4ee34aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a678328c0567c46059bc462eab4ee34aa">operator=</a> (<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;=default</td></tr>
+<tr class="memdesc:a678328c0567c46059bc462eab4ee34aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#a678328c0567c46059bc462eab4ee34aa">More...</a><br /></td></tr>
+<tr class="separator:a678328c0567c46059bc462eab4ee34aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a></td></tr>
-<tr class="memitem:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplParams" colspan="2">template&lt;typename TGridBlockExtents , typename TBlockThreadExtents &gt; </td></tr>
-<tr class="memitem:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a0ba45045245b70797e790ccb7ea9d178">WorkDivMembers</a> (TGridBlockExtents const &amp;gridBlockExtents=TGridBlockExtents(), TBlockThreadExtents const &amp;blockThreadExtents=TBlockThreadExtents())</td></tr>
-<tr class="memdesc:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a0ba45045245b70797e790ccb7ea9d178">More...</a><br /></td></tr>
-<tr class="separator:a0ba45045245b70797e790ccb7ea9d178 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85285d7c2997448f9bedd274e1359e52 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a85285d7c2997448f9bedd274e1359e52">WorkDivMembers</a> ()=delete</td></tr>
+<tr class="memdesc:a85285d7c2997448f9bedd274e1359e52 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a85285d7c2997448f9bedd274e1359e52">More...</a><br /></td></tr>
+<tr class="separator:a85285d7c2997448f9bedd274e1359e52 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplParams" colspan="2">template&lt;typename TGridBlockExtent , typename TBlockThreadExtent , typename TThreadElemExtent &gt; </td></tr>
+<tr class="memitem:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a8d4889ce0b063e88424b30465fc4c308">WorkDivMembers</a> (TGridBlockExtent const &amp;gridBlockExtent=TGridBlockExtent(), TBlockThreadExtent const &amp;blockThreadExtent=TBlockThreadExtent(), TThreadElemExtent const &amp;threadElemExtent=TThreadElemExtent())</td></tr>
+<tr class="memdesc:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from values.  <a href="#a8d4889ce0b063e88424b30465fc4c308">More...</a><br /></td></tr>
+<tr class="separator:a8d4889ce0b063e88424b30465fc4c308 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7728226a894f8fc525d182f30cf9ffc0 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a7728226a894f8fc525d182f30cf9ffc0">WorkDivMembers</a> (<a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a> const &amp;other)</td></tr>
 <tr class="memdesc:a7728226a894f8fc525d182f30cf9ffc0 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a7728226a894f8fc525d182f30cf9ffc0">More...</a><br /></td></tr>
 <tr class="separator:a7728226a894f8fc525d182f30cf9ffc0 inherit pub_methods_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,13 +189,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4b252f884f826f5b47b93d824ab83a33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a4b252f884f826f5b47b93d824ab83a33">m_Stream</a></td></tr>
-<tr class="separator:a4b252f884f826f5b47b93d824ab83a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18b7101d4b27e9eb550c075f9e6f98f6"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; TArgs... &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a18b7101d4b27e9eb550c075f9e6f98f6">m_args</a></td></tr>
+<tr class="separator:a18b7101d4b27e9eb550c075f9e6f98f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25c838058994b14c7da11b617fc3a1be"><td class="memItemLeft" align="right" valign="top">TKernelFnObj&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a25c838058994b14c7da11b617fc3a1be">m_kernelFnObj</a></td></tr>
+<tr class="separator:a25c838058994b14c7da11b617fc3a1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a></td></tr>
-<tr class="memitem:a11149d4db13272541b5fc8c6e2ccb606 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a11149d4db13272541b5fc8c6e2ccb606">m_vuiBlockThreadExtents</a></td></tr>
-<tr class="separator:a11149d4db13272541b5fc8c6e2ccb606 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6942dbc4fe0af1e729ce8ed574399fcf inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a6942dbc4fe0af1e729ce8ed574399fcf">m_vuiGridBlockExtents</a></td></tr>
-<tr class="separator:a6942dbc4fe0af1e729ce8ed574399fcf inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609880b0802cef5f1c7bb4b32e478829 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a609880b0802cef5f1c7bb4b32e478829">m_blockThreadExtent</a></td></tr>
+<tr class="separator:a609880b0802cef5f1c7bb4b32e478829 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adea062461f3bc410e0043c295ff81ef1 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#adea062461f3bc410e0043c295ff81ef1">m_gridBlockExtent</a></td></tr>
+<tr class="separator:adea062461f3bc410e0043c295ff81ef1 inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066aa716d802404b6ce2f4b96cf75eea inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a066aa716d802404b6ce2f4b96cf75eea">m_threadElemExtent</a></td></tr>
+<tr class="separator:a066aa716d802404b6ce2f4b96cf75eea inherit pub_attribs_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -202,18 +208,18 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a6d859d3cdafaca826089e64fb43fefd0 inherit pub_types_classalpaka_1_1workdiv_1_1WorkDivMembers"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TDim, typename TSize&gt;<br />
-class alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TDim, typename TSize, typename TKernelFnObj, typename... TArgs&gt;<br />
+class alpaka::exec::ExecCpuSerial&lt; TDim, TSize, TKernelFnObj, TArgs &gt;</h3>
 
-<p>The CPU serial executor. </p>
+<p>The CPU serial executor implementation. </p>
 
-<p>Definition at line <a class="el" href="AccCpuSerial_8hpp_source.html#l00053">53</a> of file <a class="el" href="AccCpuSerial_8hpp_source.html">AccCpuSerial.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccCpuSerial_8hpp_source.html#l00057">57</a> of file <a class="el" href="AccCpuSerial_8hpp_source.html">AccCpuSerial.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ac3b3299d9346ee7e9fb2af17d27cfe14"></a>
+<a class="anchor" id="a6b780a5964015ea3a043d22d8dfcc949"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <div class="memtemplate">
 template&lt;typename TWorkDiv &gt; </div>
 <table class="mlabels">
@@ -221,16 +227,22 @@ template&lt;typename TWorkDiv &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
           <td>(</td>
-          <td class="paramtype">TWorkDiv const &amp;&#160;</td>
+          <td class="paramtype">TWorkDiv &amp;&amp;&#160;</td>
           <td class="paramname"><em>workDiv</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a> &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>&#160;</td>
+          <td class="paramtype">TKernelFnObj const &amp;&#160;</td>
+          <td class="paramname"><em>kernelFnObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs const &amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,23 +259,23 @@ template&lt;typename TWorkDiv &gt; </div>
 
 <p>Constructor. </p>
 
-<p>Definition at line <a class="el" href="ExecCpuSerial_8hpp_source.html#l00176">176</a> of file <a class="el" href="ExecCpuSerial_8hpp_source.html">ExecCpuSerial.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ExecCpuSerial_8hpp_source.html#l00071">71</a> of file <a class="el" href="ExecCpuSerial_8hpp_source.html">ExecCpuSerial.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7569bc301028b66ddc917660e850dd0c"></a>
+<a class="anchor" id="a969ebe25fb8c288f794002d7e2579ebf"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -279,19 +291,19 @@ template&lt;typename TDim, typename TSize&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a31d039383b8ea1ac5ac889aab1ac9143"></a>
+<a class="anchor" id="ab06443c1823a1d3b5c25d665c78654fd"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -307,17 +319,17 @@ template&lt;typename TDim, typename TSize&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="ae84d4f0c9d15025a238956b3d3dccdb0"></a>
+<a class="anchor" id="aeb8ab62230a9c10756fff9969a20bbe1"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::~<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::~<a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -335,33 +347,20 @@ template&lt;typename TDim, typename TSize&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a35442dcc23dbb216973d2e783af6d4d7"></a>
+<a class="anchor" id="a38744fa6582a7205cbd716749b337a17"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
-<div class="memtemplate">
-template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::operator() </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype">TKernelFnObj const &amp;&#160;</td>
-          <td class="paramname"><em>kernelFnObj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TArgs const &amp;...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const -&gt; void
+          <td class="paramname"></td><td>)</td>
+          <td> const -&gt; void
             </td>
         </tr>
       </table>
@@ -372,25 +371,25 @@ template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Enqueues the kernel function object. </p>
+<p>Executes the kernel function object. </p>
 
-<p>Definition at line <a class="el" href="ExecCpuSerial_8hpp_source.html#l00215">215</a> of file <a class="el" href="ExecCpuSerial_8hpp_source.html">ExecCpuSerial.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ExecCpuSerial_8hpp_source.html#l00107">107</a> of file <a class="el" href="ExecCpuSerial_8hpp_source.html">ExecCpuSerial.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad0cdf6563a1b94a9213338bcacb10104"></a>
+<a class="anchor" id="ae80d7b5ada67e44d7ad94dbd6eedfdf4"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::operator= </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; const &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;=default</td>
         </tr>
@@ -406,19 +405,19 @@ template&lt;typename TDim, typename TSize&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a531da0625934933c6de7a52ef28194b3"></a>
+<a class="anchor" id="a678328c0567c46059bc462eab4ee34aa"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::operator= </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt; &amp;&amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt;  <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a> &amp;=default</td>
         </tr>
@@ -435,19 +434,35 @@ template&lt;typename TDim, typename TSize&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a4b252f884f826f5b47b93d824ab83a33"></a>
+<a class="anchor" id="a18b7101d4b27e9eb550c075f9e6f98f6"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim, typename TSize&gt; </div>
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html">stream::StreamCpuAsync</a> <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize &gt;::m_Stream</td>
+          <td class="memname">std::tuple&lt;TArgs...&gt; <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::m_args</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="ExecCpuSerial_8hpp_source.html#l00236">236</a> of file <a class="el" href="ExecCpuSerial_8hpp_source.html">ExecCpuSerial.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ExecCpuSerial_8hpp_source.html#l00183">183</a> of file <a class="el" href="ExecCpuSerial_8hpp_source.html">ExecCpuSerial.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a25c838058994b14c7da11b617fc3a1be"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TSize , typename TKernelFnObj , typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">TKernelFnObj <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">alpaka::exec::ExecCpuSerial</a>&lt; TDim, TSize, TKernelFnObj, TArgs &gt;::m_kernelFnObj</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ExecCpuSerial_8hpp_source.html#l00182">182</a> of file <a class="el" href="ExecCpuSerial_8hpp_source.html">ExecCpuSerial.hpp</a>.</p>
 
 </div>
 </div>
@@ -461,7 +476,7 @@ template&lt;typename TDim, typename TSize&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1exec.html">exec</a></li><li class="navelem"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:55 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

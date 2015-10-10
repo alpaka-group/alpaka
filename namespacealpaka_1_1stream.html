@@ -108,7 +108,6 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1stream.html','');})
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::stream Namespace Reference</div>  </div>
@@ -136,81 +135,51 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1stream_1_1StreamCpuSync.html">StreamCpuSync</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device stream.  <a href="classalpaka_1_1stream_1_1StreamCpuSync.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1stream_1_1StreamCudaRt.html">StreamCudaRt</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT stream.  <a href="classalpaka_1_1stream_1_1StreamCudaRt.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1stream_1_1StreamCudaRtAsync.html">StreamCudaRtAsync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT stream.  <a href="classalpaka_1_1stream_1_1StreamCudaRtAsync.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a8ea7230aa3411969d2240cb4d0872e7b"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:a8ea7230aa3411969d2240cb4d0872e7b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#a8ea7230aa3411969d2240cb4d0872e7b">Stream</a> = typename <a class="el" href="structalpaka_1_1stream_1_1traits_1_1StreamType.html">traits::StreamType</a>&lt; TAcc &gt;::type</td></tr>
-<tr class="memdesc:a8ea7230aa3411969d2240cb4d0872e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The stream type trait alias template to remove the ::type.  <a href="#a8ea7230aa3411969d2240cb4d0872e7b">More...</a><br /></td></tr>
-<tr class="separator:a8ea7230aa3411969d2240cb4d0872e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1stream_1_1StreamCudaRtSync.html">StreamCudaRtSync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT stream.  <a href="classalpaka_1_1stream_1_1StreamCudaRtSync.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aed93e4296d12a98ca5296259e8084281"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
-<tr class="memitem:aed93e4296d12a98ca5296259e8084281"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#aed93e4296d12a98ca5296259e8084281">create</a> (TDev &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1stream.html#a8ea7230aa3411969d2240cb4d0872e7b">Stream</a>&lt; TDev &gt;                        </td></tr>
-<tr class="memdesc:aed93e4296d12a98ca5296259e8084281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a stream on a device.  <a href="#aed93e4296d12a98ca5296259e8084281">More...</a><br /></td></tr>
-<tr class="separator:aed93e4296d12a98ca5296259e8084281"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac05923791bb18622d12909158efdf9a4"><td class="memTemplParams" colspan="2">template&lt;typename TStream , typename TTask &gt; </td></tr>
-<tr class="memitem:ac05923791bb18622d12909158efdf9a4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#ac05923791bb18622d12909158efdf9a4">enqueue</a> (TStream &amp;stream, TTask &amp;task) -&gt; void                        </td></tr>
-<tr class="memdesc:ac05923791bb18622d12909158efdf9a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given task in the given stream.  <a href="#ac05923791bb18622d12909158efdf9a4">More...</a><br /></td></tr>
-<tr class="separator:ac05923791bb18622d12909158efdf9a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4718e090e11b8f011e45748405bfe2d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:af4718e090e11b8f011e45748405bfe2d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#af4718e090e11b8f011e45748405bfe2d">getStream</a> (T const &amp;type) -&gt; decltype(<a class="el" href="structalpaka_1_1stream_1_1traits_1_1GetStream.html">traits::GetStream</a>&lt; T &gt;::getStream(type))                        </td></tr>
-<tr class="separator:af4718e090e11b8f011e45748405bfe2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab860d37da6595dadb0eb2739802b9b"><td class="memTemplParams" colspan="2">template&lt;typename TStream &gt; </td></tr>
-<tr class="memitem:abab860d37da6595dadb0eb2739802b9b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#abab860d37da6595dadb0eb2739802b9b">test</a> (TStream const &amp;stream) -&gt; bool                        </td></tr>
-<tr class="memdesc:abab860d37da6595dadb0eb2739802b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if all ops in the given stream have been completed.  <a href="#abab860d37da6595dadb0eb2739802b9b">More...</a><br /></td></tr>
-<tr class="separator:abab860d37da6595dadb0eb2739802b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a607a7f2676386f559ebdd763760f8044"><td class="memTemplParams" colspan="2">template&lt;typename TStream &gt; </td></tr>
+<tr class="memitem:a607a7f2676386f559ebdd763760f8044"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#a607a7f2676386f559ebdd763760f8044">empty</a> (TStream const &amp;stream) -&gt; bool                        </td></tr>
+<tr class="memdesc:a607a7f2676386f559ebdd763760f8044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the stream is empty (all ops in the given stream have been completed).  <a href="#a607a7f2676386f559ebdd763760f8044">More...</a><br /></td></tr>
+<tr class="separator:a607a7f2676386f559ebdd763760f8044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae5c53e785dcab35a89bdb6d8216e786"><td class="memTemplParams" colspan="2">template&lt;typename TStream , typename TTask &gt; </td></tr>
+<tr class="memitem:aae5c53e785dcab35a89bdb6d8216e786"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#aae5c53e785dcab35a89bdb6d8216e786">enqueue</a> (TStream &amp;stream, TTask &amp;&amp;task) -&gt; void                        </td></tr>
+<tr class="memdesc:aae5c53e785dcab35a89bdb6d8216e786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given task in the given stream.  <a href="#aae5c53e785dcab35a89bdb6d8216e786">More...</a><br /></td></tr>
+<tr class="separator:aae5c53e785dcab35a89bdb6d8216e786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The stream specifics. </p>
-</div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a8ea7230aa3411969d2240cb4d0872e7b"></a>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a607a7f2676386f559ebdd763760f8044"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc &gt; </div>
+template&lt;typename TStream &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1stream.html#a8ea7230aa3411969d2240cb4d0872e7b">alpaka::stream::Stream</a> = typedef typename <a class="el" href="structalpaka_1_1stream_1_1traits_1_1StreamType.html">traits::StreamType</a>&lt;TAcc&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The stream type trait alias template to remove the ::type. </p>
-
-<p>Definition at line <a class="el" href="stream_2Traits_8hpp_source.html#l00079">79</a> of file <a class="el" href="stream_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aed93e4296d12a98ca5296259e8084281"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TDev &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::stream::create </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::stream::empty </td>
           <td>(</td>
-          <td class="paramtype">TDev &amp;&#160;</td>
-          <td class="paramname"><em>dev</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1stream.html#a8ea7230aa3411969d2240cb4d0872e7b">Stream</a>&lt;TDev&gt;
+          <td class="paramtype">TStream const &amp;&#160;</td>
+          <td class="paramname"><em>stream</em></td><td>)</td>
+          <td> -&gt; bool
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a stream on a device. </p>
+<p>Tests if the stream is empty (all ops in the given stream have been completed). </p>
 
-<p>Definition at line <a class="el" href="stream_2Traits_8hpp_source.html#l00086">86</a> of file <a class="el" href="stream_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="stream_2Traits_8hpp_source.html#l00088">88</a> of file <a class="el" href="stream_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac05923791bb18622d12909158efdf9a4"></a>
+<a class="anchor" id="aae5c53e785dcab35a89bdb6d8216e786"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -225,7 +194,7 @@ template&lt;typename TStream , typename TTask &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TTask &amp;&#160;</td>
+          <td class="paramtype">TTask &amp;&amp;&#160;</td>
           <td class="paramname"><em>task</em>&#160;</td>
         </tr>
         <tr>
@@ -240,52 +209,7 @@ template&lt;typename TStream , typename TTask &gt; </div>
 <p>Queues the given task in the given stream. </p>
 <p>If it has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. </p>
 
-<p>Definition at line <a class="el" href="stream_2Traits_8hpp_source.html#l00102">102</a> of file <a class="el" href="stream_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af4718e090e11b8f011e45748405bfe2d"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::stream::getStream </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="structalpaka_1_1stream_1_1traits_1_1GetStream.html">traits::GetStream</a>&lt;T&gt;::getStream(type))
-        </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>The stream. </dd></dl>
-
-<p>Definition at line <a class="el" href="stream_2Traits_8hpp_source.html#l00135">135</a> of file <a class="el" href="stream_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abab860d37da6595dadb0eb2739802b9b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TStream &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::stream::test </td>
-          <td>(</td>
-          <td class="paramtype">TStream const &amp;&#160;</td>
-          <td class="paramname"><em>stream</em></td><td>)</td>
-          <td> -&gt; bool
-        </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Tests if all ops in the given stream have been completed. </p>
-
-<p>Definition at line <a class="el" href="stream_2Traits_8hpp_source.html#l00120">120</a> of file <a class="el" href="stream_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="stream_2Traits_8hpp_source.html#l00070">70</a> of file <a class="el" href="stream_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -295,7 +219,7 @@ template&lt;typename TStream &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1stream.html">stream</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:36:03 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

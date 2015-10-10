@@ -122,14 +122,6 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1exec.html','');});
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1exec_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1cuda.html">cuda</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1fibers"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1fibers.html">fibers</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1omp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1omp.html">omp</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1serial"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1serial.html">serial</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1exec_1_1threads"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1threads.html">threads</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1exec_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec_1_1traits.html">traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1exec_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The execution traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,7 +141,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU OpenMP 4.0 accelerator executor.  <a href="classalpaka_1_1exec_1_1ExecCpuOmp4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html">ExecCpuSerial</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU serial executor.  <a href="classalpaka_1_1exec_1_1ExecCpuSerial.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU serial executor implementation.  <a href="classalpaka_1_1exec_1_1ExecCpuSerial.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1exec_1_1ExecCpuThreads.html">ExecCpuThreads</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU threads executor.  <a href="classalpaka_1_1exec_1_1ExecCpuThreads.html#details">More...</a><br /></td></tr>
@@ -160,112 +152,77 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:afe6d2aafc490d202b865cf365326a459"><td class="memTemplParams" colspan="2">template&lt;typename TExec &gt; </td></tr>
-<tr class="memitem:afe6d2aafc490d202b865cf365326a459"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec.html#afe6d2aafc490d202b865cf365326a459">ExecT</a> = typename <a class="el" href="structalpaka_1_1exec_1_1traits_1_1ExecType.html">traits::ExecType</a>&lt; TExec &gt;::type</td></tr>
-<tr class="memdesc:afe6d2aafc490d202b865cf365326a459"><td class="mdescLeft">&#160;</td><td class="mdescRight">The executor type trait alias template to remove the ::type.  <a href="#afe6d2aafc490d202b865cf365326a459">More...</a><br /></td></tr>
-<tr class="separator:afe6d2aafc490d202b865cf365326a459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8afc02367dadcb1524bf024966c7d039"><td class="memTemplParams" colspan="2">template&lt;typename TExec , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a8afc02367dadcb1524bf024966c7d039"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec.html#a8afc02367dadcb1524bf024966c7d039">Exec</a> = typename <a class="el" href="structalpaka_1_1exec_1_1traits_1_1ExecType.html">traits::ExecType</a>&lt; TExec, TKernelFnObj, TArgs... &gt;::type</td></tr>
+<tr class="memdesc:a8afc02367dadcb1524bf024966c7d039"><td class="mdescLeft">&#160;</td><td class="mdescRight">The executor type trait alias template to remove the ::type.  <a href="#a8afc02367dadcb1524bf024966c7d039">More...</a><br /></td></tr>
+<tr class="separator:a8afc02367dadcb1524bf024966c7d039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:acf1c2ed4119887a6d4f873fe2df1fdad"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TStream , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:acf1c2ed4119887a6d4f873fe2df1fdad"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec.html#acf1c2ed4119887a6d4f873fe2df1fdad">create</a> (TWorkDiv const &amp;workDiv, TStream &amp;stream) -&gt; <a class="el" href="namespacealpaka_1_1exec.html#afe6d2aafc490d202b865cf365326a459">ExecT</a>&lt; TAcc &gt;                        </td></tr>
-<tr class="separator:acf1c2ed4119887a6d4f873fe2df1fdad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca1605e1bc4e01dae9de7adec97f9805"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TStream , typename TGridBlockExtents , typename TBlockThreadExtents &gt; </td></tr>
-<tr class="memitem:aca1605e1bc4e01dae9de7adec97f9805"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec.html#aca1605e1bc4e01dae9de7adec97f9805">create</a> (TGridBlockExtents const &amp;gridBlockExtents, TBlockThreadExtents const &amp;blockThreadExtents, TStream &amp;stream) -&gt; <a class="el" href="namespacealpaka_1_1exec.html#afe6d2aafc490d202b865cf365326a459">ExecT</a>&lt; TAcc &gt;                        </td></tr>
-<tr class="memdesc:aca1605e1bc4e01dae9de7adec97f9805"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an executor for the given accelerator with the work division given by grid block extents and block thread extents. The larger of the two dimensions specifies the executor dimension.  <a href="#aca1605e1bc4e01dae9de7adec97f9805">More...</a><br /></td></tr>
-<tr class="separator:aca1605e1bc4e01dae9de7adec97f9805"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16417814491915165903a552c660b424"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TWorkDiv , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a16417814491915165903a552c660b424"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1exec.html#a16417814491915165903a552c660b424">create</a> (TWorkDiv &amp;&amp;workDiv, TKernelFnObj &amp;&amp;kernelFnObj, TArgs &amp;&amp;...args) -&gt; <a class="el" href="namespacealpaka_1_1exec.html#a8afc02367dadcb1524bf024966c7d039">Exec</a>&lt;                                              TAcc,                                           typename std::decay&lt; TKernelFnObj &gt;::type,                                           typename std::decay&lt; TArgs &gt;::type... &gt;                        </td></tr>
+<tr class="separator:a16417814491915165903a552c660b424"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The executor specifics. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="afe6d2aafc490d202b865cf365326a459"></a>
+<a class="anchor" id="a8afc02367dadcb1524bf024966c7d039"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TExec &gt; </div>
+template&lt;typename TExec , typename TKernelFnObj , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1exec.html#afe6d2aafc490d202b865cf365326a459">alpaka::exec::ExecT</a> = typedef typename <a class="el" href="structalpaka_1_1exec_1_1traits_1_1ExecType.html">traits::ExecType</a>&lt;TExec&gt;::type</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1exec.html#a8afc02367dadcb1524bf024966c7d039">alpaka::exec::Exec</a> = typedef typename <a class="el" href="structalpaka_1_1exec_1_1traits_1_1ExecType.html">traits::ExecType</a>&lt;TExec, TKernelFnObj, TArgs...&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The executor type trait alias template to remove the ::type. </p>
 
-<p>Definition at line <a class="el" href="exec_2Traits_8hpp_source.html#l00060">60</a> of file <a class="el" href="exec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="exec_2Traits_8hpp_source.html#l00064">64</a> of file <a class="el" href="exec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="acf1c2ed4119887a6d4f873fe2df1fdad"></a>
+<a class="anchor" id="a16417814491915165903a552c660b424"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc , typename TStream , typename TWorkDiv &gt; </div>
+template&lt;typename TAcc , typename TWorkDiv , typename TKernelFnObj , typename... TArgs&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::exec::create </td>
           <td>(</td>
-          <td class="paramtype">TWorkDiv const &amp;&#160;</td>
+          <td class="paramtype">TWorkDiv &amp;&amp;&#160;</td>
           <td class="paramname"><em>workDiv</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TStream &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>&#160;</td>
+          <td class="paramtype">TKernelFnObj &amp;&amp;&#160;</td>
+          <td class="paramname"><em>kernelFnObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1exec.html#afe6d2aafc490d202b865cf365326a459">ExecT</a>&lt;TAcc&gt;
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1exec.html#a8afc02367dadcb1524bf024966c7d039">Exec</a>&lt;
+            TAcc,
+            typename std::decay&lt;TKernelFnObj&gt;::type,
+            typename std::decay&lt;TArgs&gt;::type...&gt;
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>An executor. </dd></dl>
 
-<p>Definition at line <a class="el" href="exec_2Traits_8hpp_source.html#l00069">69</a> of file <a class="el" href="exec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aca1605e1bc4e01dae9de7adec97f9805"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TAcc , typename TStream , typename TGridBlockExtents , typename TBlockThreadExtents &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::exec::create </td>
-          <td>(</td>
-          <td class="paramtype">TGridBlockExtents const &amp;&#160;</td>
-          <td class="paramname"><em>gridBlockExtents</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TBlockThreadExtents const &amp;&#160;</td>
-          <td class="paramname"><em>blockThreadExtents</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TStream &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1exec.html#afe6d2aafc490d202b865cf365326a459">ExecT</a>&lt;TAcc&gt;
-        </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates an executor for the given accelerator with the work division given by grid block extents and block thread extents. The larger of the two dimensions specifies the executor dimension. </p>
-<dl class="section return"><dt>Returns</dt><dd>An executor. </dd></dl>
-
-<p>Definition at line <a class="el" href="exec_2Traits_8hpp_source.html#l00108">108</a> of file <a class="el" href="exec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p>Definition at line <a class="el" href="exec_2Traits_8hpp_source.html#l00074">74</a> of file <a class="el" href="exec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -275,7 +232,7 @@ template&lt;typename TAcc , typename TStream , typename TGridBlockExtents , type
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1exec.html">exec</a></li>
-    <li class="footer">Generated on Sat Jul 18 2015 20:35:55 for alpaka by
+    <li class="footer">Generated on Sat Oct 10 2015 18:32:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
