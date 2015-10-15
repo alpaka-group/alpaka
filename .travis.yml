@@ -322,13 +322,13 @@ install:
 
     #-------------------------------------------------------------------------------
     # Clone boost.
-    # If fibers are enabled we need boost 1.59.0+.
+    # If fibers are enabled we need boost develop branch.
     - if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]
       ;then
-          if [ "${ALPAKA_BOOST_BRANCH}" != "develop" ] && [ "${ALPAKA_BOOST_BRANCH}" != "boost-1.59.0" ]
+          if [ "${ALPAKA_BOOST_BRANCH}" != "develop" ]
           ;then
-              export ALPAKA_BOOST_BRANCH=boost-1.59.0
-              && echo ALPAKA_BOOST_BRANCH=${ALPAKA_BOOST_BRANCH} set because boost fibers requires boost version 1.59.0+!
+              export ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
+              && echo ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} set because boost fibers requires boost develop branch!
           ;fi
       ;fi
 
