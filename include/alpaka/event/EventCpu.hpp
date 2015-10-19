@@ -481,17 +481,17 @@ namespace alpaka
                     // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
                     auto spEventCpuImpl(event.m_spEventCpuImpl);
 
+                    std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
+                    if(!spEventCpuImpl->m_bIsReady)
                     {
-                        std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
                         spEventCpuImpl->m_bIsWaitedFor = true;
+                        // Enqueue a task that waits for the given event.
+                        spStreamImpl->m_workerThread.enqueueTask(
+                            [spEventCpuImpl]()
+                            {
+                                wait::wait(spEventCpuImpl);
+                            });
                     }
-
-                    // Enqueue a task that waits for the given event.
-                    spStreamImpl->m_workerThread.enqueueTask(
-                        [spEventCpuImpl]()
-                        {
-                            wait::wait(spEventCpuImpl);
-                        });
                 }
             };
             //#############################################################################
@@ -534,12 +534,6 @@ namespace alpaka
                     // Copy the shared pointer of the event implementation.
                     // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
                     auto spEventCpuImpl(event.m_spEventCpuImpl);
-
-                    {
-                        std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
-                        spEventCpuImpl->m_bIsWaitedFor = true;
-                    }
-
                     // NOTE: Difference to async version: directly wait for event.
                     wait::wait(spEventCpuImpl);
                 }
