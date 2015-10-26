@@ -42,12 +42,12 @@ Accelerator Back-ends
 |Accelerator Back-end|Lib/API|Devices|Execution strategy grid-blocks|Execution strategy block-threads|
 |---|---|---|---|---|
 |Serial|n/a|Host CPU (single core)|sequential|sequential (only 1 thread per block)|
-|OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
-|OpenMP 2.0 threads|OpenMP 2.0|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
-|OpenMP 4.0 (CPU)|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
+|OpenMP 2.0+ blocks|OpenMP 2.0+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
+|OpenMP 2.0+ threads|OpenMP 2.0+|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
+|OpenMP 4.0+ (CPU)|OpenMP 4.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 | Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
-|CUDA 7.0|CUDA 7.0|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+|CUDA 7.0+|CUDA 7.0+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
 
 
 Supported Compilers
@@ -58,14 +58,12 @@ This library uses C++11 (or newer when available).
 |Accelerator Back-end|gcc 4.9.2|gcc 5.2|clang 3.5/3.6|clang 3.7|MSVC 2015|
 |---|---|---|---|---|---|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
-|OpenMP 4.0 (CPU)|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|
+|OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
+|OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|
-
-**NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the NVIDIA nvcc compiler :bangbang:
+|CUDA 7.0+|:white_check_mark:|:x:|:x:|:x:|:x:|
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
@@ -83,8 +81,9 @@ When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch 
 `boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
 
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
+*NOTE*: When using *CUDA* 7.0, the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
 
-When an accelerator back-end using *OpenMP 2.0/4.0* is enabled, the compiler and the platform have to support the corresponding *OpenMP* version.
+When an accelerator back-end using *OpenMP* is enabled, the compiler and the platform have to support the corresponding minimum *OpenMP* version.
 
 
 Usage
@@ -92,12 +91,12 @@ Usage
 
 The library is header only so nothing has to be build.
 CMake 3.3.0+ is required to provide the correct defines and include paths.
-Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compier in handling `.cu` and `.cpp` files is automatically taken care of.
-Examples how to utilize alpaka within CMake can be found in the `examples` folder.
-
+Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compiler in handling `.cu` and `.cpp` files are automatically taken care of.
 Source files do not need any special file ending.
+Examples of how to utilize alpaka within CMake can be found in the `examples` folder.
+
 The whole alpaka library can be included with: `#include <alpaka/alpaka.hpp>`
-Code not intended to be utilized by users is hidden in the `detail` namespace.
+Code that is not intended to be utilized by the user is hidden in the `detail` namespace.
 
 
 Authors
