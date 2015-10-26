@@ -89,19 +89,35 @@ namespace alpaka
                 TErrors && ... ignoredErrorCodes)
             -> void
             {
-                // Even if we get the error directly from the command, we have to reset the global error state by getting it.
-                cudaGetLastError();
                 if(error != cudaSuccess)
                 {
                     // If the error code is not one of the ignored ones.
                     std::array<cudaError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{std::forward<TErrors>(ignoredErrorCodes)...};
                     if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
                     {
-                        std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "' (possibly from a previous CUDA call)!");
+                        std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "'!");
                         std::cerr << sError << std::endl;
                         ALPAKA_DEBUG_BREAK;
                         throw std::runtime_error(sError);
                     }
+                }
+            }
+            //-----------------------------------------------------------------------------
+            //! CUDA runtime API last error checking with log and exception.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto cudaRtCheckLastError(
+                char const * cmd,
+                char const * file,
+                int const & line)
+            -> void
+            {
+                cudaError_t const lastError(cudaGetLastError());
+                if(lastError != cudaSuccess)
+                {
+                    std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' A previous CUDA call (not this one) set the error: '" + std::string(cudaGetErrorString(lastError)) + "'!");
+                    std::cerr << sError << std::endl;
+                    ALPAKA_DEBUG_BREAK;
+                    throw std::runtime_error(sError);
                 }
             }
         }
@@ -113,12 +129,14 @@ namespace alpaka
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
+        ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
 #else
     //-----------------------------------------------------------------------------
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
+        ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
 #endif
 
