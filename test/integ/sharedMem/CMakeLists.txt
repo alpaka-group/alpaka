@@ -31,16 +31,16 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 SET(_INCLUDE_DIR "include/")
-SET(_SUFFIXED_INCLUDE_DIR "${_INCLUDE_DIR}mandelbrot/")
+SET(_SUFFIXED_INCLUDE_DIR "${_INCLUDE_DIR}sharedMem/")
 SET(_SOURCE_DIR "src/")
 
-PROJECT("mandelbrot")
+PROJECT("sharedMem")
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
 #-------------------------------------------------------------------------------
 
-SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING  "The location of the alpaka library")
+SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../" CACHE STRING  "The location of the alpaka library")
 
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE("alpaka" REQUIRED)
@@ -51,7 +51,7 @@ FIND_PACKAGE("alpaka" REQUIRED)
 
 INCLUDE("${ALPAKA_ROOT}/cmake/common.cmake")
 INCLUDE("${ALPAKA_ROOT}/cmake/dev.cmake")
-SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR} "${ALPAKA_ROOT}examples/common/")
+SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR} "${ALPAKA_ROOT}test/integ/common/")
 
 #-------------------------------------------------------------------------------
 # Add library.
@@ -70,9 +70,10 @@ ADD_DEFINITIONS(
     ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
-    "mandelbrot"
+    "sharedMem"
     ${_FILES_HEADER} ${_FILES_SOURCE_CXX})
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
-    "mandelbrot"
+    "sharedMem"
     PUBLIC "alpaka")
+    

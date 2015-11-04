@@ -40,7 +40,7 @@ PROJECT("matMul")
 # Find alpaka.
 #-------------------------------------------------------------------------------
 
-SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING  "The location of the alpaka library")
+SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../" CACHE STRING  "The location of the alpaka library")
 
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE("alpaka" REQUIRED)
@@ -51,7 +51,7 @@ FIND_PACKAGE("alpaka" REQUIRED)
 
 INCLUDE("${ALPAKA_ROOT}/cmake/common.cmake")
 INCLUDE("${ALPAKA_ROOT}/cmake/dev.cmake")
-SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR} "${ALPAKA_ROOT}examples/common/")
+SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR} "${ALPAKA_ROOT}test/integ/common/")
 
 #-------------------------------------------------------------------------------
 # Add library.

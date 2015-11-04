@@ -28,7 +28,7 @@
 
 namespace alpaka
 {
-    namespace examples
+    namespace integ
     {
         //-----------------------------------------------------------------------------
         //! \return The run time of the given kernel.
