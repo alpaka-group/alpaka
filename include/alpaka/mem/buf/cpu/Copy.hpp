@@ -132,14 +132,14 @@ namespace alpaka
                                 << " dw: " << m_dstWidth
                                 << " dh: " << m_dstHeight
                                 << " dd: " << m_dstDepth
-                                << " dptr: " << m_dstMemNative
+                                << " dptr: " << reinterpret_cast<void *>(m_dstMemNative)
                                 << " dpitchb: " << m_dstPitchBytes
                                 << " dbasew: " << m_dstBufWidth
                                 << " dbaseh: " << m_dstBufHeight
                                 << " sw: " << m_srcWidth
                                 << " sh: " << m_srcHeight
                                 << " sd: " << m_srcDepth
-                                << " sptr: " << m_srcMemNative
+                                << " sptr: " << reinterpret_cast<void const *>(m_srcMemNative)
                                 << " spitchb: " << m_srcPitchBytes
                                 << " sbasew: " << m_srcBufWidth
                                 << " sbaseh: " << m_srcBufHeight
