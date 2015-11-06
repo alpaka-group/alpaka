@@ -20,19 +20,15 @@
  */
 
 #include <alpaka/alpaka.hpp>                        // alpaka::exec::create
-#include <alpaka/examples/MeasureKernelRunTime.hpp> // measureKernelRunTimeMs
-#include <alpaka/examples/accs/EnabledAccs.hpp>     // EnabledAccs
+#include <alpaka/integ/MeasureKernelRunTime.hpp>    // measureKernelRunTimeMs
+#include <alpaka/integ/accs/EnabledAccs.hpp>        // EnabledAccs
 
 #include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
 
-#include <chrono>                                   // std::chrono::high_resolution_clock
-#include <cassert>                                  // assert
 #include <iostream>                                 // std::cout
-#include <vector>                                   // std::vector
 #include <typeinfo>                                 // typeid
-#include <utility>                                  // std::forward
+#include <vector>                                   // std::vector
 #include <functional>                               // std::placeholders
-#include <unordered_map>                            // std::unordered_map
 
 //#############################################################################
 //! A matrix multiplication kernel.
@@ -249,7 +245,7 @@ struct MatMulTester
             alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on the accelerator device.
-        alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
+        alpaka::integ::Stream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
 
         alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extentA(
             static_cast<TSize>(m),
@@ -332,7 +328,7 @@ struct MatMulTester
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
-            << alpaka::examples::measureKernelRunTimeMs(
+            << alpaka::integ::measureKernelRunTimeMs(
                 streamAcc,
                 exec)
             << " ms"
@@ -392,7 +388,7 @@ auto main()
             std::cout << std::endl;
 
             // Logs the enabled accelerators.
-            alpaka::examples::accs::writeEnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>(std::cout);
+            alpaka::integ::accs::writeEnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>(std::cout);
 
             std::cout << std::endl;
 
@@ -418,7 +414,7 @@ auto main()
 
                         // Execute the kernel on all enabled accelerators.
                         alpaka::core::forEachType<
-                            alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
+                            alpaka::integ::accs::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
                                 matMulTester,
                                 m, n, k);
                     }

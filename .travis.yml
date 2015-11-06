@@ -454,10 +454,6 @@ script:
     - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r TODO * ;fi || true
 
     #-------------------------------------------------------------------------------
-    # Build and execute all tests.
-    - cd examples/
-
-    #-------------------------------------------------------------------------------
     # cppcheck
     #  --inline-suppr
     # Once only with errors returning a failure on error.
@@ -490,82 +486,15 @@ script:
     #  ;fi
 
     #-------------------------------------------------------------------------------
-    - cd mandelbrot/
-    - mkdir build/
-    - cd build/
-    - mkdir make/
-    - cd make/
-    - cmake -G "Unix Makefiles"
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
-      -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} -DALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE}
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
-      "../../"
-    - make VERBOSE=1
-    - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ]
-      ;then
-          ./mandelbrot
-      ;fi
-    - cd ../../../
 
     #-------------------------------------------------------------------------------
-    - cd matMul/
-    - mkdir build/
-    - cd build/
-    - mkdir make/
-    - cd make/
-    - cmake -G "Unix Makefiles"
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
-      -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} -DALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE}
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
-      "../../"
-    - make VERBOSE=1
-    - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ]
-      ;then
-          ./matMul
-      ;fi
-    - cd ../../../
+    # Build and execute all integration tests.
+    - ./travis/compileExec.sh "test/integ/mandelbrot/" ./mandelbrot
+    - ./travis/compileExec.sh "test/integ/matMul/" ./matMul
+    - ./travis/compileExec.sh "test/integ/sharedMem/" ./sharedMem
+    - ./travis/compileExec.sh "test/integ/vectorAdd/" ./vectorAdd
 
     #-------------------------------------------------------------------------------
-    - cd sharedMem/
-    - mkdir build/
-    - cd build/
-    - mkdir make/
-    - cd make/
-    - cmake -G "Unix Makefiles"
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
-      -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} -DALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE}
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
-      "../../"
-    - make VERBOSE=1
-    - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ]
-      ;then
-          ./sharedMem
-      ;fi
-    - cd ../../../
-
-    #-------------------------------------------------------------------------------
-    - cd vectorAdd/
-    - mkdir build/
-    - cd build/
-    - mkdir make/
-    - cd make/
-    - cmake -G "Unix Makefiles"
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
-      -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} -DALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE}
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
-      "../../"
-    - make VERBOSE=1
-    - if [ "$ALPAKA_ACC_GPU_CUDA_ENABLE" == "OFF" ]
-      ;then
-          ./vectorAdd
-      ;fi
-    - cd ../../../
-
-    - cd ../
 
 ################################################################################
 #

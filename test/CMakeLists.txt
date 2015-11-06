@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Benjamin Worpitz
+# Copyright 2015 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -26,13 +26,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
-PROJECT("alpaka_examples")
+PROJECT("alpaka_test")
 
 ################################################################################
 # Add subdirectories.
 ################################################################################
 
-ADD_SUBDIRECTORY("mandelbrot/")
-ADD_SUBDIRECTORY("matMul/")
-ADD_SUBDIRECTORY("sharedMem/")
-ADD_SUBDIRECTORY("vectorAdd/")
+ADD_SUBDIRECTORY("integ/")
+ADD_SUBDIRECTORY("unit/")
