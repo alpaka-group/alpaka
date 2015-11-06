@@ -118,10 +118,11 @@ namespace alpaka
             ((__VA_ARGS__)==1?1:\
             ((__VA_ARGS__)<=2?2:\
             ((__VA_ARGS__)<=4?4:\
+            ((__VA_ARGS__)<=8?8:\
             ((__VA_ARGS__)<=16?16:\
             ((__VA_ARGS__)<=32?32:\
             ((__VA_ARGS__)<=64?64:128\
-            ))))))
+            )))))))
     #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
             ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(typename std::remove_cv<__VA_ARGS__>::type))
 #else
