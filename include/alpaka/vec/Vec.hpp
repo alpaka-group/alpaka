@@ -631,7 +631,7 @@ namespace alpaka
         for(typename TDim::value_type i(0); i<TDim::value; ++i)
         {
             os << v[i];
-            if(i<TDim::value-1)
+            if(i != TDim::value-1)
             {
                 os << ", ";
             }
