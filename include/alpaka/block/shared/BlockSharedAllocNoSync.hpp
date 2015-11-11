@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2015 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -85,9 +85,11 @@ namespace alpaka
                 //!
                 //#############################################################################
                 template<
-                    typename T>
+                    typename T,
+                    std::size_t TuniqueId>
                 struct AllocVar<
                     T,
+                    TuniqueId,
                     BlockSharedAllocNoSync>
                 {
                     //-----------------------------------------------------------------------------
@@ -111,10 +113,12 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
-                    std::size_t TnumElements>
+                    std::size_t TnumElements,
+                    std::size_t TuniqueId>
                 struct AllocArr<
                     T,
                     TnumElements,
+                    TuniqueId,
                     BlockSharedAllocNoSync>
                 {
                     static_assert(
