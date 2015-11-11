@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2015 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -47,6 +47,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
+                    std::size_t TuniqueId,
                     typename TBlockSharedAlloc,
                     typename TSfinae = void>
                 struct AllocVar;
@@ -56,6 +57,7 @@ namespace alpaka
                 template<
                     typename T,
                     std::size_t TnumElements,
+                    std::size_t TuniqueId,
                     typename TBlockSharedAlloc,
                     typename TSfinae = void>
                 struct AllocArr;
@@ -72,12 +74,14 @@ namespace alpaka
             //! Allocates a variable in block shared memory.
             //!
             //! \tparam T The element type.
+            //! \tparam TuniqueId id those is unique inside a kernel
             //! \tparam TBlockSharedAlloc The block shared allocator implementation type.
             //! \param blockSharedAlloc The block shared allocator implementation.
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
+                std::size_t TuniqueId,
                 typename TBlockSharedAlloc>
             ALPAKA_FN_HOST_ACC auto allocVar(
                 TBlockSharedAlloc const & blockSharedAlloc)
@@ -86,6 +90,7 @@ namespace alpaka
                 return
                     traits::AllocVar<
                         T,
+                        TuniqueId,
                         TBlockSharedAlloc>
                     ::allocVar(
                         blockSharedAlloc);
@@ -96,6 +101,7 @@ namespace alpaka
             //!
             //! \tparam T The element type.
             //! \tparam TnumElements The Number of elements.
+            //! \tparam TuniqueId id those is unique inside a kernel
             //! \tparam TBlockSharedAlloc The block shared allocator implementation type.
             //! \param blockSharedAlloc The block shared allocator implementation.
             //-----------------------------------------------------------------------------
@@ -103,6 +109,7 @@ namespace alpaka
             template<
                 typename T,
                 std::size_t TnumElements,
+                std::size_t TuniqueId,
                 typename TBlockSharedAlloc>
             ALPAKA_FN_HOST_ACC auto allocArr(
                 TBlockSharedAlloc const & blockSharedAlloc)
@@ -116,6 +123,7 @@ namespace alpaka
                     traits::AllocArr<
                         T,
                         TnumElements,
+                        TuniqueId,
                         TBlockSharedAlloc>
                     ::allocArr(
                         blockSharedAlloc);
@@ -146,10 +154,12 @@ namespace alpaka
                 //! The AllocVar trait specialization for classes with BlockSharedAllocBase member type.
                 //#############################################################################
                 template<
-                    typename TBlockSharedAlloc,
-                    typename T>
+                    typename T,
+                    std::size_t TuniqueId,
+                    typename TBlockSharedAlloc>
                 struct AllocVar<
                     T,
+                    TuniqueId,
                     TBlockSharedAlloc,
                     typename std::enable_if<
                         std::is_base_of<typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay<TBlockSharedAlloc>::type>::value
@@ -166,7 +176,8 @@ namespace alpaka
                         // Delegate the call to the base class.
                         return
                             block::shared::allocVar<
-                                T>(
+                                T,
+                                TuniqueId>(
                                     static_cast<typename TBlockSharedAlloc::BlockSharedAllocBase const &>(blockSharedAlloc));
                     }
                 };
@@ -174,12 +185,14 @@ namespace alpaka
                 //! The AllocArr trait specialization for classes with BlockSharedAllocBase member type.
                 //#############################################################################
                 template<
-                    typename TBlockSharedAlloc,
                     typename T,
-                    std::size_t TnumElements>
+                    std::size_t TnumElements,
+                    std::size_t TuniqueId,
+                    typename TBlockSharedAlloc>
                 struct AllocArr<
                     T,
                     TnumElements,
+                    TuniqueId,
                     TBlockSharedAlloc,
                     typename std::enable_if<
                         std::is_base_of<typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay<TBlockSharedAlloc>::type>::value
@@ -197,7 +210,8 @@ namespace alpaka
                         return
                             block::shared::allocArr<
                                 T,
-                                TnumElements>(
+                                TnumElements,
+                                TuniqueId>(
                                     static_cast<typename TBlockSharedAlloc::BlockSharedAllocBase const &>(blockSharedAlloc));
                     }
                 };
