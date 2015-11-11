@@ -68,8 +68,8 @@ public:
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
 
         // Get some shared memory (allocate a second buffer directly afterwards to check for some synchronization bugs).
-        //std::uint32_t * const pBlockShared1(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value>());
-        //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value>());
+        //std::uint32_t * const pBlockShared1(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value,__COUNTER__>());
+        //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value,__COUNTER__>());
 
         // Calculate linearized index of the thread in the block.
         std::size_t const blockThreadIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
