@@ -26,7 +26,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
-PROJECT("alpaka_integ_test")
+PROJECT("alpakaIntegTest")
 
 ################################################################################
 # Add subdirectories.

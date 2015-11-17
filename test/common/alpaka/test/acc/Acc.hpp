@@ -36,14 +36,14 @@
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! The integration test specifics.
+    //! The test specifics.
     //-----------------------------------------------------------------------------
-    namespace integ
+    namespace test
     {
         //-----------------------------------------------------------------------------
-        //! The accelerators.
+        //! The test accelerator specifics.
         //-----------------------------------------------------------------------------
-        namespace accs
+        namespace acc
         {
             //-----------------------------------------------------------------------------
             //! The detail namespace is used to separate implementation details from user accessible code.
@@ -54,7 +54,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuSerialIfAvailableElseVoid = acc::AccCpuSerial<TDim, TSize>;
+                using AccCpuSerialIfAvailableElseVoid = alpaka::acc::AccCpuSerial<TDim, TSize>;
 #else
                 template<
                     typename TDim,
@@ -65,7 +65,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuThreadsIfAvailableElseVoid = acc::AccCpuThreads<TDim, TSize>;
+                using AccCpuThreadsIfAvailableElseVoid = alpaka::acc::AccCpuThreads<TDim, TSize>;
 #else
                 template<
                     typename TDim,
@@ -76,7 +76,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuFibersIfAvailableElseVoid = acc::AccCpuFibers<TDim, TSize>;
+                using AccCpuFibersIfAvailableElseVoid = alpaka::acc::AccCpuFibers<TDim, TSize>;
 #else
                 template<
                     typename TDim,
@@ -87,7 +87,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuOmp2BlocksIfAvailableElseVoid = acc::AccCpuOmp2Blocks<TDim, TSize>;
+                using AccCpuOmp2BlocksIfAvailableElseVoid = alpaka::acc::AccCpuOmp2Blocks<TDim, TSize>;
 #else
                 template<
                     typename TDim,
@@ -98,7 +98,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuOmp2ThreadsIfAvailableElseVoid = acc::AccCpuOmp2Threads<TDim, TSize>;
+                using AccCpuOmp2ThreadsIfAvailableElseVoid = alpaka::acc::AccCpuOmp2Threads<TDim, TSize>;
 #else
                 template<
                     typename TDim,
@@ -109,7 +109,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuOmp4IfAvailableElseVoid = acc::AccCpuOmp4<TDim, TSize>;
+                using AccCpuOmp4IfAvailableElseVoid = alpaka::acc::AccCpuOmp4<TDim, TSize>;
 #else
                 template<
                     typename TDim,
@@ -120,7 +120,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccGpuCudaRtIfAvailableElseVoid = acc::AccGpuCudaRt<TDim, TSize>;
+                using AccGpuCudaRtIfAvailableElseVoid = alpaka::acc::AccGpuCudaRt<TDim, TSize>;
 #else
                 template<
                     typename TDim,
@@ -176,7 +176,7 @@ namespace alpaka
                         std::ostream & os)
                     -> void
                     {
-                        os << acc::getAccName<TAcc>();
+                        os << alpaka::acc::getAccName<TAcc>();
                         os << " ";
                     }
                 };
@@ -203,45 +203,5 @@ namespace alpaka
                 os << std::endl;
             }
         }
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The stream type trait for the stream that should be used for the given accelerator.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TSfinae = void>
-            struct StreamType
-            {
-#if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                using type = alpaka::stream::StreamCpuSync;
-#else
-                using type = alpaka::stream::StreamCpuAsync;
-#endif
-            };
-
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-            //#############################################################################
-            //! The stream type trait specialization for the CUDA accelerator.
-            //#############################################################################
-            template<>
-            struct StreamType<
-                alpaka::dev::DevCudaRt>
-            {
-#if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                using type = alpaka::stream::StreamCudaRtSync;
-#else
-                using type = alpaka::stream::StreamCudaRtAsync;
-#endif
-            };
-#endif
-        }
-        //#############################################################################
-        //! The stream type that should be used for the given accelerator.
-        //#############################################################################
-        template<
-            typename TAcc>
-        using Stream = typename detail::StreamType<TAcc>::type;
     }
 }

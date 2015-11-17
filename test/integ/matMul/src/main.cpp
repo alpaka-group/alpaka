@@ -20,8 +20,9 @@
  */
 
 #include <alpaka/alpaka.hpp>                        // alpaka::exec::create
-#include <alpaka/integ/MeasureKernelRunTime.hpp>    // measureKernelRunTimeMs
-#include <alpaka/integ/accs/EnabledAccs.hpp>        // EnabledAccs
+#include <alpaka/test/MeasureKernelRunTime.hpp>     // measureKernelRunTimeMs
+#include <alpaka/test/acc/Acc.hpp>                  // EnabledAccs
+#include <alpaka/test/stream/Stream.hpp>            // DefaultStream
 
 #include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
 
@@ -245,7 +246,7 @@ struct MatMulTester
             alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on the accelerator device.
-        alpaka::integ::Stream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
+        alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
 
         alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extentA(
             static_cast<TSize>(m),
@@ -388,7 +389,7 @@ auto main()
             std::cout << std::endl;
 
             // Logs the enabled accelerators.
-            alpaka::integ::accs::writeEnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>(std::cout);
+            alpaka::test::acc::writeEnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>(std::cout);
 
             std::cout << std::endl;
 
@@ -414,7 +415,7 @@ auto main()
 
                         // Execute the kernel on all enabled accelerators.
                         alpaka::core::forEachType<
-                            alpaka::integ::accs::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
+                            alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
                                 matMulTester,
                                 m, n, k);
                     }
