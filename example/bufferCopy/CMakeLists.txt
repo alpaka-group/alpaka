@@ -1,5 +1,6 @@
 #
-# Copyright 2015 Benjamin Worpitz
+# \file
+# Copyright 2014-2015 Erik Zenker
 #
 # This file is part of alpaka.
 #
@@ -17,19 +18,28 @@
 # along with alpaka.
 # If not, see <http://www.gnu.org/licenses/>.
 #
+#
+
+project(alpakaBufferCopy)
+cmake_minimum_required(VERSION 3.0.1)
 
 ################################################################################
-# Required CMake version.
+# Find alpaka
 ################################################################################
+set(ALPAKA_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../" CACHE STRING  "The location of the alpaka library")
+list(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+find_package("alpaka" REQUIRED)
+include_directories(SYSTEM ${alpaka_INCLUDE_DIRS})
+add_definitions(${alpaka_DEFINITIONS})
+add_definitions(${ALPAKA_DEV_COMPILE_OPTIONS})
+set(LIBS ${LIBS} ${alpaka_LIBRARIES})
 
-PROJECT("alpakaExamples")
+###############################################################################
+# Executable
+###############################################################################
+set(bufferCopy "bufferCopy")
+file(GLOB SRCFILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
-################################################################################
-# Add subdirectories.
-################################################################################
-
-ADD_SUBDIRECTORY("bufferCopy/")
-ADD_SUBDIRECTORY("helloWorld/")
-ADD_SUBDIRECTORY("vectorAdd/")
+alpaka_add_executable(${bufferCopy} ${SRCFILES})
+target_link_libraries(${bufferCopy} ${LIBS})

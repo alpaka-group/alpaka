@@ -499,7 +499,8 @@ script:
     #-------------------------------------------------------------------------------
 
     # Build and execute all examples.
-    - ./travis/compileExec.sh "example/helloWorld" ./helloWorld    
+    - ./travis/compileExec.sh "example/bufferCopy" ./bufferCopy        
+    - ./travis/compileExec.sh "example/helloWorld" ./helloWorld
     - ./travis/compileExec.sh "example/vectorAdd" ./vectorAdd
 
 
