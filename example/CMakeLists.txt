@@ -24,12 +24,11 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
-SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
-
-PROJECT("alpaka_examples")
+PROJECT("alpakaExamples")
 
 ################################################################################
 # Add subdirectories.
 ################################################################################
 
+ADD_SUBDIRECTORY("helloWorld/")
 ADD_SUBDIRECTORY("vectorAdd/")
