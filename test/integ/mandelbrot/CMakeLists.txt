@@ -30,11 +30,10 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 # Project.
 ################################################################################
 
-SET(_INCLUDE_DIR "include/")
-SET(_SUFFIXED_INCLUDE_DIR "${_INCLUDE_DIR}mandelbrot/")
 SET(_SOURCE_DIR "src/")
+SET(_PROJECT_NAME "mandelbrot")
 
-PROJECT("mandelbrot")
+PROJECT(${_PROJECT_NAME})
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
@@ -51,17 +50,14 @@ FIND_PACKAGE("alpaka" REQUIRED)
 
 INCLUDE("${ALPAKA_ROOT}/cmake/common.cmake")
 INCLUDE("${ALPAKA_ROOT}/cmake/dev.cmake")
-SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR} "${ALPAKA_ROOT}test/integ/common/")
+SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR} "${ALPAKA_ROOT}test/common/")
 
 #-------------------------------------------------------------------------------
 # Add library.
 #-------------------------------------------------------------------------------
 
-# Add all the include files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${_SUFFIXED_INCLUDE_DIR}" "" "hpp" _FILES_HEADER)
-
 # Add all the source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE_CXX)
+append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
 
 INCLUDE_DIRECTORIES(
     ${_INCLUDE_DIRECTORIES_PRIVATE}
@@ -70,9 +66,12 @@ ADD_DEFINITIONS(
     ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
-    "mandelbrot"
-    ${_FILES_HEADER} ${_FILES_SOURCE_CXX})
+    ${_PROJECT_NAME}
+    ${_FILES_SOURCE})
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
-    "mandelbrot"
+    ${_PROJECT_NAME}
     PUBLIC "alpaka")
+
+# Group the targets into subfolders for IDEs supporting this.
+SET_TARGET_PROPERTIES(${_PROJECT_NAME} PROPERTIES FOLDER "test/integ")

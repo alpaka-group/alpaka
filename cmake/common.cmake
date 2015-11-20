@@ -134,7 +134,7 @@ FUNCTION(add_recursive_files_to_src_group In_RootDir In_SrcGroupIgnorePrefix In_
                 groupExpression
                 "${currentSubDir}")
             #MESSAGE("groupExpression: ${groupExpression}")
-            # Remove the parent directory steps from the path.
+            # Remove the parent directory from the path.
             # NOTE: This is not correct because it does not only replace at the beginning of the string.
             #  "STRING(REGEX REPLACE" would be correct if there was an easy way to escape arbitrary strings.
             STRING(

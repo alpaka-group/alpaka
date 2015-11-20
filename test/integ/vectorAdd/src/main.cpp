@@ -20,8 +20,9 @@
  */
 
 #include <alpaka/alpaka.hpp>                        // alpaka::exec::create
-#include <alpaka/integ/MeasureKernelRunTime.hpp>    // measureKernelRunTimeMs
-#include <alpaka/integ/accs/EnabledAccs.hpp>        // EnabledAccs
+#include <alpaka/test/MeasureKernelRunTime.hpp>     // measureKernelRunTimeMs
+#include <alpaka/test/acc/Acc.hpp>                  // EnabledAccs
+#include <alpaka/test/stream/Stream.hpp>            // DefaultStream
 
 #include <iostream>                                 // std::cout
 #include <typeinfo>                                 // typeid
@@ -106,7 +107,7 @@ struct VectorAddKernelTester
             alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::integ::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
+        alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
         alpaka::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
             numElements);
@@ -216,7 +217,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::integ::accs::writeEnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>(std::cout);
+        alpaka::test::acc::writeEnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>(std::cout);
 
         std::cout << std::endl;
 
@@ -233,7 +234,7 @@ auto main()
 
             // Execute the kernel on all enabled accelerators.
             alpaka::core::forEachType<
-                alpaka::integ::accs::EnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>>(
+                alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>>(
                     vectorAddKernelTester,
                     vecSize);
         }

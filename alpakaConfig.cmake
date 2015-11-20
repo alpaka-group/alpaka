@@ -69,8 +69,6 @@ SET(_ALPAKA_FOUND TRUE)
 #-------------------------------------------------------------------------------
 # Common.
 #-------------------------------------------------------------------------------
-# Add find modules.
-LIST(APPEND CMAKE_MODULE_PATH "${_ALPAKA_ROOT_DIR}/cmake/modules")
 
 # Add common functions.
 SET(_ALPAKA_COMMON_FILE "${_ALPAKA_ROOT_DIR}/cmake/common.cmake")
@@ -360,11 +358,13 @@ SET(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
 SET(_ALPAKA_LINK_LIBRARY)
 LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${_ALPAKA_LINK_LIBRARY}")
 
-SET(_ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/alpakaConfig.cmake" "${_ALPAKA_ADD_EXECUTABLE_FILE}" "${_ALPAKA_COMMON_FILE}" "${_ALPAKA_ROOT_DIR}/.travis.yml" "${_ALPAKA_ROOT_DIR}/README.md")
+SET(_ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/.travis.yml" "${_ALPAKA_ROOT_DIR}/README.md")
 
 # Add all the source and include files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" "_ALPAKA_FILES_HEADER")
-append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "cpp" "_ALPAKA_FILES_SOURCE")
+append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" _ALPAKA_FILES_HEADER)
+append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "cpp" _ALPAKA_FILES_SOURCE)
+append_recursive_files("${_ALPAKA_ROOT_DIR}/cmake" "${_ALPAKA_ROOT_DIR}/cmake" "cmake" _ALPAKA_FILES_CMAKE)
+LIST(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/alpakaConfig.cmake" "${_ALPAKA_ROOT_DIR}/Findalpaka.cmake")
 
 #-------------------------------------------------------------------------------
 # Target.
@@ -372,7 +372,7 @@ append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_AL
 IF(NOT TARGET "alpaka")
     ADD_LIBRARY(
         "alpaka"
-        ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SOURCE} ${_ALPAKA_FILES_OTHER})
+        ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SOURCE} ${_ALPAKA_FILES_CMAKE} ${_ALPAKA_FILES_OTHER})
 
     # Compile options.
     IF(${ALPAKA_DEBUG} GREATER 1)

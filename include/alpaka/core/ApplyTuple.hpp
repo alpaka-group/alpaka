@@ -35,35 +35,35 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         namespace detail
         {
-            template <class F, class... Args>
+            template<class F, class... Args>
             inline auto invoke_impl(F && f, Args &&... args)
             -> decltype(std::forward<F>(f)(std::forward<Args>(args)...))
             {
                 return std::forward<F>(f)(std::forward<Args>(args)...);
             }
  
-            template <class Base, class T, class Derived>
+            template<class Base, class T, class Derived>
             inline auto invoke_impl(T Base::*pmd, Derived && ref) 
             -> decltype(std::forward<Derived>(ref).*pmd)
             {
                 return std::forward<Derived>(ref).*pmd;
             }
  
-            template <class PMD, class Pointer>
+            template<class PMD, class Pointer>
             inline auto invoke_impl(PMD pmd, Pointer && ptr)
             -> decltype((*std::forward<Pointer>(ptr)).*pmd)
             {
                 return (*std::forward<Pointer>(ptr)).*pmd;
             }
  
-            template <class Base, class T, class Derived, class... Args>
+            template<class Base, class T, class Derived, class... Args>
             inline auto invoke_impl(T Base::*pmf, Derived && ref, Args &&... args)
             -> decltype((std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...))
             {
                 return (std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...);
             }
  
-            template <class PMF, class Pointer, class... Args>
+            template<class PMF, class Pointer, class... Args>
             inline auto invoke_impl(PMF pmf, Pointer && ptr, Args &&... args)
             -> decltype(((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...))
             {
@@ -83,7 +83,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         namespace detail
         {
-            template <class F, class Tuple, std::size_t... I>
+            template<class F, class Tuple, std::size_t... I>
             auto apply_impl( F && f, Tuple && t, core::detail::index_sequence<I...> )
             -> decltype(
                 core::invoke(
@@ -97,7 +97,7 @@ namespace alpaka
             }
         }
  
-        template <class F, class Tuple>
+        template<class F, class Tuple>
         auto apply(F && f, Tuple && t)
         -> decltype(
             detail::apply_impl(
