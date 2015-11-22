@@ -24,15 +24,13 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
-SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
-
 PROJECT("alpakaIntegTest")
 
 ################################################################################
 # Add subdirectories.
 ################################################################################
 
+ADD_SUBDIRECTORY("axpy/")
 ADD_SUBDIRECTORY("mandelbrot/")
 ADD_SUBDIRECTORY("matMul/")
 ADD_SUBDIRECTORY("sharedMem/")
-ADD_SUBDIRECTORY("vectorAdd/")
