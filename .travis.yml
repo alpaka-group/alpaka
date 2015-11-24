@@ -491,10 +491,10 @@ script:
 
     #-------------------------------------------------------------------------------
     # Build and execute all integration tests.
+    - ./travis/compileExec.sh "test/integ/axpy/" ./axpy
     - ./travis/compileExec.sh "test/integ/mandelbrot/" ./mandelbrot
     - ./travis/compileExec.sh "test/integ/matMul/" ./matMul
     - ./travis/compileExec.sh "test/integ/sharedMem/" ./sharedMem
-    - ./travis/compileExec.sh "test/integ/vectorAdd/" ./vectorAdd
 
     #-------------------------------------------------------------------------------
 

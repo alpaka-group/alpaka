@@ -31,18 +31,19 @@
 //! A vector addition kernel.
 //! \tparam TAcc The accelerator environment to be executed on.
 //#############################################################################
-class VectorAddKernel
+class AxpyKernel
 {
 public:
     //-----------------------------------------------------------------------------
-    //! The kernel entry point.
+    //! Vector addition Y = alpha * X + Y.
     //!
+    //! \tparam TAcc The type of the accelerator the kernel is executed on..
     //! \tparam TElem The matrix element type.
-    //! \param acc The accelerator to be executed on.
-    //! \param A The first source vector.
-    //! \param B The second source vector.
-    //! \param C The destination vector.
-    //! \param numElements The number of elements.
+    //! \param acc The accelerator the kernel is executed on.
+    //! \param n Specifies the number of elements of the vectors X and Y.
+    //! \param alpha Scalar the X vector is multiplied with.
+    //! \param X Vector of at least n elements.
+    //! \param Y Vector of at least n elements.
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -51,15 +52,15 @@ public:
         typename TSize>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
-        TElem const * const A,
-        TElem const * const B,
-        TElem * const C,
-        TSize const & numElements) const
+        TSize const & numElements,
+        TElem const & alpha,
+        TElem const * const X,
+        TElem * const Y) const
     -> void
     {
         static_assert(
             alpaka::dim::Dim<TAcc>::value == 1,
-            "The VectorAddKernel expects 1-dimensional indices!");
+            "The AxpyKernel expects 1-dimensional indices!");
 
         auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
         auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
@@ -73,7 +74,7 @@ public:
 
             for(TSize i(threadFirstElemIdx); i<(threadFirstElemIdx+elems); ++i)
             {
-                C[i] = A[i] + B[i];
+                Y[i] = alpha * X[i] + Y[i];
             }
         }
     }
@@ -82,7 +83,7 @@ public:
 //#############################################################################
 //! Profiles the vector addition kernel.
 //#############################################################################
-struct VectorAddKernelTester
+struct AxpyKernelTester
 {
     template<
         typename TAcc,
@@ -97,7 +98,7 @@ struct VectorAddKernelTester
         using Val = float;
 
         // Create the kernel function object.
-        VectorAddKernel kernel;
+        AxpyKernel kernel;
 
         // Get the host device.
         auto devHost(alpaka::dev::cpu::getDev());
@@ -122,7 +123,7 @@ struct VectorAddKernelTester
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
         std::cout
-            << "VectorAddKernelTester("
+            << "AxpyKernelTester("
             << " numElements:" << numElements
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
             << ", kernel: " << typeid(kernel).name()
@@ -130,34 +131,34 @@ struct VectorAddKernelTester
             << ")" << std::endl;
 
         // Allocate host memory buffers.
-        auto memBufHostA(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
-        auto memBufHostB(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
-        auto memBufHostC(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
+        auto memBufHostX(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
+        auto memBufHostOrigY(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
+        auto memBufHostY(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
 
         // Initialize the host input vectors
         for (TSize i(0); i < numElements; ++i)
         {
-            alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand());
-            alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand());
+            alpaka::mem::view::getPtrNative(memBufHostX)[i] = static_cast<Val>(rand());
+            alpaka::mem::view::getPtrNative(memBufHostOrigY)[i] = static_cast<Val>(rand());
         }
+        auto const alpha(static_cast<Val>(rand()));
 
         // Allocate the buffer on the accelerator.
-        auto memBufAccA(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
-        auto memBufAccB(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
-        auto memBufAccC(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
+        auto memBufAccX(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
+        auto memBufAccY(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(stream, memBufAccA, memBufHostA, extent);
-        alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, extent);
+        alpaka::mem::view::copy(stream, memBufAccX, memBufHostX, extent);
+        alpaka::mem::view::copy(stream, memBufAccY, memBufHostOrigY, extent);
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
             workDiv,
             kernel,
-            alpaka::mem::view::getPtrNative(memBufAccA),
-            alpaka::mem::view::getPtrNative(memBufAccB),
-            alpaka::mem::view::getPtrNative(memBufAccC),
-            numElements));
+            numElements,
+            alpha,
+            alpaka::mem::view::getPtrNative(memBufAccX),
+            alpaka::mem::view::getPtrNative(memBufAccY)));
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
@@ -168,19 +169,19 @@ struct VectorAddKernelTester
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(stream, memBufHostC, memBufAccC, extent);
+        alpaka::mem::view::copy(stream, memBufHostY, memBufAccY, extent);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
 
         bool resultCorrect(true);
-        auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));
+        auto const pHostResultData(alpaka::mem::view::getPtrNative(memBufHostY));
         for(TSize i(0u);
             i < numElements;
             ++i)
         {
-            auto const & val(pHostData[i]);
-            auto const correctResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
+            auto const & val(pHostResultData[i]);
+            auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]+alpaka::mem::view::getPtrNative(memBufHostX)[i]);
             if(val != correctResult)
             {
                 std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
@@ -212,7 +213,7 @@ auto main()
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-        std::cout << "                            alpaka vector add test                              " << std::endl;
+        std::cout << "                                alpaka axpy test                                " << std::endl;
         std::cout << "################################################################################" << std::endl;
         std::cout << std::endl;
 
@@ -221,7 +222,7 @@ auto main()
 
         std::cout << std::endl;
 
-        VectorAddKernelTester vectorAddKernelTester;
+        AxpyKernelTester axpyKernelTester;
 
         // For different sizes.
 #if ALPAKA_INTEGRATION_TEST
@@ -235,7 +236,7 @@ auto main()
             // Execute the kernel on all enabled accelerators.
             alpaka::core::forEachType<
                 alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>>(
-                    vectorAddKernelTester,
+                    axpyKernelTester,
                     vecSize);
         }
         return EXIT_SUCCESS;

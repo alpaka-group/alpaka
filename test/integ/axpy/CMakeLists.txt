@@ -31,7 +31,7 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 SET(_SOURCE_DIR "src/")
-SET(_PROJECT_NAME "vectorAdd")
+SET(_PROJECT_NAME "axpy")
 
 PROJECT(${_PROJECT_NAME})
 
