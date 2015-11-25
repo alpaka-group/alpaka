@@ -264,20 +264,6 @@ namespace alpaka
                 return {};
             }
         };
-
-        namespace cpu
-        {
-            //-----------------------------------------------------------------------------
-            //! \return The device this object is bound to.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto getDev()
-            -> DevCpu
-            {
-                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                return DevManCpu::getDevByIdx(0);
-            }
-        }
     }
 
     namespace event

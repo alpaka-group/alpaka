@@ -75,7 +75,7 @@ namespace alpaka
                 -> dev::DevCpu
                 {
                     // \FIXME: CUDA device?
-                    return dev::cpu::getDev();
+                    return dev::DevManCpu::getDevByIdx(0u);
                 }
             };
         }
@@ -327,7 +327,7 @@ namespace alpaka
                     std::array<TElem, Tsize> const & buf)
                 -> dev::DevCpu
                 {
-                    return dev::cpu::getDev();
+                    return dev::DevManCpu::getDevByIdx(0u);
                 }
             };
         }
@@ -561,7 +561,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const & buf)
                 -> dev::DevCpu
                 {
-                    return dev::cpu::getDev();
+                    return dev::DevManCpu::getDevByIdx(0u);
                 }
             };
         }
