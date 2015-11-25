@@ -150,19 +150,19 @@ namespace alpaka
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
             typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
-            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;           //!< The index of the currently executed block.
+            Vec<TDim, TSize> mutable m_gridBlockIdx;                        //!< The index of the currently executed block.
 
             // syncBlockThreads
-            TSize const m_blockThreadCount;                             //!< The number of threads per block the barrier has to wait for.
+            TSize const m_blockThreadCount;                                 //!< The number of threads per block the barrier has to wait for.
             std::map<
                 std::thread::id,
-                TSize> mutable m_threadToBarrierMap;                         //!< The mapping of thread id's to their current barrier.
+                TSize> mutable m_threadToBarrierMap;                        //!< The mapping of thread id's to their current barrier.
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
 
             // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;      //!< External block shared memory.
+            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem; //!< External block shared memory.
         };
     }
 

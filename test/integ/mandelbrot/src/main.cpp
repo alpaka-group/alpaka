@@ -258,7 +258,7 @@ public:
         return m_colors[iterationCount%16];
     }
 
-    alignas(16) std::uint32_t m_colors[16];
+    std::uint32_t m_colors[16];
 #endif
 };
 
