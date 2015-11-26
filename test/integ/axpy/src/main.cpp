@@ -101,11 +101,11 @@ struct AxpyKernelTester
         AxpyKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::dev::cpu::getDev());
+        auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
 
         // Select a device to execute on.
         alpaka::dev::Dev<TAcc> devAcc(
-            alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
+            alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
 
         // Get a stream on this device.
         alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>> stream(devAcc);

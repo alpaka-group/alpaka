@@ -100,7 +100,7 @@ auto main()
         VectorAddKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::dev::cpu::getDev());
+        auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
 
         // Select a device to execute on.
         alpaka::dev::Dev<Acc> devAcc(

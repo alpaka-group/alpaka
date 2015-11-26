@@ -236,14 +236,14 @@ struct MatMulTester
         MatMulKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::dev::cpu::getDev());
+        auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
 
         // Get a stream on the host device.
         alpaka::stream::StreamCpuAsync streamHost(devHost);
 
         // Select a device to execute on.
         alpaka::dev::Dev<TAcc> devAcc(
-            alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
+            alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
 
         // Get a stream on the accelerator device.
         alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
