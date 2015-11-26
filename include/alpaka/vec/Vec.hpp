@@ -27,6 +27,7 @@
 #include <alpaka/offset/Traits.hpp>         // offset::getOffsetX, ...
 #include <alpaka/size/Traits.hpp>           // size::traits::SizeType
 
+#include <alpaka/core/Align.hpp>            // ALPAKA_OPTIMAL_ALIGNMENT_SIZE
 #include <alpaka/core/IntegerSequence.hpp>  // core::detail::make_integer_sequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 #include <alpaka/core/Fold.hpp>             // core::foldr
@@ -138,7 +139,7 @@ namespace alpaka
     template<
         typename TDim,
         typename TSize>
-    class alignas(16u) Vec final
+    class Vec final
     {
     public:
         static_assert(TDim::value>0, "Dimensionality of the vector is required to be greater then zero!");
@@ -511,8 +512,7 @@ namespace alpaka
         }
 
     private:
-        // 16 Byte alignment for usage inside of CUDA kernels.
-        alignas(16u) TSize m_data[TDim::value];
+        TSize m_data[TDim::value];
     };
 
 

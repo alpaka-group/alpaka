@@ -152,13 +152,13 @@ namespace alpaka
         private:
             // getIdx
             typename idx::bt::IdxBtRefFiberIdMap<TDim, TSize>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
-            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
+            Vec<TDim, TSize> mutable m_gridBlockIdx;                    //!< The index of the currently executed block.
 
             // syncBlockThreads
-            TSize const m_blockThreadCount;                         //!< The number of threads per block the barrier has to wait for.
+            TSize const m_blockThreadCount;                             //!< The number of threads per block the barrier has to wait for.
             std::map<
                 boost::fibers::fiber::id,
-                TSize> mutable m_fibersToBarrier;                      //!< The mapping of fibers id's to their current barrier.
+                TSize> mutable m_fibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
             //!< We have to keep the current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
 
             // allocBlockSharedArr

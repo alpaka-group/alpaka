@@ -141,7 +141,7 @@ namespace alpaka
 
         private:
             // getIdx
-            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
+            Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
 
             // getBlockSharedExternMem
             std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;  //!< External block shared memory.

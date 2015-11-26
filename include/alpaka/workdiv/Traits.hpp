@@ -77,7 +77,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The WorkDivMembers grid block extent trait specialization for classes with WorkDivBase member type.
+            //! The work div grid block extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -106,7 +106,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The WorkDivMembers block thread extent trait specialization for classes with WorkDivBase member type.
+            //! The work div block thread extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -135,7 +135,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The WorkDivMembers block thread extent trait specialization for classes with WorkDivBase member type.
+            //! The work div block thread extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
