@@ -149,11 +149,11 @@
 
 #include <alpaka/mem/buf/BufCudaRt.hpp>
 #include <alpaka/mem/buf/BufCpu.hpp>
-#include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>
-#include <alpaka/mem/buf/BufStdContainers.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 
-#include <alpaka/mem/view/ViewBasic.hpp>
+#include <alpaka/mem/view/ViewPlainPtr.hpp>
+#include <alpaka/mem/view/ViewStdContainers.hpp>
+#include <alpaka/mem/view/ViewSubView.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 
 //-----------------------------------------------------------------------------
