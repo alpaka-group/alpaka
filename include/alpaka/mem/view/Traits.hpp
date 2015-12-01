@@ -40,28 +40,17 @@ namespace alpaka
     namespace mem
     {
         //-----------------------------------------------------------------------------
-        //! The buffer specifics.
+        //! The view specifics.
         //-----------------------------------------------------------------------------
         namespace view
         {
             namespace traits
             {
                 //#############################################################################
-                //! The memory buffer view type trait.
-                //#############################################################################
-                template<
-                    typename TDev,
-                    typename TElem,
-                    typename TDim,
-                    typename TSize,
-                    typename TSfinae = void>
-                struct ViewType;
-
-                //#############################################################################
                 //! The native pointer get trait.
                 //#############################################################################
                 template<
-                    typename TBuf,
+                    typename TView,
                     typename TSfinae = void>
                 struct GetPtrNative;
 
@@ -69,7 +58,7 @@ namespace alpaka
                 //! The pointer on device get trait.
                 //#############################################################################
                 template<
-                    typename TBuf,
+                    typename TView,
                     typename TDev,
                     typename TSfinae = void>
                 struct GetPtrDev;
@@ -121,7 +110,7 @@ namespace alpaka
                 //#############################################################################
                 //! The memory set trait.
                 //!
-                //! Fills the buffer with data.
+                //! Fills the view with data.
                 //#############################################################################
                 template<
                     typename TDim,
@@ -132,7 +121,7 @@ namespace alpaka
                 //#############################################################################
                 //! The memory copy trait.
                 //!
-                //! Copies memory from one buffer into another buffer possibly on a different device.
+                //! Copies memory from one view into another view possibly on a different device.
                 //#############################################################################
                 template<
                     typename TDim,
@@ -140,14 +129,6 @@ namespace alpaka
                     typename TDevSrc,
                     typename TSfinae = void>
                 struct TaskCopy;
-
-                //#############################################################################
-                //! The memory buffer view creation type trait.
-                //#############################################################################
-                template<
-                    typename TView,
-                    typename TSfinae = void>
-                struct CreateView;
 
                 //#############################################################################
                 //! The buffer trait.
@@ -158,108 +139,98 @@ namespace alpaka
                 struct GetBuf;
             }
 
-            //#############################################################################
-            //! The memory buffer view type trait alias template to remove the ::type.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TSize>
-            using View = typename traits::ViewType<TDev, TElem, TDim, TSize>::type;
-
             //-----------------------------------------------------------------------------
-            //! Gets the native pointer of the memory buffer.
+            //! Gets the native pointer of the memory view.
             //!
-            //! \param buf The memory buffer.
+            //! \param view The memory view.
             //! \return The native pointer.
             //-----------------------------------------------------------------------------
             template<
-                typename TBuf>
+                typename TView>
             ALPAKA_FN_HOST auto getPtrNative(
-                TBuf const & buf)
-            -> elem::Elem<TBuf> const *
+                TView const & view)
+            -> elem::Elem<TView> const *
             {
                 return
                     traits::GetPtrNative<
-                        TBuf>
+                        TView>
                     ::getPtrNative(
-                        buf);
+                        view);
             }
             //-----------------------------------------------------------------------------
-            //! Gets the native pointer of the memory buffer.
+            //! Gets the native pointer of the memory view.
             //!
-            //! \param buf The memory buffer.
+            //! \param view The memory view.
             //! \return The native pointer.
             //-----------------------------------------------------------------------------
             template<
-                typename TBuf>
+                typename TView>
             ALPAKA_FN_HOST auto getPtrNative(
-                TBuf & buf)
-            -> elem::Elem<TBuf> *
+                TView & view)
+            -> elem::Elem<TView> *
             {
                 return
                     traits::GetPtrNative<
-                        TBuf>
+                        TView>
                     ::getPtrNative(
-                        buf);
+                        view);
             }
 
             //-----------------------------------------------------------------------------
-            //! Gets the pointer to the buffer on the given device.
+            //! Gets the pointer to the view on the given device.
             //!
-            //! \param buf The memory buffer.
+            //! \param view The memory view.
             //! \param dev The device.
             //! \return The pointer on the device.
             //-----------------------------------------------------------------------------
             template<
-                typename TBuf,
+                typename TView,
                 typename TDev>
             ALPAKA_FN_HOST auto getPtrDev(
-                TBuf const & buf,
+                TView const & view,
                 TDev const & dev)
-            -> elem::Elem<TBuf> const *
+            -> elem::Elem<TView> const *
             {
                 return
                     traits::GetPtrDev<
-                        TBuf,
+                        TView,
                         TDev>
                     ::getPtrDev(
-                        buf,
+                        view,
                         dev);
             }
             //-----------------------------------------------------------------------------
-            //! Gets the pointer to the buffer on the given device.
+            //! Gets the pointer to the view on the given device.
             //!
-            //! \param buf The memory buffer.
+            //! \param view The memory view.
             //! \param dev The device.
             //! \return The pointer on the device.
             //-----------------------------------------------------------------------------
             template<
-                typename TBuf,
+                typename TView,
                 typename TDev>
             ALPAKA_FN_HOST auto getPtrDev(
-                TBuf & buf,
+                TView & view,
                 TDev const & dev)
-            -> elem::Elem<TBuf> *
+            -> elem::Elem<TView> *
             {
                 return
                     traits::GetPtrDev<
-                        TBuf,
+                        TView,
                         TDev>
                     ::getPtrDev(
-                        buf,
+                        view,
                         dev);
             }
 
             //-----------------------------------------------------------------------------
-            //! \return The pitch in bytes. This is the distance between two consecutive rows.
+            //! \return The pitch in bytes. This is the distance in bytes between two consecutive elements in the given dimension.
             //-----------------------------------------------------------------------------
             template<
                 std::size_t Tidx,
                 typename TView>
             ALPAKA_FN_HOST auto getPitchBytes(
-                TView const & buf)
+                TView const & view)
             -> size::Size<TView>
             {
                 return
@@ -267,21 +238,21 @@ namespace alpaka
                         dim::DimInt<Tidx>,
                         TView>
                     ::getPitchBytes(
-                        buf);
+                        view);
             }
 
             //-----------------------------------------------------------------------------
             //! Create a memory set task.
             //!
-            //! \param buf The memory buffer to fill.
-            //! \param byte Value to set for each element of the specified buffer.
-            //! \param extent The extent of the buffer to fill.
+            //! \param view The memory view to fill.
+            //! \param byte Value to set for each element of the specified view.
+            //! \param extent The extent of the view to fill.
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent,
                 typename TView>
             ALPAKA_FN_HOST auto taskSet(
-                TView & buf,
+                TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)
             -> decltype(
@@ -289,20 +260,20 @@ namespace alpaka
                     dim::Dim<TView>,
                     dev::Dev<TView>>
                 ::taskSet(
-                    buf,
+                    view,
                     byte,
                     extent))
             {
                 static_assert(
                     dim::Dim<TView>::value == dim::Dim<TExtent>::value,
-                    "The buffer and the extent are required to have the same dimensionality!");
+                    "The view and the extent are required to have the same dimensionality!");
 
                 return
                     traits::TaskSet<
                         dim::Dim<TView>,
                         dev::Dev<TView>>
                     ::taskSet(
-                        buf,
+                        view,
                         byte,
                         extent);
             }
@@ -310,10 +281,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets the memory to the given value asynchronously.
             //!
-            //! \param buf The memory buffer to fill.
-            //! \param byte Value to set for each element of the specified buffer.
-            //! \param extent The extent of the buffer to fill.
-            //! \param stream The stream to enqueue the buffer fill task into.
+            //! \param view The memory view to fill.
+            //! \param byte Value to set for each element of the specified view.
+            //! \param extent The extent of the view to fill.
+            //! \param stream The stream to enqueue the view fill task into.
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent,
@@ -321,7 +292,7 @@ namespace alpaka
                 typename TStream>
             ALPAKA_FN_HOST auto set(
                 TStream & stream,
-                TView & buf,
+                TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)
             -> void
@@ -329,7 +300,7 @@ namespace alpaka
                 stream::enqueue(
                     stream,
                     mem::view::taskSet(
-                        buf,
+                        view,
                         byte,
                         extent));
             }
@@ -337,186 +308,81 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates a memory copy task.
             //!
-            //! \param bufDst The destination memory buffer.
-            //! \param bufSrc The source memory buffer.
-            //! \param extent The extent of the buffer to copy.
+            //! \param viewDst The destination memory view.
+            //! \param viewSrc The source memory view.
+            //! \param extent The extent of the view to copy.
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst>
+                typename TViewSrc,
+                typename TViewDst>
             ALPAKA_FN_HOST auto taskCopy(
-                TBufDst & bufDst,
-                TBufSrc const & bufSrc,
+                TViewDst & viewDst,
+                TViewSrc const & viewSrc,
                 TExtent const & extent)
             -> decltype(
                 traits::TaskCopy<
-                    dim::Dim<TBufDst>,
-                    dev::Dev<TBufDst>,
-                    dev::Dev<TBufSrc>>
+                    dim::Dim<TViewDst>,
+                    dev::Dev<TViewDst>,
+                    dev::Dev<TViewSrc>>
                 ::taskCopy(
-                    bufDst,
-                    bufSrc,
+                    viewDst,
+                    viewSrc,
                     extent))
             {
                 static_assert(
-                    dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
-                    "The source and the destination buffers are required to have the same dimensionality!");
+                    dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                    "The source and the destination view are required to have the same dimensionality!");
                 static_assert(
-                    dim::Dim<TBufDst>::value == dim::Dim<TExtent>::value,
-                    "The destination buffer and the extent are required to have the same dimensionality!");
+                    dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                    "The destination view and the extent are required to have the same dimensionality!");
                 static_assert(
-                    std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
-                    "The source and the destination buffers are required to have the same element type!");
+                    std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                    "The source and the destination view are required to have the same element type!");
 
                 return
                     traits::TaskCopy<
-                        dim::Dim<TBufDst>,
-                        dev::Dev<TBufDst>,
-                        dev::Dev<TBufSrc>>
+                        dim::Dim<TViewDst>,
+                        dev::Dev<TViewDst>,
+                        dev::Dev<TViewSrc>>
                     ::taskCopy(
-                        bufDst,
-                        bufSrc,
+                        viewDst,
+                        viewSrc,
                         extent);
             }
 
             //-----------------------------------------------------------------------------
             //! Copies memory possibly between different memory spaces asynchronously.
             //!
-            //! \param bufDst The destination memory buffer.
-            //! \param bufSrc The source memory buffer.
-            //! \param extent The extent of the buffer to copy.
-            //! \param stream The stream to enqueue the buffer copy task into.
+            //! \param viewDst The destination memory view.
+            //! \param viewSrc The source memory view.
+            //! \param extent The extent of the view to copy.
+            //! \param stream The stream to enqueue the view copy task into.
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst,
+                typename TViewSrc,
+                typename TViewDst,
                 typename TStream>
             ALPAKA_FN_HOST auto copy(
                 TStream & stream,
-                TBufDst & bufDst,
-                TBufSrc const & bufSrc,
+                TViewDst & viewDst,
+                TViewSrc const & viewSrc,
                 TExtent const & extent)
             -> void
             {
                 stream::enqueue(
                     stream,
                     mem::view::taskCopy(
-                        bufDst,
-                        bufSrc,
+                        viewDst,
+                        viewSrc,
                         extent));
-            }
-
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //! \param buf This can be either a memory buffer or a memory view.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TView,
-                typename TBuf>
-            ALPAKA_FN_HOST auto createView(
-                TBuf const & buf)
-            -> decltype(
-                traits::CreateView<
-                    TView>
-                ::createView(
-                    buf))
-            {
-                return
-                    traits::CreateView<
-                        TView>
-                    ::createView(
-                        buf);
-            }
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //! \param buf This can be either a memory buffer or a memory view.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TView,
-                typename TBuf>
-            ALPAKA_FN_HOST auto createView(
-                TBuf & buf)
-            -> decltype(
-                traits::CreateView<
-                    TView>
-                ::createView(
-                    buf))
-            {
-                return
-                    traits::CreateView<
-                        TView>
-                    ::createView(
-                        buf);
-            }
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //! \param buf This can be either a memory buffer or a memory view.
-            //! \param extentElements The extent in elements.
-            //! \param relativeOffsetsElements The offsets in elements.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TView,
-                typename TBuf,
-                typename TExtent,
-                typename TOffsets>
-            ALPAKA_FN_HOST auto createView(
-                TBuf const & buf,
-                TExtent const & extentElements,
-                TOffsets const & relativeOffsetsElements = TOffsets())
-            -> decltype(
-                traits::CreateView<
-                    TView>
-                ::createView(
-                    buf,
-                    extentElements,
-                    relativeOffsetsElements))
-            {
-                return
-                    traits::CreateView<
-                        TView>
-                    ::createView(
-                        buf,
-                        extentElements,
-                        relativeOffsetsElements);
-            }
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //! \param buf This can be either a memory buffer or a memory view.
-            //! \param extentElements The extent in elements.
-            //! \param relativeOffsetsElements The offsets in elements.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TView,
-                typename TBuf,
-                typename TExtent,
-                typename TOffsets>
-            ALPAKA_FN_HOST auto createView(
-                TBuf & buf,
-                TExtent const & extentElements,
-                TOffsets const & relativeOffsetsElements = TOffsets())
-            -> decltype(
-                traits::CreateView<
-                    TView>
-                ::createView(
-                    buf,
-                    extentElements,
-                    relativeOffsetsElements))
-            {
-                return
-                    traits::CreateView<
-                        TView>
-                    ::createView(
-                        buf,
-                        extentElements,
-                        relativeOffsetsElements);
             }
 
             //-----------------------------------------------------------------------------
             //! Gets the memory buffer.
             //!
-            //! \param view The object the buffer is received from.
+            //! \param view The view the buffer is received from.
             //! \return The memory buffer.
             //-----------------------------------------------------------------------------
             template<
@@ -538,7 +404,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Gets the memory buffer.
             //!
-            //! \param view The object the buffer is received from.
+            //! \param view The view the buffer is received from.
             //! \return The memory buffer.
             //-----------------------------------------------------------------------------
             template<

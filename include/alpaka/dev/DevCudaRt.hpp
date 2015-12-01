@@ -30,7 +30,6 @@
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
-#include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
 
 #include <alpaka/core/Cuda.hpp>         // cudaGetDeviceCount, ...
 
@@ -469,34 +468,6 @@ namespace alpaka
                     TSize>
                 {
                     using type = mem::buf::BufCudaRt<TElem, TDim, TSize>;
-                };
-            }
-        }
-        namespace view
-        {
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TSize>
-            class ViewBasic;
-
-            namespace traits
-            {
-                //#############################################################################
-                //! The CUDA RT device memory buffer type trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct ViewType<
-                    dev::DevCudaRt,
-                    TElem,
-                    TDim,
-                    TSize>
-                {
-                    using type = mem::view::ViewBasic<dev::DevCudaRt, TElem, TDim, TSize>;
                 };
             }
         }

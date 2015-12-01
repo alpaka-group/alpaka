@@ -57,8 +57,8 @@ namespace alpaka
                     //#############################################################################
                     template<
                         typename TDim,
-                        typename TBufDst,
-                        typename TBufSrc,
+                        typename TViewDst,
+                        typename TViewSrc,
                         typename TExtent>
                     struct TaskCopy;
 
@@ -66,25 +66,25 @@ namespace alpaka
                     //! The 1D CUDA memory copy trait.
                     //#############################################################################
                     template<
-                        typename TBufDst,
-                        typename TBufSrc,
+                        typename TViewDst,
+                        typename TViewSrc,
                         typename TExtent>
                     struct TaskCopy<
                         dim::DimInt<1>,
-                        TBufDst,
-                        TBufSrc,
+                        TViewDst,
+                        TViewSrc,
                         TExtent>
                     {
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
-                            "The source and the destination buffers are required to have the same dimensionality!");
+                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TExtent>::value,
-                            "The destination buffer and the extent are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtent.
+                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            "The views and the extent are required to have the same dimensionality!");
+                        // TODO: Maybe check for Size of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
-                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
-                            "The source and the destination buffers are required to have the same element type!");
+                            std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                            "The source and the destination view are required to have the same element type!");
 
                         using Size = size::Size<TExtent>;
 
@@ -92,8 +92,8 @@ namespace alpaka
                         //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopy(
-                            TBufDst & bufDst,
-                            TBufSrc const & bufSrc,
+                            TViewDst & viewDst,
+                            TViewSrc const & viewSrc,
                             TExtent const & extent,
                             cudaMemcpyKind const & cudaMemCpyKind,
                             int const & iDstDevice,
@@ -103,12 +103,12 @@ namespace alpaka
                                 m_iSrcDevice(iSrcDevice),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_extentWidth(extent::getWidth(extent)),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
-                                m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
+                                m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
+                                m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
 #endif
-                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extent) * sizeof(elem::Elem<TBufDst>))),
-                                m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))),
-                                m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)))
+                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extent) * sizeof(elem::Elem<TViewDst>))),
+                                m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
+                                m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             assert(m_extentWidth <= m_dstWidth);
@@ -151,25 +151,25 @@ namespace alpaka
                     //! The 2D CUDA memory copy trait.
                     //#############################################################################
                     template<
-                        typename TBufDst,
-                        typename TBufSrc,
+                        typename TViewDst,
+                        typename TViewSrc,
                         typename TExtent>
                     struct TaskCopy<
                         dim::DimInt<2>,
-                        TBufDst,
-                        TBufSrc,
+                        TViewDst,
+                        TViewSrc,
                         TExtent>
                     {
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
-                            "The source and the destination buffers are required to have the same dimensionality!");
+                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TExtent>::value,
-                            "The destination buffer and the extent are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtent.
+                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            "The views and the extent are required to have the same dimensionality!");
+                        // TODO: Maybe check for Size of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
-                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
-                            "The source and the destination buffers are required to have the same element type!");
+                            std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                            "The source and the destination view are required to have the same element type!");
 
                         using Size = size::Size<TExtent>;
 
@@ -177,8 +177,8 @@ namespace alpaka
                         //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopy(
-                            TBufDst & bufDst,
-                            TBufSrc const & bufSrc,
+                            TViewDst & viewDst,
+                            TViewSrc const & viewSrc,
                             TExtent const & extent,
                             cudaMemcpyKind const & cudaMemCpyKind,
                             int const & iDstDevice,
@@ -189,19 +189,19 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_extentWidth(extent::getWidth(extent)),
 #endif
-                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extent) * sizeof(elem::Elem<TBufDst>))),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),      // required for 3D peer copy
-                                m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),      // required for 3D peer copy
+                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extent) * sizeof(elem::Elem<TViewDst>))),
+                                m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),      // required for 3D peer copy
+                                m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),      // required for 3D peer copy
 
                                 m_extentHeight(extent::getHeight(extent)),
-                                m_dstHeight(static_cast<Size>(extent::getHeight(bufDst))),    // required for 3D peer copy
-                                m_srcHeight(static_cast<Size>(extent::getHeight(bufSrc))),    // required for 3D peer copy
+                                m_dstHeight(static_cast<Size>(extent::getHeight(viewDst))),    // required for 3D peer copy
+                                m_srcHeight(static_cast<Size>(extent::getHeight(viewSrc))),    // required for 3D peer copy
 
-                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufDst>::value - 1u>(bufDst))),
-                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufSrc>::value - 1u>(bufSrc))),
+                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
 
-                                m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))),
-                                m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)))
+                                m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
+                                m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             assert(m_extentWidth <= m_dstWidth);
@@ -262,25 +262,25 @@ namespace alpaka
                     //! The 3D CUDA memory copy trait.
                     //#############################################################################
                     template<
-                        typename TBufDst,
-                        typename TBufSrc,
+                        typename TViewDst,
+                        typename TViewSrc,
                         typename TExtent>
                     struct TaskCopy<
                         dim::DimInt<3>,
-                        TBufDst,
-                        TBufSrc,
+                        TViewDst,
+                        TViewSrc,
                         TExtent>
                     {
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
-                            "The source and the destination buffers are required to have the same dimensionality!");
+                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TExtent>::value,
-                            "The destination buffer and the extent are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtent.
+                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            "The views and the extent are required to have the same dimensionality!");
+                        // TODO: Maybe check for Size of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
-                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
-                            "The source and the destination buffers are required to have the same element type!");
+                            std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                            "The source and the destination view are required to have the same element type!");
 
                         using Size = size::Size<TExtent>;
 
@@ -288,8 +288,8 @@ namespace alpaka
                         //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopy(
-                            TBufDst & bufDst,
-                            TBufSrc const & bufSrc,
+                            TViewDst & viewDst,
+                            TViewSrc const & viewSrc,
                             TExtent const & extent,
                             cudaMemcpyKind const & cudaMemCpyKind,
                             int const & iDstDevice,
@@ -300,24 +300,24 @@ namespace alpaka
                                 m_iSrcDevice(iSrcDevice),
 
                                 m_extentWidth(extent::getWidth(extent)),
-                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TBufDst>))),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
-                                m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
+                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TViewDst>))),
+                                m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
+                                m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
 
                                 m_extentHeight(extent::getHeight(extent)),
-                                m_dstHeight(static_cast<Size>(extent::getHeight(bufDst))),
-                                m_srcHeight(static_cast<Size>(extent::getHeight(bufSrc))),
+                                m_dstHeight(static_cast<Size>(extent::getHeight(viewDst))),
+                                m_srcHeight(static_cast<Size>(extent::getHeight(viewSrc))),
 
                                 m_extentDepth(extent::getDepth(extent)),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                                m_dstDepth(static_cast<Size>(extent::getDepth(bufDst))),
-                                m_srcDepth(static_cast<Size>(extent::getDepth(bufSrc))),
+                                m_dstDepth(static_cast<Size>(extent::getDepth(viewDst))),
+                                m_srcDepth(static_cast<Size>(extent::getDepth(viewSrc))),
 #endif
-                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufDst>::value - 1u>(bufDst))),
-                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufSrc>::value - 1u>(bufSrc))),
+                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
 
-                                m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))),
-                                m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)))
+                                m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
+                                m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             assert(m_extentWidth <= m_dstWidth);
@@ -406,31 +406,31 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
-                        typename TBufSrc,
-                        typename TBufDst>
+                        typename TViewSrc,
+                        typename TViewDst>
                     ALPAKA_FN_HOST static auto taskCopy(
-                        TBufDst & bufDst,
-                        TBufSrc const & bufSrc,
+                        TViewDst & viewDst,
+                        TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::cuda::detail::TaskCopy<
                         TDim,
-                        TBufDst,
-                        TBufSrc,
+                        TViewDst,
+                        TViewSrc,
                         TExtent>
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         auto const iDevice(
-                            dev::getDev(bufSrc).m_iDevice);
+                            dev::getDev(viewSrc).m_iDevice);
 
                         return
                             mem::view::cuda::detail::TaskCopy<
                                 TDim,
-                                TBufDst,
-                                TBufSrc,
+                                TViewDst,
+                                TViewSrc,
                                 TExtent>(
-                                    bufDst,
-                                    bufSrc,
+                                    viewDst,
+                                    viewSrc,
                                     extent,
                                     cudaMemcpyDeviceToHost,
                                     iDevice,
@@ -452,31 +452,31 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
-                        typename TBufSrc,
-                        typename TBufDst>
+                        typename TViewSrc,
+                        typename TViewDst>
                     ALPAKA_FN_HOST static auto taskCopy(
-                        TBufDst & bufDst,
-                        TBufSrc const & bufSrc,
+                        TViewDst & viewDst,
+                        TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::cuda::detail::TaskCopy<
                         TDim,
-                        TBufDst,
-                        TBufSrc,
+                        TViewDst,
+                        TViewSrc,
                         TExtent>
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         auto const iDevice(
-                            dev::getDev(bufDst).m_iDevice);
+                            dev::getDev(viewDst).m_iDevice);
 
                         return
                             mem::view::cuda::detail::TaskCopy<
                                 TDim,
-                                TBufDst,
-                                TBufSrc,
+                                TViewDst,
+                                TViewSrc,
                                 TExtent>(
-                                    bufDst,
-                                    bufSrc,
+                                    viewDst,
+                                    viewSrc,
                                     extent,
                                     cudaMemcpyHostToDevice,
                                     iDevice,
@@ -498,16 +498,16 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
-                        typename TBufSrc,
-                        typename TBufDst>
+                        typename TViewSrc,
+                        typename TViewDst>
                     ALPAKA_FN_HOST static auto taskCopy(
-                        TBufDst & bufDst,
-                        TBufSrc const & bufSrc,
+                        TViewDst & viewDst,
+                        TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::cuda::detail::TaskCopy<
                         TDim,
-                        TBufDst,
-                        TBufSrc,
+                        TViewDst,
+                        TViewSrc,
                         TExtent>
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -515,15 +515,15 @@ namespace alpaka
                         return
                             mem::view::cuda::detail::TaskCopy<
                                 TDim,
-                                TBufDst,
-                                TBufSrc,
+                                TViewDst,
+                                TViewSrc,
                                 TExtent>(
-                                    bufDst,
-                                    bufSrc,
+                                    viewDst,
+                                    viewSrc,
                                     extent,
                                     cudaMemcpyDeviceToDevice,
-                                    dev::getDev(bufDst).m_iDevice,
-                                    dev::getDev(bufSrc).m_iDevice);
+                                    dev::getDev(viewDst).m_iDevice,
+                                    dev::getDev(viewSrc).m_iDevice);
                     }
                 };
             }
@@ -536,10 +536,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
-                        typename TBufSrc,
-                        typename TBufDst>
+                        typename TViewSrc,
+                        typename TViewDst>
                     ALPAKA_FN_HOST static auto buildCudaMemcpy3DParms(
-                        mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TBufDst, TBufSrc, TExtent> const & task)
+                        mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DParms
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -591,11 +591,11 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TBufDst,
-                        typename TBufSrc,
+                        typename TViewDst,
+                        typename TViewSrc,
                         typename TExtent>
                     ALPAKA_FN_HOST static auto buildCudaMemcpy3DPeerParms(
-                        mem::view::cuda::detail::TaskCopy<dim::DimInt<2>, TBufDst, TBufSrc, TExtent> const & task)
+                        mem::view::cuda::detail::TaskCopy<dim::DimInt<2>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DPeerParms
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -651,11 +651,11 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TBufDst,
-                        typename TBufSrc,
+                        typename TViewDst,
+                        typename TViewSrc,
                         typename TExtent>
                     ALPAKA_FN_HOST static auto buildCudaMemcpy3DPeerParms(
-                        mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TBufDst, TBufSrc, TExtent> const & task)
+                        mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DPeerParms
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -720,18 +720,18 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst>
+                typename TViewSrc,
+                typename TViewDst>
             struct Enqueue<
                 stream::StreamCudaRtAsync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TBufDst, TBufSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TBufDst, TBufSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -783,18 +783,18 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst>
+                typename TViewSrc,
+                typename TViewDst>
             struct Enqueue<
                 stream::StreamCudaRtSync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TBufDst, TBufSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TBufDst, TBufSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -844,18 +844,18 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst>
+                typename TViewSrc,
+                typename TViewDst>
             struct Enqueue<
                 stream::StreamCudaRtAsync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TBufDst, TBufSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TBufDst, TBufSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -915,18 +915,18 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst>
+                typename TViewSrc,
+                typename TViewDst>
             struct Enqueue<
                 stream::StreamCudaRtSync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TBufDst, TBufSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TBufDst, TBufSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -984,18 +984,18 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst>
+                typename TViewSrc,
+                typename TViewDst>
             struct Enqueue<
                 stream::StreamCudaRtAsync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TBufDst, TBufSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TBufDst, TBufSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -1041,18 +1041,18 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TExtent,
-                typename TBufSrc,
-                typename TBufDst>
+                typename TViewSrc,
+                typename TViewDst>
             struct Enqueue<
                 stream::StreamCudaRtSync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TBufDst, TBufSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TBufDst, TBufSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;

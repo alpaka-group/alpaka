@@ -24,7 +24,6 @@
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
 #include <alpaka/event/Traits.hpp>      // event::traits::EventType
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
-#include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
 
 #include <alpaka/stream/Traits.hpp>     // stream::enqueue
 #include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getTotalGlobalMemSizeBytes, getFreeGlobalMemSizeBytes
@@ -431,34 +430,6 @@ namespace alpaka
                     TSize>
                 {
                     using type = mem::buf::BufCpu<TElem, TDim, TSize>;
-                };
-            }
-        }
-        namespace view
-        {
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TSize>
-            class ViewBasic;
-
-            namespace traits
-            {
-                //#############################################################################
-                //! The CPU device memory view type trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct ViewType<
-                    dev::DevCpu,
-                    TElem,
-                    TDim,
-                    TSize>
-                {
-                    using type = mem::view::ViewBasic<dev::DevCpu, TElem, TDim, TSize>;
                 };
             }
         }

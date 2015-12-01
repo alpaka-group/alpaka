@@ -52,22 +52,22 @@ namespace alpaka
                     //! Set CPU memory.
                     //#############################################################################
                     template<
-                        typename TBuf,
+                        typename TView,
                         typename TExtent>
                     struct TaskSet
                     {
                         static_assert(
-                            dim::Dim<TBuf>::value == dim::Dim<TExtent>::value,
-                            "The destination buffer and the extent are required to have the same dimensionality!");
+                            dim::Dim<TView>::value == dim::Dim<TExtent>::value,
+                            "The destination view and the extent are required to have the same dimensionality!");
 
                         //-----------------------------------------------------------------------------
                         //! Constructor.
                         //-----------------------------------------------------------------------------
                         TaskSet(
-                            TBuf & buf,
+                            TView & view,
                             std::uint8_t const & byte,
                             TExtent const & extent) :
-                                m_buf(buf),
+                                m_view(view),
                                 m_byte(byte),
                                 m_extent(extent)
                         {}
@@ -82,23 +82,23 @@ namespace alpaka
                             auto const extentWidth(extent::getWidth(m_extent));
                             auto const extentHeight(extent::getHeight(m_extent));
                             auto const extentDepth(extent::getDepth(m_extent));
-                            auto const dstWidth(extent::getWidth(m_buf));
-                            auto const dstHeight(extent::getHeight(m_buf));
+                            auto const dstWidth(extent::getWidth(m_view));
+                            auto const dstHeight(extent::getHeight(m_view));
         #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                            auto const dstDepth(extent::getDepth(m_buf));
+                            auto const dstDepth(extent::getDepth(m_view));
         #endif
                             assert(extentWidth <= dstWidth);
                             assert(extentHeight <= dstHeight);
                             assert(extentDepth <= dstDepth);
 
-                            auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TBuf>));
-                            auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(m_buf));
+                            auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TView>));
+                            auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(m_view));
                             assert(extentWidthBytes <= dstPitchBytes);
 
-                            auto const dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(m_buf)));
+                            auto const dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(m_view)));
                             auto const dstSliceSizeBytes(dstPitchBytes * dstHeight);
 
-                            auto const & dstBuf(mem::view::getBuf(m_buf));
+                            auto const & dstBuf(mem::view::getBuf(m_view));
                             auto const dstBufWidth(extent::getWidth(dstBuf));
                             auto const dstBufHeight(extent::getHeight(dstBuf));
 
@@ -115,8 +115,8 @@ namespace alpaka
                                 << " dd: " << dstDepth
                                 << " dptr: " << reinterpret_cast<void *>(dstNativePtr)
                                 << " dpitchb: " << dstPitchBytes
-                                << " dbasew: " << dstBufWidth
-                                << " dbaseh: " << dstBufHeight
+                                << " dbufw: " << dstBufWidth
+                                << " dbufh: " << dstBufHeight
                                 << std::endl;
         #endif
                             // If:
@@ -166,8 +166,8 @@ namespace alpaka
                             }
                         }
 
-                        // FIXME: Copy buffer handle, do NOT take reference!
-                        TBuf & m_buf;
+                        // FIXME: Copy view handle, do NOT take reference!
+                        TView & m_view;
                         std::uint8_t const m_byte;
                         TExtent const m_extent;
                     };
@@ -190,20 +190,20 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
-                        typename TBuf>
+                        typename TView>
                     ALPAKA_FN_HOST static auto taskSet(
-                        TBuf & buf,
+                        TView & view,
                         std::uint8_t const & byte,
                         TExtent const & extent)
                     -> cpu::detail::TaskSet<
-                        TBuf,
+                        TView,
                         TExtent>
                     {
                         return
                             cpu::detail::TaskSet<
-                                TBuf,
+                                TView,
                                 TExtent>(
-                                    buf,
+                                    view,
                                     byte,
                                     extent);
                     }

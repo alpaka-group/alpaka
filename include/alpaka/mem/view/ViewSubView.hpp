@@ -28,7 +28,7 @@
 #include <alpaka/offset/Traits.hpp>                 // traits::getOffsetX
 #include <alpaka/size/Traits.hpp>                   // size::traits::SizeType
 
-#include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>    // BufPlainPtrWrapper
+#include <alpaka/mem/view/ViewPlainPtr.hpp>         // ViewPlainPtr
 #include <alpaka/vec/Vec.hpp>                       // Vec
 #include <alpaka/core/Common.hpp>                   // ALPAKA_FN_HOST
 
@@ -62,13 +62,13 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TSize>
-            class ViewBasic
+            class ViewSubView
             {
             public:
                 using Dev = TDev;
                 using Elem = TElem;
                 using Dim = TDim;
-                using Buf = mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>;
+                using Buf = mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>;
                 // If the value type is const, we store a const buffer.
                 //using BufC = detail::MimicConst<TElem, Buf>;
 
@@ -79,7 +79,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf>
-                ViewBasic(
+                ViewSubView(
                     TBuf const & buf) :
                         m_Buf(
                             mem::view::getPtrNative(buf),
@@ -97,7 +97,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf>
-                ViewBasic(
+                ViewSubView(
                     TBuf & buf) :
                         m_Buf(
                             mem::view::getPtrNative(buf),
@@ -124,7 +124,7 @@ namespace alpaka
                     typename TBuf,
                     typename TOffsets,
                     typename TExtent>
-                ViewBasic(
+                ViewSubView(
                     TBuf const & buf,
                     TExtent const & extentElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
@@ -165,7 +165,7 @@ namespace alpaka
                     typename TBuf,
                     typename TOffsets,
                     typename TExtent>
-                ViewBasic(
+                ViewSubView(
                     TBuf & buf,
                     TExtent const & extentElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
@@ -206,14 +206,14 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for ViewBasic.
+    // Trait specializations for ViewSubView.
     //-----------------------------------------------------------------------------
     namespace dev
     {
         namespace traits
         {
             //#############################################################################
-            //! The ViewBasic device type trait specialization.
+            //! The ViewSubView device type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -221,13 +221,13 @@ namespace alpaka
                 typename TDev,
                 typename TSize>
             struct DevType<
-                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
             {
                 using type = TDev;
             };
 
             //#############################################################################
-            //! The ViewBasic device get trait specialization.
+            //! The ViewSubView device get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -235,13 +235,13 @@ namespace alpaka
                 typename TDev,
                 typename TSize>
             struct GetDev<
-                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
+                    mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & view)
                 -> TDev
                 {
                     return
@@ -256,7 +256,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The ViewBasic dimension getter trait specialization.
+            //! The ViewSubView dimension getter trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -264,7 +264,7 @@ namespace alpaka
                 typename TDev,
                 typename TSize>
             struct DimType<
-                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -275,7 +275,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The ViewBasic memory element type get trait specialization.
+            //! The ViewSubView memory element type get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -283,7 +283,7 @@ namespace alpaka
                 typename TDev,
                 typename TSize>
             struct ElemType<
-                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
             {
                 using type = TElem;
             };
@@ -294,7 +294,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The ViewBasic width get trait specialization.
+            //! The ViewSubView width get trait specialization.
             //#############################################################################
             template<
                 typename TIdx,
@@ -304,14 +304,14 @@ namespace alpaka
                 typename TSize>
             struct GetExtent<
                 TIdx,
-                mem::view::ViewBasic<TDev, TElem, TDim, TSize>,
+                mem::view::ViewSubView<TDev, TElem, TDim, TSize>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & extent)
+                    mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
                     return extent.m_extentElements[TIdx::value];
@@ -326,96 +326,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The memory buffer view creation type trait.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TDev,
-                    typename TSize>
-                struct CreateView<
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
-                {
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TBuf>
-                    ALPAKA_FN_HOST static auto createView(
-                        TBuf const & buf)
-                    -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
-                    {
-                        return mem::view::ViewBasic<
-                            TDev,
-                            typename std::add_const<TElem>::type,
-                            TDim,
-                            TSize>(
-                                buf);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TBuf>
-                    ALPAKA_FN_HOST static auto createView(
-                        TBuf & buf)
-                    -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
-                    {
-                        return mem::view::ViewBasic<
-                            TDev,
-                            TElem,
-                            TDim,
-                            TSize>(
-                                buf);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TBuf,
-                        typename TExtent,
-                        typename TOffsets>
-                    ALPAKA_FN_HOST static auto createView(
-                        TBuf const & buf,
-                        TExtent const & extentElements,
-                        TOffsets const & relativeOffsetsElements)
-                    -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
-                    {
-                        return mem::view::ViewBasic<
-                            TDev,
-                            typename std::add_const<TElem>::type,
-                            TDim,
-                            TSize>(
-                                buf,
-                                extentElements,
-                                relativeOffsetsElements);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TBuf,
-                        typename TExtent,
-                        typename TOffsets>
-                    ALPAKA_FN_HOST static auto createView(
-                        TBuf & buf,
-                        TExtent const & extentElements,
-                        TOffsets const & relativeOffsetsElements)
-                    -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
-                    {
-                        return mem::view::ViewBasic<
-                            TDev,
-                            TElem,
-                            TDim,
-                            TSize>(
-                                buf,
-                                extentElements,
-                                relativeOffsetsElements);
-                    }
-                };
-
-                //#############################################################################
-                //! The ViewBasic buf trait specialization.
+                //! The ViewSubView buf trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -423,14 +334,14 @@ namespace alpaka
                     typename TDev,
                     typename TSize>
                 struct GetBuf<
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                    mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getBuf(
-                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
-                    -> typename mem::view::ViewBasic<TDev, TElem, TDim, TSize>::Buf const &
+                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & view)
+                    -> typename mem::view::ViewSubView<TDev, TElem, TDim, TSize>::Buf const &
                     {
                         return view.m_Buf;
                     }
@@ -438,15 +349,15 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getBuf(
-                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> & view)
-                    -> typename mem::view::ViewBasic<TDev, TElem, TDim, TSize>::Buf &
+                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> & view)
+                    -> typename mem::view::ViewSubView<TDev, TElem, TDim, TSize>::Buf &
                     {
                         return view.m_Buf;
                     }
                 };
 
                 //#############################################################################
-                //! The ViewBasic native pointer get trait specialization.
+                //! The ViewSubView native pointer get trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -454,7 +365,7 @@ namespace alpaka
                     typename TDev,
                     typename TSize>
                 struct GetPtrNative<
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                    mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
                 {
                 private:
                     using IdxSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>;
@@ -463,7 +374,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
+                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & view)
                     -> TElem const *
                     {
                         auto const & buf(mem::view::getBuf(view));
@@ -477,7 +388,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> & view)
+                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> & view)
                     -> TElem *
                     {
                         auto & buf(mem::view::getBuf(view));
@@ -526,7 +437,7 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The ViewBasic pitch get trait specialization.
+                //! The ViewSubView pitch get trait specialization.
                 //#############################################################################
                 template<
                     typename TIdx,
@@ -536,13 +447,13 @@ namespace alpaka
                     typename TSize>
                 struct GetPitchBytes<
                     TIdx,
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                    mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
-                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
+                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & view)
                     -> TSize
                     {
                         return
@@ -558,7 +469,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The ViewBasic x offset get trait specialization.
+            //! The ViewSubView x offset get trait specialization.
             //#############################################################################
             template<
                 typename TIdx,
@@ -568,14 +479,14 @@ namespace alpaka
                 typename TSize>
             struct GetOffset<
                 TIdx,
-                mem::view::ViewBasic<TDev, TElem, TDim, TSize>,
+                mem::view::ViewSubView<TDev, TElem, TDim, TSize>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & offset)
+                    mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & offset)
                 -> TSize
                 {
                     return offset.m_vOffsetsElements[TIdx::value];
@@ -588,7 +499,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The ViewBasic size type trait specialization.
+            //! The ViewSubView size type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -596,7 +507,7 @@ namespace alpaka
                 typename TDev,
                 typename TSize>
             struct SizeType<
-                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
             {
                 using type = TSize;
             };
