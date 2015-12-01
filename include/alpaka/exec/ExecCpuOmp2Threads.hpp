@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
+
+#if _OPENMP < 200203
+    #error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+#endif
+
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
@@ -161,8 +167,7 @@ namespace alpaka
 
                 // The number of threads in this block.
                 TSize const blockThreadCount(blockThreadExtent.prod());
-                int const iblockThreadCount(static_cast<int>(blockThreadCount));
-
+                int const iBlockThreadCount(static_cast<int>(blockThreadCount));
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
                 ::omp_set_dynamic(0);
@@ -180,15 +185,15 @@ namespace alpaka
                         // So we have to spawn one OS thread per thread in a block.
                         // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                         // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                        #pragma omp parallel num_threads(iblockThreadCount)
+                        #pragma omp parallel num_threads(iBlockThreadCount)
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                             // GCC 5.1 fails with:
-                            // error: redeclaration of ‘const int& iblockThreadCount’
-                            // if(numThreads != iNumThreadsInBloc
+                            // error: redeclaration of ‘const int& iBlockThreadCount’
+                            // if(numThreads != iBlockThreadCount
                             //                ^
-                            // note: ‘const int& iblockThreadCount’ previously declared here
-                            // #pragma omp parallel num_threads(iNumThread
+                            // note: ‘const int& iBlockThreadCount’ previously declared here
+                            // #pragma omp parallel num_threads(iBlockThreadCount)
                             //         ^
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
                             // The first thread does some checks in the first block executed.
@@ -196,7 +201,7 @@ namespace alpaka
                             {
                                 int const numThreads(::omp_get_num_threads());
                                 std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << numThreads << std::endl;
-                                if(numThreads != iblockThreadCount)
+                                if(numThreads != iBlockThreadCount)
                                 {
                                     throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
                                 }
@@ -338,3 +343,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

@@ -21,12 +21,19 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
+#include <alpaka/dev/DevCudaRt.hpp>         // dev::DevCudaRt
+#include <alpaka/vec/Vec.hpp>               // Vec
+#include <alpaka/core/Cuda.hpp>             // cudaMalloc, ...
+
 #include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/mem/buf/Traits.hpp>        // mem::view::Copy, ...
-
-#include <alpaka/vec/Vec.hpp>               // Vec
-#include <alpaka/core/Cuda.hpp>             // cudaMalloc, ...
 
 #include <cassert>                          // assert
 #include <memory>                           // std::shared_ptr
@@ -858,3 +865,5 @@ namespace alpaka
 
 #include <alpaka/mem/buf/cuda/Copy.hpp>
 #include <alpaka/mem/buf/cuda/Set.hpp>
+
+#endif

@@ -37,56 +37,22 @@
 //-----------------------------------------------------------------------------
 // acc
 //-----------------------------------------------------------------------------
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
-    #include <alpaka/acc/AccCpuSerial.hpp>
-    #include <alpaka/exec/ExecCpuSerial.hpp>
-#endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
-    #include <alpaka/acc/AccCpuThreads.hpp>
-    #include <alpaka/exec/ExecCpuThreads.hpp>
-#endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
-    #include <alpaka/acc/AccCpuFibers.hpp>
-    #include <alpaka/exec/ExecCpuFibers.hpp>
-#endif
-#ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
-    #if _OPENMP < 200203
-        #error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
-    #endif
-    #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
-    #include <alpaka/exec/ExecCpuOmp2Blocks.hpp>
-#endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
-    #if _OPENMP < 200203
-        #error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
-    #endif
-    #include <alpaka/acc/AccCpuOmp2Threads.hpp>
-    #include <alpaka/exec/ExecCpuOmp2Threads.hpp>
-#endif
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
-    #if _OPENMP < 201307
-        #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
-    #endif
-    #include <alpaka/acc/AccCpuOmp4.hpp>
-    #include <alpaka/exec/ExecCpuOmp4.hpp>
-#endif
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/acc/AccGpuCudaRt.hpp>
-    #include <alpaka/exec/ExecGpuCudaRt.hpp>
-#endif
+#include <alpaka/acc/AccCpuSerial.hpp>
+#include <alpaka/acc/AccCpuThreads.hpp>
+#include <alpaka/acc/AccCpuFibers.hpp>
+#include <alpaka/acc/AccCpuOmp2Blocks.hpp>
+#include <alpaka/acc/AccCpuOmp2Threads.hpp>
+#include <alpaka/acc/AccCpuOmp4.hpp>
+#include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/acc/Traits.hpp>
 
 //-----------------------------------------------------------------------------
 // atomic
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>
-#endif
+#include <alpaka/atomic/AtomicCudaBuiltIn.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
-#ifdef _OPENMP
-    #include <alpaka/atomic/AtomicOmpCritSec.hpp>
-#endif
+#include <alpaka/atomic/AtomicOmpCritSec.hpp>
 #include <alpaka/atomic/AtomicStlLock.hpp>
 #include <alpaka/atomic/Op.hpp>
 #include <alpaka/atomic/Traits.hpp>
@@ -97,9 +63,7 @@
     //-----------------------------------------------------------------------------
     // shared
     //-----------------------------------------------------------------------------
-    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-        #include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>
-    #endif
+    #include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>
     #include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>
     #include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>
     #include <alpaka/block/shared/Traits.hpp>
@@ -107,28 +71,19 @@
     //-----------------------------------------------------------------------------
     // sync
     //-----------------------------------------------------------------------------
-    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-        #include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>
-    #endif
-    #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
-        #include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>
-    #endif
+    #include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>
+    #include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>
     #include <alpaka/block/sync/BlockSyncNoOp.hpp>
-    #ifdef _OPENMP
-        #include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>
-    #endif
-    #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
-        #include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>
-    #endif
+    #include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>
+    #include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>
     #include <alpaka/block/sync/Traits.hpp>
 
 //-----------------------------------------------------------------------------
 // dev
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/dev/DevCudaRt.hpp>
-#endif
+#include <alpaka/dev/DevCudaRt.hpp>
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/dev/cpu/Wait.hpp>
 #include <alpaka/dev/Traits.hpp>
 
 //-----------------------------------------------------------------------------
@@ -141,15 +96,20 @@
 //-----------------------------------------------------------------------------
 // event
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/event/EventCudaRt.hpp>
-#endif
+#include <alpaka/event/EventCudaRt.hpp>
 #include <alpaka/event/EventCpu.hpp>
 #include <alpaka/event/Traits.hpp>
 
 //-----------------------------------------------------------------------------
 // exec
 //-----------------------------------------------------------------------------
+#include <alpaka/exec/ExecCpuSerial.hpp>
+#include <alpaka/exec/ExecCpuThreads.hpp>
+#include <alpaka/exec/ExecCpuFibers.hpp>
+#include <alpaka/exec/ExecCpuOmp2Blocks.hpp>
+#include <alpaka/exec/ExecCpuOmp2Threads.hpp>
+#include <alpaka/exec/ExecCpuOmp4.hpp>
+#include <alpaka/exec/ExecGpuCudaRt.hpp>
 #include <alpaka/exec/Traits.hpp>
 
 //-----------------------------------------------------------------------------
@@ -160,22 +120,12 @@
 //-----------------------------------------------------------------------------
 // idx
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>
-#endif
-#ifdef _OPENMP
-    #include <alpaka/idx/bt/IdxBtOmp.hpp>
-#endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
-    #include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
-#endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
-    #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
-#endif
+#include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>
+#include <alpaka/idx/bt/IdxBtOmp.hpp>
+#include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
+#include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
 #include <alpaka/idx/bt/IdxBtZero.hpp>
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>
-#endif
+#include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/Traits.hpp>
 
@@ -187,9 +137,7 @@
 //-----------------------------------------------------------------------------
 // math
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/math/MathCudaBuiltIn.hpp>
-#endif
+#include <alpaka/math/MathCudaBuiltIn.hpp>
 #include <alpaka/math/MathStl.hpp>
 
 //-----------------------------------------------------------------------------
@@ -199,9 +147,7 @@
 #include <alpaka/mem/alloc/AllocCpuNew.hpp>
 #include <alpaka/mem/alloc/Traits.hpp>
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/mem/buf/BufCudaRt.hpp>
-#endif
+#include <alpaka/mem/buf/BufCudaRt.hpp>
 #include <alpaka/mem/buf/BufCpu.hpp>
 #include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>
 #include <alpaka/mem/buf/BufStdContainers.hpp>
@@ -218,9 +164,7 @@
 //-----------------------------------------------------------------------------
 // rand
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/rand/RandCuRand.hpp>
-#endif
+#include <alpaka/rand/RandCuRand.hpp>
 #include <alpaka/rand/RandStl.hpp>
 #include <alpaka/rand/Traits.hpp>
 
@@ -232,10 +176,8 @@
 //-----------------------------------------------------------------------------
 // stream
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/stream/StreamCudaRtAsync.hpp>
-    #include <alpaka/stream/StreamCudaRtSync.hpp>
-#endif
+#include <alpaka/stream/StreamCudaRtAsync.hpp>
+#include <alpaka/stream/StreamCudaRtSync.hpp>
 #include <alpaka/stream/StreamCpuAsync.hpp>
 #include <alpaka/stream/StreamCpuSync.hpp>
 #include <alpaka/stream/Traits.hpp>

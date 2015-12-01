@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
+
+#if _OPENMP < 200203
+    #error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+#endif
+
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
@@ -305,3 +311,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

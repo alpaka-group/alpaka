@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
@@ -303,3 +305,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

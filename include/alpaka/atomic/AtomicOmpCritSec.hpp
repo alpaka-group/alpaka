@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef _OPENMP
+
 #include <alpaka/atomic/Traits.hpp>                 // AtomicOp
 
 #include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
@@ -100,3 +102,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <alpaka/dev/DevCpu.hpp>            // dev::DevCpu
+
 #include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
 #include <alpaka/mem/buf/Traits.hpp>        // mem::buf::Alloc, ...
 
@@ -38,10 +40,6 @@
 
 namespace alpaka
 {
-    namespace dev
-    {
-        class DevCpu;
-    }
     namespace mem
     {
         namespace buf

@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef _OPENMP
+
 #include <alpaka/idx/Traits.hpp>            // idx::GetIdx
 
 #include <alpaka/core/OpenMp.hpp>
@@ -144,3 +146,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

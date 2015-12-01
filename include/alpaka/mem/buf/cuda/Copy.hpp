@@ -21,6 +21,15 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
+#include <alpaka/stream/StreamCudaRtSync.hpp>   // stream::StreamCudaRtSync
+#include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
+
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
 #include <alpaka/dev/DevCudaRt.hpp>             // dev::DevCudaRt
 #include <alpaka/dim/DimIntegralConst.hpp>      // dim::DimInt<N>
@@ -1085,3 +1094,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

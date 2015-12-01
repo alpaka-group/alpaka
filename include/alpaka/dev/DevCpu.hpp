@@ -23,7 +23,6 @@
 
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
 #include <alpaka/event/Traits.hpp>      // event::traits::EventType
-#include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
 #include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
 
@@ -38,6 +37,8 @@
 #include <thread>                       // std::thread
 #include <mutex>                        // std::mutex
 #include <memory>                       // std::shared_ptr
+#include <vector>                       // std::vector
+#include <algorithm>                    // std::find_if
 
 namespace alpaka
 {
@@ -460,53 +461,6 @@ namespace alpaka
                     using type = mem::view::ViewBasic<dev::DevCpu, TElem, TDim, TSize>;
                 };
             }
-        }
-    }
-    namespace wait
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU device thread wait specialization.
-            //!
-            //! Blocks until the device has completed all preceding requested tasks.
-            //! Tasks that are enqueued or streams that are created after this call is made are not waited for.
-            //#############################################################################
-            template<>
-            struct CurrentThreadWaitFor<
-                dev::DevCpu>
-            {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    dev::DevCpu const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    // Get all the streams on the device at the time of invocation.
-                    // All streams added afterwards are ignored.
-                    auto vspStreams(
-                        dev.m_spDevCpuImpl->GetAllAsyncStreamImpls());
-
-                    // Enqueue an event in every asynchronous stream on the device.
-                    // \TODO: This should be done atomically for all streams.
-                    // Furthermore there should not even be a chance to enqueue something between getting the streams and adding our wait events!
-                    std::vector<event::EventCpu> vEvents;
-                    for(auto && spStream : vspStreams)
-                    {
-                        vEvents.emplace_back(dev);
-                        stream::enqueue(spStream, vEvents.back());
-                    }
-
-                    // Now wait for all the events.
-                    for(auto && event : vEvents)
-                    {
-                        wait::wait(event);
-                    }
-                }
-            };
         }
     }
 }

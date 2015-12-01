@@ -31,7 +31,7 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 SET(_SOURCE_DIR "src/")
-SET(_PROJECT_NAME "vectorAdd")
+SET(_PROJECT_NAME "headerCheck")
 
 PROJECT(${_PROJECT_NAME})
 
@@ -39,7 +39,7 @@ PROJECT(${_PROJECT_NAME})
 # Find alpaka.
 #-------------------------------------------------------------------------------
 
-SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING  "The location of the alpaka library")
+SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../" CACHE STRING  "The location of the alpaka library")
 
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE("alpaka" REQUIRED)
@@ -50,14 +50,48 @@ FIND_PACKAGE("alpaka" REQUIRED)
 
 INCLUDE("${ALPAKA_ROOT}cmake/common.cmake")
 INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
-SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR})
+
+#-------------------------------------------------------------------------------
+# Boost.Test.
+#-------------------------------------------------------------------------------
+FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS unit_test_framework)
+IF(NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
+    MESSAGE(FATAL_ERROR "Required alpaka dependency Boost.Test (Boost >= 1.59) could not be found!")
+
+ELSE()
+    LIST(APPEND _INCLUDE_DIRECTORIES_PRIVATE ${Boost_INCLUDE_DIRS})
+    LIST(APPEND _LINK_LIBRARIES_PRIVATE ${Boost_LIBRARIES})
+ENDIF()
+
+#-------------------------------------------------------------------------------
+# Create source files.
+#-------------------------------------------------------------------------------
+
+SET(_ALPAKA_INCLUDE_DIRECTORY "${_ALPAKA_ROOT_DIR}/include")
+SET(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
+append_recursive_files("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" "_ALPAKA_FILES_HEADER")
+
+SET(_GENERATED_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/src")
+
+FOREACH(_HEADER_FILE ${_ALPAKA_FILES_HEADER})
+    # Remove the parent directory from the path.
+    # NOTE: This is not correct because it does not only replace at the beginning of the string.
+    #  "STRING(REGEX REPLACE" would be correct if there was an easy way to escape arbitrary strings.
+    STRING(
+        REPLACE "${_ALPAKA_SUFFIXED_INCLUDE_DIR}/" ""
+        _HEADER_FILE
+        "${_HEADER_FILE}")
+    SET(_SOURCE_FILE "${_GENERATED_SOURCE_DIR}/${_HEADER_FILE}.cpp")
+    #MESSAGE("${_SOURCE_FILE}")
+    FILE(WRITE "${_SOURCE_FILE}" "#include <alpaka/${_HEADER_FILE}>\n#include <alpaka/${_HEADER_FILE}>\n")
+ENDFOREACH()
 
 #-------------------------------------------------------------------------------
 # Add library.
 #-------------------------------------------------------------------------------
 
-# Add all the source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
+append_recursive_files_add_to_src_group("${_GENERATED_SOURCE_DIR}" "${_GENERATED_SOURCE_DIR}" "cpp" "_FILES_SOURCE")
+append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "cpp" "_FILES_SOURCE")
 
 INCLUDE_DIRECTORIES(
     ${_INCLUDE_DIRECTORIES_PRIVATE}
@@ -71,6 +105,6 @@ ALPAKA_ADD_EXECUTABLE(
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
     ${_PROJECT_NAME}
-    PUBLIC "alpaka")
+    PUBLIC "alpaka" ${_LINK_LIBRARIES_PRIVATE})
 
-SET_TARGET_PROPERTIES(${_PROJECT_NAME} PROPERTIES FOLDER "example")
+SET_TARGET_PROPERTIES(headerCheck PROPERTIES FOLDER "test/analysis")

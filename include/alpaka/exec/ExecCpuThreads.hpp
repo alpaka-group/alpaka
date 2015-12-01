@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
@@ -442,3 +444,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

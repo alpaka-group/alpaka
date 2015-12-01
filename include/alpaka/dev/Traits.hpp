@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
+#include <vector>                       // std::vector
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------

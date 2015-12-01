@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+
+#if _OPENMP < 201307
+    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#endif
+
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
@@ -312,3 +318,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

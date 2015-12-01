@@ -21,6 +21,10 @@
 
 #pragma once
 
+#ifdef _OPENMP
+
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
+
 #include <omp.h>
 
 namespace alpaka
@@ -51,3 +55,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

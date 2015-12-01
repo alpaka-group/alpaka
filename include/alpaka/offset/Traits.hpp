@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/size/Traits.hpp>   // Size
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt
+#include <alpaka/size/Traits.hpp>           // Size
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
-
-#include <type_traits>              // std::enable_if
+#include <type_traits>                      // std::enable_if
 
 namespace alpaka
 {
