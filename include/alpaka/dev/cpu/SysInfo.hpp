@@ -46,6 +46,7 @@
     #include <fstream>
 #endif
 
+#include <stdexcept>        // std::runtime_error
 #include <cstring>          // std::memcpy
 #include <string>           // std::string
 

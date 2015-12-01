@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/math/abs/AbsCudaBuiltIn.hpp>
 #include <alpaka/math/acos/AcosCudaBuiltIn.hpp>
 #include <alpaka/math/asin/AsinCudaBuiltIn.hpp>
@@ -82,3 +88,5 @@ namespace alpaka
         {};
     }
 }
+
+#endif

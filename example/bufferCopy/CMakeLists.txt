@@ -43,3 +43,5 @@ file(GLOB SRCFILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 alpaka_add_executable(${bufferCopy} ${SRCFILES})
 target_link_libraries(${bufferCopy} ${LIBS})
+
+set_target_properties(${bufferCopy} PROPERTIES FOLDER "example")

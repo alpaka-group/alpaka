@@ -28,6 +28,8 @@
 #include <alpaka/offset/Traits.hpp>     // offset::GetOffset
 #include <alpaka/stream/Traits.hpp>     // stream::enqueue
 
+#include <alpaka/vec/Vec.hpp>           // Vec
+
 #include <alpaka/core/Fold.hpp>         // core::foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 

@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
 #include <alpaka/vec/Vec.hpp>               // Vec, offset::getOffsetsVecEnd
@@ -139,3 +145,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

@@ -24,8 +24,6 @@
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // extent::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // mem::view::Copy, ...
-#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
-#include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
 
 #include <cassert>                          // assert
 #include <cstring>                          // std::memcpy

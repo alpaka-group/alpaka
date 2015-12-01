@@ -22,13 +22,13 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>            // dev::DevCpu
+#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
+#include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
+
 #include <alpaka/dev/Traits.hpp>            // GetDev
 #include <alpaka/event/Traits.hpp>          // EventTest, ...
 #include <alpaka/wait/Traits.hpp>           // CurrentThreadWaitFor
 #include <alpaka/dev/Traits.hpp>            // GetDev
-
-#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
-#include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
 
 #include <boost/uuid/uuid.hpp>              // boost::uuids::uuid
 #include <boost/uuid/uuid_generators.hpp>   // boost::uuids::random_generator
@@ -106,7 +106,7 @@ namespace alpaka
 
                     bool m_bIsWaitedFor;                                    //!< If a (one or multiple) streams wait for this event. The event can not be changed (deleted/re-enqueued) until completion.
 
-                    std::size_t m_canceledEnqueueCount;                    //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
+                    std::size_t m_canceledEnqueueCount;                     //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
                 };
             }
         }

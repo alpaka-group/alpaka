@@ -21,12 +21,15 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+
 #include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
 
 #include <alpaka/core/BarrierThread.hpp>// BarrierThread
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
 
+#include <thread>                       // std::thread
 #include <mutex>                        // std::mutex
 #include <map>                          // std::map
 
@@ -144,3 +147,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

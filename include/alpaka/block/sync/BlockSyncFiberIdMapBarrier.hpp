@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+
 #include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
 
 #include <alpaka/core/BarrierFiber.hpp> // BarrierFibers
@@ -140,3 +142,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

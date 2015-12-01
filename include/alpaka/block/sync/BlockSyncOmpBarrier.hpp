@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef _OPENMP
+
 #include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
@@ -94,3 +96,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

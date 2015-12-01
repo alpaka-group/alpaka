@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+
 #include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
@@ -150,3 +152,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

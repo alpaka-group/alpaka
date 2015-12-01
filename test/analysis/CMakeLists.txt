@@ -1,5 +1,5 @@
 #
-# Copyright 2015 Benjamin Worpitz
+# Copyright 2014-2015 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -24,12 +24,10 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
-PROJECT("alpakaTest")
+PROJECT("alpakaAnalysisTest")
 
 ################################################################################
 # Add subdirectories.
 ################################################################################
 
-ADD_SUBDIRECTORY("analysis/")
-ADD_SUBDIRECTORY("integ/")
-#ADD_SUBDIRECTORY("unit/")
+ADD_SUBDIRECTORY("headerCheck/")

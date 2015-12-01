@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/atomic/Op.hpp>                // Add, Sub, ...
 #include <alpaka/atomic/Traits.hpp>             // AtomicOp
 
@@ -769,3 +775,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

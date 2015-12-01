@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+
 #if BOOST_COMP_MSVC
     #pragma warning(push)
     #pragma warning(disable: 4267)  // boost/asio/detail/impl/socket_ops.ipp(1968): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
@@ -29,7 +31,7 @@
     #pragma warning(disable: 4996)  // boost/asio/detail/impl/socket_ops.ipp(1363) : warning C4996 : 'WSASocketA' : Use WSASocketW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
     #pragma warning(disable: 4456)  // boost/fiber/condition.hpp(174): warning C4456: declaration of 'lk' hides previous local declaration
                                     // boost/fiber/condition.hpp(217): warning C4456: declaration of 'lk' hides previous local declaration
-    // Boost.Fiber indirectly includes windows.h for which we need to define some things
+    // Boost.Fiber indirectly includes windows.h for which we need to define some things.
     #define NOMINMAX
 #endif
 
@@ -46,4 +48,6 @@
 #if BOOST_COMP_MSVC
     #undef NOMINMAX
     #pragma warning(pop)
+#endif
+
 #endif

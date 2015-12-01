@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+
 #include <alpaka/core/Fibers.hpp>
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_ACC_NO_CUDA
@@ -117,3 +119,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

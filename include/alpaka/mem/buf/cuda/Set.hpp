@@ -21,15 +21,24 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>            // dev::getDev
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
-#include <alpaka/extent/Traits.hpp>         // mem::view::getXXX
-#include <alpaka/mem/view/Traits.hpp>       // mem::view::Set
-#include <alpaka/stream/Traits.hpp>         // stream::Enqueue
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Cuda.hpp>             // cudaMemset, ...
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
 
-#include <cassert>                          // assert
+#include <alpaka/stream/StreamCudaRtSync.hpp>   // stream::StreamCudaRtSync
+#include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
+
+#include <alpaka/dev/Traits.hpp>                // dev::getDev
+#include <alpaka/dim/DimIntegralConst.hpp>      // dim::DimInt<N>
+#include <alpaka/extent/Traits.hpp>             // mem::view::getXXX
+#include <alpaka/mem/view/Traits.hpp>           // mem::view::Set
+#include <alpaka/stream/Traits.hpp>             // stream::Enqueue
+
+#include <alpaka/core/Cuda.hpp>                 // cudaMemset, ...
+
+#include <cassert>                              // assert
 
 namespace alpaka
 {
@@ -486,3 +495,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

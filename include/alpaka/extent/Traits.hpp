@@ -25,6 +25,7 @@
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 #include <alpaka/core/Fold.hpp>             // core::foldr
 #include <alpaka/size/Traits.hpp>           // size::Size
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt
 
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused

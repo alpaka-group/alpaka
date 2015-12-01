@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
@@ -527,3 +533,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

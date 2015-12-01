@@ -42,6 +42,9 @@ namespace alpaka
             struct DimType;
         }
 
+        //#############################################################################
+        //! The dimension type trait alias template to remove the ::type.
+        //#############################################################################
         template<
             typename T>
         using Dim = typename traits::DimType<T>::type;

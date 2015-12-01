@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
 
 #include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
@@ -336,3 +342,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

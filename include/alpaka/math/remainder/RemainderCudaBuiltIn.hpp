@@ -21,6 +21,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/math/remainder/Traits.hpp> // Remainder
 
 //#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
@@ -66,3 +72,5 @@ namespace alpaka
         }
     }
 }
+
+#endif
