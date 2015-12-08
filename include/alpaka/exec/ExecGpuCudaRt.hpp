@@ -326,13 +326,14 @@ namespace alpaka
                     {
                         reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
                         reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
-                        assert(threadElemExtent[TDim::value-1u-i] == 1);
+
                     }
                     // Assert that all extent of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
                         assert(gridBlockExtent[TDim::value-1u-i] == 1);
                         assert(blockThreadExtent[TDim::value-1u-i] == 1);
+                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -468,13 +469,13 @@ namespace alpaka
                     {
                         reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
                         reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
-                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
                     // Assert that all extent of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
                         assert(gridBlockExtent[TDim::value-1u-i] == 1);
                         assert(blockThreadExtent[TDim::value-1u-i] == 1);
+                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
