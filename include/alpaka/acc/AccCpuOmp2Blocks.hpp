@@ -21,10 +21,10 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
+#ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 
 #if _OPENMP < 200203
-    #error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+    #error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #endif
 
 // Base classes.
