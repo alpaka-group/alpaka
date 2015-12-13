@@ -54,9 +54,9 @@ INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
 #-------------------------------------------------------------------------------
 # Boost.Test.
 #-------------------------------------------------------------------------------
-FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS unit_test_framework)
+FIND_PACKAGE(Boost QUIET COMPONENTS unit_test_framework)
 IF(NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
-    MESSAGE(FATAL_ERROR "Required alpaka dependency Boost.Test (Boost >= 1.59) could not be found!")
+    MESSAGE(FATAL_ERROR "Required alpaka dependency Boost.Test could not be found!")
 
 ELSE()
     LIST(APPEND _INCLUDE_DIRECTORIES_PRIVATE ${Boost_INCLUDE_DIRS})
@@ -72,6 +72,8 @@ SET(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
 append_recursive_files("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" "_ALPAKA_FILES_HEADER")
 
 SET(_GENERATED_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/src")
+
+FILE(REMOVE_RECURSE ${_GENERATED_SOURCE_DIR})
 
 FOREACH(_HEADER_FILE ${_ALPAKA_FILES_HEADER})
     # Remove the parent directory from the path.
