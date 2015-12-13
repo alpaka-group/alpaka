@@ -42,7 +42,7 @@ There are two possible ways to tell the kernel about the accelerator type:
     * + This allows to use the accelerator in accelerator functions called from the kernel (and not within the kernel class itself) to access the accelerator methods in the same way the kernel entry point function can.
     * - This would require an additional object (the accelerator) in device memory taking up valuable CUDA registers (opposed to the inheritance solution). At least on CUDA all the accelerator functions could be inlined nevertheless.
  2. The `operator()` is templated on the accelerator type and has a reference to the accelerator as parameter.
-  * + The kernel can be an arbitrary function object with ALPAKA_FCT_HOST_ACC attributes.
+  * + The kernel can be an arbitrary function object with ALPAKA_FN_HOST_ACC attributes.
   * + This would allow to instantiate the accelerator independent kernel and set its members before execution.
   * +/- C++14 provides polymorphic lambdas. All compilers (even MSVC) support this. Inheriting from a non capturing lambda for the KernelExecutor is allowed. (TODO: How to check for a non capturing lambda?)
   * - The `operator()` could be overloaded on the accelerator type but not the kernel itself, so it always has the same members.
@@ -82,7 +82,7 @@ All the accelerators are restricted by the possibilities of CUDA.
 The library does not use a common accelerator base class with virtual functions from which all accelerator implementations inherit (run time polymorphism).
 This reduces runtime overhead because everything can be checked at compile time.
 
-**TODO**: Add note about ALPAKA_FCT_HOST_ACC!
+**TODO**: Add note about ALPAKA_FN_HOST_ACC!
 
 
 Accelerator Access within Kernels
