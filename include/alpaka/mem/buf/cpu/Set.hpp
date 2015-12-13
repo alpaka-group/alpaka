@@ -98,9 +98,8 @@ namespace alpaka
                             auto const dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(m_view)));
                             auto const dstSliceSizeBytes(dstPitchBytes * dstHeight);
 
-                            auto const & dstBuf(mem::view::getBuf(m_view));
-                            auto const dstBufWidth(extent::getWidth(dstBuf));
-                            auto const dstBufHeight(extent::getHeight(dstBuf));
+                            auto const dstBufWidth(extent::getWidth(m_view));
+                            auto const dstBufHeight(extent::getHeight(m_view));
 
                             int iByte(static_cast<int>(m_byte));
 

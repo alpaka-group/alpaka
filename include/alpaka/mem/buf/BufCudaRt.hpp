@@ -242,35 +242,6 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The BufCudaRt buf trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct GetBuf<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
-                {
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
-                    -> mem::buf::BufCudaRt<TElem, TDim, TSize> const &
-                    {
-                        return buf;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
-                    -> mem::buf::BufCudaRt<TElem, TDim, TSize> &
-                    {
-                        return buf;
-                    }
-                };
-                //#############################################################################
                 //! The BufCudaRt native pointer get trait specialization.
                 //#############################################################################
                 template<

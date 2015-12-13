@@ -203,7 +203,7 @@ int main() {
                                             static_cast<Size>(nElementsPerDim));
 
     std::array<Data, nElementsPerDim * nElementsPerDim * nElementsPerDim> plainBuffer;
-    alpaka::mem::buf::ViewPlainPtr<DevHost, Data, Dim, Size> hostBufferPlain(plainBuffer.data(), devHost, extents);
+    alpaka::mem::view::ViewPlainPtr<DevHost, Data, Dim, Size> hostBufferPlain(plainBuffer.data(), devHost, extents);
     alpaka::mem::buf::Buf<DevHost, Data, Dim, Size> hostBuffer  (alpaka::mem::buf::alloc<Data, Size>(devHost, extents));
     alpaka::mem::buf::Buf<DevAcc, Data, Dim, Size> deviceBuffer1(alpaka::mem::buf::alloc<Data, Size>(devAcc,  extents));
     alpaka::mem::buf::Buf<DevAcc, Data, Dim, Size> deviceBuffer2(alpaka::mem::buf::alloc<Data, Size>(devAcc,  extents));
