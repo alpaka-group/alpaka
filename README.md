@@ -77,8 +77,8 @@ Dependencies
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
-When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required.
-`boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
+When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch of boost and the proposed boost library [`boost-fiber`](https://github.com/olk/boost-fiber) (develop branch) are required.
+`boost-fiber`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
 
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using *CUDA* 7.0, the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
@@ -93,7 +93,7 @@ The library is header only so nothing has to be build.
 CMake 3.3.0+ is required to provide the correct defines and include paths.
 Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compiler in handling `.cu` and `.cpp` files are automatically taken care of.
 Source files do not need any special file ending.
-Examples of how to utilize alpaka within CMake can be found in the `examples` folder.
+Examples of how to utilize alpaka within CMake can be found in the `example` folder.
 
 The whole alpaka library can be included with: `#include <alpaka/alpaka.hpp>`
 Code that is not intended to be utilized by the user is hidden in the `detail` namespace.
