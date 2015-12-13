@@ -83,14 +83,14 @@ namespace alpaka
                                 m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TViewDst>))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
-                                m_dstBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(viewDst)))),
-                                m_srcBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(viewSrc)))),
+                                m_dstBufWidth(static_cast<Size>(extent::getWidth(viewDst))),
+                                m_srcBufWidth(static_cast<Size>(extent::getWidth(viewSrc))),
 
                                 m_extentHeight(extent::getHeight(extent)),
                                 m_dstHeight(static_cast<Size>(extent::getHeight(viewDst))),
                                 m_srcHeight(static_cast<Size>(extent::getHeight(viewSrc))),
-                                m_dstBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(viewDst)))),
-                                m_srcBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(viewSrc)))),
+                                m_dstBufHeight(static_cast<Size>(extent::getHeight(viewDst))),
+                                m_srcBufHeight(static_cast<Size>(extent::getHeight(viewSrc))),
 
                                 m_extentDepth(extent::getDepth(extent)),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

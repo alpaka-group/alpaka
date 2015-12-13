@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/mem/buf/Traits.hpp>    // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
+#include <alpaka/mem/view/Traits.hpp>   // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
 
 #include <alpaka/vec/Vec.hpp>           // Vec<N>
 
@@ -29,10 +29,10 @@ namespace alpaka
 {
     namespace mem
     {
-        namespace buf
+        namespace view
         {
             //#############################################################################
-            //! The memory buffer wrapper used to wrap plain pointers.
+            //! The memory view to wrap plain pointers.
             //#############################################################################
             template<
                 typename TDev,
@@ -131,7 +131,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DevType<
-                mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
             {
                 using type = TDev;
             };
@@ -145,14 +145,14 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct GetDev<
-                mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getDev(
-                    mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> const & buf)
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
                     -> TDev
                 {
-                    return buf.m_dev;
+                    return view.m_dev;
                 }
             };
         }
@@ -170,7 +170,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DimType<
-                mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -189,7 +189,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct ElemType<
-                mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
             {
                 using type = TElem;
             };
@@ -210,12 +210,12 @@ namespace alpaka
                 typename TSize>
             struct GetExtent<
                 TIdx,
-                mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>,
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> const & extent)
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
                     return extent.m_extentElements[TIdx::value];
@@ -230,39 +230,6 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The ViewPlainPtr buf trait specialization.
-                //#############################################################################
-                template<
-                    typename TDev,
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct GetBuf<
-                    mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
-                {
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_NO_HOST_ACC_WARNING
-                    ALPAKA_FN_HOST_ACC static auto getBuf(
-                        mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> const & buf)
-                    -> mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> const &
-                    {
-                        return buf;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_NO_HOST_ACC_WARNING
-                    ALPAKA_FN_HOST_ACC static auto getBuf(
-                        mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> & buf)
-                    -> mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> &
-                    {
-                        return buf;
-                    }
-                };
-
-                //#############################################################################
                 //! The ViewPlainPtr native pointer get trait specialization.
                 //#############################################################################
                 template<
@@ -271,21 +238,21 @@ namespace alpaka
                     typename TDim,
                     typename TSize>
                 struct GetPtrNative<
-                    mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
                 {
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
-                        mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> const & buf)
+                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
                     -> TElem const *
                     {
-                        return buf.m_pMem;
+                        return view.m_pMem;
                     }
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
-                        mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> & buf)
+                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> & view)
                     -> TElem *
                     {
-                        return buf.m_pMem;
+                        return view.m_pMem;
                     }
                 };
 
@@ -299,14 +266,14 @@ namespace alpaka
                     typename TSize>
                 struct GetPitchBytes<
                     dim::DimInt<TDim::value - 1u>,
-                    mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
                 {
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPitchBytes(
-                        mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> const & buf)
+                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
                     -> TSize
                     {
-                        return buf.m_pitchBytes;
+                        return view.m_pitchBytes;
                     }
                 };
             }
@@ -327,14 +294,14 @@ namespace alpaka
                 typename TSize>
             struct GetOffset<
                 TIdx,
-                mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
-                    mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize> const &)
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const &)
                 -> TSize
                 {
                     return 0u;
@@ -355,7 +322,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct SizeType<
-                mem::buf::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
             {
                 using type = TSize;
             };

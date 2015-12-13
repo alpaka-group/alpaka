@@ -152,36 +152,6 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The fixed size array buf trait specialization.
-                //#############################################################################
-                template<
-                    typename TFixedSizeArray>
-                struct GetBuf<
-                    TFixedSizeArray,
-                    typename std::enable_if<
-                        std::is_array<TFixedSizeArray>::value>::type>
-                {
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        TFixedSizeArray const & buf)
-                    -> TFixedSizeArray const &
-                    {
-                        return buf;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        TFixedSizeArray & buf)
-                    -> TFixedSizeArray &
-                    {
-                        return buf;
-                    }
-                };
-
-                //#############################################################################
                 //! The fixed size array native pointer get trait specialization.
                 //#############################################################################
                 template<
@@ -398,35 +368,6 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The std::array buf trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    std::size_t Tsize>
-                struct GetBuf<
-                    std::array<TElem, Tsize>>
-                {
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        std::array<TElem, Tsize> const & buf)
-                    -> std::array<TElem, Tsize> const &
-                    {
-                        return buf;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        std::array<TElem, Tsize> & buf)
-                    -> std::array<TElem, Tsize> &
-                    {
-                        return buf;
-                    }
-                };
-
-                //#############################################################################
                 //! The std::array native pointer get trait specialization.
                 //#############################################################################
                 template<
@@ -629,35 +570,6 @@ namespace alpaka
         {
             namespace traits
             {
-                //#############################################################################
-                //! The std::vector buf trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TAllocator>
-                struct GetBuf<
-                    std::vector<TElem, TAllocator>>
-                {
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        std::vector<TElem, TAllocator> const & buf)
-                    -> std::vector<TElem, TAllocator> const &
-                    {
-                        return buf;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        std::vector<TElem, TAllocator> & buf)
-                    -> std::vector<TElem, TAllocator> &
-                    {
-                        return buf;
-                    }
-                };
-
                 //#############################################################################
                 //! The std::vector native pointer get trait specialization.
                 //#############################################################################

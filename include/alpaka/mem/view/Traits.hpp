@@ -129,14 +129,6 @@ namespace alpaka
                     typename TDevSrc,
                     typename TSfinae = void>
                 struct TaskCopy;
-
-                //#############################################################################
-                //! The buffer trait.
-                //#############################################################################
-                template<
-                    typename TView,
-                    typename TSfinae = void>
-                struct GetBuf;
             }
 
             //-----------------------------------------------------------------------------
@@ -377,51 +369,6 @@ namespace alpaka
                         viewDst,
                         viewSrc,
                         extent));
-            }
-
-            //-----------------------------------------------------------------------------
-            //! Gets the memory buffer.
-            //!
-            //! \param view The view the buffer is received from.
-            //! \return The memory buffer.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TView>
-            ALPAKA_FN_HOST auto getBuf(
-                TView const & view)
-            -> decltype(
-                traits::GetBuf<
-                    TView>
-                ::getBuf(
-                    view))
-            {
-                return
-                    traits::GetBuf<
-                        TView>
-                    ::getBuf(
-                        view);
-            }
-            //-----------------------------------------------------------------------------
-            //! Gets the memory buffer.
-            //!
-            //! \param view The view the buffer is received from.
-            //! \return The memory buffer.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TView>
-            ALPAKA_FN_HOST auto getBuf(
-                TView & view)
-            -> decltype(
-                traits::GetBuf<
-                    TView>
-                ::getBuf(
-                    view))
-            {
-                return
-                    traits::GetBuf<
-                        TView>
-                    ::getBuf(
-                        view);
             }
 
             namespace detail
