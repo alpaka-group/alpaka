@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjarint Worpitz, Rene Widera
+* Copyright 2014-2015 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
