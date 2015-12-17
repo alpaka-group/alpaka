@@ -147,11 +147,12 @@ namespace alpaka
                     typename TVec,
                     typename... TArgs>
                 ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
-                    TVec const & blockElemExtent,
+                    TVec const & blockThreadExtent,
+                    TVec const & threadElemExtent,
                     TArgs && ...)
                 -> std::uint32_t
                 {
-                    return blockElemExtent.prod() * sizeof(std::uint32_t);
+                    return blockThreadExtent.prod() * threadElemExtent.prod() * sizeof(std::uint32_t);
                 }
             };
         }

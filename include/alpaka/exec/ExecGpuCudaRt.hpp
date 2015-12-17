@@ -360,7 +360,8 @@ namespace alpaka
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         typename std::decay<TKernelFnObj>::type,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            blockThreadExtent * threadElemExtent,
+                                            blockThreadExtent,
+                                            threadElemExtent,
                                             args...);
                             },
                             task.m_args));
@@ -500,7 +501,8 @@ namespace alpaka
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         TKernelFnObj,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            blockThreadExtent * threadElemExtent,
+                                            blockThreadExtent,
+                                            threadElemExtent,
                                             args...);
                             },
                             task.m_args));
