@@ -26,7 +26,7 @@
 
 // nvcc does not currently support boost correctly.
 // boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)) || (BOOST_COMP_MSVC && (BOOST_VERSION < 105800))
     #include <queue>        // std::queue
     #include <mutex>        // std::mutex
 #else
@@ -55,7 +55,7 @@ namespace alpaka
     {
         namespace detail
         {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)) || (BOOST_COMP_MSVC && (BOOST_VERSION < 105800))
             //#############################################################################
             //!
             //#############################################################################
