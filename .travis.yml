@@ -1,4 +1,4 @@
-################################################################################
+#
 # Copyright 2015 Benjamin Worpitz
 #
 # This file is part of alpaka.
@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with alpaka.
 # If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+#
 
 ################################################################################
 #
@@ -336,7 +336,6 @@ install:
     # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
 
     #-------------------------------------------------------------------------------
-    # CMake 2.8.7 is too old...
     # Remove the old version.
     - sudo apt-get -y remove cmake
     # Extract the version numbers.
