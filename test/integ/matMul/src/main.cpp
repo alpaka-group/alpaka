@@ -415,7 +415,7 @@ auto main()
                         std::cout << std::endl;
 
                         // Execute the kernel on all enabled accelerators.
-                        alpaka::core::forEachType<
+                        alpaka::meta::forEachType<
                             alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
                                 matMulTester,
                                 m, n, k);

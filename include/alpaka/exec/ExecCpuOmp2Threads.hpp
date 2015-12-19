@@ -41,8 +41,8 @@
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/NdLoop.hpp>               // core::NdLoop
-#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
+#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
+#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
 
@@ -125,7 +125,7 @@ namespace alpaka
 
                 // Get the size of the block shared extern memory.
                 auto const blockSharedExternMemSizeBytes(
-                    core::apply(
+                    meta::apply(
                         [&](TArgs const & ... args)
                         {
                             return
@@ -145,7 +145,7 @@ namespace alpaka
                 // Bind all arguments except the accelerator.
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
                 auto const boundKernelFnObj(
-                    core::apply(
+                    meta::apply(
                         [this](TArgs const & ... args)
                         {
                             return
@@ -174,7 +174,7 @@ namespace alpaka
                 ::omp_set_dynamic(0);
 
                 // Execute the blocks serially.
-                core::ndLoopIncIdx(
+                meta::ndLoopIncIdx(
                     gridBlockExtent,
                     [&](Vec<TDim, TSize> const & gridBlockIdx)
                     {

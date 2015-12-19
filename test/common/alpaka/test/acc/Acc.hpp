@@ -23,14 +23,10 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/ForEachType.hpp>      // core::forEachType
+#include <alpaka/meta/ForEachType.hpp>      // meta::forEachType
 
-#include <boost/mpl/vector.hpp>             // boost::mpl::vector
-#include <boost/mpl/filter_view.hpp>        // boost::mpl::filter_view
-#include <boost/mpl/not.hpp>                // boost::not_
-#include <boost/mpl/placeholders.hpp>       // boost::mpl::_1
-#include <boost/type_traits/is_same.hpp>    // boost::is_same
-
+#include <tuple>                            // std::tuple
+#include <type_traits>                      // std::is_class
 #include <iosfwd>                           // std::ostream
 
 namespace alpaka
@@ -59,7 +55,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuSerialIfAvailableElseVoid = void;
+                using AccCpuSerialIfAvailableElseVoid = int;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
                 template<
@@ -70,7 +66,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuThreadsIfAvailableElseVoid = void;
+                using AccCpuThreadsIfAvailableElseVoid = int;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
                 template<
@@ -81,7 +77,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuFibersIfAvailableElseVoid = void;
+                using AccCpuFibersIfAvailableElseVoid = int;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
                 template<
@@ -92,7 +88,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuOmp2BlocksIfAvailableElseVoid = void;
+                using AccCpuOmp2BlocksIfAvailableElseVoid = int;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
                 template<
@@ -103,7 +99,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuOmp2ThreadsIfAvailableElseVoid = void;
+                using AccCpuOmp2ThreadsIfAvailableElseVoid = int;
 #endif
 #ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
                 template<
@@ -114,7 +110,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccCpuOmp4IfAvailableElseVoid = void;
+                using AccCpuOmp4IfAvailableElseVoid = int;
 #endif
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
                 template<
@@ -125,7 +121,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize>
-                using AccGpuCudaRtIfAvailableElseVoid = void;
+                using AccGpuCudaRtIfAvailableElseVoid = int;
 #endif
                 //#############################################################################
                 //! A vector containing all available accelerators and void's.
@@ -134,7 +130,7 @@ namespace alpaka
                     typename TDim,
                     typename TSize>
                 using EnabledAccsVoid =
-                    boost::mpl::vector<
+                    std::tuple<
                         AccCpuSerialIfAvailableElseVoid<TDim, TSize>,
                         AccCpuThreadsIfAvailableElseVoid<TDim, TSize>,
                         AccCpuFibersIfAvailableElseVoid<TDim, TSize>,
@@ -152,15 +148,10 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             using EnabledAccs =
-                typename boost::mpl::filter_view<
+                typename alpaka::meta::Filter<
                     detail::EnabledAccsVoid<TDim, TSize>,
-                    boost::mpl::not_<
-                        boost::is_same<
-                            boost::mpl::_1,
-                            void
-                        >
-                    >
-                >::type;
+                    std::is_class
+                >;
 
             namespace detail
             {
@@ -195,7 +186,7 @@ namespace alpaka
             {
                 os << "Accelerators enabled: ";
 
-                core::forEachType<
+                meta::forEachType<
                     EnabledAccs<TDim, TSize>>(
                         detail::StreamOutAccName(),
                         std::ref(os));

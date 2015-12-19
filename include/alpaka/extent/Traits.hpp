@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
+#include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
-#include <alpaka/core/Fold.hpp>             // core::foldr
+#include <alpaka/meta/Fold.hpp>             // meta::foldr
 #include <alpaka/size/Traits.hpp>           // size::Size
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt
 
@@ -143,14 +143,14 @@ namespace alpaka
                 size_t... TIndices>
             ALPAKA_FN_HOST static auto getProductOfExtentInternal(
                 TExtent const & extent,
-                alpaka::core::detail::index_sequence<TIndices...> const & indices)
+                alpaka::meta::IndexSequence<TIndices...> const & indices)
             -> size::Size<TExtent>
             {
 #if !defined(__CUDA_ARCH__)
                 boost::ignore_unused(indices);
 #endif
                 return
-                    core::foldr(
+                    meta::foldr(
                         std::multiplies<size::Size<TExtent>>(),
                         getExtent<TIndices>(extent)...);
             }
@@ -166,7 +166,7 @@ namespace alpaka
             TExtent const & extent = TExtent())
         -> size::Size<TExtent>
         {
-            using IdxSequence = alpaka::core::detail::make_index_sequence<dim::Dim<TExtent>::value>;
+            using IdxSequence = alpaka::meta::MakeIndexSequence<dim::Dim<TExtent>::value>;
             return
                 detail::getProductOfExtentInternal(
                     extent,

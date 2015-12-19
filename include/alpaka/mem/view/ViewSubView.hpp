@@ -337,7 +337,7 @@ namespace alpaka
                     mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
                 {
                 private:
-                    using IdxSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>;
+                    using IdxSequence = meta::MakeIntegerSequence<std::size_t, TDim::value>;
                 public:
                     //-----------------------------------------------------------------------------
                     //!
@@ -375,11 +375,11 @@ namespace alpaka
                         std::size_t... TIndices>
                     ALPAKA_FN_HOST static auto pitchedOffsetBytes(
                         TView const & view,
-                        alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const &)
+                        meta::IntegerSequence<std::size_t, TIndices...> const &)
                     -> TSize
                     {
                         return
-                            core::foldr(
+                            meta::foldr(
                                 std::plus<TSize>(),
                                 pitchedOffsetBytesDim<TIndices>(view)...);
                     }

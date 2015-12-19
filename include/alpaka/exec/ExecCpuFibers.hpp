@@ -38,8 +38,8 @@
 
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
-#include <alpaka/core/NdLoop.hpp>               // core::NdLoop
-#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
+#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
+#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/predef.h>                       // workarounds
 #include <boost/align.hpp>                      // boost::aligned_alloc
@@ -151,7 +151,7 @@ namespace alpaka
 
                 // Get the size of the block shared extern memory.
                 auto const blockSharedExternMemSizeBytes(
-                    core::apply(
+                    meta::apply(
                         [&](TArgs const & ... args)
                         {
                             return
@@ -182,7 +182,7 @@ namespace alpaka
                 FiberPool fiberPool(blockThreadCount, blockThreadCount);
 
                 auto const boundGridBlockExecHost(
-                    core::apply(
+                    meta::apply(
                         [this, &acc, &blockThreadExtent, &fiberPool](TArgs const & ... args)
                         {
                             // Bind the kernel and its arguments to the grid block function.
@@ -199,7 +199,7 @@ namespace alpaka
                         m_args));
 
                 // Execute the blocks serially.
-                core::ndLoopIncIdx(
+                meta::ndLoopIncIdx(
                     gridBlockExtent,
                     boundGridBlockExecHost);
 
@@ -236,7 +236,7 @@ namespace alpaka
                     std::ref(kernelFnObj),
                     std::ref(args)...));
                 // Execute the block threads in parallel.
-                core::ndLoopIncIdx(
+                meta::ndLoopIncIdx(
                     blockThreadExtent,
                     boundBlockThreadExecHost);
 
