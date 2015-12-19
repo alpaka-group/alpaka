@@ -181,7 +181,7 @@ struct AxpyKernelTester
             ++i)
         {
             auto const & val(pHostResultData[i]);
-            auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]+alpaka::mem::view::getPtrNative(memBufHostX)[i]);
+            auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
             if(val != correctResult)
             {
                 std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
@@ -239,7 +239,7 @@ auto main()
                     axpyKernelTester,
                     vecSize);
         }
-        return EXIT_SUCCESS;
+        return axpyKernelTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
     }
     catch(std::exception const & e)
     {
