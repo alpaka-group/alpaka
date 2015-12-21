@@ -28,9 +28,9 @@
 #include <alpaka/size/Traits.hpp>           // size::traits::SizeType
 
 #include <alpaka/core/Align.hpp>            // ALPAKA_OPTIMAL_ALIGNMENT_SIZE
-#include <alpaka/core/IntegerSequence.hpp>  // core::detail::make_integer_sequence
+#include <alpaka/meta/IntegerSequence.hpp>  // meta::MakeIntegerSequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
-#include <alpaka/core/Fold.hpp>             // core::foldr
+#include <alpaka/meta/Fold.hpp>             // meta::foldr
 
 #include <boost/predef.h>                   // workarounds
 #if !defined(__CUDA_ARCH__)
@@ -67,7 +67,7 @@ namespace alpaka
         typename TIdxSize,
         TIdxSize... TIndices>
     ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-        core::detail::integer_sequence<TIdxSize, TIndices...> const & indices,
+        meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
         TArgs && ... args)
     -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
     {
@@ -92,10 +92,10 @@ namespace alpaka
         createVecFromIndexedFnArbitrary<
             TDim,
             TTFnObj>(
-                alpaka::core::detail::make_integer_sequence<typename TDim::value_type, TDim::value>(),
+                meta::MakeIntegerSequence<typename TDim::value_type, TDim::value>(),
                 std::forward<TArgs>(args)...))
     {
-        using IdxSequence = alpaka::core::detail::make_integer_sequence<typename TDim::value_type, TDim::value>;
+        using IdxSequence = meta::MakeIntegerSequence<typename TDim::value_type, TDim::value>;
         return
             createVecFromIndexedFnArbitrary<
                 TDim,
@@ -119,10 +119,10 @@ namespace alpaka
         createVecFromIndexedFnArbitrary<
             TDim,
             TTFnObj>(
-                alpaka::core::detail::make_integer_sequence_offset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>(),
+                meta::MakeIntegerSequenceOffset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>(),
                 std::forward<TArgs>(args)...))
     {
-        using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>;
+        using IdxSubSequence = meta::MakeIntegerSequenceOffset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>;
         return
             createVecFromIndexedFnArbitrary<
                 TDim,
@@ -150,7 +150,7 @@ namespace alpaka
     private:
         //! A sequence of integers from 0 to dim-1.
         //! This can be used to write compile time indexing algorithms.
-        using IdxSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>;
+        using IdxSequence = meta::MakeIntegerSequence<std::size_t, TDim::value>;
 
     public:
         //-----------------------------------------------------------------------------
@@ -191,7 +191,7 @@ namespace alpaka
             typename TIdxSize,
             TIdxSize... TIndices>
         ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
-            core::detail::integer_sequence<TIdxSize, TIndices...> const & indices,
+            meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
             TArgs && ... args)
         -> Vec<TDim, TSize>
         {
@@ -232,7 +232,7 @@ namespace alpaka
             TArgs && ... args)
         -> Vec<TDim, TSize>
         {
-            using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<typename TDim::value_type, TIdxOffset::value, TDim::value>;
+            using IdxSubSequence = meta::MakeIntegerSequenceOffset<typename TDim::value_type, TIdxOffset::value, TDim::value>;
             return
                 createVecFromIndexedFnArbitrary<
                     TTFnObj>(
@@ -399,9 +399,9 @@ namespace alpaka
             std::size_t... TIndices>
         ALPAKA_FN_HOST_ACC auto foldrByIndices(
             TFnObj const & f,
-            alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const & indices) const
+            meta::IntegerSequence<std::size_t, TIndices...> const & indices) const
         -> decltype(
-            core::foldr(
+            meta::foldr(
                 f,
                 ((*this)[TIndices])...))
         {
@@ -409,7 +409,7 @@ namespace alpaka
             boost::ignore_unused(indices);
 #endif
             return
-                core::foldr(
+                meta::foldr(
                     f,
                     ((*this)[TIndices])...);
         }
@@ -658,7 +658,7 @@ namespace alpaka
                     std::size_t... TIndices>
                 ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
                     Vec<TDim, TSize> const & vec,
-                    alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const &)
+                    meta::IntegerSequence<std::size_t, TIndices...> const &)
                 -> Vec<dim::DimInt<sizeof...(TIndices)>, TSize>
                 {
                     static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
@@ -673,14 +673,14 @@ namespace alpaka
                 typename TDim>
             struct SubVecFromIndices<
                 TDim,
-                alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>>
+                meta::MakeIntegerSequence<std::size_t, TDim::value>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TSize>
                 ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
                     Vec<TDim, TSize> const & vec,
-                    alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value> const &)
+                    meta::MakeIntegerSequence<std::size_t, TDim::value> const &)
                 -> Vec<TDim, TSize>
                 {
                     return vec;
@@ -699,13 +699,13 @@ namespace alpaka
             std::size_t... TIndices>
         ALPAKA_FN_HOST_ACC auto subVecFromIndices(
             Vec<TDim, TSize> const & vec,
-            core::detail::integer_sequence<std::size_t, TIndices...> const & indices)
+            meta::IntegerSequence<std::size_t, TIndices...> const & indices)
         -> Vec<dim::DimInt<sizeof...(TIndices)>, TSize>
         {
             return
                 detail::SubVecFromIndices<
                     TDim,
-                    core::detail::integer_sequence<std::size_t, TIndices...>>
+                    meta::IntegerSequence<std::size_t, TIndices...>>
                 ::subVecFromIndices(
                     vec,
                     indices);
@@ -725,7 +725,7 @@ namespace alpaka
             static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
             //! A sequence of integers from 0 to dim-1.
-            using IdxSubSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TSubDim::value>;
+            using IdxSubSequence = meta::MakeIntegerSequence<std::size_t, TSubDim::value>;
             return subVecFromIndices(vec, IdxSubSequence());
         }
         //-----------------------------------------------------------------------------
@@ -743,7 +743,7 @@ namespace alpaka
             static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
             //! A sequence of integers from 0 to dim-1.
-            using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TDim::value-TSubDim::value, TSubDim::value>;
+            using IdxSubSequence = meta::MakeIntegerSequenceOffset<std::size_t, TDim::value-TSubDim::value, TSubDim::value>;
             return subVecFromIndices(vec, IdxSubSequence());
         }
 

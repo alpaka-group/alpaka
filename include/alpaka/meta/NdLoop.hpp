@@ -21,16 +21,14 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>            // Dim
-
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 #include <alpaka/vec/Vec.hpp>               // Vec
-
-#include <alpaka/core/IntegerSequence.hpp>  // core::detail::index_sequence
+#include <alpaka/dim/Traits.hpp>            // Dim
+#include <alpaka/meta/IntegerSequence.hpp>  // meta::IndexSequence
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
 namespace alpaka
 {
-    namespace core
+    namespace meta
     {
         namespace detail
         {
@@ -45,7 +43,7 @@ namespace alpaka
             //#############################################################################
             template<>
             struct NdLoop<
-                core::detail::index_sequence<>>
+                meta::IndexSequence<>>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -69,7 +67,7 @@ namespace alpaka
             template<
                 std::size_t Tdim>
             struct NdLoop<
-                core::detail::index_sequence<Tdim>>
+                meta::IndexSequence<Tdim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -108,7 +106,7 @@ namespace alpaka
                 std::size_t Tdim,
                 std::size_t... Tdims>
             struct NdLoop<
-                core::detail::index_sequence<Tdim, Tdims...>>
+                meta::IndexSequence<Tdim, Tdims...>>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -137,7 +135,7 @@ namespace alpaka
                     for(idx[Tdim] = 0u; idx[Tdim] < extent[Tdim]; ++idx[Tdim])
                     {
                         detail::NdLoop<
-                            core::detail::index_sequence<Tdims...>>
+                            meta::IndexSequence<Tdims...>>
                         ::template ndLoop(
                                 idx,
                                 extent,
@@ -148,7 +146,7 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
-        //! The loops are nested in the order given by the index_sequence with the first element being the outermost and the last index the innermost loop.
+        //! The loops are nested in the order given by the IndexSequence with the first element being the outermost and the last index the innermost loop.
         //!
         //! \param indexSequence A sequence of indices being a permutation of the values [0, dim-1], where every values occurs at most once.
         //! \param extent N-dimensional loop extent.
@@ -161,7 +159,7 @@ namespace alpaka
             typename TFnObj,
             std::size_t... Tdims>
         ALPAKA_FN_HOST_ACC auto ndLoop(
-            core::detail::index_sequence<Tdims...> const & /*indexSequence*/,
+            meta::IndexSequence<Tdims...> const & /*indexSequence*/,
             TExtentVec const & extent,
             TFnObj const & f)
         -> void
@@ -170,17 +168,17 @@ namespace alpaka
                 dim::Dim<TExtentVec>::value > 0u,
                 "The dimension of the extent given to ndLoop has to be larger than zero!");
             static_assert(
-                core::detail::IntegerSequenceValuesInRange<core::detail::index_sequence<Tdims...>, std::size_t, 0, dim::Dim<TExtentVec>::value>::value,
-                "The values in the index_sequence have to in the rang [0,dim-1]!");
+                meta::IntegerSequenceValuesInRange<meta::IndexSequence<Tdims...>, std::size_t, 0, dim::Dim<TExtentVec>::value>::value,
+                "The values in the IndexSequence have to in the rang [0,dim-1]!");
             static_assert(
-                core::detail::IntegerSequenceValuesUnique<core::detail::index_sequence<Tdims...>>::value,
-                "The values in the index_sequence have to be unique!");
+                meta::IntegerSequenceValuesUnique<meta::IndexSequence<Tdims...>>::value,
+                "The values in the IndexSequence have to be unique!");
 
             auto idx(
                 Vec<dim::Dim<TExtentVec>, size::Size<TExtentVec>>::zeros());
 
             detail::NdLoop<
-                core::detail::index_sequence<Tdims...>>
+                meta::IndexSequence<Tdims...>>
             ::template ndLoop(
                     idx,
                     extent,
@@ -204,7 +202,7 @@ namespace alpaka
         -> void
         {
             ndLoop(
-                core::detail::make_index_sequence<dim::Dim<TExtentVec>::value>(),
+                meta::MakeIndexSequence<dim::Dim<TExtentVec>::value>(),
                 extent,
                 f);
         }

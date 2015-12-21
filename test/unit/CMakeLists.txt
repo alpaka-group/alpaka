@@ -24,12 +24,11 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
-PROJECT("alpakaTest")
+PROJECT("alpakaUnitTest")
 
 ################################################################################
 # Add subdirectories.
 ################################################################################
 
-ADD_SUBDIRECTORY("analysis/")
-ADD_SUBDIRECTORY("integ/")
-ADD_SUBDIRECTORY("unit/")
+ADD_SUBDIRECTORY("acc/")
+ADD_SUBDIRECTORY("meta/")

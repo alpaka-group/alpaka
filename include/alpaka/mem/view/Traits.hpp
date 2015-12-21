@@ -30,7 +30,7 @@
 
 #include <alpaka/vec/Vec.hpp>           // Vec
 
-#include <alpaka/core/Fold.hpp>         // core::foldr
+#include <alpaka/meta/Fold.hpp>         // meta::foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <iosfwd>                       // std::ostream
@@ -82,7 +82,7 @@ namespace alpaka
                         TView const & view)
                     -> size::Size<TView>
                     {
-                        using IdxSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
+                        using IdxSequence = meta::MakeIntegerSequenceOffset<std::size_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
                         return
                             extentProd(view, IdxSequence())
                             * sizeof(typename elem::Elem<TView>);
@@ -95,12 +95,12 @@ namespace alpaka
                         std::size_t... TIndices>
                     ALPAKA_FN_HOST static auto extentProd(
                         TView const & view,
-                        alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const &)
+                        meta::IntegerSequence<std::size_t, TIndices...> const &)
                     -> size::Size<TView>
                     {
                         // For the case that the sequence is empty (index out of range), 1 is returned.
                         return
-                            core::foldr(
+                            meta::foldr(
                                 std::multiplies<size::Size<TView>>(),
                                 1u,
                                 extent::getExtent<TIndices>(view)...);

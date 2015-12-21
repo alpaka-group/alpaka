@@ -27,16 +27,14 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
-#include <alpaka/vec/Vec.hpp>               // Vec
-#include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
+#include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
 #include <alpaka/elem/Traits.hpp>           // ElemType
 #include <alpaka/offset/Traits.hpp>         // GetOffset/SetOffset
 #include <alpaka/extent/Traits.hpp>         // GetExtent/SetExtent
 #include <alpaka/size/Traits.hpp>           // SizeType
-
-#include <boost/mpl/apply.hpp>              // boost::mpl::apply
-#include <boost/mpl/and.hpp>                // boost::mpl::and_
+#include <alpaka/vec/Vec.hpp>               // Vec
+#include <alpaka/meta/Metafunctions.hpp>    // meta::Conjunction
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 
 // cuda_runtime_api.h: CUDA Runtime API C-style interface that does not require compiling with nvcc.
 // cuda_runtime.h: CUDA Runtime API  C++-style interface built on top of the C API.
@@ -78,15 +76,13 @@ namespace alpaka
             template<
                 typename... TErrors,
                 typename = typename std::enable_if<
-                    boost::mpl::and_<
-                        boost::mpl::true_,
-                        boost::mpl::true_,
-                        boost::mpl::apply<
-                            std::is_convertible<
-                                boost::mpl::_1,
-                                cudaError_t>,
-                            TErrors>...
-                        >::value>::type>
+                    meta::Conjunction<
+                        std::true_type,
+                        std::is_convertible<
+                            TErrors,
+                            cudaError_t
+                        >...
+                    >::value>::type>
             ALPAKA_FN_HOST auto cudaRtCheckIgnore(
                 cudaError_t const & error,
                 char const * cmd,

@@ -23,44 +23,42 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
-#include <boost/mpl/is_sequence.hpp>    // boost::mpl::is_sequence
-#include <boost/mpl/begin_end.hpp>      // boost::mpl::begin/end
-#include <boost/mpl/deref.hpp>          // boost::mpl::deref
-#include <boost/mpl/next.hpp>           // boost::mpl::next
-#include <boost/mpl/aux_/unwrap.hpp>    // boost::mpl::aux::unwrap
-
 #include <boost/predef.h>               // Workarounds.
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
-#include <type_traits>                  // std::is_same
 #include <utility>                      // std::forward
 
 namespace alpaka
 {
-    namespace core
+    namespace meta
     {
         namespace detail
         {
             //#############################################################################
-            //!
+            //
             //#############################################################################
             template<
-                bool TisDone = true>
-            struct ForEachTypeImpl
+                typename TList>
+            struct ForEachTypeHelper;
+            //#############################################################################
+            //
+            //#############################################################################
+            template<
+                template<typename...> class TList>
+            struct ForEachTypeHelper<
+                TList<>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    typename TElemIt,
-                    typename TLastIt,
                     typename TFnObj,
                     typename... TArgs>
-                ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
-                    TFnObj && f ,
+                ALPAKA_FN_HOST_ACC static auto forEachTypeHelper(
+                    TFnObj && f,
                     TArgs && ... args)
                 -> void
                 {
@@ -70,47 +68,41 @@ namespace alpaka
 #endif
                 }
             };
-
             //#############################################################################
-            //!
+            //
             //#############################################################################
-            template<>
-            struct ForEachTypeImpl<
-                false>
+            template<
+                template<typename...> class TList,
+                typename T,
+                typename... Ts>
+            struct ForEachTypeHelper<
+                TList<T, Ts...>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    typename TElemIt,
-                    typename TLastIt,
                     typename TFnObj,
                     typename... TArgs>
-                ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
+                ALPAKA_FN_HOST_ACC static auto forEachTypeHelper(
                     TFnObj && f,
                     TArgs && ... args)
                 -> void
                 {
-                    using Elem = typename boost::mpl::deref<TElemIt>::type;
-
                     // Call the function object template call operator.
 #if BOOST_COMP_MSVC
-                    boost::mpl::aux::unwrap(f, 0).operator()<Elem>(
+                    f.operator()<T>(
                         std::forward<TArgs>(args)...);
 #else
-                    boost::mpl::aux::unwrap(f, 0).template operator()<Elem>(
+                    f.template operator()<T>(
                         std::forward<TArgs>(args)...);
 #endif
-                    // Recurse to the next element.
-                    using NextIt = typename boost::mpl::next<TElemIt>::type;
-                    ForEachTypeImpl<
-                        std::is_same<NextIt, TLastIt>::value>
-                    ::template forEachTypeImpl<
-                        NextIt,
-                        TLastIt>(
-                            std::forward<TFnObj>(f),
-                            std::forward<TArgs>(args)...);
+                    ForEachTypeHelper<
+                        TList<Ts...>>
+                    ::forEachTypeHelper(
+                        std::forward<TFnObj>(f),
+                        std::forward<TArgs>(args)...);
                 }
             };
         }
@@ -121,7 +113,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TSequence,
+            typename TList,
             typename TFnObj,
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto forEachType(
@@ -129,20 +121,11 @@ namespace alpaka
             TArgs && ... args)
         -> void
         {
-            static_assert(
-                boost::mpl::is_sequence<TSequence>::value,
-                "for_each_type requires the TSequence to satisfy boost::mpl::is_sequence!");
-
-            using FirstIt = typename boost::mpl::begin<TSequence>::type;
-            using LastIt = typename boost::mpl::end<TSequence>::type;
-
-            detail::ForEachTypeImpl<
-                std::is_same<FirstIt, LastIt>::value>
-            ::template forEachTypeImpl<
-                FirstIt,
-                LastIt>(
-                    std::forward<TFnObj>(f),
-                    std::forward<TArgs>(args)...);
+            detail::ForEachTypeHelper<
+                TList>
+            ::forEachTypeHelper(
+                std::forward<TFnObj>(f),
+                std::forward<TArgs>(args)...);
         }
     }
 }

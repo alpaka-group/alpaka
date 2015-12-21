@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/core/IntegerSequence.hpp>
+#include <alpaka/meta/IntegerSequence.hpp>
 
 #include <utility>      // std::forward
 #include <type_traits>  // std::decay
 
 namespace alpaka
 {
-    namespace core
+    namespace meta
     {
         //-----------------------------------------------------------------------------
         // C++17 std::invoke
@@ -41,28 +41,28 @@ namespace alpaka
             {
                 return std::forward<F>(f)(std::forward<Args>(args)...);
             }
- 
+
             template<class Base, class T, class Derived>
-            inline auto invoke_impl(T Base::*pmd, Derived && ref) 
+            inline auto invoke_impl(T Base::*pmd, Derived && ref)
             -> decltype(std::forward<Derived>(ref).*pmd)
             {
                 return std::forward<Derived>(ref).*pmd;
             }
- 
+
             template<class PMD, class Pointer>
             inline auto invoke_impl(PMD pmd, Pointer && ptr)
             -> decltype((*std::forward<Pointer>(ptr)).*pmd)
             {
                 return (*std::forward<Pointer>(ptr)).*pmd;
             }
- 
+
             template<class Base, class T, class Derived, class... Args>
             inline auto invoke_impl(T Base::*pmf, Derived && ref, Args &&... args)
             -> decltype((std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...))
             {
                 return (std::forward<Derived>(ref).*pmf)(std::forward<Args>(args)...);
             }
- 
+
             template<class PMF, class Pointer, class... Args>
             inline auto invoke_impl(PMF pmf, Pointer && ptr, Args &&... args)
             -> decltype(((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...))
@@ -70,7 +70,7 @@ namespace alpaka
                 return ((*std::forward<Pointer>(ptr)).*pmf)(std::forward<Args>(args)...);
             }
         }
- 
+
         template< class F, class... ArgTypes>
         auto invoke(F && f, ArgTypes &&... args)
         -> decltype(detail::invoke_impl(std::forward<F>(f), std::forward<ArgTypes>(args)...))
@@ -84,32 +84,32 @@ namespace alpaka
         namespace detail
         {
             template<class F, class Tuple, std::size_t... I>
-            auto apply_impl( F && f, Tuple && t, core::detail::index_sequence<I...> )
+            auto apply_impl( F && f, Tuple && t, meta::IndexSequence<I...> )
             -> decltype(
-                core::invoke(
+                meta::invoke(
                     std::forward<F>(f),
                     std::get<I>(std::forward<Tuple>(t))...))
             {
                 return
-                    core::invoke(
+                    meta::invoke(
                         std::forward<F>(f),
                         std::get<I>(std::forward<Tuple>(t))...);
             }
         }
- 
+
         template<class F, class Tuple>
         auto apply(F && f, Tuple && t)
         -> decltype(
             detail::apply_impl(
                 std::forward<F>(f),
                 std::forward<Tuple>(t),
-                core::detail::make_index_sequence<std::tuple_size<typename std::decay<Tuple>::type>::value>{}))
+                meta::MakeIndexSequence<std::tuple_size<typename std::decay<Tuple>::type>::value>{}))
         {
             return
                 detail::apply_impl(
                     std::forward<F>(f),
                     std::forward<Tuple>(t),
-                    core::detail::make_index_sequence<std::tuple_size<typename std::decay<Tuple>::type>::value>{});
+                    meta::MakeIndexSequence<std::tuple_size<typename std::decay<Tuple>::type>::value>{});
         }
     }
 }

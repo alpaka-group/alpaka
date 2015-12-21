@@ -21,12 +21,13 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>            // dev::DevCpu
+#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
 
-#include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
-#include <alpaka/mem/buf/Traits.hpp>        // mem::buf::Alloc, ...
+#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/mem/buf/Traits.hpp>            // mem::buf::Alloc, ...
 
-#include <alpaka/vec/Vec.hpp>               // Vec
+
+#include <alpaka/vec/Vec.hpp>                   // Vec
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
@@ -35,8 +36,10 @@
 
 #include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
 
-#include <cassert>                          // assert
-#include <memory>                           // std::shared_ptr
+#include <alpaka/meta/DependentFalseType.hpp>   // meta::DependentFalseType
+
+#include <cassert>                              // assert
+#include <memory>                               // std::shared_ptr
 
 namespace alpaka
 {
@@ -530,7 +533,7 @@ namespace alpaka
                             buf.m_spBufCpuImpl->m_bPinned = true;
 #else
                             static_assert(
-                                core::DependentFalseType<TElem>::value,
+                                meta::DependentFalseType<TElem>::value,
                                 "Memory pinning of BufCpu is not implemented when CUDA is not enabled!");
 #endif
                         }
@@ -586,7 +589,7 @@ namespace alpaka
                             bufImpl.m_bPinned = false;
 #else
                             static_assert(
-                                core::DependentFalseType<TElem>::value,
+                                meta::DependentFalseType<TElem>::value,
                                 "Memory unpinning of BufCpu is not implemented when CUDA is not enabled!");
 #endif
                         }

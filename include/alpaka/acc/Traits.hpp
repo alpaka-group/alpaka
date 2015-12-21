@@ -65,8 +65,7 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetAccName
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
                     return typeid(TAcc).name();
@@ -103,10 +102,9 @@ namespace alpaka
         //!
         //! \tparam TAcc The accelerator type to write the name of.
         //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TAcc>
-        ALPAKA_FN_HOST_ACC auto getAccName()
+        ALPAKA_FN_HOST auto getAccName()
         -> std::string
         {
             return

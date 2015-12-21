@@ -79,6 +79,16 @@
     #include <alpaka/block/sync/Traits.hpp>
 
 //-----------------------------------------------------------------------------
+// core
+//-----------------------------------------------------------------------------
+#include <alpaka/core/Align.hpp>
+#include <alpaka/core/Common.hpp>
+#include <alpaka/core/MapIdx.hpp>
+#include <alpaka/core/Positioning.hpp>
+#include <alpaka/core/Unroll.hpp>
+#include <alpaka/core/Vectorize.hpp>
+
+//-----------------------------------------------------------------------------
 // dev
 //-----------------------------------------------------------------------------
 #include <alpaka/dev/DevCudaRt.hpp>
@@ -157,6 +167,22 @@
 #include <alpaka/mem/view/Traits.hpp>
 
 //-----------------------------------------------------------------------------
+// meta
+//-----------------------------------------------------------------------------
+#include <alpaka/meta/Apply.hpp>
+#include <alpaka/meta/ApplyTuple.hpp>
+#include <alpaka/meta/Concatenate.hpp>
+#include <alpaka/meta/CartesianProduct.hpp>
+#include <alpaka/meta/DependentFalseType.hpp>
+#include <alpaka/meta/Filter.hpp>
+#include <alpaka/meta/Fold.hpp>
+#include <alpaka/meta/ForEachType.hpp>
+#include <alpaka/meta/Metafunctions.hpp>
+#include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/StdTupleAsMplSequence.hpp>
+#include <alpaka/meta/Transform.hpp>
+
+//-----------------------------------------------------------------------------
 // offset
 //-----------------------------------------------------------------------------
 #include <alpaka/offset/Traits.hpp>
@@ -199,16 +225,3 @@
 //-----------------------------------------------------------------------------
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/vec/Traits.hpp>
-
-//-----------------------------------------------------------------------------
-// core
-//-----------------------------------------------------------------------------
-#include <alpaka/core/Align.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Fold.hpp>
-#include <alpaka/core/ForEachType.hpp>
-#include <alpaka/core/MapIdx.hpp>
-#include <alpaka/core/NdLoop.hpp>
-#include <alpaka/core/Positioning.hpp>
-#include <alpaka/core/Unroll.hpp>
-#include <alpaka/core/Vectorize.hpp>

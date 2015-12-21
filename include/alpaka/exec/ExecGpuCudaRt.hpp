@@ -50,11 +50,10 @@
 #endif
 
 #include <alpaka/core/Cuda.hpp>                 // ALPAKA_CUDA_RT_CHECK
-#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
+#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
+#include <alpaka/meta/Metafunctions.hpp>        // meta::Conjunction
 
 #include <boost/predef.h>                       // workarounds
-#include <boost/mpl/apply.hpp>                  // boost::mpl::apply
-#include <boost/mpl/and.hpp>                    // boost::mpl::and_
 
 #include <stdexcept>                            // std::runtime_error
 #include <tuple>                                // std::tuple
@@ -111,15 +110,13 @@ namespace alpaka
         public:
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
             static_assert(
-                boost::mpl::and_<
+                meta::Conjunction<
                     // This true_ is required for the zero argument case because and_ requires at least two arguments.
-                    boost::mpl::true_,
+                    std::true_type,
                     std::is_trivially_copyable<
                         TKernelFnObj>,
-                    boost::mpl::apply<
-                        std::is_trivially_copyable<
-                            boost::mpl::_1>,
-                            TArgs>...
+                    std::is_trivially_copyable<
+                        TArgs>...
                     >::value,
                 "The given kernel function object and its arguments have to fulfill is_trivially_copyable!");
 #endif
@@ -353,7 +350,7 @@ namespace alpaka
 
                     // Get the size of the block shared extern memory.
                     auto const blockSharedExternMemSizeBytes(
-                        core::apply(
+                        meta::apply(
                             [&](TArgs const & ... args)
                             {
                                 return
@@ -395,7 +392,7 @@ namespace alpaka
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                     // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
-                    core::apply(
+                    meta::apply(
                         [&](TArgs ... args)
                         {
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
@@ -494,7 +491,7 @@ namespace alpaka
 
                     // Get the size of the block shared extern memory.
                     auto const blockSharedExternMemSizeBytes(
-                        core::apply(
+                        meta::apply(
                             [&](TArgs const & ... args)
                             {
                                 return
@@ -536,7 +533,7 @@ namespace alpaka
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                     // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
-                    core::apply(
+                    meta::apply(
                         [&](TArgs ... args)
                         {
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
