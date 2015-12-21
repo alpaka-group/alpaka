@@ -38,12 +38,12 @@
 // Boost fiber:
 // http://olk.github.io/libs/fiber/doc/html/index.html
 // https://github.com/olk/boost-fiber
-#include <boost/fiber/fiber.hpp>        // boost::fibers::fiber
-#include <boost/fiber/operations.hpp>   // boost::this_fiber
-#include <boost/fiber/condition.hpp>    // boost::fibers::condition_variable
-#include <boost/fiber/mutex.hpp>        // boost::fibers::mutex
-#include <boost/fiber/future.hpp>       // boost::fibers::future
-//#include <boost/fiber/barrier.hpp>    // boost::fibers::barrier
+#include <boost/fiber/fiber.hpp>                // boost::fibers::fiber
+#include <boost/fiber/operations.hpp>           // boost::this_fiber
+#include <boost/fiber/condition_variable.hpp>   // boost::fibers::condition_variable
+#include <boost/fiber/mutex.hpp>                // boost::fibers::mutex
+#include <boost/fiber/future.hpp>               // boost::fibers::future
+//#include <boost/fiber/barrier.hpp>            // boost::fibers::barrier
 
 #if BOOST_COMP_MSVC
     #undef NOMINMAX
