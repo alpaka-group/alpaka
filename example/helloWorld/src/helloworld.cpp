@@ -201,5 +201,5 @@ int main() {
     /**
      * Everything is fine, so lets return :)
      */
-    return 0;
+    return EXIT_SUCCESS;
 }

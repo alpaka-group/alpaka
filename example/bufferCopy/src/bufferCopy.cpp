@@ -347,5 +347,5 @@ int main() {
     /**
      * No copy failure, so lets return :)
      */
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -82,120 +82,101 @@ public:
 auto main()
 -> int
 {
-    try
+    using Acc = alpaka::acc::AccCpuSerial<alpaka::dim::DimInt<1u>, std::size_t>;
+    using Stream = alpaka::stream::StreamCpuSync;
+    using Size = std::size_t;
+    using Val = float;
+    Size const numElements(123456);
+
+    // Create the kernel function object.
+    VectorAddKernel kernel;
+
+    // Get the host device.
+    auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
+
+    // Select a device to execute on.
+    alpaka::dev::Dev<Acc> devAcc(
+        alpaka::dev::DevMan<Acc>::getDevByIdx(0));
+
+    // Get a stream on this device.
+    Stream stream(devAcc);
+
+    // The data extent.
+    alpaka::Vec<alpaka::dim::DimInt<1u>, Size> const extent(
+        numElements);
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent.
+    alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, Size> const workDiv(
+        alpaka::workdiv::getValidWorkDiv<Acc>(
+            devAcc,
+            extent,
+            static_cast<Size>(3u),
+            false,
+            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+
+    std::cout
+        << "VectorAddKernelTester("
+        << " numElements:" << numElements
+        << ", accelerator: " << alpaka::acc::getAccName<Acc>()
+        << ", kernel: " << typeid(kernel).name()
+        << ", workDiv: " << workDiv
+        << ")" << std::endl;
+
+    // Allocate host memory buffers.
+    auto memBufHostA(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
+    auto memBufHostB(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
+    auto memBufHostC(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
+
+    // Initialize the host input vectors
+    for (Size i(0); i < numElements; ++i)
     {
-        std::cout << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << "                          alpaka vector add example                             " << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << std::endl;
+        alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand());
+        alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand());
+    }
 
-        using Acc = alpaka::acc::AccCpuSerial<alpaka::dim::DimInt<1u>, std::size_t>;
-        using Stream = alpaka::stream::StreamCpuSync;
-        using Size = std::size_t;
-        using Val = float;
-        Size const numElements(123456);
+    // Allocate the buffer on the accelerator.
+    auto memBufAccA(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
+    auto memBufAccB(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
+    auto memBufAccC(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
 
-        // Create the kernel function object.
-        VectorAddKernel kernel;
+    // Copy Host -> Acc.
+    alpaka::mem::view::copy(stream, memBufAccA, memBufHostA, extent);
+    alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, extent);
 
-        // Get the host device.
-        auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
+    // Create the executor task.
+    auto const exec(alpaka::exec::create<Acc>(
+        workDiv,
+        kernel,
+        alpaka::mem::view::getPtrNative(memBufAccA),
+        alpaka::mem::view::getPtrNative(memBufAccB),
+        alpaka::mem::view::getPtrNative(memBufAccC),
+        numElements));
 
-        // Select a device to execute on.
-        alpaka::dev::Dev<Acc> devAcc(
-            alpaka::dev::DevMan<Acc>::getDevByIdx(0));
+    // Profile the kernel execution.
+    alpaka::stream::enqueue(stream, exec);
 
-        // Get a stream on this device.
-        Stream stream(devAcc);
+    // Copy back the result.
+    alpaka::mem::view::copy(stream, memBufHostC, memBufAccC, extent);
 
-        // The data extent.
-        alpaka::Vec<alpaka::dim::DimInt<1u>, Size> const extent(
-            numElements);
-
-        // Let alpaka calculate good block and grid sizes given our full problem extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, Size> const workDiv(
-            alpaka::workdiv::getValidWorkDiv<Acc>(
-                devAcc,
-                extent,
-                static_cast<Size>(3u),
-                false,
-                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
-
-        std::cout
-            << "VectorAddKernelTester("
-            << " numElements:" << numElements
-            << ", accelerator: " << alpaka::acc::getAccName<Acc>()
-            << ", kernel: " << typeid(kernel).name()
-            << ", workDiv: " << workDiv
-            << ")" << std::endl;
-
-        // Allocate host memory buffers.
-        auto memBufHostA(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
-        auto memBufHostB(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
-        auto memBufHostC(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
-
-        // Initialize the host input vectors
-        for (Size i(0); i < numElements; ++i)
+    bool resultCorrect(true);
+    auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));
+    for(Size i(0u);
+        i < numElements;
+        ++i)
+    {
+        auto const & val(pHostData[i]);
+        auto const correctResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
+        if(val != correctResult)
         {
-            alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand());
-            alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand());
+            std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+            resultCorrect = false;
         }
+    }
 
-        // Allocate the buffer on the accelerator.
-        auto memBufAccA(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
-        auto memBufAccB(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
-        auto memBufAccC(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
-
-        // Copy Host -> Acc.
-        alpaka::mem::view::copy(stream, memBufAccA, memBufHostA, extent);
-        alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, extent);
-
-        // Create the executor task.
-        auto const exec(alpaka::exec::create<Acc>(
-            workDiv,
-            kernel,
-            alpaka::mem::view::getPtrNative(memBufAccA),
-            alpaka::mem::view::getPtrNative(memBufAccB),
-            alpaka::mem::view::getPtrNative(memBufAccC),
-            numElements));
-
-        // Profile the kernel execution.
-        alpaka::stream::enqueue(stream, exec);
-
-        // Copy back the result.
-        alpaka::mem::view::copy(stream, memBufHostC, memBufAccC, extent);
-
-        bool resultCorrect(true);
-        auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));
-        for(Size i(0u);
-            i < numElements;
-            ++i)
-        {
-            auto const & val(pHostData[i]);
-            auto const correctResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
-            if(val != correctResult)
-            {
-                std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
-                resultCorrect = false;
-            }
-        }
-
-        if(resultCorrect)
-        {
-            std::cout << "Execution results correct!" << std::endl;
-        }
+    if(resultCorrect)
+    {
+        std::cout << "Execution results correct!" << std::endl;
+    }
             
-        return EXIT_SUCCESS;
-    }
-    catch(std::exception const & e)
-    {
-        std::cerr << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-    catch(...)
-    {
-        std::cerr << "Unknown Exception" << std::endl;
-        return EXIT_FAILURE;
-    }
+    return EXIT_SUCCESS;
 }
