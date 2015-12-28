@@ -129,19 +129,19 @@ before_install:
     - echo "${TRAVIS_TAG}"
 
     # g++ / clang dependencies
-    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    - travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 
     # clang
-    - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.5 main' ;fi
-    - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main' ;fi
-    - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main' ;fi
-    - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main' ;fi
-    - if [ "${CXX}" == "clang++" ] ;then wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add - ;fi
+    - if [ "${CXX}" == "clang++" ] ;then travis_retry sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.5 main' ;fi
+    - if [ "${CXX}" == "clang++" ] ;then travis_retry sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.6 main' ;fi
+    - if [ "${CXX}" == "clang++" ] ;then travis_retry sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main' ;fi
+    - if [ "${CXX}" == "clang++" ] ;then travis_retry sudo add-apt-repository -y 'deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty main' ;fi
+    - if [ "${CXX}" == "clang++" ] ;then travis_retry wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add - ;fi
 
     # git
-    - sudo add-apt-repository -y ppa:git-core/ppa
+    - travis_retry sudo add-apt-repository -y ppa:git-core/ppa
 
-    - sudo apt-get update
+    - travis_retry sudo apt-get update
 
 ################################################################################
 # Use this to install any prerequisites or dependencies necessary to run your build.
@@ -152,24 +152,24 @@ install:
 
     #-------------------------------------------------------------------------------
     # Install sloc
-    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then sudo apt-get install sloccount ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then travis_retry sudo apt-get install sloccount ;fi
 
     #-------------------------------------------------------------------------------
     # Install cppcheck
     # FIXME: Use a better static analysis tool. cppcheck does not support c++11 correctly.
-    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then sudo apt-get install cppcheck ;fi
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then travis_retry sudo apt-get install cppcheck ;fi
 
     #-------------------------------------------------------------------------------
     # Get the current gcc version.
     - git --version
-    - sudo apt-get -y install git
+    - travis_retry sudo apt-get -y install git
     - git --version
 
     #-------------------------------------------------------------------------------
     # gcc 4.6 is too old...
     - if [ "${CXX}" == "g++" ]
       ;then
-          sudo apt-get -y install g++-${ALPAKA_GCC_VER}
+          travis_retry sudo apt-get -y install g++-${ALPAKA_GCC_VER}
           && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${ALPAKA_GCC_VER} 50
           && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${ALPAKA_GCC_VER} 50
       ;fi
@@ -196,8 +196,8 @@ install:
     # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
     - if [ "${CXX}" == "clang++" ]
       ;then
-          sudo apt-get -y install libstdc++-${ALPAKA_CLANG_LIBSTDCPP_VERSION}-dev
-          && sudo apt-get -y install clang-${ALPAKA_CLANG_VER}
+          travis_retry sudo apt-get -y install libstdc++-${ALPAKA_CLANG_LIBSTDCPP_VERSION}-dev
+          && travis_retry sudo apt-get -y install clang-${ALPAKA_CLANG_VER}
           && sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${ALPAKA_CLANG_VER} 50
           && sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-${ALPAKA_CLANG_VER} 50
           && sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang 50
@@ -323,7 +323,7 @@ install:
       ;fi
     - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
       ;then
-          wget ${ALPAKA_CUDA_PKG_FILE_PATH}
+          travis_retry wget ${ALPAKA_CUDA_PKG_FILE_PATH}
           && sudo dpkg -i ${ALPAKA_CUDA_PKG_FILE_NAME}
           && sudo apt-get -y update
           && sudo apt-get -y install cuda-core-${ALPAKA_CUDA_VERSION} cuda-cudart-${ALPAKA_CUDA_VERSION} cuda-cudart-dev-${ALPAKA_CUDA_VERSION} cuda-curand-${ALPAKA_CUDA_VERSION} cuda-curand-dev-${ALPAKA_CUDA_VERSION}
