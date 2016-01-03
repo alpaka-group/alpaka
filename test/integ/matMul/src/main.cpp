@@ -96,7 +96,7 @@ public:
         auto const & blockThreadExtentVal(blockThreadExtentX);
 
         // Shared memory used to store the current blocks of A and B.
-        auto * const pBlockSharedA(acc.template getBlockSharedExternMem<TElem>());
+        auto * const pBlockSharedA(alpaka::block::shared::dyn::getMem<TElem>(acc));
         auto * const pBlockSharedB(pBlockSharedA + blockThreadExtentX*blockThreadExtentY);
 
         auto const sharedBlockIdx1d(blockThreadIdxY*blockThreadExtentX + blockThreadIdxX);
@@ -163,11 +163,11 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The trait for getting the size of the block shared extern memory for a kernel.
+            //! The trait for getting the size of the block shared dynamic memory for a kernel.
             //#############################################################################
             template<
                 typename TAcc>
-            struct BlockSharedExternMemSizeBytes<
+            struct BlockSharedMemDynSizeBytes<
                 MatMulKernel,
                 TAcc>
             {
@@ -178,7 +178,7 @@ namespace alpaka
                     typename TVec,
                     typename TIndex,
                     typename TElem>
-                ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
+                ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
                     TIndex const & m,

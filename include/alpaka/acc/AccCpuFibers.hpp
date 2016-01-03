@@ -29,8 +29,9 @@
 #include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp> // IdxBtRefFiberIdMap
 #include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
 #include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>   // BlockSharedAllocMasterSync
-#include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>     // BlockSyncFiberIdMapBarrier
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
+#include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
+#include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>                 // BlockSyncFiberIdMapBarrier
 #include <alpaka/rand/RandStl.hpp>              // RandStl
 
 // Specialized traits.
@@ -81,7 +82,8 @@ namespace alpaka
             public idx::bt::IdxBtRefFiberIdMap<TDim, TSize>,
             public atomic::AtomicNoOp,
             public math::MathStl,
-            public block::shared::BlockSharedAllocMasterSync,
+            public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
+            public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncFiberIdMapBarrier<TSize>,
             public rand::RandStl
         {
@@ -101,13 +103,15 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(
-                TWorkDiv const & workDiv) :
+                TWorkDiv const & workDiv,
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtRefFiberIdMap<TDim, TSize>(m_fibersToIndices),
                     atomic::AtomicNoOp(),
                     math::MathStl(),
-                    block::shared::BlockSharedAllocMasterSync(
+                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(blockSharedMemDynSizeBytes),
+                    block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
                     block::sync::BlockSyncFiberIdMapBarrier<TSize>(
@@ -140,17 +144,6 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuFibers() = default;
 
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
-            -> T *
-            {
-                return reinterpret_cast<T*>(m_externalSharedMem.get());
-            }
-
         private:
             // getIdx
             typename idx::bt::IdxBtRefFiberIdMap<TDim, TSize>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
@@ -165,9 +158,6 @@ namespace alpaka
 
             // allocBlockSharedArr
             boost::fibers::fiber::id mutable m_masterFiberId;           //!< The id of the master fiber.
-
-            // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;  //!< External block shared memory.
         };
     }
 

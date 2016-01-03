@@ -62,11 +62,20 @@
 //-----------------------------------------------------------------------------
     //-----------------------------------------------------------------------------
     // shared
-    //-----------------------------------------------------------------------------
-    #include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>
-    #include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>
-    #include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>
-    #include <alpaka/block/shared/Traits.hpp>
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        // dynamic
+        //-----------------------------------------------------------------------------
+        #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
+        #include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp>
+        #include <alpaka/block/shared/dyn/Traits.hpp>
+        //-----------------------------------------------------------------------------
+        // static
+        //-----------------------------------------------------------------------------
+        #include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>
+        #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
+        #include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
+        #include <alpaka/block/shared/st/Traits.hpp>
 
     //-----------------------------------------------------------------------------
     // sync

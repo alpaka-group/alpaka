@@ -37,7 +37,7 @@
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>      // acc::AccCpuOmp2Blocks
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
@@ -124,13 +124,13 @@ namespace alpaka
                 auto const threadElemExtent(
                     workdiv::getWorkDiv<Thread, Elems>(*this));
 
-                // Get the size of the block shared extern memory.
-                auto const blockSharedExternMemSizeBytes(
+                // Get the size of the block shared dynamic memory.
+                auto const blockSharedMemDynSizeBytes(
                     meta::apply(
                         [&](TArgs const & ... args)
                         {
                             return
-                                kernel::getBlockSharedExternMemSizeBytes<
+                                kernel::getBlockSharedMemDynSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuOmp2Blocks<TDim, TSize>>(
                                         blockThreadExtent,
@@ -141,7 +141,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
@@ -179,14 +179,8 @@ namespace alpaka
                     }
 #endif
                     acc::AccCpuOmp2Blocks<TDim, TSize> acc(
-                        *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
-
-                    if(blockSharedExternMemSizeBytes > 0u)
-                    {
-                        acc.m_externalSharedMem.reset(
-                            reinterpret_cast<uint8_t *>(
-                                boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
-                    }
+                        *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this),
+                        blockSharedMemDynSizeBytes);
 
                     // NOTE: schedule(static) does not improve performance.
 #if _OPENMP < 200805    // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop header.
@@ -212,11 +206,8 @@ namespace alpaka
                             acc);
 
                         // After a block has been processed, the shared memory has to be deleted.
-                        block::shared::freeMem(acc);
+                        block::shared::st::freeMem(acc);
                     }
-
-                    // After all blocks have been processed, the external shared memory has to be deleted.
-                    acc.m_externalSharedMem.reset();
                 }
 
                 // Reset the dynamic thread number setting.
