@@ -66,9 +66,10 @@ public:
         {
             // Calculate the number of elements to compute in this thread.
             // The result is uniform for all but the last thread.
-            auto const elems(threadElemExtent + alpaka::math::min(acc, static_cast<unsigned long long>(0u), static_cast<unsigned long long>(numElements-(threadFirstElemIdx+threadElemExtent))));
+            auto const threadLastElemIdx(threadFirstElemIdx+threadElemExtent);
+            auto const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
 
-            for(TSize i(threadFirstElemIdx); i<(threadFirstElemIdx+elems); ++i)
+            for(TSize i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
             {
                 C[i] = A[i] + B[i];
             }
