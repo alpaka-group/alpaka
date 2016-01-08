@@ -29,7 +29,7 @@
 #include <vector>                                   // std::vector
 
 //#############################################################################
-//! A kernel using atomicOp, syncBlockThreads, getBlockSharedExternMem, getIdx, getWorkDiv and global memory to compute a (useless) result.
+//! A kernel using atomicOp, syncBlockThreads, getMem, getIdx, getWorkDiv and global memory to compute a (useless) result.
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TnumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
@@ -65,12 +65,12 @@ public:
         // The number of threads in this block.
         std::size_t const blockThreadCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
-        // Get the extern allocated shared memory.
-        std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
+        // Get the dynamically allocated shared memory.
+        std::uint32_t * const pBlockShared(alpaka::block::shared::dyn::getMem<std::uint32_t>(acc));
 
         // Get some shared memory (allocate a second buffer directly afterwards to check for some synchronization bugs).
-        //std::uint32_t * const pBlockShared1(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value,__COUNTER__>());
-        //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value,__COUNTER__>());
+        //std::uint32_t * const pBlockShared1(alpaka::block::shared::st::allocArr<std::uint32_t, TnumUselessWork::value,__COUNTER__>());
+        //std::uint32_t * const pBlockShared2(alpaka::block::shared::st::allocArr<std::uint32_t, TnumUselessWork::value,__COUNTER__>());
 
         // Calculate linearized index of the thread in the block.
         std::size_t const blockThreadIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
@@ -131,12 +131,12 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The trait for getting the size of the block shared extern memory for a kernel.
+            //! The trait for getting the size of the block shared dynamic memory for a kernel.
             //#############################################################################
             template<
                 typename TnumUselessWork,
                 typename TAcc>
-            struct BlockSharedExternMemSizeBytes<
+            struct BlockSharedMemDynSizeBytes<
                 SharedMemKernel<TnumUselessWork>,
                 TAcc>
             {
@@ -146,7 +146,7 @@ namespace alpaka
                 template<
                     typename TVec,
                     typename... TArgs>
-                ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
+                ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
                     TArgs && ...)

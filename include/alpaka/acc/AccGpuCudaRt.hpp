@@ -33,8 +33,9 @@
 #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>       // IdxBtCudaBuiltIn
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>      // AtomicCudaBuiltIn
 #include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
-#include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>  // BlockSharedAllocCudaBuiltIn
-#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>   // BlockSyncCudaBuiltIn
+#include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp> // BlockSharedMemDynCudaBuiltIn
+#include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>   // BlockSharedMemStCudaBuiltIn
+#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>                   // BlockSyncCudaBuiltIn
 #include <alpaka/rand/RandCuRand.hpp>               // RandCuRand
 
 // Specialized traits.
@@ -79,7 +80,8 @@ namespace alpaka
             public idx::bt::IdxBtCudaBuiltIn<TDim, TSize>,
             public atomic::AtomicCudaBuiltIn,
             public math::MathCudaBuiltIn,
-            public block::shared::BlockSharedAllocCudaBuiltIn,
+            public block::shared::dyn::BlockSharedMemDynCudaBuiltIn,
+            public block::shared::st::BlockSharedMemStCudaBuiltIn,
             public block::sync::BlockSyncCudaBuiltIn,
             public rand::RandCuRand
         {
@@ -94,7 +96,8 @@ namespace alpaka
                     idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
                     atomic::AtomicCudaBuiltIn(),
                     math::MathCudaBuiltIn(),
-                    block::shared::BlockSharedAllocCudaBuiltIn(),
+                    block::shared::dyn::BlockSharedMemDynCudaBuiltIn(),
+                    block::shared::st::BlockSharedMemStCudaBuiltIn(),
                     block::sync::BlockSyncCudaBuiltIn(),
                     rand::RandCuRand()
             {}
@@ -120,22 +123,6 @@ namespace alpaka
             //! Destructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~AccGpuCudaRt() = default;
-
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
-            -> T *
-            {
-                // Because unaligned access to variables is not allowed in device code,
-                // we have to use the widest possible type to have all types aligned correctly.
-                // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
-                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
-                extern __shared__ float4 shMem[];
-                return reinterpret_cast<T *>(shMem);
-            }
         };
     }
 

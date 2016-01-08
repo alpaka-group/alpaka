@@ -29,7 +29,8 @@
 #include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
 #include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
 #include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>  // BlockSharedAllocNoSync
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
+#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>                // BlockSharedMemStNoSync
 #include <alpaka/block/sync/BlockSyncNoOp.hpp>  // BlockSyncNoOp
 #include <alpaka/rand/RandStl.hpp>              // RandStl
 
@@ -75,7 +76,8 @@ namespace alpaka
             public idx::bt::IdxBtZero<TDim, TSize>,
             public atomic::AtomicNoOp,
             public math::MathStl,
-            public block::shared::BlockSharedAllocNoSync,
+            public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
+            public block::shared::st::BlockSharedMemStNoSync,
             public block::sync::BlockSyncNoOp,
             public rand::RandStl
         {
@@ -95,13 +97,15 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(
-                TWorkDiv const & workDiv) :
+                TWorkDiv const & workDiv,
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TSize>(),
                     atomic::AtomicNoOp(),
                     math::MathStl(),
-                    block::shared::BlockSharedAllocNoSync(),
+                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(blockSharedMemDynSizeBytes),
+                    block::shared::st::BlockSharedMemStNoSync(),
                     block::sync::BlockSyncNoOp(),
                     rand::RandStl(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros())
@@ -130,23 +134,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() = default;
 
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
-            -> T *
-            {
-                return reinterpret_cast<T*>(m_externalSharedMem.get());
-            }
-
         private:
             // getIdx
             Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
-
-            // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;  //!< External block shared memory.
         };
     }
 

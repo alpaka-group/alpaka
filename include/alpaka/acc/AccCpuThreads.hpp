@@ -29,8 +29,9 @@
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>    // IdxBtRefThreadIdMap
 #include <alpaka/atomic/AtomicStlLock.hpp>          // AtomicStlLock
 #include <alpaka/math/MathStl.hpp>                  // MathStl
-#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>   // BlockSharedAllocMasterSync
-#include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>    // BlockSyncThreadIdMapBarrier
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
+#include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
+#include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>                // BlockSyncThreadIdMapBarrier
 #include <alpaka/rand/RandStl.hpp>              // RandStl
 
 // Specialized traits.
@@ -78,7 +79,8 @@ namespace alpaka
             public idx::bt::IdxBtRefThreadIdMap<TDim, TSize>,
             public atomic::AtomicStlLock,
             public math::MathStl,
-            public block::shared::BlockSharedAllocMasterSync,
+            public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
+            public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncThreadIdMapBarrier<TSize>,
             public rand::RandStl
         {
@@ -98,13 +100,15 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuThreads(
-                TWorkDiv const & workDiv) :
+                TWorkDiv const & workDiv,
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_threadToIndexMap),
                     atomic::AtomicStlLock(),
                     math::MathStl(),
-                    block::shared::BlockSharedAllocMasterSync(
+                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(blockSharedMemDynSizeBytes),
+                    block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
                     block::sync::BlockSyncThreadIdMapBarrier<TSize>(
@@ -137,17 +141,6 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuThreads() = default;
 
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
-            -> T *
-            {
-                return reinterpret_cast<T*>(m_externalSharedMem.get());
-            }
-
         private:
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
@@ -162,9 +155,6 @@ namespace alpaka
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
-
-            // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem; //!< External block shared memory.
         };
     }
 

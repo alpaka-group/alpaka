@@ -33,8 +33,9 @@
 #include <alpaka/idx/bt/IdxBtOmp.hpp>           // IdxBtOmp
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
 #include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
-#include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>    // BlockSyncOmpBarrier
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
+#include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
+#include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>                        // BlockSyncOmpBarrier
 #include <alpaka/rand/RandStl.hpp>              // RandStl
 
 // Specialized traits.
@@ -81,7 +82,8 @@ namespace alpaka
             public idx::bt::IdxBtOmp<TDim, TSize>,
             public atomic::AtomicOmpCritSec,
             public math::MathStl,
-            public block::shared::BlockSharedAllocMasterSync,
+            public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
+            public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncOmpBarrier,
             public rand::RandStl
         {
@@ -101,13 +103,15 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(
-                TWorkDiv const & workDiv) :
+                TWorkDiv const & workDiv,
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TSize>(),
                     atomic::AtomicOmpCritSec(),
                     math::MathStl(),
-                    block::shared::BlockSharedAllocMasterSync(
+                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(blockSharedMemDynSizeBytes),
+                    block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),
                     block::sync::BlockSyncOmpBarrier(),
@@ -137,23 +141,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp4() = default;
 
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
-            -> T *
-            {
-                return reinterpret_cast<T*>(m_externalSharedMem.get());
-            }
-
         private:
             // getIdx
             Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
-
-            // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;  //!< External block shared memory.
         };
     }
 

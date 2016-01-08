@@ -42,7 +42,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The trait for getting the size of the block shared extern memory of a kernel.
+            //! The trait for getting the size of the block shared dynamic memory of a kernel.
             //!
             //! \tparam TKernelFnObj The kernel function object.
             //! \tparam TAcc The accelerator.
@@ -53,7 +53,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename TAcc,
                 typename TSfinae = void>
-            struct BlockSharedExternMemSizeBytes
+            struct BlockSharedMemDynSizeBytes
             {
                 //-----------------------------------------------------------------------------
                 //! \param blockElemExtent The block element extent for which the block shared memory size should be calculated.
@@ -66,7 +66,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename... TArgs>
-                ALPAKA_FN_HOST_ACC static auto getBlockSharedExternMemSizeBytes(
+                ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                     Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
                     Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
@@ -94,17 +94,17 @@ namespace alpaka
             typename TAcc,
             typename TDim,
             typename... TArgs>
-        ALPAKA_FN_HOST_ACC auto getBlockSharedExternMemSizeBytes(
+        ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
             Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
             Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
             TArgs const & ... args)
         -> size::Size<TAcc>
         {
             return
-                traits::BlockSharedExternMemSizeBytes<
+                traits::BlockSharedMemDynSizeBytes<
                     TKernelFnObj,
                     TAcc>
-                ::getBlockSharedExternMemSizeBytes(
+                ::getBlockSharedMemDynSizeBytes(
                     blockThreadExtent,
                     threadElemExtent,
                     args...);

@@ -38,7 +38,7 @@
 // Implementation details.
 #include <alpaka/acc/AccGpuCudaRt.hpp>          // acc:AccGpuCudaRt
 #include <alpaka/dev/DevCudaRt.hpp>             // dev::DevCudaRt
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
 #include <alpaka/stream/StreamCudaRtSync.hpp>   // stream::StreamCudaRtSync
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
@@ -348,13 +348,13 @@ namespace alpaka
                     }
 #endif
 
-                    // Get the size of the block shared extern memory.
-                    auto const blockSharedExternMemSizeBytes(
+                    // Get the size of the block shared dynamic memory.
+                    auto const blockSharedMemDynSizeBytes(
                         meta::apply(
                             [&](TArgs const & ... args)
                             {
                                 return
-                                    kernel::getBlockSharedExternMemSizeBytes<
+                                    kernel::getBlockSharedMemDynSizeBytes<
                                         typename std::decay<TKernelFnObj>::type,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
                                             blockThreadExtent,
@@ -366,7 +366,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory size.
                     std::cout << BOOST_CURRENT_FUNCTION
-                        << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                        << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -398,7 +398,7 @@ namespace alpaka
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                blockSharedExternMemSizeBytes,
+                                blockSharedMemDynSizeBytes,
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
@@ -489,13 +489,13 @@ namespace alpaka
                     }
 #endif
 
-                    // Get the size of the block shared extern memory.
-                    auto const blockSharedExternMemSizeBytes(
+                    // Get the size of the block shared dynamic memory.
+                    auto const blockSharedMemDynSizeBytes(
                         meta::apply(
                             [&](TArgs const & ... args)
                             {
                                 return
-                                    kernel::getBlockSharedExternMemSizeBytes<
+                                    kernel::getBlockSharedMemDynSizeBytes<
                                         TKernelFnObj,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
                                             blockThreadExtent,
@@ -507,7 +507,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory size.
                     std::cout << BOOST_CURRENT_FUNCTION
-                        << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                        << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -539,7 +539,7 @@ namespace alpaka
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                blockSharedExternMemSizeBytes,
+                                blockSharedMemDynSizeBytes,
                                 stream.m_spStreamCudaRtSyncImpl->m_CudaStream>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
