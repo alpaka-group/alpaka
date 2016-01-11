@@ -38,12 +38,19 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The stream type trait for the stream that should be used for the given accelerator.
+                //! The default stream type trait for devices.
                 //#############################################################################
                 template<
                     typename TDev,
                     typename TSfinae = void>
-                struct DefaultStreamType
+                struct DefaultStreamType;
+
+                //#############################################################################
+                //! The default stream type trait specialization for the CPU device.
+                //#############################################################################
+                template<>
+                struct DefaultStreamType<
+                    alpaka::dev::DevCpu>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                     using type = alpaka::stream::StreamCpuSync;
@@ -52,9 +59,13 @@ namespace alpaka
 #endif
                 };
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#ifndef __CUDACC__
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
                 //#############################################################################
-                //! The stream type trait specialization for the CUDA accelerator.
+                //! The default stream type trait specialization for the CUDA device.
                 //#############################################################################
                 template<>
                 struct DefaultStreamType<

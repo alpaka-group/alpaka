@@ -224,7 +224,7 @@ namespace alpaka
             // Restrict the max block thread extent with the grid thread extent.
             // This removes dimensions not required in the grid thread extent.
             // This has to be done before the blockThreadCountMax clipping to get the maximum correctly.
-            for(typename TDim::value_type i(0); i<TDim::value; ++i)
+            for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 blockThreadExtent[i] = std::min(blockThreadExtent[i], gridThreadExtent[i]);
             }
@@ -277,9 +277,9 @@ namespace alpaka
                         auto const minElemIdx(
                             static_cast<TSize>(
                                 std::distance(
-                                    &blockThreadExtent[0],
+                                    &blockThreadExtent[0u],
                                     std::min_element(
-                                        &blockThreadExtent[0],
+                                        &blockThreadExtent[0u],
                                         &blockThreadExtent[TDim::value-1u],
                                         [](TSize const & a, TSize const & b)
                                         {
@@ -342,7 +342,7 @@ namespace alpaka
                 }
                 else if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
                 {
-                    for(typename TDim::value_type i(0); i<TDim::value; ++i)
+                    for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         blockThreadExtent[i] =
                             detail::nextDivisorLowerOrEqual(
@@ -352,7 +352,7 @@ namespace alpaka
                 }
                 else
                 {
-                    for(typename TDim::value_type i(0); i<TDim::value; ++i)
+                    for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         blockThreadExtent[i] =
                             detail::nextDivisorLowerOrEqual(
@@ -367,7 +367,7 @@ namespace alpaka
 
             // Set the grid block extent (rounded to the next integer not less then the quotient.
             auto gridBlockExtent(Vec<TDim, TSize>::ones());
-            for(typename TDim::value_type i(0); i<TDim::value; ++i)
+            for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridBlockExtent[i] =
                     static_cast<TSize>(

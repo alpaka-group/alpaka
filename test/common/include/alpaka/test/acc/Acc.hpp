@@ -23,8 +23,6 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/meta/ForEachType.hpp>      // meta::forEachType
-
 #include <tuple>                            // std::tuple
 #include <type_traits>                      // std::is_class
 #include <iosfwd>                           // std::ostream
@@ -193,6 +191,104 @@ namespace alpaka
 
                 os << std::endl;
             }
+
+            namespace detail
+            {
+                //#############################################################################
+                //! A std::tuple holding dimensions.
+                //#############################################################################
+                using TestDims =
+                    std::tuple<
+                        alpaka::dim::DimInt<1u>,
+                        alpaka::dim::DimInt<2u>,
+                        alpaka::dim::DimInt<3u>,
+                        alpaka::dim::DimInt<4u>>;
+
+                //#############################################################################
+                //! A std::tuple holding size types.
+                //#############################################################################
+                using TestSizes =
+                    std::tuple<
+                        std::size_t,
+                        std::int64_t,
+                        std::uint64_t,
+                        std::int32_t,
+                        std::uint32_t,
+                        std::int16_t,
+                        std::uint16_t,
+                        std::int8_t,
+                        std::uint8_t>;
+
+                //#############################################################################
+                //! A std::tuple holding multiple std::tuple consisting of a dimension and a size type.
+                //!
+                //! TestAccParamSets =
+                //!     tuple<
+                //!         tuple<Dim1,Size1>,
+                //!         tuple<Dim2,Size1>,
+                //!         tuple<Dim3,Size1>,
+                //!         ...,
+                //!         tuple<DimN,SizeN>>
+                //#############################################################################
+                using TestAccParamSets =
+                    meta::CartesianProduct<
+                        std::tuple,
+                        TestDims,
+                        TestSizes
+                    >;
+
+                //#############################################################################
+                //! Transforms a std::tuple holding a dimension and a size type to a fully instantiated accelerator.
+                //!
+                //! EnabledAccs<Dim,Size> = tuple<Acc1<Dim,Size>, ..., AccN<Dim,Size>>
+                //#############################################################################
+                template<
+                    typename TTestAccParamSet>
+                struct InstantiateEnabledAccsWithTestParamSetImpl
+                {
+                    using type =
+                        EnabledAccs<
+                            typename std::tuple_element<0, TTestAccParamSet>::type,
+                            typename std::tuple_element<1, TTestAccParamSet>::type
+                        >;
+                };
+
+                template<
+                    typename TTestAccParamSet>
+                using InstantiateEnabledAccsWithTestParamSet = typename InstantiateEnabledAccsWithTestParamSetImpl<TTestAccParamSet>::type;
+
+                //#############################################################################
+                //! A std::tuple containing std::tuple with fully instantiated accelerators.
+                //!
+                //! TestEnabledAccs =
+                //!     tuple<
+                //!         tuple<Acc1<Dim1,Size1>, ..., AccN<Dim1,Size1>>,
+                //!         tuple<Acc1<Dim2,Size1>, ..., AccN<Dim2,Size1>>,
+                //!         ...,
+                //!         tuple<Acc1<DimN,SizeN>, ..., AccN<DimN,SizeN>>>
+                //#############################################################################
+                using InstantiatedEnabledAccs =
+                    meta::Transform<
+                        TestAccParamSets,
+                        InstantiateEnabledAccsWithTestParamSet
+                    >;
+            }
+
+            //#############################################################################
+            //! A std::tuple containing fully instantiated accelerators.
+            //!
+            //! TestAccs =
+            //!     tuple<
+            //!         Acc1<Dim1,Size1>, ..., AccN<Dim1,Size1>,
+            //!         Acc1<Dim2,Size1>, ..., AccN<Dim2,Size1>,
+            //!         ...,
+            //!         Acc1<DimN,SizeN>, ..., AccN<DimN,SizeN>>
+            //#############################################################################
+            using TestAccs =
+                alpaka::meta::Apply<
+                    detail::InstantiatedEnabledAccs,
+                    meta::Concatenate
+                >;
         }
     }
 }

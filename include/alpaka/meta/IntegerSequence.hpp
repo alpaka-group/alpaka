@@ -33,37 +33,71 @@ namespace alpaka
 {
     namespace meta
     {
+        //#############################################################################
         // This could be replaced with c++14 std::IntegerSequence if we raise the minimum.
+        //#############################################################################
         template<
             typename T,
-            T... TVals>
+            T... Tvals>
         struct IntegerSequence
         {
             static_assert(std::is_integral<T>::value, "IntegerSequence<T, I...> requires T to be an integral type.");
 
-            typedef IntegerSequence<T, TVals...> type;
+            typedef IntegerSequence<T, Tvals...> type;
             typedef T value_type;
 
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto size() noexcept
             -> std::size_t
             {
-                return (sizeof...(TVals));
+                return (sizeof...(Tvals));
             }
         };
+
+        namespace detail
+        {
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TDstType,
+                typename TIntegerSequence>
+            struct ConvertIntegerSequence;
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TDstType,
+                typename T,
+                T... Tvals>
+            struct ConvertIntegerSequence<
+                TDstType,
+                IntegerSequence<T, Tvals...>>
+            {
+                using type = IntegerSequence<TDstType, ((TDstType)Tvals)...>;
+            };
+        }
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TDstType,
+            typename TIntegerSequence>
+        using ConvertIntegerSequence = typename detail::ConvertIntegerSequence<TDstType, TIntegerSequence>::type;
+
 
         template<bool TisSizeNegative, bool TbIsBegin, typename T, T Tbegin, typename TIntCon, typename TIntSeq>
         struct MakeIntegerSequenceHelper
         {
             static_assert(!TisSizeNegative, "MakeIntegerSequence<T, N> requires N to be non-negative.");
         };
-        template<typename T, T Tbegin, T... TVals>
-        struct MakeIntegerSequenceHelper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, IntegerSequence<T, TVals...> > :
-            IntegerSequence<T, TVals...>
+        template<typename T, T Tbegin, T... Tvals>
+        struct MakeIntegerSequenceHelper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, IntegerSequence<T, Tvals...> > :
+            IntegerSequence<T, Tvals...>
         {};
-        template<typename T, T Tbegin, T TIdx, T... TVals>
-        struct MakeIntegerSequenceHelper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, IntegerSequence<T, TVals...> > :
-            MakeIntegerSequenceHelper<false, TIdx == (Tbegin+1), T, Tbegin, std::integral_constant<T, TIdx - 1>, IntegerSequence<T, TIdx - 1, TVals...> >
+        template<typename T, T Tbegin, T TIdx, T... Tvals>
+        struct MakeIntegerSequenceHelper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, IntegerSequence<T, Tvals...> > :
+            MakeIntegerSequenceHelper<false, TIdx == (Tbegin+1), T, Tbegin, std::integral_constant<T, TIdx - 1>, IntegerSequence<T, TIdx - 1, Tvals...> >
         {};
 
         template<typename T, T Tbegin, T Tsize>
@@ -72,59 +106,79 @@ namespace alpaka
         template<typename T, T Tsize>
         using MakeIntegerSequence = MakeIntegerSequenceOffset<T, 0u, Tsize>;
 
-        template<std::size_t... TVals>
-        using IndexSequence = IntegerSequence<std::size_t, TVals...>;
 
-        template<typename T, T Tbegin, T Tsize>
-        using MakeIndexSequenceOffset = MakeIntegerSequenceOffset<std::size_t, Tbegin, Tsize>;
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            std::size_t... Tvals>
+        using IndexSequence = IntegerSequence<std::size_t, Tvals...>;
 
-        template<std::size_t Tsize>
-        using MakeIndexSequence = MakeIntegerSequence<std::size_t, Tsize>;
-
-        template<typename... Ts>
-        using IndexSequenceFor = MakeIndexSequence<sizeof...(Ts)>;
-
-        //-----------------------------------------------------------------------------
-        //! Checks if the integral values are unique.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
+        //!
+        //#############################################################################
         template<
             typename T,
-            T... Is>
+            T Tbegin,
+            T Tsize>
+        using MakeIndexSequenceOffset = MakeIntegerSequenceOffset<std::size_t, Tbegin, Tsize>;
+
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            std::size_t Tsize>
+        using MakeIndexSequence = MakeIntegerSequence<std::size_t, Tsize>;
+
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename... Ts>
+        using IndexSequenceFor = MakeIndexSequence<sizeof...(Ts)>;
+
+
+        //#############################################################################
+        //! Checks if the integral values are unique.
+        //#############################################################################
+        template<
+            typename T,
+            T... Tvals>
         struct IntegralValuesUnique
         {
-            static constexpr bool value = meta::IsParameterPackSet<std::integral_constant<T, Is>...>::value;
+            static constexpr bool value = meta::IsParameterPackSet<std::integral_constant<T, Tvals>...>::value;
         };
 
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! Checks if the values in the index sequence are unique.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         template<
             typename TIntegerSequence>
         struct IntegerSequenceValuesUnique;
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! Checks if the values in the index sequence are unique.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         template<
             typename T,
-            T... Is>
+            T... Tvals>
         struct IntegerSequenceValuesUnique<
-            IntegerSequence<T, Is...>>
+            IntegerSequence<T, Tvals...>>
         {
-            static constexpr bool value = IntegralValuesUnique<T, Is...>::value;
+            static constexpr bool value = IntegralValuesUnique<T, Tvals...>::value;
         };
 
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! Checks if the integral values are within the given range.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         template<
             typename T,
             T Tmin,
             T Tmax,
-            T... Is>
+            T... Tvals>
         struct IntegralValuesInRange;
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! Checks if the integral values are within the given range.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         template<
             typename T,
             T Tmin,
@@ -136,49 +190,49 @@ namespace alpaka
         {
             static constexpr bool value = true;
         };
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! Checks if the integral values are within the given range.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         template<
             typename T,
             T Tmin,
             T Tmax,
             T I,
-            T... Is>
+            T... Tvals>
         struct IntegralValuesInRange<
             T,
             Tmin,
             Tmax,
             I,
-            Is...>
+            Tvals...>
         {
-            static constexpr bool value = (I >= Tmin) && (I <=Tmax) && IntegralValuesInRange<T, Tmin, Tmax, Is...>::value;
+            static constexpr bool value = (I >= Tmin) && (I <=Tmax) && IntegralValuesInRange<T, Tmin, Tmax, Tvals...>::value;
         };
 
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! Checks if the values in the index sequence are within the given range.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         template<
             typename TIntegerSequence,
             typename T,
             T Tmin,
             T Tmax>
         struct IntegerSequenceValuesInRange;
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! Checks if the values in the index sequence are within the given range.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         template<
             typename T,
-            T... Is,
+            T... Tvals,
             T Tmin,
             T Tmax>
         struct IntegerSequenceValuesInRange<
-            IntegerSequence<T, Is...>,
+            IntegerSequence<T, Tvals...>,
             T,
             Tmin,
             Tmax>
         {
-            static constexpr bool value = IntegralValuesInRange<T, Tmin, Tmax, Is...>::value;
+            static constexpr bool value = IntegralValuesInRange<T, Tmin, Tmax, Tvals...>::value;
         };
     }
 }

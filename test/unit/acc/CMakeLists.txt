@@ -31,26 +31,18 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 SET(_SOURCE_DIR "src/")
-SET(_PROJECT_NAME "acc")
+SET(_TARGET_NAME "acc")
 
-PROJECT(${_PROJECT_NAME})
-
-#-------------------------------------------------------------------------------
-# Find alpaka.
-#-------------------------------------------------------------------------------
-
-SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../" CACHE STRING  "The location of the alpaka library")
-
-LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
-FIND_PACKAGE("alpaka" REQUIRED)
+PROJECT(${_TARGET_NAME})
 
 #-------------------------------------------------------------------------------
-# Common.
+# Find alpaka test common.
 #-------------------------------------------------------------------------------
 
-INCLUDE("${ALPAKA_ROOT}cmake/common.cmake")
-INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
-SET(_INCLUDE_DIRECTORIES_PRIVATE "${ALPAKA_ROOT}test/common/")
+SET(COMMON_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../common/" CACHE STRING  "The location of the alpaka test common library")
+
+LIST(APPEND CMAKE_MODULE_PATH "${COMMON_ROOT}")
+FIND_PACKAGE("common" REQUIRED)
 
 #-------------------------------------------------------------------------------
 # Boost.Test.
@@ -73,19 +65,19 @@ append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
 
 INCLUDE_DIRECTORIES(
     ${_INCLUDE_DIRECTORIES_PRIVATE}
-    ${alpaka_INCLUDE_DIRS})
+    ${common_INCLUDE_DIRS})
 ADD_DEFINITIONS(
-    ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
+    ${common_DEFINITIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
-    ${_PROJECT_NAME}
+    ${_TARGET_NAME}
     ${_FILES_SOURCE})
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
-    ${_PROJECT_NAME}
-    PUBLIC "alpaka" ${_LINK_LIBRARIES_PRIVATE})
+    ${_TARGET_NAME}
+    PUBLIC "common" ${_LINK_LIBRARIES_PRIVATE})
 
-SET_TARGET_PROPERTIES(${_PROJECT_NAME} PROPERTIES FOLDER "test/unit")
+SET_TARGET_PROPERTIES(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
 
 ENABLE_TESTING()
-ADD_TEST(NAME ${_PROJECT_NAME} COMMAND ${_PROJECT_NAME})
+ADD_TEST(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME})

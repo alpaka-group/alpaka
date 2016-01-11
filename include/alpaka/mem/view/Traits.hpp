@@ -82,7 +82,8 @@ namespace alpaka
                         TView const & view)
                     -> size::Size<TView>
                     {
-                        using IdxSequence = meta::MakeIntegerSequenceOffset<std::size_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
+                        using IdxSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
+                        using IdxSequence = meta::ConvertIntegerSequence<std::size_t, IdxSequenceSigned>;
                         return
                             extentProd(view, IdxSequence())
                             * sizeof(typename elem::Elem<TView>);
