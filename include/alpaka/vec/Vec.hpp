@@ -119,10 +119,11 @@ namespace alpaka
         createVecFromIndexedFnArbitrary<
             TDim,
             TTFnObj>(
-                meta::MakeIntegerSequenceOffset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>(),
+                meta::ConvertIntegerSequence<typename TIdxOffset::value_type, meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>>(),
                 std::forward<TArgs>(args)...))
     {
-        using IdxSubSequence = meta::MakeIntegerSequenceOffset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>;
+        using IdxSubSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>;
+        using IdxSubSequence = meta::ConvertIntegerSequence<typename TIdxOffset::value_type, IdxSubSequenceSigned>;
         return
             createVecFromIndexedFnArbitrary<
                 TDim,
@@ -232,7 +233,8 @@ namespace alpaka
             TArgs && ... args)
         -> Vec<TDim, TSize>
         {
-            using IdxSubSequence = meta::MakeIntegerSequenceOffset<typename TDim::value_type, TIdxOffset::value, TDim::value>;
+            using IdxSubSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>;
+            using IdxSubSequence = meta::ConvertIntegerSequence<typename TDim::value_type, IdxSubSequenceSigned>;
             return
                 createVecFromIndexedFnArbitrary<
                     TTFnObj>(

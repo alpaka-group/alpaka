@@ -300,10 +300,19 @@ namespace alpaka
                     m_qTasks(queueSize),
                     m_bShutdownFlag(false)
                 {
+                    if(concurrentExecutionCount < 1)
+                    {
+                        throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
+                    }
+                    if(queueSize < 1)
+                    {
+                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
+                    }
+
                     m_vConcurrentExecs.reserve(concurrentExecutionCount);
 
                     // Create all concurrent executors.
-                    for(size_t concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
+                    for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
                         m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
                     }
@@ -367,7 +376,8 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type>) >::type
+                // NOTE: The first argument to the get_future() function call is the this pointer.
+                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
                 {
                     auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
 
@@ -511,6 +521,15 @@ namespace alpaka
                     m_bShutdownFlag(false),
                     m_cvWakeup()
                 {
+                    if(concurrentExecutionCount < 1)
+                    {
+                        throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
+                    }
+                    if(queueSize < 1)
+                    {
+                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
+                    }
+
                     m_vConcurrentExecs.reserve(concurrentExecutionCount);
 
                     // Create all concurrent executors.
@@ -584,7 +603,8 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type>) >::type
+                // NOTE: The first argument to the get_future() function call is the this pointer.
+                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
                 {
                     auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
 

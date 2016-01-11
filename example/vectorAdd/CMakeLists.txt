@@ -31,9 +31,9 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 SET(_SOURCE_DIR "src/")
-SET(_PROJECT_NAME "vectorAdd")
+SET(_TARGET_NAME "vectorAdd")
 
-PROJECT(${_PROJECT_NAME})
+PROJECT(${_TARGET_NAME})
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
@@ -66,11 +66,11 @@ ADD_DEFINITIONS(
     ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
-    ${_PROJECT_NAME}
+    ${_TARGET_NAME}
     ${_FILES_SOURCE})
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
-    ${_PROJECT_NAME}
+    ${_TARGET_NAME}
     PUBLIC "alpaka")
 
-SET_TARGET_PROPERTIES(${_PROJECT_NAME} PROPERTIES FOLDER "example")
+SET_TARGET_PROPERTIES(${_TARGET_NAME} PROPERTIES FOLDER "example")

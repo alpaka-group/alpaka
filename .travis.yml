@@ -45,7 +45,7 @@ compiler:
 # ALPAKA_INTEGRATION_TEST                       : {ON}
 # CXX                                           : {g++, clang++}
 #   [clang++] ALPAKA_CLANG_LIBSTDCPP_VERSION    : {4.9}
-#   [clang++] ALPAKA_CLANG_VER                  : {3.5, 3.6, 3.7}
+#   [clang++] ALPAKA_CLANG_VER                  : {3.5, 3.6, 3.7, 3.8}
 #   [g++] ALPAKA_GCC_VER                        : {4.9, 5}
 # ALPAKA_BOOST_BRANCH                           : {boost-1.56.0, boost-1.57.0, boost-1.58.0, boost-1.59.0, develop}
 # ALPAKA_CMAKE_VER                              : {3.3.0, 3.3.1, 3.3.2, 3.4.0}
@@ -180,15 +180,6 @@ install:
           && ALPAKA_GCC_VER_MINOR=${ALPAKA_GCC_VER:2:1}
           && echo ${ALPAKA_GCC_VER_MAJOR}
           && echo ${ALPAKA_GCC_VER_MINOR}
-      ;fi
-    # gcc version 5+ requires boost-1.59.0+.
-    - if [ "${CXX}" == "clang++" ]
-      ;then
-          if (( ${ALPAKA_GCC_VER_MAJOR} == 5 ))
-          ;then
-              export ALPAKA_BOOST_BRANCH=boost-1.59.0
-              && echo ALPAKA_BOOST_BRANCH=${ALPAKA_BOOST_BRANCH} because gcc 5+ is only supported by boost 1.59+!
-          ;fi
       ;fi
 
     #-------------------------------------------------------------------------------

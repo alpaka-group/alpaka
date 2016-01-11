@@ -58,21 +58,13 @@ UNSET(_ALPAKA_VER_MINOR)
 UNSET(_ALPAKA_VER_PATCH)
 
 #-------------------------------------------------------------------------------
-# Directory of this file.
-#-------------------------------------------------------------------------------
-SET(_ALPAKA_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
-
-# Normalize the path (e.g. remove ../)
-GET_FILENAME_COMPONENT(_ALPAKA_ROOT_DIR "${_ALPAKA_ROOT_DIR}" ABSOLUTE)
-
-#-------------------------------------------------------------------------------
-# Set found to true initially and set it on false if a required dependency is missing.
-#-------------------------------------------------------------------------------
-SET(_ALPAKA_FOUND TRUE)
-
-#-------------------------------------------------------------------------------
 # Common.
 #-------------------------------------------------------------------------------
+
+# Directory of this file.
+SET(_ALPAKA_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
+# Normalize the path (e.g. remove ../)
+GET_FILENAME_COMPONENT(_ALPAKA_ROOT_DIR "${_ALPAKA_ROOT_DIR}" ABSOLUTE)
 
 # Add common functions.
 SET(_ALPAKA_COMMON_FILE "${_ALPAKA_ROOT_DIR}/cmake/common.cmake")
@@ -81,6 +73,9 @@ INCLUDE("${_ALPAKA_COMMON_FILE}")
 # Add ALPAKA_ADD_EXECUTABLE function.
 SET(_ALPAKA_ADD_EXECUTABLE_FILE "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake")
 INCLUDE("${_ALPAKA_ADD_EXECUTABLE_FILE}")
+
+# Set found to true initially and set it to false if a required dependency is missing.
+SET(_ALPAKA_FOUND TRUE)
 
 #-------------------------------------------------------------------------------
 # Options.
@@ -295,16 +290,11 @@ IF(MSVC)
     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC)
 ELSE()
     # Select C++ standard version.
-    IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
-        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-std=c++14")
-    ELSE()
-        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-std=c++11")
-    ENDIF()
+    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-std=c++11")
 
     # Add linker options.
-    IF(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE)
-        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;pthread")
-    ENDIF()
+    # lipthread:
+    LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;pthread")
     # librt: undefined reference to `clock_gettime'
     LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
 
