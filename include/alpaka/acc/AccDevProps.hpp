@@ -55,22 +55,25 @@ namespace alpaka
                 TSize const & blockThreadCountMax,
                 Vec<TDim, TSize> const & threadElemExtentMax,
                 TSize const & threadElemCountMax) :
-                    m_multiProcessorCount(multiProcessorCount),
                     m_gridBlockExtentMax(gridBlockExtentMax),
-                    m_gridBlockCountMax(gridBlockCountMax),
                     m_blockThreadExtentMax(blockThreadExtentMax),
-                    m_blockThreadCountMax(blockThreadCountMax),
                     m_threadElemExtentMax(threadElemExtentMax),
-                    m_threadElemCountMax(threadElemCountMax)
+                    m_gridBlockCountMax(gridBlockCountMax),
+                    m_blockThreadCountMax(blockThreadCountMax),
+                    m_threadElemCountMax(threadElemCountMax),
+                    m_multiProcessorCount(multiProcessorCount)
             {}
 
-            TSize m_multiProcessorCount;                //!< The number of multiprocessors.
+            // NOTE: The members have been reordered from the order in the constructor because gcc is buggy for some TDim and TSize and generates invalid assembly.
             Vec<TDim, TSize> m_gridBlockExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
-            TSize m_gridBlockCountMax;                  //!< The maximum number of blocks in a grid.
             Vec<TDim, TSize> m_blockThreadExtentMax;    //!< The maximum number of threads in each dimension of a block.
-            TSize m_blockThreadCountMax;                //!< The maximum number of threads in a block.
             Vec<TDim, TSize> m_threadElemExtentMax;     //!< The maximum number of elements in each dimension of a thread.
+
+            TSize m_gridBlockCountMax;                  //!< The maximum number of blocks in a grid.
+            TSize m_blockThreadCountMax;                //!< The maximum number of threads in a block.
             TSize m_threadElemCountMax;                 //!< The maximum number of elements in a threads.
+
+            TSize m_multiProcessorCount;                //!< The number of multiprocessors.
         };
     }
 }
