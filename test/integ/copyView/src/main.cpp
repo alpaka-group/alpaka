@@ -23,6 +23,7 @@
 
 #include <iostream>                                 // std::cout, std::endl
 #include <array>                                    // std::array
+#include <vector>                                   // std::vector
 #include <numeric>                                  // std::iota 
 
 
@@ -50,7 +51,7 @@ auto main()
             using Acc     = alpaka::acc::AccCpuSerial<Dim, Size>;
             using DevHost = alpaka::dev::Dev<Host>;
             using DevAcc  = alpaka::dev::Dev<Acc>;
-            using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
+            //using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
             using Stream  = alpaka::stream::StreamCpuSync;
 
             /***************************************************************************
@@ -68,50 +69,59 @@ auto main()
              * Create buffers
              **************************************************************************/
             using Data = std::uint32_t;
-            const Extents nElementsPerDim = 2;
-            const Extents nElementsPerDimView = 1;            
+            const Extents nElementsPerDim = 4;
+            const Extents nElementsPerDimView = 2;
+            const Extents offsetInAllDims = 0;
+            const Data constValue = 42;
             
             const alpaka::Vec<Dim, Size> extents(static_cast<Size>(nElementsPerDim),
                                                  static_cast<Size>(nElementsPerDim),
                                                  static_cast<Size>(nElementsPerDim));
 
-            const alpaka::Vec<Dim, Size> extentsView(static_cast<Size>(nElementsPerDimView),
+            const alpaka::Vec<Dim, Size> viewExtents(static_cast<Size>(nElementsPerDimView),
                                                      static_cast<Size>(nElementsPerDimView),
                                                      static_cast<Size>(nElementsPerDimView));
 
-            const alpaka::Vec<Dim, Size> offsetView(static_cast<Size>(nElementsPerDimView),
-                                                    static_cast<Size>(nElementsPerDimView),
-                                                    static_cast<Size>(nElementsPerDimView));
+            const alpaka::Vec<Dim, Size> offsetExtents(static_cast<Size>(offsetInAllDims),
+                                                       static_cast<Size>(offsetInAllDims),
+                                                       static_cast<Size>(offsetInAllDims));
 
             
             using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Data, Dim, Size>;
             using Buf          = alpaka::mem::buf::Buf<DevHost, Data, Dim, Size>;
+
+
             
-            std::array<Data, Dim::value * nElementsPerDim> plainBuffer;
-            std::iota
+            std::vector<Data> plainBuffer(extents.prod(), constValue);
             ViewPlainPtr srcBuffer(plainBuffer.data(), devHost, extents);
-            Buf          destBuffer(alpaka::mem::buf::alloc<Data, Size>(devHost, extentsView));
+            Buf          destBuffer(alpaka::mem::buf::alloc<Data, Size>(devHost, viewExtents));
 
             
-            /***************************************************************************
-             * Create view
-             **************************************************************************/
+            // /***************************************************************************
+            //  * Create view
+            //  **************************************************************************/
             using ViewSubView  = alpaka::mem::view::ViewSubView<DevHost, Data, Dim, Size>;
-            ViewSubView  viewBuffer(srcBuffer, extentsView, offsetView);
+            ViewSubView  viewBuffer(srcBuffer, viewExtents, offsetExtents);
+            ViewSubView  identViewBuffer(srcBuffer);            
 
             
-            /***************************************************************************
-             * Copy view to destination buffer
-             **************************************************************************/
-            alpaka::mem::view::copy(stream, viewBuffer, destBuffer, extentsView);
+            // /***************************************************************************
+            //  * Copy view to destination buffer
+            //  **************************************************************************/
+            alpaka::mem::view::copy(stream, viewBuffer, destBuffer, viewExtents);
 
 
             /***************************************************************************
              * Test results
              **************************************************************************/
-            
-            
-            
+            for(size_t i = 0; i < extents.prod(); ++i){
+                //std::cout << "[" << i << "]: " << alpaka::mem::view::getPtrNative(srcBuffer)[i] << std::endl;                
+                assert(alpaka::mem::view::getPtrNative(srcBuffer)[i] == constValue);                
+                assert(alpaka::mem::view::getPtrNative(viewBuffer)[i] == constValue);
+                assert(alpaka::mem::view::getPtrNative(identViewBuffer)[i] == constValue);                                
+                assert(alpaka::mem::view::getPtrNative(destBuffer)[i] == constValue);
+                
+            }
 
         }
     catch(std::exception const & e)
