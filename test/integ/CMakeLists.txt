@@ -31,6 +31,7 @@ PROJECT("alpakaIntegTest")
 ################################################################################
 
 ADD_SUBDIRECTORY("axpy/")
+ADD_SUBDIRECTORY("copyView/")
 ADD_SUBDIRECTORY("mandelbrot/")
 ADD_SUBDIRECTORY("matMul/")
 ADD_SUBDIRECTORY("sharedMem/")
