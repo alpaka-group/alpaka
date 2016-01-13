@@ -117,10 +117,12 @@ auto main()
             for(size_t i = 0; i < extents.prod(); ++i){
                 //std::cout << "[" << i << "]: " << alpaka::mem::view::getPtrNative(srcBuffer)[i] << std::endl;                
                 assert(alpaka::mem::view::getPtrNative(srcBuffer)[i] == constValue);                
-                assert(alpaka::mem::view::getPtrNative(viewBuffer)[i] == constValue);
                 assert(alpaka::mem::view::getPtrNative(identViewBuffer)[i] == constValue);                                
+            }
+
+            for(size_t i = 0; i < viewExtents.prod(); ++i){
+                assert(alpaka::mem::view::getPtrNative(viewBuffer)[i] == constValue);
                 assert(alpaka::mem::view::getPtrNative(destBuffer)[i] == constValue);
-                
             }
 
         }
