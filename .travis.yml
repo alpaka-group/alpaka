@@ -249,7 +249,7 @@ install:
                   if (( ${ALPAKA_CUDA_VER_MAJOR} > 6 ))
                   ;then
                       export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
-                      && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because CUDA 7.0 does not support the gcc version!
+                      && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because CUDA 7.x does not support the gcc version!
                   ;fi
               ;fi
           ;fi
@@ -355,7 +355,7 @@ install:
     - git clone -b ${ALPAKA_BOOST_BRANCH} --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git boost
     - cd boost/
     - export ALPAKA_BOOST_ROOT_DIR=`pwd`
-    - echo "${ALPAKA_BOOST_ROOT_DIR}"
+    - echo "ALPAKA_BOOST_ROOT_DIR=${ALPAKA_BOOST_ROOT_DIR}"
 
     - cd libs/
 
@@ -377,7 +377,7 @@ install:
     - cd boost_libs/
     - mkdir x64
     - export ALPAKA_BOOST_LIB_DIR=`pwd`/x64/lib
-    - echo "${ALPAKA_BOOST_LIB_DIR}"
+    - echo "ALPAKA_BOOST_LIB_DIR=${ALPAKA_BOOST_LIB_DIR}"
     - cd ../
     - cd boost/
 
@@ -391,7 +391,7 @@ install:
     - if [ "${CXX}" == "clang++" ]
       ;then
           export ALPAKA_BOOST_COMPILER=-clang${ALPAKA_CLANG_VER_MAJOR}${ALPAKA_CLANG_VER_MINOR}
-          && echo "${ALPAKA_BOOST_COMPILER}"
+          && echo "ALPAKA_BOOST_COMPILER=${ALPAKA_BOOST_COMPILER}"
           && ALPAKA_BOOST_B2_CXXFLAGS+="-Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros -Wunknown-warning-option"
       ;fi
     # Select the libraries required.
@@ -409,7 +409,7 @@ install:
       ;fi
     - ALPAKA_BOOST_B2+=" --stagedir=../boost_libs/x64 stage"
     # Build boost.
-    - echo "${ALPAKA_BOOST_B2}"
+    - echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
     - eval "${ALPAKA_BOOST_B2}"
 
     # Clean the intermediate build files.
@@ -487,10 +487,8 @@ script:
     #-------------------------------------------------------------------------------
     # Build and execute all unit tests (beginning with most general libraries).
     - ./travis/compileExec.sh "test/unit/meta/" ./meta
-    # Currently this test spams the nvcc output with
-    # warning: calling a __host__ function from a __host__ __device__ function is not allowed
-    # This renders the CI compile times unusable.
-    - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/acc/" ./acc ;fi
+    - ./travis/compileExec.sh "test/unit/acc/" ./acc
+    - ./travis/compileExec.sh "test/unit/mem/view/" ./memView
 
     #-------------------------------------------------------------------------------
     # Build and execute all integration tests.

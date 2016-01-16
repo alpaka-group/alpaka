@@ -36,26 +36,12 @@
 
 namespace alpaka
 {
-    /*namespace detail
-    {
-        //#############################################################################
-        // \tparam TSource Type to mimic the constness of.
-        // \tparam T Type to conditionally make const.
-        //#############################################################################
-        template<
-            typename TSource,
-            typename T>
-        using MimicConst = typename std::conditional<
-            std::is_const<TSource>::value,
-            typename std::add_const<T>::type,
-            typename std::remove_const<T>::type>;
-    }*/
     namespace mem
     {
         namespace view
         {
             //#############################################################################
-            //! A memory buffer view.
+            //! A sub-view to a view.
             //#############################################################################
             template<
                 typename TDev,
@@ -68,44 +54,42 @@ namespace alpaka
                 using Dev = TDev;
                 using Elem = TElem;
                 using Dim = TDim;
-                using Buf = mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>;
-                // If the value type is const, we store a const buffer.
-                //using BufC = detail::MimicConst<TElem, Buf>;
+                using ViewParentView = mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>;
 
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param view This can be either a memory buffer or a memory view.
+                //! \param view The view this view is a sub-view of.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TView>
                 ViewSubView(
                     TView const & view) :
-                        m_Buf(
+                        m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
                             extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytes<TDim::value - 1u>(view)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(view)),
-                        m_extentElements(extent::getExtentVecEnd<TDim>(view))
+                            mem::view::getPitchBytesVecEnd<TDim>(view)),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(view)),
+                        m_offsetsElements(Vec<TDim, TSize>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param view This can be either a memory buffer or a memory view.
+                //! \param view The view this view is a sub-view of.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TView>
                 ViewSubView(
                     TView & view) :
-                        m_Buf(
+                        m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
                             extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytes<TDim::value - 1u>(view)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(view)),
-                        m_extentElements(extent::getExtentVecEnd<TDim>(view))
+                            mem::view::getPitchBytesVecEnd<TDim>(view)),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(view)),
+                        m_offsetsElements(Vec<TDim, TSize>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -113,10 +97,9 @@ namespace alpaka
                         std::is_same<TSize, size::Size<TView>>::value,
                         "The size type of TView and the TSize template parameter have to be identical!");
                 }
-
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param view This can be either a memory buffer or a memory view.
+                //! \param view The view this view is a sub-view of.
                 //! \param extentElements The extent in elements.
                 //! \param relativeOffsetsElements The offsets in elements.
                 //-----------------------------------------------------------------------------
@@ -128,13 +111,13 @@ namespace alpaka
                     TView const & view,
                     TExtent const & extentElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
-                        m_Buf(
+                        m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
                             extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytes<TDim::value - 1u>(view)),
+                            mem::view::getPitchBytesVecEnd<TDim>(view)),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extentElements)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(view))
+                        m_offsetsElements(offset::getOffsetVecEnd<TDim>(relativeOffsetsElements))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -148,16 +131,13 @@ namespace alpaka
                         std::is_same<TSize, size::Size<TView>>::value,
                         "The size type of TView and the TSize template parameter have to be identical!");
 
-                    assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(view));
-                    assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(view));
-                    assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(view));
-                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(view)+extent::getWidth(extentElements)) <= extent::getWidth(view));
-                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(view)+extent::getHeight(extentElements)) <= extent::getHeight(view));
-                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(view)+extent::getDepth(extentElements)) <= extent::getDepth(view));
+                    assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
+                    assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
+                    assert((offset::getOffsetZ(relativeOffsetsElements)+extent::getDepth(extentElements)) <= extent::getDepth(view));
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param view This can be either a memory buffer or a memory view.
+                //! \param view The view this view is a sub-view of.
                 //! \param extentElements The extent in elements.
                 //! \param relativeOffsetsElements The offsets in elements.
                 //-----------------------------------------------------------------------------
@@ -169,13 +149,13 @@ namespace alpaka
                     TView & view,
                     TExtent const & extentElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
-                        m_Buf(
+                        m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
                             extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytes<TDim::value - 1u>(view)),
+                            mem::view::getPitchBytesVecEnd<TDim>(view)),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extentElements)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(view))
+                        m_offsetsElements(offset::getOffsetVecEnd<TDim>(relativeOffsetsElements))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -189,18 +169,15 @@ namespace alpaka
                         std::is_same<TSize, size::Size<TView>>::value,
                         "The size type of TView and the TSize template parameter have to be identical!");
 
-                    assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(view));
-                    assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(view));
-                    assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(view));
-                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(view)+extent::getWidth(extentElements)) <= extent::getWidth(view));
-                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(view)+extent::getHeight(extentElements)) <= extent::getHeight(view));
-                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(view)+extent::getDepth(extentElements)) <= extent::getDepth(view));
+                    assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
+                    assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
+                    assert((offset::getOffsetZ(relativeOffsetsElements)+extent::getDepth(extentElements)) <= extent::getDepth(view));
                 }
 
             public:
-                Buf m_Buf;
-                Vec<TDim, TSize> m_extentElements;
-                Vec<TDim, TSize> m_vOffsetsElements;
+                ViewParentView m_viewParentView;        // This wraps the parent view.
+                Vec<TDim, TSize> m_extentElements;      // The extent of this view.
+                Vec<TDim, TSize> m_offsetsElements;     // The offset relative to the parent view.
             };
         }
     }
@@ -246,7 +223,7 @@ namespace alpaka
                 {
                     return
                         dev::getDev(
-                            view);
+                            view.m_viewParentView);
                 }
             };
         }
@@ -349,8 +326,8 @@ namespace alpaka
                         // \TODO: pre-calculate this pointer for faster execution.
                         return
                             reinterpret_cast<TElem const *>(
-                                reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(view))
-                                + pitchedOffsetBytes(view, view, IdxSequence()));
+                                reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(view.m_viewParentView))
+                                + pitchedOffsetBytes(view, IdxSequence()));
                     }
                     //-----------------------------------------------------------------------------
                     //!
@@ -362,13 +339,18 @@ namespace alpaka
                         // \TODO: pre-calculate this pointer for faster execution.
                         return
                             reinterpret_cast<TElem *>(
-                                reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view))
+                                reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view.m_viewParentView))
                                 + pitchedOffsetBytes(view, IdxSequence()));
                     }
 
                 private:
                     //-----------------------------------------------------------------------------
+                    //! For a 3D vector this calculates:
                     //!
+                    //! offset::getOffset<0u>(view) * mem::view::getPitchBytes<1u>(view)
+                    //! + offset::getOffset<1u>(view) * mem::view::getPitchBytes<2u>(view)
+                    //! + offset::getOffset<2u>(view) * mem::view::getPitchBytes<3u>(view)
+                    //! while mem::view::getPitchBytes<3u>(view) is equivalent to sizeof(TElem)
                     //-----------------------------------------------------------------------------
                     template<
                         typename TView,
@@ -421,7 +403,7 @@ namespace alpaka
                     {
                         return
                             mem::view::getPitchBytes<TIdx::value>(
-                                view);
+                                view.m_viewParentView);
                     }
                 };
             }
@@ -452,7 +434,7 @@ namespace alpaka
                     mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & offset)
                 -> TSize
                 {
-                    return offset.m_vOffsetsElements[TIdx::value];
+                    return offset.m_offsetsElements[TIdx::value];
                 }
             };
         }

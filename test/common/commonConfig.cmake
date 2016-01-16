@@ -39,7 +39,7 @@ UNSET(common_LIBRARIES)
 UNSET(_COMMON_FOUND)
 UNSET(_COMMON_INCLUDE_DIRECTORY)
 UNSET(_COMMON_SOURCE_DIRECTORY)
-UNSET(_COMMON_PROJECT_NAME)
+UNSET(_COMMON_TARGET_NAME)
 UNSET(_COMMON_FILES_HEADER)
 UNSET(_COMMON_FILES_SOURCE)
 UNSET(_COMMON_FILES_CMAKE)
@@ -52,15 +52,15 @@ GET_FILENAME_COMPONENT(_COMMON_ROOT_DIR "${_COMMON_ROOT_DIR}" ABSOLUTE)
 # Set found to true initially and set it to false if a required dependency is missing.
 SET(_COMMON_FOUND TRUE)
 
-SET(_COMMON_PROJECT_NAME "common")
+SET(_COMMON_TARGET_NAME "common")
 
-PROJECT(${_COMMON_PROJECT_NAME})
+PROJECT(${_COMMON_TARGET_NAME})
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
 #-------------------------------------------------------------------------------
 
-SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING  "The location of the alpaka library")
+SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
 
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE("alpaka" REQUIRED)
@@ -95,22 +95,22 @@ LIST(APPEND _COMMON_FILES_CMAKE "${_COMMON_ROOT_DIR}/commonConfig.cmake" "${_COM
 #-------------------------------------------------------------------------------
 # Target.
 #-------------------------------------------------------------------------------
-IF(NOT TARGET ${_COMMON_PROJECT_NAME})
+IF(NOT TARGET ${_COMMON_TARGET_NAME})
     INCLUDE_DIRECTORIES(
         ${common_INCLUDE_DIRS})
     ADD_DEFINITIONS(
         ${common_DEFINITIONS})
     # Always add all files to the target executable build call to add them to the build project.
     ADD_LIBRARY(
-        ${_COMMON_PROJECT_NAME}
+        ${_COMMON_TARGET_NAME}
         STATIC
         ${_COMMON_FILES_HEADER} ${_COMMON_FILES_SOURCE} ${_COMMON_FILES_CMAKE})
     # Set the link libraries for this library (adds libs, include directories, defines and compile options).
     TARGET_LINK_LIBRARIES(
-        ${_COMMON_PROJECT_NAME}
+        ${_COMMON_TARGET_NAME}
         PUBLIC "alpaka" ${common_LIBRARIES})
     SET_TARGET_PROPERTIES(
-        ${_COMMON_PROJECT_NAME}
+        ${_COMMON_TARGET_NAME}
         PROPERTIES FOLDER "test")
 ENDIF()
 
@@ -125,7 +125,7 @@ IF(NOT _COMMON_FOUND)
     UNSET(_COMMON_FOUND)
     UNSET(_COMMON_INCLUDE_DIRECTORY)
     UNSET(_COMMON_SOURCE_DIRECTORY)
-    UNSET(_COMMON_PROJECT_NAME)
+    UNSET(_COMMON_TARGET_NAME)
     UNSET(_COMMON_FILES_HEADER)
     UNSET(_COMMON_FILES_SOURCE)
     UNSET(_COMMON_FILES_CMAKE)
@@ -142,6 +142,6 @@ ENDIF()
 # Handles the REQUIRED, QUIET and version-related arguments for FIND_PACKAGE.
 INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(
-    ${_COMMON_PROJECT_NAME}
+    ${_COMMON_TARGET_NAME}
     FOUND_VAR common_FOUND
     REQUIRED_VARS common_INCLUDE_DIR)

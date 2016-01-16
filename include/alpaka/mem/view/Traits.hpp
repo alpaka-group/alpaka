@@ -63,9 +63,21 @@ namespace alpaka
                     typename TSfinae = void>
                 struct GetPtrDev;
 
+                namespace detail
+                {
+                    //#############################################################################
+                    //!
+                    //#############################################################################
+                    template<
+                        typename TIdx,
+                        typename TView,
+                        typename TSfinae = void>
+                    struct GetPitchBytesDefault;
+                }
+
                 //#############################################################################
                 //! The pitch in bytes.
-                //! This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx+1).
+                //! This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx-1).
                 //!
                 //! The default implementation uses the extent to calculate the pitch.
                 //#############################################################################
@@ -82,31 +94,77 @@ namespace alpaka
                         TView const & view)
                     -> size::Size<TView>
                     {
-                        using IdxSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
-                        using IdxSequence = meta::ConvertIntegerSequence<std::size_t, IdxSequenceSigned>;
-                        return
-                            extentProd(view, IdxSequence())
-                            * sizeof(typename elem::Elem<TView>);
-                    }
-                private:
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    template<
-                        std::size_t... TIndices>
-                    ALPAKA_FN_HOST static auto extentProd(
-                        TView const & view,
-                        meta::IntegerSequence<std::size_t, TIndices...> const &)
-                    -> size::Size<TView>
-                    {
-                        // For the case that the sequence is empty (index out of range), 1 is returned.
-                        return
-                            meta::foldr(
-                                std::multiplies<size::Size<TView>>(),
-                                1u,
-                                extent::getExtent<TIndices>(view)...);
+                        return detail::GetPitchBytesDefault<TIdx, TView>::getPitchBytesDefault(view);
                     }
                 };
+
+                namespace detail
+                {
+                    //#############################################################################
+                    //!
+                    //#############################################################################
+                    template<
+                        typename TIdx,
+                        typename TView>
+                    struct GetPitchBytesDefault<
+                        TIdx,
+                        TView,
+                        typename std::enable_if<TIdx::value < (dim::Dim<TView>::value - 1)>::type>
+                    {
+                        //-----------------------------------------------------------------------------
+                        //!
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FN_HOST static auto getPitchBytesDefault(
+                            TView const & view)
+                        -> size::Size<TView>
+                        {
+                            return
+                                extent::getExtent<TIdx::value>(view)
+                                * GetPitchBytes<dim::DimInt<TIdx::value+1>, TView>::getPitchBytes(view);
+                        }
+                    };
+                    //#############################################################################
+                    //!
+                    //#############################################################################
+                    template<
+                        typename TView>
+                    struct GetPitchBytesDefault<
+                        dim::DimInt<dim::Dim<TView>::value - 1u>,
+                        TView>
+                    {
+                        //-----------------------------------------------------------------------------
+                        //!
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FN_HOST static auto getPitchBytesDefault(
+                            TView const & view)
+                        -> size::Size<TView>
+                        {
+                            return
+                                extent::getExtent<dim::Dim<TView>::value - 1u>(view)
+                                * sizeof(elem::Elem<TView>);
+                        }
+                    };
+                    //#############################################################################
+                    //!
+                    //#############################################################################
+                    template<
+                        typename TView>
+                    struct GetPitchBytesDefault<
+                        dim::DimInt<dim::Dim<TView>::value>,
+                        TView>
+                    {
+                        //-----------------------------------------------------------------------------
+                        //!
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FN_HOST static auto getPitchBytesDefault(
+                            TView const &)
+                        -> size::Size<TView>
+                        {
+                            return
+                                sizeof(elem::Elem<TView>);
+                        }
+                    };
+                }
 
                 //#############################################################################
                 //! The memory set trait.
@@ -489,6 +547,81 @@ namespace alpaka
                     rowSeparator,
                     rowPrefix,
                     rowSuffix);
+            }
+        }
+    }
+
+    namespace mem
+    {
+        namespace view
+        {
+            namespace detail
+            {
+                //#############################################################################
+                //! A function object that returns the pitch for each index.
+                //#############################################################################
+                template<
+                    std::size_t Tidx>
+                struct CreatePitchBytes
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    template<
+                        typename TPitch>
+                    ALPAKA_FN_HOST_ACC static auto create(
+                        TPitch const & pitch)
+                    -> size::Size<TPitch>
+                    {
+                        return mem::view::getPitchBytes<Tidx>(pitch);
+                    }
+                };
+            }
+            //-----------------------------------------------------------------------------
+            //! \return The pitch vector.
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<
+                typename TPitch>
+            ALPAKA_FN_HOST_ACC auto getPitchBytesVec(
+                TPitch const & pitch = TPitch())
+            -> Vec<dim::Dim<TPitch>, size::Size<TPitch>>
+            {
+                return
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                Vec<dim::Dim<TPitch>, size::Size<TPitch>>::template
+#endif
+                    createVecFromIndexedFn<
+#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                        dim::Dim<TPitch>,
+#endif
+                        detail::CreatePitchBytes>(
+                            pitch);
+            }
+            //-----------------------------------------------------------------------------
+            //! \return The pitch but only the last N elements.
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<
+                typename TDim,
+                typename TPitch>
+            ALPAKA_FN_HOST_ACC auto getPitchBytesVecEnd(
+                TPitch const & pitch = TPitch())
+            -> Vec<TDim, size::Size<TPitch>>
+            {
+                using IdxOffset = std::integral_constant<std::intmax_t, ((std::intmax_t)dim::Dim<TPitch>::value)-((std::intmax_t)TDim::value)>;
+                return
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                Vec<TDim, size::Size<TPitch>>::template
+#endif
+                    createVecFromIndexedFnOffset<
+#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                        TDim,
+#endif
+                        detail::CreatePitchBytes,
+                        IdxOffset>(
+                            pitch);
             }
         }
     }

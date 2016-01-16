@@ -42,11 +42,6 @@ namespace alpaka
             class ViewPlainPtr final
             {
             public:
-                using Dev = TDev;
-                using Elem = TElem;
-                using Dim = TDim;
-
-            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor
                 //-----------------------------------------------------------------------------
@@ -60,24 +55,32 @@ namespace alpaka
                         m_pMem(pMem),
                         m_dev(dev),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                        m_pitchBytes(extent::getWidth(extent) * sizeof(TElem))
-                {}
+                        m_pitchBytes(Vec<TDim, TSize>::all(0))
+                {
+                    // Calculate the pitches by hand.
+                    m_pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * sizeof(TElem);
+                    for(TSize i = TDim::value - 1u; i > static_cast<TSize>(0u); --i)
+                    {
+                        m_pitchBytes[i-1] = extent[i-1] * m_pitchBytes[i];
+                    }
+                }
 
                 //-----------------------------------------------------------------------------
                 //! Constructor
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    typename TExtent>
+                    typename TExtent,
+                    typename TPitch>
                 ALPAKA_FN_HOST_ACC ViewPlainPtr(
                     TElem * pMem,
                     TDev const dev,
                     TExtent const & extent,
-                    TSize const & pitchBytes) :
+                    TPitch const & pitchBytes) :
                         m_pMem(pMem),
                         m_dev(dev),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                        m_pitchBytes(pitchBytes)
+                        m_pitchBytes(vec::subVecEnd<TDim>(pitchBytes))
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -110,7 +113,7 @@ namespace alpaka
                 TElem * m_pMem;
                 TDev m_dev;
                 Vec<TDim, TSize> m_extentElements;
-                TSize m_pitchBytes;
+                Vec<TDim, TSize> m_pitchBytes;
             };
         }
     }
@@ -260,20 +263,22 @@ namespace alpaka
                 //! The ViewPlainPtr memory pitch get trait specialization.
                 //#############################################################################
                 template<
+                    typename TIdx,
                     typename TDev,
                     typename TElem,
                     typename TDim,
                     typename TSize>
                 struct GetPitchBytes<
-                    dim::DimInt<TDim::value - 1u>,
-                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                    TIdx,
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>,
+                    typename std::enable_if<TIdx::value < TDim::value>::type>
                 {
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPitchBytes(
                         mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
                     -> TSize
                     {
-                        return view.m_pitchBytes;
+                        return view.m_pitchBytes[TIdx::value];
                     }
                 };
             }

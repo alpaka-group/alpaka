@@ -31,25 +31,18 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 
 SET(_SOURCE_DIR "src/")
-SET(_TARGET_NAME "meta")
+SET(_TARGET_NAME "memView")
 
 PROJECT(${_TARGET_NAME})
 
 #-------------------------------------------------------------------------------
-# Find alpaka.
+# Find alpaka test common.
 #-------------------------------------------------------------------------------
 
-SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../" CACHE STRING "The location of the alpaka library")
+SET(COMMON_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../common/" CACHE STRING  "The location of the alpaka test common library")
 
-LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
-FIND_PACKAGE("alpaka" REQUIRED)
-
-#-------------------------------------------------------------------------------
-# Common.
-#-------------------------------------------------------------------------------
-
-INCLUDE("${ALPAKA_ROOT}cmake/common.cmake")
-INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
+LIST(APPEND CMAKE_MODULE_PATH "${COMMON_ROOT}")
+FIND_PACKAGE("common" REQUIRED)
 
 #-------------------------------------------------------------------------------
 # Boost.Test.
@@ -76,10 +69,10 @@ append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
 
 INCLUDE_DIRECTORIES(
     ${_INCLUDE_DIRECTORIES_PRIVATE}
-    ${alpaka_INCLUDE_DIRS})
+    ${common_INCLUDE_DIRS})
 ADD_DEFINITIONS(
     ${_DEFINITIONS_PRIVATE}
-    ${alpaka_DEFINITIONS})
+    ${common_DEFINITIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
     ${_TARGET_NAME}
@@ -87,7 +80,7 @@ ALPAKA_ADD_EXECUTABLE(
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
     ${_TARGET_NAME}
-    PUBLIC "alpaka" ${_LINK_LIBRARIES_PRIVATE})
+    PUBLIC "common" ${_LINK_LIBRARIES_PRIVATE})
 
 SET_TARGET_PROPERTIES(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
 

@@ -26,7 +26,7 @@ cmake_minimum_required(VERSION 3.0.1)
 ################################################################################
 # Find alpaka
 ################################################################################
-set(ALPAKA_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../" CACHE STRING  "The location of the alpaka library")
+set(ALPAKA_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../" CACHE STRING "The location of the alpaka library")
 list(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 
 find_package("alpaka" REQUIRED)

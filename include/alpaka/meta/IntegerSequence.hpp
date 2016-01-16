@@ -85,6 +85,46 @@ namespace alpaka
             typename TIntegerSequence>
         using ConvertIntegerSequence = typename detail::ConvertIntegerSequence<TDstType, TIntegerSequence>::type;
 
+        namespace detail
+        {
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                template<typename...> class TList,
+                typename T,
+                template<T> class TOp,
+                typename TIntegerSequence>
+            struct TransformIntegerSequence;
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                template<typename...> class TList,
+                typename T,
+                template<T> class TOp,
+                T... Tvals>
+            struct TransformIntegerSequence<
+                TList,
+                T,
+                TOp,
+                IntegerSequence<T, Tvals...>>
+            {
+                using type =
+                    TList<
+                        TOp<Tvals>...>;
+            };
+        }
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            template<typename...> class TList,
+            typename T,
+            template<T> class TOp,
+            typename TIntegerSequence>
+        using TransformIntegerSequence = typename detail::TransformIntegerSequence<TList, T, TOp, TIntegerSequence>::type;
+
 
         template<bool TisSizeNegative, bool TbIsBegin, typename T, T Tbegin, typename TIntCon, typename TIntSeq>
         struct MakeIntegerSequenceHelper
