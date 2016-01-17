@@ -29,7 +29,7 @@
 
 #include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
-#include <alpaka/vec/Vec.hpp>               // Vec, offset::getOffsetsVecEnd
+#include <alpaka/vec/Vec.hpp>               // Vec, offset::getOffsetVecEnd
 #include <alpaka/core/Cuda.hpp>             // getOffset(dim3)
 
 //#include <boost/core/ignore_unused.hpp>   // boost::ignore_unused
@@ -122,7 +122,7 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(idx);
-                    return vec::cast<TSize>(offset::getOffsetsVecEnd<TDim>(blockIdx));
+                    return vec::cast<TSize>(offset::getOffsetVecEnd<TDim>(blockIdx));
                 }
             };
         }

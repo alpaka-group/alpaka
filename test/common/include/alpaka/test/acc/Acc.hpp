@@ -27,6 +27,13 @@
 #include <type_traits>                      // std::is_class
 #include <iosfwd>                           // std::ostream
 
+
+// When compiling the tests with nvcc on th CI infrastructure we have to dramatically reduce the number of tested combinations.
+// Else the log length would be exceeded.
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__) && ALPAKA_INTEGRATION_TEST
+    #define ALPAKA_CUDA_INTEGRATION_TEST
+#endif
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -44,7 +51,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             namespace detail
             {
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
                 template<
                     typename TDim,
                     typename TSize>
@@ -55,7 +62,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuSerialIfAvailableElseVoid = int;
 #endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED) && !defined(ALPAKA_CUDA_INTEGRATION_TEST)
                 template<
                     typename TDim,
                     typename TSize>
@@ -66,7 +73,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuThreadsIfAvailableElseVoid = int;
 #endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
                 template<
                     typename TDim,
                     typename TSize>
@@ -77,7 +84,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuFibersIfAvailableElseVoid = int;
 #endif
-#ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
+#if defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
                 template<
                     typename TDim,
                     typename TSize>
@@ -88,7 +95,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuOmp2BlocksIfAvailableElseVoid = int;
 #endif
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED) && !defined(ALPAKA_CUDA_INTEGRATION_TEST)
                 template<
                     typename TDim,
                     typename TSize>
@@ -99,7 +106,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuOmp2ThreadsIfAvailableElseVoid = int;
 #endif
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#if defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED) && !defined(ALPAKA_CUDA_INTEGRATION_TEST)
                 template<
                     typename TDim,
                     typename TSize>
@@ -194,6 +201,33 @@ namespace alpaka
 
             namespace detail
             {
+#if defined(ALPAKA_CUDA_INTEGRATION_TEST)
+                //#############################################################################
+                //! A std::tuple holding dimensions.
+                //#############################################################################
+                using TestDims =
+                    std::tuple<
+                        alpaka::dim::DimInt<1u>,
+                        //alpaka::dim::DimInt<2u>,
+                        alpaka::dim::DimInt<3u>/*,
+                        alpaka::dim::DimInt<4u>*/>;
+
+                //#############################################################################
+                //! A std::tuple holding size types.
+                //#############################################################################
+                using TestSizes =
+                    std::tuple<
+                        std::size_t,
+                        //std::int64_t,
+                        std::uint64_t,
+                        std::int32_t,
+                        //std::uint32_t,
+                        //std::int16_t,
+                        std::uint16_t/*,
+                        std::int8_t,
+                        std::uint8_t*/>;
+#else
+
                 //#############################################################################
                 //! A std::tuple holding dimensions.
                 //#############################################################################
@@ -202,7 +236,11 @@ namespace alpaka
                         alpaka::dim::DimInt<1u>,
                         alpaka::dim::DimInt<2u>,
                         alpaka::dim::DimInt<3u>,
-                        alpaka::dim::DimInt<4u>>;
+                // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
+#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__))
+                        alpaka::dim::DimInt<4u>
+#endif
+                    >;
 
                 //#############################################################################
                 //! A std::tuple holding size types.
@@ -215,9 +253,10 @@ namespace alpaka
                         std::int32_t,
                         std::uint32_t,
                         std::int16_t,
-                        std::uint16_t,
+                        std::uint16_t/*,
                         std::int8_t,
-                        std::uint8_t>;
+                        std::uint8_t*/>;
+#endif
 
                 //#############################################################################
                 //! A std::tuple holding multiple std::tuple consisting of a dimension and a size type.

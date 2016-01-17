@@ -444,7 +444,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto prod() const
         -> TSize
         {
-            return foldrAll(std::multiplies<TSize>());
+            return foldrAll(
+                [](TSize a, TSize b)
+                {
+                    return a * b;
+                });
         }
         //-----------------------------------------------------------------------------
         //! \return The sum of all values.
@@ -453,7 +457,11 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto sum() const
         -> TSize
         {
-            return foldrAll(std::plus<TSize>());
+            return foldrAll(
+                [](TSize a, TSize b)
+                {
+                    return a + b;
+                });
         }
         //-----------------------------------------------------------------------------
         //! \return The min of all values.
@@ -465,7 +473,7 @@ namespace alpaka
             return foldrAll(
                 [](TSize a, TSize b)
                 {
-                    return std::min(a,b);
+                    return (b < a) ? b : a;
                 });
         }
         //-----------------------------------------------------------------------------
@@ -478,14 +486,13 @@ namespace alpaka
             return foldrAll(
                 [](TSize a, TSize b)
                 {
-                    return std::max(a,b);
+                    return (b > a) ? b : a;
                 });
         }
         //-----------------------------------------------------------------------------
         //! \return The index of the minimal element.
         //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC auto minElem() const
+        ALPAKA_FN_HOST auto minElem() const
         -> typename TDim::value_type
         {
             return
@@ -499,8 +506,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The index of the maximal element.
         //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC auto maxElem() const
+        ALPAKA_FN_HOST auto maxElem() const
         -> typename TDim::value_type
         {
             return
@@ -873,7 +879,7 @@ namespace alpaka
             };
         }
         //-----------------------------------------------------------------------------
-        //! \return The extent.
+        //! \return The extent vector.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
@@ -945,12 +951,12 @@ namespace alpaka
             };
         }
         //-----------------------------------------------------------------------------
-        //! \return The offsets.
+        //! \return The offset vector.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets>
-        ALPAKA_FN_HOST_ACC auto getOffsetsVec(
+        ALPAKA_FN_HOST_ACC auto getOffsetVec(
             TOffsets const & offsets = TOffsets())
         -> Vec<dim::Dim<TOffsets>, size::Size<TOffsets>>
         {
@@ -966,13 +972,13 @@ namespace alpaka
                         offsets);
         }
         //-----------------------------------------------------------------------------
-        //! \return The offsets vector but only the last N elements.
+        //! \return The offset vector but only the last N elements.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
             typename TOffsets>
-        ALPAKA_FN_HOST_ACC auto getOffsetsVecEnd(
+        ALPAKA_FN_HOST_ACC auto getOffsetVecEnd(
             TOffsets const & offsets = TOffsets())
         -> Vec<TDim, size::Size<TOffsets>>
         {

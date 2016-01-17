@@ -54,6 +54,10 @@ IF(NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
 ELSE()
     LIST(APPEND _INCLUDE_DIRECTORIES_PRIVATE ${Boost_INCLUDE_DIRS})
     LIST(APPEND _LINK_LIBRARIES_PRIVATE ${Boost_LIBRARIES})
+
+    IF(NOT Boost_USE_STATIC_LIBS)
+        LIST(APPEND _DEFINITIONS_PRIVATE "-DBOOST_TEST_DYN_LINK")
+    ENDIF()
 ENDIF()
 
 #-------------------------------------------------------------------------------
@@ -67,6 +71,7 @@ INCLUDE_DIRECTORIES(
     ${_INCLUDE_DIRECTORIES_PRIVATE}
     ${common_INCLUDE_DIRS})
 ADD_DEFINITIONS(
+    ${_DEFINITIONS_PRIVATE}
     ${common_DEFINITIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
