@@ -31,5 +31,6 @@ PROJECT("alpakaUnitTest")
 ################################################################################
 
 ADD_SUBDIRECTORY("acc/")
+ADD_SUBDIRECTORY("kernel/")
 ADD_SUBDIRECTORY("mem/view/")
 ADD_SUBDIRECTORY("meta/")
