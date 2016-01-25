@@ -491,6 +491,7 @@ script:
     # Build and execute all unit tests (beginning with most general libraries).
     - ./travis/compileExec.sh "test/unit/meta/" ./meta
     - ./travis/compileExec.sh "test/unit/acc/" ./acc
+    - ./travis/compileExec.sh "test/unit/kernel/" ./kernel
     - ./travis/compileExec.sh "test/unit/mem/view/" ./memView
 
     #-------------------------------------------------------------------------------
