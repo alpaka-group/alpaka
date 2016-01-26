@@ -80,7 +80,12 @@ namespace alpaka
                         m_pMem(pMem),
                         m_dev(dev),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                        m_pitchBytes(vec::subVecEnd<TDim>(pitchBytes))
+                        m_pitchBytes(
+                            vec::subVecEnd<TDim>(
+                               static_cast<
+                                    Vec<TDim, TSize> >(pitchBytes)
+                            )
+                        )
                 {}
 
                 //-----------------------------------------------------------------------------
