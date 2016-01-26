@@ -123,5 +123,5 @@ namespace alpaka
             ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(typename std::remove_cv<__VA_ARGS__>::type))
 #else
     #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
-            alpaka::core::align::OptimalAlignment<sizeof(typename std::remove_cv<__VA_ARGS__>::type)>::value
+            ::alpaka::core::align::OptimalAlignment<sizeof(typename std::remove_cv<__VA_ARGS__>::type)>::value
 #endif
