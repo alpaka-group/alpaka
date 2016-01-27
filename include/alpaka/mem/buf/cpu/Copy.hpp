@@ -97,8 +97,10 @@ namespace alpaka
                                 m_dstDepth(static_cast<Size>(extent::getDepth(viewDst))),
                                 m_srcDepth(static_cast<Size>(extent::getDepth(viewSrc))),
 #endif
-                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
-                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcPitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),                                
 
                                 m_dstMemNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(viewSrc)))
@@ -110,8 +112,8 @@ namespace alpaka
                             assert(m_extentWidth <= m_srcWidth);
                             assert(m_extentHeight <= m_srcHeight);
                             assert(m_extentDepth <= m_srcDepth);
-                            assert(m_extentWidthBytes <= m_dstPitchBytes);
-                            assert(m_extentWidthBytes <= m_srcPitchBytes);
+                            assert(m_extentWidthBytes <= m_dstPitchBytesX);
+                            assert(m_extentWidthBytes <= m_srcPitchBytesX);
 #endif
                         }
 
@@ -131,14 +133,14 @@ namespace alpaka
                                 << " dh: " << m_dstHeight
                                 << " dd: " << m_dstDepth
                                 << " dptr: " << reinterpret_cast<void *>(m_dstMemNative)
-                                << " dpitchb: " << m_dstPitchBytes
+                                << " dpitchb: " << m_dstPitchBytesX
                                 << " dbufw: " << m_dstBufWidth
                                 << " dbufh: " << m_dstBufHeight
                                 << " sw: " << m_srcWidth
                                 << " sh: " << m_srcHeight
                                 << " sd: " << m_srcDepth
                                 << " sptr: " << reinterpret_cast<void const *>(m_srcMemNative)
-                                << " spitchb: " << m_srcPitchBytes
+                                << " spitchb: " << m_srcPitchBytesX
                                 << " sbufw: " << m_srcBufWidth
                                 << " sbufh: " << m_srcBufHeight
                                 << std::endl;
@@ -152,8 +154,6 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            auto const dstSliceSizeBytes(m_dstPitchBytes * m_dstHeight);
-                            auto const srcSliceSizeBytes(m_srcPitchBytes * m_srcHeight);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             printDebug();
@@ -171,7 +171,7 @@ namespace alpaka
                             // -> we can copy whole slices at once overwriting the pitch bytes
                             auto const copySliceAtOnce(
                                 equalWidths
-                                && (m_dstPitchBytes == m_srcPitchBytes));
+                                && (m_dstPitchBytesX == m_srcPitchBytesX));
 
                             // If:
                             // - the copy extent width and height are identical to the dst and src extent width and height
@@ -183,7 +183,7 @@ namespace alpaka
                                 && (m_extentHeight == m_srcHeight)
                                 && (m_extentHeight == m_dstBufHeight)
                                 && (m_extentHeight == m_srcBufHeight)
-                                && (dstSliceSizeBytes == srcSliceSizeBytes)
+                                && (m_dstPitchBytesY == m_srcPitchBytesY)
                                 && copySliceAtOnce);
 
                             if(copyAllAtOnce)
@@ -191,7 +191,7 @@ namespace alpaka
                                 std::memcpy(
                                     reinterpret_cast<void *>(m_dstMemNative),
                                     reinterpret_cast<void const *>(m_srcMemNative),
-                                    dstSliceSizeBytes*m_extentDepth);
+                                    m_dstPitchBytesX * m_extentHeight * m_extentDepth);
                             }
                             else
                             {
@@ -200,17 +200,17 @@ namespace alpaka
                                     if(copySliceAtOnce)
                                     {
                                         std::memcpy(
-                                            reinterpret_cast<void *>(m_dstMemNative + z*dstSliceSizeBytes),
-                                            reinterpret_cast<void const *>(m_srcMemNative + z*srcSliceSizeBytes),
-                                            m_dstPitchBytes*m_extentHeight);
+                                            reinterpret_cast<void *>(m_dstMemNative + z*m_dstPitchBytesY),
+                                            reinterpret_cast<void const *>(m_srcMemNative + z*m_srcPitchBytesY),
+                                            m_dstPitchBytesX*m_extentHeight);
                                     }
                                     else
                                     {
                                         for(auto y((decltype(m_extentHeight)(0))); y < m_extentHeight; ++y)
                                         {
                                             std::memcpy(
-                                                reinterpret_cast<void *>(m_dstMemNative + y*m_dstPitchBytes + z*dstSliceSizeBytes),
-                                                reinterpret_cast<void const *>(m_srcMemNative + y*m_srcPitchBytes + z*srcSliceSizeBytes),
+                                                reinterpret_cast<void *>(m_dstMemNative + y*m_dstPitchBytesX + z*m_dstPitchBytesY),
+                                                reinterpret_cast<void const *>(m_srcMemNative + y*m_srcPitchBytesX + z*m_srcPitchBytesY),
                                                 m_extentWidthBytes);
                                         }
                                     }
@@ -236,8 +236,10 @@ namespace alpaka
                         Size m_dstDepth;
                         Size m_srcDepth;
 #endif
-                        Size m_dstPitchBytes;
-                        Size m_srcPitchBytes;
+                        Size m_dstPitchBytesX;
+                        Size m_srcPitchBytesX;
+                        Size m_dstPitchBytesY;
+                        Size m_srcPitchBytesY;                        
 
                         std::uint8_t * m_dstMemNative;
                         std::uint8_t const * m_srcMemNative;
