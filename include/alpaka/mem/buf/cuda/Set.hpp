@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz, Rene Widera
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera, Erik Zenker
 *
 * This file is part of alpaka.
 *
@@ -62,7 +62,7 @@ namespace alpaka
                 namespace detail
                 {
                     //#############################################################################
-                    //! The CUDA memory copy trait.
+                    //! The CUDA memory set trait.
                     //#############################################################################
                     template<
                         typename TDim,
@@ -275,7 +275,7 @@ namespace alpaka
                     auto const extentHeight(extent::getHeight(extent));
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));
-                    auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
@@ -288,7 +288,7 @@ namespace alpaka
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2DAsync(
                             dstNativePtr,
-                            dstPitchBytes,
+                            dstPitchBytesX,
                             static_cast<int>(byte),
                             extentWidthBytes,
                             extentHeight,
@@ -332,7 +332,7 @@ namespace alpaka
                     auto const extentHeight(extent::getHeight(extent));
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));
-                    auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
@@ -345,7 +345,7 @@ namespace alpaka
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2D(
                             dstNativePtr,
-                            dstPitchBytes,
+                            dstPitchBytesX,
                             static_cast<int>(byte),
                             extentWidthBytes,
                             extentHeight));
@@ -389,8 +389,10 @@ namespace alpaka
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));
                     auto const dstDepth(extent::getDepth(buf));
-                    auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
+                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    using Elem = alpaka::elem::Elem<TView>;                    
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
                     assert(extentDepth <= dstDepth);
@@ -399,13 +401,13 @@ namespace alpaka
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
                             dstNativePtr,
-                            dstPitchBytes,
-                            dstWidth,
-                            dstHeight));
+                            dstPitchBytesX,
+                            dstWidth * sizeof(Elem),
+                            dstPitchBytesY/dstPitchBytesX));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            extentWidth,
+                            extentWidth * sizeof(Elem),
                             extentHeight,
                             extentDepth));
 
@@ -460,8 +462,10 @@ namespace alpaka
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));
                     auto const dstDepth(extent::getDepth(buf));
-                    auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
+                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));                    
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    using Elem = alpaka::elem::Elem<TView>;
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
                     assert(extentDepth <= dstDepth);
@@ -470,13 +474,13 @@ namespace alpaka
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
                             dstNativePtr,
-                            dstPitchBytes,
-                            dstWidth,
-                            dstHeight));
+                            dstPitchBytesX,
+                            dstWidth * sizeof(Elem),
+                            dstPitchBytesY/dstPitchBytesX));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            extentWidth,
+                            extentWidth * sizeof(Elem),
                             extentHeight,
                             extentDepth));
 
