@@ -236,8 +236,8 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<3u>, TElem> const & idx,
-                    Vec<dim::DimInt<3u>, TElem> const & extent)
+                    Vec<dim::DimInt<4u>, TElem> const & idx,
+                    Vec<dim::DimInt<4u>, TElem> const & extent)
                 -> Vec<dim::DimInt<1u>, TElem>
                 {
                     return {
