@@ -197,8 +197,10 @@ namespace alpaka
                                 m_dstHeight(static_cast<Size>(extent::getHeight(viewDst))),    // required for 3D peer copy
                                 m_srcHeight(static_cast<Size>(extent::getHeight(viewSrc))),    // required for 3D peer copy
 
-                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
-                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
 
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
@@ -208,8 +210,8 @@ namespace alpaka
                             assert(m_extentHeight <= m_dstHeight);
                             assert(m_extentWidth <= m_srcWidth);
                             assert(m_extentHeight <= m_srcHeight);
-                            assert(m_extentWidthBytes <= m_dstPitchBytes);
-                            assert(m_extentWidthBytes <= m_srcPitchBytes);
+                            assert(m_extentWidthBytes <= m_dstpitchBytesX);
+                            assert(m_extentWidthBytes <= m_srcpitchBytesX);
 #endif
                         }
 
@@ -228,12 +230,12 @@ namespace alpaka
                                 << " dw: " << m_dstWidth
                                 << " dh: " << m_dstHeight
                                 << " dptr: " << m_dstMemNative
-                                << " dpitchb: " << m_dstPitchBytes
+                                << " dpitchb: " << m_dstpitchBytesX
                                 << " sdev: " << m_iSrcDevice
                                 << " sw: " << m_srcWidth
                                 << " sh: " << m_srcHeight
                                 << " sptr: " << m_srcMemNative
-                                << " spitchb: " << m_srcPitchBytes
+                                << " spitchb: " << m_srcpitchBytesX
                                 << std::endl;
                         }
 #endif
@@ -252,8 +254,11 @@ namespace alpaka
                         Size m_dstHeight;         // required for 3D peer copy
                         Size m_srcHeight;         // required for 3D peer copy
 
-                        Size m_dstPitchBytes;
-                        Size m_srcPitchBytes;
+                        Size m_dstpitchBytesX;
+                        Size m_srcpitchBytesX;
+                        Size m_dstPitchBytesY;
+                        Size m_srcPitchBytesY;
+                        
 
                         void * m_dstMemNative;
                         void const * m_srcMemNative;
@@ -313,9 +318,12 @@ namespace alpaka
                                 m_dstDepth(static_cast<Size>(extent::getDepth(viewDst))),
                                 m_srcDepth(static_cast<Size>(extent::getDepth(viewSrc))),
 #endif
-                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
-                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
 
+                                
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
@@ -326,8 +334,8 @@ namespace alpaka
                             assert(m_extentWidth <= m_srcWidth);
                             assert(m_extentHeight <= m_srcHeight);
                             assert(m_extentDepth <= m_srcDepth);
-                            assert(m_extentWidthBytes <= m_dstPitchBytes);
-                            assert(m_extentWidthBytes <= m_srcPitchBytes);
+                            assert(m_extentWidthBytes <= m_dstpitchBytesX);
+                            assert(m_extentWidthBytes <= m_srcpitchBytesX);
 #endif
                         }
 
@@ -348,13 +356,13 @@ namespace alpaka
                                 << " dh: " << m_dstHeight
                                 << " dd: " << m_dstDepth
                                 << " dptr: " << m_dstMemNative
-                                << " dpitchb: " << m_dstPitchBytes
+                                << " dpitchb: " << m_dstpitchBytesX
                                 << " sdev: " << m_iSrcDevice
                                 << " sw: " << m_srcWidth
                                 << " sh: " << m_srcHeight
                                 << " sd: " << m_srcDepth
                                 << " sptr: " << m_srcMemNative
-                                << " spitchb: " << m_srcPitchBytes
+                                << " spitchb: " << m_srcpitchBytesX
                                 << std::endl;
                         }
 #endif
@@ -377,8 +385,10 @@ namespace alpaka
                         Size m_dstDepth;
                         Size m_srcDepth;
 #endif
-                        Size m_dstPitchBytes;
-                        Size m_srcPitchBytes;
+                        Size m_dstpitchBytesX;
+                        Size m_srcpitchBytesX;
+                        Size m_dstPitchBytesY;
+                        Size m_srcPitchBytesY;
 
                         void * m_dstMemNative;
                         void const * m_srcMemNative;
@@ -554,8 +564,10 @@ namespace alpaka
 
                         auto const & extentDepth(task.m_extentDepth);
 
-                        auto const & dstPitchBytes(task.m_dstPitchBytes);
-                        auto const & srcPitchBytes(task.m_srcPitchBytes);
+                        auto const & dstpitchBytesX(task.m_dstpitchBytesX);
+                        auto const & srcpitchBytesX(task.m_srcpitchBytesX);
+                        auto const & dstPitchBytesY(task.m_dstPitchBytesY);
+                        auto const & srcPitchBytesY(task.m_srcPitchBytesY);
 
                         auto const & dstNativePtr(task.m_dstMemNative);
                         auto const & srcNativePtr(task.m_srcMemNative);
@@ -564,20 +576,21 @@ namespace alpaka
                         cudaMemcpy3DParms cudaMemCpy3DParms = {0};
                         //cudaMemCpy3DParms.srcArray;     // Either srcArray or srcPtr.
                         //cudaMemCpy3DParms.srcPos;       // Optional. Offset in bytes.
+
                         cudaMemCpy3DParms.srcPtr =
                             make_cudaPitchedPtr(
                                 const_cast<void *>(srcNativePtr),
-                                srcPitchBytes,
+                                srcpitchBytesX,
                                 srcWidth,
-                                srcHeight);
+                                srcPitchBytesY/srcpitchBytesX);
                         //cudaMemCpy3DParms.dstArray;     // Either dstArray or dstPtr.
                         //cudaMemCpy3DParms.dstPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DParms.dstPtr =
                             make_cudaPitchedPtr(
                                 dstNativePtr,
-                                dstPitchBytes,
+                                dstpitchBytesX,
                                 dstWidth,
-                                dstHeight);
+                                dstPitchBytesY/dstpitchBytesX);
                         cudaMemCpy3DParms.extent =
                             make_cudaExtent(
                                 extentWidthBytes,
@@ -613,8 +626,10 @@ namespace alpaka
 
                         auto const extentDepth(1u);
 
-                        auto const & dstPitchBytes(task.m_dstPitchBytes);
-                        auto const & srcPitchBytes(task.m_srcPitchBytes);
+                        auto const & dstpitchBytesX(task.m_dstpitchBytesX);
+                        auto const & srcpitchBytesX(task.m_srcpitchBytesX);
+                        auto const & dstPitchBytesY(task.m_dstPitchBytesY);
+                        auto const & srcPitchBytesY(task.m_srcPitchBytesY);
 
                         auto const & dstNativePtr(task.m_dstMemNative);
                         auto const & srcNativePtr(task.m_srcMemNative);
@@ -627,9 +642,9 @@ namespace alpaka
                         cudaMemCpy3DPeerParms.dstPtr =
                             make_cudaPitchedPtr(
                                 dstNativePtr,
-                                dstPitchBytes,
+                                dstpitchBytesX,
                                 dstWidth,
-                                dstHeight);
+                                dstPitchBytesY/dstpitchBytesX);
                         cudaMemCpy3DPeerParms.extent =
                             make_cudaExtent(
                                 extentWidthBytes,
@@ -641,9 +656,9 @@ namespace alpaka
                         cudaMemCpy3DPeerParms.srcPtr =
                             make_cudaPitchedPtr(
                                 const_cast<void *>(srcNativePtr),
-                                srcPitchBytes,
+                                srcpitchBytesX,
                                 srcWidth,
-                                srcHeight);
+                                dstPitchBytesY/dstpitchBytesX);
 
                         return cudaMemCpy3DPeerParms;
                     }
@@ -673,8 +688,10 @@ namespace alpaka
 
                         auto const & extentDepth(task.m_extentDepth);
 
-                        auto const & dstPitchBytes(task.m_dstPitchBytes);
-                        auto const & srcPitchBytes(task.m_srcPitchBytes);
+                        auto const & dstpitchBytesX(task.m_dstpitchBytesX);
+                        auto const & srcpitchBytesX(task.m_srcpitchBytesX);
+                        auto const & dstPitchBytesY(task.m_dstPitchBytesY);
+                        auto const & srcPitchBytesY(task.m_srcPitchBytesY);
 
                         auto const & dstNativePtr(task.m_dstMemNative);
                         auto const & srcNativePtr(task.m_srcMemNative);
@@ -687,9 +704,9 @@ namespace alpaka
                         cudaMemCpy3DPeerParms.dstPtr =
                             make_cudaPitchedPtr(
                                 dstNativePtr,
-                                dstPitchBytes,
+                                dstpitchBytesX,
                                 dstWidth,
-                                dstHeight);
+                                srcPitchBytesY/srcpitchBytesX);
                         cudaMemCpy3DPeerParms.extent =
                             make_cudaExtent(
                                 extentWidthBytes,
@@ -701,9 +718,9 @@ namespace alpaka
                         cudaMemCpy3DPeerParms.srcPtr =
                             make_cudaPitchedPtr(
                                 const_cast<void *>(srcNativePtr),
-                                srcPitchBytes,
+                                srcpitchBytesX,
                                 srcWidth,
-                                srcHeight);
+                                srcPitchBytesY/srcpitchBytesX);
 
                         return cudaMemCpy3DPeerParms;
                     }
@@ -871,8 +888,8 @@ namespace alpaka
                         auto const & extentWidthBytes(task.m_extentWidthBytes);
                         auto const & extentHeight(task.m_extentHeight);
 
-                        auto const & dstPitchBytes(task.m_dstPitchBytes);
-                        auto const & srcPitchBytes(task.m_srcPitchBytes);
+                        auto const & dstpitchBytesX(task.m_dstpitchBytesX);
+                        auto const & srcpitchBytesX(task.m_srcpitchBytesX);
 
                         auto const & dstNativePtr(task.m_dstMemNative);
                         auto const & srcNativePtr(task.m_srcMemNative);
@@ -887,9 +904,9 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2DAsync(
                                 dstNativePtr,
-                                dstPitchBytes,
+                                dstpitchBytesX,
                                 srcNativePtr,
-                                srcPitchBytes,
+                                srcpitchBytesX,
                                 extentWidthBytes,
                                 extentHeight,
                                 cudaMemCpyKind,
@@ -942,8 +959,8 @@ namespace alpaka
                         auto const & extentWidthBytes(task.m_extentWidthBytes);
                         auto const & extentHeight(task.m_extentHeight);
 
-                        auto const & dstPitchBytes(task.m_dstPitchBytes);
-                        auto const & srcPitchBytes(task.m_srcPitchBytes);
+                        auto const & dstpitchBytesX(task.m_dstpitchBytesX);
+                        auto const & srcpitchBytesX(task.m_srcpitchBytesX);
 
                         auto const & dstNativePtr(task.m_dstMemNative);
                         auto const & srcNativePtr(task.m_srcMemNative);
@@ -958,9 +975,9 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2D(
                                 dstNativePtr,
-                                dstPitchBytes,
+                                dstpitchBytesX,
                                 srcNativePtr,
-                                srcPitchBytes,
+                                srcpitchBytesX,
                                 extentWidthBytes,
                                 extentHeight,
                                 cudaMemCpyKind));
