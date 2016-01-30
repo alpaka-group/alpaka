@@ -188,6 +188,7 @@
 #include <alpaka/meta/ForEachType.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 #include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/UniqueId.hpp>
 #include <alpaka/meta/StdTupleAsMplSequence.hpp>
 #include <alpaka/meta/Transform.hpp>
 

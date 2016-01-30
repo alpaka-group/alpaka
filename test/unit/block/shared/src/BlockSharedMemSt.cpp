@@ -52,29 +52,29 @@ public:
         TAcc const & acc) const
     -> void
     {
-        auto && a = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
+        auto && a = alpaka::block::shared::st::allocVar<std::uint32_t>(acc);
         BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &a);
 
-        auto && b = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
+        auto && b = alpaka::block::shared::st::allocVar<std::uint32_t>(acc);
         BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &b);
 
-        auto && c = alpaka::block::shared::st::allocVar<float, __COUNTER__>(acc);
+        auto && c = alpaka::block::shared::st::allocVar<float>(acc);
         BOOST_REQUIRE_NE(static_cast<float *>(nullptr), &c);
 
-        auto && d = alpaka::block::shared::st::allocVar<double, __COUNTER__>(acc);
+        auto && d = alpaka::block::shared::st::allocVar<double>(acc);
         BOOST_REQUIRE_NE(static_cast<double *>(nullptr), &d);
 
-        auto && e = alpaka::block::shared::st::allocVar<std::uint64_t, __COUNTER__>(acc);
+        auto && e = alpaka::block::shared::st::allocVar<std::uint64_t>(acc);
         BOOST_REQUIRE_NE(static_cast<std::uint64_t *>(nullptr), &e);
 
 
-        auto * f = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
+        auto * f = alpaka::block::shared::st::allocArr<std::uint32_t, 32u>(acc);
         BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), f);
 
-        auto * g = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
+        auto * g = alpaka::block::shared::st::allocArr<std::uint32_t, 32u>(acc);
         BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), g);
 
-        auto * h = alpaka::block::shared::st::allocArr<double, 16u, __COUNTER__>(acc);
+        auto * h = alpaka::block::shared::st::allocArr<double, 16u>(acc);
         BOOST_REQUIRE_NE(static_cast<double *>(nullptr), h);
     }
 };
@@ -117,19 +117,18 @@ public:
         TAcc const & acc) const
     -> void
     {
-        auto && a = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-        auto && b = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
+        auto && a = alpaka::block::shared::st::allocVar<std::uint32_t>(acc);
+        auto && b = alpaka::block::shared::st::allocVar<std::uint32_t>(acc);
         BOOST_REQUIRE_NE(&a, &b);
-        auto && c = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&b,&c);
+        auto && c = alpaka::block::shared::st::allocVar<std::uint32_t>(acc);
         BOOST_REQUIRE_NE(&a, &c);
         BOOST_REQUIRE_NE(&b, &c);
 
-        auto * d = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
+        auto * d = alpaka::block::shared::st::allocArr<std::uint32_t, 32u>(acc);
         BOOST_REQUIRE_NE(&a, d);
         BOOST_REQUIRE_NE(&b, d);
         BOOST_REQUIRE_NE(&c, d);
-        auto * e = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
+        auto * e = alpaka::block::shared::st::allocArr<std::uint32_t, 32u>(acc);
         BOOST_REQUIRE_NE(&a, e);
         BOOST_REQUIRE_NE(&b, e);
         BOOST_REQUIRE_NE(&c, e);
