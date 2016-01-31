@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <alpaka/meta/UniqueId.hpp> // meta::uniqueId
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -86,8 +88,8 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
-                    std::size_t TuniqueId,
-                    typename TBlockSharedMemSt>
+                    typename TBlockSharedMemSt,
+                    std::size_t TuniqueId = meta::uniqueId()>
                 ALPAKA_FN_HOST_ACC auto allocVar(
                     TBlockSharedMemSt const & blockSharedMemSt)
                 -> T &
@@ -114,8 +116,8 @@ namespace alpaka
                 template<
                     typename T,
                     std::size_t TnumElements,
-                    std::size_t TuniqueId,
-                    typename TBlockSharedMemSt>
+                    typename TBlockSharedMemSt,
+                    std::size_t TuniqueId = meta::uniqueId()>
                 ALPAKA_FN_HOST_ACC auto allocArr(
                     TBlockSharedMemSt const & blockSharedMemSt)
                 -> T *
@@ -182,6 +184,7 @@ namespace alpaka
                             return
                                 block::shared::st::allocVar<
                                     T,
+                                    typename TBlockSharedMemSt::BlockSharedMemStBase,
                                     TuniqueId>(
                                         static_cast<typename TBlockSharedMemSt::BlockSharedMemStBase const &>(blockSharedMemSt));
                         }
@@ -216,6 +219,7 @@ namespace alpaka
                                 block::shared::st::allocArr<
                                     T,
                                     TnumElements,
+                                    typename TBlockSharedMemSt::BlockSharedMemStBase,
                                     TuniqueId>(
                                         static_cast<typename TBlockSharedMemSt::BlockSharedMemStBase const &>(blockSharedMemSt));
                         }
