@@ -559,8 +559,8 @@ namespace alpaka
                         auto const & srcWidth(task.m_srcWidth);
 
                         auto const & extentHeight(task.m_extentHeight);
-                        auto const & dstHeight(task.m_dstHeight);
-                        auto const & srcHeight(task.m_srcHeight);
+                        //auto const & dstHeight(task.m_dstHeight);
+                        //auto const & srcHeight(task.m_srcHeight);
 
                         auto const & extentDepth(task.m_extentDepth);
 
