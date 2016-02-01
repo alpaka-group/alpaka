@@ -57,7 +57,7 @@ namespace alpaka
                         using Size = alpaka::size::Size<TView>;
                         using Elem = alpaka::elem::Elem<TView>;
 
-                        IteratorType(
+                        ALPAKA_FN_HOST IteratorType(
                             TView & view) :
                             m_nativePtr(alpaka::mem::view::getPtrNative(view)),
                             m_currentIdx(0),
@@ -65,7 +65,7 @@ namespace alpaka
                             m_pitchBytes(alpaka::mem::view::getPitchBytesVec(view))
                         {}
 
-                        IteratorType(
+                        ALPAKA_FN_HOST IteratorType(
                             TView & view,
                             Size const idx) :
                             m_nativePtr(alpaka::mem::view::getPtrNative(view)),
@@ -123,7 +123,7 @@ namespace alpaka
 
                             Elem * ptr = m_nativePtr;
 
-                            for(Size dim_i = 0; dim_i < Dim::value - 1; dim_i++)
+                            for(Size dim_i = 0; dim_i + 1 < static_cast<Size>(Dim::value); dim_i++)
                             {
                                 ptr += (currentIdxDimx[dim_i] * m_pitchBytes[dim_i+1]) / sizeof(Elem);
                             }
@@ -147,7 +147,7 @@ namespace alpaka
                         typename TSfinae = void>
                     struct Begin
                     {
-                        ALPAKA_FN_HOST_ACC static auto begin(
+                        ALPAKA_FN_HOST static auto begin(
                             TView & view)
                         -> IteratorType<TView>
                         {
@@ -163,11 +163,11 @@ namespace alpaka
                         typename TSfinae = void>
                     struct End
                     {
-                        ALPAKA_FN_HOST_ACC static auto end(
+                        ALPAKA_FN_HOST static auto end(
                             TView & view)
                         -> IteratorType<TView>
                         {
-                            auto extents = alpaka::extent::getExtents(view);
+                            auto extents = alpaka::extent::getExtentVec(view);
                             return IteratorType<TView>(view, extents.prod());
                         }
                     };
@@ -185,7 +185,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TView>
-                ALPAKA_FN_HOST_ACC static auto begin(
+                ALPAKA_FN_HOST static auto begin(
                     TView & view)
                 -> Iterator<TView>
                 {
@@ -197,7 +197,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TView>
-                ALPAKA_FN_HOST_ACC static auto end(
+                ALPAKA_FN_HOST static auto end(
                     TView & view)
                 -> Iterator<TView>
                 {
