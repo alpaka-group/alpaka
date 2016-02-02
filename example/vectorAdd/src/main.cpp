@@ -178,6 +178,6 @@ auto main()
     {
         std::cout << "Execution results correct!" << std::endl;
     }
-            
+
     return EXIT_SUCCESS;
 }

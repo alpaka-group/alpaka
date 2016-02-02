@@ -633,7 +633,7 @@ namespace alpaka
                     -> bool
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                        
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
                         return bufImpl.m_bPinned;
 #else

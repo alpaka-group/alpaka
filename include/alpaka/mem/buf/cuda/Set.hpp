@@ -392,7 +392,7 @@ namespace alpaka
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
                     auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    using Elem = alpaka::elem::Elem<TView>;                    
+                    using Elem = alpaka::elem::Elem<TView>;
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
                     assert(extentDepth <= dstDepth);
@@ -463,7 +463,7 @@ namespace alpaka
                     auto const dstHeight(extent::getHeight(buf));
                     auto const dstDepth(extent::getDepth(buf));
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
-                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));                    
+                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     using Elem = alpaka::elem::Elem<TView>;
                     assert(extentWidth <= dstWidth);
