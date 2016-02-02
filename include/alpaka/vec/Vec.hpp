@@ -28,9 +28,10 @@
 #include <alpaka/size/Traits.hpp>           // size::traits::SizeType
 
 #include <alpaka/core/Align.hpp>            // ALPAKA_OPTIMAL_ALIGNMENT_SIZE
-#include <alpaka/meta/IntegerSequence.hpp>  // meta::MakeIntegerSequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 #include <alpaka/meta/Fold.hpp>             // meta::foldr
+#include <alpaka/meta/IntegerSequence.hpp>  // meta::MakeIntegerSequence
+#include <alpaka/meta/Metafunctions.hpp>    // meta::Conjunction
 
 #include <boost/predef.h>                   // workarounds
 #if !defined(__CUDA_ARCH__)
@@ -170,8 +171,19 @@ namespace alpaka
                 // There have to be dim arguments.
                 (sizeof...(TArgs)+1 == TDim::value)
                 &&
-                (std::is_same<TSize, typename std::decay<TArg0>::type>::value)
-                >::type>
+                // They all have to have type TSize
+                meta::Conjunction<
+                    std::true_type,
+                    std::is_same<
+                        typename std::decay<TArg0>::type,
+                        TSize
+                    >,
+                    std::is_same<
+                        typename std::decay<TArgs>::type,
+                        TSize
+                    >...
+                >::value
+            >::type>
         ALPAKA_FN_HOST_ACC Vec(
             TArg0 && arg0,
             TArgs && ... args) :
