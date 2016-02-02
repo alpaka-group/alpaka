@@ -35,3 +35,5 @@ ADD_SUBDIRECTORY("block/shared/")
 ADD_SUBDIRECTORY("kernel/")
 ADD_SUBDIRECTORY("mem/view/")
 ADD_SUBDIRECTORY("meta/")
+ADD_SUBDIRECTORY("vec/")
+

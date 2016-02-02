@@ -40,7 +40,7 @@
 #include <cstdint>                          // std::uint32_t
 #include <ostream>                          // std::ostream
 #include <cassert>                          // assert
-#include <type_traits>                      // std::enable_if
+#include <type_traits>                      // std::enable_if, std::decay
 #include <algorithm>                        // std::min, std::max, std::min_element, std::max_element
 
 // The nvcc compiler does not support the out of class version.
@@ -169,11 +169,8 @@ namespace alpaka
             typename = typename std::enable_if<
                 // There have to be dim arguments.
                 (sizeof...(TArgs)+1 == TDim::value)
-                && (
-                    // And there is either more than one argument ...
-                    (sizeof...(TArgs) > 0u)
-                    // ... or the first argument is not applicable for the copy constructor.
-                    || (!std::is_base_of<Vec<TDim, TSize>, typename std::remove_reference<TArg0>::type>::value))
+                &&
+                (std::is_same<TSize, typename std::decay<TArg0>::type>::value)
                 >::type>
         ALPAKA_FN_HOST_ACC Vec(
             TArg0 && arg0,
