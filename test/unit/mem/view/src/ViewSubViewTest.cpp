@@ -161,38 +161,22 @@ static auto createVecFromIndexedFn()
 }
 
 //-----------------------------------------------------------------------------
-//! Prints all elements of the buffer.
-//-----------------------------------------------------------------------------
-struct PrintBufferKernel {
-    template <typename TAcc,
-              typename TIter>
-    ALPAKA_FN_ACC void operator()(
-        TAcc const & acc,
-        TIter begin,
-        TIter end) const {
-
-        (void)acc;
-        for(; begin != end; begin++){
-            std::cout << *begin << std::endl;
-        }
-    }
-};
-
-//-----------------------------------------------------------------------------
-//! Compares iterator element-wise
+//! Compares iterators element-wise
 //-----------------------------------------------------------------------------
 struct CompareBufferKernel {
-    template <typename TAcc,
-              typename TIterA,
-              typename TIterB>
+    template<
+        typename TAcc,
+        typename TIterA,
+        typename TIterB>
     ALPAKA_FN_ACC void operator()(
         TAcc const & acc,
         TIterA beginA,
         TIterA endA,
-        TIterB beginB) const {
-
+        TIterB beginB) const
+    {
         (void)acc;
-        for(; beginA != endA; beginA++, beginB++){
+        for(; beginA != endA; beginA++, beginB++)
+        {
             BOOST_REQUIRE_EQUAL(
                 *beginA,
                 *beginB);
@@ -341,7 +325,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         threadsPerBlock,
         elementsPerThread));    
 
-
     auto const extentBuf(alpaka::Vec<Dim, Size>::all(nElementsPerDim));
     auto const extentView(alpaka::Vec<Dim, Size>::all(nElementsPerDimView));
     auto const offsetView(alpaka::Vec<Dim, Size>::all(offsetInAllDims));
@@ -356,9 +339,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::mem::view::copy(stream, buf, plainBuf, extentBuf);    
 
     CompareBufferKernel compareBufferKernel;
-    PrintBufferKernel printBufferKernel;
 
-    switch(Dim::value){
+    switch(Dim::value)
+    {
     case 1:
         {
             std::vector<Elem> v2{1,2};
@@ -443,7 +426,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using View = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
     using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
 
-    if(Dim::value != 4){
+    if(Dim::value != 4)
+    {
         DevHost devHost (alpaka::dev::DevMan<Host>::getDevByIdx(0));    
         DevAcc devAcc(alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
         Stream stream (devAcc);
