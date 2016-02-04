@@ -85,10 +85,12 @@ namespace alpaka
                 template<
                     typename TVec>
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
+                    BlockSharedMemDyn const & blockSharedMemDyn,
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent)
                 -> size::Size<TAcc>
                 {
+                    boost::ignore_unused(blockSharedMemDyn);
                     return sizeof(std::uint32_t) * blockThreadExtent.prod() * threadElemExtent.prod();
                 }
             };

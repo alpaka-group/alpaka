@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -130,8 +130,8 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    TKernelFnObj,
                                     acc::AccCpuOmp2Threads<TDim, TSize>>(
+                                        m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
                                         args...);
@@ -184,10 +184,10 @@ namespace alpaka
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                             // GCC 5.1 fails with:
-                            // error: redeclaration of ‘const int& iBlockThreadCount’
+                            // error: redeclaration of const int& iBlockThreadCount
                             // if(numThreads != iBlockThreadCount
                             //                ^
-                            // note: ‘const int& iBlockThreadCount’ previously declared here
+                            // note: const int& iBlockThreadCount previously declared here
                             // #pragma omp parallel num_threads(iBlockThreadCount)
                             //         ^
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))

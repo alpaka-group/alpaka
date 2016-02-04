@@ -179,6 +179,7 @@ namespace alpaka
                     typename TIndex,
                     typename TElem>
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
+                    MatMulKernel const & matMulKernel,
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
                     TIndex const & m,
@@ -194,6 +195,7 @@ namespace alpaka
                     TIndex const & ldc)
                 -> TIndex
                 {
+                    boost::ignore_unused(matMulKernel);
                     boost::ignore_unused(m);
                     boost::ignore_unused(n);
                     boost::ignore_unused(k);

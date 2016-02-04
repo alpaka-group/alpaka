@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -130,8 +130,8 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    TKernelFnObj,
                                     acc::AccCpuOmp4<TDim, TSize>>(
+                                        m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
                                         args...);
@@ -188,7 +188,7 @@ namespace alpaka
                         {
                             Vec<dim::DimInt<1u>, TSize> const gridBlockIdx(b);
                             // When this is not repeated here:
-                            // error: ‘gridBlockExtent’ referenced in target region does not have a mappable type
+                            // error: gridBlockExtent referenced in target region does not have a mappable type
                             auto const gridBlockExtent2(
                                 workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this)));
                             acc.m_gridBlockIdx = core::mapIdx<TDim::value>(

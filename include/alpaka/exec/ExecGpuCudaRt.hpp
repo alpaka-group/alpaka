@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -355,8 +355,8 @@ namespace alpaka
                             {
                                 return
                                     kernel::getBlockSharedMemDynSizeBytes<
-                                        typename std::decay<TKernelFnObj>::type,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
+                                            task.m_kernelFnObj,
                                             blockThreadExtent,
                                             threadElemExtent,
                                             args...);
@@ -496,8 +496,8 @@ namespace alpaka
                             {
                                 return
                                     kernel::getBlockSharedMemDynSizeBytes<
-                                        TKernelFnObj,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
+                                            task.m_kernelFnObj,
                                             blockThreadExtent,
                                             threadElemExtent,
                                             args...);
