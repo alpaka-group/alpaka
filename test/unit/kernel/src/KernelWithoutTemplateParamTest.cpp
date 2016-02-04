@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(kernelNoTemplateCpu)
         alpaka::Vec<Dim, Size>::ones());
 
     KernelNoTemplateCpu kernel;
- 
+
     BOOST_REQUIRE_EQUAL(
         true,
         fixture(
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(kernelNoTemplateGpu)
         alpaka::Vec<Dim, Size>::ones());
 
     KernelNoTemplateGpu kernel;
- 
+
     BOOST_REQUIRE_EQUAL(
         true,
         fixture(
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamCpu)
         alpaka::Vec<Dim, Size>::ones());
 
     KernelWithoutTemplateParamCpu kernel;
- 
+
     BOOST_REQUIRE_EQUAL(
         true,
         fixture(
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamGpu)
         alpaka::Vec<Dim, Size>::ones());
 
     KernelWithoutTemplateParamGpu kernel;
- 
+
     BOOST_REQUIRE_EQUAL(
         true,
         fixture(

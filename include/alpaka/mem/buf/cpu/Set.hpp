@@ -57,7 +57,7 @@ namespace alpaka
                     struct TaskSet
                     {
                         using Size = size::Size<TExtent>;
-                        
+
                         static_assert(
                             dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                             "The destination view and the extent are required to have the same dimensionality!");
@@ -80,14 +80,14 @@ namespace alpaka
 #endif
                                 m_extentWidthBytes(m_extentWidth * sizeof(elem::Elem<TView>)),
                                 m_dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view)),
-                                m_dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view)),                                
+                                m_dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view)),
                                 m_dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view))),
                                 m_dstBufWidth(static_cast<Size>(extent::getWidth(view))),
                                 m_dstBufHeight(static_cast<Size>(extent::getHeight(view)))
                         {
                             assert(m_extentWidth <= m_dstWidth);
                             assert(m_extentHeight <= m_dstHeight);
-                            assert(m_extentDepth <= m_dstDepth);                         
+                            assert(m_extentDepth <= m_dstDepth);
                             assert(m_extentWidthBytes <= m_dstPitchBytesX);
                         }
                         //-----------------------------------------------------------------------------
@@ -119,7 +119,7 @@ namespace alpaka
 
                             for(Size z = static_cast<Size>(0); z < m_extentDepth; ++z)
                             {
-                                
+
                                     for(Size y = static_cast<Size>(0); y < m_extentHeight; ++y)
                                     {
                                             std::memset(
@@ -141,7 +141,7 @@ namespace alpaka
 #endif
                         Size const m_extentWidthBytes;
                         Size const m_dstPitchBytesX;
-                        Size const m_dstPitchBytesY;                        
+                        Size const m_dstPitchBytesY;
                         std::uint8_t * m_dstNativePtr;
                         Size const m_dstBufWidth;
                         Size const m_dstBufHeight;

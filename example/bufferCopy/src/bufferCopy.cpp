@@ -251,7 +251,7 @@ int main() {
         alpaka::mem::view::getPtrNative(hostBuffer)[i] = static_cast<Data>(i);
     }
 
-    
+
     /**
      * Fill plain host with increasing data
      *
@@ -268,7 +268,7 @@ int main() {
                                                  extents));                                        // 2nd kernel argument
 
     alpaka::stream::enqueue(stream, fill);
-    
+
 
     /**
      * Copy host to device Buffer
@@ -278,13 +278,13 @@ int main() {
      * like it is done for kernel execution, but
      * more automatically. Copy is only possible
      * from host to host, host to device and
-     * device to host. Some devices also support 
-     * device to device copy, but this is not true 
-     * in general. However, currently all 
+     * device to host. Some devices also support
+     * device to device copy, but this is not true
+     * in general. However, currently all
      * (both CPU and GPU) devices support it.
-     * As always within alpaka, you will get a compile 
-     * time error if the desired copy coperation 
-     * (e.g. between various accelerator devices) is 
+     * As always within alpaka, you will get a compile
+     * time error if the desired copy coperation
+     * (e.g. between various accelerator devices) is
      * not currently supported.
      * In this example both host buffers are copied
      * into device buffers.
@@ -305,15 +305,15 @@ int main() {
                                                 testBufferKernel,
                                                 alpaka::mem::view::getPtrNative(deviceBuffer1), // 1st kernel argument
                                                 extents));                                      // 2nd kernel argument
-    
+
     auto const test2 (alpaka::exec::create<Acc> (workdiv,
                                                 testBufferKernel,
                                                 alpaka::mem::view::getPtrNative(deviceBuffer1), // 1st kernel argument
                                                 extents));                                      // 2nd kernel argument
-    
+
 
     alpaka::stream::enqueue(stream, test1);
-    alpaka::stream::enqueue(stream, test2);    
+    alpaka::stream::enqueue(stream, test2);
 
 
     /**
@@ -323,8 +323,8 @@ int main() {
      * terminal with numbers, the following
      * kernel prints all numbers of the
      * device buffer to stdout on the terminal.
-     * Since this possibly is a parallel operation, 
-     * the output can appear in any order or even 
+     * Since this possibly is a parallel operation,
+     * the output can appear in any order or even
      * completely distorted.
      */
     PrintBufferKernel printBufferKernel;
@@ -341,7 +341,7 @@ int main() {
 
     alpaka::stream::enqueue(stream, print1);
     std::cout << std::endl;
-    alpaka::stream::enqueue(stream, print2);    
+    alpaka::stream::enqueue(stream, print2);
 
 
     /**

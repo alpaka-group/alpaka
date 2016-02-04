@@ -100,7 +100,7 @@ namespace alpaka
                                 m_dstPitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
                                 m_srcPitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
                                 m_dstPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
-                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),                                
+                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
 
                                 m_dstMemNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(viewSrc)))
@@ -239,7 +239,7 @@ namespace alpaka
                         Size m_dstPitchBytesX;
                         Size m_srcPitchBytesX;
                         Size m_dstPitchBytesY;
-                        Size m_srcPitchBytesY;                        
+                        Size m_srcPitchBytesY;
 
                         std::uint8_t * m_dstMemNative;
                         std::uint8_t const * m_srcMemNative;

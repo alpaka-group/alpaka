@@ -139,15 +139,15 @@ int main() {
      * well as the type of parallelism used by the executor.
      * Different accelerators have different requirements on the work
      * division. For example, the sequential accelerator can not
-     * provide any thread level parallelism (synchronizable as well as non synchronizable), 
+     * provide any thread level parallelism (synchronizable as well as non synchronizable),
      * whereas the CUDA accelerator can spawn hundreds of synchronizing
      * and non synchronizing threads at the same time.
      *
      * The workdiv is divided in three levels of parallelization:
      * - grid-blocks:      The number of blocks in the grid (parallel, not synchronizable)
-     * - block-threads:    The number of threads per block (parallel, synchronizable). 
+     * - block-threads:    The number of threads per block (parallel, synchronizable).
      *                     Each thread executes one kernel invocation.
-     * - thread-elements:  The number of elements per thread (sequential, not synchronizable). 
+     * - thread-elements:  The number of elements per thread (sequential, not synchronizable).
      *                     Each kernel has to execute its elements sequentially.
      *
      * - Grid     : consists of blocks
