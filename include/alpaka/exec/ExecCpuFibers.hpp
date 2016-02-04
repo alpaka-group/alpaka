@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -156,8 +156,8 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    TKernelFnObj,
                                     acc::AccCpuFibers<TDim, TSize>>(
+                                        m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
                                         args...);

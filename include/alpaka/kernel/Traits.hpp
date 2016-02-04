@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -56,6 +56,7 @@ namespace alpaka
             struct BlockSharedMemDynSizeBytes
             {
                 //-----------------------------------------------------------------------------
+                //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated
                 //! \param blockElemExtent The block element extent for which the block shared memory size should be calculated.
                 //! \tparam TArgs The kernel invocation argument types pack.
                 //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
@@ -67,11 +68,13 @@ namespace alpaka
                     typename TDim,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+                    TKernelFnObj const & kernelFnObj,
                     Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
                     Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
                 -> size::Size<TAcc>
                 {
+                    boost::ignore_unused(kernelFnObj);
                     boost::ignore_unused(blockThreadExtent);
                     boost::ignore_unused(threadElemExtent);
                     boost::ignore_unused(args...);
@@ -90,11 +93,12 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TKernelFnObj,
             typename TAcc,
+            typename TKernelFnObj,
             typename TDim,
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
+            TKernelFnObj const & kernelFnObj,
             Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
             Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
             TArgs const & ... args)
@@ -105,6 +109,7 @@ namespace alpaka
                     TKernelFnObj,
                     TAcc>
                 ::getBlockSharedMemDynSizeBytes(
+                    kernelFnObj,
                     blockThreadExtent,
                     threadElemExtent,
                     args...);

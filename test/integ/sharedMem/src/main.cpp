@@ -143,11 +143,13 @@ namespace alpaka
                     typename TVec,
                     typename... TArgs>
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
+                    SharedMemKernel<TnumUselessWork> const & sharedMemKernel,
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
                     TArgs && ...)
                 -> std::uint32_t
                 {
+                    boost::ignore_unused(sharedMemKernel);
                     return blockThreadExtent.prod() * threadElemExtent.prod() * sizeof(std::uint32_t);
                 }
             };
