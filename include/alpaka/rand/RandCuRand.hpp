@@ -21,6 +21,9 @@
 
 #pragma once
 
+// This header is not currently supported by the clang native CUDA compiler.
+#if !defined(__CUDA__)
+
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #ifndef __CUDACC__
@@ -342,5 +345,7 @@ namespace alpaka
         }
     }
 }
+
+#endif
 
 #endif

@@ -24,8 +24,9 @@
 #include <boost/predef.h>   // workarounds
 #include <boost/version.hpp>// workarounds
 
-// nvcc does not currently support boost correctly.
-// boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
+// Both, nvcc and clang for CUDA do not currently support boost correctly.
+// nvcc: boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
+// clang: invalid token at start of a preprocessor expression "|| BOOST_WORKAROUND(__NVCC__, BOOST_TESTED_AT(1)) \"
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <queue>        // std::queue
     #include <mutex>        // std::mutex
