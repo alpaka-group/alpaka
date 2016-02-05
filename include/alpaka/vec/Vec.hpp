@@ -44,7 +44,7 @@
 #include <algorithm>                        // std::min, std::max, std::min_element, std::max_element
 
 // The nvcc compiler does not support the out of class version.
-#ifdef __CUDACC__
+#if defined(__CUDACC__) && !defined(__CUDA__)
     #define ALPAKA_CREATE_VEC_IN_CLASS
 #endif
 

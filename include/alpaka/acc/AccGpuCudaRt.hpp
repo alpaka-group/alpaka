@@ -82,8 +82,11 @@ namespace alpaka
             public math::MathCudaBuiltIn,
             public block::shared::dyn::BlockSharedMemDynCudaBuiltIn,
             public block::shared::st::BlockSharedMemStCudaBuiltIn,
-            public block::sync::BlockSyncCudaBuiltIn,
-            public rand::RandCuRand
+            public block::sync::BlockSyncCudaBuiltIn
+// This header is not currently supported by the clang native CUDA compiler.
+#if !defined(__CUDA__)
+            , public rand::RandCuRand
+#endif
         {
         public:
             //-----------------------------------------------------------------------------
@@ -98,8 +101,10 @@ namespace alpaka
                     math::MathCudaBuiltIn(),
                     block::shared::dyn::BlockSharedMemDynCudaBuiltIn(),
                     block::shared::st::BlockSharedMemStCudaBuiltIn(),
-                    block::sync::BlockSyncCudaBuiltIn(),
-                    rand::RandCuRand()
+                    block::sync::BlockSyncCudaBuiltIn()
+#if !defined(__CUDA__)
+                    , rand::RandCuRand()
+#endif
             {}
 
         public:

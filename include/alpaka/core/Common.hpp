@@ -63,7 +63,7 @@
 //! WARNING: Only use this method if there is no other way.
 //! Most cases can be solved by #ifdef __CUDA_ARCH__ or #ifdef __CUDACC__.
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__) && !defined(__CUDA__)
     #if BOOST_COMP_MSVC
         #define ALPAKA_NO_HOST_ACC_WARNING\
             __pragma(hd_warning_disable)
