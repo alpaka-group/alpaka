@@ -352,13 +352,19 @@ SET(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
 SET(_ALPAKA_LINK_LIBRARY)
 LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${_ALPAKA_LINK_LIBRARY}")
 
-SET(_ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/.travis.yml" "${_ALPAKA_ROOT_DIR}/README.md")
-
 # Add all the source and include files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" _ALPAKA_FILES_HEADER)
 append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "cpp" _ALPAKA_FILES_SOURCE)
-append_recursive_files("${_ALPAKA_ROOT_DIR}/cmake" "${_ALPAKA_ROOT_DIR}/cmake" "cmake" _ALPAKA_FILES_CMAKE)
-LIST(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/alpakaConfig.cmake" "${_ALPAKA_ROOT_DIR}/Findalpaka.cmake")
+
+append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/travis" "${_ALPAKA_ROOT_DIR}" "sh" _ALPAKA_FILES_TRAVIS)
+SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_TRAVIS} PROPERTIES HEADER_FILE_ONLY TRUE)
+
+append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/cmake" "${_ALPAKA_ROOT_DIR}" "cmake" _ALPAKA_FILES_CMAKE)
+LIST(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/alpakaConfig.cmake" "${_ALPAKA_ROOT_DIR}/Findalpaka.cmake" "${_ALPAKA_ROOT_DIR}/CMakeLists.txt" "${_ALPAKA_ROOT_DIR}/cmake/dev.cmake" "${_ALPAKA_ROOT_DIR}/cmake/common.cmake" "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake")
+SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_CMAKE} PROPERTIES HEADER_FILE_ONLY TRUE)
+
+SET(_ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/.gitignore" "${_ALPAKA_ROOT_DIR}/.travis.yml" "${_ALPAKA_ROOT_DIR}/COPYING" "${_ALPAKA_ROOT_DIR}/COPYING.LESSER" "${_ALPAKA_ROOT_DIR}/README.md")
+SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_OTHER} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 #-------------------------------------------------------------------------------
 # Target.
@@ -366,7 +372,7 @@ LIST(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/alpakaConfig.cmake" "${_ALP
 IF(NOT TARGET "alpaka")
     ADD_LIBRARY(
         "alpaka"
-        ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SOURCE} ${_ALPAKA_FILES_CMAKE} ${_ALPAKA_FILES_OTHER})
+        ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SOURCE} ${_ALPAKA_FILES_CMAKE} ${_ALPAKA_FILES_TRAVIS} ${_ALPAKA_FILES_OTHER})
 
     # Compile options.
     IF(${ALPAKA_DEBUG} GREATER 1)

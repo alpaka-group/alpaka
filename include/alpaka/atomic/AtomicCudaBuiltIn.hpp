@@ -27,7 +27,7 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/atomic/Op.hpp>                // Add, Sub, ...
+#include <alpaka/atomic/Op.hpp>                 // Add, Sub, ...
 #include <alpaka/atomic/Traits.hpp>             // AtomicOp
 
 #include <alpaka/core/Common.hpp>               // ALPAKA_FN_ACC_CUDA_ONLY

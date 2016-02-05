@@ -1,6 +1,8 @@
 **alpaka** - Abstraction Library for Parallel Kernel Acceleration
 =================================================================
 
+[![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
+
 The **alpaka** library is a header-only C++11 abstraction library for accelerator development.
 
 Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.
@@ -64,10 +66,6 @@ This library uses C++11 (or newer when available).
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |CUDA 7.0+|:white_check_mark:|:x:|:x:|:x:|:x:|
-
-Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
-
-Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 
 Dependencies
