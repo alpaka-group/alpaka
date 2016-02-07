@@ -35,6 +35,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <type_traits>                          // std::is_same
+#include <numeric>                              // std::iota
 
 BOOST_AUTO_TEST_SUITE(acc)
 
