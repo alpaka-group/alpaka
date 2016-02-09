@@ -56,9 +56,9 @@ namespace alpaka
     {
         namespace cpu
         {
-#if BOOST_ARCH_X86
             namespace detail
             {
+#if BOOST_ARCH_X86
     #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || (!BOOST_COMP_MSVC_EMULATED && __INTEL_COMPILER)
         #include <cpuid.h>
                 //-----------------------------------------------------------------------------
