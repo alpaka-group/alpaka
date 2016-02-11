@@ -74,7 +74,7 @@ namespace alpaka
                     typename TPitch>
                 ALPAKA_FN_HOST_ACC ViewPlainPtr(
                     TElem * pMem,
-                    TDev const dev,
+                    TDev const & dev,
                     TExtent const & extent,
                     TPitch const & pitchBytes) :
                         m_pMem(pMem),
@@ -116,7 +116,7 @@ namespace alpaka
 
             public:
                 TElem * m_pMem;
-                TDev m_dev;
+                TDev const & m_dev;
                 Vec<TDim, TSize> m_extentElements;
                 Vec<TDim, TSize> m_pitchBytes;
             };
