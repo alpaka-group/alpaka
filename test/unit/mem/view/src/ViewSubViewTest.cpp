@@ -220,85 +220,107 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     //-----------------------------------------------------------------------------
     // alpaka::dev::traits::DevType
-    static_assert(
-        std::is_same<alpaka::dev::Dev<View>, Dev>::value,
-        "The device type of the view has to be equal to the specified one.");
+    {
+        static_assert(
+            std::is_same<alpaka::dev::Dev<View>, Dev>::value,
+            "The device type of the view has to be equal to the specified one.");
+    }
+
     //-----------------------------------------------------------------------------
     // alpaka::dev::traits::GetDev
-    BOOST_REQUIRE(
-        dev == alpaka::dev::getDev(view));
+    {
+        BOOST_REQUIRE(
+            dev == alpaka::dev::getDev(view));
+    }
 
     //-----------------------------------------------------------------------------
     // alpaka::dim::traits::DimType
-    static_assert(
-        alpaka::dim::Dim<View>::value == Dim::value,
-        "The dimensionality of the view has to be equal to the specified one.");
+    {
+        static_assert(
+            alpaka::dim::Dim<View>::value == Dim::value,
+            "The dimensionality of the view has to be equal to the specified one.");
+    }
 
     //-----------------------------------------------------------------------------
     // alpaka::elem::traits::ElemType
-    static_assert(
-        std::is_same<alpaka::elem::Elem<View>, Elem>::value,
-        "The element type of the view has to be equal to the specified one.");
+    {
+        static_assert(
+            std::is_same<alpaka::elem::Elem<View>, Elem>::value,
+            "The element type of the view has to be equal to the specified one.");
+    }
 
     //-----------------------------------------------------------------------------
     // alpaka::extent::traits::GetExtent
-    BOOST_REQUIRE_EQUAL(
-        extentView,
-        alpaka::extent::getExtentVec(view));
+    {
+        BOOST_REQUIRE_EQUAL(
+            extentView,
+            alpaka::extent::getExtentVec(view));
+    }
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::view::traits::GetPitchBytes
     // The pitch of the view has to be identical to the pitch of the underlying buffer in all dimensions.
-    using IdxSequence1 = alpaka::meta::MakeIndexSequence<Dim::value + 1u>;
-    using DimSequence1 = alpaka::meta::TransformIntegerSequence<std::tuple, std::size_t, alpaka::dim::DimInt, IdxSequence1>;
-    CheckPitchBytesIdentical const checkPitchBytesIdentical;
-    alpaka::meta::forEachType<
-        DimSequence1>(
-            checkPitchBytesIdentical,
-            buf,
-            view);
-
-    // The pitches have to be exactly the values we calculate here.
-    auto pitches(alpaka::Vec<alpaka::dim::DimInt<Dim::value + 1u>, Size>::ones());
-    // Initialize the pitch between two elements of the X dimension ...
-    pitches[Dim::value] = sizeof(Elem);
-    // ... and fill all the other dimensions.
-    for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
     {
-        pitches[i-1] = extentBuf[i-1] * pitches[i];
-    }
-    CheckPitchBytesIdentical2 const checkPitchBytesIdentical2;
-    alpaka::meta::forEachType<
-        DimSequence1>(
-            checkPitchBytesIdentical2,
-            pitches,
-            view);
+        using IdxSequence1 = alpaka::meta::MakeIndexSequence<Dim::value + 1u>;
+        using DimSequence1 = alpaka::meta::TransformIntegerSequence<std::tuple, std::size_t, alpaka::dim::DimInt, IdxSequence1>;
+        CheckPitchBytesIdentical const checkPitchBytesIdentical;
+        alpaka::meta::forEachType<
+            DimSequence1>(
+                checkPitchBytesIdentical,
+                buf,
+                view);
+
+        // The pitches have to be exactly the values we calculate here.
+        auto pitches(alpaka::Vec<alpaka::dim::DimInt<Dim::value + 1u>, Size>::ones());
+        // Initialize the pitch between two elements of the X dimension ...
+        pitches[Dim::value] = sizeof(Elem);
+        // ... and fill all the other dimensions.
+        for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
+        {
+            pitches[i-1] = extentBuf[i-1] * pitches[i];
+        }
+        CheckPitchBytesIdentical2 const checkPitchBytesIdentical2;
+        alpaka::meta::forEachType<
+            DimSequence1>(
+                checkPitchBytesIdentical2,
+                pitches,
+                view);
+    //}
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::view::traits::GetPtrNative
     // The native pointer has to be exactly the value we calculate here.
-    auto viewPtrNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::view::getPtrNative(buf)));
-    for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
-    {
-        viewPtrNative += offsetView[i - 1u] * pitches[i];
+    //{
+        auto viewPtrNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::view::getPtrNative(buf)));
+        for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
+        {
+            viewPtrNative += offsetView[i - 1u] * pitches[i];
+        }
+        BOOST_REQUIRE_EQUAL(
+            reinterpret_cast<Elem *>(viewPtrNative),
+            alpaka::mem::view::getPtrNative(view));
     }
-    BOOST_REQUIRE_EQUAL(
-        reinterpret_cast<Elem *>(viewPtrNative),
-        alpaka::mem::view::getPtrNative(view));
 
     //-----------------------------------------------------------------------------
     // alpaka::offset::traits::GetOffset
-    BOOST_REQUIRE_EQUAL(
-        offsetView,
-        alpaka::offset::getOffsetVec(view));
+    {
+        BOOST_REQUIRE_EQUAL(
+            offsetView,
+            alpaka::offset::getOffsetVec(view));
+    }
 
     //-----------------------------------------------------------------------------
     // alpaka::size::traits::SizeType
-    static_assert(
-        std::is_same<alpaka::size::Size<View>, Size>::value,
-        "The size type of the view has to be equal to the specified one.");
+    {
+        static_assert(
+            std::is_same<alpaka::size::Size<View>, Size>::value,
+            "The size type of the view has to be equal to the specified one.");
+    }
 }
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     copyViewSubViewStatic,
     TAcc,
@@ -424,6 +446,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     };
 }
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     copyViewSubViewGeneric,
     TAcc,
