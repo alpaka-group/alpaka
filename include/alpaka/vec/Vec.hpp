@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <alpaka/vec/Traits.hpp>            // vec::SubVecFromIndices
 #include <alpaka/dim/Traits.hpp>            // dim::getDim
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // extent::getWidth, ...
@@ -40,7 +41,7 @@
 #include <cstdint>                          // std::uint32_t
 #include <ostream>                          // std::ostream
 #include <cassert>                          // assert
-#include <type_traits>                      // std::enable_if, std::decay
+#include <type_traits>                      // std::enable_if, std::decay, std::is_same
 #include <algorithm>                        // std::min, std::max, std::min_element, std::max_element
 
 // The nvcc compiler does not support the out of class version.
@@ -370,7 +371,7 @@ namespace alpaka
             Vec const & rhs) const
         -> bool
         {
-            for(typename TDim::value_type i(0); i < TDim::value; i++)
+            for(typename TDim::value_type i(0); i < TDim::value; ++i)
             {
                 if((*this)[i] != rhs[i])
                 {
@@ -645,25 +646,64 @@ namespace alpaka
         return os;
     }
 
+    namespace dim
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The Vec dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct DimType<
+                Vec<TDim, TSize>>
+            {
+                using type = TDim;
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The GPU CUDA accelerator work division size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                Vec<TDim, TSize>>
+            {
+                using type = TSize;
+            };
+        }
+    }
     namespace vec
     {
-        namespace detail
+        namespace traits
         {
             //#############################################################################
             //! Specialization for selecting a sub-vector.
             //#############################################################################
             template<
                 typename TDim,
-                typename TIndexSequence>
-            struct SubVecFromIndices
+                typename TSize,
+                std::size_t... TIndices>
+            struct SubVecFromIndices<
+                Vec<TDim, TSize>,
+                meta::IntegerSequence<std::size_t, TIndices...>,
+                typename std::enable_if<
+                    !std::is_same<
+                        meta::IntegerSequence<std::size_t, TIndices...>,
+                        meta::MakeIntegerSequence<std::size_t, TDim::value>
+                    >::value
+                >::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TSize,
-                    std::size_t... TIndices>
                 ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
-                    Vec<TDim, TSize> const & vec,
-                    meta::IntegerSequence<std::size_t, TIndices...> const &)
+                    Vec<TDim, TSize> const & vec)
                 -> Vec<dim::DimInt<sizeof...(TIndices)>, TSize>
                 {
                     static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
@@ -675,81 +715,20 @@ namespace alpaka
             //! Specialization for selecting the whole vector.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct SubVecFromIndices<
-                TDim,
+                Vec<TDim, TSize>,
                 meta::MakeIntegerSequence<std::size_t, TDim::value>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TSize>
                 ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
-                    Vec<TDim, TSize> const & vec,
-                    meta::MakeIntegerSequence<std::size_t, TDim::value> const &)
+                    Vec<TDim, TSize> const & vec)
                 -> Vec<TDim, TSize>
                 {
                     return vec;
                 }
             };
-        }
-        //-----------------------------------------------------------------------------
-        //! Builds a new vector by selecting the elements of the source vector in the given order.
-        //! Repeating and swizzling elements is allowed.
-        //! \return The sub-vector consisting of the elements specified by the indices.
-        //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TDim,
-            typename TSize,
-            std::size_t... TIndices>
-        ALPAKA_FN_HOST_ACC auto subVecFromIndices(
-            Vec<TDim, TSize> const & vec,
-            meta::IntegerSequence<std::size_t, TIndices...> const & indices)
-        -> Vec<dim::DimInt<sizeof...(TIndices)>, TSize>
-        {
-            return
-                detail::SubVecFromIndices<
-                    TDim,
-                    meta::IntegerSequence<std::size_t, TIndices...>>
-                ::subVecFromIndices(
-                    vec,
-                    indices);
-        }
-        //-----------------------------------------------------------------------------
-        //! \return The sub-vector consisting of the first N elements of the source vector.
-        //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TSubDim,
-            typename TDim,
-            typename TSize>
-        ALPAKA_FN_HOST_ACC auto subVecBegin(
-            Vec<TDim, TSize> const & vec)
-        -> Vec<TSubDim, TSize>
-        {
-            static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
-
-            //! A sequence of integers from 0 to dim-1.
-            using IdxSubSequence = meta::MakeIntegerSequence<std::size_t, TSubDim::value>;
-            return subVecFromIndices(vec, IdxSubSequence());
-        }
-        //-----------------------------------------------------------------------------
-        //! \return The sub-vector consisting of the last N elements of the source vector.
-        //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TSubDim,
-            typename TDim,
-            typename TSize>
-        ALPAKA_FN_HOST_ACC auto subVecEnd(
-            Vec<TDim, TSize> const & vec)
-        -> Vec<TSubDim, TSize>
-        {
-            static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
-
-            //! A sequence of integers from 0 to dim-1.
-            using IdxSubSequence = meta::MakeIntegerSequenceOffset<std::size_t, TDim::value-TSubDim::value, TSubDim::value>;
-            return subVecFromIndices(vec, IdxSubSequence());
         }
 
         namespace detail
@@ -774,80 +753,101 @@ namespace alpaka
                     Vec<TDim, TSize> const & vec)
                 -> TSizeNew
                 {
-                    return static_cast<TSizeNew>(vec[Tidx]);
+                    return
+                        static_cast<TSizeNew>(
+                            vec[Tidx]);
                 }
             };
-
-    }
-        //-----------------------------------------------------------------------------
-        //! Cast constructor.
-        //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TSizeNew,
-            typename TDim,
-            typename TSize>
-        ALPAKA_FN_HOST_ACC static auto cast(Vec<TDim, TSize> const & other)
-        -> Vec<TDim, TSizeNew>
-        {
-            return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-            Vec<TDim, TSizeNew>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-                    TDim,
-#endif
-                    detail::CreateCast>(
-                        TSizeNew(),
-                        other);
         }
-    }
-    namespace detail
-    {
-        //#############################################################################
-        //! A function object that returns the value at the index from the back of the vector.
-        //#############################################################################
-        template<
-            std::size_t Tidx>
-        struct CreateReverse
+        namespace traits
         {
-            //-----------------------------------------------------------------------------
-            //!
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
+            //#############################################################################
+            //! Specialization for selecting a sub-vector.
+            //#############################################################################
+            template<
+                typename TSizeNew,
+                typename TDim,
+                typename TSize>
+            struct Cast<
+                TSizeNew,
+                Vec<TDim, TSize>>
+            {
+                //-----------------------------------------------------------------------------
+                //! Cast constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto cast(
+                    Vec<TDim, TSize> const & other)
+                -> Vec<TDim, TSizeNew>
+                {
+                    return
+        #ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                    Vec<TDim, TSizeNew>::template
+        #endif
+                        createVecFromIndexedFn<
+        #ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                            TDim,
+        #endif
+                            vec::detail::CreateCast>(
+                                TSizeNew(),
+                                other);
+                }
+            };
+        }
+
+        namespace detail
+        {
+            //#############################################################################
+            //! A function object that returns the value at the index from the back of the vector.
+            //#############################################################################
+            template<
+                std::size_t Tidx>
+            struct CreateReverse
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TDim,
+                    typename TSize>
+                ALPAKA_FN_HOST_ACC static auto create(
+                    Vec<TDim, TSize> const & vec)
+                -> TSize
+                {
+                    return vec[TDim::value - 1u - Tidx];
+                }
+            };
+        }
+        namespace traits
+        {
+            //#############################################################################
+            //! Specialization for selecting a sub-vector.
+            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
-            ALPAKA_FN_HOST_ACC static auto create(
-                Vec<TDim, TSize> const & vec)
-            -> TSize
+            struct Reverse<
+                Vec<TDim, TSize>>
             {
-                return vec[TDim::value - 1u - Tidx];
-            }
-        };
-    }
-    //-----------------------------------------------------------------------------
-    //! \return The reverse vector.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TDim,
-        typename TSize>
-    ALPAKA_FN_HOST_ACC auto reverseVec(
-        Vec<TDim, TSize> const & vec)
-    -> Vec<TDim, TSize>
-    {
-        return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-            Vec<TDim, TSize>::template
-#endif
-            createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-                TDim,
-#endif
-                detail::CreateReverse>(
-                    vec);
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto reverse(
+                    Vec<TDim, TSize> const & vec)
+                -> Vec<TDim, TSize>
+                {
+                    return
+            #ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                        Vec<TDim, TSize>::template
+            #endif
+                        createVecFromIndexedFn<
+            #ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                            TDim,
+            #endif
+                            vec::detail::CreateReverse>(
+                                vec);
+                }
+            };
+        }
     }
 
     namespace extent
@@ -993,23 +993,6 @@ namespace alpaka
                         offsets);
         }
     }
-    namespace dim
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The Vec dimension get trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct DimType<
-                Vec<TDim, TSize>>
-            {
-                using type = TDim;
-            };
-        }
-    }
     namespace extent
     {
         namespace traits
@@ -1105,23 +1088,6 @@ namespace alpaka
                 {
                     offsets[TIdx::value] = offset;
                 }
-            };
-        }
-    }
-    namespace size
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The GPU CUDA accelerator work division size type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct SizeType<
-                Vec<TDim, TSize>>
-            {
-                using type = TSize;
             };
         }
     }

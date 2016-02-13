@@ -24,6 +24,110 @@
 
 BOOST_AUTO_TEST_SUITE(vec)
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE(
+    basicVecTraits)
+{
+    using Dim = alpaka::dim::DimInt<3u>;
+    using Size = std::size_t;
+    using Vec = alpaka::Vec<Dim, Size>;
+
+    auto const vec(
+        Vec(
+            static_cast<std::size_t>(0u),
+            static_cast<std::size_t>(8u),
+            static_cast<std::size_t>(15u)));
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::subVecFromIndices
+    {
+        using IdxSequence =
+            alpaka::meta::IntegerSequence<
+                std::size_t,
+                0u,
+                Dim::value -1u,
+                0u>;
+        auto const vecSubIndices(
+            alpaka::vec::subVecFromIndices<
+                IdxSequence>(
+                    vec));
+
+        BOOST_REQUIRE_EQUAL(vecSubIndices[0u], vec[0u]);
+        BOOST_REQUIRE_EQUAL(vecSubIndices[1u], vec[Dim::value -1u]);
+        BOOST_REQUIRE_EQUAL(vecSubIndices[2u], vec[0u]);
+    }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::subVecBegin
+    {
+        using DimSubVecEnd =
+            alpaka::dim::DimInt<2u>;
+        auto const vecSubBegin(
+            alpaka::vec::subVecBegin<
+                DimSubVecEnd>(
+                    vec));
+
+        for(typename Dim::value_type i(0); i < DimSubVecEnd::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecSubBegin[i], vec[i]);
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::subVecEnd
+    {
+        using DimSubVecEnd =
+            alpaka::dim::DimInt<2u>;
+        auto const vecSubEnd(
+            alpaka::vec::subVecEnd<
+                DimSubVecEnd>(
+                    vec));
+
+        for(typename Dim::value_type i(0); i < DimSubVecEnd::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecSubEnd[i], vec[Dim::value - DimSubVecEnd::value + i]);
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::cast
+    {
+        using SizeCast = std::uint16_t;
+        auto const vecCast(
+            alpaka::vec::cast<
+                SizeCast>(
+                    vec));
+
+        using VecCast = typename std::decay<decltype(vecCast)>::type;
+        static_assert(
+            std::is_same<
+                alpaka::size::Size<VecCast>,
+                SizeCast
+            >::value,
+            "The size type of the casted vec is wrong");
+
+        for(typename Dim::value_type i(0); i < Dim::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecCast[i], static_cast<SizeCast>(vec[i]));
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::reverse
+    {
+        auto const vecReverse(
+            alpaka::vec::reverse(
+                vec));
+
+        for(typename Dim::value_type i(0); i < Dim::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecReverse[i], vec[Dim::value - 1u - i]);
+        }
+    }
+}
+
 //#############################################################################
 //!
 //#############################################################################
