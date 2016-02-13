@@ -61,7 +61,7 @@ namespace alpaka
                     RemainderStl const & remainder,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(std::max(x, y))
+                -> decltype(std::remainder(x, y))
                 {
                     boost::ignore_unused(remainder);
                     return std::remainder(x, y);

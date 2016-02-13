@@ -24,11 +24,17 @@
 
 BOOST_AUTO_TEST_SUITE(vec)
 
+//#############################################################################
+//!
+//#############################################################################
 template<
     typename TDim,
     typename TSize>
-struct NonAlpakaVec {
-
+struct NonAlpakaVec
+{
+    //-----------------------------------------------------------------------------
+    //!
+    //-----------------------------------------------------------------------------
     operator ::alpaka::Vec<
         TDim,
         TSize>() const
@@ -37,22 +43,23 @@ struct NonAlpakaVec {
             TDim,
             TSize
         >;
-        AlpakaVector result( AlpakaVector::zeros() );
+        AlpakaVector result(AlpakaVector::zeros());
 
-        for(TSize d = 0; d < TDim::value; ++d)
+        for(TSize d(0); d < TDim::value; ++d)
         {
             result[TDim::value - 1 - d] = (*this)[d];
         }    
 
         return result;
     }
-
-    auto operator [](TSize idx) const
+    //-----------------------------------------------------------------------------
+    //!
+    //-----------------------------------------------------------------------------
+    auto operator [](TSize /*idx*/) const
     -> TSize
     {
         return static_cast<TSize>(0);
     }
-
 };
 
 //-----------------------------------------------------------------------------
@@ -66,7 +73,6 @@ BOOST_AUTO_TEST_CASE(
 
     NonAlpakaVec<Dim, Size> nonAlpakaVec;
     static_cast<alpaka::Vec<Dim, Size> >(nonAlpakaVec);
-
 }
 
 BOOST_AUTO_TEST_SUITE_END()
