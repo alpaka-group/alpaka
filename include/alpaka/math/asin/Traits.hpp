@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -55,6 +57,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto asin(
             T const & asin,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Asin<
                 T,
@@ -62,6 +65,7 @@ namespace alpaka
             ::asin(
                 asin,
                 arg))
+#endif
         {
             return
                 traits::Asin<
@@ -94,10 +98,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto asin(
                     T const & asin,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::asin(
                         static_cast<typename T::AsinBase const &>(asin),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

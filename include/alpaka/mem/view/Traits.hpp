@@ -33,6 +33,8 @@
 #include <alpaka/meta/Fold.hpp>         // meta::foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <iosfwd>                       // std::ostream
 
 namespace alpaka
@@ -306,6 +308,7 @@ namespace alpaka
                 TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 traits::TaskSet<
                     dim::Dim<TView>,
@@ -314,6 +317,7 @@ namespace alpaka
                     view,
                     byte,
                     extent))
+#endif
             {
                 static_assert(
                     dim::Dim<TView>::value == dim::Dim<TExtent>::value,
@@ -371,6 +375,7 @@ namespace alpaka
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 traits::TaskCopy<
                     dim::Dim<TViewDst>,
@@ -380,6 +385,7 @@ namespace alpaka
                     viewDst,
                     viewSrc,
                     extent))
+#endif
             {
                 static_assert(
                     dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,

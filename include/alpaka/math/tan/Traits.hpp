@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -56,6 +58,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto tan(
             T const & tan,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Tan<
                 T,
@@ -63,6 +66,7 @@ namespace alpaka
             ::tan(
                 tan,
                 arg))
+#endif
         {
             return
                 traits::Tan<
@@ -95,10 +99,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto tan(
                     T const & tan,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::tan(
                         static_cast<typename T::TanBase const &>(tan),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

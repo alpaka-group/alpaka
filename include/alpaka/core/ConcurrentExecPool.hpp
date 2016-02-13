@@ -24,6 +24,8 @@
 #include <boost/predef.h>   // workarounds
 #include <boost/version.hpp>// workarounds
 
+#include <boost/config.hpp> // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 // nvcc does not currently support boost correctly.
 // boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
@@ -376,8 +378,10 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 // NOTE: The first argument to the get_future() function call is the this pointer.
                 -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+#endif
                 {
                     auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
 
@@ -599,8 +603,10 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 // NOTE: The first argument to the get_future() function call is the this pointer.
                 -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+#endif
                 {
                     auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
 

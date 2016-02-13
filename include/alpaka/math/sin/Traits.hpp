@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -56,6 +58,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto sin(
             T const & sin,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Sin<
                 T,
@@ -63,6 +66,7 @@ namespace alpaka
             ::sin(
                 sin,
                 arg))
+#endif
         {
             return
                 traits::Sin<
@@ -95,10 +99,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto sin(
                     T const & sin,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::sin(
                         static_cast<typename T::SinBase const &>(sin),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

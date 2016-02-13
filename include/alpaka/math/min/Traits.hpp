@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -62,6 +64,7 @@ namespace alpaka
             T const & min,
             Tx const & x,
             Ty const & y)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Min<
                 T,
@@ -71,6 +74,7 @@ namespace alpaka
                 min,
                 x,
                 y))
+#endif
         {
             return
                 traits::Min<
@@ -108,11 +112,13 @@ namespace alpaka
                     T const & min,
                     Tx const & x,
                     Ty const & y)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::min(
                         static_cast<typename T::MinBase const &>(min),
                         x,
                         y))
+#endif
                 {
                     // Delegate the call to the base class.
                     return
