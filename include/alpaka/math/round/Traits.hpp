@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -74,6 +76,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto round(
             T const & round,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Round<
                 T,
@@ -81,6 +84,7 @@ namespace alpaka
             ::round(
                 round,
                 arg))
+#endif
         {
             return
                 traits::Round<
@@ -163,10 +167,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto round(
                     T const & round,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::round(
                         static_cast<typename T::RoundBase const &>(round),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return
@@ -195,10 +201,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto lround(
                     T const & lround,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::lround(
                         static_cast<typename T::RoundBase const &>(lround),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return
@@ -227,10 +235,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto llround(
                     T const & llround,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::llround(
                         static_cast<typename T::RoundBase const &>(llround),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

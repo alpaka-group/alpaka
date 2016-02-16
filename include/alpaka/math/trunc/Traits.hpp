@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -56,6 +58,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto trunc(
             T const & trunc,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Trunc<
                 T,
@@ -63,6 +66,7 @@ namespace alpaka
             ::trunc(
                 trunc,
                 arg))
+#endif
         {
             return
                 traits::Trunc<
@@ -95,10 +99,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto trunc(
                     T const & trunc,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::trunc(
                         static_cast<typename T::TruncBase const &>(trunc),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

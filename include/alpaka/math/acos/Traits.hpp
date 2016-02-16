@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
 namespace alpaka
@@ -55,6 +57,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto acos(
             T const & acos,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Acos<
                 T,
@@ -62,6 +65,7 @@ namespace alpaka
             ::acos(
                 acos,
                 arg))
+#endif
         {
             return
                 traits::Acos<
@@ -94,10 +98,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto acos(
                     T const & acos,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::acos(
                         static_cast<typename T::AcosBase const &>(acos),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

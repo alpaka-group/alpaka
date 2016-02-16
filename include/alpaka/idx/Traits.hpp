@@ -30,6 +30,8 @@
 #include <alpaka/vec/Vec.hpp>               // Vec<N>
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #include <utility>                          // std::forward
 
 namespace alpaka
@@ -189,10 +191,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdx const & idx,
                     TWorkDiv const & workDiv)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)
                     * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
                     + idx::getIdx<origin::Block, unit::Threads>(idx, workDiv))
+#endif
                 {
                     return
                         idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)

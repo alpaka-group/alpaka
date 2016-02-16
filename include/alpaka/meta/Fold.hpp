@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
+#include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
@@ -52,25 +54,7 @@ namespace alpaka
 #endif
             return t;
         }
-#if __cplusplus >= 201402L
-        //-----------------------------------------------------------------------------
-        //!
-        //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TFnObj,
-            typename T0,
-            typename T1,
-            typename... Ts>
-        ALPAKA_FN_HOST_ACC auto foldr(
-            TFnObj const & f,
-            T0 const & t0,
-            T1 const & t1,
-            Ts const & ... ts)
-        {
-            return f(t0, foldr(f, t1, ts...));
-        }
-#else
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         namespace detail
         {
             //#############################################################################
@@ -131,6 +115,24 @@ namespace alpaka
         // http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196
         //-> decltype(f(t0, foldr(f, t1, ts...)))
         -> typename detail::TypeOfFold<TFnObj, T0, T1, Ts...>::type
+        {
+            return f(t0, foldr(f, t1, ts...));
+        }
+#else
+        //-----------------------------------------------------------------------------
+        //!
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TFnObj,
+            typename T0,
+            typename T1,
+            typename... Ts>
+        ALPAKA_FN_HOST_ACC auto foldr(
+            TFnObj const & f,
+            T0 const & t0,
+            T1 const & t1,
+            Ts const & ... ts)
         {
             return f(t0, foldr(f, t1, ts...));
         }
