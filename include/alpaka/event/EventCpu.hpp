@@ -26,7 +26,7 @@
 #include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
 
 #include <alpaka/dev/Traits.hpp>            // GetDev
-#include <alpaka/event/Traits.hpp>          // EventTest, ...
+#include <alpaka/event/Traits.hpp>          // event::traits::Test, ...
 #include <alpaka/wait/Traits.hpp>           // CurrentThreadWaitFor
 #include <alpaka/dev/Traits.hpp>            // GetDev
 
@@ -198,18 +198,35 @@ namespace alpaka
             {
                 using type = event::EventCpu;
             };
-
+            //#############################################################################
+            //! The CPU device event create trait specialization.
+            //#############################################################################
+            template<>
+            struct Create<
+                event::EventCpu,
+                dev::DevCpu>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto create(
+                    dev::DevCpu const & dev)
+                -> event::EventCpu
+                {
+                    return event::EventCpu(dev);
+                }
+            };
             //#############################################################################
             //! The CPU device event test trait specialization.
             //#############################################################################
             template<>
-            struct EventTest<
+            struct Test<
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a stream (not enqueued or already handled).
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto eventTest(
+                ALPAKA_FN_HOST static auto test(
                     event::EventCpu const & event)
                 -> bool
                 {

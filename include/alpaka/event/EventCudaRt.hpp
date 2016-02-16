@@ -29,7 +29,7 @@
 
 #include <alpaka/dev/DevCudaRt.hpp>             // dev::DevCudaRt
 #include <alpaka/dev/Traits.hpp>                // GetDev
-#include <alpaka/event/Traits.hpp>              // EventTest, ...
+#include <alpaka/event/Traits.hpp>              // event::traits::Test, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor
 
 #include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
@@ -214,18 +214,35 @@ namespace alpaka
             {
                 using type = event::EventCudaRt;
             };
-
+            //#############################################################################
+            //! The CPU device event create trait specialization.
+            //#############################################################################
+            template<>
+            struct Create<
+                event::EventCudaRt,
+                dev::DevCudaRt>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto create(
+                    dev::DevCudaRt const & dev)
+                -> event::EventCudaRt
+                {
+                    return event::EventCudaRt(dev);
+                }
+            };
             //#############################################################################
             //! The CUDA RT device event test trait specialization.
             //#############################################################################
             template<>
-            struct EventTest<
+            struct Test<
                 event::EventCudaRt>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto eventTest(
+                ALPAKA_FN_HOST static auto test(
                     event::EventCudaRt const & event)
                 -> bool
                 {
