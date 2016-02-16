@@ -30,7 +30,6 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 # Project.
 ################################################################################
 
-SET(_SOURCE_DIR "src/")
 SET(_TARGET_NAME "blockShared")
 
 PROJECT(${_TARGET_NAME})
@@ -40,7 +39,6 @@ PROJECT(${_TARGET_NAME})
 #-------------------------------------------------------------------------------
 
 SET(COMMON_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../../common/" CACHE STRING  "The location of the alpaka test common library")
-
 LIST(APPEND CMAKE_MODULE_PATH "${COMMON_ROOT}")
 FIND_PACKAGE("common" REQUIRED)
 
@@ -54,11 +52,17 @@ IF(NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
 ELSE()
     LIST(APPEND _INCLUDE_DIRECTORIES_PRIVATE ${Boost_INCLUDE_DIRS})
     LIST(APPEND _LINK_LIBRARIES_PRIVATE ${Boost_LIBRARIES})
+
+    IF(NOT Boost_USE_STATIC_LIBS)
+        LIST(APPEND _DEFINITIONS_PRIVATE "-DBOOST_TEST_DYN_LINK")
+    ENDIF()
 ENDIF()
 
 #-------------------------------------------------------------------------------
-# Add library.
+# Add executable.
 #-------------------------------------------------------------------------------
+
+SET(_SOURCE_DIR "src/")
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
@@ -67,6 +71,7 @@ INCLUDE_DIRECTORIES(
     ${_INCLUDE_DIRECTORIES_PRIVATE}
     ${common_INCLUDE_DIRS})
 ADD_DEFINITIONS(
+    ${_DEFINITIONS_PRIVATE}
     ${common_DEFINITIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
@@ -77,6 +82,7 @@ TARGET_LINK_LIBRARIES(
     ${_TARGET_NAME}
     PUBLIC "common" ${_LINK_LIBRARIES_PRIVATE})
 
+# Group the targets into subfolders for IDEs supporting this.
 SET_TARGET_PROPERTIES(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
 
 ENABLE_TESTING()

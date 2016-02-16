@@ -1,5 +1,4 @@
 #
-# \file
 # Copyright 2014-2015 Erik Zenker
 #
 # This file is part of alpaka.
@@ -18,30 +17,63 @@
 # along with alpaka.
 # If not, see <http://www.gnu.org/licenses/>.
 #
-#
-
-project(alpaka-helloworld)
-cmake_minimum_required(VERSION 3.0.1)
 
 ################################################################################
-# Find alpaka
+# Required CMake version.
 ################################################################################
-set(ALPAKA_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../" CACHE STRING "The location of the alpaka library")
-list(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 
-find_package("alpaka" REQUIRED)
-include_directories(SYSTEM ${alpaka_INCLUDE_DIRS})
-add_definitions(${alpaka_DEFINITIONS})
-add_definitions(${ALPAKA_DEV_COMPILE_OPTIONS})
-set(LIBS ${LIBS} ${alpaka_LIBRARIES})
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
-###############################################################################
-# Executable
-###############################################################################
-set(helloWorld "helloWorld")
-file(GLOB SRCFILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
-alpaka_add_executable(${helloWorld} ${SRCFILES})
-target_link_libraries(${helloWorld} ${LIBS})
+################################################################################
+# Project.
+################################################################################
 
-set_target_properties(${helloWorld} PROPERTIES FOLDER "example")
+SET(_TARGET_NAME "helloWorld")
+
+PROJECT(${_TARGET_NAME})
+
+#-------------------------------------------------------------------------------
+# Find alpaka.
+#-------------------------------------------------------------------------------
+
+SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
+LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
+FIND_PACKAGE("alpaka" REQUIRED)
+
+#-------------------------------------------------------------------------------
+# Common.
+#-------------------------------------------------------------------------------
+
+INCLUDE("${ALPAKA_ROOT}cmake/common.cmake")
+INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
+
+#-------------------------------------------------------------------------------
+# Add executable.
+#-------------------------------------------------------------------------------
+
+SET(_SOURCE_DIR "src/")
+
+# Add all the source files in all recursive subdirectories and group them accordingly.
+append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
+
+IF(MSVC)
+    LIST(APPEND _COMPILE_DEFINITIONS_PRIVATE "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
+ENDIF()
+
+INCLUDE_DIRECTORIES(
+    ${alpaka_INCLUDE_DIRS})
+ADD_DEFINITIONS(
+    ${_COMPILE_DEFINITIONS_PRIVATE}
+    ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
+# Always add all files to the target executable build call to add them to the build project.
+ALPAKA_ADD_EXECUTABLE(
+    ${_TARGET_NAME}
+    ${_FILES_SOURCE})
+# Set the link libraries for this library (adds libs, include directories, defines and compile options).
+TARGET_LINK_LIBRARIES(
+    ${_TARGET_NAME}
+    PUBLIC "alpaka")
+
+SET_TARGET_PROPERTIES(${_TARGET_NAME} PROPERTIES FOLDER "example")

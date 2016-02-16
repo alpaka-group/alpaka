@@ -398,7 +398,7 @@ install:
           && ALPAKA_BOOST_B2_CXXFLAGS+="-Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros -Wunknown-warning-option"
       ;fi
     # Select the libraries required.
-    - ALPAKA_BOOST_B2+=" --with-program_options --with-test"
+    - ALPAKA_BOOST_B2+=" --with-test"
     - if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]
       ;then
           ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"

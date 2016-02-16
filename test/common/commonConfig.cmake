@@ -61,7 +61,6 @@ PROJECT(${_COMMON_TARGET_NAME})
 #-------------------------------------------------------------------------------
 
 SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
-
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE("alpaka" REQUIRED)
 
@@ -94,6 +93,7 @@ LIST(APPEND _COMMON_FILES_CMAKE "${_COMMON_ROOT_DIR}/commonConfig.cmake" "${_COM
 
 IF(MSVC)
     LIST(APPEND common_DEFINITIONS "/bigobj")
+    LIST(APPEND common_DEFINITIONS "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
 ENDIF()
 
 #-------------------------------------------------------------------------------

@@ -30,7 +30,6 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 # Project.
 ################################################################################
 
-SET(_SOURCE_DIR "src/")
 SET(_TARGET_NAME "vectorAdd")
 
 PROJECT(${_TARGET_NAME})
@@ -40,7 +39,6 @@ PROJECT(${_TARGET_NAME})
 #-------------------------------------------------------------------------------
 
 SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
-
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE("alpaka" REQUIRED)
 
@@ -50,19 +48,24 @@ FIND_PACKAGE("alpaka" REQUIRED)
 
 INCLUDE("${ALPAKA_ROOT}cmake/common.cmake")
 INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
-SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR})
 
 #-------------------------------------------------------------------------------
-# Add library.
+# Add executable.
 #-------------------------------------------------------------------------------
+
+SET(_SOURCE_DIR "src/")
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
 
+IF(MSVC)
+    LIST(APPEND _COMPILE_DEFINITIONS_PRIVATE "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
+ENDIF()
+
 INCLUDE_DIRECTORIES(
-    ${_INCLUDE_DIRECTORIES_PRIVATE}
     ${alpaka_INCLUDE_DIRS})
 ADD_DEFINITIONS(
+    ${_COMPILE_DEFINITIONS_PRIVATE}
     ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
