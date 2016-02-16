@@ -92,6 +92,10 @@ append_recursive_files_add_to_src_group("${_COMMON_INCLUDE_DIRECTORY}" "${_COMMO
 append_recursive_files_add_to_src_group("${_COMMON_SOURCE_DIRECTORY}" "${_COMMON_SOURCE_DIRECTORY}" "cpp" _COMMON_FILES_SOURCE)
 LIST(APPEND _COMMON_FILES_CMAKE "${_COMMON_ROOT_DIR}/commonConfig.cmake" "${_COMMON_ROOT_DIR}/Findcommon.cmake")
 
+IF(MSVC)
+    LIST(APPEND common_DEFINITIONS "/bigobj")
+ENDIF()
+
 #-------------------------------------------------------------------------------
 # Target.
 #-------------------------------------------------------------------------------
