@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -216,6 +216,11 @@
 #include <alpaka/stream/StreamCpuAsync.hpp>
 #include <alpaka/stream/StreamCpuSync.hpp>
 #include <alpaka/stream/Traits.hpp>
+
+//-----------------------------------------------------------------------------
+// time
+//-----------------------------------------------------------------------------
+#include <alpaka/time/Traits.hpp>
 
 //-----------------------------------------------------------------------------
 // wait
