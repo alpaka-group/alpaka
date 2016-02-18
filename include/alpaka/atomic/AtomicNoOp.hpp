@@ -66,7 +66,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers accelerator atomic operation function object.
+            //! The CPU fibers accelerator atomic operation.
             //#############################################################################
             template<
                 typename TOp,

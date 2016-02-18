@@ -80,7 +80,7 @@ namespace alpaka
             // Add.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -101,7 +101,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -122,7 +122,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -143,7 +143,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -164,7 +164,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -200,7 +200,7 @@ namespace alpaka
             // Sub.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -221,7 +221,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -245,7 +245,7 @@ namespace alpaka
             // Min.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -266,7 +266,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -287,7 +287,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -311,7 +311,7 @@ namespace alpaka
             // Max.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -332,7 +332,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -350,7 +350,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -374,7 +374,7 @@ namespace alpaka
             // Exch.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -395,7 +395,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -416,7 +416,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -437,7 +437,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -461,7 +461,7 @@ namespace alpaka
             // Inc.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -485,7 +485,7 @@ namespace alpaka
             // Dec.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -509,7 +509,7 @@ namespace alpaka
             // And.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -530,7 +530,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -551,7 +551,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -575,7 +575,7 @@ namespace alpaka
             // Or.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -596,7 +596,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -617,7 +617,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -641,7 +641,7 @@ namespace alpaka
             // Xor.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -662,7 +662,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -683,7 +683,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -707,7 +707,7 @@ namespace alpaka
             // Cas.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -729,7 +729,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -751,7 +751,7 @@ namespace alpaka
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator atomic operation function object.
+            //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<

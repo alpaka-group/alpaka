@@ -84,7 +84,7 @@ namespace alpaka
                         && (!std::is_same<typename TBlockSync::BlockSyncBase, typename std::decay<TBlockSync>::type>::value)>::type>
                 {
                     //-----------------------------------------------------------------------------
-                    //! \return The number of threads in each dimension of a block.
+                    //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto syncBlockThreads(
