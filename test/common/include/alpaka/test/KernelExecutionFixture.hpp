@@ -38,6 +38,7 @@ namespace alpaka
             using Dim = alpaka::dim::Dim<Acc>;
             using Size = alpaka::size::Size<Acc>;
             using DevAcc = alpaka::dev::Dev<Acc>;
+            using PltfAcc  = alpaka::pltf::Pltf<DevAcc>;
             using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
 
         public:
@@ -48,8 +49,8 @@ namespace alpaka
                 typename TExtent>
             KernelExecutionFixture(
                 TExtent const & extent) :
-                    m_devHost(alpaka::dev::DevManCpu::getDevByIdx(0u)),
-                    m_devAcc(alpaka::dev::DevMan<Acc>::getDevByIdx(0u)),
+                    m_devHost(alpaka::pltf::getDevByIdx<pltf::PltfCpu>(0u)),
+                    m_devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u)),
                     m_stream(m_devAcc),
                     m_workDiv(
                         alpaka::workdiv::getValidWorkDiv<Acc>(

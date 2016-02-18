@@ -32,6 +32,7 @@
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
@@ -255,19 +256,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU OpenMP 2.0 grid block executor device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevManType<
-                exec::ExecCpuOmp2Blocks<TDim, TSize, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -307,6 +295,25 @@ namespace alpaka
                 TArgs...>
             {
                 using type = exec::ExecCpuOmp2Blocks<TDim, TSize, TKernelFnObj, TArgs...>;
+            };
+        }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU OpenMP 2.0 grid block executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct PltfType<
+                exec::ExecCpuOmp2Blocks<TDim, TSize, TKernelFnObj, TArgs...>>
+            {
+                using type = pltf::PltfCpu;
             };
         }
     }

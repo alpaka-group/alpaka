@@ -201,12 +201,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::acc::TestAccs)
 {
     using Dev = alpaka::dev::Dev<TAcc>;
+    using Pltf = alpaka::pltf::Pltf<Dev>;
+
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
     using View = alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Size>;
 
-    Dev dev(alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
+    Dev dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
 
     // We have to be careful with the extents used.
     // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
@@ -326,14 +328,17 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     TAcc,
     alpaka::test::acc::TestAccs)
 {
-    using DevAcc = alpaka::dev::Dev<TAcc>;
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
-    using Host = alpaka::acc::AccCpuSerial<Dim, Size>;
-    using DevHost = alpaka::dev::Dev<Host>;
-    using Stream = alpaka::test::stream::DefaultStream<DevAcc>;
+
+    using DevAcc = alpaka::dev::Dev<TAcc>;
+    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+
+    using DevHost = alpaka::dev::DevCpu;
+    using PltfHost = alpaka::pltf::Pltf<DevHost>;
 
     using View = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
     using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
@@ -342,9 +347,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     const Size nElementsPerDimView = static_cast<Size>(2u);
     const Size offsetInAllDims = static_cast<Size>(1u);
 
-    DevHost devHost(alpaka::dev::DevMan<Host>::getDevByIdx(0u));
-    DevAcc devAcc(alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
-    Stream stream(devAcc);
+    DevHost devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+    DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    StreamAcc stream(devAcc);
 
     using Vec = alpaka::Vec<Dim, Size>;
 
@@ -454,23 +459,26 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     TAcc,
     alpaka::test::acc::TestAccs)
 {
-    using DevAcc = alpaka::dev::Dev<TAcc>;
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
-    using Host = alpaka::acc::AccCpuSerial<Dim, Size>;
-    using DevHost = alpaka::dev::Dev<Host>;
-    using Stream = alpaka::test::stream::DefaultStream<DevAcc>;
+
+    using DevAcc = alpaka::dev::Dev<TAcc>;
+    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+
+    using DevHost = alpaka::dev::DevCpu;
+    using PltfHost = alpaka::pltf::Pltf<DevHost>;
 
     using View = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
     using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
 
     if(Dim::value != 4)
     {
-        DevHost devHost (alpaka::dev::DevMan<Host>::getDevByIdx(0));
-        DevAcc devAcc(alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
-        Stream stream (devAcc);
+        DevHost devHost (alpaka::pltf::getDevByIdx<PltfHost>(0));
+        DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+        StreamAcc stream (devAcc);
 
         auto const extentBuf(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
         auto const extentView(createVecFromIndexedFn<Dim, Size, CreateExtentViewVal>());

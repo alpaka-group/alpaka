@@ -176,15 +176,20 @@ struct SharedMemTester
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
+        using DevAcc = alpaka::dev::Dev<TAcc>;
+        using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+        using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+
         // Create the kernel function object.
         SharedMemKernel<TnumUselessWork> kernel(42);
 
         // Select a device to execute on.
         alpaka::dev::Dev<TAcc> devAcc(
-            alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
+            alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
         // Get a stream on this device.
-        alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>> stream(devAcc);
+        StreamAcc stream(
+            devAcc);
 
         // Set the grid blocks extent.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(

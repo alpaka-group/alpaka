@@ -99,6 +99,8 @@ int main() {
     using Stream  = alpaka::stream::StreamCpuSync;
     using DevAcc  = alpaka::dev::Dev<Acc>;
     using DevHost = alpaka::dev::Dev<Host>;
+    using PltfHost = alpaka::pltf::Pltf<DevHost>;
+    using PltfAcc  = alpaka::pltf::Pltf<DevAcc>;
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
 
 
@@ -112,8 +114,8 @@ int main() {
      * can also retrieve all devices in a vector (getDevs()).
      * In this example the first devices is choosen.
      */
-    DevAcc  devAcc  (alpaka::dev::DevMan<Acc>::getDevByIdx(0));
-    DevHost devHost (alpaka::dev::DevMan<Host>::getDevByIdx(0));
+    DevAcc  devAcc  (alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    DevHost devHost (alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
     /**
      * Create a stream to the accelerator device

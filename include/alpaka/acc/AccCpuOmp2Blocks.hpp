@@ -42,6 +42,7 @@
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
@@ -232,17 +233,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block accelerator device type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct DevManType<
-                acc::AccCpuOmp2Blocks<TDim, TSize>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -280,6 +270,23 @@ namespace alpaka
                 TArgs...>
             {
                 using type = exec::ExecCpuOmp2Blocks<TDim, TSize, TKernelFnObj, TArgs...>;
+            };
+        }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU OpenMP 2.0 block executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct PltfType<
+                acc::AccCpuOmp2Blocks<TDim, TSize>>
+            {
+                using type = pltf::PltfCpu;
             };
         }
     }

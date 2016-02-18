@@ -42,6 +42,7 @@
 #include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                    // dev::traits::DevType
 #include <alpaka/exec/Traits.hpp>                   // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>                   // size::traits::SizeType
 
 // Implementation details.
@@ -223,17 +224,6 @@ namespace alpaka
             {
                 using type = dev::DevCudaRt;
             };
-            //#############################################################################
-            //! The GPU CUDA accelerator device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct DevManType<
-                acc::AccGpuCudaRt<TDim, TSize>>
-            {
-                using type = dev::DevManCudaRt;
-            };
         }
     }
     namespace dim
@@ -271,6 +261,23 @@ namespace alpaka
                 TArgs...>
             {
                 using type = exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>;
+            };
+        }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU CUDA executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct PltfType<
+                acc::AccGpuCudaRt<TDim, TSize>>
+            {
+                using type = pltf::PltfCudaRt;
             };
         }
     }
