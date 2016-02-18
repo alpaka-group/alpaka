@@ -191,7 +191,7 @@ namespace alpaka
                                 std::memcpy(
                                     reinterpret_cast<void *>(m_dstMemNative),
                                     reinterpret_cast<void const *>(m_srcMemNative),
-                                    m_dstPitchBytesX * m_extentHeight * m_extentDepth);
+                                    static_cast<std::size_t>(m_dstPitchBytesX * m_extentHeight * m_extentDepth));
                             }
                             else
                             {
@@ -202,7 +202,7 @@ namespace alpaka
                                         std::memcpy(
                                             reinterpret_cast<void *>(m_dstMemNative + z*m_dstPitchBytesY),
                                             reinterpret_cast<void const *>(m_srcMemNative + z*m_srcPitchBytesY),
-                                            m_dstPitchBytesX*m_extentHeight);
+                                            static_cast<std::size_t>(m_dstPitchBytesX*m_extentHeight));
                                     }
                                     else
                                     {
@@ -211,7 +211,7 @@ namespace alpaka
                                             std::memcpy(
                                                 reinterpret_cast<void *>(m_dstMemNative + y*m_dstPitchBytesX + z*m_dstPitchBytesY),
                                                 reinterpret_cast<void const *>(m_srcMemNative + y*m_srcPitchBytesX + z*m_srcPitchBytesY),
-                                                m_extentWidthBytes);
+                                                static_cast<std::size_t>(m_extentWidthBytes));
                                         }
                                     }
                                 }
