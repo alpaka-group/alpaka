@@ -37,7 +37,7 @@
 //#############################################################################
 //!
 //#############################################################################
-class BlockSharedMemDyn
+class BlockSharedMemDynTestKernel
 {
 public:
     //-----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace alpaka
             template<
                 typename TAcc>
             struct BlockSharedMemDynSizeBytes<
-                BlockSharedMemDyn,
+                BlockSharedMemDynTestKernel,
                 TAcc>
             {
                 //-----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ namespace alpaka
                 template<
                     typename TVec>
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
-                    BlockSharedMemDyn const & blockSharedMemDyn,
+                    BlockSharedMemDynTestKernel const & blockSharedMemDyn,
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent)
                 -> size::Size<TAcc>
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
         alpaka::Vec<Dim, Size>::ones());
 
-    BlockSharedMemDyn kernel;
+    BlockSharedMemDynTestKernel kernel;
 
     BOOST_REQUIRE_EQUAL(
         true,
