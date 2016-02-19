@@ -68,7 +68,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The OpenMP accelerator atomic operation function object.
+            //! The OpenMP accelerator atomic operation.
             //
             // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
             // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!

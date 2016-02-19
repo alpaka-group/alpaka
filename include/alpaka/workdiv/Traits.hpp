@@ -92,7 +92,7 @@ namespace alpaka
                     && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of a block.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -121,7 +121,7 @@ namespace alpaka
                     && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of a block.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -150,7 +150,7 @@ namespace alpaka
                     && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of a block.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -177,7 +177,7 @@ namespace alpaka
                 unit::Threads>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of the grid.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -204,7 +204,7 @@ namespace alpaka
                 unit::Elems>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of the grid.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -231,7 +231,7 @@ namespace alpaka
                 unit::Elems>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of the grid.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(

@@ -564,7 +564,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! A function object that returns the pitch for each index.
+                //! A class with a create method that returns the pitch for each index.
                 //#############################################################################
                 template<
                     std::size_t Tidx>
