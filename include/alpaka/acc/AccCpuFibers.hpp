@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -33,6 +33,7 @@
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
 #include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>                 // BlockSyncFiberIdMapBarrier
 #include <alpaka/rand/RandStl.hpp>              // RandStl
+#include <alpaka/time/TimeStl.hpp>              // TimeStl
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
@@ -85,7 +86,8 @@ namespace alpaka
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncFiberIdMapBarrier<TSize>,
-            public rand::RandStl
+            public rand::RandStl,
+            public time::TimeStl
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -118,6 +120,7 @@ namespace alpaka
                         m_blockThreadCount,
                         m_fibersToBarrier),
                     rand::RandStl(),
+                    time::TimeStl(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
                     m_blockThreadCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}

@@ -266,10 +266,6 @@ namespace alpaka
         };
     }
 
-    namespace event
-    {
-        class EventCpu;
-    }
     namespace dev
     {
         namespace traits

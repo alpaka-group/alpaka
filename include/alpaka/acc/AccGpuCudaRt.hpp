@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -37,6 +37,7 @@
 #include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>   // BlockSharedMemStCudaBuiltIn
 #include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>                   // BlockSyncCudaBuiltIn
 #include <alpaka/rand/RandCuRand.hpp>               // RandCuRand
+#include <alpaka/time/TimeCudaBuiltIn.hpp>          // TimeCudaBuiltIn
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
@@ -83,7 +84,8 @@ namespace alpaka
             public block::shared::dyn::BlockSharedMemDynCudaBuiltIn,
             public block::shared::st::BlockSharedMemStCudaBuiltIn,
             public block::sync::BlockSyncCudaBuiltIn,
-            public rand::RandCuRand
+            public rand::RandCuRand,
+            public time::TimeCudaBuiltIn
         {
         public:
             //-----------------------------------------------------------------------------
@@ -99,7 +101,8 @@ namespace alpaka
                     block::shared::dyn::BlockSharedMemDynCudaBuiltIn(),
                     block::shared::st::BlockSharedMemStCudaBuiltIn(),
                     block::sync::BlockSyncCudaBuiltIn(),
-                    rand::RandCuRand()
+                    rand::RandCuRand(),
+                    time::TimeCudaBuiltIn()
             {}
 
         public:
