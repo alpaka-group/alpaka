@@ -299,7 +299,7 @@ namespace alpaka
                     TSize concurrentExecutionCount,
                     TSize queueSize = 128u) :
                     m_vConcurrentExecs(),
-                    m_qTasks(queueSize),
+                    m_qTasks(static_cast<std::size_t>(queueSize)),
                     m_bShutdownFlag(false)
                 {
                     if(concurrentExecutionCount < 1)
@@ -311,7 +311,7 @@ namespace alpaka
                         throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
                     }
 
-                    m_vConcurrentExecs.reserve(concurrentExecutionCount);
+                    m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
                     // Create all concurrent executors.
                     for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
@@ -516,7 +516,7 @@ namespace alpaka
                     TSize concurrentExecutionCount,
                     TSize queueSize = 128u) :
                     m_vConcurrentExecs(),
-                    m_qTasks(queueSize),
+                    m_qTasks(static_cast<std::size_t>(queueSize)),
                     m_mtxWakeup(),
                     m_bShutdownFlag(false),
                     m_cvWakeup()
@@ -530,7 +530,7 @@ namespace alpaka
                         throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
                     }
 
-                    m_vConcurrentExecs.reserve(concurrentExecutionCount);
+                    m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
                     // Create all concurrent executors.
                     for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)

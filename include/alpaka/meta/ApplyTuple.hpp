@@ -23,6 +23,7 @@
 
 #include <alpaka/meta/IntegerSequence.hpp>
 
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 #include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
 #include <utility>                          // std::forward
@@ -96,6 +97,8 @@ namespace alpaka
                     std::get<I>(std::forward<Tuple>(t))...))
 #endif
             {
+                // If the the index sequence is empty, t will not be used at all.
+                boost::ignore_unused(t);
                 return
                     meta::invoke(
                         std::forward<F>(f),

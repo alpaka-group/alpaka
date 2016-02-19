@@ -106,13 +106,13 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(
                 TWorkDiv const & workDiv,
-                std::size_t const & blockSharedMemDynSizeBytes) :
+                TSize const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TSize>(),
                     atomic::AtomicOmpCritSec(),
                     math::MathStl(),
-                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(blockSharedMemDynSizeBytes),
+                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),

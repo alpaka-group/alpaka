@@ -33,6 +33,7 @@
 #include <alpaka/test/mem/view/Iterator.hpp>    // Iterator
 
 #include <boost/test/unit_test.hpp>
+#include <boost/predef.h>                       // workarounds
 
 #include <type_traits>                          // std::is_same
 #include <numeric>                              // std::iota
@@ -366,7 +367,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     View view(buf, extentView, offsetView);
 
     // Init buf with increasing values
-    std::vector<Elem> v(extentBuf.prod(), static_cast<Elem>(0u));
+    std::vector<Elem> v(static_cast<std::size_t>(extentBuf.prod()), static_cast<Elem>(0u));
     std::iota(v.begin(), v.end(), static_cast<Elem>(0u));
     ViewPlainPtr plainBuf(v.data(), devHost, extentBuf);
     alpaka::mem::view::copy(stream, buf, plainBuf, extentBuf);
@@ -466,7 +467,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using View = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
     using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
 
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4127) // conditional expression is constant
+#endif
+
     if(Dim::value != 4)
+
+#if BOOST_COMP_MSVC
+    #pragma warning(pop)
+#endif
     {
         DevHost devHost (alpaka::dev::DevMan<Host>::getDevByIdx(0));
         DevAcc devAcc(alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
