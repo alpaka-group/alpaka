@@ -150,14 +150,16 @@ int main() {
     using Acc     = alpaka::acc::AccCpuSerial<Dim, Size>;
     using DevHost = alpaka::dev::Dev<Host>;
     using DevAcc  = alpaka::dev::Dev<Acc>;
+    using PltfHost = alpaka::pltf::Pltf<DevHost>;
+    using PltfAcc  = alpaka::pltf::Pltf<DevAcc>;
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
     using Stream  = alpaka::stream::StreamCpuSync;
 
     /***************************************************************************
      * Get the first device
      **************************************************************************/
-    DevAcc  devAcc  (alpaka::dev::DevMan<Acc>::getDevByIdx(0));
-    DevHost devHost (alpaka::dev::DevMan<Acc>::getDevByIdx(0));
+    DevAcc  devAcc  (alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    DevHost devHost (alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
     /***************************************************************************
      * Create sync stream

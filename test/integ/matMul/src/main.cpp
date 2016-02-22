@@ -234,33 +234,43 @@ struct MatMulTester
         std::cout << "################################################################################" << std::endl;
 
         using Val = std::uint32_t;
+        using Vec2 = alpaka::Vec<alpaka::dim::DimInt<2u>, TSize>;
+        using DevAcc = alpaka::dev::Dev<TAcc>;
+        using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+        using StreamAcc = alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>>;
+        using PltfHost = alpaka::pltf::PltfCpu;
+        using StreamHost = alpaka::stream::StreamCpuAsync;
 
         // Create the kernel function object.
         MatMulKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
+        auto devHost(
+            alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
         // Get a stream on the host device.
-        alpaka::stream::StreamCpuAsync streamHost(devHost);
+        StreamHost streamHost(
+            devHost);
 
         // Select a device to execute on.
-        alpaka::dev::Dev<TAcc> devAcc(
-            alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
+        auto devAcc(
+            alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
         // Get a stream on the accelerator device.
-        alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
+        StreamAcc streamAcc(
+            devAcc);
 
-        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extentA(
+        // Specify the input matrix extents.
+        Vec2 const extentA(
             static_cast<TSize>(m),
             static_cast<TSize>(k));
 
-        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extentB(
+        Vec2 const extentB(
             static_cast<TSize>(k),
             static_cast<TSize>(n));
 
         // Result matrix is MxN. We create one worker per result matrix cell.
-        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extentC(
+        Vec2 const extentC(
             static_cast<TSize>(m),
             static_cast<TSize>(n));
 

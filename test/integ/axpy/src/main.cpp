@@ -97,19 +97,24 @@ struct AxpyKernelTester
         std::cout << "################################################################################" << std::endl;
 
         using Val = float;
+        using DevAcc = alpaka::dev::Dev<TAcc>;
+        using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+        using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+        using PltfHost = alpaka::pltf::PltfCpu;
 
         // Create the kernel function object.
         AxpyKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
+        auto devHost(
+            alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
         // Select a device to execute on.
-        alpaka::dev::Dev<TAcc> devAcc(
-            alpaka::dev::DevMan<TAcc>::getDevByIdx(0u));
+        auto devAcc(
+            alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
         // Get a stream on this device.
-        alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>> stream(devAcc);
+        StreamAcc stream(devAcc);
 
         alpaka::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
             numElements);

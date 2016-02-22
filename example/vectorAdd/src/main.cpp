@@ -83,24 +83,31 @@ public:
 auto main()
 -> int
 {
-    using Acc = alpaka::acc::AccCpuSerial<alpaka::dim::DimInt<1u>, std::size_t>;
-    using Stream = alpaka::stream::StreamCpuSync;
-    using Size = std::size_t;
     using Val = float;
+    using Size = std::size_t;
+
+    using Acc = alpaka::acc::AccCpuSerial<alpaka::dim::DimInt<1u>, Size>;
+    using DevAcc = alpaka::dev::Dev<Acc>;
+    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using StreamAcc = alpaka::stream::StreamCpuSync;
+
+    using PltfHost = alpaka::pltf::PltfCpu;
+
     Size const numElements(123456);
 
     // Create the kernel function object.
     VectorAddKernel kernel;
 
     // Get the host device.
-    auto devHost(alpaka::dev::DevManCpu::getDevByIdx(0u));
+    auto devHost(
+        alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
     // Select a device to execute on.
-    alpaka::dev::Dev<Acc> devAcc(
-        alpaka::dev::DevMan<Acc>::getDevByIdx(0));
+    auto devAcc(
+        alpaka::pltf::getDevByIdx<PltfAcc>(0));
 
     // Get a stream on this device.
-    Stream stream(devAcc);
+    StreamAcc stream(devAcc);
 
     // The data extent.
     alpaka::Vec<alpaka::dim::DimInt<1u>, Size> const extent(

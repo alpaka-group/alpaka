@@ -28,6 +28,7 @@
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
@@ -357,19 +358,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU fibers executor device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevManType<
-                exec::ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -409,6 +397,25 @@ namespace alpaka
                 TArgs...>
             {
                 using type = exec::ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>;
+            };
+        }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU fibers executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct PltfType<
+                exec::ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>>
+            {
+                using type = pltf::PltfCpu;
             };
         }
     }

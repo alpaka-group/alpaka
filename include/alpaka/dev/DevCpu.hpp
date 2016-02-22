@@ -22,18 +22,14 @@
 #pragma once
 
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
-#include <alpaka/event/Traits.hpp>      // event::traits::EventType
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
+#include <alpaka/pltf/Traits.hpp>       // pltf::traits::PltfType
 
-#include <alpaka/stream/Traits.hpp>     // stream::enqueue
 #include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getTotalGlobalMemSizeBytes, getFreeGlobalMemSizeBytes
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 #include <map>                          // std::map
-#include <sstream>                      // std::stringstream
-#include <limits>                       // std::numeric_limits
-#include <thread>                       // std::thread
 #include <mutex>                        // std::mutex
 #include <memory>                       // std::shared_ptr
 #include <vector>                       // std::vector
@@ -52,6 +48,17 @@ namespace alpaka
                 class StreamCpuAsyncImpl;
             }
         }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            template<
+                typename TPltf,
+                typename TSfinae>
+            struct GetDevByIdx;
+        }
+        class PltfCpu;
     }
     namespace dev
     {
@@ -173,7 +180,7 @@ namespace alpaka
         //#############################################################################
         class DevCpu
         {
-            friend class DevManCpu;
+            friend struct pltf::traits::GetDevByIdx<pltf::PltfCpu>;
         protected:
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -222,91 +229,12 @@ namespace alpaka
         public:
             std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
         };
-
-        //#############################################################################
-        //! The CPU device manager.
-        //#############################################################################
-        class DevManCpu
-        {
-        public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST DevManCpu() = delete;
-
-            //-----------------------------------------------------------------------------
-            //! \return The number of devices available.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto getDevCount()
-            -> std::size_t
-            {
-                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                return 1;
-            }
-            //-----------------------------------------------------------------------------
-            //! \return The number of devices available.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto getDevByIdx(
-                std::size_t const & devIdx)
-            -> DevCpu
-            {
-                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                std::size_t const devCount(getDevCount());
-                if(devIdx >= devCount)
-                {
-                    std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for CPU device with index " << devIdx << " because there are only " << devCount << " devices!";
-                    throw std::runtime_error(ssErr.str());
-                }
-
-                return {};
-            }
-        };
     }
 
     namespace dev
     {
         namespace traits
         {
-            //#############################################################################
-            //! The CPU device device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                dev::DevCpu>
-            {
-                using type = dev::DevCpu;
-            };
-            //#############################################################################
-            //! The CPU device manager device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                dev::DevManCpu>
-            {
-                using type = dev::DevCpu;
-            };
-
-            //#############################################################################
-            //! The CPU device device get trait specialization.
-            //#############################################################################
-            template<>
-            struct GetDev<
-                dev::DevCpu>
-            {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    dev::DevCpu const & dev)
-                -> dev::DevCpu
-                {
-                    return dev;
-                }
-            };
-
             //#############################################################################
             //! The CPU device name get trait specialization.
             //#############################################################################
@@ -388,16 +316,6 @@ namespace alpaka
                     // The CPU does nothing on reset.
                 }
             };
-
-            //#############################################################################
-            //! The CPU device device manager type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                dev::DevCpu>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace mem
@@ -428,6 +346,21 @@ namespace alpaka
                     using type = mem::buf::BufCpu<TElem, TDim, TSize>;
                 };
             }
+        }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU device platform type trait specialization.
+            //#############################################################################
+            template<>
+            struct PltfType<
+                dev::DevCpu>
+            {
+                using type = pltf::PltfCpu;
+            };
         }
     }
 }

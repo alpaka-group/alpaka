@@ -23,6 +23,7 @@
 
 #include <alpaka/dev/DevCpu.hpp>        // dev::DevCpu
 #include <alpaka/mem/buf/Traits.hpp>    // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
+#include <alpaka/pltf/PltfCpu.hpp>      // pltf::getDevByIndex
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -72,7 +73,7 @@ namespace alpaka
                 -> dev::DevCpu
                 {
                     // \FIXME: CUDA device?
-                    return dev::DevManCpu::getDevByIdx(0u);
+                    return pltf::getDevByIdx<pltf::PltfCpu>(0u);
                 }
             };
         }
@@ -294,7 +295,7 @@ namespace alpaka
                     std::array<TElem, Tsize> const & buf)
                 -> dev::DevCpu
                 {
-                    return dev::DevManCpu::getDevByIdx(0u);
+                    return pltf::getDevByIdx<pltf::PltfCpu>(0u);
                 }
             };
         }
@@ -499,7 +500,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const & buf)
                 -> dev::DevCpu
                 {
-                    return dev::DevManCpu::getDevByIdx(0u);
+                    return pltf::getDevByIdx<pltf::PltfCpu>(0u);
                 }
             };
         }

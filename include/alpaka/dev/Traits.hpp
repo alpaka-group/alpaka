@@ -25,8 +25,6 @@
 
 #include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
-#include <vector>                       // std::vector
-
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -46,14 +44,6 @@ namespace alpaka
                 typename T,
                 typename TSfinae = void>
             struct DevType;
-
-            //#############################################################################
-            //! The device manager type trait.
-            //#############################################################################
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct DevManType;
 
             //#############################################################################
             //! The device get trait.
@@ -103,13 +93,6 @@ namespace alpaka
             typename T>
         using Dev = typename traits::DevType<T>::type;
 
-        //#############################################################################
-        //! The device manager type trait alias template to remove the ::type.
-        //#############################################################################
-        template<
-            typename T>
-        using DevMan = typename traits::DevManType<T>::type;
-
         //-----------------------------------------------------------------------------
         //! \return The device this object is bound to.
         //-----------------------------------------------------------------------------
@@ -126,25 +109,6 @@ namespace alpaka
                     T>
                 ::getDev(
                     t);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return All the devices available on this accelerator.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TDevMan>
-        ALPAKA_FN_HOST auto getDevs()
-        -> std::vector<Dev<TDevMan>>
-        {
-            std::vector<Dev<TDevMan>> devs;
-
-            std::size_t const devCount(TDevMan::getDevCount());
-            for(std::size_t devIdx(0); devIdx < devCount; ++devIdx)
-            {
-                devs.push_back(TDevMan::getDevByIdx(devIdx));
-            }
-
-            return devs;
         }
 
         //-----------------------------------------------------------------------------
