@@ -142,7 +142,7 @@ auto main()
         alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand());
     }
 
-    // Allocate the buffer on the accelerator.
+    // Allocate the buffers on the accelerator.
     auto memBufAccA(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
     auto memBufAccB(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
     auto memBufAccC(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
