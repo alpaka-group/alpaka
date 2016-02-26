@@ -138,7 +138,6 @@ namespace alpaka
                         -> TSize
                         {
                             auto const extentElementCount(extent::getProductOfExtent(extent));
-                            assert(extentElementCount>0);
 
                             return extentElementCount;
                         }
