@@ -1,0 +1,192 @@
+#
+# Copyright 2015 Benjamin Worpitz
+#
+# This file is part of alpaka.
+#
+# alpaka is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# alpaka is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with alpaka.
+# If not, see <http://www.gnu.org/licenses/>.
+#
+
+################################################################################
+# General configuration.
+################################################################################
+
+version: "{build}"
+
+branches:
+    except:
+        - gh-pages
+
+# Build tags (GitHub only)
+skip_tags: false
+
+################################################################################
+# Environment configuration.
+################################################################################
+
+os:
+    - Visual Studio 2015
+
+init:
+    - cmd: cmake --version
+    - cmd: git --version
+    - cmd: msbuild /version
+    # Fixes the line endings on Windows.
+    - cmd: git config --global core.autocrlf true
+
+# Clone directory.
+clone_folder: c:\projects\alpaka
+# Fetch repository as zip archive.
+shallow_clone: false
+# Set the clone depth.
+clone_depth: 1
+
+environment:
+    global:
+        ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: ON
+        ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON
+        ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON
+        ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF
+        ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: ON
+
+    matrix:
+        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF
+          ALPAKA_DEBUG: 2
+          OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: boost-1.60.0
+        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF
+          ALPAKA_DEBUG: 0
+          OMP_NUM_THREADS: 3
+          ALPAKA_BOOST_BRANCH: boost-1.59.0
+        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: ON
+          ALPAKA_DEBUG: 2
+          OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: develop
+
+matrix:
+    fast_finish: true
+
+    allow_failures:
+        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: ON
+          ALPAKA_DEBUG: 2
+          OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: develop
+
+################################################################################
+# Build configuration.
+################################################################################
+
+platform:
+#    - Win32
+    - x64
+
+configuration:
+#    - Debug
+    - Release
+
+# scripts to run before build
+before_build:
+    # Print the travis environment variables: http://docs.travis-ci.com/user/ci-environment/
+    - cmd: echo "%APPVEYOR%"
+    - cmd: echo "%CI%"
+    - cmd: echo "%APPVEYOR_API_URL%"
+    - cmd: echo "%APPVEYOR_ACCOUNT_NAME%"
+    - cmd: echo "%APPVEYOR_PROJECT_ID%"
+    - cmd: echo "%APPVEYOR_PROJECT_NAME%"
+    - cmd: echo "%APPVEYOR_PROJECT_SLUG%"
+    - cmd: echo "%APPVEYOR_BUILD_FOLDER%"
+    - cmd: echo "%APPVEYOR_BUILD_ID%"
+    - cmd: echo "%APPVEYOR_BUILD_NUMBER%"
+    - cmd: echo "%APPVEYOR_BUILD_VERSION%"
+    - cmd: echo "%APPVEYOR_PULL_REQUEST_NUMBER%"
+    - cmd: echo "%APPVEYOR_PULL_REQUEST_TITLE%"
+    - cmd: echo "%APPVEYOR_JOB_ID%"
+    - cmd: echo "%APPVEYOR_REPO_PROVIDER%"
+    - cmd: echo "%APPVEYOR_REPO_SCM%"
+    - cmd: echo "%APPVEYOR_REPO_NAME%"
+    - cmd: echo "%APPVEYOR_REPO_BRANCH%"
+    - cmd: echo "%APPVEYOR_REPO_TAG%"
+    - cmd: echo "%APPVEYOR_REPO_TAG_NAME%"
+    - cmd: echo "%APPVEYOR_REPO_COMMIT%"
+    #- cmd: echo "%APPVEYOR_REPO_COMMIT_AUTHOR%"
+    #- cmd: echo "%APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL%"
+    - cmd: echo "%APPVEYOR_REPO_COMMIT_TIMESTAMP%"
+    - cmd: echo "%APPVEYOR_REPO_COMMIT_MESSAGE%"
+    - cmd: echo "%APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED%"
+    - cmd: echo "%APPVEYOR_SCHEDULED_BUILD%"
+    - cmd: echo "%APPVEYOR_FORCED_BUILD%"
+    - cmd: echo "%APPVEYOR_RE_BUILD%"
+    - cmd: echo "%PLATFORM%"
+    - cmd: echo "%CONFIGURATION%"
+
+    #-------------------------------------------------------------------------------
+    # Clone boost.
+    # If fibers are enabled we need boost develop branch.
+    - ps: |
+        if ($env:ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE -eq "ON") {
+            if ($env:ALPAKA_BOOST_BRANCH -ne "develop") {
+                $env:ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE = "OFF"
+                write-warning "ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF set because boost fibers requires boost develop branch!"
+            }
+        }
+
+    - cmd: set BOOST_ROOT=C:\projects\boost
+    - cmd: set ALPAKA_B2_STAGE_DIR=C:\projects\boost_libs
+    - cmd: set BOOST_LIBRARYDIR=%ALPAKA_B2_STAGE_DIR%\lib
+    - cmd: git clone -b %ALPAKA_BOOST_BRANCH% --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git %BOOST_ROOT%
+    - cmd: cd %BOOST_ROOT%
+
+    # Clone boost.fiber.
+    - cmd: cd libs
+    - cmd: if "%ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE%"=="ON" git clone -b develop --single-branch --depth 1 https://github.com/olk/boost-fiber.git fiber
+    - cmd: cd ..
+
+    # Prepare building of boost.
+    - cmd: call bootstrap.bat
+    # Create file links.
+    - cmd: b2 headers
+
+    - cmd: if "%PLATFORM%"=="Win32" set BOOST_ADDRESS_MODEL=32
+    - cmd: if "%PLATFORM%"=="x64" set BOOST_ADDRESS_MODEL=64
+    - cmd: if "%CONFIGURATION%"=="Debug" set BOOST_VARIANT=debug
+    - cmd: if "%CONFIGURATION%"=="Release" set BOOST_VARIANT=release
+    # Select the libraries required.
+    - cmd: set ALPAKA_BOOST_B2=--with-test
+    - cmd: if "%ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE%"=="ON" set ALPAKA_BOOST_B2=%ALPAKA_BOOST_B2% --with-fiber --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time
+
+    - cmd: b2 -j2 --toolset=msvc-14.0 --layout=versioned %ALPAKA_BOOST_B2% architecture=x86 address-model=%BOOST_ADDRESS_MODEL% variant=%BOOST_VARIANT% link=static threading=multi runtime-link=shared define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS --stagedir="%ALPAKA_B2_STAGE_DIR%"
+
+    #-------------------------------------------------------------------------------
+    # Build the visual studio soultion from the cmake files.
+    - cmd: cd C:\projects\alpaka
+
+    - cmd: if "%PLATFORM%"=="Win32" set ALPAKA_CMAKE_GENERATOR_NAME=Visual Studio 14 2015
+    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
+    - cmd: mkdir build
+    - cmd: cd build
+    - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF -DALPAKA_DEBUG="%ALPAKA_DEBUG%" ".."
+
+    # TODO: Use something like the following if clang fully supports to build alpaka on Sindows. 
+    #- cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -T LLVM-vs2014 -DCMAKE_CXX_COMPILER="C:\\Program Files\\LLVM\\msbuild-bin\\cl.exe" ..
+    #- cmd: cmake .. -DCMAKE_CXX_COMPILER="C:\\projects\\alpaka\\$_OUTDIR\\bin\\clang++.exe"
+
+build:
+    project: C:\projects\alpaka\build\alpakaAll.sln
+    parallel: true
+    # quiet|minimal|normal|detailed
+    verbosity: minimal
+
+# scripts to run after build
+# TODO: run unit tests
+after_build:
