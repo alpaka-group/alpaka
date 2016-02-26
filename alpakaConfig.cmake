@@ -74,6 +74,10 @@ INCLUDE("${_ALPAKA_COMMON_FILE}")
 SET(_ALPAKA_ADD_EXECUTABLE_FILE "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake")
 INCLUDE("${_ALPAKA_ADD_EXECUTABLE_FILE}")
 
+# Add ALPAKA_ADD_LIBRARY function.
+SET(_ALPAKA_ADD_LIBRARY_FILE "${_ALPAKA_ROOT_DIR}/cmake/addLibrary.cmake")
+INCLUDE("${_ALPAKA_ADD_LIBRARY_FILE}")
+
 # Set found to true initially and set it to false if a required dependency is missing.
 SET(_ALPAKA_FOUND TRUE)
 
