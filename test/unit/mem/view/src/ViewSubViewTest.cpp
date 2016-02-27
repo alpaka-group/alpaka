@@ -30,6 +30,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>              // alpaka::test::acc::TestAccs
 #include <alpaka/test/stream/Stream.hpp>        // DefaultStream
+#include <alpaka/test/mem/view/ViewTest.hpp>    // viewTest
 #include <alpaka/test/mem/view/Iterator.hpp>    // Iterator
 
 #include <boost/test/unit_test.hpp>
@@ -38,66 +39,7 @@
 #include <type_traits>                          // std::is_same
 #include <numeric>                              // std::iota
 
-BOOST_AUTO_TEST_SUITE(acc)
-
-//#############################################################################
-//!
-//#############################################################################
-struct CheckPitchBytesIdentical
-{
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    CheckPitchBytesIdentical()
-    {};
-
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    template<
-        typename TIdx,
-        typename TView1,
-        typename TView2>
-    auto operator()(
-        TView1 const & view1,
-        TView2 const & view2) const
-    -> void
-    {
-        BOOST_REQUIRE_EQUAL(
-            alpaka::mem::view::getPitchBytes<TIdx::value>(view1),
-            alpaka::mem::view::getPitchBytes<TIdx::value>(view2));
-    }
-};
-
-//#############################################################################
-//!
-//#############################################################################
-struct CheckPitchBytesIdentical2
-{
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    CheckPitchBytesIdentical2()
-    {};
-
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    template<
-        typename TIdx,
-        typename TDim,
-        typename TSize,
-        typename TView2>
-    auto operator()(
-        alpaka::Vec<TDim, TSize> const & vec,
-        TView2 const & view2) const
-    -> void
-    {
-        BOOST_REQUIRE_EQUAL(
-            vec[TIdx::value],
-            alpaka::mem::view::getPitchBytes<TIdx::value>(view2));
-    }
-};
+BOOST_AUTO_TEST_SUITE(memView)
 
 //#############################################################################
 //! 1D: sizeof(TSize) * (5)
@@ -169,10 +111,11 @@ static auto createVecFromIndexedFn()
                 TSize());
 }
 
-//-----------------------------------------------------------------------------
+//#############################################################################
 //! Compares iterators element-wise
-//-----------------------------------------------------------------------------
-struct CompareBufferKernel {
+//#############################################################################
+struct CompareBufferKernel
+{
     template<
         typename TAcc,
         typename TIterA,
@@ -180,7 +123,7 @@ struct CompareBufferKernel {
     ALPAKA_FN_ACC void operator()(
         TAcc const & acc,
         TIterA beginA,
-        TIterA endA,
+        TIterA const & endA,
         TIterB beginB) const
     {
         (void)acc;
@@ -222,102 +165,44 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     View view(buf, extentView, offsetView);
 
     //-----------------------------------------------------------------------------
-    // alpaka::dev::traits::DevType
-    {
-        static_assert(
-            std::is_same<alpaka::dev::Dev<View>, Dev>::value,
-            "The device type of the view has to be equal to the specified one.");
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::dev::traits::GetDev
-    {
-        BOOST_REQUIRE(
-            dev == alpaka::dev::getDev(view));
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::dim::traits::DimType
-    {
-        static_assert(
-            alpaka::dim::Dim<View>::value == Dim::value,
-            "The dimensionality of the view has to be equal to the specified one.");
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::elem::traits::ElemType
-    {
-        static_assert(
-            std::is_same<alpaka::elem::Elem<View>, Elem>::value,
-            "The element type of the view has to be equal to the specified one.");
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::extent::traits::GetExtent
-    {
-        BOOST_REQUIRE_EQUAL(
+    viewTest<
+        Elem>(
+            view,
+            dev,
             extentView,
-            alpaka::extent::getExtentVec(view));
-    }
+            offsetView);
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::view::traits::GetPitchBytes
     // The pitch of the view has to be identical to the pitch of the underlying buffer in all dimensions.
     {
-        using IdxSequence1 = alpaka::meta::MakeIndexSequence<Dim::value + 1u>;
-        using DimSequence1 = alpaka::meta::TransformIntegerSequence<std::tuple, std::size_t, alpaka::dim::DimInt, IdxSequence1>;
-        CheckPitchBytesIdentical const checkPitchBytesIdentical;
-        alpaka::meta::forEachType<
-            DimSequence1>(
-                checkPitchBytesIdentical,
-                buf,
-                view);
+        auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
+        auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
 
-        // The pitches have to be exactly the values we calculate here.
-        auto pitches(alpaka::Vec<alpaka::dim::DimInt<Dim::value + 1u>, Size>::ones());
-        // Initialize the pitch between two elements of the X dimension ...
-        pitches[Dim::value] = sizeof(Elem);
-        // ... and fill all the other dimensions.
         for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
         {
-            pitches[i-1] = extentBuf[i-1] * pitches[i];
+            BOOST_REQUIRE_EQUAL(
+                pitchBuf[i-1u],
+                pitchView[i-1u]);
         }
-        CheckPitchBytesIdentical2 const checkPitchBytesIdentical2;
-        alpaka::meta::forEachType<
-            DimSequence1>(
-                checkPitchBytesIdentical2,
-                pitches,
-                view);
-    //}
+    }
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::view::traits::GetPtrNative
     // The native pointer has to be exactly the value we calculate here.
-    //{
-        auto viewPtrNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::view::getPtrNative(buf)));
+    {
+        auto viewPtrNative(
+            reinterpret_cast<std::uint8_t *>(
+                alpaka::mem::view::getPtrNative(buf)));
+        auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
         for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
         {
-            viewPtrNative += offsetView[i - 1u] * pitches[i];
+            auto const pitch = (i < Dim::value) ? pitchBuf[i] : sizeof(Elem);
+            viewPtrNative += offsetView[i - 1u] * pitch;
         }
         BOOST_REQUIRE_EQUAL(
             reinterpret_cast<Elem *>(viewPtrNative),
             alpaka::mem::view::getPtrNative(view));
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::offset::traits::GetOffset
-    {
-        BOOST_REQUIRE_EQUAL(
-            offsetView,
-            alpaka::offset::getOffsetVec(view));
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::size::traits::SizeType
-    {
-        static_assert(
-            std::is_same<alpaka::size::Size<View>, Size>::value,
-            "The size type of the view has to be equal to the specified one.");
     }
 }
 
@@ -341,7 +226,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using DevHost = alpaka::dev::DevCpu;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
 
-    using View = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
+    using ViewSubView = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
     using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
 
     const Size nElementsPerDim = static_cast<Size>(4u);
@@ -354,9 +239,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     using Vec = alpaka::Vec<Dim, Size>;
 
-    const auto elementsPerThread(Vec::all(static_cast<Size>(1u)));
-    const auto threadsPerBlock(Vec::all(static_cast<Size>(1u)));
-    const auto blocksPerGrid(Vec::all(static_cast<Size>(1u)));
+    const auto elementsPerThread(Vec::ones());
+    const auto threadsPerBlock(Vec::ones());
+    const auto blocksPerGrid(Vec::ones());
 
     WorkDiv const workdiv(
         alpaka::workdiv::WorkDivMembers<Dim, Size>(
@@ -364,18 +249,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             threadsPerBlock,
             elementsPerThread));
 
-    auto const extentBuf(Vec::all(nElementsPerDim));
-    auto const extentView(Vec::all(nElementsPerDimView));
-    auto const offsetView(Vec::all(offsetInAllDims));
-    auto buf(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentBuf));
-    auto buf2(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentView));
-    View view(buf, extentView, offsetView);
-
     // Init buf with increasing values
+    auto const extentBuf(Vec::all(nElementsPerDim));
+    auto bufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentBuf));
     std::vector<Elem> v(static_cast<std::size_t>(extentBuf.prod()), static_cast<Elem>(0u));
     std::iota(v.begin(), v.end(), static_cast<Elem>(0u));
-    ViewPlainPtr plainBuf(v.data(), devHost, extentBuf);
-    alpaka::mem::view::copy(stream, buf, plainBuf, extentBuf);
+    ViewPlainPtr viewHost(v.data(), devHost, extentBuf);
+    alpaka::mem::view::copy(stream, bufAcc, viewHost, extentBuf);
+
+    // Create sub-view for buf.
+    auto const extentView(Vec::all(nElementsPerDimView));
+    auto const offsetView(Vec::all(offsetInAllDims));
+    ViewSubView subViewAcc(bufAcc, extentView, offsetView);
+
+    // Create 2nd buffer only containing the sub-view.
+    auto referenceBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentView));
 
     CompareBufferKernel compareBufferKernel;
 
@@ -384,15 +272,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     case 1:
         {
             std::vector<Elem> v2{1,2};
-            ViewPlainPtr plainBuf2(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, buf2, plainBuf2, extentView);
+            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
+            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
             auto const compare(
                 alpaka::exec::create<TAcc>(
                     workdiv,
                     compareBufferKernel,
-                    alpaka::test::mem::view::begin(buf2),
-                    alpaka::test::mem::view::end(buf2),
-                    alpaka::test::mem::view::begin(view)));
+                    alpaka::test::mem::view::begin(referenceBufAcc),
+                    alpaka::test::mem::view::end(referenceBufAcc),
+                    alpaka::test::mem::view::begin(subViewAcc)));
             alpaka::stream::enqueue(stream, compare);
             alpaka::wait::wait(stream);
         break;
@@ -400,15 +288,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     case 2:
         {
             std::vector<Elem> v2{5, 6, 9, 10};
-            ViewPlainPtr plainBuf2(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, buf2, plainBuf2, extentView);
+            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
+            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
             auto const compare(
                 alpaka::exec::create<TAcc>(
                     workdiv,
                     compareBufferKernel,
-                    alpaka::test::mem::view::begin(buf2),
-                    alpaka::test::mem::view::end(buf2),
-                    alpaka::test::mem::view::begin(view)));
+                    alpaka::test::mem::view::begin(referenceBufAcc),
+                    alpaka::test::mem::view::end(referenceBufAcc),
+                    alpaka::test::mem::view::begin(subViewAcc)));
             alpaka::stream::enqueue(stream, compare);
             alpaka::wait::wait(stream);
             break;
@@ -416,15 +304,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     case 3:
         {
             std::vector<Elem> v2{21, 22, 25, 26, 37, 38, 41, 42};
-            ViewPlainPtr plainBuf2(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, buf2, plainBuf2, extentView);
+            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
+            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
             auto const compare(
                 alpaka::exec::create<TAcc>(
                     workdiv,
                     compareBufferKernel,
-                    alpaka::test::mem::view::begin(buf2),
-                    alpaka::test::mem::view::end(buf2),
-                    alpaka::test::mem::view::begin(view)));
+                    alpaka::test::mem::view::begin(referenceBufAcc),
+                    alpaka::test::mem::view::end(referenceBufAcc),
+                    alpaka::test::mem::view::begin(subViewAcc)));
             alpaka::stream::enqueue(stream, compare);
             alpaka::wait::wait(stream);
             break;
@@ -433,15 +321,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         {
             /*
             std::vector<Elem> v2{75, 76, 78, 79, 91, 92, 95, 96, 139, 140, 143, 144, 155, 156, 159, 160};
-            ViewPlainPtr plainBuf2(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, buf2, plainBuf2, extentView);
+            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
+            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
             auto const compare(
                 alpaka::exec::create<TAcc>(
                     workdiv,
                     compareBufferKernel,
-                    alpaka::test::mem::view::begin(buf2),
-                    alpaka::test::mem::view::end(buf2),
-                    alpaka::test::mem::view::begin(view)));
+                    alpaka::test::mem::view::begin(referenceBufAcc),
+                    alpaka::test::mem::view::end(referenceBufAcc),
+                    alpaka::test::mem::view::begin(subViewAcc)));
             */
             alpaka::wait::wait(stream);
             break;
