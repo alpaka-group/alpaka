@@ -56,7 +56,7 @@ INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
 SET(_SOURCE_DIR "src/")
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE)
+append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "cpp" _FILES_SOURCE)
 
 IF(MSVC)
     LIST(APPEND _COMPILE_DEFINITIONS_PRIVATE "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
