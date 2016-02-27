@@ -26,24 +26,8 @@
 
 #include <boost/config.hpp> // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
-// nvcc does not currently support boost correctly.
-// boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <queue>        // std::queue
-    #include <mutex>        // std::mutex
-#else
-    #if BOOST_COMP_MSVC
-        #pragma warning(push)
-        #pragma warning(disable: 4244)  // boost/lockfree/detail/tagged_ptr_ptrcompression.hpp(59): warning C4244: '=': conversion from 'int' to 'boost::lockfree::detail::tagged_ptr<boost::lockfree::detail::freelist_stack<T,Alloc>::freelist_node>::tag_t', possible loss of data
-    #endif
-
-    #include <boost/lockfree/queue.hpp>
-
-    #if BOOST_COMP_MSVC
-        #pragma warning(pop)
-    #endif
-#endif
-
+#include <queue>            // std::queue
+#include <mutex>            // std::mutex
 #include <stdexcept>        // std::current_exception
 #include <vector>           // std::vector
 #include <exception>        // std::runtime_error
@@ -57,7 +41,6 @@ namespace alpaka
     {
         namespace detail
         {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
             //#############################################################################
             //!
             //#############################################################################
@@ -85,12 +68,12 @@ namespace alpaka
                 //! Pushes the given value onto the back of the queue.
                 //-----------------------------------------------------------------------------
                 auto push(
-                    T const & t)
+                    T && t)
                 -> void
                 {
                     std::lock_guard<std::mutex> lk(m_Mutex);
 
-                    std::queue<T>::push(t);
+                    std::queue<T>::push(std::forward<T>(t));
                 }
                 //-----------------------------------------------------------------------------
                 //! Pops the given value from the front of the queue.
@@ -116,14 +99,7 @@ namespace alpaka
             private:
                 std::mutex m_Mutex;
             };
-#else
-            //#############################################################################
-            //!
-            //#############################################################################
-            template<
-                typename T>
-            using ThreadSafeQueue = boost::lockfree::queue<T>;
-#endif
+
             //#############################################################################
             //! ITaskPkg.
             //#############################################################################
@@ -349,7 +325,7 @@ namespace alpaka
 
                     joinAllConcurrentExecs();
 
-                    auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                    auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                     // Signal to each incomplete task that it will not complete due to pool destruction.
                     while(popTask(currentTaskPackage))
@@ -388,16 +364,13 @@ namespace alpaka
                     // Return type of the function object, can be void via specialization of TaskPkg.
                     using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
-                    // Ensures no memory leak if push throws.
-                    // \TODO: C++14 std::make_unique would be better.
-                    auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                    auto future(packagePtr->m_Promise.get_future());
+                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                    std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
-                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
+                    auto future(pTaskPackage->m_Promise.get_future());
 
-                    // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
-                    packagePtr.release();
+                    m_qTasks.push(std::move(upTaskPackage));
 
                     return future;
                 }
@@ -427,7 +400,7 @@ namespace alpaka
                     // Checks whether pool is being destroyed, if so, stop running.
                     while(!m_bShutdownFlag.load(std::memory_order_relaxed))
                     {
-                        auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                        auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                         // Use popTask so we only ever have one reference to the ITaskPkg
                         if(popTask(currentTaskPackage))
@@ -455,14 +428,11 @@ namespace alpaka
                 //! Pops a task from the queue.
                 //-----------------------------------------------------------------------------
                 auto popTask(
-                    std::unique_ptr<ITaskPkg> & out)
+                    std::shared_ptr<ITaskPkg> & out)
                 -> bool
                 {
-                    ITaskPkg * tempPtr(nullptr);
-
-                    if(m_qTasks.pop(tempPtr))
+                    if(m_qTasks.pop(out))
                     {
-                        out.reset(tempPtr);
                         return true;
                     }
                     return false;
@@ -470,7 +440,7 @@ namespace alpaka
 
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
-                ThreadSafeQueue<ITaskPkg *> m_qTasks;
+                ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
                 std::atomic<bool> m_bShutdownFlag;
             };
 
@@ -574,7 +544,7 @@ namespace alpaka
 
                     joinAllConcurrentExecs();
 
-                    auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                    auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                     // Signal to each incomplete task that it will not complete due to pool destruction.
                     while(popTask(currentTaskPackage))
@@ -613,16 +583,13 @@ namespace alpaka
                     // Return type of the function object, can be void via specialization of TaskPkg.
                     using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
-                    // Ensures no memory leak if push throws.
-                    // \TODO: C++14 std::make_unique would be better.
-                    auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                    auto future(packagePtr->m_Promise.get_future());
+                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                    std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
-                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
+                    auto future(pTaskPackage->m_Promise.get_future());
 
-                    // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
-                    packagePtr.release();
+                    m_qTasks.push(std::move(upTaskPackage));
 
                     m_cvWakeup.notify_one();
 
@@ -654,7 +621,7 @@ namespace alpaka
                     // Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).
                     while(!m_bShutdownFlag)
                     {
-                        auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                        auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                         // Use popTask so we only ever have one reference to the ITaskPkg
                         if(popTask(currentTaskPackage))
@@ -690,14 +657,11 @@ namespace alpaka
                 //! Pops a task from the queue.
                 //-----------------------------------------------------------------------------
                 auto popTask(
-                    std::unique_ptr<ITaskPkg> & out)
+                    std::shared_ptr<ITaskPkg> & out)
                 -> bool
                 {
-                    ITaskPkg * tempPtr(nullptr);
-
-                    if(m_qTasks.pop(tempPtr))
+                    if(m_qTasks.pop(out))
                     {
-                        out.reset(tempPtr);
                         return true;
                     }
                     return false;
@@ -705,7 +669,7 @@ namespace alpaka
 
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
-                ThreadSafeQueue<ITaskPkg *> m_qTasks;
+                ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
 
                 TMutex m_mtxWakeup;
                 std::atomic<bool> m_bShutdownFlag;
