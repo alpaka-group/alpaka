@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
         for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
         {
-            auto const pitch = (i < Dim::value) ? pitchBuf[i] : static_cast<Size>(sizeof(Elem));
+            auto const pitch = (i < static_cast<Size>(Dim::value)) ? pitchBuf[i] : static_cast<Size>(sizeof(Elem));
             viewPtrNative += offsetView[i - 1u] * pitch;
         }
         BOOST_REQUIRE_EQUAL(
