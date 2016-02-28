@@ -70,8 +70,8 @@ namespace alpaka
             //#############################################################################
             //! The OpenMP accelerator atomic operation.
             //
-            // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
-            // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
+            // NOTE: We can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed.
+            // So this would not be fully atomic. Between the store of the old value and the operation could be a context switch.
             //#############################################################################
             template<
                 typename TOp,
@@ -92,9 +92,29 @@ namespace alpaka
                 {
                     boost::ignore_unused(atomic);
                     T old;
+                    // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                     #pragma omp critical (AlpakaOmpAtomicOp)
                     {
                         old = TOp()(addr, value);
+                    }
+                    return old;
+                }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                    atomic::AtomicOmpCritSec const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    boost::ignore_unused(atomic);
+                    T old;
+                    // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
+                    #pragma omp critical (AlpakaOmpAtomicOp2)
+                    {
+                        old = TOp()(addr, compare, value);
                     }
                     return old;
                 }

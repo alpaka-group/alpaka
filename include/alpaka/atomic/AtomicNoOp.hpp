@@ -88,6 +88,19 @@ namespace alpaka
                     boost::ignore_unused(atomic);
                     return TOp()(addr, value);
                 }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                    atomic::AtomicNoOp const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    boost::ignore_unused(atomic);
+                    return TOp()(addr, compare, value);
+                }
             };
         }
     }

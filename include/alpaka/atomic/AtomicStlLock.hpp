@@ -100,6 +100,21 @@ namespace alpaka
                     std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
                     return TOp()(addr, value);
                 }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                    atomic::AtomicStlLock const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
+                    // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.
+                    std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
+                    return TOp()(addr, compare, value);
+                }
             };
         }
     }
