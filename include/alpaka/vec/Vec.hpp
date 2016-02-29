@@ -596,6 +596,56 @@ namespace alpaka
 
     namespace detail
     {
+        //##################################################################################
+        //! A function object that returns the difference of the two input vectors elements.
+        //##################################################################################
+        template<
+            std::size_t Tidx>
+        struct CreateSub
+        {
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<
+                typename TDim,
+                typename TSize>
+            ALPAKA_FN_HOST_ACC static auto create(
+                Vec<TDim, TSize> const & p,
+                Vec<TDim, TSize> const & q)
+            -> TSize
+            {
+                return p[Tidx] - q[Tidx];
+            }
+        };
+    }
+    //-----------------------------------------------------------------------------
+    //! \return The element wise difference of two vectors.
+    //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<
+        typename TDim,
+        typename TSize>
+    ALPAKA_FN_HOST_ACC auto operator-(
+        Vec<TDim, TSize> const & p,
+        Vec<TDim, TSize> const & q)
+    -> Vec<TDim, TSize>
+    {
+        return
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+            Vec<TDim, TSize>::template
+#endif
+            createVecFromIndexedFn<
+#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                TDim,
+#endif
+                detail::CreateSub>(
+                    p,
+                    q);
+    }
+
+    namespace detail
+    {
         //#############################################################################
         //! A function object that returns the product of the two input vectors elements.
         //#############################################################################
