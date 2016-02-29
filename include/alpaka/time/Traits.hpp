@@ -21,9 +21,11 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -76,8 +78,11 @@ namespace alpaka
             struct Clock<
                 TTime,
                 typename std::enable_if<
-                    std::is_base_of<typename TTime::TimeBase, typename std::decay<TTime>::type>::value
-                    && (!std::is_same<typename TTime::TimeBase, typename std::decay<TTime>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TTime::TimeBase,
+                        TTime
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //!

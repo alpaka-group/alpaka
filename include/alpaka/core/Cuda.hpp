@@ -27,12 +27,12 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
 #include <alpaka/elem/Traits.hpp>           // ElemType
 #include <alpaka/offset/Traits.hpp>         // GetOffset/SetOffset
 #include <alpaka/extent/Traits.hpp>         // GetExtent/SetExtent
 #include <alpaka/size/Traits.hpp>           // SizeType
 #include <alpaka/vec/Vec.hpp>               // Vec
+#include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
 #include <alpaka/meta/Metafunctions.hpp>    // meta::Conjunction
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 

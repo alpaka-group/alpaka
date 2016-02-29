@@ -21,9 +21,11 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -80,8 +82,11 @@ namespace alpaka
                 struct SyncBlockThread<
                     TBlockSync,
                     typename std::enable_if<
-                        std::is_base_of<typename TBlockSync::BlockSyncBase, typename std::decay<TBlockSync>::type>::value
-                        && (!std::is_same<typename TBlockSync::BlockSyncBase, typename std::decay<TBlockSync>::type>::value)>::type>
+                        meta::IsStrictBase<
+                            typename TBlockSync::BlockSyncBase,
+                            TBlockSync
+                        >::value
+                    >::type>
                 {
                     //-----------------------------------------------------------------------------
                     //!

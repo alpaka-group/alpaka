@@ -21,12 +21,14 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
-#include <utility>                  // std::declval
-#include <type_traits>              // std::is_integral, std::is_floating_point, ...
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <utility>                      // std::declval
+#include <type_traits>                  // std::is_integral, std::is_floating_point, ...
 
 namespace alpaka
 {
@@ -313,8 +315,11 @@ namespace alpaka
                 struct CreateDefault<
                     TRand,
                     typename std::enable_if<
-                        std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
-                        && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
+                        meta::IsStrictBase<
+                            typename TRand::RandBase,
+                            TRand
+                        >::value
+                    >::type>
                 {
                     //-----------------------------------------------------------------------------
                     //

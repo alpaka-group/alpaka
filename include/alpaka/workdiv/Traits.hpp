@@ -21,16 +21,18 @@
 
 #pragma once
 
-#include <alpaka/size/Traits.hpp>           // Size
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <alpaka/vec/Vec.hpp>               // Vec<N>
-#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/size/Traits.hpp>       // Size
 
-#include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <alpaka/vec/Vec.hpp>           // Vec<N>
+#include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Threads
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
-#include <type_traits>                      // std::enable_if, std::is_base_of, std::is_same, std::decay
-#include <utility>                          // std::forward
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
+#include <utility>                      // std::forward
 
 namespace alpaka
 {
@@ -88,8 +90,11 @@ namespace alpaka
                 origin::Grid,
                 unit::Blocks,
                 typename std::enable_if<
-                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
-                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TWorkDiv::WorkDivBase,
+                        TWorkDiv
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -117,8 +122,11 @@ namespace alpaka
                 origin::Block,
                 unit::Threads,
                 typename std::enable_if<
-                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
-                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TWorkDiv::WorkDivBase,
+                        TWorkDiv
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -146,8 +154,11 @@ namespace alpaka
                 origin::Thread,
                 unit::Elems,
                 typename std::enable_if<
-                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
-                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TWorkDiv::WorkDivBase,
+                        TWorkDiv
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
