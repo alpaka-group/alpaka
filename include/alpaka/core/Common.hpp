@@ -42,6 +42,11 @@
     #define ALPAKA_FN_ACC __device__ __host__ __forceinline__
     #define ALPAKA_FN_HOST_ACC __device__ __host__ __forceinline__
     #define ALPAKA_FN_HOST __host__ __forceinline__
+    #define ALPAKA_FN_NO_INLINE_ACC_CUDA_ONLY __device__
+    #define ALPAKA_FN_NO_INLINE_ACC_NO_CUDA __host__
+    #define ALPAKA_FN_NO_INLINE_ACC __device__ __host__
+    #define ALPAKA_FN_NO_INLINE_HOST_ACC __device__ __host__
+    #define ALPAKA_FN_NO_INLINE_HOST __host__
 #else
     // NOTE: ALPAKA_FN_ACC_CUDA_ONLY should not be defined to cause build failures when CUDA only functions are used and CUDA is disabled.
     // However, this also destroys syntax highlighting.
@@ -50,6 +55,11 @@
     #define ALPAKA_FN_ACC inline
     #define ALPAKA_FN_HOST_ACC inline
     #define ALPAKA_FN_HOST inline
+    #define ALPAKA_FN_NO_INLINE_ACC_CUDA_ONLY
+    #define ALPAKA_FN_NO_INLINE_ACC_NO_CUDA
+    #define ALPAKA_FN_NO_INLINE_ACC
+    #define ALPAKA_FN_NO_INLINE_HOST_ACC
+    #define ALPAKA_FN_NO_INLINE_HOST
 #endif
 
 //-----------------------------------------------------------------------------
