@@ -488,12 +488,15 @@ script:
     - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then ./travis/compileExec.sh "test/analysis/headerCheck/" ./headerCheck ;fi
 
     #-------------------------------------------------------------------------------
-    # Build and execute all unit tests (beginning with most general libraries).
-    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/meta/" ./meta ;fi
+    # Build and execute all unit tests.
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/acc/" ./acc ;fi
-    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/kernel/" ./kernel ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/atomic/" ./atomic ;fi
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/block/shared/" ./blockShared ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/kernel/" ./kernel ;fi
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/mem/view/" ./memView ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/meta/" ./meta ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/time/" ./time ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/vec/" ./vec ;fi
 
     #-------------------------------------------------------------------------------
     # Build and execute all integration tests.

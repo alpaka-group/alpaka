@@ -21,9 +21,11 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -80,6 +82,41 @@ namespace alpaka
                     value);
         }
 
+        //-----------------------------------------------------------------------------
+        //! Executes the given operation atomically.
+        //!
+        //! \tparam TOp The operation type.
+        //! \tparam TAtomic The atomic implementation type.
+        //! \tparam T The value type.
+        //! \param atomic The atomic implementation.
+        //! \param addr The value to change atomically.
+        //! \param compare The comparison value used in the atomic operation.
+        //! \param value The value used in the atomic operation.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TOp,
+            typename TAtomic,
+            typename T>
+        ALPAKA_FN_HOST_ACC auto atomicOp(
+            TAtomic const & atomic,
+            T * const addr,
+            T const & compare,
+            T const & value)
+        -> T
+        {
+            return
+                traits::AtomicOp<
+                    TOp,
+                    TAtomic,
+                    T>
+                ::atomicOp(
+                    atomic,
+                    addr,
+                    compare,
+                    value);
+        }
+
         namespace traits
         {
             //#############################################################################
@@ -94,8 +131,11 @@ namespace alpaka
                 TAtomic,
                 T,
                 typename std::enable_if<
-                    std::is_base_of<typename TAtomic::AtomicBase, typename std::decay<TAtomic>::type>::value
-                    && (!std::is_same<typename TAtomic::AtomicBase, typename std::decay<TAtomic>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TAtomic::AtomicBase,
+                        TAtomic
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -113,6 +153,26 @@ namespace alpaka
                             TOp>(
                                 static_cast<typename TAtomic::AtomicBase const &>(atomic),
                                 addr,
+                                value);
+                }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto atomicOp(
+                    TAtomic const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    // Delegate the call to the base class.
+                    return
+                        atomic::atomicOp<
+                            TOp>(
+                                static_cast<typename TAtomic::AtomicBase const &>(atomic),
+                                addr,
+                                compare,
                                 value);
                 }
             };

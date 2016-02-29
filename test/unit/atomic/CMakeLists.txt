@@ -30,7 +30,7 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 # Project.
 ################################################################################
 
-SET(_TARGET_NAME "time")
+SET(_TARGET_NAME "atomic")
 
 PROJECT(${_TARGET_NAME})
 

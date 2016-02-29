@@ -75,7 +75,7 @@ namespace alpaka
                     alpaka::exec::create<Acc>(
                         m_workDiv,
                         kernelFnObj,
-                        std::forward<TArgs>(args)...));
+                        args...));
 
                 alpaka::stream::enqueue(m_stream, exec);
 
