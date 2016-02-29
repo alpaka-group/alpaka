@@ -221,7 +221,7 @@ namespace alpaka
                                 std::size_t freeGlobalMemSizeBytes(0);
                                 if(file >> freeGlobalMemSizeBytes)
                                 {
-                                    return freeGlobalMemSizeBytes;
+                                    return freeGlobalMemSizeBytes * size_t(1024);
                                 }
                                 else
                                 {
