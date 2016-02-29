@@ -518,18 +518,21 @@ namespace alpaka
                         if(!mem::buf::isPinned(buf))
                         {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-                            // - cudaHostRegisterDefault:
-                            //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
-                            // - cudaHostRegisterPortable:
-                            //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
-                            ALPAKA_CUDA_RT_CHECK_IGNORE(
-                                cudaHostRegister(
-                                    const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtent(buf) * sizeof(elem::Elem<buf::BufCpu<TElem, TDim, TSize>>),
-                                    cudaHostRegisterDefault),
-                                cudaErrorHostMemoryAlreadyRegistered);
+                            if(buf.m_spBufCpuImpl->m_extentElements.prod() != 0)
+                            {
+                                // - cudaHostRegisterDefault:
+                                //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
+                                // - cudaHostRegisterPortable:
+                                //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
+                                ALPAKA_CUDA_RT_CHECK_IGNORE(
+                                    cudaHostRegister(
+                                        const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
+                                        extent::getProductOfExtent(buf) * sizeof(elem::Elem<buf::BufCpu<TElem, TDim, TSize>>),
+                                        cudaHostRegisterDefault),
+                                    cudaErrorHostMemoryAlreadyRegistered);
 
-                            buf.m_spBufCpuImpl->m_bPinned = true;
+                                buf.m_spBufCpuImpl->m_bPinned = true;
+                            }
 #else
                             static_assert(
                                 meta::DependentFalseType<TElem>::value,
