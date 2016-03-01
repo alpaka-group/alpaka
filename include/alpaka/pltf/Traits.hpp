@@ -20,11 +20,12 @@
 */
 
 #pragma once
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
+#include <alpaka/dev/Traits.hpp>    // dev::Dev
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
-#include <alpaka/dev/Traits.hpp>        // dev::Dev
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
-#include <vector>                       // std::vector
+#include <vector>                   // std::vector
 
 namespace alpaka
 {
@@ -76,7 +77,9 @@ namespace alpaka
         template<
             typename TPltf>
         ALPAKA_FN_HOST auto getDevCount()
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(traits::GetDevCount<TPltf>::getDevCount())
+#endif
         {
             return
                 traits::GetDevCount<
@@ -91,7 +94,9 @@ namespace alpaka
             typename TPltf>
         ALPAKA_FN_HOST auto getDevByIdx(
             std::size_t const & devIdx)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(traits::GetDevByIdx<TPltf>::getDevByIdx(devIdx))
+#endif
         {
             return
                 traits::GetDevByIdx<

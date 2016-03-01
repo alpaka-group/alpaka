@@ -28,10 +28,10 @@
 #include <alpaka/offset/Traits.hpp>         // offset::getOffsetX, ...
 #include <alpaka/size/Traits.hpp>           // size::traits::SizeType
 
-#include <alpaka/core/Align.hpp>            // ALPAKA_OPTIMAL_ALIGNMENT_SIZE
 #include <alpaka/meta/IntegerSequence.hpp>  // meta::MakeIntegerSequence
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 #include <alpaka/meta/Fold.hpp>             // meta::foldr
+#include <alpaka/core/Align.hpp>            // ALPAKA_OPTIMAL_ALIGNMENT_SIZE
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
 #include <boost/predef.h>                   // workarounds
 #include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION

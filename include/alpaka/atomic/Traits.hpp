@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
-
 #include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>                  // std::enable_if
 

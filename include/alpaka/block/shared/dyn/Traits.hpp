@@ -21,9 +21,11 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -92,8 +94,11 @@ namespace alpaka
                         T,
                         TBlockSharedMemDyn,
                         typename std::enable_if<
-                            std::is_base_of<typename TBlockSharedMemDyn::BlockSharedMemDynBase, typename std::decay<TBlockSharedMemDyn>::type>::value
-                            && (!std::is_same<typename TBlockSharedMemDyn::BlockSharedMemDynBase, typename std::decay<TBlockSharedMemDyn>::type>::value)>::type>
+                            meta::IsStrictBase<
+                                typename TBlockSharedMemDyn::BlockSharedMemDynBase,
+                                TBlockSharedMemDyn
+                            >::value
+                        >::type>
                     {
                         //-----------------------------------------------------------------------------
                         //!
