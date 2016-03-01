@@ -325,11 +325,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     TestAtomicOperations<TAcc, std::uint16_t>::testAtomicOperations();
 #endif
     TestAtomicOperations<TAcc, std::int32_t>::testAtomicOperations();
-    TestAtomicOperations<TAcc, std::uint32_t>::testAtomicOperations();
 #if !defined(ALPAKA_INTEGRATION_TEST)
+    TestAtomicOperations<TAcc, std::uint32_t>::testAtomicOperations();
     TestAtomicOperations<TAcc, std::int64_t>::testAtomicOperations();
-#endif
     TestAtomicOperations<TAcc, std::uint64_t>::testAtomicOperations();
+#endif
     // Not all atomic operations are possible with floating point values.
     //TestAtomicOperations<TAcc, float>::testAtomicOperations();
     //TestAtomicOperations<TAcc, double>::testAtomicOperations();
