@@ -113,8 +113,6 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    assert(memPtr);
-
                     // Set the current device. \TODO: Is setting the current device before cudaFree required?
                     ALPAKA_CUDA_RT_CHECK(
                         cudaSetDevice(
@@ -368,9 +366,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        assert(width>0);
                         auto const widthBytes(width * sizeof(T));
-                        assert(widthBytes>0);
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -382,7 +378,7 @@ namespace alpaka
                             cudaMalloc(
                                 &memPtr,
                                 widthBytes));
-                        assert((memPtr));
+                        assert(memPtr);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -425,12 +421,7 @@ namespace alpaka
 
                         auto const width(extent::getWidth(extent));
                         auto const widthBytes(width * sizeof(T));
-                        assert(widthBytes>0);
                         auto const height(extent::getHeight(extent));
-#ifndef NDEBUG
-                        auto const elementCount(width * height);
-#endif
-                        assert(elementCount>0);
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(

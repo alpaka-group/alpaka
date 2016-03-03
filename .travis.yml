@@ -491,6 +491,7 @@ script:
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/atomic/" ./atomic ;fi
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/block/shared/" ./blockShared ;fi
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/kernel/" ./kernel ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/mem/buf/" ./memBuf ;fi
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/mem/view/" ./memView ;fi
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/meta/" ./meta ;fi
     - if [ "${ALPAKA_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/time/" ./time ;fi
