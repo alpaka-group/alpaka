@@ -378,7 +378,6 @@ namespace alpaka
                             cudaMalloc(
                                 &memPtr,
                                 widthBytes));
-                        assert(memPtr);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -436,8 +435,7 @@ namespace alpaka
                                 &pitchBytes,
                                 widthBytes,
                                 height));
-                        assert(memPtr);
-                        assert(pitchBytes>=widthBytes);
+                        assert(pitchBytes>=widthBytes||(width*height)==0);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -497,7 +495,6 @@ namespace alpaka
                                 &cudaPitchedPtrVal,
                                 cudaExtentVal));
 
-                        assert(cudaPitchedPtrVal.ptr);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
