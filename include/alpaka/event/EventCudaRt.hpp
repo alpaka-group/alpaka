@@ -158,7 +158,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(EventCudaRt const & rhs) const
             -> bool
             {
-                return (m_spEventCudaImpl->m_CudaEvent == m_spEventCudaImpl->m_CudaEvent);
+                return (m_spEventCudaImpl->m_CudaEvent == rhs.m_spEventCudaImpl->m_CudaEvent);
             }
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
