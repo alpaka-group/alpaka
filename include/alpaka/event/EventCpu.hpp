@@ -281,7 +281,7 @@ namespace alpaka
                         [spEventCpuImpl]()
                         {
                             {
-                                std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
+                                std::lock_guard<std::mutex> lk2(spEventCpuImpl->m_Mutex);
                                 // Nothing to do if it has been re-enqueued to a later position in the queue.
                                 if(spEventCpuImpl->m_canceledEnqueueCount > 0)
                                 {
