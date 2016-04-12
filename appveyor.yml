@@ -69,7 +69,7 @@ environment:
           ALPAKA_DEBUG: 0
           OMP_NUM_THREADS: 3
           ALPAKA_BOOST_BRANCH: boost-1.59.0
-        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: ON
+        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF
           ALPAKA_DEBUG: 0
           OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: develop
