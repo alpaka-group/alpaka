@@ -45,8 +45,8 @@
 #include <type_traits>                      // std::enable_if, std::decay, std::is_same
 #include <algorithm>                        // std::min, std::max, std::min_element, std::max_element
 
-// The nvcc compiler does not support the out of class version.
-#ifdef __CUDACC__
+// The nvcc and intel compiler does not support the out of class version.
+#if defined(__CUDACC__) || defined(__INTEL_COMPILER)
     #define ALPAKA_CREATE_VEC_IN_CLASS
 #endif
 
