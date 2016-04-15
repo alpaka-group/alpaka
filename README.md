@@ -98,15 +98,77 @@ The whole alpaka library can be included with: `#include <alpaka/alpaka.hpp>`
 Code that is not intended to be utilized by the user is hidden in the `detail` namespace.
 
 
+Introduction
+------------
+
+For a quick introduction, feel free to playback the recording of our presentation at
+[GTC 2016](http://mygtc.gputechconf.com/quicklink/858sI36):
+
+ - E. Zenker, R. Widera, G. Juckeland et al.,
+   *Porting the Plasma Simulation PIConGPU to Heterogeneous Architectures with Alpaka*,
+   [video link (39 min)](http://on-demand.gputechconf.com/gtc/2016/video/S6298.html)
+
+
+Citing alpaka
+-------------
+
+Currently all authors of **alpaka** are scientists or connected with
+research. For us to justify the importance and impact of our work, please
+consider citing us accordingly in your derived work and publications:
+
+```latex
+% Peer-Reviewed Publication %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Peer reviewed and accepted publication in
+%   "The Sixth International Workshop on
+%    Accelerators and Hybrid Exascale Systems (AsHES)"
+% at the
+%   "30th IEEE International Parallel and Distributed
+%    Processing Symposium" in Chicago, IL, USA
+@inproceedings{ZenkerAsHES2016,
+  author    = {Erik Zenker and Benjamin Worpitz and Ren{\'{e}} Widera
+               and Axel Huebl and Guido Juckeland and
+               Andreas Kn{\"{u}}pfer and Wolfgang E. Nagel and Michael Bussmann},
+  title     = {Alpaka - An Abstraction Library for Parallel Kernel Acceleration},
+  archivePrefix = "arXiv",
+  eprint    = {1602.08477},
+  keywords  = {Computer science;CUDA;Mathematical Software;nVidia;OpenMP;Package;
+               performance portability;Portability;Tesla K20;Tesla K80},
+  day       = {23},
+  month     = {May},
+  year      = {2016},
+  publisher = {IEEE Computer Society},
+  url       = {http://arxiv.org/abs/1602.08477},
+}
+
+
+% Original Work: Benjamin Worpitz' Master Thesis %%%%%%%%%%
+%
+@MasterThesis{Worpitz2015,
+  author = {Benjamin Worpitz},
+  title  = {Investigating performance portability of a highly scalable
+            particle-in-cell simulation code on various multi-core
+            architectures},
+  school = {{Technische Universit{\"{a}}t Dresden}},
+  month  = {Sep},
+  year   = {2015},
+  type   = {Master Thesis},
+  doi    = {10.5281/zenodo.49768},
+  url    = {http://dx.doi.org/10.5281/zenodo.49768}
+}
+```
+
+
 Authors
 -------
 
-### Maintainers and core developers
+### Maintainers and Core Developers
 
-- Benjamin Worpitz
+- Benjamin Worpitz (original author)
+- Erik Zenker
+- Rene Widera
 
-### Participants, Former Members and Thanks
+### Former Members, Contributions and Thanks
 
 - Dr. Michael Bussmann
-- Rene Widera
 - Axel Huebl
