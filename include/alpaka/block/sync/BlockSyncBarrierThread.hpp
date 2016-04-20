@@ -21,14 +21,15 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
 #include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
 
-#include <alpaka/core/BarrierFiber.hpp> // BarrierFibers
+#include <alpaka/core/BarrierThread.hpp>// BarrierThread
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
 
+#include <thread>                       // std::thread
 #include <mutex>                        // std::mutex
 #include <map>                          // std::map
 
@@ -43,77 +44,42 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TSize>
-            class BlockSyncFiberIdMapBarrier
+            class BlockSyncBarrierThread
             {
             public:
-                using BlockSyncBase = BlockSyncFiberIdMapBarrier;
+                using BlockSyncBase = BlockSyncBarrierThread;
 
-                using Barrier = core::fibers::BarrierFiber<TSize>;
-                using ThreadIdToBarrierIdxMap = std::map<boost::fibers::fiber::id, TSize>;
-                using ThreadIdToBarrierIdxMapIterator = typename ThreadIdToBarrierIdxMap::iterator;
+                using Barrier = core::threads::BarrierThread<TSize>;
 
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncFiberIdMapBarrier(
-                    TSize const & blockThreadCount,
-                    ThreadIdToBarrierIdxMap & threadIdToBarrierIdxMap) :
-                        m_blockThreadCount(blockThreadCount),
-                        m_threadIdToBarrierIdxMap(threadIdToBarrierIdxMap)
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(
+                    TSize const & blockThreadCount) :
+                        m_barrier(blockThreadCount)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncFiberIdMapBarrier(BlockSyncFiberIdMapBarrier const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(BlockSyncBarrierThread const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncFiberIdMapBarrier(BlockSyncFiberIdMapBarrier &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(BlockSyncBarrierThread &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncFiberIdMapBarrier const &) -> BlockSyncFiberIdMapBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierThread const &) -> BlockSyncBarrierThread & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncFiberIdMapBarrier &&) -> BlockSyncFiberIdMapBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierThread &&) -> BlockSyncBarrierThread & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncFiberIdMapBarrier() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierThread() = default;
 
-                //-----------------------------------------------------------------------------
-                //! Syncs all threads in the current block.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads(
-                    ThreadIdToBarrierIdxMapIterator const & itFind) const
-                -> void
-                {
-                    assert(itFind != m_threadIdToBarrierIdxMap.end());
-
-                    auto & barrierIdx(itFind->second);
-                    TSize const modBarrierIdx(barrierIdx % 2);
-
-                    auto & bar(m_barriers[modBarrierIdx]);
-
-                    // (Re)initialize a barrier if this is the first thread to reach it.
-                    // DCLP: Double checked locking pattern for better performance.
-                    if(bar.getThreadCount() == 0)
-                    {
-                        // No DCLP required because there can not be an interruption in between the check and the reset.
-                        bar.reset(m_blockThreadCount);
-                    }
-
-                    // Wait for the barrier.
-                    bar.wait();
-                    ++barrierIdx;
-                }
-
-                TSize const & m_blockThreadCount;           //!< The number of threads per block the barrier has to wait for.
-
-                ThreadIdToBarrierIdxMap & m_threadIdToBarrierIdxMap;
-                //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
-                Barrier mutable m_barriers[2];           //!< The barriers for the synchronization of threads.
+                Barrier mutable m_barrier;
             };
 
             namespace traits
@@ -124,18 +90,16 @@ namespace alpaka
                 template<
                     typename TSize>
                 struct SyncBlockThread<
-                    BlockSyncFiberIdMapBarrier<TSize>>
+                    BlockSyncBarrierThread<TSize>>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
-                        block::sync::BlockSyncFiberIdMapBarrier<TSize> const & blockSync)
+                        block::sync::BlockSyncBarrierThread<TSize> const & blockSync)
                     -> void
                     {
-                        auto const threadId(boost::this_fiber::get_id());
-                        typename block::sync::BlockSyncFiberIdMapBarrier<TSize>::ThreadIdToBarrierIdxMapIterator const itFind(blockSync.m_threadIdToBarrierIdxMap.find(threadId));
-                        blockSync.syncBlockThreads(itFind);
+                        blockSync.m_barrier.wait();
                     }
                 };
             }

@@ -35,7 +35,7 @@
 #include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
 #include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp> // BlockSharedMemDynCudaBuiltIn
 #include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>   // BlockSharedMemStCudaBuiltIn
-#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>                   // BlockSyncCudaBuiltIn
+#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>               // BlockSyncCudaBuiltIn
 #include <alpaka/rand/RandCuRand.hpp>               // RandCuRand
 #include <alpaka/time/TimeCudaBuiltIn.hpp>          // TimeCudaBuiltIn
 

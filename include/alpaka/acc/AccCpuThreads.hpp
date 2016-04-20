@@ -31,7 +31,7 @@
 #include <alpaka/math/MathStl.hpp>                  // MathStl
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
-#include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>                // BlockSyncThreadIdMapBarrier
+#include <alpaka/block/sync/BlockSyncBarrierThread.hpp>                     // BlockSyncBarrierThread
 #include <alpaka/rand/RandStl.hpp>                  // RandStl
 #include <alpaka/time/TimeStl.hpp>                  // TimeStl
 
@@ -83,7 +83,7 @@ namespace alpaka
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
-            public block::sync::BlockSyncThreadIdMapBarrier<TSize>,
+            public block::sync::BlockSyncBarrierThread<TSize>,
             public rand::RandStl,
             public time::TimeStl
         {
@@ -114,13 +114,11 @@ namespace alpaka
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
-                    block::sync::BlockSyncThreadIdMapBarrier<TSize>(
-                        m_blockThreadCount,
-                        m_threadToBarrierMap),
+                    block::sync::BlockSyncBarrierThread<TSize>(
+                        workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStl(),
                     time::TimeStl(),
-                    m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
-                    m_blockThreadCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
+                    m_gridBlockIdx(Vec<TDim, TSize>::zeros())
             {}
 
         public:
@@ -150,12 +148,6 @@ namespace alpaka
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
             typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
             Vec<TDim, TSize> mutable m_gridBlockIdx;                        //!< The index of the currently executed block.
-
-            // syncBlockThreads
-            TSize const m_blockThreadCount;                                 //!< The number of threads per block the barrier has to wait for.
-            std::map<
-                std::thread::id,
-                TSize> mutable m_threadToBarrierMap;                        //!< The mapping of thread id's to their current barrier.
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.

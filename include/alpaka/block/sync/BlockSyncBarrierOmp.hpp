@@ -38,35 +38,35 @@ namespace alpaka
             //#############################################################################
             //! The OpenMP barrier block synchronization.
             //#############################################################################
-            class BlockSyncOmpBarrier
+            class BlockSyncBarrierOmp
             {
             public:
-                using BlockSyncBase = BlockSyncOmpBarrier;
+                using BlockSyncBase = BlockSyncBarrierOmp;
 
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncOmpBarrier() = default;
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncOmpBarrier(BlockSyncOmpBarrier const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp(BlockSyncBarrierOmp const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncOmpBarrier(BlockSyncOmpBarrier &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp(BlockSyncBarrierOmp &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncOmpBarrier const &) -> BlockSyncOmpBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierOmp const &) -> BlockSyncBarrierOmp & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncOmpBarrier &&) -> BlockSyncOmpBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierOmp &&) -> BlockSyncBarrierOmp & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncOmpBarrier() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierOmp() = default;
             };
 
             namespace traits
@@ -76,13 +76,13 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct SyncBlockThread<
-                    BlockSyncOmpBarrier>
+                    BlockSyncBarrierOmp>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
-                        block::sync::BlockSyncOmpBarrier const & blockSync)
+                        block::sync::BlockSyncBarrierOmp const & blockSync)
                     -> void
                     {
                         boost::ignore_unused(blockSync);

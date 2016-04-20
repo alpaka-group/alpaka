@@ -80,11 +80,11 @@
     //-----------------------------------------------------------------------------
     // sync
     //-----------------------------------------------------------------------------
+    #include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
+    #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
+    #include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
     #include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>
-    #include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>
     #include <alpaka/block/sync/BlockSyncNoOp.hpp>
-    #include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>
-    #include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>
     #include <alpaka/block/sync/Traits.hpp>
 
 //-----------------------------------------------------------------------------

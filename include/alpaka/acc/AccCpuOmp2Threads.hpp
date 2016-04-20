@@ -35,7 +35,7 @@
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
-#include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>                        // BlockSyncOmpBarrier
+#include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>                        // BlockSyncBarrierOmp
 #include <alpaka/rand/RandStl.hpp>              // RandStl
 #include <alpaka/time/TimeOmp.hpp>              // TimeOmp
 
@@ -86,7 +86,7 @@ namespace alpaka
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
-            public block::sync::BlockSyncOmpBarrier,
+            public block::sync::BlockSyncBarrierOmp,
             public rand::RandStl,
             public time::TimeOmp
         {
@@ -117,7 +117,7 @@ namespace alpaka
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),
-                    block::sync::BlockSyncOmpBarrier(),
+                    block::sync::BlockSyncBarrierOmp(),
                     rand::RandStl(),
                     time::TimeOmp(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros())

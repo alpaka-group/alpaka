@@ -21,10 +21,18 @@
 
 #pragma once
 
+// Uncomment this to disable the standard spinlock behaviour of the threads
+//#define ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
+
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_ACC_NO_CUDA
 
-#include <mutex>                    // std::mutex
-#include <condition_variable>       // std::condition_variable
+#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
+    #include <mutex>                // std::mutex
+    #include <condition_variable>   // std::condition_variable
+#else
+    #include <atomic>               // std::atomic
+    #include <thread>               // std::this_thread::yield
+#endif
 
 namespace alpaka
 {
@@ -33,7 +41,7 @@ namespace alpaka
         namespace threads
         {
             //#############################################################################
-            //! A barrier.
+            //! A self-resetting barrier.
             //#############################################################################
             template<
                 typename TSize>
@@ -44,16 +52,16 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA explicit BarrierThread(
-                    TSize const & threadCount = 0) :
-                    m_threadCount(threadCount)
+                    TSize const & threadCount) :
+                    m_threadCount(threadCount),
+                    m_curThreadCount(threadCount),
+                    m_generation(0)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BarrierThread(
-                    BarrierThread const & other) = delete;/* :
-                    m_threadCount(other.m_threadCount)
-                {}*/
+                    BarrierThread const & other) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
@@ -77,42 +85,44 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA auto wait()
                 -> void
                 {
+                    TSize const generationWhenEnteredTheWait = m_generation;
+#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
                     std::unique_lock<std::mutex> lock(m_mtxBarrier);
-                    if(--m_threadCount == 0)
+#endif
+                    if(--m_curThreadCount == 0)
                     {
+                        m_curThreadCount = m_threadCount;
+                        ++m_generation;
+#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
                         m_cvAllThreadsReachedBarrier.notify_all();
+#endif
                     }
                     else
                     {
-                        m_cvAllThreadsReachedBarrier.wait(lock, [this] { return m_threadCount == 0; });
+#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
+                        m_cvAllThreadsReachedBarrier.wait(lock, [this, generationWhenEnteredTheWait] { return generationWhenEnteredTheWait != m_generation; });
+#else
+                        while(generationWhenEnteredTheWait == m_generation)
+                        {
+                            std::this_thread::yield();
+                        }
+#endif
                     }
                 }
 
-                //-----------------------------------------------------------------------------
-                //! \return The number of threads to wait for.
-                //! NOTE: The value almost always is invalid the time you get it.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto getThreadCount() const
-                -> TSize
-                {
-                    return m_threadCount;
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Resets the number of threads to wait for to the given number.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto reset(
-                    TSize const & threadCount)
-                -> void
-                {
-                    std::lock_guard<std::mutex> lock(m_mtxBarrier);
-                    m_threadCount = threadCount;
-                }
-
             private:
+#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
                 std::mutex m_mtxBarrier;
                 std::condition_variable m_cvAllThreadsReachedBarrier;
-                TSize m_threadCount;
+#endif
+                const TSize m_threadCount;
+#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
+                TSize m_curThreadCount;
+                TSize m_generation;
+#else
+                std::atomic<TSize> m_curThreadCount;
+                std::atomic<TSize> m_generation;
+#endif
             };
         }
     }

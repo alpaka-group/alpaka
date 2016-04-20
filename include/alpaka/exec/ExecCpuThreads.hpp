@@ -243,7 +243,6 @@ namespace alpaka
                 futuresInBlock.clear();
 
                 acc.m_threadToIndexMap.clear();
-                acc.m_threadToBarrierMap.clear();
 
                 // After a block has been processed, the shared memory has to be deleted.
                 block::shared::st::freeMem(acc);
@@ -295,21 +294,16 @@ namespace alpaka
                     acc.m_idMasterThread = threadId;
                 }
 
-                // We can not use the default syncBlockThreads here because it searches inside m_threadToBarrierMap for the thread id.
-                // Concurrently searching while others use emplace is unsafe!
-                typename std::map<std::thread::id, TSize>::iterator itThreadToBarrier;
-
                 {
                     // The insertion of elements has to be done one thread at a time.
                     std::lock_guard<std::mutex> lock(acc.m_mtxMapInsert);
 
                     // Save the thread id, and index.
                     acc.m_threadToIndexMap.emplace(threadId, blockThreadIdx);
-                    itThreadToBarrier = acc.m_threadToBarrierMap.emplace(threadId, 0).first;
                 }
 
                 // Sync all threads so that the maps with thread id's are complete and not changed after here.
-                acc.syncBlockThreads(itThreadToBarrier);
+                syncBlockThreads(acc);
 
                 // Execute the kernel itself.
                 kernelFnObj(
@@ -318,7 +312,7 @@ namespace alpaka
 
                 // We have to sync all threads here because if a thread would finish before all threads have been started,
                 // a new thread could get the recycled (then duplicate) thread id!
-                acc.syncBlockThreads(itThreadToBarrier);
+                syncBlockThreads(acc);
             }
 
             TKernelFnObj m_kernelFnObj;

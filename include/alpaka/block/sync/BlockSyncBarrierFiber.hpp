@@ -23,84 +23,85 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
-#include <alpaka/core/Fibers.hpp>
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/BarrierFiber.hpp> // BarrierFibers
 
-#include <mutex>                    // std::unique_lock
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
+
+#include <mutex>                        // std::mutex
+#include <map>                          // std::map
 
 namespace alpaka
 {
-    namespace core
+    namespace block
     {
-        namespace fibers
+        namespace sync
         {
             //#############################################################################
-            //! A self-resetting barrier.
-            // NOTE: We do not use the boost::fibers::barrier because it does not support simple resetting.
+            //! The thread id map barrier block synchronization.
             //#############################################################################
             template<
                 typename TSize>
-            class BarrierFiber
+            class BlockSyncBarrierFiber
             {
             public:
+                using BlockSyncBase = BlockSyncBarrierFiber;
+
+                using Barrier = core::fibers::BarrierFiber<TSize>;
+
                 //-----------------------------------------------------------------------------
-                //! Constructor.
+                //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA explicit BarrierFiber(
-                    TSize const & threadCount) :
-                    m_threadCount(threadCount),
-                    m_curThreadCount(threadCount),
-                    m_generation(0)
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(
+                    TSize const & blockThreadCount) :
+                        m_barrier(blockThreadCount)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BarrierFiber(BarrierFiber const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(BlockSyncBarrierFiber const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BarrierFiber(BarrierFiber &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(BlockSyncBarrierFiber &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierFiber const &) -> BarrierFiber & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierFiber const &) -> BlockSyncBarrierFiber & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierFiber &&) -> BarrierFiber & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierFiber &&) -> BlockSyncBarrierFiber & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BarrierFiber() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierFiber() = default;
 
-                //-----------------------------------------------------------------------------
-                //! Waits for all the other fibers to reach the barrier.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto wait()
-                -> void
-                {
-                    const auto generationWhenEnteredTheWait = m_generation;
-                    std::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    if(--m_threadCount == 0)
-                    {
-                        m_curThreadCount = m_threadCount;
-                        ++m_generation;
-                        m_cvAllFibersReachedBarrier.notify_all();
-                    }
-                    else
-                    {
-                        m_cvAllFibersReachedBarrier.wait(lock, [this, generationWhenEnteredTheWait] { return generationWhenEnteredTheWait != m_generation; });
-                    }
-                }
-
-            private:
-                boost::fibers::mutex m_mtxBarrier;
-                boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-                const TSize m_threadCount;
-                TSize m_curThreadCount;
-                TSize m_generation;
+                Barrier mutable m_barrier;
             };
+
+            namespace traits
+            {
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<
+                    typename TSize>
+                struct SyncBlockThread<
+                    BlockSyncBarrierFiber<TSize>>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
+                        block::sync::BlockSyncBarrierFiber<TSize> const & blockSync)
+                    -> void
+                    {
+                        blockSync.m_barrier.wait();
+                    }
+                };
+            }
         }
     }
 }

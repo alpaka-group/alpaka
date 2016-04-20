@@ -245,7 +245,6 @@ namespace alpaka
                 futuresInBlock.clear();
 
                 acc.m_fibersToIndices.clear();
-                acc.m_fibersToBarrier.clear();
 
                 // After a block has been processed, the shared memory has to be deleted.
                 block::shared::st::freeMem(acc);
@@ -297,16 +296,11 @@ namespace alpaka
                     acc.m_masterFiberId = fiberId;
                 }
 
-                // We can not use the default syncBlockThreads here because it searches inside m_fibersToBarrier for the thread id.
-                // Concurrently searching while others use emplace is unsafe!
-                typename std::map<boost::fibers::fiber::id, TSize>::iterator itFiberToBarrier;
-
                 // Save the fiber id, and index.
                 acc.m_fibersToIndices.emplace(fiberId, blockThreadIdx);
-                itFiberToBarrier = acc.m_fibersToBarrier.emplace(fiberId, 0).first;
 
                 // Sync all threads so that the maps with thread id's are complete and not changed after here.
-                acc.syncBlockThreads(itFiberToBarrier);
+                syncBlockThreads(acc);
 
                 // Execute the kernel itself.
                 kernelFnObj(
@@ -314,7 +308,7 @@ namespace alpaka
                     args...);
 
                 // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!
-                acc.syncBlockThreads(itFiberToBarrier);
+                syncBlockThreads(acc);
             }
 
             TKernelFnObj m_kernelFnObj;

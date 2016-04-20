@@ -31,7 +31,7 @@
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
-#include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>                 // BlockSyncFiberIdMapBarrier
+#include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>                      // BlockSyncBarrierFiber
 #include <alpaka/rand/RandStl.hpp>              // RandStl
 #include <alpaka/time/TimeStl.hpp>              // TimeStl
 
@@ -86,7 +86,7 @@ namespace alpaka
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
-            public block::sync::BlockSyncFiberIdMapBarrier<TSize>,
+            public block::sync::BlockSyncBarrierFiber<TSize>,
             public rand::RandStl,
             public time::TimeStl
         {
@@ -117,13 +117,11 @@ namespace alpaka
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
-                    block::sync::BlockSyncFiberIdMapBarrier<TSize>(
-                        m_blockThreadCount,
-                        m_fibersToBarrier),
+                    block::sync::BlockSyncBarrierFiber<TSize>(
+                        workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStl(),
                     time::TimeStl(),
-                    m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
-                    m_blockThreadCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
+                    m_gridBlockIdx(Vec<TDim, TSize>::zeros())
             {}
 
         public:
@@ -152,13 +150,6 @@ namespace alpaka
             // getIdx
             typename idx::bt::IdxBtRefFiberIdMap<TDim, TSize>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
             Vec<TDim, TSize> mutable m_gridBlockIdx;                    //!< The index of the currently executed block.
-
-            // syncBlockThreads
-            TSize const m_blockThreadCount;                             //!< The number of threads per block the barrier has to wait for.
-            std::map<
-                boost::fibers::fiber::id,
-                TSize> mutable m_fibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
-            //!< We have to keep the current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
 
             // allocBlockSharedArr
             boost::fibers::fiber::id mutable m_masterFiberId;           //!< The id of the master fiber.
