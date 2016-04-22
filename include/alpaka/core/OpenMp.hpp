@@ -34,7 +34,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The maximum number of threads the OpenMP 2.0 runtime is capable of.
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto getMaxOmpThreads()
+        ALPAKA_FN_HOST inline auto getMaxOmpThreads()
         -> int
         {
             // NOTE: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP 2.0 runtime at any time:

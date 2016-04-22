@@ -107,7 +107,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! CUDA runtime API last error checking with log and exception.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto cudaRtCheckLastError(
+            ALPAKA_FN_HOST inline auto cudaRtCheckLastError(
                 char const * cmd,
                 char const * file,
                 int const & line)

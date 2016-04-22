@@ -37,19 +37,19 @@
 //! ALPAKA_FN_ACC int add(int a, int b);
 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #define ALPAKA_FN_ACC_CUDA_ONLY __device__ __forceinline__
-    #define ALPAKA_FN_ACC_NO_CUDA __host__ __forceinline__
-    #define ALPAKA_FN_ACC __device__ __host__ __forceinline__
-    #define ALPAKA_FN_HOST_ACC __device__ __host__ __forceinline__
-    #define ALPAKA_FN_HOST __host__ __forceinline__
+    #define ALPAKA_FN_ACC_CUDA_ONLY __device__
+    #define ALPAKA_FN_ACC_NO_CUDA __host__
+    #define ALPAKA_FN_ACC __device__ __host__
+    #define ALPAKA_FN_HOST_ACC __device__ __host__
+    #define ALPAKA_FN_HOST __host__
 #else
     // NOTE: ALPAKA_FN_ACC_CUDA_ONLY should not be defined to cause build failures when CUDA only functions are used and CUDA is disabled.
     // However, this also destroys syntax highlighting.
-    #define ALPAKA_FN_ACC_CUDA_ONLY inline
-    #define ALPAKA_FN_ACC_NO_CUDA inline
-    #define ALPAKA_FN_ACC inline
-    #define ALPAKA_FN_HOST_ACC inline
-    #define ALPAKA_FN_HOST inline
+    #define ALPAKA_FN_ACC_CUDA_ONLY
+    #define ALPAKA_FN_ACC_NO_CUDA
+    #define ALPAKA_FN_ACC
+    #define ALPAKA_FN_HOST_ACC
+    #define ALPAKA_FN_HOST
 #endif
 
 //-----------------------------------------------------------------------------
@@ -73,6 +73,15 @@
     #endif
 #else
     #define ALPAKA_NO_HOST_ACC_WARNING
+#endif
+
+//-----------------------------------------------------------------------------
+//! Macro defining the inline function attribute.
+//-----------------------------------------------------------------------------
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+    #define ALPAKA_FN_INLINE __forceinline__
+#else
+    #define ALPAKA_FN_INLINE inline
 #endif
 
 namespace alpaka
