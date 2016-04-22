@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2016 Benjamin Worpitz
+# Copyright 2015 Benjamin Worpitz, Erik Zenker
 #
 # This file is part of alpaka.
 #
@@ -65,6 +65,7 @@ compiler:
 # ALPAKA_ACC_GPU_CUDA_ENABLE                    : {ON, OFF}
 #   [ON] ALPAKA_CUDA_VERSION                    : {7.0, 7.5}
 #   [ON] ALPAKA_CUDA_COMPILER                   : {nvcc, [CXX==clang++]:clang}
+# ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE             : {ON, OFF}
 ################################################################################
 env:
     global:
@@ -73,6 +74,7 @@ env:
         - ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=ON
         - ALPAKA_ACC_CPU_BT_OMP4_ENABLE=ON
         - ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=ON
+        - ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE=ON
         - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
         - ALPAKA_CLANG_LIBSTDCPP_VERSION=5
 
@@ -460,6 +462,11 @@ install:
     - sudo rm -rf bin.v2
 
     - cd ../
+
+    #-------------------------------------------------------------------------------
+    # Install TBB
+    - travis_retry sudo apt-get -y install libtbb-dev
+
 
 ################################################################################
 # Use this to prepare your build for testing.

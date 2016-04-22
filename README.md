@@ -50,6 +50,7 @@ Accelerator Back-ends
 |OpenMP 4.0+ (CPU)|OpenMP 4.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 |CUDA 7.0+|CUDA 7.0+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+|TBB 2.2+ blocks|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
 
 
 Supported Compilers
@@ -65,6 +66,7 @@ This library uses C++11 (or newer when available).
 |OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |CUDA 7.0+|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|:x:|
+|TBB 2.2+|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 
 
 Dependencies
@@ -78,6 +80,8 @@ When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA
 *NOTE*: When using *CUDA* 7.0, the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
 
 When an accelerator back-end using *OpenMP* is enabled, the compiler and the platform have to support the corresponding minimum *OpenMP* version.
+
+When an accelerator back-end using *TBB* is enabled, the compiler and the platform have to support the corresponding minimum *TBB* version.
 
 
 Usage

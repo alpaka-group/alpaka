@@ -127,6 +127,17 @@ namespace alpaka
                     typename TSize>
                 using AccGpuCudaRtIfAvailableElseVoid = int;
 #endif
+#if defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
+                template<
+                    typename TDim,
+                    typename TSize>
+                using AccCpuTbbIfAvailableElseVoid = alpaka::acc::AccCpuTbbBlocks<TDim, TSize>;
+#else
+                template<
+                    typename TDim,
+                    typename TSize>
+                using AccCpuTbbIfAvailableElseVoid = int;
+#endif                
                 //#############################################################################
                 //! A vector containing all available accelerators and void's.
                 //#############################################################################
@@ -141,6 +152,7 @@ namespace alpaka
                         AccCpuOmp2BlocksIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp2ThreadsIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp4IfAvailableElseVoid<TDim, TSize>,
+                        AccCpuTbbIfAvailableElseVoid<TDim, TSize>,
                         AccGpuCudaRtIfAvailableElseVoid<TDim, TSize>
                     >;
             }
