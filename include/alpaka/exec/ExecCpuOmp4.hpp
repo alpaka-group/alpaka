@@ -162,6 +162,10 @@ namespace alpaka
                 // The number of threads in a block.
                 TSize const blockThreadCount(blockThreadExtent.prod());
 
+                // Force the environment to use the given number of threads.
+                int const ompIsDynamic(::omp_get_dynamic());
+                ::omp_set_dynamic(0);
+
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 #pragma omp target if(0)
                 {
@@ -198,10 +202,6 @@ namespace alpaka
 
                             // Execute the threads in parallel.
 
-                            // Force the environment to use the given number of threads.
-                            int const ompIsDynamic(::omp_get_dynamic());
-                            ::omp_set_dynamic(0);
-
                             // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
                             // So we have to spawn one OS thread per thread in a block.
                             // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
@@ -225,17 +225,18 @@ namespace alpaka
                                     acc);
 
                                 // Wait for all threads to finish before deleting the shared memory.
-                                block::sync::syncBlockThreads(acc);
+                                // This is done by default if the omp 'nowait' clause is missing
+                                //block::sync::syncBlockThreads(acc);
                             }
-
-                            // Reset the dynamic thread number setting.
-                            ::omp_set_dynamic(ompIsDynamic);
 
                             // After a block has been processed, the shared memory has to be deleted.
                             block::shared::st::freeMem(acc);
                         }
                     }
                 }
+
+                // Reset the dynamic thread number setting.
+                ::omp_set_dynamic(ompIsDynamic);
             }
 
             TKernelFnObj m_kernelFnObj;
