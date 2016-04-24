@@ -27,7 +27,6 @@
 #include <type_traits>                      // std::is_class
 #include <iosfwd>                           // std::ostream
 
-
 // When compiling the tests with nvcc on th CI infrastructure we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__) && ALPAKA_INTEGRATION_TEST
@@ -199,65 +198,65 @@ namespace alpaka
                 os << std::endl;
             }
 
-            namespace detail
-            {
 #if defined(ALPAKA_CUDA_INTEGRATION_TEST)
-                //#############################################################################
-                //! A std::tuple holding dimensions.
-                //#############################################################################
-                using TestDims =
-                    std::tuple<
-                        alpaka::dim::DimInt<1u>,
-                        //alpaka::dim::DimInt<2u>,
-                        alpaka::dim::DimInt<3u>/*,
-                        alpaka::dim::DimInt<4u>*/>;
+            //#############################################################################
+            //! A std::tuple holding dimensions.
+            //#############################################################################
+            using TestDims =
+                std::tuple<
+                    alpaka::dim::DimInt<1u>,
+                    //alpaka::dim::DimInt<2u>,
+                    alpaka::dim::DimInt<3u>/*,
+                    alpaka::dim::DimInt<4u>*/>;
 
-                //#############################################################################
-                //! A std::tuple holding size types.
-                //#############################################################################
-                using TestSizes =
-                    std::tuple<
-                        std::size_t,
-                        //std::int64_t,
-                        std::uint64_t,
-                        std::int32_t,
-                        //std::uint32_t,
-                        //std::int16_t,
-                        std::uint16_t/*,
-                        std::int8_t,
-                        std::uint8_t*/>;
+            //#############################################################################
+            //! A std::tuple holding size types.
+            //#############################################################################
+            using TestSizes =
+                std::tuple<
+                    std::size_t,
+                    //std::int64_t,
+                    std::uint64_t,
+                    std::int32_t,
+                    //std::uint32_t,
+                    //std::int16_t,
+                    std::uint16_t/*,
+                    std::int8_t,
+                    std::uint8_t*/>;
 #else
 
-                //#############################################################################
-                //! A std::tuple holding dimensions.
-                //#############################################################################
-                using TestDims =
-                    std::tuple<
-                        alpaka::dim::DimInt<1u>,
-                        alpaka::dim::DimInt<2u>,
-                        alpaka::dim::DimInt<3u>,
-                // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
+            //#############################################################################
+            //! A std::tuple holding dimensions.
+            //#############################################################################
+            using TestDims =
+                std::tuple<
+                    alpaka::dim::DimInt<1u>,
+                    alpaka::dim::DimInt<2u>,
+                    alpaka::dim::DimInt<3u>,
+            // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__))
-                        alpaka::dim::DimInt<4u>
+                    alpaka::dim::DimInt<4u>
 #endif
-                    >;
+                >;
 
-                //#############################################################################
-                //! A std::tuple holding size types.
-                //#############################################################################
-                using TestSizes =
-                    std::tuple<
-                        std::size_t,
-                        std::int64_t,
-                        std::uint64_t,
-                        std::int32_t,
-                        std::uint32_t,
-                        //std::int16_t,
-                        std::uint16_t/*,
-                        std::int8_t,
-                        std::uint8_t*/>;
+            //#############################################################################
+            //! A std::tuple holding size types.
+            //#############################################################################
+            using TestSizes =
+                std::tuple<
+                    std::size_t,
+                    std::int64_t,
+                    std::uint64_t,
+                    std::int32_t,
+                    std::uint32_t,
+                    //std::int16_t,
+                    std::uint16_t/*,
+                    std::int8_t,
+                    std::uint8_t*/>;
 #endif
 
+            namespace detail
+            {
                 //#############################################################################
                 //! A std::tuple holding multiple std::tuple consisting of a dimension and a size type.
                 //!

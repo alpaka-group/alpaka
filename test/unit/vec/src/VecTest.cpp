@@ -20,6 +20,8 @@
  */
 
 #include <alpaka/alpaka.hpp>
+#include <alpaka/test/acc/Acc.hpp>  // alpaka::test::acc::TestAccs
+
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(vec)
@@ -169,14 +171,20 @@ struct NonAlpakaVec
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(
-    vec1DConstructionFromNonAlpakaVec)
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    vecNDConstructionFromNonAlpakaVec,
+    TDim,
+    alpaka::test::acc::TestDims)
 {
-    using Dim = alpaka::dim::DimInt<1u>;
     using Size = std::size_t;
 
-    NonAlpakaVec<Dim, Size> nonAlpakaVec;
-    static_cast<alpaka::Vec<Dim, Size> >(nonAlpakaVec);
+    NonAlpakaVec<TDim, Size> nonAlpakaVec;
+    auto const alpakaVec(static_cast<alpaka::Vec<TDim, Size>>(nonAlpakaVec));
+
+    for(Size d(0); d < TDim::value; ++d)
+    {
+        BOOST_REQUIRE_EQUAL(nonAlpakaVec[d], alpakaVec[d]);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
