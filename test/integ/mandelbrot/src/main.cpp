@@ -480,7 +480,7 @@ auto main()
 
         // For different sizes.
         for(std::uint32_t imageSize(1u<<3u);
-#if ALPAKA_INTEGRATION_TEST
+#if ALPAKA_CI
             imageSize <= 1u<<8u;
 #else
             imageSize <= 1u<<13u;

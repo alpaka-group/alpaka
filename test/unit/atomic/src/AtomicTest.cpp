@@ -318,14 +318,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::acc::TestAccs)
 {
     // This test exceeds the maximum compilation time.
-#if !defined(ALPAKA_INTEGRATION_TEST)
+#if !ALPAKA_CI
     TestAtomicOperations<TAcc, std::int8_t>::testAtomicOperations();
     TestAtomicOperations<TAcc, std::uint8_t>::testAtomicOperations();
     TestAtomicOperations<TAcc, std::int16_t>::testAtomicOperations();
     TestAtomicOperations<TAcc, std::uint16_t>::testAtomicOperations();
 #endif
     TestAtomicOperations<TAcc, std::int32_t>::testAtomicOperations();
-#if !defined(ALPAKA_INTEGRATION_TEST)
+#if !ALPAKA_CI
     TestAtomicOperations<TAcc, std::uint32_t>::testAtomicOperations();
     TestAtomicOperations<TAcc, std::int64_t>::testAtomicOperations();
     TestAtomicOperations<TAcc, std::uint64_t>::testAtomicOperations();

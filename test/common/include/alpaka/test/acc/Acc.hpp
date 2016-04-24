@@ -29,7 +29,7 @@
 
 // When compiling the tests with nvcc on th CI infrastructure we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__) && ALPAKA_INTEGRATION_TEST
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__) && ALPAKA_CI
     #define ALPAKA_CUDA_INTEGRATION_TEST
 #endif
 

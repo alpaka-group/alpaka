@@ -184,7 +184,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-#if ALPAKA_INTEGRATION_TEST
+#if ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TSize>(4));
 #else
                     // NOTE: ::omp_get_thread_limit() returns 2^31-1 (largest positive int value)...

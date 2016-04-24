@@ -409,7 +409,7 @@ auto main()
             MatMulTester matMulTester;
 
             // For different matrix sizes.
-#if ALPAKA_INTEGRATION_TEST
+#if ALPAKA_CI
             for(std::uint32_t m(1u); m <= 64u; m *= 8u)
             {
                 for(std::uint32_t n(1u); n <= 79u; n *= 79u)
