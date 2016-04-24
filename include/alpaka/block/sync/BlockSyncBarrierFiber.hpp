@@ -27,7 +27,7 @@
 
 #include <alpaka/core/BarrierFiber.hpp> // BarrierFibers
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
 
 #include <mutex>                        // std::mutex
 #include <map>                          // std::map

@@ -62,7 +62,7 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TBlockSync>
-            ALPAKA_FN_HOST_ACC auto syncBlockThreads(
+            ALPAKA_FN_ACC auto syncBlockThreads(
                 TBlockSync const & blockSync)
             -> void
             {
@@ -92,7 +92,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
-                    ALPAKA_FN_HOST_ACC static auto syncBlockThreads(
+                    ALPAKA_FN_ACC static auto syncBlockThreads(
                         TBlockSync const & blockSync)
                     -> void
                     {

@@ -23,7 +23,7 @@
 
 #include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
 
 #include <type_traits>                  // std::enable_if
 
@@ -85,12 +85,11 @@ namespace alpaka
                 //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
                 //! \param blockSharedMemSt The block shared allocator implementation.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
                     std::size_t TuniqueId,
                     typename TBlockSharedMemSt>
-                ALPAKA_FN_HOST_ACC auto allocVar(
+                ALPAKA_FN_ACC auto allocVar(
                     TBlockSharedMemSt const & blockSharedMemSt)
                 -> T &
                 {
@@ -112,13 +111,12 @@ namespace alpaka
                 //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
                 //! \param blockSharedMemSt The block shared allocator implementation.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
                     std::size_t TnumElements,
                     std::size_t TuniqueId,
                     typename TBlockSharedMemSt>
-                ALPAKA_FN_HOST_ACC auto allocArr(
+                ALPAKA_FN_ACC auto allocArr(
                     TBlockSharedMemSt const & blockSharedMemSt)
                 -> T *
                 {
@@ -142,10 +140,9 @@ namespace alpaka
                 //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
                 //! \param blockSharedMemSt The block shared allocator implementation.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TBlockSharedMemSt>
-                ALPAKA_FN_HOST_ACC auto freeMem(
+                ALPAKA_FN_ACC auto freeMem(
                     TBlockSharedMemSt & blockSharedMemSt)
                 -> void
                 {
@@ -178,8 +175,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_NO_HOST_ACC_WARNING
-                        ALPAKA_FN_HOST_ACC static auto allocVar(
+                        ALPAKA_FN_ACC static auto allocVar(
                             TBlockSharedMemSt const & blockSharedMemSt)
                         -> T &
                         {
@@ -214,8 +210,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_NO_HOST_ACC_WARNING
-                        ALPAKA_FN_HOST_ACC static auto allocArr(
+                        ALPAKA_FN_ACC static auto allocArr(
                             TBlockSharedMemSt const & blockSharedMemSt)
                         -> T *
                         {
@@ -245,8 +240,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_NO_HOST_ACC_WARNING
-                        ALPAKA_FN_HOST_ACC static auto freeMem(
+                        ALPAKA_FN_ACC static auto freeMem(
                             TBlockSharedMemSt & blockSharedMemSt)
                         -> void
                         {

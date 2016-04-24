@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/vec/Vec.hpp>       // Vec
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
 
 #include <vector>                   // std::vector
 #include <string>                   // std::string

@@ -23,7 +23,7 @@
 
 #include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
 
 #include <type_traits>                  // std::enable_if
 
@@ -66,11 +66,10 @@ namespace alpaka
                 //! \tparam TBlockSharedMemDyn The block shared dynamic memory implementation type.
                 //! \param blockSharedMemDyn The block shared dynamic memory implementation.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
                     typename TBlockSharedMemDyn>
-                ALPAKA_FN_HOST_ACC auto getMem(
+                ALPAKA_FN_ACC auto getMem(
                     TBlockSharedMemDyn const & blockSharedMemDyn)
                 -> T *
                 {
@@ -103,8 +102,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_NO_HOST_ACC_WARNING
-                        ALPAKA_FN_HOST_ACC static auto getMem(
+                        ALPAKA_FN_ACC static auto getMem(
                             TBlockSharedMemDyn const & blockSharedMemDyn)
                         -> T *
                         {
