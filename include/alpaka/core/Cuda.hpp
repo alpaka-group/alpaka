@@ -93,8 +93,16 @@ namespace alpaka
             {
                 if(error != cudaSuccess)
                 {
-                    // If the error code is not one of the ignored ones.
+                    // Disable the incorrect warning see: http://stackoverflow.com/questions/13905200/is-it-wise-to-ignore-gcc-clangs-wmissing-braces-warning
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmissing-braces"
+#endif
                     std::array<cudaError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{std::forward<TErrors>(ignoredErrorCodes)...};
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
+                    // If the error code is not one of the ignored ones.
                     if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
                     {
                         std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "'!");
