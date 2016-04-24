@@ -103,7 +103,8 @@ namespace alpaka
             //#############################################################################
             //! ITaskPkg.
             //#############################################################################
-            // \TODO: Replace with std::packaged_task which was buggy in MSVC 12.
+            // \NOTE: We can not use C++11 std::packaged_task as it forces the use of std::future
+            // but we additionally support boost::fibers::promise.
             class ITaskPkg
             {
             public:
@@ -184,8 +185,8 @@ namespace alpaka
 
                 TPromise<TFnObjReturn> m_Promise;
             private:
-                // to avoid out of memory access `std::remove_reference` forbid
-                // that local references of an other thread can be stored as member 
+                // NOTE: To avoid invalid memory accesses to memory of a different thread
+                // `std::remove_reference` enforces the function object to be copied.
                 typename std::remove_reference<TFnObj>::type m_FnObj;
             };
 
@@ -237,8 +238,8 @@ namespace alpaka
 
                 TPromise<void> m_Promise;
             private:
-                // to avoid out of memory access `std::remove_reference` forbid
-                // that local references of an other thread can be stored as member
+                // NOTE: To avoid invalid memory accesses to memory of a different thread
+                // `std::remove_reference` enforces the function object to be copied.
                 typename std::remove_reference<TFnObj>::type m_FnObj;
             };
 

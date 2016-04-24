@@ -90,8 +90,15 @@
 //-----------------------------------------------------------------------------
 // core
 //-----------------------------------------------------------------------------
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Align.hpp>
+#include <alpaka/core/BarrierFiber.hpp>
+#include <alpaka/core/BarrierThread.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/ConcurrentExecPool.hpp>
+#include <alpaka/core/Cuda.hpp>
+#include <alpaka/core/Debug.hpp>
+#include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/MapIdx.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unroll.hpp>

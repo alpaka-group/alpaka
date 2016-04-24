@@ -31,6 +31,7 @@
 #include <alpaka/meta/IntegerSequence.hpp>  // meta::MakeIntegerSequence
 #include <alpaka/meta/Fold.hpp>             // meta::foldr
 #include <alpaka/core/Align.hpp>            // ALPAKA_OPTIMAL_ALIGNMENT_SIZE
+#include <alpaka/core/Assert.hpp>           // assertValueUnsigned
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
 #include <boost/predef.h>                   // workarounds

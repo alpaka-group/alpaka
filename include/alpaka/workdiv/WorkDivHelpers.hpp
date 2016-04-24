@@ -27,6 +27,8 @@
 #include <alpaka/acc/Traits.hpp>                // getAccDevProps
 
 #include <alpaka/vec/Vec.hpp>                   // Vec
+
+#include <alpaka/core/Assert.hpp>               // assertValueUnsigned
 #include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST
 
 #include <cassert>                              // assert

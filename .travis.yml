@@ -293,7 +293,7 @@ install:
               && echo ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} because nvcc does not support boost correctly!
           ;fi
       ;fi
-    # Install nvcc
+    # Install CUDA
     - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
       ;then
           if [ ${ALPAKA_CUDA_VER_MAJOR} == 7 ]
