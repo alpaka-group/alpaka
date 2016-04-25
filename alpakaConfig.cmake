@@ -184,6 +184,21 @@ ENDIF()
 #-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
     FIND_PACKAGE(OpenMP)
+
+    # Manually find OpenMP for the clang compiler if it was not already found.
+    # Even CMake 3.5 is unable to find libiomp and provide the correct OpenMP flags.
+    IF(NOT OPENMP_FOUND)
+        IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            FIND_PATH(_ALPAKA_LIBIOMP_INCLUDE_DIR NAMES "omp.h" PATH_SUFFIXES "include" "libiomp" "include/libiomp")
+            IF(_ALPAKA_LIBIOMP_INCLUDE_DIR)
+                SET(OPENMP_FOUND TRUE)
+                SET(OpenMP_CXX_FLAGS "-fopenmp=libiomp5")
+                SET(OpenMP_C_FLAGS "-fopenmp=libiomp5")
+                LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${_ALPAKA_LIBIOMP_INCLUDE_DIR}")
+            ENDIF()
+        ENDIF()
+    ENDIF()
+
     IF(NOT OPENMP_FOUND)
         MESSAGE(WARNING "Optional alpaka dependency OpenMP could not be found! OpenMP accelerators disabled!")
         SET(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU grid block accelerator" FORCE)
