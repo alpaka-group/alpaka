@@ -69,8 +69,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicStlLock() = default;
 
-        private:
-            std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
+            std::mutex & getMutex() const
+            {
+                static std::mutex m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
+                return m_mtxAtomic;
+            }
         };
 
         namespace traits
@@ -97,7 +100,7 @@ namespace alpaka
                 {
                     // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                     // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.
-                    std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
+                    std::lock_guard<std::mutex> lock(atomic.getMutex());
                     return TOp()(addr, value);
                 }
                 //-----------------------------------------------------------------------------
@@ -112,7 +115,7 @@ namespace alpaka
                 {
                     // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                     // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.
-                    std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
+                    std::lock_guard<std::mutex> lock(atomic.getMutex());
                     return TOp()(addr, compare, value);
                 }
             };
