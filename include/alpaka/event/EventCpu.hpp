@@ -292,7 +292,8 @@ namespace alpaka
 
                     // We can not unlock the mutex here, because the order of events enqueued has to be identical to the call order.
                     // Unlocking here would allow a later enqueue call to complete before this event is enqueued.
-
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     // Enqueue a task that only resets the events flag if it is completed.
                     spStreamImpl->m_workerThread.enqueueTask(
                         [spEventCpuImpl]()
@@ -313,6 +314,7 @@ namespace alpaka
                             }
                             spEventCpuImpl->m_ConditionVariable.notify_all();
                         });
+#endif
                 }
             };
             //#############################################################################
@@ -502,12 +504,15 @@ namespace alpaka
                     if(!spEventCpuImpl->m_bIsReady)
                     {
                         spEventCpuImpl->m_bIsWaitedFor = true;
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                         // Enqueue a task that waits for the given event.
                         spStreamImpl->m_workerThread.enqueueTask(
                             [spEventCpuImpl]()
                             {
                                 wait::wait(spEventCpuImpl);
                             });
+#endif
                     }
                 }
             };

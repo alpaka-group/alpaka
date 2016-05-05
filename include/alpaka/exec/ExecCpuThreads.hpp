@@ -229,7 +229,8 @@ namespace alpaka
                 meta::ndLoopIncIdx(
                     blockThreadExtent,
                     boundBlockThreadExecHost);
-
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 // Wait for the completion of the block thread kernels.
                 std::for_each(
                     futuresInBlock.begin(),
@@ -239,6 +240,7 @@ namespace alpaka
                         t.wait();
                     }
                 );
+#endif
                 // Clean up.
                 futuresInBlock.clear();
 
@@ -271,9 +273,12 @@ namespace alpaka
                             args...);
                     });
                 // Add the bound function to the block thread pool.
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 futuresInBlock.emplace_back(
                     threadPool.enqueueTask(
                         boundBlockThreadExecAcc));
+#endif
             }
             //-----------------------------------------------------------------------------
             //! The thread entry point on the accelerator.

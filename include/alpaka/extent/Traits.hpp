@@ -27,7 +27,7 @@
 #include <alpaka/size/Traits.hpp>           // size::Size
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt
 
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
@@ -146,7 +146,7 @@ namespace alpaka
                 alpaka::meta::IndexSequence<TIndices...> const & indices)
             -> size::Size<TExtent>
             {
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
                 boost::ignore_unused(indices);
 #endif
                 return

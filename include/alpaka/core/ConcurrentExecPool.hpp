@@ -21,19 +21,27 @@
 
 #pragma once
 
-#include <boost/predef.h>   // workarounds
-#include <boost/version.hpp>// workarounds
+//-----------------------------------------------------------------------------
+// Clang does not support exceptions when natively compiling device code.
+// This is no problem at some places but others explicitly rely on std::exception_ptr,
+// std::current_exception, std::make_exception_ptr, etc. which are not declared in device code.
+// Therefore, we can not even parse those parts when compiling device code.
+//-----------------------------------------------------------------------------
+#include <alpaka/core/Common.hpp>   // BOOST_LANG_CUDA, BOOST_ARCH_CUDA_DEVICE
 
-#include <boost/config.hpp> // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/predef.h>           // workarounds
+#include <boost/version.hpp>        // workarounds
 
-#include <queue>            // std::queue
-#include <mutex>            // std::mutex
-#include <stdexcept>        // std::current_exception
-#include <vector>           // std::vector
-#include <exception>        // std::runtime_error
-#include <utility>          // std::forward
-#include <atomic>           // std::atomic
-#include <future>           // std::future
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <queue>                    // std::queue
+#include <mutex>                    // std::mutex
+#include <stdexcept>                // std::current_exception
+#include <vector>                   // std::vector
+#include <exception>                // std::runtime_error
+#include <utility>                  // std::forward
+#include <atomic>                   // std::atomic
+#include <future>                   // std::future
 
 namespace alpaka
 {
@@ -120,7 +128,10 @@ namespace alpaka
                     }
                     catch(...)
                     {
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                         setException(std::current_exception());
+#endif
                     }
                 }
 
@@ -131,12 +142,15 @@ namespace alpaka
                 virtual auto run() -> void = 0;
 
             public:
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 //-----------------------------------------------------------------------------
                 virtual auto setException(
                     std::exception_ptr const & exceptPtr)
                 -> void = 0;
+#endif
             };
 
             //#############################################################################
@@ -173,6 +187,8 @@ namespace alpaka
                     m_Promise.set_value(this->m_FnObj());
                 }
             public:
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 //-----------------------------------------------------------------------------
@@ -182,7 +198,7 @@ namespace alpaka
                 {
                     m_Promise.set_exception(exceptPtr);
                 }
-
+#endif
                 TPromise<TFnObjReturn> m_Promise;
             private:
                 // NOTE: To avoid invalid memory accesses to memory of a different thread
@@ -226,6 +242,8 @@ namespace alpaka
                     m_Promise.set_value();
                 }
             public:
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 //-----------------------------------------------------------------------------
@@ -235,7 +253,7 @@ namespace alpaka
                 {
                     m_Promise.set_exception(exceptPtr);
                 }
-
+#endif
                 TPromise<void> m_Promise;
             private:
                 // NOTE: To avoid invalid memory accesses to memory of a different thread
@@ -336,7 +354,10 @@ namespace alpaka
                     while(popTask(currentTaskPackage))
                     {
                         auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                         currentTaskPackage->setException(std::make_exception_ptr(except));
+#endif
                     }
                 }
 
@@ -555,7 +576,10 @@ namespace alpaka
                     while(popTask(currentTaskPackage))
                     {
                         auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                         currentTaskPackage->setException(std::make_exception_ptr(except));
+#endif
                     }
                 }
 

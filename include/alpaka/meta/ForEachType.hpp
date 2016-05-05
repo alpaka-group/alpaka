@@ -24,7 +24,7 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <boost/predef.h>               // Workarounds.
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
@@ -62,7 +62,7 @@ namespace alpaka
                     TArgs && ... args)
                 -> void
                 {
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
                     boost::ignore_unused(f);
                     boost::ignore_unused(args...);
 #endif
