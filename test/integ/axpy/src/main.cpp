@@ -144,10 +144,21 @@ struct AxpyKernelTester
         // Initialize the host input vectors
         for (TSize i(0); i < numElements; ++i)
         {
-            alpaka::mem::view::getPtrNative(memBufHostX)[i] = static_cast<Val>(rand());
-            alpaka::mem::view::getPtrNative(memBufHostOrigY)[i] = static_cast<Val>(rand());
+            alpaka::mem::view::getPtrNative(memBufHostX)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+            alpaka::mem::view::getPtrNative(memBufHostOrigY)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
         }
-        auto const alpha(static_cast<Val>(rand()));
+        auto const alpha(static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX));
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+        std::cout << BOOST_CURRENT_FUNCTION
+            << " alpha: " << alpha << std::endl;
+        std::cout << BOOST_CURRENT_FUNCTION << " X_host: ";
+        alpaka::mem::view::print(memBufHostX, std::cout);
+        std::cout << std::endl;
+        std::cout << BOOST_CURRENT_FUNCTION << " Y_host: ";
+        alpaka::mem::view::print(memBufHostOrigY, std::cout);
+        std::cout << std::endl;
+#endif
 
         // Allocate the buffer on the accelerator.
         auto memBufAccX(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
@@ -156,6 +167,17 @@ struct AxpyKernelTester
         // Copy Host -> Acc.
         alpaka::mem::view::copy(stream, memBufAccX, memBufHostX, extent);
         alpaka::mem::view::copy(stream, memBufAccY, memBufHostOrigY, extent);
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+        alpaka::wait::wait(stream);
+
+        std::cout << BOOST_CURRENT_FUNCTION << " X_Dev: ";
+        alpaka::mem::view::print(memBufHostX, std::cout);
+        std::cout << std::endl;
+        std::cout << BOOST_CURRENT_FUNCTION << " Y_Dev: ";
+        alpaka::mem::view::print(memBufHostX, std::cout);
+        std::cout << std::endl;
+#endif
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
