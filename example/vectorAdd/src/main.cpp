@@ -138,8 +138,8 @@ auto main()
     // Initialize the host input vectors
     for (Size i(0); i < numElements; ++i)
     {
-        alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand());
-        alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand());
+        alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+        alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
     }
 
     // Allocate the buffers on the accelerator.

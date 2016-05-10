@@ -34,6 +34,7 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 #include <iosfwd>                       // std::ostream
 
@@ -506,6 +507,9 @@ namespace alpaka
                         std::string const & rowSuffix)
                     -> void
                     {
+                        boost::ignore_unused(view);
+                        boost::ignore_unused(rowSeparator);
+
                         os << rowPrefix;
 
                         auto const lastIdx(extent[dim::Dim<TView>::value-1u]-1u);
