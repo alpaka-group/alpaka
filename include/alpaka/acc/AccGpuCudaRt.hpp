@@ -23,7 +23,9 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#ifndef __CUDACC__
+#include <alpaka/core/Common.hpp>                   // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
@@ -85,7 +87,10 @@ namespace alpaka
             public block::shared::dyn::BlockSharedMemDynCudaBuiltIn,
             public block::shared::st::BlockSharedMemStCudaBuiltIn,
             public block::sync::BlockSyncCudaBuiltIn,
+// This is not currently supported by the clang native CUDA compiler.
+#if !BOOST_COMP_CLANG_CUDA
             public rand::RandCuRand,
+#endif
             public time::TimeCudaBuiltIn
         {
         public:
@@ -102,7 +107,10 @@ namespace alpaka
                     block::shared::dyn::BlockSharedMemDynCudaBuiltIn(),
                     block::shared::st::BlockSharedMemStCudaBuiltIn(),
                     block::sync::BlockSyncCudaBuiltIn(),
+// This is not currently supported by the clang native CUDA compiler.
+#if !BOOST_COMP_CLANG_CUDA
                     rand::RandCuRand(),
+#endif
                     time::TimeCudaBuiltIn()
             {}
 

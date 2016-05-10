@@ -36,7 +36,7 @@
 
 #include <boost/predef.h>                   // workarounds
 #include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
@@ -46,8 +46,10 @@
 #include <type_traits>                      // std::enable_if, std::decay, std::is_same
 #include <algorithm>                        // std::min, std::max, std::min_element, std::max_element
 
-// The nvcc and intel compiler does not support the out of class version.
-#if defined(__CUDACC__) || defined(__INTEL_COMPILER)
+// Some compilers do not support the out of class versions:
+// - the nvcc 7.0 CUDA compiler
+// - the intel compiler
+#if BOOST_COMP_NVCC || BOOST_COMP_INTEL
     #define ALPAKA_CREATE_VEC_IN_CLASS
 #endif
 
@@ -76,7 +78,7 @@ namespace alpaka
     -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
 #endif
     {
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
         boost::ignore_unused(indices);
 #endif
         return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
@@ -202,7 +204,7 @@ namespace alpaka
             TArgs && ... args)
         -> Vec<TDim, TSize>
         {
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
             boost::ignore_unused(indices);
 #endif
             return Vec<TDim, TSize>(
@@ -415,7 +417,7 @@ namespace alpaka
                 ((*this)[TIndices])...))
 #endif
         {
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
             boost::ignore_unused(indices);
 #endif
             return

@@ -64,7 +64,7 @@ This library uses C++11 (or newer when available).
 |OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0+|:white_check_mark:|:x:|:x:|:x:|:x:|:x:|
+|CUDA 7.0+|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|:x:|
 
 
 Dependencies

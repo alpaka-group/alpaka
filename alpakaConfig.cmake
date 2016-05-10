@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Benjamin Worpitz
+# Copyright 2014-2016 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -242,7 +242,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             ENDIF()
             SET(CUDA_PROPAGATE_HOST_FLAGS ON)
 
-            SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
+            SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "GPU architecture")
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
@@ -253,47 +253,76 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture" FORCE)
             ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
 
-            LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
-
-            IF(NOT MSVC)
-                LIST(APPEND CUDA_NVCC_FLAGS "-std=c++11")
-                SET(CUDA_HOST_COMPILER "${CMAKE_CXX_COMPILER}")
-            ENDIF()
-
-            IF(CMAKE_BUILD_TYPE MATCHES "Debug")
-                LIST(APPEND CUDA_NVCC_FLAGS "-g" "-G")
-            ENDIF()
+            SET(ALPAKA_CUDA_COMPILER "nvcc" CACHE STRING "CUDA compiler")
+            SET_PROPERTY(CACHE ALPAKA_CUDA_COMPILER PROPERTY STRINGS "nvcc;clang")
 
             OPTION(ALPAKA_CUDA_FAST_MATH "Enable fast-math" ON)
-            IF(ALPAKA_CUDA_FAST_MATH)
-                LIST(APPEND CUDA_NVCC_FLAGS "--use_fast_math")
-            ENDIF()
-
-            OPTION(ALPAKA_CUDA_FTZ "Set flush to zero for GPU" OFF)
-            IF(ALPAKA_CUDA_FTZ)
-                LIST(APPEND CUDA_NVCC_FLAGS "--ftz=true")
-            ELSE()
-                LIST(APPEND CUDA_NVCC_FLAGS "--ftz=false")
-            ENDIF()
-
             OPTION(ALPAKA_CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
-            IF(ALPAKA_CUDA_SHOW_REGISTER)
-                LIST(APPEND CUDA_NVCC_FLAGS "-Xptxas=-v")
-            ENDIF()
-
             OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
-            IF(ALPAKA_CUDA_KEEP_FILES)
-                MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
-                LIST(APPEND CUDA_NVCC_FLAGS "--keep" "--keep-dir" "${PROJECT_BINARY_DIR}/nvcc_tmp")
-            ENDIF()
 
-            OPTION(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
-            IF(ALPAKA_CUDA_SHOW_CODELINES)
-                LIST(APPEND CUDA_NVCC_FLAGS "--source-in-ptx" "-lineinfo")
-                IF(NOT MSVC)
-                    LIST(APPEND CUDA_NVCC_FLAGS "-Xcompiler" "-rdynamic")
+            IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
+                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-gpu-arch=${ALPAKA_CUDA_ARCH}")
+
+                # This flag silences the warning produced by the Dummy.cpp files:
+                # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
+                # This seems to be a false positive as all flags are 'unused' for an empty file.
+                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-Qunused-arguments")
+
+                # Silences warnings that are produced by boost because clang is not correctly identified.
+                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-Wno-unused-local-typedef")
+
+                IF(ALPAKA_CUDA_FAST_MATH)
+                    LIST(APPEND CUDA_NVCC_FLAGS "-ffp-contract=fast -ffast_math")
                 ENDIF()
-                SET(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
+
+                IF(ALPAKA_CUDA_SHOW_REGISTER)
+                    LIST(APPEND CUDA_NVCC_FLAGS "-Xcuda-ptxas=-v")
+                ENDIF()
+
+                IF(ALPAKA_CUDA_KEEP_FILES)
+                    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-save-temps")
+                ENDIF()
+
+            ELSE()
+                LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
+
+                IF(NOT MSVC)
+                    LIST(APPEND CUDA_NVCC_FLAGS "-std=c++11")
+                    SET(CUDA_HOST_COMPILER "${CMAKE_CXX_COMPILER}")
+                ENDIF()
+
+                IF(CMAKE_BUILD_TYPE MATCHES "Debug")
+                    LIST(APPEND CUDA_NVCC_FLAGS "-g" "-G")
+                ENDIF()
+
+                IF(ALPAKA_CUDA_FAST_MATH)
+                    LIST(APPEND CUDA_NVCC_FLAGS "--use_fast_math")
+                ENDIF()
+
+                OPTION(ALPAKA_CUDA_FTZ "Set flush to zero for GPU" OFF)
+                IF(ALPAKA_CUDA_FTZ)
+                    LIST(APPEND CUDA_NVCC_FLAGS "--ftz=true")
+                ELSE()
+                    LIST(APPEND CUDA_NVCC_FLAGS "--ftz=false")
+                ENDIF()
+
+                IF(ALPAKA_CUDA_SHOW_REGISTER)
+                    LIST(APPEND CUDA_NVCC_FLAGS "-Xptxas=-v")
+                ENDIF()
+
+                IF(ALPAKA_CUDA_KEEP_FILES)
+                    MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
+                    LIST(APPEND CUDA_NVCC_FLAGS "--keep" "--keep-dir" "${PROJECT_BINARY_DIR}/nvcc_tmp")
+                ENDIF()
+
+                OPTION(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
+                IF(ALPAKA_CUDA_SHOW_CODELINES)
+                    LIST(APPEND CUDA_NVCC_FLAGS "--source-in-ptx" "-lineinfo")
+                    IF(NOT MSVC)
+                        LIST(APPEND CUDA_NVCC_FLAGS "-Xcompiler" "-rdynamic")
+                    ENDIF()
+                    SET(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
+                ENDIF()
             ENDIF()
 
             LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;${CUDA_CUDART_LIBRARY}")

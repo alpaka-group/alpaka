@@ -21,10 +21,12 @@
 
 #pragma once
 
-#include <alpaka/vec/Vec.hpp>           // Vec
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/vec/Vec.hpp>               // Vec
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#if !BOOST_ARCH_CUDA_DEVICE
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
 
 //-----------------------------------------------------------------------------
 //! The alpaka accelerator library.
@@ -74,10 +76,12 @@ namespace alpaka
                     TArgs const & ... args)
                 -> size::Size<TAcc>
                 {
+#if !BOOST_ARCH_CUDA_DEVICE
                     boost::ignore_unused(kernelFnObj);
                     boost::ignore_unused(blockThreadExtent);
                     boost::ignore_unused(threadElemExtent);
                     boost::ignore_unused(args...);
+#endif
 
                     return 0;
                 }

@@ -25,7 +25,7 @@
 
 #include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
@@ -49,7 +49,7 @@ namespace alpaka
             T const & t)
         -> T
         {
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
             boost::ignore_unused(f);
 #endif
             return t;

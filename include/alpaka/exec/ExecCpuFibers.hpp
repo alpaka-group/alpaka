@@ -273,9 +273,12 @@ namespace alpaka
                             args...);
                     });
                 // Add the bound function to the block thread pool.
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 futuresInBlock.emplace_back(
                     fiberPool.enqueueTask(
                         boundBlockThreadExecAcc));
+#endif
             }
             //-----------------------------------------------------------------------------
             //! The fiber entry point.

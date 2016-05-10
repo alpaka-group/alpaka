@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Benjamin Worpitz
+# Copyright 2014-2016 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -26,15 +26,26 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.3.0)
 #------------------------------------------------------------------------------
 FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name)
     IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
-        FOREACH(_file ${ARGN})
-            IF((${_file} MATCHES "\\.cpp$") OR (${_file} MATCHES "\\.cxx$"))
-                SET_SOURCE_FILES_PROPERTIES(${_file} PROPERTIES CUDA_SOURCE_PROPERTY_FORMAT OBJ)
-            ENDIF()
-        ENDFOREACH()
-        CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
-        CUDA_ADD_EXECUTABLE(
-            ${In_Name}
-            ${ARGN})
+        IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
+            FOREACH(_file ${ARGN})
+                IF((${_file} MATCHES "\\.cpp$") OR (${_file} MATCHES "\\.cxx$") OR (${_file} MATCHES "\\.cu$"))
+                    SET_SOURCE_FILES_PROPERTIES(${_file} PROPERTIES COMPILE_FLAGS "-x cuda")
+                ENDIF()
+            ENDFOREACH()
+            ADD_EXECUTABLE(
+                ${In_Name}
+                ${ARGN})
+        ELSE()
+            FOREACH(_file ${ARGN})
+                IF((${_file} MATCHES "\\.cpp$") OR (${_file} MATCHES "\\.cxx$"))
+                    SET_SOURCE_FILES_PROPERTIES(${_file} PROPERTIES CUDA_SOURCE_PROPERTY_FORMAT OBJ)
+                ENDIF()
+            ENDFOREACH()
+            CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
+            CUDA_ADD_EXECUTABLE(
+                ${In_Name}
+                ${ARGN})
+        ENDIF()
     ELSE()
         ADD_EXECUTABLE(
             ${In_Name}

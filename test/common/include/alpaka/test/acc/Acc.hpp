@@ -29,8 +29,8 @@
 
 // When compiling the tests with nvcc on th CI infrastructure we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__) && ALPAKA_CI
-    #define ALPAKA_CUDA_INTEGRATION_TEST
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && ALPAKA_CI
+    #define ALPAKA_CUDA_CI
 #endif
 
 namespace alpaka
@@ -61,7 +61,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuSerialIfAvailableElseVoid = int;
 #endif
-#if defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED) && !defined(ALPAKA_CUDA_INTEGRATION_TEST)
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED) && !defined(ALPAKA_CUDA_CI)
                 template<
                     typename TDim,
                     typename TSize>
@@ -94,7 +94,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuOmp2BlocksIfAvailableElseVoid = int;
 #endif
-#if defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED) && !defined(ALPAKA_CUDA_INTEGRATION_TEST)
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED) && !defined(ALPAKA_CUDA_CI)
                 template<
                     typename TDim,
                     typename TSize>
@@ -105,7 +105,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuOmp2ThreadsIfAvailableElseVoid = int;
 #endif
-#if defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED) && !defined(ALPAKA_CUDA_INTEGRATION_TEST)
+#if defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED) && !defined(ALPAKA_CUDA_CI)
                 template<
                     typename TDim,
                     typename TSize>
@@ -116,7 +116,7 @@ namespace alpaka
                     typename TSize>
                 using AccCpuOmp4IfAvailableElseVoid = int;
 #endif
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                 template<
                     typename TDim,
                     typename TSize>
@@ -198,7 +198,7 @@ namespace alpaka
                 os << std::endl;
             }
 
-#if defined(ALPAKA_CUDA_INTEGRATION_TEST)
+#if defined(ALPAKA_CUDA_CI)
             //#############################################################################
             //! A std::tuple holding dimensions.
             //#############################################################################
@@ -234,7 +234,7 @@ namespace alpaka
                     alpaka::dim::DimInt<2u>,
                     alpaka::dim::DimInt<3u>,
             // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
-#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__))
+#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
                     alpaka::dim::DimInt<4u>
 #endif
                 >;

@@ -1,5 +1,5 @@
 #
-# Copyright 2015 Benjamin Worpitz
+# Copyright 2015-2016 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -44,7 +44,7 @@ compiler:
 # \TODO: Test full matrix:
 # CXX                                           : {g++, clang++}
 #   [g++] ALPAKA_GCC_VER                        : {4.9, 5}
-#   [clang++] ALPAKA_CLANG_LIBSTDCPP_VERSION    : {4.9}
+#   [clang++] ALPAKA_CLANG_LIBSTDCPP_VERSION    : {5}
 #   [clang++] ALPAKA_CLANG_VER                  : {3.5, 3.6, 3.7, 3.8, 3.9}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # ALPAKA_CI                                     : {ON}
@@ -64,6 +64,7 @@ compiler:
 #   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
 # ALPAKA_ACC_GPU_CUDA_ENABLE                    : {ON, OFF}
 #   [ON] ALPAKA_CUDA_VERSION                    : {7.0, 7.5}
+#   [ON] ALPAKA_CUDA_COMPILER                   : {nvcc, [CXX==clang++]:clang}
 ################################################################################
 env:
     global:
@@ -73,36 +74,35 @@ env:
         - ALPAKA_ACC_CPU_BT_OMP4_ENABLE=ON
         - ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=ON
         - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-        - ALPAKA_CLANG_LIBSTDCPP_VERSION=4.9
+        - ALPAKA_CLANG_LIBSTDCPP_VERSION=5
 
     matrix:
         # Analysis builds
-        - ALPAKA_CUDA_VERSION=7.5 ALPAKA_CI_ANALYSIS=ON  ALPAKA_CI_SANITIZERS=           ALPAKA_DEBUG=2 ALPAKA_CI_CMAKE_VER=3.4.3 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.7 ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_ACC_GPU_CUDA_ENABLE=ON
-        - ALPAKA_CUDA_VERSION=7.5 ALPAKA_CI_ANALYSIS=ON  ALPAKA_CI_SANITIZERS=           ALPAKA_DEBUG=2 ALPAKA_CI_CMAKE_VER=3.4.3 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.7 ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VERSION=7.5 ALPAKA_CUDA_COMPILER=clang
+        - ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.8 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
 
         # Debug builds
-        - ALPAKA_CUDA_VERSION=7.5 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=           ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8 ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_ACC_GPU_CUDA_ENABLE=ON
-        - ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.4.3 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=3 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_ACC_GPU_CUDA_ENABLE=ON
-        - ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.3.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=2 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
-        - ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VERSION=7.5 ALPAKA_CUDA_COMPILER=clang
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=3 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VERSION=7.0 ALPAKA_CUDA_COMPILER=nvcc
+        #- ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_CI_CMAKE_VER=3.3.2 ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=2 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+        - ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
 
         # Release builds
-        # FIXME: Reenable Release builds for CUDA. BOOST_AUTO_TEST_CASE_TEMPLATE does not compile in Release mode.
-        #- ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=           ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8 ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_ACC_GPU_CUDA_ENABLE=ON
-        #- ALPAKA_CUDA_VERSION=7.5 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.4.3 CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=3 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_ACC_GPU_CUDA_ENABLE=ON
-        - ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.3.2 CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=2 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
-        - ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VERSION=7.0 ALPAKA_CUDA_COMPILER=clang
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=3 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VERSION=7.5 ALPAKA_CUDA_COMPILER=nvcc
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.3.2 ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=2 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+        - ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
 
 matrix:
     allow_failures:
         - compiler: gcc
-          env: ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+          env: ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
         - compiler: gcc
-          env: ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+          env: ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
         - compiler: clang
-          env: ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+          env: ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=ASan+UBSan ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
         - compiler: clang
-          env: ALPAKA_CUDA_VERSION=7.0 ALPAKA_CI_ANALYSIS=OFF ALPAKA_CI_SANITIZERS=TSan+UBSan ALPAKA_DEBUG=0 ALPAKA_CI_CMAKE_VER=3.5.2 CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+          env: ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=OFF ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
 
         - os: osx
 
@@ -162,13 +162,37 @@ install:
     #- if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then travis_retry sudo apt-get install cppcheck ;fi
 
     #-------------------------------------------------------------------------------
-    # Get the current gcc version.
+    # Get the current git version.
     - git --version
     - travis_retry sudo apt-get -y install git
     - git --version
 
     #-------------------------------------------------------------------------------
-    # gcc 4.6 is too old...
+    # We can only use clang as a CUDA compiler when clang is used as the main compiler.
+    # For gcc we have to use nvcc.
+    - if [ "${CXX}" != "clang++" ]
+      ;then
+          if [ "${ALPAKA_CUDA_COMPILER}" == "clang" ]
+          ;then
+              export ALPAKA_CUDA_COMPILER=nvcc
+          ;fi
+      ;fi
+
+    #-------------------------------------------------------------------------------
+    # FIXME: BOOST_AUTO_TEST_CASE_TEMPLATE is not compilable with nvcc in Release mode.
+    - if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
+      ;then
+          if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
+          ;then
+              if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
+              ;then
+                  CMAKE_BUILD_TYPE=Debug
+              ;fi
+          ;fi
+      ;fi
+
+    #-------------------------------------------------------------------------------
+    # Install the required gcc
     - if [ "${CXX}" == "g++" ]
       ;then
           travis_retry sudo apt-get -y install g++-${ALPAKA_GCC_VER}
@@ -237,6 +261,16 @@ install:
           ;fi
       ;fi
 
+    # Install some specific parts instead of the whole 'build-essential'
+    - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
+      ;then
+          if [ "${ALPAKA_CUDA_COMPILER}" == "clang" ]
+          ;then
+              travis_retry sudo apt-get -y install g++-multilib
+          ;fi
+      ;fi
+
+
     #-------------------------------------------------------------------------------
     # Extract the CUDA version numbers.
     - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
@@ -270,18 +304,21 @@ install:
           ;then
               if [ ${TRAVIS_OS_NAME} == "linux" ]
               ;then
-                  if (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} < 5 )) ))
+                  if [ ${ALPAKA_CUDA_COMPILER} != "clang" ]
                   ;then
-                      export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
-                      && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because clang is not a supported compiler for CUDA 7.0 on linux!
-                  ;elif (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 5 )) ))
-                  ;then
-                      export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
-                      && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because the CUDA 7.5 clang support is buggy!
-                      && if (( (( ${ALPAKA_CLANG_VER_MAJOR} > 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} > 6 )) ) ))
+                      if (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} < 5 )) ))
                       ;then
                           export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
-                          && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because clang versions higher then 3.6 are not a supported compiler for CUDA 7.5 on linux!
+                          && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because clang is not a supported compiler for CUDA 7.0 on linux!
+                      ;elif (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 5 )) ))
+                      ;then
+                          export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+                          && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because the CUDA 7.5 clang support is buggy!
+                          && if (( (( ${ALPAKA_CLANG_VER_MAJOR} > 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} > 6 )) ) ))
+                          ;then
+                              export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
+                              && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because clang versions higher then 3.6 are not a supported compiler for CUDA 7.5 on linux!
+                          ;fi
                       ;fi
                   ;fi
               ;fi
@@ -334,7 +371,7 @@ install:
     # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
 
     #-------------------------------------------------------------------------------
-    # Remove the old version.
+    # Remove the old CMake version.
     - sudo apt-get -y remove cmake
     # Extract the version numbers.
     - ALPAKA_CMAKE_VER_MAJOR=${ALPAKA_CI_CMAKE_VER:0:1}
@@ -522,8 +559,9 @@ script:
     #        -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
     #        -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     #        -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
-    #        -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} -DALPAKA_ACC_CPU_BT_OMP4_ENABLE=${ALPAKA_ACC_CPU_BT_OMP4_ENABLE} -DALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE}
-    #        -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
+    #        -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE} -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} -DALPAKA_ACC_CPU_BT_OMP4_ENABLE=${ALPAKA_ACC_CPU_BT_OMP4_ENABLE}
+    #        -DALPAKA_ACC_GPU_CUDA_ENABLE="${ALPAKA_ACC_GPU_CUDA_ENABLE}" -DALPAKA_CUDA_VERSION="${ALPAKA_CUDA_VERSION}" -DALPAKA_CUDA_COMPILER="${ALPAKA_CUDA_COMPILER}"
+    #        -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_CI=ON
     #        "../../"
     #      && scan-build -analyze-headers --status-bugs make VERBOSE=1
     #      && cd ../../../
@@ -532,14 +570,16 @@ script:
 
     #-------------------------------------------------------------------------------
     # Build and execute all unit tests.
+    # FIXME: clang as CUDA compiler currently fails for some of the tests with:
+    # build/boost/boost/test/utils/lazy_ostream.hpp:35:29: Generating code for declaration 'boost::unit_test::lazy_ostream::instance'
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/acc/" ./acc ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/atomic/" ./atomic ;fi
-    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/block/shared/" ./blockShared ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a ${ALPAKA_CUDA_COMPILER} != "clang" ] ;then ./travis/compileExec.sh "test/unit/block/shared/" ./blockShared ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/kernel/" ./kernel ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/mem/buf/" ./memBuf ;fi
-    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/mem/view/" ./memView ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a ${ALPAKA_CUDA_COMPILER} != "clang" ] ;then ./travis/compileExec.sh "test/unit/mem/view/" ./memView ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/meta/" ./meta ;fi
-    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/time/" ./time ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a ${ALPAKA_CUDA_COMPILER} != "clang" ] ;then ./travis/compileExec.sh "test/unit/time/" ./time ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/vec/" ./vec ;fi
 
     #-------------------------------------------------------------------------------

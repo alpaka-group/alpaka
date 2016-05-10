@@ -61,7 +61,7 @@ namespace alpaka
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#ifndef __CUDACC__
+#if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
                 //#############################################################################

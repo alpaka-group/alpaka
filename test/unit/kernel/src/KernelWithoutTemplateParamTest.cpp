@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_SUITE(kernel)
 using Dim = alpaka::dim::DimInt<2u>;
 using Size = std::uint32_t;
 using AccCpu = alpaka::acc::AccCpuSerial<Dim, Size>;
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 using AccGpu = alpaka::acc::AccGpuCudaRt<Dim, Size>;
 #endif
 
@@ -63,8 +63,8 @@ struct KernelNoTemplateCpu
         AccCpu const & acc) const
     -> void
     {
-        auto gridBlockExtent =
-            alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        // Do something useless on the accelerator.
+        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
     }
 };
 
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(kernelNoTemplateCpu)
             kernel));
 }
 
-/*#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+/*#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 //#############################################################################
 //! DO NOT ENABLE! COMPILATION WILL FAIL!
 //#############################################################################
@@ -98,8 +98,8 @@ struct KernelNoTemplateGpu
         AccGpu const & acc) const
     -> void
     {
-        auto gridBlockExtent =
-            alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        // Do something useless on the accelerator.
+        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
     }
 };
 
@@ -135,8 +135,8 @@ struct KernelWithoutTemplateParamCpu
         AccCpu const & acc) const
     -> void
     {
-        auto gridBlockExtent =
-            alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        // Do something useless on the accelerator.
+        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
     }
 };
 
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamCpu)
             kernel));
 }
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 //#############################################################################
 //!
 //#############################################################################
@@ -172,8 +172,8 @@ struct KernelWithoutTemplateParamGpu
         AccGpu const & acc) const
     -> void
     {
-        auto gridBlockExtent =
-            alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        // Do something useless on the accelerator.
+        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
     }
 };
 

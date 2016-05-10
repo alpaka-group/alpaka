@@ -23,7 +23,9 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#ifndef __CUDACC__
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
@@ -34,7 +36,6 @@
 #include <alpaka/vec/Vec.hpp>               // Vec
 #include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
 #include <alpaka/meta/Metafunctions.hpp>    // meta::Conjunction
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 
 // cuda_runtime_api.h: CUDA Runtime API C-style interface that does not require compiling with nvcc.
 // cuda_runtime.h: CUDA Runtime API  C++-style interface built on top of the C API.
@@ -49,7 +50,7 @@
 
 #include <array>                            // std::array
 #include <type_traits>                      // std::enable_if
-#include <utility>                          // std::forward
+#include <utility>                          // std::forward, std::declval
 #include <iostream>                         // std::cerr
 #include <string>                           // std::string, std::to_string
 #include <stdexcept>                        // std::runtime_error
@@ -260,7 +261,16 @@ namespace alpaka
                     || std::is_same<T, uint4>::value
                     || std::is_same<T, ulong4>::value
                     || std::is_same<T, ulonglong4>::value
-                    || std::is_same<T, ushort4>::value>
+                    || std::is_same<T, ushort4>::value
+// CUDA built-in variables have special types in clang native CUDA compilation
+// defined in cuda_builtin_vars.h
+#if BOOST_COMP_CLANG_CUDA
+                    || std::is_same<T, __cuda_builtin_threadIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockDim_t>::value
+                    || std::is_same<T, __cuda_builtin_gridDim_t>::value
+#endif
+                >
             {};
         }
     }
@@ -287,7 +297,8 @@ namespace alpaka
                     || std::is_same<T, uint1>::value
                     || std::is_same<T, ulong1>::value
                     || std::is_same<T, ulonglong1>::value
-                    || std::is_same<T, ushort1>::value>::type>
+                    || std::is_same<T, ushort1>::value
+                >::type>
             {
                 using type = dim::DimInt<1u>;
             };
@@ -310,7 +321,8 @@ namespace alpaka
                     || std::is_same<T, uint2>::value
                     || std::is_same<T, ulong2>::value
                     || std::is_same<T, ulonglong2>::value
-                    || std::is_same<T, ushort2>::value>::type>
+                    || std::is_same<T, ushort2>::value
+                >::type>
             {
                 using type = dim::DimInt<2u>;
             };
@@ -334,7 +346,14 @@ namespace alpaka
                     || std::is_same<T, uint3>::value
                     || std::is_same<T, ulong3>::value
                     || std::is_same<T, ulonglong3>::value
-                    || std::is_same<T, ushort3>::value>::type>
+                    || std::is_same<T, ushort3>::value
+#if BOOST_COMP_CLANG_CUDA
+                    || std::is_same<T, __cuda_builtin_threadIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockDim_t>::value
+                    || std::is_same<T, __cuda_builtin_gridDim_t>::value
+#endif
+                >::type>
             {
                 using type = dim::DimInt<3u>;
             };
@@ -357,7 +376,8 @@ namespace alpaka
                     || std::is_same<T, uint4>::value
                     || std::is_same<T, ulong4>::value
                     || std::is_same<T, ulonglong4>::value
-                    || std::is_same<T, ushort4>::value>::type>
+                    || std::is_same<T, ushort4>::value
+                >::type>
             {
                 using type = dim::DimInt<4u>;
             };
@@ -371,13 +391,13 @@ namespace alpaka
             //! The CUDA vectors elem type trait specialization.
             //#############################################################################
             template<
-                typename TSize>
+                typename T>
             struct ElemType<
-                TSize,
+                T,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TSize>::value>::type>
+                    cuda::traits::IsCudaBuiltInType<T>::value>::type>
             {
-                using type = decltype(TSize().x);
+                using type = decltype(std::declval<T>().x);
             };
         }
     }

@@ -23,10 +23,6 @@
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
-#if (!defined(__CUDA_ARCH__))
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
-#endif
-
 //-----------------------------------------------------------------------------
 //! Suggests unrolling of the directly following loop to the compiler.
 //!
@@ -35,7 +31,7 @@
 //!  for(...){...}`
 // \TODO: Implement for other compilers.
 //-----------------------------------------------------------------------------
-#ifdef __CUDA_ARCH__
+#if BOOST_ARCH_CUDA_DEVICE
     #if BOOST_COMP_MSVC
         #define ALPAKA_UNROLL(...) __pragma(unroll __VA_ARGS__)
     #else

@@ -26,11 +26,10 @@
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/mem/buf/Traits.hpp>            // mem::buf::Alloc, ...
 
-
 #include <alpaka/vec/Vec.hpp>                   // Vec
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
     #include <alpaka/core/Cuda.hpp>
 #endif
 
@@ -75,7 +74,7 @@ namespace alpaka
                                 m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
                                 m_pMem(mem::alloc::alloc<TElem>(*this, computeElementCount(extent))),
                                 m_pitchBytes(static_cast<TSize>(extent::getWidth(extent) * sizeof(TElem)))
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                                 ,m_bPinned(false)
 #endif
                         {
@@ -119,7 +118,7 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                             // Unpin this memory if it is currently pinned.
                             mem::buf::unpin(*this);
 #endif
@@ -147,7 +146,7 @@ namespace alpaka
                         Vec<TDim, TSize> const m_extentElements;
                         TElem * const m_pMem;
                         TSize const m_pitchBytes;
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                         bool m_bPinned;
 #endif
                     };
@@ -517,7 +516,7 @@ namespace alpaka
 
                         if(!mem::buf::isPinned(buf))
                         {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                             if(buf.m_spBufCpuImpl->m_extentElements.prod() != 0)
                             {
                                 // - cudaHostRegisterDefault:
@@ -582,7 +581,7 @@ namespace alpaka
 
                         if(mem::buf::isPinned(bufImpl))
                         {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                             ALPAKA_CUDA_RT_CHECK_IGNORE(
                                 cudaHostUnregister(
                                     const_cast<void *>(reinterpret_cast<void const *>(bufImpl.m_pMem))),
@@ -636,7 +635,7 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                         return bufImpl.m_bPinned;
 #else
                         return false;

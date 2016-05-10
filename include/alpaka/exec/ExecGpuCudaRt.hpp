@@ -23,7 +23,9 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#ifndef __CUDACC__
+#include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
@@ -85,7 +87,7 @@ namespace alpaka
                     TKernelFnObj const kernelFnObj,
                     TArgs ... args)
                 {
-#if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
+#if BOOST_ARCH_CUDA_DEVICE && (BOOST_ARCH_CUDA_DEVICE < BOOST_VERSION_NUMBER(2, 0, 0))
     #error "Cuda device capability >= 2.0 is required!"
 #endif
                     acc::AccGpuCudaRt<TDim, TSize> acc(threadElemExtent);
