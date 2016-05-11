@@ -82,6 +82,9 @@ INCLUDE("${_ALPAKA_ADD_LIBRARY_FILE}")
 # Set found to true initially and set it to false if a required dependency is missing.
 SET(_ALPAKA_FOUND TRUE)
 
+# Add module search path
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/" )
+
 #-------------------------------------------------------------------------------
 # Options.
 #-------------------------------------------------------------------------------
@@ -92,6 +95,8 @@ OPTION(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block 
 OPTION(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread accelerator" ON)
 OPTION(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread accelerator" OFF)
 OPTION(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU accelerator" ON)
+OPTION(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block accelerator" ON)
+
 
 # Drop-down combo box in cmake-gui.
 SET(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
@@ -332,6 +337,20 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 ENDIF()
 
 #-------------------------------------------------------------------------------
+# Find TBB.
+#-------------------------------------------------------------------------------
+IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
+    FIND_PACKAGE(TBB 2.2)
+    IF(NOT TBB_FOUND)
+        MESSAGE(WARNING "Optional alpaka dependency TBB could not be found! TBB grid block accelerator disabled!")
+        SET(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OFF CACHE BOOL "Enable the TBB grid block accelerator" FORCE)
+    ELSE()
+        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${TBB_LIBRARIES}")
+        LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC ${TBB_INCLUDE_DIRS})
+    ENDIF()
+ENDIF()
+
+#-------------------------------------------------------------------------------
 # Compiler settings.
 #-------------------------------------------------------------------------------
 IF(MSVC)
@@ -386,6 +405,10 @@ ENDIF()
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
     LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_GPU_CUDA_ENABLED")
     MESSAGE(STATUS ALPAKA_ACC_GPU_CUDA_ENABLED)
+ENDIF()
+IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
+    LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED")
+    MESSAGE(STATUS ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
 ENDIF()
 
 LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
