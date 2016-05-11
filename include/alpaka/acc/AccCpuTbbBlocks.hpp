@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2016 Benjamin Worpitz, Erik Zenker
+* Copyright 2014-2016 Benjamin Worpitz, Erik Zenker, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -27,7 +27,9 @@
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
 #include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
+#include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
 #include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
+#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
 #include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>                // BlockSharedMemStNoSync
@@ -74,7 +76,11 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TSize>,
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtZero<TDim, TSize>,
-            public atomic::AtomicStlLock,
+            public atomic::AtomicHierarchy<
+                atomic::AtomicStlLock, // grid atomics
+                atomic::AtomicStlLock, // block atomics
+                atomic::AtomicNoOp     // thread atomics
+            >,
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStNoSync,
@@ -103,7 +109,11 @@ namespace alpaka
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TSize>(),
-                    atomic::AtomicStlLock(),
+                    atomic::AtomicHierarchy<
+                        atomic::AtomicStlLock, // atomics between grids
+                        atomic::AtomicStlLock, // atomics between blocks
+                        atomic::AtomicNoOp     // atomics between threads
+                    >(),
                     math::MathStl(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStNoSync(),

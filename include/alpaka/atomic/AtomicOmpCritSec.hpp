@@ -33,6 +33,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The OpenMP accelerator atomic ops.
+        //
+        //  Atomics can be used in the blocks and threads hierarchy levels.
+        //  Atomics are not guaranteed to be save between devices or grids.
         //#############################################################################
         class AtomicOmpCritSec
         {
@@ -75,11 +78,13 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TOp,
-                typename T>
+                typename T,
+                typename THierarchy>
             struct AtomicOp<
                 TOp,
                 atomic::AtomicOmpCritSec,
-                T>
+                T,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
