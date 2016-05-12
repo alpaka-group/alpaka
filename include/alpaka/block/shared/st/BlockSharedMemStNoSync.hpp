@@ -113,38 +113,6 @@ namespace alpaka
                     //#############################################################################
                     //!
                     //#############################################################################
-                    template<
-                        typename T,
-                        std::size_t TnumElements,
-                        std::size_t TuniqueId>
-                    struct AllocArr<
-                        T,
-                        TnumElements,
-                        TuniqueId,
-                        BlockSharedMemStNoSync>
-                    {
-                        static_assert(
-                            TnumElements > 0,
-                            "The number of elements to allocate in block shared memory must not be zero!");
-
-                        //-----------------------------------------------------------------------------
-                        //
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_ACC_NO_CUDA static auto allocArr(
-                            block::shared::st::BlockSharedMemStNoSync const & blockSharedMemSt)
-                        -> T *
-                        {
-                            blockSharedMemSt.m_sharedAllocs.emplace_back(
-                                reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(16u, sizeof(T) * TnumElements)));
-                            return
-                                reinterpret_cast<T*>(
-                                    blockSharedMemSt.m_sharedAllocs.back().get());
-                        }
-                    };
-                    //#############################################################################
-                    //!
-                    //#############################################################################
                     template<>
                     struct FreeMem<
                         BlockSharedMemStNoSync>

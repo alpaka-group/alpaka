@@ -39,6 +39,32 @@ BOOST_AUTO_TEST_SUITE(blockSharedMemSt)
 //#############################################################################
 //!
 //#############################################################################
+template<
+    typename TType,
+    size_t TSize>
+struct Array {
+    TType m_data[TSize];
+
+    template<
+        typename T_Idx>
+    ALPAKA_FN_HOST_ACC const TType &operator[](
+        const T_Idx idx) const
+    {
+        return m_data[idx];
+    }
+
+    template<
+        typename TIdx>
+    ALPAKA_FN_HOST_ACC TType & operator[](
+        const TIdx idx)
+    {
+        return m_data[idx];
+    }
+};
+
+//#############################################################################
+//!
+//#############################################################################
 class BlockSharedMemStNonNullTestKernel
 {
 public:
@@ -68,14 +94,14 @@ public:
         BOOST_REQUIRE_NE(static_cast<std::uint64_t *>(nullptr), &e);
 
 
-        auto * f = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), f);
+        auto && f = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &f[0]);
 
-        auto * g = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), g);
+        auto && g = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &g[0]);
 
-        auto * h = alpaka::block::shared::st::allocArr<double, 16u, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<double *>(nullptr), h);
+        auto && h = alpaka::block::shared::st::allocVar<Array<double, 16>, __COUNTER__>(acc);
+        BOOST_REQUIRE_NE(static_cast<double *>(nullptr), &h[0]);
     }
 };
 
@@ -125,15 +151,15 @@ public:
         BOOST_REQUIRE_NE(&a, &c);
         BOOST_REQUIRE_NE(&b, &c);
 
-        auto * d = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&a, d);
-        BOOST_REQUIRE_NE(&b, d);
-        BOOST_REQUIRE_NE(&c, d);
-        auto * e = alpaka::block::shared::st::allocArr<std::uint32_t, 32u, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&a, e);
-        BOOST_REQUIRE_NE(&b, e);
-        BOOST_REQUIRE_NE(&c, e);
-        BOOST_REQUIRE_NE(d, e);
+        auto && d = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        BOOST_REQUIRE_NE(&a, &d[0]);
+        BOOST_REQUIRE_NE(&b, &d[0]);
+        BOOST_REQUIRE_NE(&c, &d[0]);
+        auto && e = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        BOOST_REQUIRE_NE(&a, &e[0]);
+        BOOST_REQUIRE_NE(&b, &e[0]);
+        BOOST_REQUIRE_NE(&c, &e[0]);
+        BOOST_REQUIRE_NE(&d[0], &e[0]);
     }
 };
 
