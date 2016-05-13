@@ -111,42 +111,6 @@ namespace alpaka
                     //#############################################################################
                     //!
                     //#############################################################################
-                    template<
-                        typename T,
-                        std::size_t TnumElements,
-                        std::size_t TuniqueId>
-                    struct AllocArr<
-                        T,
-                        TnumElements,
-                        TuniqueId,
-                        BlockSharedMemStCudaBuiltIn>
-                    {
-                        // NOTE: CUDA requires the constructor and destructor of shared objects to be empty.
-                        //  That means it is either std::is_trivially_default_constructible or of the form Type(){}.
-                        //static_assert(
-                        //    std::is_trivially_default_constructible<T>::value,
-                        //    "The type of the objects to allocate in block shared memory has to be trivially default constructible!");
-                        //static_assert(
-                        //    std::is_trivially_destructible<T>::value,
-                        //    "The type of the objects to allocate in block shared memory has to be trivially destructible!");
-                        static_assert(
-                            TnumElements > 0,
-                            "The number of elements to allocate in block shared memory must not be zero!");
-
-                        //-----------------------------------------------------------------------------
-                        //
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_ACC_CUDA_ONLY static auto allocArr(
-                            block::shared::st::BlockSharedMemStCudaBuiltIn const &)
-                        -> T *
-                        {
-                            __shared__ T shMem[TnumElements];
-                            return shMem;
-                        }
-                    };
-                    //#############################################################################
-                    //!
-                    //#############################################################################
                     template<>
                     struct FreeMem<
                         BlockSharedMemStCudaBuiltIn>

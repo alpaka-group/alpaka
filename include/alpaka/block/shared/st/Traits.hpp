@@ -59,16 +59,6 @@ namespace alpaka
                         typename TSfinae = void>
                     struct AllocVar;
                     //#############################################################################
-                    //! The block shared static memory array allocation operation trait.
-                    //#############################################################################
-                    template<
-                        typename T,
-                        std::size_t TnumElements,
-                        std::size_t TuniqueId,
-                        typename TBlockSharedMemSt,
-                        typename TSfinae = void>
-                    struct AllocArr;
-                    //#############################################################################
                     //! The block shared static memory free operation trait.
                     //#############################################################################
                     template<
@@ -99,38 +89,6 @@ namespace alpaka
                             TuniqueId,
                             TBlockSharedMemSt>
                         ::allocVar(
-                            blockSharedMemSt);
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Allocates an array in block shared static memory.
-                //!
-                //! \tparam T The element type.
-                //! \tparam TnumElements The Number of elements.
-                //! \tparam TuniqueId id those is unique inside a kernel
-                //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
-                //! \param blockSharedMemSt The block shared allocator implementation.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename T,
-                    std::size_t TnumElements,
-                    std::size_t TuniqueId,
-                    typename TBlockSharedMemSt>
-                ALPAKA_FN_ACC auto allocArr(
-                    TBlockSharedMemSt const & blockSharedMemSt)
-                -> T *
-                {
-                    static_assert(
-                        TnumElements > 0,
-                        "The number of elements to allocate in block shared memory must not be zero!");
-
-                    return
-                        traits::AllocArr<
-                            T,
-                            TnumElements,
-                            TuniqueId,
-                            TBlockSharedMemSt>
-                        ::allocArr(
                             blockSharedMemSt);
                 }
 
@@ -183,42 +141,6 @@ namespace alpaka
                             return
                                 block::shared::st::allocVar<
                                     T,
-                                    TuniqueId>(
-                                        static_cast<typename TBlockSharedMemSt::BlockSharedMemStBase const &>(blockSharedMemSt));
-                        }
-                    };
-                    //#############################################################################
-                    //! The AllocArr trait specialization for classes with BlockSharedMemStBase member type.
-                    //#############################################################################
-                    template<
-                        typename T,
-                        std::size_t TnumElements,
-                        std::size_t TuniqueId,
-                        typename TBlockSharedMemSt>
-                    struct AllocArr<
-                        T,
-                        TnumElements,
-                        TuniqueId,
-                        TBlockSharedMemSt,
-                        typename std::enable_if<
-                            meta::IsStrictBase<
-                                typename TBlockSharedMemSt::BlockSharedMemStBase,
-                                TBlockSharedMemSt
-                            >::value
-                        >::type>
-                    {
-                        //-----------------------------------------------------------------------------
-                        //!
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_ACC static auto allocArr(
-                            TBlockSharedMemSt const & blockSharedMemSt)
-                        -> T *
-                        {
-                            // Delegate the call to the base class.
-                            return
-                                block::shared::st::allocArr<
-                                    T,
-                                    TnumElements,
                                     TuniqueId>(
                                         static_cast<typename TBlockSharedMemSt::BlockSharedMemStBase const &>(blockSharedMemSt));
                         }
