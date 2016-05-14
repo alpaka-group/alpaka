@@ -191,6 +191,14 @@ namespace alpaka
                     typename TDevSrc,
                     typename TSfinae = void>
                 struct TaskCopy;
+
+                //#############################################################################
+                //! The static device memory view creation trait.
+                //#############################################################################
+                template<
+                    typename TDev,
+                    typename TSfinae = void>
+                struct CreateStaticDevMemView;
             }
 
             //-----------------------------------------------------------------------------
@@ -632,6 +640,37 @@ namespace alpaka
                         detail::CreatePitchBytes,
                         IdxOffset>(
                             pitch);
+            }
+
+            //-----------------------------------------------------------------------------
+            //! \return A view to static device memory.
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<
+                typename TElem,
+                typename TDev,
+                typename TExtent>
+            ALPAKA_FN_HOST_ACC auto createStaticDevMemView(
+                TElem * pMem,
+                TDev const & dev,
+                TExtent const & extent)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+            -> decltype(
+                traits::CreateStaticDevMemView<
+                        TDev>
+                    ::createStaticDevMemView(
+                        pMem,
+                        dev,
+                        extent))
+#endif
+            {
+                return
+                    traits::CreateStaticDevMemView<
+                        TDev>
+                    ::createStaticDevMemView(
+                        pMem,
+                        dev,
+                        extent);
             }
         }
     }

@@ -24,6 +24,8 @@
 #include <alpaka/mem/view/Traits.hpp>   // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
 
 #include <alpaka/vec/Vec.hpp>           // Vec<N>
+#include <alpaka/dev/DevCpu.hpp>        // DevCpu
+#include <alpaka/dev/DevCudaRt.hpp>     // DevCudaRt
 
 namespace alpaka
 {
@@ -286,6 +288,79 @@ namespace alpaka
                         return view.m_pitchBytes[TIdx::value];
                     }
                 };
+
+                //#############################################################################
+                //! The CPU device CreateStaticDevMemView trait specialization.
+                //#############################################################################
+                template<>
+                struct CreateStaticDevMemView<
+                    dev::DevCpu>
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TElem,
+                        typename TExtent>
+                    ALPAKA_FN_HOST static auto createStaticDevMemView(
+                        TElem * pMem,
+                        dev::DevCpu const & dev,
+                        TExtent const & extent)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                    -> alpaka::mem::view::ViewPlainPtr<dev::DevCpu, TElem, alpaka::dim::Dim<TExtent>, alpaka::size::Size<TExtent>>
+#endif
+                    {
+                        return
+                            alpaka::mem::view::ViewPlainPtr<
+                                dev::DevCpu,
+                                TElem,
+                                alpaka::dim::Dim<TExtent>,
+                                alpaka::size::Size<TExtent>>(
+                                    pMem,
+                                    dev,
+                                    extent);
+                    }
+                };
+
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+                //#############################################################################
+                //! The CUDA RT device CreateStaticDevMemView trait specialization.
+                //#############################################################################
+                template<>
+                struct CreateStaticDevMemView<
+                    dev::DevCudaRt>
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TElem,
+                        typename TExtent>
+                    ALPAKA_FN_HOST static auto createStaticDevMemView(
+                        TElem * pMem,
+                        dev::DevCudaRt const & dev,
+                        TExtent const & extent)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                    -> alpaka::mem::view::ViewPlainPtr<dev::DevCudaRt, TElem, alpaka::dim::Dim<TExtent>, alpaka::size::Size<TExtent>>
+#endif
+                    {
+                        TElem* pMemAcc(nullptr);
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaGetSymbolAddress(
+                                reinterpret_cast<void **>(&pMemAcc),
+                                *pMem));
+                        return
+                            alpaka::mem::view::ViewPlainPtr<
+                                dev::DevCudaRt,
+                                TElem,
+                                alpaka::dim::Dim<TExtent>,
+                                alpaka::size::Size<TExtent>>(
+                                    pMemAcc,
+                                    dev,
+                                    extent);
+                    }
+                };
+#endif
             }
         }
     }

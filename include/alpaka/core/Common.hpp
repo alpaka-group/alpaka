@@ -146,3 +146,21 @@
 #else
     #define ALPAKA_FN_INLINE inline
 #endif
+
+//-----------------------------------------------------------------------------
+//! This macro defines a variable lying in global accelerator device memory.
+//-----------------------------------------------------------------------------
+#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+    #define ALPAKA_STATIC_DEV_MEM_GLOBAL __device__
+#else
+    #define ALPAKA_STATIC_DEV_MEM_GLOBAL
+#endif
+
+//-----------------------------------------------------------------------------
+//! This macro defines a variable lying in constant accelerator device memory.
+//-----------------------------------------------------------------------------
+#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+    #define ALPAKA_STATIC_DEV_MEM_CONSTANT __constant__
+#else
+    #define ALPAKA_STATIC_DEV_MEM_CONSTANT
+#endif
