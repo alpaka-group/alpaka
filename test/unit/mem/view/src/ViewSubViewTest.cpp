@@ -116,6 +116,7 @@ static auto createVecFromIndexedFn()
 //#############################################################################
 struct CompareBufferKernel
 {
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TAcc,
         typename TIterA,
