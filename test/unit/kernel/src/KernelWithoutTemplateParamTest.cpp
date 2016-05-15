@@ -45,11 +45,14 @@ BOOST_AUTO_TEST_SUITE(kernel)
 
 using Dim = alpaka::dim::DimInt<2u>;
 using Size = std::uint32_t;
+#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
 using AccCpu = alpaka::acc::AccCpuSerial<Dim, Size>;
+#endif
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 using AccGpu = alpaka::acc::AccGpuCudaRt<Dim, Size>;
 #endif
 
+#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
 //#############################################################################
 //!
 //#############################################################################
@@ -83,6 +86,7 @@ BOOST_AUTO_TEST_CASE(kernelNoTemplateCpu)
         fixture(
             kernel));
 }
+#endif
 
 /*#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 //#############################################################################
@@ -120,6 +124,7 @@ BOOST_AUTO_TEST_CASE(kernelNoTemplateGpu)
 }
 #endif*/
 
+#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
 //#############################################################################
 //!
 //#############################################################################
@@ -155,6 +160,7 @@ BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamCpu)
         fixture(
             kernel));
 }
+#endif
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 //#############################################################################

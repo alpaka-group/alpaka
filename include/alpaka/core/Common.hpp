@@ -97,12 +97,18 @@
 //! All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC_CUDA_ONLY or ALPAKA_FN_ACC.
 //!
 //! Usage:
-//! ALPAKA_FN_ACC int add(int a, int b);
+//! ALPAKA_FN_ACC
+//! auto add(std::int32_t a, std::int32_t b)
+//! -> std::int32_t;
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
+#if BOOST_LANG_CUDA
     #define ALPAKA_FN_ACC_CUDA_ONLY __device__
     #define ALPAKA_FN_ACC_NO_CUDA __host__
-    #define ALPAKA_FN_ACC __device__ __host__
+    #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+        #define ALPAKA_FN_ACC __device__
+    #else
+        #define ALPAKA_FN_ACC __device__ __host__
+    #endif
     #define ALPAKA_FN_HOST_ACC __device__ __host__
     #define ALPAKA_FN_HOST __host__
 #else
@@ -126,7 +132,7 @@
 //! WARNING: Only use this method if there is no other way.
 //! Most cases can be solved by #if BOOST_ARCH_CUDA_DEVICE or #if BOOST_LANG_CUDA.
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA
+#if BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA
     #if BOOST_COMP_MSVC
         #define ALPAKA_NO_HOST_ACC_WARNING\
             __pragma(hd_warning_disable)
@@ -141,7 +147,7 @@
 //-----------------------------------------------------------------------------
 //! Macro defining the inline function attribute.
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
+#if BOOST_LANG_CUDA
     #define ALPAKA_FN_INLINE __forceinline__
 #else
     #define ALPAKA_FN_INLINE inline
