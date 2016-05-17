@@ -147,7 +147,7 @@ public:
         auto && b = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
         BOOST_REQUIRE_NE(&a, &b);
         auto && c = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&b,&c);
+        BOOST_REQUIRE_NE(&b, &c);
         BOOST_REQUIRE_NE(&a, &c);
         BOOST_REQUIRE_NE(&b, &c);
 

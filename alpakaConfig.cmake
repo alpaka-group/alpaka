@@ -88,6 +88,8 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/" 
 #-------------------------------------------------------------------------------
 # Options.
 #-------------------------------------------------------------------------------
+OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only accelerators using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
+
 OPTION(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU accelerator" ON)
 OPTION(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block thread accelerator" ON)
 OPTION(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread accelerator" OFF)
@@ -97,6 +99,16 @@ OPTION(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block 
 OPTION(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU accelerator" ON)
 OPTION(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block accelerator" ON)
 
+IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE AND
+    (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
+    ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE OR
+    ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OR
+    ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
+    ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
+    ALPAKA_ACC_CPU_BT_OMP4_ENABLE OR
+    ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE))
+    MESSAGE(WARNING "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only accelerators using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA accelerators from being enabled.")
+ENDIF()
 
 # Drop-down combo box in cmake-gui.
 SET(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
@@ -378,6 +390,11 @@ ENDIF()
 #-------------------------------------------------------------------------------
 # alpaka.
 #-------------------------------------------------------------------------------
+IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+    LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_GPU_CUDA_ONLY_MODE")
+    MESSAGE(STATUS ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+ENDIF()
+
 IF(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE)
     LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED")
     MESSAGE(STATUS ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
