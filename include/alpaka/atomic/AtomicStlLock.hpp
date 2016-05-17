@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -31,6 +31,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU threads accelerator atomic ops.
+        //
+        //  Atomics can be used in the grids, blocks and threads hierarchy levels.
+        //  Atomics are not guaranteed to be save between devices.
         //#############################################################################
         class AtomicStlLock
         {
@@ -39,10 +42,9 @@ namespace alpaka
                 typename TAtomic,
                 typename TOp,
                 typename T,
+                typename THierarchy,
                 typename TSfinae>
             friend struct atomic::traits::AtomicOp;
-
-            using AtomicBase = AtomicStlLock;
 
             //-----------------------------------------------------------------------------
             //! Default constructor.
@@ -83,11 +85,13 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TOp,
-                typename T>
+                typename T,
+                typename THierarchy>
             struct AtomicOp<
                 TOp,
                 atomic::AtomicStlLock,
-                T>
+                T,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //

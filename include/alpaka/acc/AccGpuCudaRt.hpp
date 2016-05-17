@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2016 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -34,6 +34,7 @@
 #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>       // IdxGbCudaBuiltIn
 #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>       // IdxBtCudaBuiltIn
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>      // AtomicCudaBuiltIn
+#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
 #include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
 #include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp> // BlockSharedMemDynCudaBuiltIn
 #include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>   // BlockSharedMemStCudaBuiltIn
@@ -82,7 +83,11 @@ namespace alpaka
             public workdiv::WorkDivCudaBuiltIn<TDim, TSize>,
             public idx::gb::IdxGbCudaBuiltIn<TDim, TSize>,
             public idx::bt::IdxBtCudaBuiltIn<TDim, TSize>,
-            public atomic::AtomicCudaBuiltIn,
+            public atomic::AtomicHierarchy<
+                atomic::AtomicCudaBuiltIn, // grid atomics
+                atomic::AtomicCudaBuiltIn, // block atomics
+                atomic::AtomicCudaBuiltIn  // thread atomics
+            >,
             public math::MathCudaBuiltIn,
             public block::shared::dyn::BlockSharedMemDynCudaBuiltIn,
             public block::shared::st::BlockSharedMemStCudaBuiltIn,
@@ -102,7 +107,11 @@ namespace alpaka
                     workdiv::WorkDivCudaBuiltIn<TDim, TSize>(threadElemExtent),
                     idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
                     idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
-                    atomic::AtomicCudaBuiltIn(),
+                    atomic::AtomicHierarchy<
+                        atomic::AtomicCudaBuiltIn, // atomics between grids
+                        atomic::AtomicCudaBuiltIn, // atomics between blocks
+                        atomic::AtomicCudaBuiltIn  // atomics between threads
+                    >(),
                     math::MathCudaBuiltIn(),
                     block::shared::dyn::BlockSharedMemDynCudaBuiltIn(),
                     block::shared::st::BlockSharedMemStCudaBuiltIn(),

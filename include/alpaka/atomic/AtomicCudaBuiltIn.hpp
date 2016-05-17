@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2015 Benjamin Worpitz
+ * Copyright 2014-2016 Benjamin Worpitz, Rene Widera
  *
  * This file is part of alpaka.
  *
@@ -38,11 +38,13 @@ namespace alpaka
     {
         //#############################################################################
         //! The GPU CUDA accelerator atomic ops.
+        //
+        //  Atomics can used in the hierarchy level grids, blocks and threads.
+        //  Atomics are not guaranteed to be save between devices
         //#############################################################################
         class AtomicCudaBuiltIn
         {
         public:
-            using AtomicBase = AtomicCudaBuiltIn;
 
             //-----------------------------------------------------------------------------
             //! Default constructor.
@@ -82,11 +84,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Add,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -103,11 +107,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Add,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -124,11 +130,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Add,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -145,11 +153,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Add,
                 atomic::AtomicCudaBuiltIn,
-                float>
+                float,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -166,11 +176,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Add,
                 atomic::AtomicCudaBuiltIn,
-                double>
+                double,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -202,11 +214,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Sub,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -223,11 +237,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Sub,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -247,11 +263,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Min,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -268,11 +286,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Min,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -289,11 +309,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            /*template<>
+            /*template<
+               typename THierarchy>
             struct AtomicOp<
                 op::Min,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -313,11 +335,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Max,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -334,11 +358,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Max,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
@@ -352,11 +378,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            /*template<>
+            /*template<
+               typename THierarchy>
             struct AtomicOp<
                 op::Max,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -376,11 +404,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Exch,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -397,11 +427,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Exch,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -418,11 +450,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Exch,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -439,11 +473,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Exch,
                 atomic::AtomicCudaBuiltIn,
-                float>
+                float,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -463,11 +499,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Inc,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -487,11 +525,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Dec,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -511,11 +551,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::And,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -532,11 +574,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::And,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -553,11 +597,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            /*template<>
+            /*template<
+                typename THierarchy>
             struct AtomicOp<
                 op::And,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -577,11 +623,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Or,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -598,11 +646,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Or,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -619,11 +669,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            /*template<>
+            /*template<
+               typename THierarchy>
             struct AtomicOp<
                 op::Or,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -643,11 +695,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Xor,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -664,11 +718,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Xor,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -685,11 +741,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            /*template<>
+            /*template<
+               typename THierarchy>
             struct AtomicOp<
                 op::Xor,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -709,11 +767,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Cas,
                 atomic::AtomicCudaBuiltIn,
-                int>
+                int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -731,11 +791,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Cas,
                 atomic::AtomicCudaBuiltIn,
-                unsigned int>
+                unsigned int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -753,11 +815,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             //-----------------------------------------------------------------------------
-            template<>
+            template<
+                typename THierarchy>
             struct AtomicOp<
                 op::Cas,
                 atomic::AtomicCudaBuiltIn,
-                unsigned long long int>
+                unsigned long long int,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //

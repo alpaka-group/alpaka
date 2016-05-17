@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -23,6 +23,7 @@
 
 #include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
+#include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>                  // std::enable_if
@@ -46,8 +47,19 @@ namespace alpaka
                 typename TOp,
                 typename TAtomic,
                 typename T,
+                typename THierarchy,
                 typename TSfinae = void>
             struct AtomicOp;
+
+            //#############################################################################
+            //! Get the atomic implementation for a hierarchy level
+            //#############################################################################
+            template<
+                typename TAtomic,
+                typename THierarchy
+            >
+            struct AtomicBase;
+
         }
 
         //-----------------------------------------------------------------------------
@@ -64,18 +76,21 @@ namespace alpaka
         template<
             typename TOp,
             typename TAtomic,
-            typename T>
+            typename T,
+            typename THierarchy = hierarchy::Grids>
         ALPAKA_FN_HOST_ACC auto atomicOp(
             TAtomic const & atomic,
             T * const addr,
-            T const & value)
+            T const & value,
+            THierarchy const & = THierarchy())
         -> T
         {
             return
                 traits::AtomicOp<
                     TOp,
                     TAtomic,
-                    T>
+                    T,
+                    THierarchy>
                 ::atomicOp(
                     atomic,
                     addr,
@@ -97,19 +112,22 @@ namespace alpaka
         template<
             typename TOp,
             typename TAtomic,
-            typename T>
+            typename T,
+            typename THierarchy = hierarchy::Grids>
         ALPAKA_FN_HOST_ACC auto atomicOp(
             TAtomic const & atomic,
             T * const addr,
             T const & compare,
-            T const & value)
+            T const & value,
+            THierarchy const & = THierarchy())
         -> T
         {
             return
                 traits::AtomicOp<
                     TOp,
                     TAtomic,
-                    T>
+                    T,
+                    THierarchy>
                 ::atomicOp(
                     atomic,
                     addr,
@@ -120,22 +138,19 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The AtomicOp trait specialization for classes with AtomicBase member type.
+            //! The AtomicOp trait specialization for classes with `UsedAtomicHierarchies`
+            //  member type.
             //#############################################################################
             template<
                 typename TOp,
                 typename TAtomic,
-                typename T>
+                typename T,
+                typename THierarchy>
             struct AtomicOp<
                 TOp,
                 TAtomic,
                 T,
-                typename std::enable_if<
-                    meta::IsStrictBase<
-                        typename TAtomic::AtomicBase,
-                        TAtomic
-                    >::value
-                >::type>
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -151,9 +166,14 @@ namespace alpaka
                     return
                         atomic::atomicOp<
                             TOp>(
-                                static_cast<typename TAtomic::AtomicBase const &>(atomic),
+                                static_cast<
+                                    typename AtomicBase<
+                                        typename TAtomic::UsedAtomicHierarchies,
+                                        THierarchy
+                                    >::type const &>(atomic),
                                 addr,
-                                value);
+                                value,
+                                THierarchy());
                 }
                 //-----------------------------------------------------------------------------
                 //!
@@ -170,10 +190,15 @@ namespace alpaka
                     return
                         atomic::atomicOp<
                             TOp>(
-                                static_cast<typename TAtomic::AtomicBase const &>(atomic),
+                                static_cast<
+                                    typename AtomicBase<
+                                        typename TAtomic::UsedAtomicHierarchies,
+                                        THierarchy
+                                    >::type const &>(atomic),
                                 addr,
                                 compare,
-                                value);
+                                value,
+                                THierarchy());
                 }
             };
         }

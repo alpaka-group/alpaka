@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2016 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -28,6 +28,7 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>               // IdxGbRef
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>    // IdxBtRefThreadIdMap
 #include <alpaka/atomic/AtomicStlLock.hpp>          // AtomicStlLock
+#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
 #include <alpaka/math/MathStl.hpp>                  // MathStl
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
@@ -79,7 +80,11 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TSize>,
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtRefThreadIdMap<TDim, TSize>,
-            public atomic::AtomicStlLock,
+            public atomic::AtomicHierarchy<
+                atomic::AtomicStlLock, // grid atomics
+                atomic::AtomicStlLock, // block atomics
+                atomic::AtomicStlLock  // thread atomics
+            >,
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
@@ -108,7 +113,11 @@ namespace alpaka
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_threadToIndexMap),
-                    atomic::AtomicStlLock(),
+                    atomic::AtomicHierarchy<
+                        atomic::AtomicStlLock, // atomics between grids
+                        atomic::AtomicStlLock, // atomics between blocks
+                        atomic::AtomicStlLock  // atomics between threads
+                    >(),
                     math::MathStl(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStMasterSync(

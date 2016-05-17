@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2016 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -31,7 +31,9 @@
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
 #include <alpaka/idx/bt/IdxBtOmp.hpp>           // IdxBtOmp
+#include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
+#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
@@ -82,7 +84,11 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TSize>,
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtOmp<TDim, TSize>,
-            public atomic::AtomicOmpCritSec,
+            public atomic::AtomicHierarchy<
+                atomic::AtomicStlLock,       // grid atomics
+                atomic::AtomicOmpCritSec,    // block atomics
+                atomic::AtomicOmpCritSec     // thread atomics
+            >,
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
@@ -111,7 +117,11 @@ namespace alpaka
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TSize>(),
-                    atomic::AtomicOmpCritSec(),
+                    atomic::AtomicHierarchy<
+                        atomic::AtomicStlLock,    // atomics between grids
+                        atomic::AtomicOmpCritSec, // atomics between blocks
+                        atomic::AtomicOmpCritSec  // atomics between threads
+                    >(),
                     math::MathStl(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStMasterSync(
