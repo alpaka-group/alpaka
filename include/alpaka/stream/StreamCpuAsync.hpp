@@ -76,7 +76,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST StreamCpuAsyncImpl(
-                        dev::DevCpu & dev) :
+                        dev::DevCpu const & dev) :
                             m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev),
                             m_workerThread(1u, 128u)
@@ -123,7 +123,7 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST StreamCpuAsync(
-                dev::DevCpu & dev) :
+                dev::DevCpu const & dev) :
                     m_spAsyncStreamCpu(std::make_shared<cpu::detail::StreamCpuAsyncImpl>(dev))
             {
                 dev.m_spDevCpuImpl->RegisterAsyncStream(m_spAsyncStreamCpu);
