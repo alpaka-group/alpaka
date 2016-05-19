@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/block/shared/st/Traits.hpp>// AllocVar, AllocArr
+#include <alpaka/block/shared/st/Traits.hpp>// AllocVar
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_NO_CUDA
 
