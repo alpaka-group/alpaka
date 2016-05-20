@@ -29,7 +29,7 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/block/shared/dyn/Traits.hpp>   // AllocVar, AllocArr
+#include <alpaka/block/shared/dyn/Traits.hpp>   // AllocVar
 
 #include <type_traits>                          // std::is_trivially_default_constructible, std::is_trivially_destructible
 
