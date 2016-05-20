@@ -54,7 +54,6 @@ namespace alpaka
                 using Dev = TDev;
                 using Elem = TElem;
                 using Dim = TDim;
-                using ViewParentView = mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -175,7 +174,7 @@ namespace alpaka
                 }
 
             public:
-                ViewParentView m_viewParentView;        // This wraps the parent view.
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> m_viewParentView; // This wraps the parent view.
                 Vec<TDim, TSize> m_extentElements;      // The extent of this view.
                 Vec<TDim, TSize> m_offsetsElements;     // The offset relative to the parent view.
             };
