@@ -254,11 +254,6 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU accelerator" FORCE)
 
         ELSE()
-            IF(${ALPAKA_DEBUG} GREATER 1)
-                SET(CUDA_VERBOSE_BUILD ON)
-            ENDIF()
-            SET(CUDA_PROPAGATE_HOST_FLAGS ON)
-
             SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "GPU architecture")
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
@@ -289,11 +284,12 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-Wno-unused-local-typedef")
 
                 IF(ALPAKA_CUDA_FAST_MATH)
-                    LIST(APPEND CUDA_NVCC_FLAGS "-ffp-contract=fast -ffast_math")
+                    # -ffp-contract=fast enables the usage of FMA
+                    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ffast-math" "-ffp-contract=fast")
                 ENDIF()
 
                 IF(ALPAKA_CUDA_SHOW_REGISTER)
-                    LIST(APPEND CUDA_NVCC_FLAGS "-Xcuda-ptxas=-v")
+                    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-Xcuda-ptxas=-v")
                 ENDIF()
 
                 IF(ALPAKA_CUDA_KEEP_FILES)
@@ -301,6 +297,12 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDIF()
 
             ELSE()
+                IF(${ALPAKA_DEBUG} GREATER 1)
+                    SET(CUDA_VERBOSE_BUILD ON)
+                ENDIF()
+
+                SET(CUDA_PROPAGATE_HOST_FLAGS ON)
+
                 LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
 
                 IF(NOT MSVC)
