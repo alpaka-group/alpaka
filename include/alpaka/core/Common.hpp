@@ -23,7 +23,8 @@
 
 #include <alpaka/core/Debug.hpp>
 
-#include <boost/predef/version_number.h>   // BOOST_VERSION_NUMBER
+#include <boost/predef/version_number.h>    // BOOST_VERSION_NUMBER
+#include <boost/version.hpp>                // BOOST_VERSION
 
 //#############################################################################
 // This extends Boost.Predef by detecting:
@@ -89,6 +90,16 @@
 // After explicitly including <boost/config.hpp> we can safely undefine some of the wrong settings.
 //-----------------------------------------------------------------------------
 #if BOOST_COMP_CLANG_CUDA
+    #include <boost/config.hpp>
+    #undef BOOST_NO_CXX11_VARIADIC_TEMPLATES
+#endif
+
+//-----------------------------------------------------------------------------
+// Boost 1.61 disabled variadic templates for nvcc 7.0 because it was buggy.
+// However, we rely on it being enabled, as it was in all previous boost versions we support.
+// After explicitly including <boost/config.hpp> we can safely undefine the wrong setting.
+//-----------------------------------------------------------------------------
+#if BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(7, 5, 0) && BOOST_PREDEF_MAKE_10_VVRRPP(BOOST_VERSION) >= BOOST_VERSION_NUMBER(1, 61, 0)
     #include <boost/config.hpp>
     #undef BOOST_NO_CXX11_VARIADIC_TEMPLATES
 #endif
