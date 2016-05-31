@@ -117,7 +117,7 @@ SET_PROPERTY(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 #-------------------------------------------------------------------------------
 # Find Boost.
 #-------------------------------------------------------------------------------
-SET(_ALPAKA_BOOST_MIN_VER "1.56.0") # minimum version for basic features
+SET(_ALPAKA_BOOST_MIN_VER "1.59.0") # minimum version for basic features
 IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DEBUG ON)
     SET(Boost_DETAILED_FAILURE_MSG ON)
