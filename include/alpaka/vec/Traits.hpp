@@ -92,6 +92,7 @@ namespace alpaka
                     vec);
         }
         //-----------------------------------------------------------------------------
+        //! \tparam TVec has to specialize SubVecFromIndices.
         //! \return The sub-vector consisting of the first N elements of the source vector.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
@@ -126,6 +127,7 @@ namespace alpaka
                         vec);
         }
         //-----------------------------------------------------------------------------
+        //! \tparam TVec has to specialize SubVecFromIndices.
         //! \return The sub-vector consisting of the last N elements of the source vector.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
