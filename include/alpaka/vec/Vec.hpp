@@ -952,6 +952,7 @@ namespace alpaka
             };
         }
         //-----------------------------------------------------------------------------
+        //! \tparam TExtent has to specialize extent::GetExtent.
         //! \return The extent vector.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
@@ -973,6 +974,7 @@ namespace alpaka
                         extent);
         }
         //-----------------------------------------------------------------------------
+        //! \tparam TExtent has to specialize extent::GetExtent.
         //! \return The extent but only the last N elements.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
@@ -1024,6 +1026,7 @@ namespace alpaka
             };
         }
         //-----------------------------------------------------------------------------
+        //! \tparam TExtent has to specialize offset::GetOffset.
         //! \return The offset vector.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
@@ -1045,6 +1048,7 @@ namespace alpaka
                         offsets);
         }
         //-----------------------------------------------------------------------------
+        //! \tparam TExtent has to specialize offset::GetOffset.
         //! \return The offset vector but only the last N elements.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
