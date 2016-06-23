@@ -527,17 +527,20 @@ ENDIF()
 #-------------------------------------------------------------------------------
 # Find alpaka version.
 #-------------------------------------------------------------------------------
-FILE(STRINGS "${_ALPAKA_ROOT_DIR}/include/alpaka/alpaka.hpp"
-     _ALPAKA_VERSION_DEFINE REGEX "#define ALPAKA_VERSION BOOST_VERSION_NUMBER")
+file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_MAJOR_HPP REGEX "#define ALPAKA_VERSION_MAJOR ")
+file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_MINOR_HPP REGEX "#define ALPAKA_VERSION_MINOR ")
+file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_PATCH_HPP REGEX "#define ALPAKA_VERSION_PATCH ")
 
-STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\1" _ALPAKA_VER_MAJOR "${_ALPAKA_VERSION_DEFINE}")
-STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\2" _ALPAKA_VER_MINOR "${_ALPAKA_VERSION_DEFINE}")
-STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\3" _ALPAKA_VER_PATCH "${_ALPAKA_VERSION_DEFINE}")
+string(REGEX MATCH "([0-9]+)" ALPAKA_VERSION_MAJOR  ${ALPAKA_VERSION_MAJOR_HPP})
+string(REGEX MATCH "([0-9]+)" ALPAKA_VERSION_MINOR  ${ALPAKA_VERSION_MINOR_HPP})
+string(REGEX MATCH "([0-9]+)" ALPAKA_VERSION_PATCH  ${ALPAKA_VERSION_PATCH_HPP})
+
+set(PACKAGE_VERSION "${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VERSION_PATCH}")
 
 #-------------------------------------------------------------------------------
 # Set return values.
 #-------------------------------------------------------------------------------
-SET(alpaka_VERSION "${_ALPAKA_VER_MAJOR}.${_ALPAKA_VER_MINOR}.${_ALPAKA_VER_PATCH}")
+set(alpaka_VERSION "${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VERSION_PATCH}")
 SET(alpaka_COMPILE_OPTIONS ${_ALPAKA_COMPILE_OPTIONS_PUBLIC})
 SET(alpaka_COMPILE_DEFINITIONS ${_ALPAKA_COMPILE_DEFINITIONS_PUBLIC})
 # Add '-D' to the definitions

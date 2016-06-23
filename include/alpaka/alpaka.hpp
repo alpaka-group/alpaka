@@ -22,15 +22,6 @@
 #pragma once
 
 //#############################################################################
-// Define the version number.
-//#############################################################################
-
-#include <boost/predef/version_number.h>    // BOOST_VERSION_NUMBER
-
-//! The alpaka library version number
-#define ALPAKA_VERSION BOOST_VERSION_NUMBER(2, 0, 0)
-
-//#############################################################################
 // Include the whole library.
 //#############################################################################
 
