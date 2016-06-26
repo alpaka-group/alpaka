@@ -52,6 +52,7 @@ Accelerator Back-ends
 |OpenMP 2.0+ threads|OpenMP 2.0+|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 |OpenMP 4.0+ (CPU)|OpenMP 4.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
+| Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |CUDA 7.0+|CUDA 7.0+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
 
 
@@ -67,7 +68,8 @@ This library uses C++11 (or newer when available).
 |OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:white_check_mark: (native)|:white_check_mark: (nvcc 8.0+)|
+| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:white_check_mark: (native/nvcc 8.0+)|:white_check_mark: (nvcc 8.0+)|
 
 
 Dependencies
@@ -76,6 +78,9 @@ Dependencies
 [Boost](http://boost.org/) 1.59+ is the only mandatory external dependency.
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
+
+When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch of boost is required.
+`boost-fiber`, `boost-context` and all of its dependencies are required to be build in C++11 mode `./b2 cxxflags="-std=c++11"`.
 
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using *CUDA* 7.0, the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
