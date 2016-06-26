@@ -58,10 +58,11 @@ namespace alpaka
             struct BlockSharedMemDynSizeBytes
             {
                 //-----------------------------------------------------------------------------
-                //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated
-                //! \param blockElemExtent The block element extent for which the block shared memory size should be calculated.
+                //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
+                //! \param blockThreadExtent The block thread extent.
+                //! \param threadElemExtent The thread element extent.
                 //! \tparam TArgs The kernel invocation argument types pack.
-                //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
+                //! \param args,... The kernel invocation arguments.
                 //! \return The size of the shared memory allocated for a block in bytes.
                 //! The default version always returns zero.
                 //-----------------------------------------------------------------------------
@@ -89,9 +90,11 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \param blockElemExtent The block element extent for which the block shared memory size should be calculated.
+        //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
+        //! \param blockThreadExtent The block thread extent.
+        //! \param threadElemExtent The thread element extent.
         //! \tparam TArgs The kernel invocation argument types pack.
-        //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
+        //! \param args,... The kernel invocation arguments.
         //! \return The size of the shared memory allocated for a block in bytes.
         //! The default implementation always returns zero.
         //-----------------------------------------------------------------------------

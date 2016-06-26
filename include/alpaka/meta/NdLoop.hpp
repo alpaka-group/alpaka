@@ -26,6 +26,10 @@
 #include <alpaka/meta/IntegerSequence.hpp>  // meta::IndexSequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
+#if !BOOST_ARCH_CUDA_DEVICE
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
+
 namespace alpaka
 {
     namespace meta
@@ -151,7 +155,6 @@ namespace alpaka
         //! \param indexSequence A sequence of indices being a permutation of the values [0, dim-1], where every values occurs at most once.
         //! \param extent N-dimensional loop extent.
         //! \param f The function called at each iteration.
-        //! \param args,... The additional arguments given to each function call.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
@@ -159,11 +162,15 @@ namespace alpaka
             typename TFnObj,
             std::size_t... Tdims>
         ALPAKA_FN_HOST_ACC auto ndLoop(
-            meta::IndexSequence<Tdims...> const & /*indexSequence*/,
+            meta::IndexSequence<Tdims...> const & indexSequence,
             TExtentVec const & extent,
             TFnObj const & f)
         -> void
         {
+#if !BOOST_ARCH_CUDA_DEVICE
+            boost::ignore_unused(indexSequence);
+#endif
+
             static_assert(
                 dim::Dim<TExtentVec>::value > 0u,
                 "The dimension of the extent given to ndLoop has to be larger than zero!");
@@ -190,7 +197,6 @@ namespace alpaka
         //!
         //! \param extent N-dimensional loop extent.
         //! \param f The function called at each iteration.
-        //! \param args,... The additional arguments given to each function call.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<

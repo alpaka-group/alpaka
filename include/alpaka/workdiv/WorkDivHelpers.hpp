@@ -165,7 +165,7 @@ namespace alpaka
         //!
         //! \param gridElemExtent
         //!     The full extent of elements in the grid.
-        //! \param threadElemExtents
+        //! \param threadElemExtent
         //!     the number of elements computed per thread.
         //! \param accDevProps
         //!     The maxima for the work division.
