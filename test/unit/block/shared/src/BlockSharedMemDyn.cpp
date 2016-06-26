@@ -32,6 +32,7 @@
 #include <alpaka/test/stream/Stream.hpp>            // alpaka::test::stream::DefaultStream
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
+#include <boost/assert.hpp>                         // BOOST_VERIFY
 #include <boost/test/unit_test.hpp>
 
 //#############################################################################
@@ -52,15 +53,15 @@ public:
     {
         // Assure that the pointer is non null.
         auto && a = alpaka::block::shared::dyn::getMem<std::uint32_t>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), a);
+        BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != a);
 
         // Each call should return the same pointer ...
         auto && b = alpaka::block::shared::dyn::getMem<std::uint32_t>(acc);
-        BOOST_REQUIRE_EQUAL(a, b);
+        BOOST_VERIFY(a == b);
 
         // ... even for different types.
         auto && c = alpaka::block::shared::dyn::getMem<float>(acc);
-        BOOST_REQUIRE_EQUAL(a, reinterpret_cast<std::uint32_t *>(c));
+        BOOST_VERIFY(a == reinterpret_cast<std::uint32_t *>(c));
     }
 };
 

@@ -32,6 +32,7 @@
 #include <alpaka/test/stream/Stream.hpp>            // alpaka::test::stream::DefaultStream
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
+#include <boost/assert.hpp>                         // BOOST_VERIFY
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(blockSharedMemSt)
@@ -79,29 +80,29 @@ public:
     -> void
     {
         auto && a = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &a);
+        BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &a);
 
         auto && b = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &b);
+        BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &b);
 
         auto && c = alpaka::block::shared::st::allocVar<float, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<float *>(nullptr), &c);
+        BOOST_VERIFY(static_cast<float *>(nullptr) != &c);
 
         auto && d = alpaka::block::shared::st::allocVar<double, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<double *>(nullptr), &d);
+        BOOST_VERIFY(static_cast<double *>(nullptr) != &d);
 
         auto && e = alpaka::block::shared::st::allocVar<std::uint64_t, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint64_t *>(nullptr), &e);
+        BOOST_VERIFY(static_cast<std::uint64_t *>(nullptr) != &e);
 
 
         auto && f = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &f[0]);
+        BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &f[0]);
 
         auto && g = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<std::uint32_t *>(nullptr), &g[0]);
+        BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &g[0]);
 
         auto && h = alpaka::block::shared::st::allocVar<Array<double, 16>, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(static_cast<double *>(nullptr), &h[0]);
+        BOOST_VERIFY(static_cast<double *>(nullptr) != &h[0]);
     }
 };
 
@@ -145,21 +146,21 @@ public:
     {
         auto && a = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
         auto && b = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&a, &b);
+        BOOST_VERIFY(&a != &b);
         auto && c = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&b, &c);
-        BOOST_REQUIRE_NE(&a, &c);
-        BOOST_REQUIRE_NE(&b, &c);
+        BOOST_VERIFY(&b != &c);
+        BOOST_VERIFY(&a != &c);
+        BOOST_VERIFY(&b != &c);
 
         auto && d = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&a, &d[0]);
-        BOOST_REQUIRE_NE(&b, &d[0]);
-        BOOST_REQUIRE_NE(&c, &d[0]);
+        BOOST_VERIFY(&a != &d[0]);
+        BOOST_VERIFY(&b != &d[0]);
+        BOOST_VERIFY(&c != &d[0]);
         auto && e = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
-        BOOST_REQUIRE_NE(&a, &e[0]);
-        BOOST_REQUIRE_NE(&b, &e[0]);
-        BOOST_REQUIRE_NE(&c, &e[0]);
-        BOOST_REQUIRE_NE(&d[0], &e[0]);
+        BOOST_VERIFY(&a != &e[0]);
+        BOOST_VERIFY(&b != &e[0]);
+        BOOST_VERIFY(&c != &e[0]);
+        BOOST_VERIFY(&d[0] != &e[0]);
     }
 };
 

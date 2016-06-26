@@ -31,6 +31,7 @@
 #include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
+#include <boost/assert.hpp>                         // BOOST_VERIFY
 #include <boost/test/unit_test.hpp>
 
 //#############################################################################
@@ -62,9 +63,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig + value;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -78,9 +79,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig - value;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -94,9 +95,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = std::min(operandOrig, value);
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -110,9 +111,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = std::max(operandOrig, value);
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -126,9 +127,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = value;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -143,9 +144,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig + 1;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -160,9 +161,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig - 1;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -176,9 +177,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig & value;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -192,9 +193,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig | value;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -208,9 +209,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig ^ value;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -226,9 +227,9 @@ public:
                         &operand,
                         compare,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = value;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -244,9 +245,9 @@ public:
                         &operand,
                         compare,
                         value);
-            BOOST_REQUIRE_EQUAL(operandOrig, ret);
+            BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig;
-            BOOST_REQUIRE_EQUAL(operand, reference);
+            BOOST_VERIFY(operand == reference);
         }
     }
 };

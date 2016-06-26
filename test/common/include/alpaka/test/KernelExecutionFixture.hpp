@@ -38,7 +38,7 @@ namespace alpaka
             using Dim = alpaka::dim::Dim<Acc>;
             using Size = alpaka::size::Size<Acc>;
             using DevAcc = alpaka::dev::Dev<Acc>;
-            using PltfAcc  = alpaka::pltf::Pltf<DevAcc>;
+            using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
             using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
 
         public:
