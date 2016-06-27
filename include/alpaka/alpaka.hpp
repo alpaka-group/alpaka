@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2016 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Erik Zenker
 *
 * This file is part of alpaka.
 *
@@ -22,17 +22,13 @@
 #pragma once
 
 //#############################################################################
-// Define the version number.
-//#############################################################################
-
-#include <boost/predef/version_number.h>    // BOOST_VERSION_NUMBER
-
-//! The alpaka library version number
-#define ALPAKA_VERSION BOOST_VERSION_NUMBER(2, 0, 0)
-
-//#############################################################################
 // Include the whole library.
 //#############################################################################
+
+//-----------------------------------------------------------------------------
+// version number
+//-----------------------------------------------------------------------------
+#include <alpaka/version.hpp>
 
 //-----------------------------------------------------------------------------
 // acc
