@@ -33,6 +33,7 @@
 #include <alpaka/test/mem/view/ViewTest.hpp>    // viewTest
 #include <alpaka/test/mem/view/Iterator.hpp>    // Iterator
 
+#include <boost/assert.hpp>                     // BOOST_VERIFY
 #include <boost/test/unit_test.hpp>
 #include <boost/predef.h>                       // workarounds
 
@@ -130,9 +131,7 @@ struct CompareBufferKernel
         (void)acc;
         for(; beginA != endA; ++beginA, ++beginB)
         {
-            BOOST_REQUIRE_EQUAL(
-                *beginA,
-                *beginB);
+            BOOST_VERIFY(*beginA == *beginB);
         }
     }
 };

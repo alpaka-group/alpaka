@@ -624,12 +624,12 @@ script:
     # Build and execute all unit tests.
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/acc/" ./acc ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/atomic/" ./atomic ;fi
-    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a ${ALPAKA_CUDA_COMPILER} != "clang" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" != "ON" ] ;then ./travis/compileExec.sh "test/unit/block/shared/" ./blockShared ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/block/shared/" ./blockShared ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/kernel/" ./kernel ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/mem/buf/" ./memBuf ;fi
-    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a ${ALPAKA_CUDA_COMPILER} != "clang" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" != "ON" ] ;then ./travis/compileExec.sh "test/unit/mem/view/" ./memView ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/mem/view/" ./memView ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/meta/" ./meta ;fi
-    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a ${ALPAKA_CUDA_COMPILER} != "clang" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" != "ON" ] ;then ./travis/compileExec.sh "test/unit/time/" ./time ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/time/" ./time ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./travis/compileExec.sh "test/unit/vec/" ./vec ;fi
 
     #-------------------------------------------------------------------------------

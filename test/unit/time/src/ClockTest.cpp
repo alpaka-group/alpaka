@@ -31,6 +31,7 @@
 #include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
+#include <boost/assert.hpp>                         // BOOST_VERIFY
 #include <boost/test/unit_test.hpp>
 
 //#############################################################################
@@ -51,14 +52,14 @@ public:
     {
         std::uint64_t const start(
             alpaka::time::clock(acc));
-        BOOST_REQUIRE_NE(0u, start);
+        BOOST_VERIFY(0u != start);
 
         std::uint64_t const end(
             alpaka::time::clock(acc));
-        BOOST_REQUIRE_NE(0u, end);
+        BOOST_VERIFY(0u != end);
 
         // 'end' has to be greater then 'start'.
-        BOOST_REQUIRE_GT(end, start);
+        BOOST_VERIFY(end > start);
     }
 };
 
