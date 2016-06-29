@@ -21,6 +21,14 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/math/acos/Traits.hpp>  // Acos
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -56,14 +64,16 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_ACC_CUDA_ONLY static auto acos(
-                    AcosCudaBuiltIn const & acos,
+                    AcosCudaBuiltIn const & /*acos*/,
                     TArg const & arg)
                 -> decltype(::acos(arg))
                 {
-                    boost::ignore_unused(acos);
+                    //boost::ignore_unused(acos);
                     return ::acos(arg);
                 }
             };
         }
     }
 }
+
+#endif

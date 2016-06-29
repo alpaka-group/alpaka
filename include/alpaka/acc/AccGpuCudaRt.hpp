@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,20 +21,32 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>                   // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 // Base classes.
 #include <alpaka/workdiv/WorkDivCudaBuiltIn.hpp>    // WorkDivCudaBuiltIn
 #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>       // IdxGbCudaBuiltIn
 #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>       // IdxBtCudaBuiltIn
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>      // AtomicCudaBuiltIn
+#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
 #include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
-#include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>  // BlockSharedAllocCudaBuiltIn
-#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>   // BlockSyncCudaBuiltIn
+#include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp> // BlockSharedMemDynCudaBuiltIn
+#include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>   // BlockSharedMemStCudaBuiltIn
+#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>               // BlockSyncCudaBuiltIn
 #include <alpaka/rand/RandCuRand.hpp>               // RandCuRand
+#include <alpaka/time/TimeCudaBuiltIn.hpp>          // TimeCudaBuiltIn
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                    // dev::traits::DevType
 #include <alpaka/exec/Traits.hpp>                   // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>                   // size::traits::SizeType
 
 // Implementation details.
@@ -71,11 +83,20 @@ namespace alpaka
             public workdiv::WorkDivCudaBuiltIn<TDim, TSize>,
             public idx::gb::IdxGbCudaBuiltIn<TDim, TSize>,
             public idx::bt::IdxBtCudaBuiltIn<TDim, TSize>,
-            public atomic::AtomicCudaBuiltIn,
+            public atomic::AtomicHierarchy<
+                atomic::AtomicCudaBuiltIn, // grid atomics
+                atomic::AtomicCudaBuiltIn, // block atomics
+                atomic::AtomicCudaBuiltIn  // thread atomics
+            >,
             public math::MathCudaBuiltIn,
-            public block::shared::BlockSharedAllocCudaBuiltIn,
+            public block::shared::dyn::BlockSharedMemDynCudaBuiltIn,
+            public block::shared::st::BlockSharedMemStCudaBuiltIn,
             public block::sync::BlockSyncCudaBuiltIn,
-            public rand::RandCuRand
+// This is not currently supported by the clang native CUDA compiler.
+#if !BOOST_COMP_CLANG_CUDA
+            public rand::RandCuRand,
+#endif
+            public time::TimeCudaBuiltIn
         {
         public:
             //-----------------------------------------------------------------------------
@@ -86,11 +107,20 @@ namespace alpaka
                     workdiv::WorkDivCudaBuiltIn<TDim, TSize>(threadElemExtent),
                     idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
                     idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
-                    atomic::AtomicCudaBuiltIn(),
+                    atomic::AtomicHierarchy<
+                        atomic::AtomicCudaBuiltIn, // atomics between grids
+                        atomic::AtomicCudaBuiltIn, // atomics between blocks
+                        atomic::AtomicCudaBuiltIn  // atomics between threads
+                    >(),
                     math::MathCudaBuiltIn(),
-                    block::shared::BlockSharedAllocCudaBuiltIn(),
+                    block::shared::dyn::BlockSharedMemDynCudaBuiltIn(),
+                    block::shared::st::BlockSharedMemStCudaBuiltIn(),
                     block::sync::BlockSyncCudaBuiltIn(),
-                    rand::RandCuRand()
+// This is not currently supported by the clang native CUDA compiler.
+#if !BOOST_COMP_CLANG_CUDA
+                    rand::RandCuRand(),
+#endif
+                    time::TimeCudaBuiltIn()
             {}
 
         public:
@@ -114,22 +144,6 @@ namespace alpaka
             //! Destructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~AccGpuCudaRt() = default;
-
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
-            -> T *
-            {
-                // Because unaligned access to variables is not allowed in device code,
-                // we have to use the widest possible type to have all types aligned correctly.
-                // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
-                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
-                extern __shared__ float4 shMem[];
-                return reinterpret_cast<T *>(shMem);
-            }
         };
     }
 
@@ -230,17 +244,6 @@ namespace alpaka
             {
                 using type = dev::DevCudaRt;
             };
-            //#############################################################################
-            //! The GPU CUDA accelerator device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct DevManType<
-                acc::AccGpuCudaRt<TDim, TSize>>
-            {
-                using type = dev::DevManCudaRt;
-            };
         }
     }
     namespace dim
@@ -281,6 +284,23 @@ namespace alpaka
             };
         }
     }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU CUDA executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct PltfType<
+                acc::AccGpuCudaRt<TDim, TSize>>
+            {
+                using type = pltf::PltfCudaRt;
+            };
+        }
+    }
     namespace size
     {
         namespace traits
@@ -299,3 +319,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

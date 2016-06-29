@@ -239,8 +239,11 @@ namespace alpaka
                     TTask & task)
                 -> void
                 {
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
                         task);
+#endif
                 }
                 //-----------------------------------------------------------------------------
                 //
@@ -250,8 +253,11 @@ namespace alpaka
                     TTask const & task)
                 -> void
                 {
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
                         task);
+#endif
                 }
             };
             //#############################################################################

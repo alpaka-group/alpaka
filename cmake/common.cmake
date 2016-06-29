@@ -53,7 +53,7 @@ FUNCTION(append_recursive_relative_subdirs In_RootDir Out_RecursiveRelativeSubDi
 
     # Get the paths to all the recursive files.
     # Create empty list for the case of no subdirectories being present.
-    SET(recusiveRelativeSubDirs)
+    SET(recursiveRelativeSubDirs)
     FOREACH(
         relativeFilePath
         IN LISTS recursiveRelativeFiles)
@@ -63,28 +63,28 @@ FUNCTION(append_recursive_relative_subdirs In_RootDir Out_RecursiveRelativeSubDi
             PATH)
         LIST(
             APPEND
-            recusiveRelativeSubDirs
+            recursiveRelativeSubDirs
             "${relativeSubDir}")
     ENDFOREACH()
-    #MESSAGE("recusiveRelativeSubDirs: ${recusiveRelativeSubDirs}")
+    #MESSAGE("recursiveRelativeSubDirs: ${recursiveRelativeSubDirs}")
 
     # If the list is not empty.
     LIST(
         LENGTH
-        recusiveRelativeSubDirs
-        recusiveRelativeSubDirsLength)
-    IF("${recusiveRelativeSubDirsLength}")
+        recursiveRelativeSubDirs
+        recursiveRelativeSubDirsLength)
+    IF("${recursiveRelativeSubDirsLength}")
         # Remove duplicates from the list.
         LIST(
             REMOVE_DUPLICATES
-            recusiveRelativeSubDirs)
-        #MESSAGE("recusiveRelativeSubDirs: ${recusiveRelativeSubDirs}")
+            recursiveRelativeSubDirs)
+        #MESSAGE("recursiveRelativeSubDirs: ${recursiveRelativeSubDirs}")
 
         # Set the return value (append it to the value in the parent scope).
         #MESSAGE("Out_RecursiveRelativeSubDirsVariableName: ${Out_RecursiveRelativeSubDirsVariableName}")
         SET(
             ${Out_RecursiveRelativeSubDirsVariableName}
-            "${${Out_RecursiveRelativeSubDirsVariableName}}" "${recusiveRelativeSubDirs}"
+            "${${Out_RecursiveRelativeSubDirsVariableName}}" "${recursiveRelativeSubDirs}"
             PARENT_SCOPE)
     ENDIF()
 ENDFUNCTION()
@@ -107,11 +107,18 @@ FUNCTION(add_recursive_files_to_src_group In_RootDir In_SrcGroupIgnorePrefix In_
     FOREACH(
         currentRelativeSubDir
         IN
-        LISTS recursiveRelativeSubDirs)
+        LISTS recursiveRelativeSubDirs
+        ITEMS "")
         # Appended the current subdirectory.
-        SET(
-            currentSubDir
-            "${In_RootDir}/${currentRelativeSubDir}")
+        IF(currentRelativeSubDir STREQUAL "")
+            SET(
+                currentSubDir
+                "${In_RootDir}")
+        ELSE()
+            SET(
+                currentSubDir
+                "${In_RootDir}/${currentRelativeSubDir}")
+        ENDIF()
         #MESSAGE("currentSubDir: ${currentSubDir}")
         # Get all the files in this sub-folder.
         SET(
@@ -134,7 +141,7 @@ FUNCTION(add_recursive_files_to_src_group In_RootDir In_SrcGroupIgnorePrefix In_
                 groupExpression
                 "${currentSubDir}")
             #MESSAGE("groupExpression: ${groupExpression}")
-            # Remove the parent directory steps from the path.
+            # Remove the parent directory from the path.
             # NOTE: This is not correct because it does not only replace at the beginning of the string.
             #  "STRING(REGEX REPLACE" would be correct if there was an easy way to escape arbitrary strings.
             STRING(

@@ -24,7 +24,7 @@
 #include <alpaka/vec/Vec.hpp>               // Vec
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
@@ -39,10 +39,11 @@ namespace alpaka
             //#############################################################################
             template<
                 std::size_t TidxDimOut,
-                std::size_t TidxDimIn>
+                std::size_t TidxDimIn,
+                typename TSfinae = void>
             struct MapIdx;
             //#############################################################################
-            //! Maps a linear index to a linear index.
+            //! Maps a 1 dimensional index to a 1 dimensional index.
             //#############################################################################
             template<>
             struct MapIdx<
@@ -51,9 +52,9 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
-                // \param Index Idx to be mapped.
-                // \param Extent Spatial size to map the index to.
-                // \return Vector of dimension TidxDimOut.
+                // \param idx Idx to be mapped.
+                // \param extent Spatial size to map the index to.
+                // \return A 1 dimensional vector.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -63,46 +64,14 @@ namespace alpaka
                     Vec<dim::DimInt<1u>, TElem> const & extent)
                 -> Vec<dim::DimInt<1u>, TElem>
                 {
-#if !defined(__CUDA_ARCH__)
+#if !BOOST_ARCH_CUDA_DEVICE
                     boost::ignore_unused(extent);
 #endif
                     return idx;
                 }
             };
             //#############################################################################
-            //! Maps a linear index to a 3 dimensional index.
-            //#############################################################################
-            template<>
-            struct MapIdx<
-                3u,
-                1u>
-            {
-                //-----------------------------------------------------------------------------
-                // \tparam TElem Type of the index values.
-                // \param Index Idx to be mapped.
-                // \param Extent Spatial size to map the index to.
-                // \return Vector of dimension TidxDimOut.
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TElem>
-                ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<3u>, TElem> const & extent)
-                -> Vec<dim::DimInt<3u>, TElem>
-                {
-                    auto const & idx1d(idx[0u]);
-                    auto const xyExtentProd(extent[2u] * extent[1u]);
-                    auto const & extentX(extent[2]);
-
-                    return {
-                        idx1d / xyExtentProd,
-                        (idx1d % xyExtentProd) / extentX,
-                        idx1d % extentX};
-                }
-            };
-            //#############################################################################
-            //! Maps a linear index to a 2 dimensional index.
+            //! Maps a 1 dimensional index to a 2 dimensional index.
             //#############################################################################
             template<>
             struct MapIdx<
@@ -111,9 +80,9 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
-                // \param Index Idx to be mapped.
-                // \param Extent Spatial size to map the index to.
-                // \return Vector of dimension TidxDimOut.
+                // \param idx Idx to be mapped.
+                // \param extent Spatial size to map the index to.
+                // \return A 2 dimensional vector.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -123,41 +92,82 @@ namespace alpaka
                     Vec<dim::DimInt<2u>, TElem> const & extent)
                 -> Vec<dim::DimInt<2u>, TElem>
                 {
-                    auto const & idx1d(idx[0u]);
-                    auto const & extentX(extent[1u]);
+                    TElem const & idx1d(idx[0u]);
+                    TElem const & extentX(extent[1u]);
 
                     return {
-                        idx1d / extentX,
-                        idx1d % extentX};
+                        static_cast<TElem>(idx1d / extentX),
+                        static_cast<TElem>(idx1d % extentX)};
                 }
             };
             //#############################################################################
-            //! Maps a 3 dimensional index to a linear index.
+            //! Maps a 1 dimensional index to a 3 dimensional index.
             //#############################################################################
             template<>
             struct MapIdx<
-                1u,
-                3u>
+                3u,
+                1u>
             {
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
-                // \param Index Idx to be mapped.
-                // \param Extent Spatial size to map the index to.
-                // \return Vector of dimension TidxDimOut.
+                // \param idx Idx to be mapped.
+                // \param extent Spatial size to map the index to.
+                // \return A 3 dimensional vector.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<3u>, TElem> const & idx,
+                    Vec<dim::DimInt<1u>, TElem> const & idx,
                     Vec<dim::DimInt<3u>, TElem> const & extent)
-                -> Vec<dim::DimInt<1u>, TElem>
+                -> Vec<dim::DimInt<3u>, TElem>
                 {
-                    return (idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u];
+                    TElem const & idx1d(idx[0u]);
+                    TElem const & extentX(extent[2]);
+                    TElem const xyExtentProd(extent[2u] * extent[1u]);
+
+                    return {
+                        static_cast<TElem>(idx1d / xyExtentProd),
+                        static_cast<TElem>((idx1d % xyExtentProd) / extentX),
+                        static_cast<TElem>(idx1d % extentX)};
                 }
             };
             //#############################################################################
-            //! Maps a 2 dimensional index to a linear index.
+            //! Maps a 1 dimensional index to a 4 dimensional index.
+            //#############################################################################
+            template<>
+            struct MapIdx<
+                4u,
+                1u>
+            {
+                //-----------------------------------------------------------------------------
+                // \tparam TElem Type of the index values.
+                // \param idx Idx to be mapped.
+                // \param extent Spatial size to map the index to.
+                // \return A 4 dimensional vector.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElem>
+                ALPAKA_FN_HOST_ACC static auto mapIdx(
+                    Vec<dim::DimInt<1u>, TElem> const & idx,
+                    Vec<dim::DimInt<4u>, TElem> const & extent)
+                -> Vec<dim::DimInt<4u>, TElem>
+                {
+                    TElem const & idx1d(idx[0u]);
+                    TElem const & extentX(extent[3]);
+                    TElem const xyExtentProd(extent[3u] * extent[2u]);
+                    TElem const xyzExtentProd(xyExtentProd * extent[1u]);
+
+                    return {
+                        static_cast<TElem>(idx1d / xyzExtentProd),
+                        static_cast<TElem>((idx1d % xyzExtentProd) / xyExtentProd),
+                        static_cast<TElem>((idx1d % xyExtentProd) / extentX),
+                        static_cast<TElem>(idx1d % extentX)};
+                }
+            };
+            //#############################################################################
+            //! Maps a 2 dimensional index to a 1 dimensional index.
             //#############################################################################
             template<>
             struct MapIdx<
@@ -166,9 +176,9 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
-                // \param Index Idx to be mapped.
-                // \param Extent Spatial size to map the index to.
-                // \return Vector of dimension TidxDimOut.
+                // \param idx Idx to be mapped.
+                // \param extent Spatial size to map the index to.
+                // \return A 1 dimensional vector.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -178,7 +188,60 @@ namespace alpaka
                     Vec<dim::DimInt<2u>, TElem> const & extent)
                 -> Vec<dim::DimInt<1u>, TElem>
                 {
-                    return idx[0u] * extent[1u] + idx[1u];
+                    return {
+                        idx[0u] * extent[1u] + idx[1u]};
+                }
+            };
+            //#############################################################################
+            //! Maps a 3 dimensional index to a 1 dimensional index.
+            //#############################################################################
+            template<>
+            struct MapIdx<
+                1u,
+                3u>
+            {
+                //-----------------------------------------------------------------------------
+                // \tparam TElem Type of the index values.
+                // \param idx Idx to be mapped.
+                // \param extent Spatial size to map the index to.
+                // \return A 1 dimensional vector.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElem>
+                ALPAKA_FN_HOST_ACC static auto mapIdx(
+                    Vec<dim::DimInt<3u>, TElem> const & idx,
+                    Vec<dim::DimInt<3u>, TElem> const & extent)
+                -> Vec<dim::DimInt<1u>, TElem>
+                {
+                    return {
+                        (idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u]};
+                }
+            };
+            //#############################################################################
+            //! Maps a 4 dimensional index to a 1 dimensional index.
+            //#############################################################################
+            template<>
+            struct MapIdx<
+                1u,
+                4u>
+            {
+                //-----------------------------------------------------------------------------
+                // \tparam TElem Type of the index values.
+                // \param idx Idx to be mapped.
+                // \param extent Spatial size to map the index to.
+                // \return A 1 dimensional vector.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElem>
+                ALPAKA_FN_HOST_ACC static auto mapIdx(
+                    Vec<dim::DimInt<4u>, TElem> const & idx,
+                    Vec<dim::DimInt<4u>, TElem> const & extent)
+                -> Vec<dim::DimInt<1u>, TElem>
+                {
+                    return {
+                        ((idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u]) * extent[3u] + idx[3u]};
                 }
             };
         }
@@ -200,12 +263,13 @@ namespace alpaka
             Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extent)
         -> Vec<dim::DimInt<TidxDimOut>, TElem>
         {
-            return detail::MapIdx<
-                TidxDimOut,
-                TidxDimIn>
-            ::mapIdx(
-                idx,
-                extent);
+            return
+                detail::MapIdx<
+                    TidxDimOut,
+                    TidxDimIn>
+                ::mapIdx(
+                    idx,
+                    extent);
         }
     }
 }

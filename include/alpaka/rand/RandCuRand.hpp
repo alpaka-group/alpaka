@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2015 Benjamin Worpitz
+* Copyright 2015-2016 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -21,11 +21,21 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
+// This is not currently supported by the clang native CUDA compiler.
+#if !BOOST_COMP_CLANG_CUDA
+
 #include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
 
 #include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY
 #include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK
 
 #include <curand_kernel.h>              // curand_init, ...
@@ -336,3 +346,6 @@ namespace alpaka
         }
     }
 }
+
+#endif
+#endif

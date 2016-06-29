@@ -21,9 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -61,6 +65,7 @@ namespace alpaka
             T const & pow,
             TBase const & base,
             TExp const & exp)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Pow<
                 T,
@@ -70,6 +75,7 @@ namespace alpaka
                 pow,
                 base,
                 exp))
+#endif
         {
             return
                 traits::Pow<
@@ -96,8 +102,11 @@ namespace alpaka
                 TBase,
                 TExp,
                 typename std::enable_if<
-                    std::is_base_of<typename T::PowBase, typename std::decay<T>::type>::value
-                    && (!std::is_same<typename T::PowBase, typename std::decay<T>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename T::PowBase,
+                        T
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -107,11 +116,13 @@ namespace alpaka
                     T const & pow,
                     TBase const & base,
                     TExp const & exp)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::pow(
                         static_cast<typename T::PowBase const &>(pow),
                         base,
                         exp))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

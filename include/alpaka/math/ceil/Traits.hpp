@@ -21,9 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -56,6 +60,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto ceil(
             T const & ceil,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Ceil<
                 T,
@@ -63,6 +68,7 @@ namespace alpaka
             ::ceil(
                 ceil,
                 arg))
+#endif
         {
             return
                 traits::Ceil<
@@ -85,8 +91,11 @@ namespace alpaka
                 T,
                 TArg,
                 typename std::enable_if<
-                    std::is_base_of<typename T::CeilBase, typename std::decay<T>::type>::value
-                    && (!std::is_same<typename T::CeilBase, typename std::decay<T>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename T::CeilBase,
+                        T
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -95,10 +104,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto ceil(
                     T const & ceil,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::ceil(
                         static_cast<typename T::CeilBase const &>(ceil),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

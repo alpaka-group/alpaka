@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,10 +21,12 @@
 
 #pragma once
 
-#include <alpaka/vec/Vec.hpp>           // Vec
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/vec/Vec.hpp>               // Vec
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#if !BOOST_ARCH_CUDA_DEVICE
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
 
 //-----------------------------------------------------------------------------
 //! The alpaka accelerator library.
@@ -42,7 +44,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The trait for getting the size of the block shared extern memory of a kernel.
+            //! The trait for getting the size of the block shared dynamic memory of a kernel.
             //!
             //! \tparam TKernelFnObj The kernel function object.
             //! \tparam TAcc The accelerator.
@@ -53,12 +55,14 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename TAcc,
                 typename TSfinae = void>
-            struct BlockSharedExternMemSizeBytes
+            struct BlockSharedMemDynSizeBytes
             {
                 //-----------------------------------------------------------------------------
-                //! \param blockElemExtent The block element extent for which the block shared memory size should be calculated.
+                //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
+                //! \param blockThreadExtent The block thread extent.
+                //! \param threadElemExtent The thread element extent.
                 //! \tparam TArgs The kernel invocation argument types pack.
-                //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
+                //! \param args,... The kernel invocation arguments.
                 //! \return The size of the shared memory allocated for a block in bytes.
                 //! The default version always returns zero.
                 //-----------------------------------------------------------------------------
@@ -66,78 +70,56 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename... TArgs>
-                ALPAKA_FN_HOST_ACC static auto getBlockSharedExternMemSizeBytes(
-                    Vec<TDim, size::Size<TAcc>> const & blockElemExtent,
+                ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+                    TKernelFnObj const & kernelFnObj,
+                    Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
+                    Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
                 -> size::Size<TAcc>
                 {
-                    boost::ignore_unused(blockElemExtent);
+#if !BOOST_ARCH_CUDA_DEVICE
+                    boost::ignore_unused(kernelFnObj);
+                    boost::ignore_unused(blockThreadExtent);
+                    boost::ignore_unused(threadElemExtent);
                     boost::ignore_unused(args...);
+#endif
 
                     return 0;
-                }
-            };
-
-            //#############################################################################
-            //! The trait for inquiring if the kernel supports vectorization.
-            //! The default implementation returns false.
-            //#############################################################################
-            template<
-                typename TKernelFnObj,
-                typename TSfinae = void>
-            struct SupportsVectorization
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST_ACC static auto supportsVectorization()
-                -> bool
-                {
-                    return false;
                 }
             };
         }
 
         //-----------------------------------------------------------------------------
-        //! \param blockElemExtent The block element extent for which the block shared memory size should be calculated.
+        //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
+        //! \param blockThreadExtent The block thread extent.
+        //! \param threadElemExtent The thread element extent.
         //! \tparam TArgs The kernel invocation argument types pack.
-        //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
+        //! \param args,... The kernel invocation arguments.
         //! \return The size of the shared memory allocated for a block in bytes.
         //! The default implementation always returns zero.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TKernelFnObj,
             typename TAcc,
+            typename TKernelFnObj,
             typename TDim,
             typename... TArgs>
-        ALPAKA_FN_HOST_ACC auto getBlockSharedExternMemSizeBytes(
-            Vec<TDim, size::Size<TAcc>> const & blockElemExtent,
+        ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
+            TKernelFnObj const & kernelFnObj,
+            Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
+            Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
             TArgs const & ... args)
         -> size::Size<TAcc>
         {
             return
-                traits::BlockSharedExternMemSizeBytes<
+                traits::BlockSharedMemDynSizeBytes<
                     TKernelFnObj,
                     TAcc>
-                ::getBlockSharedExternMemSizeBytes(
-                    blockElemExtent,
+                ::getBlockSharedMemDynSizeBytes(
+                    kernelFnObj,
+                    blockThreadExtent,
+                    threadElemExtent,
                     args...);
-        }
-        //-----------------------------------------------------------------------------
-        //! \return If the kernel supports vectorization.
-        //! The default implementation always returns false.
-        //-----------------------------------------------------------------------------
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TKernelFnObj>
-        ALPAKA_FN_HOST_ACC auto supportsVectorization()
-        -> bool
-        {
-            return
-                traits::SupportsVectorization<
-                    TKernelFnObj>
-                ::supportsVectorization();
         }
     }
 }

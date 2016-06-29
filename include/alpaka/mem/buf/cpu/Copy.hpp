@@ -24,8 +24,6 @@
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // extent::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // mem::view::Copy, ...
-#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
-#include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
 
 #include <cassert>                          // assert
 #include <cstring>                          // std::memcpy
@@ -56,54 +54,56 @@ namespace alpaka
                     //! TODO: Specialize for different dimensionalities to optimize.
                     //#############################################################################
                     template<
-                        typename TBufDst,
-                        typename TBufSrc,
+                        typename TViewDst,
+                        typename TViewSrc,
                         typename TExtent>
                     struct TaskCopy
                     {
                         using Size = size::Size<TExtent>;
 
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
-                            "The source and the destination buffers are required to have the same dimensionality!");
+                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TExtent>::value,
-                            "The buffers and the extent are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtent.
+                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            "The views and the extent are required to have the same dimensionality!");
+                        // TODO: Maybe check for Size of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
-                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
-                            "The source and the destination buffers are required to have the same element type!");
+                            std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                            "The source and the destination view are required to have the same element type!");
 
                         //-----------------------------------------------------------------------------
                         //! Constructor.
                         //-----------------------------------------------------------------------------
                         TaskCopy(
-                            TBufDst & bufDst,
-                            TBufSrc const & bufSrc,
+                            TViewDst & viewDst,
+                            TViewSrc const & viewSrc,
                             TExtent const & extent) :
                                 m_extentWidth(extent::getWidth(extent)),
-                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TBufDst>))),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
-                                m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
-                                m_dstBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(bufDst)))),
-                                m_srcBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(bufSrc)))),
+                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TViewDst>))),
+                                m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
+                                m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
+                                m_dstBufWidth(static_cast<Size>(extent::getWidth(viewDst))),
+                                m_srcBufWidth(static_cast<Size>(extent::getWidth(viewSrc))),
 
                                 m_extentHeight(extent::getHeight(extent)),
-                                m_dstHeight(static_cast<Size>(extent::getHeight(bufDst))),
-                                m_srcHeight(static_cast<Size>(extent::getHeight(bufSrc))),
-                                m_dstBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(bufDst)))),
-                                m_srcBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(bufSrc)))),
+                                m_dstHeight(static_cast<Size>(extent::getHeight(viewDst))),
+                                m_srcHeight(static_cast<Size>(extent::getHeight(viewSrc))),
+                                m_dstBufHeight(static_cast<Size>(extent::getHeight(viewDst))),
+                                m_srcBufHeight(static_cast<Size>(extent::getHeight(viewSrc))),
 
                                 m_extentDepth(extent::getDepth(extent)),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                                m_dstDepth(static_cast<Size>(extent::getDepth(bufDst))),
-                                m_srcDepth(static_cast<Size>(extent::getDepth(bufSrc))),
+                                m_dstDepth(static_cast<Size>(extent::getDepth(viewDst))),
+                                m_srcDepth(static_cast<Size>(extent::getDepth(viewSrc))),
 #endif
-                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufDst>::value - 1u>(bufDst))),
-                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufSrc>::value - 1u>(bufSrc))),
+                                m_dstPitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcPitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
 
-                                m_dstMemNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(bufDst))),
-                                m_srcMemNative(reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(bufSrc)))
+                                m_dstMemNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(viewDst))),
+                                m_srcMemNative(reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             assert(m_extentWidth <= m_dstWidth);
@@ -112,8 +112,8 @@ namespace alpaka
                             assert(m_extentWidth <= m_srcWidth);
                             assert(m_extentHeight <= m_srcHeight);
                             assert(m_extentDepth <= m_srcDepth);
-                            assert(m_extentWidthBytes <= m_dstPitchBytes);
-                            assert(m_extentWidthBytes <= m_srcPitchBytes);
+                            assert(m_extentWidthBytes <= m_dstPitchBytesX);
+                            assert(m_extentWidthBytes <= m_srcPitchBytesX);
 #endif
                         }
 
@@ -132,17 +132,17 @@ namespace alpaka
                                 << " dw: " << m_dstWidth
                                 << " dh: " << m_dstHeight
                                 << " dd: " << m_dstDepth
-                                << " dptr: " << m_dstMemNative
-                                << " dpitchb: " << m_dstPitchBytes
-                                << " dbasew: " << m_dstBufWidth
-                                << " dbaseh: " << m_dstBufHeight
+                                << " dptr: " << reinterpret_cast<void *>(m_dstMemNative)
+                                << " dpitchb: " << m_dstPitchBytesX
+                                << " dbufw: " << m_dstBufWidth
+                                << " dbufh: " << m_dstBufHeight
                                 << " sw: " << m_srcWidth
                                 << " sh: " << m_srcHeight
                                 << " sd: " << m_srcDepth
-                                << " sptr: " << m_srcMemNative
-                                << " spitchb: " << m_srcPitchBytes
-                                << " sbasew: " << m_srcBufWidth
-                                << " sbaseh: " << m_srcBufHeight
+                                << " sptr: " << reinterpret_cast<void const *>(m_srcMemNative)
+                                << " spitchb: " << m_srcPitchBytesX
+                                << " sbufw: " << m_srcBufWidth
+                                << " sbufh: " << m_srcBufHeight
                                 << std::endl;
                         }
 #endif
@@ -154,8 +154,6 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            auto const dstSliceSizeBytes(m_dstPitchBytes * m_dstHeight);
-                            auto const srcSliceSizeBytes(m_srcPitchBytes * m_srcHeight);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             printDebug();
@@ -173,7 +171,7 @@ namespace alpaka
                             // -> we can copy whole slices at once overwriting the pitch bytes
                             auto const copySliceAtOnce(
                                 equalWidths
-                                && (m_dstPitchBytes == m_srcPitchBytes));
+                                && (m_dstPitchBytesX == m_srcPitchBytesX));
 
                             // If:
                             // - the copy extent width and height are identical to the dst and src extent width and height
@@ -185,7 +183,7 @@ namespace alpaka
                                 && (m_extentHeight == m_srcHeight)
                                 && (m_extentHeight == m_dstBufHeight)
                                 && (m_extentHeight == m_srcBufHeight)
-                                && (dstSliceSizeBytes == srcSliceSizeBytes)
+                                && (m_dstPitchBytesY == m_srcPitchBytesY)
                                 && copySliceAtOnce);
 
                             if(copyAllAtOnce)
@@ -193,7 +191,7 @@ namespace alpaka
                                 std::memcpy(
                                     reinterpret_cast<void *>(m_dstMemNative),
                                     reinterpret_cast<void const *>(m_srcMemNative),
-                                    dstSliceSizeBytes*m_extentDepth);
+                                    static_cast<std::size_t>(m_dstPitchBytesX * m_extentHeight * m_extentDepth));
                             }
                             else
                             {
@@ -202,18 +200,18 @@ namespace alpaka
                                     if(copySliceAtOnce)
                                     {
                                         std::memcpy(
-                                            reinterpret_cast<void *>(m_dstMemNative + z*dstSliceSizeBytes),
-                                            reinterpret_cast<void const *>(m_srcMemNative + z*srcSliceSizeBytes),
-                                            m_dstPitchBytes*m_extentHeight);
+                                            reinterpret_cast<void *>(m_dstMemNative + z*m_dstPitchBytesY),
+                                            reinterpret_cast<void const *>(m_srcMemNative + z*m_srcPitchBytesY),
+                                            static_cast<std::size_t>(m_dstPitchBytesX*m_extentHeight));
                                     }
                                     else
                                     {
                                         for(auto y((decltype(m_extentHeight)(0))); y < m_extentHeight; ++y)
                                         {
                                             std::memcpy(
-                                                reinterpret_cast<void *>(m_dstMemNative + y*m_dstPitchBytes + z*dstSliceSizeBytes),
-                                                reinterpret_cast<void const *>(m_srcMemNative + y*m_srcPitchBytes + z*srcSliceSizeBytes),
-                                                m_extentWidthBytes);
+                                                reinterpret_cast<void *>(m_dstMemNative + y*m_dstPitchBytesX + z*m_dstPitchBytesY),
+                                                reinterpret_cast<void const *>(m_srcMemNative + y*m_srcPitchBytesX + z*m_srcPitchBytesY),
+                                                static_cast<std::size_t>(m_extentWidthBytes));
                                         }
                                     }
                                 }
@@ -238,8 +236,10 @@ namespace alpaka
                         Size m_dstDepth;
                         Size m_srcDepth;
 #endif
-                        Size m_dstPitchBytes;
-                        Size m_srcPitchBytes;
+                        Size m_dstPitchBytesX;
+                        Size m_srcPitchBytesX;
+                        Size m_dstPitchBytesY;
+                        Size m_srcPitchBytesY;
 
                         std::uint8_t * m_dstMemNative;
                         std::uint8_t const * m_srcMemNative;
@@ -266,24 +266,24 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
-                        typename TBufSrc,
-                        typename TBufDst>
+                        typename TViewSrc,
+                        typename TViewDst>
                     ALPAKA_FN_HOST static auto taskCopy(
-                        TBufDst & bufDst,
-                        TBufSrc const & bufSrc,
+                        TViewDst & viewDst,
+                        TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> cpu::detail::TaskCopy<
-                        TBufDst,
-                        TBufSrc,
+                        TViewDst,
+                        TViewSrc,
                         TExtent>
                     {
                         return
                             cpu::detail::TaskCopy<
-                                TBufDst,
-                                TBufSrc,
+                                TViewDst,
+                                TViewSrc,
                                 TExtent>(
-                                    bufDst,
-                                    bufSrc,
+                                    viewDst,
+                                    viewSrc,
                                     extent);
                     }
                 };

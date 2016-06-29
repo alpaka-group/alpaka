@@ -21,9 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -55,6 +59,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto asin(
             T const & asin,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Asin<
                 T,
@@ -62,6 +67,7 @@ namespace alpaka
             ::asin(
                 asin,
                 arg))
+#endif
         {
             return
                 traits::Asin<
@@ -84,8 +90,11 @@ namespace alpaka
                 T,
                 TArg,
                 typename std::enable_if<
-                    std::is_base_of<typename T::AsinBase, typename std::decay<T>::type>::value
-                    && (!std::is_same<typename T::AsinBase, typename std::decay<T>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename T::AsinBase,
+                        T
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -94,10 +103,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto asin(
                     T const & asin,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::asin(
                         static_cast<typename T::AsinBase const &>(asin),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

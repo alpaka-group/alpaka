@@ -22,22 +22,18 @@
 #pragma once
 
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
-#include <alpaka/event/Traits.hpp>      // event::traits::EventType
-#include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
-#include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
+#include <alpaka/pltf/Traits.hpp>       // pltf::traits::PltfType
 
-#include <alpaka/stream/Traits.hpp>     // stream::enqueue
 #include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getTotalGlobalMemSizeBytes, getFreeGlobalMemSizeBytes
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 #include <map>                          // std::map
-#include <sstream>                      // std::stringstream
-#include <limits>                       // std::numeric_limits
-#include <thread>                       // std::thread
 #include <mutex>                        // std::mutex
 #include <memory>                       // std::shared_ptr
+#include <vector>                       // std::vector
+#include <algorithm>                    // std::find_if
 
 namespace alpaka
 {
@@ -52,6 +48,17 @@ namespace alpaka
                 class StreamCpuAsyncImpl;
             }
         }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            template<
+                typename TPltf,
+                typename TSfinae>
+            struct GetDevByIdx;
+        }
+        class PltfCpu;
     }
     namespace dev
     {
@@ -173,7 +180,7 @@ namespace alpaka
         //#############################################################################
         class DevCpu
         {
-            friend class DevManCpu;
+            friend struct pltf::traits::GetDevByIdx<pltf::PltfCpu>;
         protected:
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -222,109 +229,12 @@ namespace alpaka
         public:
             std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
         };
-
-        //#############################################################################
-        //! The CPU device manager.
-        //#############################################################################
-        class DevManCpu
-        {
-        public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST DevManCpu() = delete;
-
-            //-----------------------------------------------------------------------------
-            //! \return The number of devices available.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto getDevCount()
-            -> std::size_t
-            {
-                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                return 1;
-            }
-            //-----------------------------------------------------------------------------
-            //! \return The number of devices available.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto getDevByIdx(
-                std::size_t const & devIdx)
-            -> DevCpu
-            {
-                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                std::size_t const devCount(getDevCount());
-                if(devIdx >= devCount)
-                {
-                    std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for CPU device with index " << devIdx << " because there are only " << devCount << " devices!";
-                    throw std::runtime_error(ssErr.str());
-                }
-
-                return {};
-            }
-        };
-
-        namespace cpu
-        {
-            //-----------------------------------------------------------------------------
-            //! \return The device this object is bound to.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto getDev()
-            -> DevCpu
-            {
-                ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                return DevManCpu::getDevByIdx(0);
-            }
-        }
     }
 
-    namespace event
-    {
-        class EventCpu;
-    }
     namespace dev
     {
         namespace traits
         {
-            //#############################################################################
-            //! The CPU device device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                dev::DevCpu>
-            {
-                using type = dev::DevCpu;
-            };
-            //#############################################################################
-            //! The CPU device manager device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                dev::DevManCpu>
-            {
-                using type = dev::DevCpu;
-            };
-
-            //#############################################################################
-            //! The CPU device device get trait specialization.
-            //#############################################################################
-            template<>
-            struct GetDev<
-                dev::DevCpu>
-            {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    dev::DevCpu const & dev)
-                -> dev::DevCpu
-                {
-                    return dev;
-                }
-            };
-
             //#############################################################################
             //! The CPU device name get trait specialization.
             //#############################################################################
@@ -406,16 +316,6 @@ namespace alpaka
                     // The CPU does nothing on reset.
                 }
             };
-
-            //#############################################################################
-            //! The CPU device device manager type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                dev::DevCpu>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace mem
@@ -447,79 +347,19 @@ namespace alpaka
                 };
             }
         }
-        namespace view
-        {
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TSize>
-            class ViewBasic;
-
-            namespace traits
-            {
-                //#############################################################################
-                //! The CPU device memory view type trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct ViewType<
-                    dev::DevCpu,
-                    TElem,
-                    TDim,
-                    TSize>
-                {
-                    using type = mem::view::ViewBasic<dev::DevCpu, TElem, TDim, TSize>;
-                };
-            }
-        }
     }
-    namespace wait
+    namespace pltf
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU device thread wait specialization.
-            //!
-            //! Blocks until the device has completed all preceding requested tasks.
-            //! Tasks that are enqueued or streams that are created after this call is made are not waited for.
+            //! The CPU device platform type trait specialization.
             //#############################################################################
             template<>
-            struct CurrentThreadWaitFor<
+            struct PltfType<
                 dev::DevCpu>
             {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    dev::DevCpu const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    // Get all the streams on the device at the time of invocation.
-                    // All streams added afterwards are ignored.
-                    auto vspStreams(
-                        dev.m_spDevCpuImpl->GetAllAsyncStreamImpls());
-
-                    // Enqueue an event in every asynchronous stream on the device.
-                    // \TODO: This should be done atomically for all streams.
-                    // Furthermore there should not even be a chance to enqueue something between getting the streams and adding our wait events!
-                    std::vector<event::EventCpu> vEvents;
-                    for(auto && spStream : vspStreams)
-                    {
-                        vEvents.emplace_back(dev);
-                        stream::enqueue(spStream, vEvents.back());
-                    }
-
-                    // Now wait for all the events.
-                    for(auto && event : vEvents)
-                    {
-                        wait::wait(event);
-                    }
-                }
+                using type = pltf::PltfCpu;
             };
         }
     }

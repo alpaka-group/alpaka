@@ -21,9 +21,17 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/dev/DevCudaRt.hpp>             // dev::DevCudaRt
 #include <alpaka/dev/Traits.hpp>                // GetDev
-#include <alpaka/event/Traits.hpp>              // EventTest, ...
+#include <alpaka/event/Traits.hpp>              // event::traits::Test, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor
 
 #include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
@@ -152,7 +160,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(EventCudaRt const & rhs) const
             -> bool
             {
-                return (m_spEventCudaImpl->m_CudaEvent == m_spEventCudaImpl->m_CudaEvent);
+                return (m_spEventCudaImpl->m_CudaEvent == rhs.m_spEventCudaImpl->m_CudaEvent);
             }
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
@@ -208,18 +216,35 @@ namespace alpaka
             {
                 using type = event::EventCudaRt;
             };
-
+            //#############################################################################
+            //! The CPU device event create trait specialization.
+            //#############################################################################
+            template<>
+            struct Create<
+                event::EventCudaRt,
+                dev::DevCudaRt>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto create(
+                    dev::DevCudaRt const & dev)
+                -> event::EventCudaRt
+                {
+                    return event::EventCudaRt(dev);
+                }
+            };
             //#############################################################################
             //! The CUDA RT device event test trait specialization.
             //#############################################################################
             template<>
-            struct EventTest<
+            struct Test<
                 event::EventCudaRt>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto eventTest(
+                ALPAKA_FN_HOST static auto test(
                     event::EventCudaRt const & event)
                 -> bool
                 {
@@ -407,3 +432,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

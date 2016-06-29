@@ -21,10 +21,14 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <utility>                  // std::declval
-#include <type_traits>              // std::is_integral, std::is_floating_point, ...
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <utility>                      // std::declval
+#include <type_traits>                  // std::is_integral, std::is_floating_point, ...
 
 namespace alpaka
 {
@@ -80,12 +84,14 @@ namespace alpaka
                 typename TRand>
             ALPAKA_FN_HOST_ACC auto createNormalReal(
                 TRand const & rand)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 traits::CreateNormalReal<
                     TRand,
                     T>
                 ::createNormalReal(
                     std::declval<TRand const &>()))
+#endif
             {
                 static_assert(
                     std::is_floating_point<T>::value,
@@ -107,12 +113,14 @@ namespace alpaka
                 typename TRand>
             ALPAKA_FN_HOST_ACC auto createUniformReal(
                 TRand const & rand)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 traits::CreateUniformReal<
                     TRand,
                     T>
                 ::createUniformReal(
                     std::declval<TRand const &>()))
+#endif
             {
                 static_assert(
                     std::is_floating_point<T>::value,
@@ -134,12 +142,14 @@ namespace alpaka
                 typename TRand>
             ALPAKA_FN_HOST_ACC auto createUniformUint(
                 TRand const & rand)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 traits::CreateUniformUint<
                     TRand,
                     T>
                 ::createUniformUint(
                     std::declval<TRand const &>()))
+#endif
             {
                 static_assert(
                     std::is_integral<T>::value && std::is_unsigned<T>::value,
@@ -173,9 +183,11 @@ namespace alpaka
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto createNormalReal(
                         TRand const & rand)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                     -> decltype(
                         rand::distribution::createNormalReal<T>(
                             static_cast<typename TRand::RandBase const &>(rand)))
+#endif
                     {
                         // Delegate the call to the base class.
                         return
@@ -202,9 +214,11 @@ namespace alpaka
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto createUniformReal(
                         TRand const & rand)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                     -> decltype(
                         rand::distribution::createUniformReal<T>(
                             static_cast<typename TRand::RandBase const &>(rand)))
+#endif
                     {
                         // Delegate the call to the base class.
                         return
@@ -231,9 +245,11 @@ namespace alpaka
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto createUniformUint(
                         TRand const & rand)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                     -> decltype(
                         rand::distribution::createUniformUint<T>(
                             static_cast<typename TRand::RandBase const &>(rand)))
+#endif
                     {
                         // Delegate the call to the base class.
                         return
@@ -271,6 +287,7 @@ namespace alpaka
                 TRand const & rand,
                 std::uint32_t const & seed,
                 std::uint32_t const & subsequence)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 traits::CreateDefault<
                     TRand>
@@ -278,6 +295,7 @@ namespace alpaka
                     std::declval<TRand const &>(),
                     std::declval<std::uint32_t const &>(),
                     std::declval<std::uint32_t const &>()))
+#endif
             {
                 return
                     traits::CreateDefault<
@@ -297,8 +315,11 @@ namespace alpaka
                 struct CreateDefault<
                     TRand,
                     typename std::enable_if<
-                        std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
-                        && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
+                        meta::IsStrictBase<
+                            typename TRand::RandBase,
+                            TRand
+                        >::value
+                    >::type>
                 {
                     //-----------------------------------------------------------------------------
                     //
@@ -308,11 +329,13 @@ namespace alpaka
                         TRand const & rand,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                     -> decltype(
                         rand::generator::createDefault(
                             static_cast<typename TRand::RandBase const &>(rand),
                             seed,
                             subsequence))
+#endif
                     {
                         // Delegate the call to the base class.
                         return

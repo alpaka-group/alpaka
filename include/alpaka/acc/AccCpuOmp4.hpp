@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,20 +21,31 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+
+#if _OPENMP < 201307
+    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#endif
+
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
 #include <alpaka/idx/bt/IdxBtOmp.hpp>           // IdxBtOmp
+#include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
+#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
 #include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
-#include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>    // BlockSyncOmpBarrier
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
+#include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
+#include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>                        // BlockSyncBarrierOmp
 #include <alpaka/rand/RandStl.hpp>              // RandStl
+#include <alpaka/time/TimeOmp.hpp>              // TimeOmp
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
@@ -73,11 +84,17 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TSize>,
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtOmp<TDim, TSize>,
-            public atomic::AtomicOmpCritSec,
+            public atomic::AtomicHierarchy<
+                atomic::AtomicStlLock,       // grid atomics
+                atomic::AtomicOmpCritSec,    // block atomics
+                atomic::AtomicOmpCritSec     // thread atomics
+            >,
             public math::MathStl,
-            public block::shared::BlockSharedAllocMasterSync,
-            public block::sync::BlockSyncOmpBarrier,
-            public rand::RandStl
+            public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
+            public block::shared::st::BlockSharedMemStMasterSync,
+            public block::sync::BlockSyncBarrierOmp,
+            public rand::RandStl,
+            public time::TimeOmp
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -95,17 +112,24 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(
-                TWorkDiv const & workDiv) :
+                TWorkDiv const & workDiv,
+                TSize const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TSize>(),
-                    atomic::AtomicOmpCritSec(),
+                    atomic::AtomicHierarchy<
+                        atomic::AtomicStlLock,    // atomics between grids
+                        atomic::AtomicOmpCritSec, // atomics between blocks
+                        atomic::AtomicOmpCritSec  // atomics between threads
+                    >(),
                     math::MathStl(),
-                    block::shared::BlockSharedAllocMasterSync(
+                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),
-                    block::sync::BlockSyncOmpBarrier(),
+                    block::sync::BlockSyncBarrierOmp(),
                     rand::RandStl(),
+                    time::TimeOmp(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros())
             {}
 
@@ -131,23 +155,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp4() = default;
 
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
-            -> T *
-            {
-                return reinterpret_cast<T*>(m_externalSharedMem.get());
-            }
-
         private:
             // getIdx
-            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
-
-            // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;  //!< External block shared memory.
+            Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
         };
     }
 
@@ -184,7 +194,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-#if ALPAKA_INTEGRATION_TEST
+#if ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TSize>(4));
 #else
                     // NOTE: ::omp_get_thread_limit() returns 2^31-1 (largest positive int value)...
@@ -243,17 +253,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator device type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct DevManType<
-                acc::AccCpuOmp4<TDim, TSize>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -294,6 +293,23 @@ namespace alpaka
             };
         }
     }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU OpenMP 4.0 executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct PltfType<
+                acc::AccCpuOmp4<TDim, TSize>>
+            {
+                using type = pltf::PltfCpu;
+            };
+        }
+    }
     namespace size
     {
         namespace traits
@@ -312,3 +328,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

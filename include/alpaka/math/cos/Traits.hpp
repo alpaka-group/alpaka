@@ -21,9 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -56,6 +60,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto cos(
             T const & cos,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Cos<
                 T,
@@ -63,6 +68,7 @@ namespace alpaka
             ::cos(
                 cos,
                 arg))
+#endif
         {
             return
                 traits::Cos<
@@ -85,8 +91,11 @@ namespace alpaka
                 T,
                 TArg,
                 typename std::enable_if<
-                    std::is_base_of<typename T::CosBase, typename std::decay<T>::type>::value
-                    && (!std::is_same<typename T::CosBase, typename std::decay<T>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename T::CosBase,
+                        T
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -95,10 +104,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto cos(
                     T const & cos,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::cos(
                         static_cast<typename T::CosBase const &>(cos),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

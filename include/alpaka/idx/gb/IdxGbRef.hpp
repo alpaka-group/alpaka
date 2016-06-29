@@ -73,7 +73,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
 
             public:
-                alignas(16u) Vec<TDim, TSize> const & m_gridBlockIdx;
+                Vec<TDim, TSize> const & m_gridBlockIdx;
             };
         }
     }

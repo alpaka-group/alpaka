@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,20 +21,27 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
 #include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
 #include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
+#include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
+#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
 #include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>  // BlockSharedAllocNoSync
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
+#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>                // BlockSharedMemStNoSync
 #include <alpaka/block/sync/BlockSyncNoOp.hpp>  // BlockSyncNoOp
 #include <alpaka/rand/RandStl.hpp>              // RandStl
+#include <alpaka/time/TimeStl.hpp>              // TimeStl
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
@@ -71,11 +78,17 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TSize>,
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtZero<TDim, TSize>,
-            public atomic::AtomicNoOp,
+            public atomic::AtomicHierarchy<
+                atomic::AtomicStlLock, // grid atomics
+                atomic::AtomicNoOp,    // block atomics
+                atomic::AtomicNoOp     // thread atomics
+            >,
             public math::MathStl,
-            public block::shared::BlockSharedAllocNoSync,
+            public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
+            public block::shared::st::BlockSharedMemStNoSync,
             public block::sync::BlockSyncNoOp,
-            public rand::RandStl
+            public rand::RandStl,
+            public time::TimeStl
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -93,15 +106,22 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(
-                TWorkDiv const & workDiv) :
+                TWorkDiv const & workDiv,
+                TSize const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TSize>(),
-                    atomic::AtomicNoOp(),
+                    atomic::AtomicHierarchy<
+                        atomic::AtomicStlLock, // atomics between grids
+                        atomic::AtomicNoOp,    // atomics between blocks
+                        atomic::AtomicNoOp     // atomics between threads
+                    >(),
                     math::MathStl(),
-                    block::shared::BlockSharedAllocNoSync(),
+                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::st::BlockSharedMemStNoSync(),
                     block::sync::BlockSyncNoOp(),
                     rand::RandStl(),
+                    time::TimeStl(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros())
             {}
 
@@ -128,23 +148,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() = default;
 
-            //-----------------------------------------------------------------------------
-            //! \return The pointer to the externally allocated block shared memory.
-            //-----------------------------------------------------------------------------
-            template<
-                typename T>
-            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
-            -> T *
-            {
-                return reinterpret_cast<T*>(m_externalSharedMem.get());
-            }
-
         private:
             // getIdx
-            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
-
-            // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;  //!< External block shared memory.
+            Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
         };
     }
 
@@ -234,17 +240,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU serial accelerator device type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct DevManType<
-                acc::AccCpuSerial<TDim, TSize>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -285,6 +280,23 @@ namespace alpaka
             };
         }
     }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU serial executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct PltfType<
+                acc::AccCpuSerial<TDim, TSize>>
+            {
+                using type = pltf::PltfCpu;
+            };
+        }
+    }
     namespace size
     {
         namespace traits
@@ -303,3 +315,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -31,6 +31,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU threads accelerator atomic ops.
+        //
+        //  Atomics can be used in the grids, blocks and threads hierarchy levels.
+        //  Atomics are not guaranteed to be save between devices.
         //#############################################################################
         class AtomicStlLock
         {
@@ -39,10 +42,9 @@ namespace alpaka
                 typename TAtomic,
                 typename TOp,
                 typename T,
+                typename THierarchy,
                 typename TSfinae>
             friend struct atomic::traits::AtomicOp;
-
-            using AtomicBase = AtomicStlLock;
 
             //-----------------------------------------------------------------------------
             //! Default constructor.
@@ -69,22 +71,27 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicStlLock() = default;
 
-        private:
-            std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
+            std::mutex & getMutex() const
+            {
+                static std::mutex m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
+                return m_mtxAtomic;
+            }
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads accelerator atomic operation function object.
+            //! The CPU threads accelerator atomic operation.
             //#############################################################################
             template<
                 typename TOp,
-                typename T>
+                typename T,
+                typename THierarchy>
             struct AtomicOp<
                 TOp,
                 atomic::AtomicStlLock,
-                T>
+                T,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -97,8 +104,23 @@ namespace alpaka
                 {
                     // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                     // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.
-                    std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
+                    std::lock_guard<std::mutex> lock(atomic.getMutex());
                     return TOp()(addr, value);
+                }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                    atomic::AtomicStlLock const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
+                    // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.
+                    std::lock_guard<std::mutex> lock(atomic.getMutex());
+                    return TOp()(addr, compare, value);
                 }
             };
         }

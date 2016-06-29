@@ -23,33 +23,113 @@
 
 #include <alpaka/core/Debug.hpp>
 
-#include <type_traits>                      // std::enable_if
+#include <boost/predef/version_number.h>    // BOOST_VERSION_NUMBER
+#include <boost/version.hpp>                // BOOST_VERSION
 
-#if (!defined(__CUDA_ARCH__)) || defined(NDEBUG)
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+//#############################################################################
+// This extends Boost.Predef by detecting:
+// - BOOST_LANG_CUDA
+// - BOOST_ARCH_CUDA_DEVICE
+// - BOOST_COMP_NVCC
+// - BOOST_COMP_CLANG_CUDA
+//#############################################################################
+
+//-----------------------------------------------------------------------------
+// BOOST_PREDEF_MAKE_10_VVRRP(V)
+//-----------------------------------------------------------------------------
+#define BOOST_PREDEF_MAKE_10_VVRRP(V) BOOST_VERSION_NUMBER(((V)/1000)%100,((V)/10)%100,(V)%10)
+
+//-----------------------------------------------------------------------------
+// CUDA language detection
+// - clang defines __CUDA__ when compiling CUDA code ('-x cuda')
+// - nvcc defines __CUDACC__ when compiling CUDA code
+//-----------------------------------------------------------------------------
+#if defined(__CUDA__) || defined(__CUDACC__)
+    #include <cuda.h>
+    #define BOOST_LANG_CUDA BOOST_PREDEF_MAKE_10_VVRRP(CUDA_VERSION)
+#else
+    #define BOOST_LANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
 #endif
-#include <boost/predef.h>                   // workarounds
+
+//-----------------------------------------------------------------------------
+// CUDA device architecture detection
+//-----------------------------------------------------------------------------
+#if defined(__CUDA_ARCH__)
+    #define BOOST_ARCH_CUDA_DEVICE BOOST_PREDEF_MAKE_10_VRP(__CUDA_ARCH__)
+#else
+    #define BOOST_ARCH_CUDA_DEVICE BOOST_VERSION_NUMBER_NOT_AVAILABLE
+#endif
+
+//-----------------------------------------------------------------------------
+// nvcc CUDA compiler detection
+//-----------------------------------------------------------------------------
+#if defined(__CUDACC__) && defined(__NVCC__)
+    // The __CUDACC_VER__, __CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__ and __CUDACC_VER_BUILD__
+    // have been added with nvcc 7.5 and have not been available before.
+    #if !(__CUDACC_VER_MAJOR__ || __CUDACC_VER_MINOR__ || __CUDACC_VER_BUILD__)
+        #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER_AVAILABLE
+    #else
+        #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER(__CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__, __CUDACC_VER_BUILD__)
+    #endif
+#else
+    #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER_NOT_AVAILABLE
+#endif
+
+//-----------------------------------------------------------------------------
+// clang CUDA compiler detection
+// Currently __CUDA__ is only defined by clang when compiling CUDA code.
+//-----------------------------------------------------------------------------
+#if defined(__CUDA__)
+    #define BOOST_COMP_CLANG_CUDA BOOST_COMP_CLANG
+#else
+    #define BOOST_COMP_CLANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
+#endif
+
+//-----------------------------------------------------------------------------
+// Boost does not yet correctly identify clang when compiling CUDA code.
+// After explicitly including <boost/config.hpp> we can safely undefine some of the wrong settings.
+//-----------------------------------------------------------------------------
+#if BOOST_COMP_CLANG_CUDA
+    #include <boost/config.hpp>
+    #undef BOOST_NO_CXX11_VARIADIC_TEMPLATES
+#endif
+
+//-----------------------------------------------------------------------------
+// Boost 1.61 disabled variadic templates for nvcc 7.0 because it was buggy.
+// However, we rely on it being enabled, as it was in all previous boost versions we support.
+// After explicitly including <boost/config.hpp> we can safely undefine the wrong setting.
+//-----------------------------------------------------------------------------
+#if BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(7, 5, 0) && BOOST_PREDEF_MAKE_10_VVRRPP(BOOST_VERSION) >= BOOST_VERSION_NUMBER(1, 61, 0)
+    #include <boost/config.hpp>
+    #undef BOOST_NO_CXX11_VARIADIC_TEMPLATES
+#endif
 
 //-----------------------------------------------------------------------------
 //! All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC_CUDA_ONLY or ALPAKA_FN_ACC.
 //!
 //! Usage:
-//! ALPAKA_FN_ACC int add(int a, int b);
+//! ALPAKA_FN_ACC
+//! auto add(std::int32_t a, std::int32_t b)
+//! -> std::int32_t;
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #define ALPAKA_FN_ACC_CUDA_ONLY __device__ __forceinline__
-    #define ALPAKA_FN_ACC_NO_CUDA __host__ __forceinline__
-    #define ALPAKA_FN_ACC __device__ __host__ __forceinline__
-    #define ALPAKA_FN_HOST_ACC __device__ __host__ __forceinline__
-    #define ALPAKA_FN_HOST __host__ __forceinline__
+#if BOOST_LANG_CUDA
+    #define ALPAKA_FN_ACC_CUDA_ONLY __device__
+    #define ALPAKA_FN_ACC_NO_CUDA __host__
+    #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+        #define ALPAKA_FN_ACC __device__
+    #else
+        #define ALPAKA_FN_ACC __device__ __host__
+    #endif
+    #define ALPAKA_FN_HOST_ACC __device__ __host__
+    #define ALPAKA_FN_HOST __host__
 #else
     // NOTE: ALPAKA_FN_ACC_CUDA_ONLY should not be defined to cause build failures when CUDA only functions are used and CUDA is disabled.
     // However, this also destroys syntax highlighting.
-    #define ALPAKA_FN_ACC_CUDA_ONLY inline
-    #define ALPAKA_FN_ACC_NO_CUDA inline
-    #define ALPAKA_FN_ACC inline
-    #define ALPAKA_FN_HOST_ACC inline
-    #define ALPAKA_FN_HOST inline
+    #define ALPAKA_FN_ACC_CUDA_ONLY
+    #define ALPAKA_FN_ACC_NO_CUDA
+    #define ALPAKA_FN_ACC
+    #define ALPAKA_FN_HOST_ACC
+    #define ALPAKA_FN_HOST
 #endif
 
 //-----------------------------------------------------------------------------
@@ -61,9 +141,9 @@
 //! ALPAKA_FN_HOST_ACC function_declaration()
 //!
 //! WARNING: Only use this method if there is no other way.
-//! Most cases can be solved by #ifdef __CUDA_ARCH__ or #ifdef __CUDACC__.
+//! Most cases can be solved by #if BOOST_ARCH_CUDA_DEVICE or #if BOOST_LANG_CUDA.
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA
     #if BOOST_COMP_MSVC
         #define ALPAKA_NO_HOST_ACC_WARNING\
             __pragma(hd_warning_disable)
@@ -75,86 +155,29 @@
     #define ALPAKA_NO_HOST_ACC_WARNING
 #endif
 
-namespace alpaka
-{
-    namespace core
-    {
-        //#############################################################################
-        //! A false_type being dependent on a ignored template parameter.
-        //! This allows to use static_assert in uninstantiated template specializations without triggering.
-        //#############################################################################
-        template<
-            typename T>
-        struct DependentFalseType :
-            std::false_type
-        {};
-
-        namespace detail
-        {
-            //#############################################################################
-            //!
-            //#############################################################################
-            template<
-                typename TArg,
-                typename TSfinae = void>
-            struct AssertValueUnsigned;
-            //#############################################################################
-            //!
-            //#############################################################################
-            template<
-                typename TArg>
-            struct AssertValueUnsigned<
-                TArg,
-                typename std::enable_if<!std::is_unsigned<TArg>::value>::type>
-            {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-                    TArg const & arg)
-                -> void
-                {
-#ifdef NDEBUG
-                    boost::ignore_unused(arg);
+//-----------------------------------------------------------------------------
+//! Macro defining the inline function attribute.
+//-----------------------------------------------------------------------------
+#if BOOST_LANG_CUDA
+    #define ALPAKA_FN_INLINE __forceinline__
 #else
-                    assert(arg >= 0);
+    #define ALPAKA_FN_INLINE inline
 #endif
-                }
-            };
-            //#############################################################################
-            //!
-            //#############################################################################
-            template<
-                typename TArg>
-            struct AssertValueUnsigned<
-                TArg,
-                typename std::enable_if<std::is_unsigned<TArg>::value>::type>
-            {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-                    TArg const & arg)
-                -> void
-                {
-#ifndef __CUDA_ARCH__
-                    boost::ignore_unused(arg);
+
+//-----------------------------------------------------------------------------
+//! This macro defines a variable lying in global accelerator device memory.
+//-----------------------------------------------------------------------------
+#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+    #define ALPAKA_STATIC_DEV_MEM_GLOBAL __device__
+#else
+    #define ALPAKA_STATIC_DEV_MEM_GLOBAL
 #endif
-                    // Nothing to do for unsigned types.
-                }
-            };
-        }
-        //-----------------------------------------------------------------------------
-        //! This method checks integral values if they are greater or equal zero.
-        //! The implementation prevents warnings for checking this for unsigned types.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TArg>
-        ALPAKA_NO_HOST_ACC_WARNING
-        ALPAKA_FN_HOST_ACC auto assertValueUnsigned(
-            TArg const & arg)
-        -> void
-        {
-            detail::AssertValueUnsigned<
-                TArg>
-            ::assertValueUnsigned(
-                arg);
-        }
-    }
-}
+
+//-----------------------------------------------------------------------------
+//! This macro defines a variable lying in constant accelerator device memory.
+//-----------------------------------------------------------------------------
+#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+    #define ALPAKA_STATIC_DEV_MEM_CONSTANT __constant__
+#else
+    #define ALPAKA_STATIC_DEV_MEM_CONSTANT
+#endif

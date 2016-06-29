@@ -21,9 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -61,6 +65,7 @@ namespace alpaka
             T const & remainder,
             Tx const & x,
             Ty const & y)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Remainder<
                 T,
@@ -70,6 +75,7 @@ namespace alpaka
                 remainder,
                 x,
                 y))
+#endif
         {
             return
                 traits::Remainder<
@@ -96,8 +102,11 @@ namespace alpaka
                 Tx,
                 Ty,
                 typename std::enable_if<
-                    std::is_base_of<typename T::RemainderBase, typename std::decay<T>::type>::value
-                    && (!std::is_same<typename T::RemainderBase, typename std::decay<T>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename T::RemainderBase,
+                        T
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -107,11 +116,13 @@ namespace alpaka
                     T const & remainder,
                     Tx const & x,
                     Ty const & y)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::remainder(
                         static_cast<typename T::RemainderBase const &>(remainder),
                         x,
                         y))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

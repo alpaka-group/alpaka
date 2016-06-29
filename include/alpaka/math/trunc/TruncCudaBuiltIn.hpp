@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjarint Worpitz, Rene Widera
+* Copyright 2014-2015 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -20,6 +20,14 @@
 */
 
 #pragma once
+
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
 
 #include <alpaka/math/trunc/Traits.hpp> // Trunc
 
@@ -65,3 +73,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

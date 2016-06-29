@@ -21,6 +21,14 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/math/erf/Traits.hpp>   // Erf
 
 //#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -66,3 +74,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

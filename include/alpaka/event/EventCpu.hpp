@@ -22,13 +22,13 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>            // dev::DevCpu
-#include <alpaka/dev/Traits.hpp>            // GetDev
-#include <alpaka/event/Traits.hpp>          // EventTest, ...
-#include <alpaka/wait/Traits.hpp>           // CurrentThreadWaitFor
-#include <alpaka/dev/Traits.hpp>            // GetDev
-
 #include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
 #include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
+
+#include <alpaka/dev/Traits.hpp>            // GetDev
+#include <alpaka/event/Traits.hpp>          // event::traits::Test, ...
+#include <alpaka/wait/Traits.hpp>           // CurrentThreadWaitFor
+#include <alpaka/dev/Traits.hpp>            // GetDev
 
 #include <boost/uuid/uuid.hpp>              // boost::uuids::uuid
 #include <boost/uuid/uuid_generators.hpp>   // boost::uuids::random_generator
@@ -106,7 +106,7 @@ namespace alpaka
 
                     bool m_bIsWaitedFor;                                    //!< If a (one or multiple) streams wait for this event. The event can not be changed (deleted/re-enqueued) until completion.
 
-                    std::size_t m_canceledEnqueueCount;                    //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
+                    std::size_t m_canceledEnqueueCount;                     //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
                 };
             }
         }
@@ -198,18 +198,35 @@ namespace alpaka
             {
                 using type = event::EventCpu;
             };
-
+            //#############################################################################
+            //! The CPU device event create trait specialization.
+            //#############################################################################
+            template<>
+            struct Create<
+                event::EventCpu,
+                dev::DevCpu>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto create(
+                    dev::DevCpu const & dev)
+                -> event::EventCpu
+                {
+                    return event::EventCpu(dev);
+                }
+            };
             //#############################################################################
             //! The CPU device event test trait specialization.
             //#############################################################################
             template<>
-            struct EventTest<
+            struct Test<
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a stream (not enqueued or already handled).
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto eventTest(
+                ALPAKA_FN_HOST static auto test(
                     event::EventCpu const & event)
                 -> bool
                 {
@@ -275,13 +292,14 @@ namespace alpaka
 
                     // We can not unlock the mutex here, because the order of events enqueued has to be identical to the call order.
                     // Unlocking here would allow a later enqueue call to complete before this event is enqueued.
-
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     // Enqueue a task that only resets the events flag if it is completed.
                     spStreamImpl->m_workerThread.enqueueTask(
                         [spEventCpuImpl]()
                         {
                             {
-                                std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
+                                std::lock_guard<std::mutex> lk2(spEventCpuImpl->m_Mutex);
                                 // Nothing to do if it has been re-enqueued to a later position in the queue.
                                 if(spEventCpuImpl->m_canceledEnqueueCount > 0)
                                 {
@@ -296,6 +314,7 @@ namespace alpaka
                             }
                             spEventCpuImpl->m_ConditionVariable.notify_all();
                         });
+#endif
                 }
             };
             //#############################################################################
@@ -481,17 +500,20 @@ namespace alpaka
                     // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
                     auto spEventCpuImpl(event.m_spEventCpuImpl);
 
+                    std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
+                    if(!spEventCpuImpl->m_bIsReady)
                     {
-                        std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
                         spEventCpuImpl->m_bIsWaitedFor = true;
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+                        // Enqueue a task that waits for the given event.
+                        spStreamImpl->m_workerThread.enqueueTask(
+                            [spEventCpuImpl]()
+                            {
+                                wait::wait(spEventCpuImpl);
+                            });
+#endif
                     }
-
-                    // Enqueue a task that waits for the given event.
-                    spStreamImpl->m_workerThread.enqueueTask(
-                        [spEventCpuImpl]()
-                        {
-                            wait::wait(spEventCpuImpl);
-                        });
                 }
             };
             //#############################################################################
@@ -534,12 +556,6 @@ namespace alpaka
                     // Copy the shared pointer of the event implementation.
                     // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
                     auto spEventCpuImpl(event.m_spEventCpuImpl);
-
-                    {
-                        std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
-                        spEventCpuImpl->m_bIsWaitedFor = true;
-                    }
-
                     // NOTE: Difference to async version: directly wait for event.
                     wait::wait(spEventCpuImpl);
                 }

@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
 
+#include <alpaka/dev/Traits.hpp>    // dev::getDev
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -39,9 +41,18 @@ namespace alpaka
             //! The event type trait.
             //#############################################################################
             template<
-                typename TAcc,
+                typename T,
                 typename TSfinae = void>
             struct EventType;
+
+            //#############################################################################
+            //! The event creator trait.
+            //#############################################################################
+            template<
+                typename TEvent,
+                typename TDev,
+                typename TSfinae = void>
+            struct Create;
 
             //#############################################################################
             //! The event tester trait.
@@ -49,30 +60,36 @@ namespace alpaka
             template<
                 typename TEvent,
                 typename TSfinae = void>
-            struct EventTest;
+            struct Test;
         }
 
         //#############################################################################
         //! The event type trait alias template to remove the ::type.
         //#############################################################################
         template<
-            typename TAcc>
-        using Event = typename traits::EventType<TAcc>::type;
+            typename T>
+        using Event = typename traits::EventType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! Creates an event on a device.
         //-----------------------------------------------------------------------------
         template<
+            typename TEvent,
             typename TDev>
         ALPAKA_FN_HOST auto create(
             TDev const & dev)
-        -> Event<TDev>
+        -> TEvent
         {
-            return Event<TDev>(dev);
+            return
+                traits::Create<
+                    TEvent,
+                    TDev>
+                ::create(
+                    dev);
         }
 
         //-----------------------------------------------------------------------------
-        //! Tests if the given event has already be completed.
+        //! Tests if the given event has already been completed.
         //-----------------------------------------------------------------------------
         template<
             typename TEvent>
@@ -81,9 +98,9 @@ namespace alpaka
         -> bool
         {
             return
-                traits::EventTest<
+                traits::Test<
                     TEvent>
-                ::eventTest(
+                ::test(
                     event);
         }
     }

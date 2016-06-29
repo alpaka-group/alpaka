@@ -1,6 +1,9 @@
 **alpaka** - Abstraction Library for Parallel Kernel Acceleration
 =================================================================
 
+[![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
+[![Build status](https://ci.appveyor.com/api/projects/status/xjeyugcg1cb0662s/branch/develop?svg=true)](https://ci.appveyor.com/project/BenjaminW3/alpaka-vuiya/branch/develop)
+
 The **alpaka** library is a header-only C++11 abstraction library for accelerator development.
 
 Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.
@@ -42,12 +45,12 @@ Accelerator Back-ends
 |Accelerator Back-end|Lib/API|Devices|Execution strategy grid-blocks|Execution strategy block-threads|
 |---|---|---|---|---|
 |Serial|n/a|Host CPU (single core)|sequential|sequential (only 1 thread per block)|
-|OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
-|OpenMP 2.0 threads|OpenMP 2.0|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
-|OpenMP 4.0 (CPU)|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
+|OpenMP 2.0+ blocks|OpenMP 2.0+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
+|OpenMP 2.0+ threads|OpenMP 2.0+|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
+|OpenMP 4.0+ (CPU)|OpenMP 4.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
-| Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
-|CUDA 7.0|CUDA 7.0|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+|CUDA 7.0+|CUDA 7.0+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+|TBB 2.2+ blocks|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
 
 
 Supported Compilers
@@ -55,36 +58,30 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|Accelerator Back-end|gcc 4.9.2|gcc 5.2|clang 3.5/3.6|clang 3.7|MSVC 2015|
-|---|---|---|---|---|---|
-|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
-|OpenMP 4.0 (CPU)|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|
-| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|
-
-**NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the NVIDIA nvcc compiler :bangbang:
-
-Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
-
-Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
+|Accelerator Back-end|gcc 4.9.2|gcc 5.3|gcc 6.1|clang 3.5/3.6|clang 3.7|clang 3.8|MSVC 2015|
+|---|---|---|---|---|---|---|---|
+|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|
+| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:x:|:x:|:x:|:x:|:white_check_mark: (native)|:x:|
+|TBB 2.2+|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:grey_question:|
 
 
 Dependencies
 ------------
 
-[Boost](http://boost.org/) 1.56+ is the only mandatory external dependency.
+[Boost](http://boost.org/) 1.59+ is the only mandatory external dependency.
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
-When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required.
-`boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
-
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
+*NOTE*: When using *CUDA* 7.0, the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
 
-When an accelerator back-end using *OpenMP 2.0/4.0* is enabled, the compiler and the platform have to support the corresponding *OpenMP* version.
+When an accelerator back-end using *OpenMP* is enabled, the compiler and the platform have to support the corresponding minimum *OpenMP* version.
+
+When an accelerator back-end using *TBB* is enabled, the compiler and the platform have to support the corresponding minimum *TBB* version.
 
 
 Usage
@@ -92,23 +89,85 @@ Usage
 
 The library is header only so nothing has to be build.
 CMake 3.3.0+ is required to provide the correct defines and include paths.
-Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compier in handling `.cu` and `.cpp` files is automatically taken care of.
-Examples how to utilize alpaka within CMake can be found in the `examples` folder.
-
+Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compiler in handling `.cu` and `.cpp` files are automatically taken care of.
 Source files do not need any special file ending.
+Examples of how to utilize alpaka within CMake can be found in the `example` folder.
+
 The whole alpaka library can be included with: `#include <alpaka/alpaka.hpp>`
-Code not intended to be utilized by users is hidden in the `detail` namespace.
+Code that is not intended to be utilized by the user is hidden in the `detail` namespace.
+
+
+Introduction
+------------
+
+For a quick introduction, feel free to playback the recording of our presentation at
+[GTC 2016](http://mygtc.gputechconf.com/quicklink/858sI36):
+
+ - E. Zenker, R. Widera, G. Juckeland et al.,
+   *Porting the Plasma Simulation PIConGPU to Heterogeneous Architectures with Alpaka*,
+   [video link (39 min)](http://on-demand.gputechconf.com/gtc/2016/video/S6298.html)
+
+
+Citing alpaka
+-------------
+
+Currently all authors of **alpaka** are scientists or connected with
+research. For us to justify the importance and impact of our work, please
+consider citing us accordingly in your derived work and publications:
+
+```latex
+% Peer-Reviewed Publication %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Peer reviewed and accepted publication in
+%   "The Sixth International Workshop on
+%    Accelerators and Hybrid Exascale Systems (AsHES)"
+% at the
+%   "30th IEEE International Parallel and Distributed
+%    Processing Symposium" in Chicago, IL, USA
+@inproceedings{ZenkerAsHES2016,
+  author    = {Erik Zenker and Benjamin Worpitz and Ren{\'{e}} Widera
+               and Axel Huebl and Guido Juckeland and
+               Andreas Kn{\"{u}}pfer and Wolfgang E. Nagel and Michael Bussmann},
+  title     = {Alpaka - An Abstraction Library for Parallel Kernel Acceleration},
+  archivePrefix = "arXiv",
+  eprint    = {1602.08477},
+  keywords  = {Computer science;CUDA;Mathematical Software;nVidia;OpenMP;Package;
+               performance portability;Portability;Tesla K20;Tesla K80},
+  day       = {23},
+  month     = {May},
+  year      = {2016},
+  publisher = {IEEE Computer Society},
+  url       = {http://arxiv.org/abs/1602.08477},
+}
+
+
+% Original Work: Benjamin Worpitz' Master Thesis %%%%%%%%%%
+%
+@MasterThesis{Worpitz2015,
+  author = {Benjamin Worpitz},
+  title  = {Investigating performance portability of a highly scalable
+            particle-in-cell simulation code on various multi-core
+            architectures},
+  school = {{Technische Universit{\"{a}}t Dresden}},
+  month  = {Sep},
+  year   = {2015},
+  type   = {Master Thesis},
+  doi    = {10.5281/zenodo.49768},
+  url    = {http://dx.doi.org/10.5281/zenodo.49768}
+}
+```
 
 
 Authors
 -------
 
-### Maintainers and core developers
+### Maintainers and Core Developers
 
-- Benjamin Worpitz
+- Benjamin Worpitz (original author)
+- Erik Zenker
+- Rene Widera
 
-### Participants, Former Members and Thanks
+### Former Members, Contributions and Thanks
 
 - Dr. Michael Bussmann
-- Rene Widera
 - Axel Huebl

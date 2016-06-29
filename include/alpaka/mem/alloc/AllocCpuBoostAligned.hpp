@@ -26,6 +26,7 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <boost/align.hpp>              // boost::aligned_alloc
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 namespace alpaka
 {

@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef _OPENMP
+
 #include <alpaka/atomic/Traits.hpp>                 // AtomicOp
 
 #include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
@@ -31,6 +33,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The OpenMP accelerator atomic ops.
+        //
+        //  Atomics can be used in the blocks and threads hierarchy levels.
+        //  Atomics are not guaranteed to be save between devices or grids.
         //#############################################################################
         class AtomicOmpCritSec
         {
@@ -66,18 +71,20 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The OpenMP accelerator atomic operation function object.
+            //! The OpenMP accelerator atomic operation.
             //
-            // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
-            // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
+            // NOTE: We can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed.
+            // So this would not be fully atomic. Between the store of the old value and the operation could be a context switch.
             //#############################################################################
             template<
                 typename TOp,
-                typename T>
+                typename T,
+                typename THierarchy>
             struct AtomicOp<
                 TOp,
                 atomic::AtomicOmpCritSec,
-                T>
+                T,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -90,9 +97,29 @@ namespace alpaka
                 {
                     boost::ignore_unused(atomic);
                     T old;
+                    // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                     #pragma omp critical (AlpakaOmpAtomicOp)
                     {
                         old = TOp()(addr, value);
+                    }
+                    return old;
+                }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                    atomic::AtomicOmpCritSec const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    boost::ignore_unused(atomic);
+                    T old;
+                    // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
+                    #pragma omp critical (AlpakaOmpAtomicOp2)
+                    {
+                        old = TOp()(addr, compare, value);
                     }
                     return old;
                 }
@@ -100,3 +127,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

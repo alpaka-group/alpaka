@@ -146,36 +146,3 @@ namespace alpaka
 #else
     #define ALPAKA_DEBUG_BREAK
 #endif
-
-//-----------------------------------------------------------------------------
-//! Error checking with log and exception.
-//-----------------------------------------------------------------------------
-/*#define ALPAKA_ASSERT_MSG_EXCP1(assertionExpression)\
-    {\
-        bool const error(assertionExpression);\
-        if(error != cudaSuccess)\
-        {\
-            std::string const sError(__FILE__ "(" BOOST_PP_STRINGIZE(__LINE__) ") '" #assertionExpression "' assertion failed!");\
-            std::cerr << sError << std::endl;\
-            ALPAKA_DEBUG_BREAK;\
-            throw std::runtime_error(sError);\
-        }\
-    }
-//-----------------------------------------------------------------------------
-//! Error checking with log and exception.
-//-----------------------------------------------------------------------------
-#define ALPAKA_ASSERT_MSG_EXCP2(assertionExpression, sErrorMessage)\
-    {\
-        bool const error(assertionExpression);\
-        if(error != cudaSuccess)\
-        {\
-            std::string const sError(__FILE__ "(" BOOST_PP_STRINGIZE(__LINE__) ") '" #assertionExpression "' assertion failed: '" + std::string(sErrorMessage) + "'!");\
-            std::cerr << sError << std::endl;\
-            ALPAKA_DEBUG_BREAK;\
-            throw std::runtime_error(sError);\
-        }\
-    }
-
-#define ALPAKA_ASSERT_MSG_EXCP_GET(_1,_2,NAME,...) NAME
-#define ALPAKA_ASSERT_MSG_EXCP(...)\
-    ALPAKA_ASSERT_MSG_EXCP_GET(__VA_ARGS__, ALPAKA_ASSERT_MSG_EXCP2, ALPAKA_ASSERT_MSG_EXCP1)(__VA_ARGS__)*/

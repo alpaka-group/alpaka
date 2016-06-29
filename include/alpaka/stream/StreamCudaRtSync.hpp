@@ -21,6 +21,14 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
 
 #include <alpaka/dev/Traits.hpp>        // dev::GetDev, dev::DevType
@@ -295,3 +303,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

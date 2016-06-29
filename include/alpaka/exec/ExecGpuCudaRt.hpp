@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,18 +21,27 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 #include <alpaka/stream/Traits.hpp>             // stream::traits::Enqueue
 
 // Implementation details.
 #include <alpaka/acc/AccGpuCudaRt.hpp>          // acc:AccGpuCudaRt
 #include <alpaka/dev/DevCudaRt.hpp>             // dev::DevCudaRt
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
 #include <alpaka/stream/StreamCudaRtSync.hpp>   // stream::StreamCudaRtSync
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
@@ -44,11 +53,10 @@
 #endif
 
 #include <alpaka/core/Cuda.hpp>                 // ALPAKA_CUDA_RT_CHECK
-#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
+#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
+#include <alpaka/meta/Metafunctions.hpp>        // meta::Conjunction
 
 #include <boost/predef.h>                       // workarounds
-#include <boost/mpl/apply.hpp>                  // boost::mpl::apply
-#include <boost/mpl/and.hpp>                    // boost::mpl::and_
 
 #include <stdexcept>                            // std::runtime_error
 #include <tuple>                                // std::tuple
@@ -79,7 +87,7 @@ namespace alpaka
                     TKernelFnObj const kernelFnObj,
                     TArgs ... args)
                 {
-#if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
+#if BOOST_ARCH_CUDA_DEVICE && (BOOST_ARCH_CUDA_DEVICE < BOOST_VERSION_NUMBER(2, 0, 0))
     #error "Cuda device capability >= 2.0 is required!"
 #endif
                     acc::AccGpuCudaRt<TDim, TSize> acc(threadElemExtent);
@@ -105,15 +113,13 @@ namespace alpaka
         public:
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
             static_assert(
-                boost::mpl::and_<
+                meta::Conjunction<
                     // This true_ is required for the zero argument case because and_ requires at least two arguments.
-                    boost::mpl::true_,
+                    std::true_type,
                     std::is_trivially_copyable<
                         TKernelFnObj>,
-                    boost::mpl::apply<
-                        std::is_trivially_copyable<
-                            boost::mpl::_1>,
-                            TArgs>...
+                    std::is_trivially_copyable<
+                        TArgs>...
                     >::value,
                 "The given kernel function object and its arguments have to fulfill is_trivially_copyable!");
 #endif
@@ -197,19 +203,6 @@ namespace alpaka
             {
                 using type = dev::DevCudaRt;
             };
-            //#############################################################################
-            //! The GPU CUDA executor device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevManType<
-                exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevManCudaRt;
-            };
         }
     }
     namespace dim
@@ -249,6 +242,25 @@ namespace alpaka
                 TArgs...>
             {
                 using type = exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>;
+            };
+        }
+    }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU CUDA executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct PltfType<
+                exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>>
+            {
+                using type = pltf::PltfCudaRt;
             };
         }
     }
@@ -320,13 +332,14 @@ namespace alpaka
                     {
                         reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
                         reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
-                        assert(threadElemExtent[TDim::value-1u-i] == 1);
+
                     }
                     // Assert that all extent of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
                         assert(gridBlockExtent[TDim::value-1u-i] == 1);
                         assert(blockThreadExtent[TDim::value-1u-i] == 1);
+                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -344,16 +357,17 @@ namespace alpaka
                     }
 #endif
 
-                    // Get the size of the block shared extern memory.
-                    auto const blockSharedExternMemSizeBytes(
-                        core::apply(
+                    // Get the size of the block shared dynamic memory.
+                    auto const blockSharedMemDynSizeBytes(
+                        meta::apply(
                             [&](TArgs const & ... args)
                             {
                                 return
-                                    kernel::getBlockSharedExternMemSizeBytes<
-                                        typename std::decay<TKernelFnObj>::type,
+                                    kernel::getBlockSharedMemDynSizeBytes<
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            blockThreadExtent * threadElemExtent,
+                                            task.m_kernelFnObj,
+                                            blockThreadExtent,
+                                            threadElemExtent,
                                             args...);
                             },
                             task.m_args));
@@ -361,7 +375,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory size.
                     std::cout << BOOST_CURRENT_FUNCTION
-                        << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                        << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -387,13 +401,13 @@ namespace alpaka
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                     // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
-                    core::apply(
+                    meta::apply(
                         [&](TArgs ... args)
                         {
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                blockSharedExternMemSizeBytes,
+                                blockSharedMemDynSizeBytes,
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
@@ -462,13 +476,13 @@ namespace alpaka
                     {
                         reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
                         reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
-                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
                     // Assert that all extent of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
                         assert(gridBlockExtent[TDim::value-1u-i] == 1);
                         assert(blockThreadExtent[TDim::value-1u-i] == 1);
+                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -484,16 +498,17 @@ namespace alpaka
                     }
 #endif
 
-                    // Get the size of the block shared extern memory.
-                    auto const blockSharedExternMemSizeBytes(
-                        core::apply(
+                    // Get the size of the block shared dynamic memory.
+                    auto const blockSharedMemDynSizeBytes(
+                        meta::apply(
                             [&](TArgs const & ... args)
                             {
                                 return
-                                    kernel::getBlockSharedExternMemSizeBytes<
-                                        TKernelFnObj,
+                                    kernel::getBlockSharedMemDynSizeBytes<
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            blockThreadExtent * threadElemExtent,
+                                            task.m_kernelFnObj,
+                                            blockThreadExtent,
+                                            threadElemExtent,
                                             args...);
                             },
                             task.m_args));
@@ -501,7 +516,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory size.
                     std::cout << BOOST_CURRENT_FUNCTION
-                        << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                        << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -527,13 +542,13 @@ namespace alpaka
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                     // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
-                    core::apply(
+                    meta::apply(
                         [&](TArgs ... args)
                         {
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                blockSharedExternMemSizeBytes,
+                                blockSharedMemDynSizeBytes,
                                 stream.m_spStreamCudaRtSyncImpl->m_CudaStream>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
@@ -560,3 +575,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

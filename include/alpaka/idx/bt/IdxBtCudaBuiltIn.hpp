@@ -21,9 +21,17 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
-#include <alpaka/vec/Vec.hpp>               // Vec, offset::getOffsetsVecEnd
+#include <alpaka/vec/Vec.hpp>               // Vec, offset::getOffsetVecEnd
 #include <alpaka/core/Cuda.hpp>             // getOffset(dim3)
 
 //#include <boost/core/ignore_unused.hpp>   // boost::ignore_unused
@@ -116,7 +124,7 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(idx);
-                    return vec::cast<TSize>(offset::getOffsetsVecEnd<TDim>(threadIdx));
+                    return vec::cast<TSize>(offset::getOffsetVecEnd<TDim>(threadIdx));
                 }
             };
         }
@@ -139,3 +147,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

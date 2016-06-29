@@ -101,30 +101,27 @@ namespace alpaka
                         ? 128
                         :
 #endif
-                            // Align at a minimum of 16 Bytes.
-                            (/*(TsizeBytes <= 16)
-                            ? 16
-                            :*/ RoundUpToPowerOfTwo<TsizeBytes>::value)>
+                            (RoundUpToPowerOfTwo<TsizeBytes>::value)>
             {};
         }
     }
 }
 
-// GCC does not support constant expressions as parameters to alignas: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
+// ICC does not support constant expressions as parameters to alignas
 // The optimal alignment for a type is the next higher or equal power of two.
-// TODO: Is a alignment < 16 really optimal on a GPU?
-#if BOOST_COMP_GNUC || BOOST_COMP_INTEL
+#if BOOST_COMP_INTEL
     #define ALPAKA_OPTIMAL_ALIGNMENT_SIZE(...)\
             ((__VA_ARGS__)==1?1:\
             ((__VA_ARGS__)<=2?2:\
             ((__VA_ARGS__)<=4?4:\
+            ((__VA_ARGS__)<=8?8:\
             ((__VA_ARGS__)<=16?16:\
             ((__VA_ARGS__)<=32?32:\
             ((__VA_ARGS__)<=64?64:128\
-            ))))))
+            )))))))
     #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
             ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(typename std::remove_cv<__VA_ARGS__>::type))
 #else
     #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
-            alpaka::core::align::OptimalAlignment<sizeof(typename std::remove_cv<__VA_ARGS__>::type)>::value
+            ::alpaka::core::align::OptimalAlignment<sizeof(typename std::remove_cv<__VA_ARGS__>::type)>::value
 #endif

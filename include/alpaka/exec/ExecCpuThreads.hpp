@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,22 +21,25 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
 #include <alpaka/acc/AccCpuThreads.hpp>         // acc:AccCpuThreads
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
-#include <alpaka/core/NdLoop.hpp>               // core::NdLoop
-#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
+#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
+#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/predef.h>                       // workarounds
 #include <boost/align.hpp>                      // boost::aligned_alloc
@@ -142,43 +145,38 @@ namespace alpaka
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
                 auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
-                auto const blockElemExtent(
-                    workdiv::getWorkDiv<Block, Elems>(*this));
+                auto const threadElemExtent(
+                    workdiv::getWorkDiv<Thread, Elems>(*this));
 
-                // Get the size of the block shared extern memory.
-                auto const blockSharedExternMemSizeBytes(
-                    core::apply(
+                // Get the size of the block shared dynamic memory.
+                auto const blockSharedMemDynSizeBytes(
+                    meta::apply(
                         [&](TArgs const & ... args)
                         {
                             return
-                                kernel::getBlockSharedExternMemSizeBytes<
-                                    TKernelFnObj,
+                                kernel::getBlockSharedMemDynSizeBytes<
                                     acc::AccCpuThreads<TDim, TSize>>(
-                                        blockElemExtent,
+                                        m_kernelFnObj,
+                                        blockThreadExtent,
+                                        threadElemExtent,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 acc::AccCpuThreads<TDim, TSize> acc(
-                    *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
-
-                if(blockSharedExternMemSizeBytes > 0u)
-                {
-                    acc.m_externalSharedMem.reset(
-                        reinterpret_cast<uint8_t *>(
-                            boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
-                }
+                    *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this),
+                    blockSharedMemDynSizeBytes);
 
                 auto const blockThreadCount(blockThreadExtent.prod());
                 ThreadPool threadPool(blockThreadCount, blockThreadCount);
 
                 // Bind the kernel and its arguments to the grid block function.
                 auto const boundGridBlockExecHost(
-                    core::apply(
+                    meta::apply(
                         [this, &acc, &blockThreadExtent, &threadPool](TArgs const & ... args)
                         {
                             return
@@ -194,12 +192,9 @@ namespace alpaka
                         m_args));
 
                 // Execute the blocks serially.
-                core::ndLoopIncIdx(
+                meta::ndLoopIncIdx(
                     gridBlockExtent,
                     boundGridBlockExecHost);
-
-                // After all blocks have been processed, the external shared memory has to be deleted.
-                acc.m_externalSharedMem.reset();
             }
 
         private:
@@ -231,10 +226,11 @@ namespace alpaka
                     std::ref(kernelFnObj),
                     std::ref(args)...));
                 // Execute the block threads in parallel.
-                core::ndLoopIncIdx(
+                meta::ndLoopIncIdx(
                     blockThreadExtent,
                     boundBlockThreadExecHost);
-
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 // Wait for the completion of the block thread kernels.
                 std::for_each(
                     futuresInBlock.begin(),
@@ -244,14 +240,14 @@ namespace alpaka
                         t.wait();
                     }
                 );
+#endif
                 // Clean up.
                 futuresInBlock.clear();
 
                 acc.m_threadToIndexMap.clear();
-                acc.m_threadToBarrierMap.clear();
 
                 // After a block has been processed, the shared memory has to be deleted.
-                block::shared::freeMem(acc);
+                block::shared::st::freeMem(acc);
             }
             //-----------------------------------------------------------------------------
             //! The function executed for each block thread on the host.
@@ -277,9 +273,12 @@ namespace alpaka
                             args...);
                     });
                 // Add the bound function to the block thread pool.
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 futuresInBlock.emplace_back(
                     threadPool.enqueueTask(
                         boundBlockThreadExecAcc));
+#endif
             }
             //-----------------------------------------------------------------------------
             //! The thread entry point on the accelerator.
@@ -300,21 +299,16 @@ namespace alpaka
                     acc.m_idMasterThread = threadId;
                 }
 
-                // We can not use the default syncBlockThreads here because it searches inside m_threadToBarrierMap for the thread id.
-                // Concurrently searching while others use emplace is unsafe!
-                typename std::map<std::thread::id, TSize>::iterator itThreadToBarrier;
-
                 {
                     // The insertion of elements has to be done one thread at a time.
                     std::lock_guard<std::mutex> lock(acc.m_mtxMapInsert);
 
                     // Save the thread id, and index.
                     acc.m_threadToIndexMap.emplace(threadId, blockThreadIdx);
-                    itThreadToBarrier = acc.m_threadToBarrierMap.emplace(threadId, 0).first;
                 }
 
                 // Sync all threads so that the maps with thread id's are complete and not changed after here.
-                acc.syncBlockThreads(itThreadToBarrier);
+                syncBlockThreads(acc);
 
                 // Execute the kernel itself.
                 kernelFnObj(
@@ -323,7 +317,7 @@ namespace alpaka
 
                 // We have to sync all threads here because if a thread would finish before all threads have been started,
                 // a new thread could get the recycled (then duplicate) thread id!
-                acc.syncBlockThreads(itThreadToBarrier);
+                syncBlockThreads(acc);
             }
 
             TKernelFnObj m_kernelFnObj;
@@ -367,19 +361,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU threads executor device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevManType<
-                exec::ExecCpuThreads<TDim, TSize, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -422,6 +403,25 @@ namespace alpaka
             };
         }
     }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU threads executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct PltfType<
+                exec::ExecCpuThreads<TDim, TSize, TKernelFnObj, TArgs...>>
+            {
+                using type = pltf::PltfCpu;
+            };
+        }
+    }
     namespace size
     {
         namespace traits
@@ -442,3 +442,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

@@ -21,9 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -61,6 +65,7 @@ namespace alpaka
             T const & atan2,
             Ty const & y,
             Tx const & x)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Atan2<
                 T,
@@ -70,6 +75,7 @@ namespace alpaka
                 atan2,
                 y,
                 x))
+#endif
         {
             return
                 traits::Atan2<
@@ -96,8 +102,11 @@ namespace alpaka
                 Ty,
                 Tx,
                 typename std::enable_if<
-                    std::is_base_of<typename T::Atan2Base, typename std::decay<T>::type>::value
-                    && (!std::is_same<typename T::Atan2Base, typename std::decay<T>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename T::Atan2Base,
+                        T
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -107,11 +116,13 @@ namespace alpaka
                     T const & atan2,
                     Ty const & y,
                     Tx const & x)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::atan2(
                         static_cast<typename T::Atan2Base const &>(atan2),
                         y,
                         x))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

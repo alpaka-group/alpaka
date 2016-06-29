@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,22 +21,29 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+
+#if _OPENMP < 201307
+    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#endif
+
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp4.hpp>            // acc:AccCpuOmp4
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
 #include <alpaka/core/MapIdx.hpp>               // core::mapIdx
-#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
+#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
 
@@ -114,31 +121,32 @@ namespace alpaka
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
                 auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
-                auto const blockElemExtent(
-                    workdiv::getWorkDiv<Block, Elems>(*this));
+                auto const threadElemExtent(
+                    workdiv::getWorkDiv<Thread, Elems>(*this));
 
-                // Get the size of the block shared extern memory.
-                auto const blockSharedExternMemSizeBytes(
-                    core::apply(
+                // Get the size of the block shared dynamic memory.
+                auto const blockSharedMemDynSizeBytes(
+                    meta::apply(
                         [&](TArgs const & ... args)
                         {
                             return
-                                kernel::getBlockSharedExternMemSizeBytes<
-                                    TKernelFnObj,
+                                kernel::getBlockSharedMemDynSizeBytes<
                                     acc::AccCpuOmp4<TDim, TSize>>(
-                                        blockElemExtent,
+                                        m_kernelFnObj,
+                                        blockThreadExtent,
+                                        threadElemExtent,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
                 auto const boundKernelFnObj(
-                    core::apply(
+                    meta::apply(
                         [this](TArgs const & ... args)
                         {
                             return
@@ -153,6 +161,10 @@ namespace alpaka
                 TSize const numBlocksInGrid(gridBlockExtent.prod());
                 // The number of threads in a block.
                 TSize const blockThreadCount(blockThreadExtent.prod());
+
+                // Force the environment to use the given number of threads.
+                int const ompIsDynamic(::omp_get_dynamic());
+                ::omp_set_dynamic(0);
 
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 #pragma omp target if(0)
@@ -173,21 +185,15 @@ namespace alpaka
                         }
 #endif
                         acc::AccCpuOmp4<TDim, TSize> acc(
-                            *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
-
-                        if(blockSharedExternMemSizeBytes > 0u)
-                        {
-                            acc.m_externalSharedMem.reset(
-                                reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
-                        }
+                            *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this),
+                            blockSharedMemDynSizeBytes);
 
                         #pragma omp distribute
                         for(TSize b = 0u; b<numBlocksInGrid; ++b)
                         {
                             Vec<dim::DimInt<1u>, TSize> const gridBlockIdx(b);
                             // When this is not repeated here:
-                            // error: ‘gridBlockExtent’ referenced in target region does not have a mappable type
+                            // error: gridBlockExtent referenced in target region does not have a mappable type
                             auto const gridBlockExtent2(
                                 workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this)));
                             acc.m_gridBlockIdx = core::mapIdx<TDim::value>(
@@ -195,10 +201,6 @@ namespace alpaka
                                 gridBlockExtent2);
 
                             // Execute the threads in parallel.
-
-                            // Force the environment to use the given number of threads.
-                            int const ompIsDynamic(::omp_get_dynamic());
-                            ::omp_set_dynamic(0);
 
                             // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
                             // So we have to spawn one OS thread per thread in a block.
@@ -223,19 +225,18 @@ namespace alpaka
                                     acc);
 
                                 // Wait for all threads to finish before deleting the shared memory.
-                                block::sync::syncBlockThreads(acc);
+                                // This is done by default if the omp 'nowait' clause is missing
+                                //block::sync::syncBlockThreads(acc);
                             }
 
-                            // Reset the dynamic thread number setting.
-                            ::omp_set_dynamic(ompIsDynamic);
-
                             // After a block has been processed, the shared memory has to be deleted.
-                            block::shared::freeMem(acc);
+                            block::shared::st::freeMem(acc);
                         }
-                        // After all blocks have been processed, the external shared memory has to be deleted.
-                        acc.m_externalSharedMem.reset();
                     }
                 }
+
+                // Reset the dynamic thread number setting.
+                ::omp_set_dynamic(ompIsDynamic);
             }
 
             TKernelFnObj m_kernelFnObj;
@@ -279,19 +280,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU OpenMP4 executor device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevManType<
-                exec::ExecCpuOmp4<TDim, TSize, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -334,6 +322,25 @@ namespace alpaka
             };
         }
     }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU OpenMP4 executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct PltfType<
+                exec::ExecCpuOmp4<TDim, TSize, TKernelFnObj, TArgs...>>
+            {
+                using type = pltf::PltfCpu;
+            };
+        }
+    }
     namespace size
     {
         namespace traits
@@ -354,3 +361,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjaremainder Worpitz
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -61,7 +61,7 @@ namespace alpaka
                     RemainderStl const & remainder,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(std::max(x, y))
+                -> decltype(std::remainder(x, y))
                 {
                     boost::ignore_unused(remainder);
                     return std::remainder(x, y);

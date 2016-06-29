@@ -21,14 +21,18 @@
 
 #pragma once
 
-#include <alpaka/size/Traits.hpp>           // Size
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <alpaka/vec/Vec.hpp>               // Vec<N>
-#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/size/Traits.hpp>       // Size
 
-#include <type_traits>                      // std::enable_if, std::is_base_of, std::is_same, std::decay
-#include <utility>                          // std::forward
+#include <alpaka/vec/Vec.hpp>           // Vec<N>
+#include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Threads
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
+#include <utility>                      // std::forward
 
 namespace alpaka
 {
@@ -77,7 +81,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The WorkDivMembers grid block extent trait specialization for classes with WorkDivBase member type.
+            //! The work div grid block extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -86,11 +90,14 @@ namespace alpaka
                 origin::Grid,
                 unit::Blocks,
                 typename std::enable_if<
-                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
-                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TWorkDiv::WorkDivBase,
+                        TWorkDiv
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of a block.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -106,7 +113,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The WorkDivMembers block thread extent trait specialization for classes with WorkDivBase member type.
+            //! The work div block thread extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -115,11 +122,14 @@ namespace alpaka
                 origin::Block,
                 unit::Threads,
                 typename std::enable_if<
-                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
-                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TWorkDiv::WorkDivBase,
+                        TWorkDiv
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of a block.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -135,7 +145,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The WorkDivMembers block thread extent trait specialization for classes with WorkDivBase member type.
+            //! The work div block thread extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -144,11 +154,14 @@ namespace alpaka
                 origin::Thread,
                 unit::Elems,
                 typename std::enable_if<
-                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
-                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TWorkDiv::WorkDivBase,
+                        TWorkDiv
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of a block.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
@@ -175,14 +188,16 @@ namespace alpaka
                 unit::Threads>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of the grid.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
                     * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv))
+#endif
                 {
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
@@ -200,14 +215,16 @@ namespace alpaka
                 unit::Elems>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of the grid.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     workdiv::getWorkDiv<origin::Grid, unit::Threads>(workDiv)
                     * workdiv::getWorkDiv<origin::Thread, unit::Elems>(workDiv))
+#endif
                 {
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Threads>(workDiv)
@@ -225,14 +242,16 @@ namespace alpaka
                 unit::Elems>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads in each dimension of the grid.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
                     * workdiv::getWorkDiv<origin::Thread, unit::Elems>(workDiv))
+#endif
                 {
                     return
                         workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)

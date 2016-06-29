@@ -21,16 +21,21 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
-#include <alpaka/vec/Vec.hpp>               // Vec
-#include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
 #include <alpaka/elem/Traits.hpp>           // ElemType
 #include <alpaka/offset/Traits.hpp>         // GetOffset/SetOffset
 #include <alpaka/extent/Traits.hpp>         // GetExtent/SetExtent
 #include <alpaka/size/Traits.hpp>           // SizeType
-
-#include <boost/mpl/apply.hpp>              // boost::mpl::apply
-#include <boost/mpl/and.hpp>                // boost::mpl::and_
+#include <alpaka/vec/Vec.hpp>               // Vec
+#include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
+#include <alpaka/meta/Metafunctions.hpp>    // meta::Conjunction
 
 // cuda_runtime_api.h: CUDA Runtime API C-style interface that does not require compiling with nvcc.
 // cuda_runtime.h: CUDA Runtime API  C++-style interface built on top of the C API.
@@ -45,7 +50,7 @@
 
 #include <array>                            // std::array
 #include <type_traits>                      // std::enable_if
-#include <utility>                          // std::forward
+#include <utility>                          // std::forward, std::declval
 #include <iostream>                         // std::cerr
 #include <string>                           // std::string, std::to_string
 #include <stdexcept>                        // std::runtime_error
@@ -72,15 +77,13 @@ namespace alpaka
             template<
                 typename... TErrors,
                 typename = typename std::enable_if<
-                    boost::mpl::and_<
-                        boost::mpl::true_,
-                        boost::mpl::true_,
-                        boost::mpl::apply<
-                            std::is_convertible<
-                                boost::mpl::_1,
-                                cudaError_t>,
-                            TErrors>...
-                        >::value>::type>
+                    meta::Conjunction<
+                        std::true_type,
+                        std::is_convertible<
+                            TErrors,
+                            cudaError_t
+                        >...
+                    >::value>::type>
             ALPAKA_FN_HOST auto cudaRtCheckIgnore(
                 cudaError_t const & error,
                 char const * cmd,
@@ -89,19 +92,43 @@ namespace alpaka
                 TErrors && ... ignoredErrorCodes)
             -> void
             {
-                // Even if we get the error directly from the command, we have to reset the global error state by getting it.
-                cudaGetLastError();
                 if(error != cudaSuccess)
                 {
-                    // If the error code is not one of the ignored ones.
+                    // Disable the incorrect warning see: http://stackoverflow.com/questions/13905200/is-it-wise-to-ignore-gcc-clangs-wmissing-braces-warning
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmissing-braces"
+#endif
                     std::array<cudaError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{std::forward<TErrors>(ignoredErrorCodes)...};
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
+                    // If the error code is not one of the ignored ones.
                     if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
                     {
-                        std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "' (possibly from a previous CUDA call)!");
+                        std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "'!");
                         std::cerr << sError << std::endl;
                         ALPAKA_DEBUG_BREAK;
                         throw std::runtime_error(sError);
                     }
+                }
+            }
+            //-----------------------------------------------------------------------------
+            //! CUDA runtime API last error checking with log and exception.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST inline auto cudaRtCheckLastError(
+                char const * cmd,
+                char const * file,
+                int const & line)
+            -> void
+            {
+                cudaError_t const lastError(cudaGetLastError());
+                if(lastError != cudaSuccess)
+                {
+                    std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' A previous CUDA call (not this one) set the error: '" + std::string(cudaGetErrorString(lastError)) + "'!");
+                    std::cerr << sError << std::endl;
+                    ALPAKA_DEBUG_BREAK;
+                    throw std::runtime_error(sError);
                 }
             }
         }
@@ -113,12 +140,14 @@ namespace alpaka
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
+        ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
 #else
     //-----------------------------------------------------------------------------
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
+        ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
 #endif
 
@@ -232,7 +261,16 @@ namespace alpaka
                     || std::is_same<T, uint4>::value
                     || std::is_same<T, ulong4>::value
                     || std::is_same<T, ulonglong4>::value
-                    || std::is_same<T, ushort4>::value>
+                    || std::is_same<T, ushort4>::value
+// CUDA built-in variables have special types in clang native CUDA compilation
+// defined in cuda_builtin_vars.h
+#if BOOST_COMP_CLANG_CUDA
+                    || std::is_same<T, __cuda_builtin_threadIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockDim_t>::value
+                    || std::is_same<T, __cuda_builtin_gridDim_t>::value
+#endif
+                >
             {};
         }
     }
@@ -259,7 +297,8 @@ namespace alpaka
                     || std::is_same<T, uint1>::value
                     || std::is_same<T, ulong1>::value
                     || std::is_same<T, ulonglong1>::value
-                    || std::is_same<T, ushort1>::value>::type>
+                    || std::is_same<T, ushort1>::value
+                >::type>
             {
                 using type = dim::DimInt<1u>;
             };
@@ -282,7 +321,8 @@ namespace alpaka
                     || std::is_same<T, uint2>::value
                     || std::is_same<T, ulong2>::value
                     || std::is_same<T, ulonglong2>::value
-                    || std::is_same<T, ushort2>::value>::type>
+                    || std::is_same<T, ushort2>::value
+                >::type>
             {
                 using type = dim::DimInt<2u>;
             };
@@ -306,7 +346,14 @@ namespace alpaka
                     || std::is_same<T, uint3>::value
                     || std::is_same<T, ulong3>::value
                     || std::is_same<T, ulonglong3>::value
-                    || std::is_same<T, ushort3>::value>::type>
+                    || std::is_same<T, ushort3>::value
+#if BOOST_COMP_CLANG_CUDA
+                    || std::is_same<T, __cuda_builtin_threadIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockIdx_t>::value
+                    || std::is_same<T, __cuda_builtin_blockDim_t>::value
+                    || std::is_same<T, __cuda_builtin_gridDim_t>::value
+#endif
+                >::type>
             {
                 using type = dim::DimInt<3u>;
             };
@@ -329,7 +376,8 @@ namespace alpaka
                     || std::is_same<T, uint4>::value
                     || std::is_same<T, ulong4>::value
                     || std::is_same<T, ulonglong4>::value
-                    || std::is_same<T, ushort4>::value>::type>
+                    || std::is_same<T, ushort4>::value
+                >::type>
             {
                 using type = dim::DimInt<4u>;
             };
@@ -343,13 +391,13 @@ namespace alpaka
             //! The CUDA vectors elem type trait specialization.
             //#############################################################################
             template<
-                typename TSize>
+                typename T>
             struct ElemType<
-                TSize,
+                T,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TSize>::value>::type>
+                    cuda::traits::IsCudaBuiltInType<T>::value>::type>
             {
-                using type = decltype(TSize().x);
+                using type = decltype(std::declval<T>().x);
             };
         }
     }
@@ -728,3 +776,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

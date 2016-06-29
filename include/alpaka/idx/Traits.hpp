@@ -21,14 +21,19 @@
 
 #pragma once
 
+#include <alpaka/meta/IsStrictBase.hpp>     // meta::IsStrictBase
+
+#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+
+#include <alpaka/vec/Vec.hpp>               // Vec<N>
+
 #include <alpaka/dim/Traits.hpp>            // dim::DimType
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/size/Traits.hpp>           // size::traits::SizeType
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
 
-#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/vec/Vec.hpp>               // Vec<N>
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
 #include <utility>                          // std::forward
 
@@ -112,8 +117,11 @@ namespace alpaka
                 origin::Grid,
                 unit::Blocks,
                 typename std::enable_if<
-                    std::is_base_of<typename TIdxGb::IdxGbBase, typename std::decay<TIdxGb>::type>::value
-                    && (!std::is_same<typename TIdxGb::IdxGbBase, typename std::decay<TIdxGb>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TIdxGb::IdxGbBase,
+                        TIdxGb
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
@@ -146,8 +154,11 @@ namespace alpaka
                 origin::Block,
                 unit::Threads,
                 typename std::enable_if<
-                    std::is_base_of<typename TIdxBt::IdxBtBase, typename std::decay<TIdxBt>::type>::value
-                    && (!std::is_same<typename TIdxBt::IdxBtBase, typename std::decay<TIdxBt>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename TIdxBt::IdxBtBase,
+                        TIdxBt
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
@@ -189,10 +200,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdx const & idx,
                     TWorkDiv const & workDiv)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)
                     * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
                     + idx::getIdx<origin::Block, unit::Threads>(idx, workDiv))
+#endif
                 {
                     return
                         idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)

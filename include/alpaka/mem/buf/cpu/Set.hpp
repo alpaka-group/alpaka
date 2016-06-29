@@ -1,6 +1,6 @@
             /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2015 Benjamin Worpitz, Erik Zenker
 *
 * This file is part of alpaka.
 *
@@ -24,8 +24,6 @@
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // mem::view::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // mem::view::Set, ...
-#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
-#include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
 
 #include <cassert>                          // assert
 #include <cstring>                          // std::memset
@@ -54,25 +52,44 @@ namespace alpaka
                     //! Set CPU memory.
                     //#############################################################################
                     template<
-                        typename TBuf,
+                        typename TView,
                         typename TExtent>
                     struct TaskSet
                     {
+                        using Size = size::Size<TExtent>;
+
                         static_assert(
-                            dim::Dim<TBuf>::value == dim::Dim<TExtent>::value,
-                            "The destination buffer and the extent are required to have the same dimensionality!");
+                            dim::Dim<TView>::value == dim::Dim<TExtent>::value,
+                            "The destination view and the extent are required to have the same dimensionality!");
 
                         //-----------------------------------------------------------------------------
                         //! Constructor.
                         //-----------------------------------------------------------------------------
                         TaskSet(
-                            TBuf & buf,
+                            TView & view,
                             std::uint8_t const & byte,
                             TExtent const & extent) :
-                                m_buf(buf),
                                 m_byte(byte),
-                                m_extent(extent)
-                        {}
+                                m_extentWidth(static_cast<Size>(extent::getWidth(extent))),
+                                m_extentHeight(static_cast<Size>(extent::getHeight(extent))),
+                                m_extentDepth(static_cast<Size>(extent::getDepth(extent))),
+                                m_dstWidth(static_cast<Size>(extent::getWidth(view))),
+                                m_dstHeight(static_cast<Size>(extent::getHeight(view))),
+#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+                                m_dstDepth(static_cast<Size>(extent::getDepth(view))),
+#endif
+                                m_extentWidthBytes(m_extentWidth * sizeof(elem::Elem<TView>)),
+                                m_dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view)),
+                                m_dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view)),
+                                m_dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view))),
+                                m_dstBufWidth(static_cast<Size>(extent::getWidth(view))),
+                                m_dstBufHeight(static_cast<Size>(extent::getHeight(view)))
+                        {
+                            assert(m_extentWidth <= m_dstWidth);
+                            assert(m_extentHeight <= m_dstHeight);
+                            assert(m_extentDepth <= m_dstDepth);
+                            assert(m_extentWidthBytes <= m_dstPitchBytesX);
+                        }
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
@@ -81,97 +98,54 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            auto const extentWidth(extent::getWidth(m_extent));
-                            auto const extentHeight(extent::getHeight(m_extent));
-                            auto const extentDepth(extent::getDepth(m_extent));
-                            auto const dstWidth(extent::getWidth(m_buf));
-                            auto const dstHeight(extent::getHeight(m_buf));
-        #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                            auto const dstDepth(extent::getDepth(m_buf));
-        #endif
-                            assert(extentWidth <= dstWidth);
-                            assert(extentHeight <= dstHeight);
-                            assert(extentDepth <= dstDepth);
-
-                            auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TBuf>));
-                            auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(m_buf));
-                            assert(extentWidthBytes <= dstPitchBytes);
-
-                            auto const dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(m_buf)));
-                            auto const dstSliceSizeBytes(dstPitchBytes * dstHeight);
-
-                            auto const & dstBuf(mem::view::getBuf(m_buf));
-                            auto const dstBufWidth(extent::getWidth(dstBuf));
-                            auto const dstBufHeight(extent::getHeight(dstBuf));
-
-                            int iByte(static_cast<int>(m_byte));
-
         #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
-                                << " ew: " << extentWidth
-                                << " eh: " << extentHeight
-                                << " ed: " << extentDepth
-                                << " ewb: " << extentWidthBytes
-                                << " dw: " << dstWidth
-                                << " dh: " << dstHeight
-                                << " dd: " << dstDepth
-                                << " dptr: " << reinterpret_cast<void *>(dstNativePtr)
-                                << " dpitchb: " << dstPitchBytes
-                                << " dbasew: " << dstBufWidth
-                                << " dbaseh: " << dstBufHeight
+                                << " ew: " << m_extentWidth
+                                << " eh: " << m_extentHeight
+                                << " ed: " << m_extentDepth
+                                << " ewb: " << m_extentWidthBytes
+                                << " dw: " << m_dstWidth
+                                << " dh: " << m_dstHeight
+                                << " dd: " << m_dstDepth
+                                << " dptr: " << reinterpret_cast<void *>(m_dstNativePtr)
+                                << " dpitchbX: " << m_dstPitchBytesX
+                                << " dpitchbY: " << m_dstPitchBytesY
+                                << " dbufw: " << m_dstBufWidth
+                                << " dbufh: " << m_dstBufHeight
                                 << std::endl;
         #endif
-                            // If:
-                            // - the set extent width is identical to the dst extent width
-                            // -> we can set whole slices at once overwriting the pitch bytes
-                            auto const copySliceAtOnce(
-                                (extentWidth == dstWidth)
-                                && (extentWidth == dstBufWidth));
 
-                            // If:
-                            // - the set extent width and height are identical to the dst extent width and height
-                            // -> we can set the whole memory at once overwriting the pitch bytes
-                            auto const copyAllAtOnce(
-                                copySliceAtOnce
-                                && (extentHeight == dstHeight)
-                                && (extentHeight == dstBufHeight));
 
-                            if(copyAllAtOnce)
+
+                            for(Size z = static_cast<Size>(0); z < m_extentDepth; ++z)
                             {
-                                std::memset(
-                                    reinterpret_cast<void *>(dstNativePtr),
-                                    iByte,
-                                    dstSliceSizeBytes*extentDepth);
-                            }
-                            else
-                            {
-                                for(auto z(decltype(extentDepth)(0)); z < extentDepth; ++z)
-                                {
-                                    if(copySliceAtOnce)
+
+                                    for(Size y = static_cast<Size>(0); y < m_extentHeight; ++y)
                                     {
-                                        std::memset(
-                                            reinterpret_cast<void *>(dstNativePtr + z*dstSliceSizeBytes),
-                                            iByte,
-                                            dstPitchBytes*extentHeight);
-                                    }
-                                    else
-                                    {
-                                        for(auto y(decltype(extentHeight)(0)); y < extentHeight; ++y)
-                                        {
                                             std::memset(
-                                                reinterpret_cast<void *>(dstNativePtr + y*dstPitchBytes + z*dstSliceSizeBytes),
-                                                iByte,
-                                                extentWidthBytes);
+                                                        reinterpret_cast<void *>(m_dstNativePtr + y*m_dstPitchBytesX + z*m_dstPitchBytesY),
+                                                        m_byte,
+                                                        m_extentWidthBytes);
                                         }
-                                    }
                                 }
-                            }
                         }
 
-                        // FIXME: Copy buffer handle, do NOT take reference!
-                        TBuf & m_buf;
                         std::uint8_t const m_byte;
-                        TExtent const m_extent;
+                        Size const m_extentWidth;
+                        Size const m_extentHeight;
+                        Size const m_extentDepth;
+                        Size const m_dstWidth;
+                        Size const m_dstHeight;
+#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+                        Size const m_dstDepth;
+#endif
+                        Size const m_extentWidthBytes;
+                        Size const m_dstPitchBytesX;
+                        Size const m_dstPitchBytesY;
+                        std::uint8_t * m_dstNativePtr;
+                        Size const m_dstBufWidth;
+                        Size const m_dstBufHeight;
+
                     };
                 }
             }
@@ -192,20 +166,20 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
-                        typename TBuf>
+                        typename TView>
                     ALPAKA_FN_HOST static auto taskSet(
-                        TBuf & buf,
+                        TView & view,
                         std::uint8_t const & byte,
                         TExtent const & extent)
                     -> cpu::detail::TaskSet<
-                        TBuf,
+                        TView,
                         TExtent>
                     {
                         return
                             cpu::detail::TaskSet<
-                                TBuf,
+                                TView,
                                 TExtent>(
-                                    buf,
+                                    view,
                                     byte,
                                     extent);
                     }

@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -35,7 +35,6 @@ namespace alpaka
         class AtomicNoOp
         {
         public:
-            using AtomicBase = AtomicNoOp;
 
             //-----------------------------------------------------------------------------
             //! Default constructor.
@@ -66,15 +65,17 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers accelerator atomic operation function object.
+            //! The CPU fibers accelerator atomic operation.
             //#############################################################################
             template<
                 typename TOp,
-                typename T>
+                typename T,
+                typename THierarchy>
             struct AtomicOp<
                 TOp,
                 atomic::AtomicNoOp,
-                T>
+                T,
+                THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -87,6 +88,19 @@ namespace alpaka
                 {
                     boost::ignore_unused(atomic);
                     return TOp()(addr, value);
+                }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                    atomic::AtomicNoOp const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    boost::ignore_unused(atomic);
+                    return TOp()(addr, compare, value);
                 }
             };
         }

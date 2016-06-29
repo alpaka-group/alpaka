@@ -21,12 +21,21 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+
+#if !BOOST_LANG_CUDA
+    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#endif
+
+#include <alpaka/dev/DevCudaRt.hpp>         // dev::DevCudaRt
+#include <alpaka/vec/Vec.hpp>               // Vec
+#include <alpaka/core/Cuda.hpp>             // cudaMalloc, ...
+
 #include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/mem/buf/Traits.hpp>        // mem::view::Copy, ...
-
-#include <alpaka/vec/Vec.hpp>               // Vec
-#include <alpaka/core/Cuda.hpp>             // cudaMalloc, ...
 
 #include <cassert>                          // assert
 #include <memory>                           // std::shared_ptr
@@ -105,8 +114,6 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    assert(memPtr);
 
                     // Set the current device. \TODO: Is setting the current device before cudaFree required?
                     ALPAKA_CUDA_RT_CHECK(
@@ -235,35 +242,6 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The BufCudaRt buf trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct GetBuf<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
-                {
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
-                    -> mem::buf::BufCudaRt<TElem, TDim, TSize> const &
-                    {
-                        return buf;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getBuf(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
-                    -> mem::buf::BufCudaRt<TElem, TDim, TSize> &
-                    {
-                        return buf;
-                    }
-                };
-                //#############################################################################
                 //! The BufCudaRt native pointer get trait specialization.
                 //#############################################################################
                 template<
@@ -390,9 +368,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        assert(width>0);
                         auto const widthBytes(width * sizeof(T));
-                        assert(widthBytes>0);
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -404,7 +380,6 @@ namespace alpaka
                             cudaMalloc(
                                 &memPtr,
                                 widthBytes));
-                        assert((memPtr));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -447,12 +422,7 @@ namespace alpaka
 
                         auto const width(extent::getWidth(extent));
                         auto const widthBytes(width * sizeof(T));
-                        assert(widthBytes>0);
                         auto const height(extent::getHeight(extent));
-#ifndef NDEBUG
-                        auto const elementCount(width * height);
-#endif
-                        assert(elementCount>0);
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -467,8 +437,7 @@ namespace alpaka
                                 &pitchBytes,
                                 widthBytes,
                                 height));
-                        assert(memPtr);
-                        assert(pitchBytes>=widthBytes);
+                        assert(pitchBytes>=widthBytes||(width*height)==0);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -528,7 +497,6 @@ namespace alpaka
                                 &cudaPitchedPtrVal,
                                 cudaExtentVal));
 
-                        assert(cudaPitchedPtrVal.ptr);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -858,3 +826,5 @@ namespace alpaka
 
 #include <alpaka/mem/buf/cuda/Copy.hpp>
 #include <alpaka/mem/buf/cuda/Set.hpp>
+
+#endif

@@ -21,33 +21,27 @@
 
 #pragma once
 
-#include <boost/predef.h>   // workarounds
-#include <boost/version.hpp>// workarounds
+//-----------------------------------------------------------------------------
+// Clang does not support exceptions when natively compiling device code.
+// This is no problem at some places but others explicitly rely on std::exception_ptr,
+// std::current_exception, std::make_exception_ptr, etc. which are not declared in device code.
+// Therefore, we can not even parse those parts when compiling device code.
+//-----------------------------------------------------------------------------
+#include <alpaka/core/Common.hpp>   // BOOST_LANG_CUDA, BOOST_ARCH_CUDA_DEVICE
 
-// nvcc does not currently support boost correctly.
-// boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <queue>        // std::queue
-    #include <mutex>        // std::mutex
-#else
-    #if BOOST_COMP_MSVC
-        #pragma warning(push)
-        #pragma warning(disable: 4244)  // boost/lockfree/detail/tagged_ptr_ptrcompression.hpp(59): warning C4244: '=': conversion from 'int' to 'boost::lockfree::detail::tagged_ptr<boost::lockfree::detail::freelist_stack<T,Alloc>::freelist_node>::tag_t', possible loss of data
-    #endif
+#include <boost/predef.h>           // workarounds
+#include <boost/version.hpp>        // workarounds
 
-    #include <boost/lockfree/queue.hpp>
+#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
-    #if BOOST_COMP_MSVC
-        #pragma warning(pop)
-    #endif
-#endif
-
-#include <stdexcept>        // std::current_exception
-#include <vector>           // std::vector
-#include <exception>        // std::runtime_error
-#include <utility>          // std::forward
-#include <atomic>           // std::atomic
-#include <future>           // std::future
+#include <queue>                    // std::queue
+#include <mutex>                    // std::mutex
+#include <stdexcept>                // std::current_exception
+#include <vector>                   // std::vector
+#include <exception>                // std::runtime_error
+#include <utility>                  // std::forward
+#include <atomic>                   // std::atomic
+#include <future>                   // std::future
 
 namespace alpaka
 {
@@ -55,7 +49,6 @@ namespace alpaka
     {
         namespace detail
         {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
             //#############################################################################
             //!
             //#############################################################################
@@ -83,12 +76,12 @@ namespace alpaka
                 //! Pushes the given value onto the back of the queue.
                 //-----------------------------------------------------------------------------
                 auto push(
-                    T const & t)
+                    T && t)
                 -> void
                 {
                     std::lock_guard<std::mutex> lk(m_Mutex);
 
-                    std::queue<T>::push(t);
+                    std::queue<T>::push(std::forward<T>(t));
                 }
                 //-----------------------------------------------------------------------------
                 //! Pops the given value from the front of the queue.
@@ -114,18 +107,12 @@ namespace alpaka
             private:
                 std::mutex m_Mutex;
             };
-#else
-            //#############################################################################
-            //!
-            //#############################################################################
-            template<
-                typename T>
-            using ThreadSafeQueue = boost::lockfree::queue<T>;
-#endif
+
             //#############################################################################
             //! ITaskPkg.
             //#############################################################################
-            // \TODO: Replace with std::packaged_task which was buggy in MSVC 12.
+            // \NOTE: We can not use C++11 std::packaged_task as it forces the use of std::future
+            // but we additionally support boost::fibers::promise.
             class ITaskPkg
             {
             public:
@@ -141,7 +128,10 @@ namespace alpaka
                     }
                     catch(...)
                     {
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                         setException(std::current_exception());
+#endif
                     }
                 }
 
@@ -152,12 +142,15 @@ namespace alpaka
                 virtual auto run() -> void = 0;
 
             public:
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 //-----------------------------------------------------------------------------
                 virtual auto setException(
                     std::exception_ptr const & exceptPtr)
                 -> void = 0;
+#endif
             };
 
             //#############################################################################
@@ -194,6 +187,8 @@ namespace alpaka
                     m_Promise.set_value(this->m_FnObj());
                 }
             public:
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 //-----------------------------------------------------------------------------
@@ -203,10 +198,12 @@ namespace alpaka
                 {
                     m_Promise.set_exception(exceptPtr);
                 }
-
+#endif
                 TPromise<TFnObjReturn> m_Promise;
             private:
-                TFnObj m_FnObj;
+                // NOTE: To avoid invalid memory accesses to memory of a different thread
+                // `std::remove_reference` enforces the function object to be copied.
+                typename std::remove_reference<TFnObj>::type m_FnObj;
             };
 
             //#############################################################################
@@ -245,6 +242,8 @@ namespace alpaka
                     m_Promise.set_value();
                 }
             public:
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 //-----------------------------------------------------------------------------
@@ -254,10 +253,12 @@ namespace alpaka
                 {
                     m_Promise.set_exception(exceptPtr);
                 }
-
+#endif
                 TPromise<void> m_Promise;
             private:
-                TFnObj m_FnObj;
+                // NOTE: To avoid invalid memory accesses to memory of a different thread
+                // `std::remove_reference` enforces the function object to be copied.
+                typename std::remove_reference<TFnObj>::type m_FnObj;
             };
 
             //#############################################################################
@@ -297,13 +298,22 @@ namespace alpaka
                     TSize concurrentExecutionCount,
                     TSize queueSize = 128u) :
                     m_vConcurrentExecs(),
-                    m_qTasks(queueSize),
+                    m_qTasks(static_cast<std::size_t>(queueSize)),
                     m_bShutdownFlag(false)
                 {
-                    m_vConcurrentExecs.reserve(concurrentExecutionCount);
+                    if(concurrentExecutionCount < 1)
+                    {
+                        throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
+                    }
+                    if(queueSize < 1)
+                    {
+                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
+                    }
+
+                    m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
                     // Create all concurrent executors.
-                    for(size_t concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
+                    for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
                         m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
                     }
@@ -338,13 +348,16 @@ namespace alpaka
 
                     joinAllConcurrentExecs();
 
-                    auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                    auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                     // Signal to each incomplete task that it will not complete due to pool destruction.
                     while(popTask(currentTaskPackage))
                     {
                         auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                         currentTaskPackage->setException(std::make_exception_ptr(except));
+#endif
                     }
                 }
 
@@ -367,23 +380,23 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type>) >::type
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                // NOTE: The first argument to the get_future() function call is the this pointer.
+                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+#endif
                 {
-                    auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
+                    auto boundTask(std::bind(task, args...));
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
                     using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
-                    // Ensures no memory leak if push throws.
-                    // \TODO: C++14 std::make_unique would be better.
-                    auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                    auto future(packagePtr->m_Promise.get_future());
+                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                    std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
-                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
+                    auto future(pTaskPackage->m_Promise.get_future());
 
-                    // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
-                    packagePtr.release();
+                    m_qTasks.push(std::move(upTaskPackage));
 
                     return future;
                 }
@@ -401,11 +414,7 @@ namespace alpaka
                 auto isQueueEmpty() const
                 -> bool
                 {
-#if (BOOST_VERSION < 105700)
-                    return const_cast<ThreadSafeQueue<ITaskPkg *> &>(m_qTasks).empty();
-#else
                     return m_qTasks.empty();
-#endif
                 }
 
             private:
@@ -417,7 +426,7 @@ namespace alpaka
                     // Checks whether pool is being destroyed, if so, stop running.
                     while(!m_bShutdownFlag.load(std::memory_order_relaxed))
                     {
-                        auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                        auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                         // Use popTask so we only ever have one reference to the ITaskPkg
                         if(popTask(currentTaskPackage))
@@ -445,14 +454,11 @@ namespace alpaka
                 //! Pops a task from the queue.
                 //-----------------------------------------------------------------------------
                 auto popTask(
-                    std::unique_ptr<ITaskPkg> & out)
+                    std::shared_ptr<ITaskPkg> & out)
                 -> bool
                 {
-                    ITaskPkg * tempPtr(nullptr);
-
-                    if(m_qTasks.pop(tempPtr))
+                    if(m_qTasks.pop(out))
                     {
-                        out.reset(tempPtr);
                         return true;
                     }
                     return false;
@@ -460,7 +466,7 @@ namespace alpaka
 
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
-                ThreadSafeQueue<ITaskPkg *> m_qTasks;
+                ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
                 std::atomic<bool> m_bShutdownFlag;
             };
 
@@ -506,12 +512,21 @@ namespace alpaka
                     TSize concurrentExecutionCount,
                     TSize queueSize = 128u) :
                     m_vConcurrentExecs(),
-                    m_qTasks(queueSize),
+                    m_qTasks(static_cast<std::size_t>(queueSize)),
                     m_mtxWakeup(),
                     m_bShutdownFlag(false),
                     m_cvWakeup()
                 {
-                    m_vConcurrentExecs.reserve(concurrentExecutionCount);
+                    if(concurrentExecutionCount < 1)
+                    {
+                        throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
+                    }
+                    if(queueSize < 1)
+                    {
+                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
+                    }
+
+                    m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
                     // Create all concurrent executors.
                     for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
@@ -555,13 +570,16 @@ namespace alpaka
 
                     joinAllConcurrentExecs();
 
-                    auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                    auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                     // Signal to each incomplete task that it will not complete due to pool destruction.
                     while(popTask(currentTaskPackage))
                     {
                         auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                         currentTaskPackage->setException(std::make_exception_ptr(except));
+#endif
                     }
                 }
 
@@ -584,25 +602,28 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type>) >::type
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                // NOTE: The first argument to the get_future() function call is the this pointer.
+                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+#endif
                 {
-                    auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
+                    auto boundTask(std::bind(task, args...));
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
                     using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
-                    // Ensures no memory leak if push throws.
-                    // \TODO: C++14 std::make_unique would be better.
-                    auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                    auto future(packagePtr->m_Promise.get_future());
+                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                    std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
-                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
+                    auto future(pTaskPackage->m_Promise.get_future());
 
-                    // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
-                    packagePtr.release();
+                    {
+                        std::lock_guard<TMutex> lock(m_mtxWakeup);
+                        m_qTasks.push(std::move(upTaskPackage));
 
-                    m_cvWakeup.notify_one();
+                        m_cvWakeup.notify_one();
+                    }
 
                     return future;
                 }
@@ -620,11 +641,7 @@ namespace alpaka
                 auto isQueueEmpty() const
                 -> bool
                 {
-#if (BOOST_VERSION < 105700)
-                    return const_cast<ThreadSafeQueue<ITaskPkg *> &>(m_qTasks).empty();
-#else
                     return m_qTasks.empty();
-#endif
                 }
 
             private:
@@ -636,24 +653,25 @@ namespace alpaka
                     // Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).
                     while(!m_bShutdownFlag)
                     {
-                        auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
+                        auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
 
                         // Use popTask so we only ever have one reference to the ITaskPkg
                         if(popTask(currentTaskPackage))
                         {
                             currentTaskPackage->runTask();
                         }
-                        else
                         {
                             std::unique_lock<TMutex> lock(m_mtxWakeup);
-
-                            // If the shutdown flag has been set since the last check, return now.
-                            if(m_bShutdownFlag)
+                            if(m_qTasks.empty())
                             {
-                                return;
-                            }
+                                // If the shutdown flag has been set since the last check, return now.
+                                if(m_bShutdownFlag)
+                                {
+                                    return;
+                                }
 
-                            m_cvWakeup.wait(lock, [this]() { return ((!m_qTasks.empty()) || m_bShutdownFlag); });
+                                m_cvWakeup.wait(lock, [this]() { return ((!m_qTasks.empty()) || m_bShutdownFlag); });
+                            }
                         }
                     }
                 }
@@ -672,14 +690,11 @@ namespace alpaka
                 //! Pops a task from the queue.
                 //-----------------------------------------------------------------------------
                 auto popTask(
-                    std::unique_ptr<ITaskPkg> & out)
+                    std::shared_ptr<ITaskPkg> & out)
                 -> bool
                 {
-                    ITaskPkg * tempPtr(nullptr);
-
-                    if(m_qTasks.pop(tempPtr))
+                    if(m_qTasks.pop(out))
                     {
-                        out.reset(tempPtr);
                         return true;
                     }
                     return false;
@@ -687,7 +702,7 @@ namespace alpaka
 
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
-                ThreadSafeQueue<ITaskPkg *> m_qTasks;
+                ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
 
                 TMutex m_mtxWakeup;
                 std::atomic<bool> m_bShutdownFlag;

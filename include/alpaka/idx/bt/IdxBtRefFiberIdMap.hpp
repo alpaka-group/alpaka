@@ -21,6 +21,8 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+
 #include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
 #include <alpaka/core/Fibers.hpp>
@@ -151,3 +153,5 @@ namespace alpaka
         }
     }
 }
+
+#endif

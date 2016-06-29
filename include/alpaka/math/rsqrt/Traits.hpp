@@ -21,9 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
+#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
 
-#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+
+#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {
@@ -56,6 +60,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto rsqrt(
             T const & rsqrt,
             TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
             traits::Rsqrt<
                 T,
@@ -63,6 +68,7 @@ namespace alpaka
             ::rsqrt(
                 rsqrt,
                 arg))
+#endif
         {
             return
                 traits::Rsqrt<
@@ -85,8 +91,11 @@ namespace alpaka
                 T,
                 TArg,
                 typename std::enable_if<
-                    std::is_base_of<typename T::RsqrtBase, typename std::decay<T>::type>::value
-                    && (!std::is_same<typename T::RsqrtBase, typename std::decay<T>::type>::value)>::type>
+                    meta::IsStrictBase<
+                        typename T::RsqrtBase,
+                        T
+                    >::value
+                >::type>
             {
                 //-----------------------------------------------------------------------------
                 //
@@ -95,10 +104,12 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto rsqrt(
                     T const & rsqrt,
                     TArg const & arg)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::rsqrt(
                         static_cast<typename T::RsqrtBase const &>(rsqrt),
                         arg))
+#endif
                 {
                     // Delegate the call to the base class.
                     return

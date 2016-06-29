@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2016 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -21,21 +21,24 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
 #include <alpaka/acc/AccCpuSerial.hpp>          // acc:AccCpuSerial
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
-#include <alpaka/core/NdLoop.hpp>               // core::NdLoop
-#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
+#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
+#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 #include <boost/align.hpp>                      // boost::aligned_alloc
@@ -113,31 +116,32 @@ namespace alpaka
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
                 auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
-                auto const blockElemExtent(
-                    workdiv::getWorkDiv<Block, Elems>(*this));
+                auto const threadElemExtent(
+                    workdiv::getWorkDiv<Thread, Elems>(*this));
 
-                // Get the size of the block shared extern memory.
-                auto const blockSharedExternMemSizeBytes(
-                    core::apply(
+                // Get the size of the block shared dynamic memory.
+                auto const blockSharedMemDynSizeBytes(
+                    meta::apply(
                         [&](TArgs const & ... args)
                         {
                             return
-                                kernel::getBlockSharedExternMemSizeBytes<
-                                    TKernelFnObj,
+                                kernel::getBlockSharedMemDynSizeBytes<
                                     acc::AccCpuSerial<TDim, TSize>>(
-                                        blockElemExtent,
+                                        m_kernelFnObj,
+                                        blockThreadExtent,
+                                        threadElemExtent,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
                 auto const boundKernelFnObj(
-                    core::apply(
+                    meta::apply(
                         [this](TArgs const & ... args)
                         {
                             return
@@ -149,20 +153,14 @@ namespace alpaka
                         m_args));
 
                 acc::AccCpuSerial<TDim, TSize> acc(
-                    *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
-
-                if(blockSharedExternMemSizeBytes > 0u)
-                {
-                    acc.m_externalSharedMem.reset(
-                        reinterpret_cast<uint8_t *>(
-                            boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
-                }
+                    *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this),
+                    blockSharedMemDynSizeBytes);
 
                 // There is only ever one thread in a block in the serial accelerator.
                 assert(blockThreadExtent.prod() == 1u);
 
                 // Execute the blocks serially.
-                core::ndLoopIncIdx(
+                meta::ndLoopIncIdx(
                     gridBlockExtent,
                     [&](Vec<TDim, TSize> const & blockThreadIdx)
                     {
@@ -172,11 +170,8 @@ namespace alpaka
                             acc);
 
                         // After a block has been processed, the shared memory has to be deleted.
-                        block::shared::freeMem(acc);
+                        block::shared::st::freeMem(acc);
                     });
-
-                // After all blocks have been processed, the external shared memory has to be deleted.
-                acc.m_externalSharedMem.reset();
             }
 
             TKernelFnObj m_kernelFnObj;
@@ -220,19 +215,6 @@ namespace alpaka
             {
                 using type = dev::DevCpu;
             };
-            //#############################################################################
-            //! The CPU serial executor device manager type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevManType<
-                exec::ExecCpuSerial<TDim, TSize, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevManCpu;
-            };
         }
     }
     namespace dim
@@ -275,6 +257,25 @@ namespace alpaka
             };
         }
     }
+    namespace pltf
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU serial executor platform type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct PltfType<
+                exec::ExecCpuSerial<TDim, TSize, TKernelFnObj, TArgs...>>
+            {
+                using type = pltf::PltfCpu;
+            };
+        }
+    }
     namespace size
     {
         namespace traits
@@ -295,3 +296,5 @@ namespace alpaka
         }
     }
 }
+
+#endif
