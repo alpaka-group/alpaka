@@ -1,6 +1,5 @@
 var classalpaka_1_1atomic_1_1AtomicNoOp =
 [
-    [ "AtomicBase", "classalpaka_1_1atomic_1_1AtomicNoOp.html#abbf53568e1af9452095ba5bf52faabc7", null ],
     [ "AtomicNoOp", "classalpaka_1_1atomic_1_1AtomicNoOp.html#a3bbf821375eab3606f74964d5f83232a", null ],
     [ "AtomicNoOp", "classalpaka_1_1atomic_1_1AtomicNoOp.html#a39547b5df3555a1dcb6ae2a890a3fe0b", null ],
     [ "AtomicNoOp", "classalpaka_1_1atomic_1_1AtomicNoOp.html#a152479aafba720b4534ee49a9e49866e", null ],

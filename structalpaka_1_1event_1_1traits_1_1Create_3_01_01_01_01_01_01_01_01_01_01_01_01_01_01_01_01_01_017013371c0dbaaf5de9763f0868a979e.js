@@ -1,0 +1,4 @@
+var structalpaka_1_1event_1_1traits_1_1Create_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_017013371c0dbaaf5de9763f0868a979e =
+[
+    [ "create", "structalpaka_1_1event_1_1traits_1_1Create_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_017013371c0dbaaf5de9763f0868a979e.html#ac98fbc1ec884033a68bcafdd2febd1d7", null ]
+];

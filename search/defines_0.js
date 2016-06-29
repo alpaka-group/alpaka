@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['alpaka_5fcreate_5fvec_5fin_5fclass',['ALPAKA_CREATE_VEC_IN_CLASS',['../Vec_8hpp.html#a0a3401bd236aadc633ba0850080dea25',1,'ALPAKA_CREATE_VEC_IN_CLASS():&#160;Vec.hpp'],['../Vec_8hpp.html#a0a3401bd236aadc633ba0850080dea25',1,'ALPAKA_CREATE_VEC_IN_CLASS():&#160;Vec.hpp']]],
   ['alpaka_5fcuda_5frt_5fcheck',['ALPAKA_CUDA_RT_CHECK',['../Cuda_8hpp.html#a69aee482f007066dfdb79c831e8ba771',1,'Cuda.hpp']]],
   ['alpaka_5fcuda_5frt_5fcheck_5fignore',['ALPAKA_CUDA_RT_CHECK_IGNORE',['../Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c',1,'Cuda.hpp']]],
   ['alpaka_5fdebug',['ALPAKA_DEBUG',['../Debug_8hpp.html#a7f84384a17e301a636770e17c2951383',1,'Debug.hpp']]],
@@ -15,8 +14,14 @@ var searchData=
   ['alpaka_5ffn_5facc_5fno_5fcuda',['ALPAKA_FN_ACC_NO_CUDA',['../Common_8hpp.html#abdd6790bfd7b8850c72cfb0a15834195',1,'Common.hpp']]],
   ['alpaka_5ffn_5fhost',['ALPAKA_FN_HOST',['../Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575',1,'Common.hpp']]],
   ['alpaka_5ffn_5fhost_5facc',['ALPAKA_FN_HOST_ACC',['../Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3',1,'Common.hpp']]],
+  ['alpaka_5ffn_5finline',['ALPAKA_FN_INLINE',['../Common_8hpp.html#abecbcba04c4231d227406ebb0020330b',1,'Common.hpp']]],
   ['alpaka_5fno_5fhost_5facc_5fwarning',['ALPAKA_NO_HOST_ACC_WARNING',['../Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c',1,'Common.hpp']]],
   ['alpaka_5foptimal_5falignment',['ALPAKA_OPTIMAL_ALIGNMENT',['../Align_8hpp.html#aa32712c717c4b16951a245ffaa20b7e1',1,'Align.hpp']]],
+  ['alpaka_5fstatic_5fdev_5fmem_5fconstant',['ALPAKA_STATIC_DEV_MEM_CONSTANT',['../Common_8hpp.html#abbf7860725b039936b006b9e5f5e2767',1,'Common.hpp']]],
+  ['alpaka_5fstatic_5fdev_5fmem_5fglobal',['ALPAKA_STATIC_DEV_MEM_GLOBAL',['../Common_8hpp.html#a9296a1da0518f8d14168c42960b8dd84',1,'Common.hpp']]],
   ['alpaka_5funroll',['ALPAKA_UNROLL',['../Unroll_8hpp.html#a57dd84fb3aa4dccb871fa74c30a4fe2f',1,'Unroll.hpp']]],
-  ['alpaka_5fversion',['ALPAKA_VERSION',['../alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0',1,'alpaka.hpp']]]
+  ['alpaka_5fversion',['ALPAKA_VERSION',['../version_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0',1,'version.hpp']]],
+  ['alpaka_5fversion_5fmajor',['ALPAKA_VERSION_MAJOR',['../version_8hpp.html#ad47b381d8d19dc91eba7c6063ffe1b0d',1,'version.hpp']]],
+  ['alpaka_5fversion_5fminor',['ALPAKA_VERSION_MINOR',['../version_8hpp.html#a709a81320b19f018a10150cc14812983',1,'version.hpp']]],
+  ['alpaka_5fversion_5fpatch',['ALPAKA_VERSION_PATCH',['../version_8hpp.html#a35cc4276fce8540b45fa1f5db49fd86b',1,'version.hpp']]]
 ];

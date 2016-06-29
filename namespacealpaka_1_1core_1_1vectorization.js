@@ -1,6 +1,5 @@
 var namespacealpaka_1_1core_1_1vectorization =
 [
-    [ "detail", "namespacealpaka_1_1core_1_1vectorization_1_1detail.html", "namespacealpaka_1_1core_1_1vectorization_1_1detail" ],
     [ "GetVectorizationSizeElems", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems" ],
     [ "GetVectorizationSizeElems<                                                                                                                  double >", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01_01_01_01_01_01_01_01_01_1511b584144477f5ecaae9c731ea7887.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01_01_01_01_01_01_01_01_01_1511b584144477f5ecaae9c731ea7887" ],
     [ "GetVectorizationSizeElems<                                                                                                                  float >", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01_01_01_01_01_01_01_01_01_6002478e4e5f36ef4fae31b15688b4b2.html", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01_01_01_01_01_01_01_01_01_6002478e4e5f36ef4fae31b15688b4b2" ],

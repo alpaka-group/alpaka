@@ -1,4 +1,0 @@
-var structalpaka_1_1stream_1_1traits_1_1StreamTest_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0157539482afa6d749a489ca7992f675ec =
-[
-    [ "streamTest", "structalpaka_1_1stream_1_1traits_1_1StreamTest_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0157539482afa6d749a489ca7992f675ec.html#af88f10321e545180ca60216b815069d5", null ]
-];

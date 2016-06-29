@@ -1,0 +1,4 @@
+var structalpaka_1_1meta_1_1detail_1_1FilterImplHelper_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0f8c1d1e6ad03a6c99c495c408c01d245 =
+[
+    [ "type", "structalpaka_1_1meta_1_1detail_1_1FilterImplHelper_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0f8c1d1e6ad03a6c99c495c408c01d245.html#a82fb77ca565b722acd1a436c5ab2b503", null ]
+];

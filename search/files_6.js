@@ -7,5 +7,6 @@ var searchData=
   ['idxbtzero_2ehpp',['IdxBtZero.hpp',['../IdxBtZero_8hpp.html',1,'']]],
   ['idxgbcudabuiltin_2ehpp',['IdxGbCudaBuiltIn.hpp',['../IdxGbCudaBuiltIn_8hpp.html',1,'']]],
   ['idxgbref_2ehpp',['IdxGbRef.hpp',['../IdxGbRef_8hpp.html',1,'']]],
-  ['integersequence_2ehpp',['IntegerSequence.hpp',['../IntegerSequence_8hpp.html',1,'']]]
+  ['integersequence_2ehpp',['IntegerSequence.hpp',['../IntegerSequence_8hpp.html',1,'']]],
+  ['isstrictbase_2ehpp',['IsStrictBase.hpp',['../IsStrictBase_8hpp.html',1,'']]]
 ];

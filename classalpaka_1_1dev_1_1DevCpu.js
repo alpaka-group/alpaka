@@ -8,6 +8,6 @@ var classalpaka_1_1dev_1_1DevCpu =
     [ "operator=", "classalpaka_1_1dev_1_1DevCpu.html#a95603c2cef99eaa8891d5248d54e3dfb", null ],
     [ "operator=", "classalpaka_1_1dev_1_1DevCpu.html#ad9524ba93d9c9505e19bcce9928cf2da", null ],
     [ "operator==", "classalpaka_1_1dev_1_1DevCpu.html#a13250b2dd8a8ec81508c56f215dceb9c", null ],
-    [ "DevManCpu", "classalpaka_1_1dev_1_1DevCpu.html#ac1fee66b7a4cc1cddb917e0dea644b1b", null ],
+    [ "pltf::traits::GetDevByIdx< pltf::PltfCpu >", "classalpaka_1_1dev_1_1DevCpu.html#a7eb2d526f16f708540ec6620ae4520aa", null ],
     [ "m_spDevCpuImpl", "classalpaka_1_1dev_1_1DevCpu.html#a0da5a3ee9bbf87272dedbfa09962762b", null ]
 ];

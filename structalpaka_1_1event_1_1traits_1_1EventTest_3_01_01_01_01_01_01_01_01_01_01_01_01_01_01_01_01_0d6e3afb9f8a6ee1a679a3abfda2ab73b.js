@@ -1,4 +1,0 @@
-var structalpaka_1_1event_1_1traits_1_1EventTest_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0d6e3afb9f8a6ee1a679a3abfda2ab73b =
-[
-    [ "eventTest", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0d6e3afb9f8a6ee1a679a3abfda2ab73b.html#a97019954459d05f0dd803842faa3d9a5", null ]
-];

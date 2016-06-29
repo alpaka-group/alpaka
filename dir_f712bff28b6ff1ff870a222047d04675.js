@@ -14,12 +14,16 @@ var dir_f712bff28b6ff1ff870a222047d04675 =
     [ "kernel", "dir_ddf4b6b668da48004ea34c8205023599.html", "dir_ddf4b6b668da48004ea34c8205023599" ],
     [ "math", "dir_e50c5330781fe39f2449e5fa74719543.html", "dir_e50c5330781fe39f2449e5fa74719543" ],
     [ "mem", "dir_fb1128c962bebe125e17152b21133100.html", "dir_fb1128c962bebe125e17152b21133100" ],
+    [ "meta", "dir_9b06e2d5421d26ecb89f5fc8cf901459.html", "dir_9b06e2d5421d26ecb89f5fc8cf901459" ],
     [ "offset", "dir_2fd2a33bf37bb9d804931f787b573f1a.html", "dir_2fd2a33bf37bb9d804931f787b573f1a" ],
+    [ "pltf", "dir_3da4cf0d8582bc897be6864cae72e9ae.html", "dir_3da4cf0d8582bc897be6864cae72e9ae" ],
     [ "rand", "dir_192cbe7214f78dcbefe56af07355e2bc.html", "dir_192cbe7214f78dcbefe56af07355e2bc" ],
     [ "size", "dir_b5fc82727090c7226f32d5f4130216a5.html", "dir_b5fc82727090c7226f32d5f4130216a5" ],
     [ "stream", "dir_a6bf17d418b363d6fddcc972eecee6e1.html", "dir_a6bf17d418b363d6fddcc972eecee6e1" ],
+    [ "time", "dir_a7ea804b58dbe69fc7c600cb292cbe23.html", "dir_a7ea804b58dbe69fc7c600cb292cbe23" ],
     [ "vec", "dir_7056b9f7cd8b764aedbfcd44587c0438.html", "dir_7056b9f7cd8b764aedbfcd44587c0438" ],
     [ "wait", "dir_e5cf12aa6bf98e3330032dc34c918fca.html", "dir_e5cf12aa6bf98e3330032dc34c918fca" ],
     [ "workdiv", "dir_43271bcfd261ba185a35bd5280ac7ea9.html", "dir_43271bcfd261ba185a35bd5280ac7ea9" ],
-    [ "alpaka.hpp", "alpaka_8hpp.html", "alpaka_8hpp" ]
+    [ "alpaka.hpp", "alpaka_8hpp.html", null ],
+    [ "version.hpp", "version_8hpp.html", "version_8hpp" ]
 ];

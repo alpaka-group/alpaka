@@ -1,4 +1,0 @@
-var structalpaka_1_1size_1_1traits_1_1SizeType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_68e526a7cb56989329896698bd97c7ea =
-[
-    [ "type", "structalpaka_1_1size_1_1traits_1_1SizeType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_68e526a7cb56989329896698bd97c7ea.html#a18d346f969069873796d7dcfddaf838d", null ]
-];

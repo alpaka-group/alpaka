@@ -1,0 +1,4 @@
+var structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_5f8d35870e310c98a318154082f4f429 =
+[
+    [ "getDevByIdx", "structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_5f8d35870e310c98a318154082f4f429.html#a669010e1826907275ec01bb155603d5e", null ]
+];

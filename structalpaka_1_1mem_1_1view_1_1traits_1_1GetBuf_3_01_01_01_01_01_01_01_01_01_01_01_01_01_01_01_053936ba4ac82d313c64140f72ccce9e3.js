@@ -1,5 +1,0 @@
-var structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_053936ba4ac82d313c64140f72ccce9e3 =
-[
-    [ "getBuf", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_053936ba4ac82d313c64140f72ccce9e3.html#ab44b9bc1944e70af3f66cfc498d64c53", null ],
-    [ "getBuf", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_053936ba4ac82d313c64140f72ccce9e3.html#a162ab77e697d9bb87e405f8b2e96e57b", null ]
-];

@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Cbrt_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_09f82e548a3d672688e4d57b58abcabad =
+[
+    [ "cbrt", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_09f82e548a3d672688e4d57b58abcabad.html#ae8eade287d179921d20822ff66dce5e7", null ]
+];

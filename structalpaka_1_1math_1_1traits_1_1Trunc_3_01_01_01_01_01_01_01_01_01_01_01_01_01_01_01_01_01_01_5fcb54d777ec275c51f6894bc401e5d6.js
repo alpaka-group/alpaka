@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Trunc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_5fcb54d777ec275c51f6894bc401e5d6 =
-[
-    [ "trunc", "structalpaka_1_1math_1_1traits_1_1Trunc_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_5fcb54d777ec275c51f6894bc401e5d6.html#a32c82653d5613cb11ce0fdd96d6b7b38", null ]
-];

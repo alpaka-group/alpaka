@@ -7,6 +7,6 @@ var classalpaka_1_1dev_1_1DevCudaRt =
     [ "operator=", "classalpaka_1_1dev_1_1DevCudaRt.html#a763824238875bccfbf9c37e77abf7aef", null ],
     [ "operator=", "classalpaka_1_1dev_1_1DevCudaRt.html#a595550aa1be6c4a6b4e6ae6874b64b78", null ],
     [ "operator==", "classalpaka_1_1dev_1_1DevCudaRt.html#a92407bb0acb5b5eb5c898ac4a9072f59", null ],
-    [ "DevManCudaRt", "classalpaka_1_1dev_1_1DevCudaRt.html#a21992bfd9cc7df576fa75bfa0577c70f", null ],
+    [ "pltf::traits::GetDevByIdx< pltf::PltfCudaRt >", "classalpaka_1_1dev_1_1DevCudaRt.html#ad86a5320bb118c2754562b5d0a189f0b", null ],
     [ "m_iDevice", "classalpaka_1_1dev_1_1DevCudaRt.html#ae96298eff0ad73a477d6b7dc53ae6d64", null ]
 ];

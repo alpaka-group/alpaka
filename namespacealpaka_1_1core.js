@@ -5,6 +5,5 @@ var namespacealpaka_1_1core =
     [ "fibers", "namespacealpaka_1_1core_1_1fibers.html", "namespacealpaka_1_1core_1_1fibers" ],
     [ "threads", "namespacealpaka_1_1core_1_1threads.html", "namespacealpaka_1_1core_1_1threads" ],
     [ "vectorization", "namespacealpaka_1_1core_1_1vectorization.html", "namespacealpaka_1_1core_1_1vectorization" ],
-    [ "DependentFalseType", "structalpaka_1_1core_1_1DependentFalseType.html", null ],
     [ "RoundUpToPowerOfTwo", "structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html", null ]
 ];

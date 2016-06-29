@@ -1,4 +1,4 @@
 var structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01822bc94ceba7f09b73cd3968581ff658 =
 [
-    [ "taskCopy", "structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01822bc94ceba7f09b73cd3968581ff658.html#a57689868cfc879b4edf803d0b447d712", null ]
+    [ "taskCopy", "structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01822bc94ceba7f09b73cd3968581ff658.html#aba5e88c1975257a1cb00ea52f6b4d0b9", null ]
 ];

@@ -1,0 +1,4 @@
+var structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01_01_01_01_01_01_01_01_01_01_01_01cd73b6751a5dd18a20a2e8b200942225 =
+[
+    [ "freeMem", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01_01_01_01_01_01_01_01_01_01_01_01cd73b6751a5dd18a20a2e8b200942225.html#a8d8c63b5ef583ff6b9711fa17b7d63ce", null ]
+];

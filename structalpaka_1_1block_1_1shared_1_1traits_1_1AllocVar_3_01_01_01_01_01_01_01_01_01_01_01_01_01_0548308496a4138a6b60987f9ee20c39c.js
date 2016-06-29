@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01_01_01_01_01_01_01_01_01_01_01_01_01_0548308496a4138a6b60987f9ee20c39c =
-[
-    [ "allocVar", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01_01_01_01_01_01_01_01_01_01_01_01_01_0548308496a4138a6b60987f9ee20c39c.html#a2200a7b6f89276dcb930e671e60e7562", null ]
-];

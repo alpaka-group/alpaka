@@ -1,0 +1,5 @@
+var structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_02411aad2dfc1db48e0a4d5483e227946 =
+[
+    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_02411aad2dfc1db48e0a4d5483e227946.html#a97a4312589036b7a2d8dd8c60454bd9b", null ],
+    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_02411aad2dfc1db48e0a4d5483e227946.html#ab483d51e67738090256a248c42041728", null ]
+];

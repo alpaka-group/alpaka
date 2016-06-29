@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Round_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_463b9049d004f59844c1d0a84ae741ce =
-[
-    [ "round", "structalpaka_1_1math_1_1traits_1_1Round_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_463b9049d004f59844c1d0a84ae741ce.html#a5a48bb811feec18650ceb188e548a16d", null ]
-];

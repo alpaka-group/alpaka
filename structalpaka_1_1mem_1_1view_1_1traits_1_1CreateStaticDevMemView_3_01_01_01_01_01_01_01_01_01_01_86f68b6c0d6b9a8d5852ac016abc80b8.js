@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1CreateStaticDevMemView_3_01_01_01_01_01_01_01_01_01_01_86f68b6c0d6b9a8d5852ac016abc80b8 =
+[
+    [ "createStaticDevMemView", "structalpaka_1_1mem_1_1view_1_1traits_1_1CreateStaticDevMemView_3_01_01_01_01_01_01_01_01_01_01_86f68b6c0d6b9a8d5852ac016abc80b8.html#aa3760e27c7912a0e27c25ea55fd657aa", null ]
+];
