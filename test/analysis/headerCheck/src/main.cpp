@@ -20,7 +20,16 @@
  */
 
 #define BOOST_TEST_MODULE headerCheck
+
+#include <boost/predef.h>   // BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 BOOST_AUTO_TEST_SUITE(headerCheck)
 

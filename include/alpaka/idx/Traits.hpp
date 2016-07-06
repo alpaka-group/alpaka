@@ -34,6 +34,9 @@
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
 
 #include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#if !BOOST_ARCH_CUDA_DEVICE
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
 
 #include <utility>                          // std::forward
 
@@ -228,6 +231,9 @@ namespace alpaka
             TThreadElemExtent const & threadElemExtent)
         -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
+#if !BOOST_ARCH_CUDA_DEVICE
+            boost::ignore_unused(idxWorkDiv);
+#endif
             return gridThreadIdx * threadElemExtent;
         }
         //-----------------------------------------------------------------------------

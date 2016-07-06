@@ -63,6 +63,11 @@ namespace alpaka
                     TFnObj const & f)
                 -> void
                 {
+#if !BOOST_ARCH_CUDA_DEVICE
+                    boost::ignore_unused(idx);
+                    boost::ignore_unused(extent);
+                    boost::ignore_unused(f);
+#endif
                 }
             };
             //#############################################################################

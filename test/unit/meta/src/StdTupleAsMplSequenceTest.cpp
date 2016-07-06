@@ -41,7 +41,15 @@
 #include <boost/mpl/pop_back.hpp>
 #include <boost/mpl/contains.hpp>
 
+#include <boost/predef.h>   // BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 #include <iostream>
 #include <type_traits>
