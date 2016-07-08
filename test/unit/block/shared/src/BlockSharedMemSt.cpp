@@ -33,7 +33,15 @@
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
 #include <boost/assert.hpp>                         // BOOST_VERIFY
+#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 BOOST_AUTO_TEST_SUITE(blockSharedMemSt)
 
@@ -79,6 +87,10 @@ public:
         TAcc const & acc) const
     -> void
     {
+#if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Waddress"  // warning: the compiler can assume that the address of ‘a’ will never be NULL [-Waddress]
+#endif
         auto && a = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
         BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &a);
 
@@ -103,6 +115,9 @@ public:
 
         auto && h = alpaka::block::shared::st::allocVar<Array<double, 16>, __COUNTER__>(acc);
         BOOST_VERIFY(static_cast<double *>(nullptr) != &h[0]);
+#if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0)
+    #pragma GCC diagnostic pop
+#endif
     }
 };
 

@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Benjamin Worpitz
+# Copyright 2014-2016 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -24,8 +24,9 @@
 
 #MSVC
 IF(MSVC)
-    # Force to always compile with W4
+    # Force to always compile with W4 and WX
     LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "/W4")
+    LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "/WX")
     # Improve debugging.
     IF(CMAKE_BUILD_TYPE MATCHES "Debug")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-d2Zi+")
@@ -34,11 +35,15 @@ ELSE()
     # GNU
     IF(CMAKE_COMPILER_IS_GNUCXX)
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wall")
-        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-pedantic")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wextra")
+        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-pedantic")
+        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Werror")
     # Clang or AppleClang
     ELSEIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wall")
+        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wextra")
+        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-pedantic")
+        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Werror")
     # ICC
     ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wall")
