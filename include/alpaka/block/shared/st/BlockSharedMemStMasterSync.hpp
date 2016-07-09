@@ -113,7 +113,6 @@ namespace alpaka
                             // Assure that all threads have executed the return of the last allocBlockSharedArr function (if there was one before).
                             blockSharedMemSt.m_syncFn();
 
-                            // Arbitrary decision: The fiber that was created first has to allocate the memory.
                             if(blockSharedMemSt.m_isMasterThreadFn())
                             {
                                 blockSharedMemSt.m_sharedAllocs.emplace_back(

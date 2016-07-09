@@ -158,7 +158,7 @@ namespace alpaka
                 {
                     auto const old(*addr);
                     auto & ref(*addr);
-                    ref = ((old >= value) ? 0 : old+1);
+                    ref = ((old >= value) ? 0 : old + 1);
                     return old;
                 }
             };

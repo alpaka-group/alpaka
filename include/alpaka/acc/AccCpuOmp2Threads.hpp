@@ -55,7 +55,7 @@
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 
-#include <memory>                               // std::unique_ptr
+#include <limits>                               // std::numeric_limits
 #include <typeinfo>                             // typeid
 
 namespace alpaka

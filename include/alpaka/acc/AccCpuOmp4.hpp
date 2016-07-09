@@ -45,7 +45,7 @@
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
@@ -55,7 +55,7 @@
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 
-#include <memory>                               // std::unique_ptr
+#include <limits>                               // std::numeric_limits
 #include <typeinfo>                             // typeid
 
 namespace alpaka

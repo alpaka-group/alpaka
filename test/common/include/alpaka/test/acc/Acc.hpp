@@ -27,7 +27,7 @@
 #include <type_traits>                      // std::is_class
 #include <iosfwd>                           // std::ostream
 
-// When compiling the tests with nvcc on th CI infrastructure we have to dramatically reduce the number of tested combinations.
+// When compiling the tests with nvcc on the CI infrastructure we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && ALPAKA_CI
     #define ALPAKA_CUDA_CI
@@ -83,6 +83,17 @@ namespace alpaka
                     typename TSize>
                 using AccCpuFibersIfAvailableElseVoid = int;
 #endif
+#if defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
+                template<
+                    typename TDim,
+                    typename TSize>
+                using AccCpuTbbIfAvailableElseVoid = alpaka::acc::AccCpuTbbBlocks<TDim, TSize>;
+#else
+                template<
+                    typename TDim,
+                    typename TSize>
+                using AccCpuTbbIfAvailableElseVoid = int;
+#endif
 #if defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
                 template<
                     typename TDim,
@@ -127,17 +138,6 @@ namespace alpaka
                     typename TSize>
                 using AccGpuCudaRtIfAvailableElseVoid = int;
 #endif
-#if defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
-                template<
-                    typename TDim,
-                    typename TSize>
-                using AccCpuTbbIfAvailableElseVoid = alpaka::acc::AccCpuTbbBlocks<TDim, TSize>;
-#else
-                template<
-                    typename TDim,
-                    typename TSize>
-                using AccCpuTbbIfAvailableElseVoid = int;
-#endif                
                 //#############################################################################
                 //! A vector containing all available accelerators and void's.
                 //#############################################################################
@@ -149,10 +149,10 @@ namespace alpaka
                         AccCpuSerialIfAvailableElseVoid<TDim, TSize>,
                         AccCpuThreadsIfAvailableElseVoid<TDim, TSize>,
                         AccCpuFibersIfAvailableElseVoid<TDim, TSize>,
+                        AccCpuTbbIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp2BlocksIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp2ThreadsIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp4IfAvailableElseVoid<TDim, TSize>,
-                        AccCpuTbbIfAvailableElseVoid<TDim, TSize>,
                         AccGpuCudaRtIfAvailableElseVoid<TDim, TSize>
                     >;
             }

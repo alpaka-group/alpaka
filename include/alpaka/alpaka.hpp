@@ -36,11 +36,11 @@
 #include <alpaka/acc/AccCpuSerial.hpp>
 #include <alpaka/acc/AccCpuThreads.hpp>
 #include <alpaka/acc/AccCpuFibers.hpp>
+#include <alpaka/acc/AccCpuTbbBlocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #include <alpaka/acc/AccCpuOmp4.hpp>
 #include <alpaka/acc/AccGpuCudaRt.hpp>
-#include <alpaka/acc/AccCpuTbbBlocks.hpp>
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/acc/Traits.hpp>
 
@@ -97,6 +97,7 @@
 #include <alpaka/core/Debug.hpp>
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/MapIdx.hpp>
+#include <alpaka/core/OpenMp.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unroll.hpp>
 #include <alpaka/core/Vectorize.hpp>
@@ -129,11 +130,11 @@
 #include <alpaka/exec/ExecCpuSerial.hpp>
 #include <alpaka/exec/ExecCpuThreads.hpp>
 #include <alpaka/exec/ExecCpuFibers.hpp>
+#include <alpaka/exec/ExecCpuTbbBlocks.hpp>
 #include <alpaka/exec/ExecCpuOmp2Blocks.hpp>
 #include <alpaka/exec/ExecCpuOmp2Threads.hpp>
 #include <alpaka/exec/ExecCpuOmp4.hpp>
 #include <alpaka/exec/ExecGpuCudaRt.hpp>
-#include <alpaka/exec/ExecCpuTbbBlocks.hpp>
 #include <alpaka/exec/Traits.hpp>
 
 //-----------------------------------------------------------------------------

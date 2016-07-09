@@ -78,7 +78,7 @@ namespace alpaka
                         std::unique_ptr<
                             uint8_t,
                             boost::alignment::aligned_delete>> mutable
-                        m_sharedAllocs;    //!< Block shared memory.
+                        m_sharedAllocs;
                 };
 
                 namespace traits

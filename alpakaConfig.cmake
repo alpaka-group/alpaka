@@ -83,31 +83,31 @@ INCLUDE("${_ALPAKA_ADD_LIBRARY_FILE}")
 SET(_ALPAKA_FOUND TRUE)
 
 # Add module search path
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/" )
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 
 #-------------------------------------------------------------------------------
 # Options.
 #-------------------------------------------------------------------------------
-OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only accelerators using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
+OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
 
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU accelerator" ON)
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block thread accelerator" ON)
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread accelerator" OFF)
-OPTION(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block accelerator" ON)
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread accelerator" ON)
-OPTION(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread accelerator" OFF)
-OPTION(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU accelerator" ON)
-OPTION(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block accelerator" ON)
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU back-end" ON)
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block thread back-end" ON)
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread back-end" OFF)
+OPTION(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" ON)
+OPTION(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" ON)
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" ON)
+OPTION(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread back-end" OFF)
+OPTION(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU back-end" ON)
 
 IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE AND
     (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
     ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE OR
     ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OR
+    ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OR
     ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
     ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
-    ALPAKA_ACC_CPU_BT_OMP4_ENABLE OR
-    ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE))
-    MESSAGE(WARNING "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only accelerators using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA accelerators from being enabled.")
+    ALPAKA_ACC_CPU_BT_OMP4_ENABLE))
+    MESSAGE(WARNING "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only back-ends using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA back-ends from being enabled.")
 ENDIF()
 
 # Drop-down combo box in cmake-gui.
@@ -125,8 +125,8 @@ ENDIF()
 IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
     FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread atomic chrono date_time)
     IF(NOT Boost_FIBER_FOUND)
-        MESSAGE(WARNING "Optional alpaka dependency Boost fiber could not be found! Fibers accelerator disabled!")
-        SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers CPU accelerator" FORCE)
+        MESSAGE(WARNING "Optional alpaka dependency Boost fiber could not be found! Fibers back-end disabled!")
+        SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers CPU back-end" FORCE)
         FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET)
     ENDIF()
 
@@ -197,6 +197,20 @@ ELSE()
 ENDIF()
 
 #-------------------------------------------------------------------------------
+# Find TBB.
+#-------------------------------------------------------------------------------
+IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
+    FIND_PACKAGE(TBB 2.2)
+    IF(NOT TBB_FOUND)
+        MESSAGE(WARNING "Optional alpaka dependency TBB could not be found! TBB grid block back-end disabled!")
+        SET(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OFF CACHE BOOL "Enable the TBB grid block back-end" FORCE)
+    ELSE()
+        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${TBB_LIBRARIES}")
+        LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC ${TBB_INCLUDE_DIRS})
+    ENDIF()
+ENDIF()
+
+#-------------------------------------------------------------------------------
 # Find OpenMP.
 #-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
@@ -217,10 +231,10 @@ IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
     ENDIF()
 
     IF(NOT OPENMP_FOUND)
-        MESSAGE(WARNING "Optional alpaka dependency OpenMP could not be found! OpenMP accelerators disabled!")
-        SET(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU grid block accelerator" FORCE)
-        SET(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU block thread accelerator" FORCE)
-        SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU block and thread accelerator" FORCE)
+        MESSAGE(WARNING "Optional alpaka dependency OpenMP could not be found! OpenMP back-ends disabled!")
+        SET(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU grid block back-end" FORCE)
+        SET(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU block thread back-end" FORCE)
+        SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU block and thread back-end" FORCE)
 
     ELSE()
         LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC ${OpenMP_CXX_FLAGS})
@@ -244,14 +258,14 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
     ENDIF()
 
     IF(ALPAKA_CUDA_VERSION VERSION_LESS 7.0)
-        MESSAGE(WARNING "CUDA Toolkit < 7.0 is not supported! CUDA accelerator disabled!")
-        SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU accelerator" FORCE)
+        MESSAGE(WARNING "CUDA Toolkit < 7.0 is not supported! CUDA back-end disabled!")
+        SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU back-end" FORCE)
 
     ELSE()
         FIND_PACKAGE(CUDA "${ALPAKA_CUDA_VERSION}")
         IF(NOT CUDA_FOUND)
-            MESSAGE(WARNING "Optional alpaka dependency CUDA could not be found! CUDA accelerator disabled!")
-            SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU accelerator" FORCE)
+            MESSAGE(WARNING "Optional alpaka dependency CUDA could not be found! CUDA back-end disabled!")
+            SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU back-end" FORCE)
 
         ELSE()
             SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "GPU architecture")
@@ -351,20 +365,6 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 ENDIF()
 
 #-------------------------------------------------------------------------------
-# Find TBB.
-#-------------------------------------------------------------------------------
-IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
-    FIND_PACKAGE(TBB 2.2)
-    IF(NOT TBB_FOUND)
-        MESSAGE(WARNING "Optional alpaka dependency TBB could not be found! TBB grid block accelerator disabled!")
-        SET(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OFF CACHE BOOL "Enable the TBB grid block accelerator" FORCE)
-    ELSE()
-        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${TBB_LIBRARIES}")
-        LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC ${TBB_INCLUDE_DIRS})
-    ENDIF()
-ENDIF()
-
-#-------------------------------------------------------------------------------
 # Compiler settings.
 #-------------------------------------------------------------------------------
 IF(MSVC)
@@ -409,6 +409,10 @@ IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
     LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED")
     MESSAGE(STATUS ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
 ENDIF()
+IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
+    LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED")
+    MESSAGE(STATUS ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
+ENDIF()
 IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE)
     LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED")
     MESSAGE(STATUS ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
@@ -424,10 +428,6 @@ ENDIF()
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
     LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_GPU_CUDA_ENABLED")
     MESSAGE(STATUS ALPAKA_ACC_GPU_CUDA_ENABLED)
-ENDIF()
-IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
-    LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED")
-    MESSAGE(STATUS ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
 ENDIF()
 
 LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
