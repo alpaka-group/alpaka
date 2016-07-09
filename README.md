@@ -3,6 +3,7 @@
 
 [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 [![Build status](https://ci.appveyor.com/api/projects/status/xjeyugcg1cb0662s/branch/develop?svg=true)](https://ci.appveyor.com/project/BenjaminW3/alpaka-vuiya/branch/develop)
+[![Coverage Status](https://coveralls.io/repos/github/ComputationalRadiationPhysics/alpaka/badge.svg?branch=develop)](https://coveralls.io/github/ComputationalRadiationPhysics/alpaka?branch=develop)
 
 The **alpaka** library is a header-only C++11 abstraction library for accelerator development.
 

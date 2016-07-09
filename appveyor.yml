@@ -64,16 +64,16 @@ environment:
         ALPAKA_ACC_GPU_CUDA_ENABLE: OFF
         ALPAKA_ACC_GPU_CUDA_ONLY_MODE: OFF
 
-    matrix:
-        - ALPAKA_DEBUG: 0
-          OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: boost-1.60.0
-        - ALPAKA_DEBUG: 0
-          OMP_NUM_THREADS: 3
-          ALPAKA_BOOST_BRANCH: boost-1.61.0
-        - ALPAKA_DEBUG: 0
-          OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: develop
+#    matrix:
+#        - ALPAKA_DEBUG: 0
+#          OMP_NUM_THREADS: 4
+#          ALPAKA_BOOST_BRANCH: boost-1.60.0
+#        - ALPAKA_DEBUG: 0
+#          OMP_NUM_THREADS: 3
+#          ALPAKA_BOOST_BRANCH: boost-1.61.0
+#        - ALPAKA_DEBUG: 0
+#          OMP_NUM_THREADS: 4
+#          ALPAKA_BOOST_BRANCH: develop
 
 matrix:
     fast_finish: true
