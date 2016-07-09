@@ -66,8 +66,9 @@ public:
             alpaka::time::clock(acc));
         BOOST_VERIFY(0u != end);
 
-        // 'end' has to be greater then 'start'.
-        BOOST_VERIFY(end > start);
+        // 'end' has to be greater equal 'start'.
+        // CUDA clock will never be equal for two calls, but the clock implementations for CPUs can be.
+        BOOST_VERIFY(end >= start);
     }
 };
 
