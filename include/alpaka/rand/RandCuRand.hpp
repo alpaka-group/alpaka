@@ -65,6 +65,15 @@ namespace alpaka
                 class Xor
                 {
                 public:
+
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //
+                    // After calling this constructor the instance is not valid initialized and
+                    // need to be overwritten with a valid object
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_CUDA_ONLY Xor() = default;
+
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------

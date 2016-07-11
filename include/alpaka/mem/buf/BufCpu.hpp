@@ -37,6 +37,10 @@
 
 #include <alpaka/meta/DependentFalseType.hpp>   // meta::DependentFalseType
 
+#if !BOOST_ARCH_CUDA_DEVICE
+    #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#endif
+
 #include <cassert>                              // assert
 #include <memory>                               // std::shared_ptr
 
@@ -638,6 +642,7 @@ namespace alpaka
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                         return bufImpl.m_bPinned;
 #else
+                        boost::ignore_unused(bufImpl);
                         return false;
 #endif
                     }

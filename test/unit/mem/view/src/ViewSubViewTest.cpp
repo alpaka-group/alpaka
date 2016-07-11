@@ -34,8 +34,15 @@
 #include <alpaka/test/mem/view/Iterator.hpp>    // Iterator
 
 #include <boost/assert.hpp>                     // BOOST_VERIFY
+#include <boost/predef.h>                       // BOOST_COMP_MSVC, BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
-#include <boost/predef.h>                       // workarounds
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 #include <type_traits>                          // std::is_same
 #include <numeric>                              // std::iota
@@ -152,7 +159,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = alpaka::size::Size<TAcc>;
     using View = alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Size>;
 
-    Dev dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
 
     // We have to be careful with the extents used.
     // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
@@ -233,8 +240,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     const Size nElementsPerDimView = static_cast<Size>(2u);
     const Size offsetInAllDims = static_cast<Size>(1u);
 
-    DevHost devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
-    DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+    DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
     StreamAcc stream(devAcc);
 
     using Vec = alpaka::Vec<Dim, Size>;
@@ -374,8 +381,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     #pragma warning(pop)
 #endif
     {
-        DevHost devHost (alpaka::pltf::getDevByIdx<PltfHost>(0));
-        DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+        DevHost const devHost (alpaka::pltf::getDevByIdx<PltfHost>(0));
+        DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
         StreamAcc stream (devAcc);
 
         auto const extentBuf(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());

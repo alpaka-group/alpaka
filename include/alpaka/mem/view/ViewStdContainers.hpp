@@ -295,6 +295,7 @@ namespace alpaka
                     std::array<TElem, Tsize> const & buf)
                 -> dev::DevCpu
                 {
+                    boost::ignore_unused(buf);
                     return pltf::getDevByIdx<pltf::PltfCpu>(0u);
                 }
             };
@@ -500,6 +501,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const & buf)
                 -> dev::DevCpu
                 {
+                    boost::ignore_unused(buf);
                     return pltf::getDevByIdx<pltf::PltfCpu>(0u);
                 }
             };

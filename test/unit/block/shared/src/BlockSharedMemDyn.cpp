@@ -33,7 +33,15 @@
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
 #include <boost/assert.hpp>                         // BOOST_VERIFY
+#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 //#############################################################################
 //!

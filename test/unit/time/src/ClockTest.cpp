@@ -32,7 +32,15 @@
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
 #include <boost/assert.hpp>                         // BOOST_VERIFY
+#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 //#############################################################################
 //!
@@ -58,8 +66,9 @@ public:
             alpaka::time::clock(acc));
         BOOST_VERIFY(0u != end);
 
-        // 'end' has to be greater then 'start'.
-        BOOST_VERIFY(end > start);
+        // 'end' has to be greater equal 'start'.
+        // CUDA clock will never be equal for two calls, but the clock implementations for CPUs can be.
+        BOOST_VERIFY(end >= start);
     }
 };
 

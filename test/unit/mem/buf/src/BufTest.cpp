@@ -32,8 +32,15 @@
 #include <alpaka/test/stream/Stream.hpp>        // DefaultStream
 #include <alpaka/test/mem/view/ViewTest.hpp>    // viewTest
 
+#include <boost/predef.h>                       // BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
-#include <boost/predef.h>                       // workarounds
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 #include <type_traits>                          // std::is_same
 #include <numeric>                              // std::iota
@@ -103,7 +110,7 @@ static auto basicBufferOperationsTest(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    Dev dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::buf::alloc

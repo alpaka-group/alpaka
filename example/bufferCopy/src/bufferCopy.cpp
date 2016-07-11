@@ -169,8 +169,8 @@ auto main()
     /***************************************************************************
      * Get the first device
      **************************************************************************/
-    DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
-    DevHost devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+    DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
     /***************************************************************************
      * Create sync stream

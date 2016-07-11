@@ -184,7 +184,7 @@ struct SharedMemTester
         SharedMemKernel<TnumUselessWork> kernel(42);
 
         // Select a device to execute on.
-        alpaka::dev::Dev<TAcc> devAcc(
+        auto const devAcc(
             alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
         // Get a stream on this device.

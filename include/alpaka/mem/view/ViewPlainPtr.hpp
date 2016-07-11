@@ -57,15 +57,8 @@ namespace alpaka
                         m_pMem(pMem),
                         m_dev(dev),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                        m_pitchBytes(Vec<TDim, TSize>::all(0))
-                {
-                    // Calculate the pitches by hand.
-                    m_pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * sizeof(TElem);
-                    for(TSize i = TDim::value - 1u; i > static_cast<TSize>(0u); --i)
-                    {
-                        m_pitchBytes[i-1] = extent[i-1] * m_pitchBytes[i];
-                    }
-                }
+                        m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
+                {}
 
                 //-----------------------------------------------------------------------------
                 //! Constructor
@@ -116,11 +109,31 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC ~ViewPlainPtr() = default;
 
+            private:
+                //-----------------------------------------------------------------------------
+                //! Calculate the pitches purely from the extents.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TExtent>
+                ALPAKA_FN_HOST_ACC static auto calculatePitchesFromExtents(
+                    TExtent const & extent)
+                -> Vec<TDim, TSize>
+                {
+                    Vec<TDim, TSize> pitchBytes(Vec<TDim, TSize>::all(0));
+                    pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * sizeof(TElem);
+                    for(TSize i = TDim::value - 1u; i > static_cast<TSize>(0u); --i)
+                    {
+                        pitchBytes[i-1] = extent[i-1] * pitchBytes[i];
+                    }
+                    return pitchBytes;
+                }
+
             public:
-                TElem * m_pMem;
-                TDev m_dev;
-                Vec<TDim, TSize> m_extentElements;
-                Vec<TDim, TSize> m_pitchBytes;
+                TElem * const m_pMem;
+                TDev const m_dev;
+                Vec<TDim, TSize> const m_extentElements;
+                Vec<TDim, TSize> const m_pitchBytes;
             };
         }
     }

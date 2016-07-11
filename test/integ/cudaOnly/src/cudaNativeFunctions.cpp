@@ -22,7 +22,15 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
+#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
 #include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 

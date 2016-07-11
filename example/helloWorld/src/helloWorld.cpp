@@ -117,8 +117,8 @@ auto main()
      * can also retrieve all devices in a vector (getDevs()).
      * In this example the first devices is choosen.
      */
-    DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
-    DevHost devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+    DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
     /**
      * Create a stream to the accelerator device
