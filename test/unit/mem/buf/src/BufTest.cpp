@@ -110,7 +110,7 @@ static auto basicBufferOperationsTest(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    Dev dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::buf::alloc

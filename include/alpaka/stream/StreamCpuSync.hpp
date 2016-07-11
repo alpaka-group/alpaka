@@ -58,7 +58,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST StreamCpuSyncImpl(
-                        dev::DevCpu & dev) :
+                        dev::DevCpu const & dev) :
                             m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev)
                     {}
@@ -100,7 +100,7 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST StreamCpuSync(
-                dev::DevCpu & dev) :
+                dev::DevCpu const & dev) :
                     m_spSyncStreamCpu(std::make_shared<cpu::detail::StreamCpuSyncImpl>(dev))
             {}
             //-----------------------------------------------------------------------------

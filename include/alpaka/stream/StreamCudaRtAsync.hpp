@@ -141,7 +141,7 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST StreamCudaRtAsync(
-                dev::DevCudaRt & dev) :
+                dev::DevCudaRt const & dev) :
                 m_spStreamCudaRtAsyncImpl(std::make_shared<cuda::detail::StreamCudaRtAsyncImpl>(dev))
             {}
             //-----------------------------------------------------------------------------

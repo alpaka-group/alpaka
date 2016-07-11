@@ -29,7 +29,6 @@
 #include <alpaka/stream/Traits.hpp>     // stream::enqueue
 
 #include <alpaka/vec/Vec.hpp>           // Vec
-
 #include <alpaka/meta/Fold.hpp>         // meta::foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
@@ -566,13 +565,7 @@ namespace alpaka
                     rowPrefix,
                     rowSuffix);
             }
-        }
-    }
 
-    namespace mem
-    {
-        namespace view
-        {
             namespace detail
             {
                 //#############################################################################

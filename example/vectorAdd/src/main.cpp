@@ -99,11 +99,11 @@ auto main()
     VectorAddKernel kernel;
 
     // Get the host device.
-    auto devHost(
+    auto const devHost(
         alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
     // Select a device to execute on.
-    auto devAcc(
+    auto const devAcc(
         alpaka::pltf::getDevByIdx<PltfAcc>(0));
 
     // Get a stream on this device.
