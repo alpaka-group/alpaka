@@ -121,7 +121,7 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     Vec<TDim, TSize> pitchBytes(Vec<TDim, TSize>::all(0));
-                    pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * sizeof(TElem);
+                    pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TSize>(sizeof(TElem));
                     for(TSize i = TDim::value - 1u; i > static_cast<TSize>(0u); --i)
                     {
                         pitchBytes[i-1] = extent[i-1] * pitchBytes[i];

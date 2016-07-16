@@ -74,7 +74,7 @@ namespace alpaka
                 TDstType,
                 IntegerSequence<T, Tvals...>>
             {
-                using type = IntegerSequence<TDstType, ((TDstType)Tvals)...>;
+                using type = IntegerSequence<TDstType, static_cast<TDstType>(Tvals)...>;
             };
         }
         //#############################################################################

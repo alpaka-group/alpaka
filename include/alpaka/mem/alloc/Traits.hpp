@@ -78,7 +78,7 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            //! \return The pointer to the allocated memory.
+            //! Frees the memory identified by the given pointer.
             //-----------------------------------------------------------------------------
             template<
                 typename TAlloc,

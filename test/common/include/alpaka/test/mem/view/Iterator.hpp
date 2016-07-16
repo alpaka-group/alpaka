@@ -156,9 +156,9 @@ namespace alpaka
 
                             Elem * ptr = m_nativePtr;
 
-                            for(Size dim_i = 0; dim_i + 1 < static_cast<Size>(Dim::value); dim_i++)
+                            for(Size dim_i(0); dim_i + 1 < static_cast<Size>(Dim::value); ++dim_i)
                             {
-                                ptr += (currentIdxDimx[dim_i] * m_pitchBytes[dim_i+1]) / sizeof(Elem);
+                                ptr += (currentIdxDimx[dim_i] * m_pitchBytes[dim_i+1]) / static_cast<Size>(sizeof(Elem));
                             }
 
                             ptr += currentIdxDimx[Dim::value - 1];

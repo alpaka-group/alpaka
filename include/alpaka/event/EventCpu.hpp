@@ -62,9 +62,9 @@ namespace alpaka
                             m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev),
                             m_Mutex(),
+                            m_canceledEnqueueCount(0),
                             m_bIsReady(true),
-                            m_bIsWaitedFor(false),
-                            m_canceledEnqueueCount(0)
+                            m_bIsWaitedFor(false)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -101,12 +101,11 @@ namespace alpaka
 
                     std::mutex mutable m_Mutex;                             //!< The mutex used to synchronize access to the event.
 
-                    bool m_bIsReady;                                        //!< If the event is not waiting within a stream (not enqueued or already completed).
                     std::condition_variable mutable m_ConditionVariable;    //!< The condition signaling the event completion.
+                    std::size_t m_canceledEnqueueCount;                     //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
+                    bool m_bIsReady;                                        //!< If the event is not waiting within a stream (not enqueued or already completed).
 
                     bool m_bIsWaitedFor;                                    //!< If a (one or multiple) streams wait for this event. The event can not be changed (deleted/re-enqueued) until completion.
-
-                    std::size_t m_canceledEnqueueCount;                     //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
                 };
             }
         }
@@ -278,7 +277,7 @@ namespace alpaka
 #endif
                             return;
                         }
-                        // ... and noby is waiting for it, increment the cancel counter.
+                        // ... and nobody is waiting for it, increment the cancel counter.
                         else
                         {
                             ++spEventCpuImpl->m_canceledEnqueueCount;
@@ -376,7 +375,7 @@ namespace alpaka
 #endif
                                 return;
                             }
-                            // ... and noby is waiting for it, increment the cancel counter.
+                            // ... and nobody is waiting for it, increment the cancel counter.
                             else
                             {
                                 ++spEventCpuImpl->m_canceledEnqueueCount;

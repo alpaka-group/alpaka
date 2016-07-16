@@ -100,7 +100,8 @@ namespace alpaka
                 -> size::Size<TAcc>
                 {
                     boost::ignore_unused(blockSharedMemDyn);
-                    return sizeof(std::uint32_t) * blockThreadExtent.prod() * threadElemExtent.prod();
+                    return
+                        static_cast<size::Size<TAcc>>(sizeof(std::uint32_t)) * blockThreadExtent.prod() * threadElemExtent.prod();
                 }
             };
         }

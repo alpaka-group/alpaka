@@ -108,7 +108,7 @@ namespace alpaka
                                 m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
 #endif
-                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extent) * sizeof(elem::Elem<TViewDst>))),
+                                m_extentWidthBytes(extent::getWidth(extent) * static_cast<Size>(sizeof(elem::Elem<TViewDst>))),
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {

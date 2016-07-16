@@ -621,7 +621,7 @@ namespace alpaka
                 TPitch const & pitch = TPitch())
             -> Vec<TDim, size::Size<TPitch>>
             {
-                using IdxOffset = std::integral_constant<std::intmax_t, ((std::intmax_t)dim::Dim<TPitch>::value)-((std::intmax_t)TDim::value)>;
+                using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TPitch>::value) - static_cast<std::intmax_t>(TDim::value)>;
                 return
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
                 Vec<TDim, size::Size<TPitch>>::template

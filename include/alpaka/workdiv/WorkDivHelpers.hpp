@@ -266,7 +266,7 @@ namespace alpaka
                     while(blockThreadExtent.prod() > blockThreadCountMax)
                     {
                         auto const maxElemIdx(blockThreadExtent.maxElem());
-                        blockThreadExtent[maxElemIdx] = blockThreadExtent[maxElemIdx] / 2u;
+                        blockThreadExtent[maxElemIdx] = blockThreadExtent[maxElemIdx] / static_cast<TSize>(2u);
                     }
                 }
                 else
@@ -290,11 +290,11 @@ namespace alpaka
                                             {
                                                 return false;
                                             }
-                                            else */if(a == 1u)
+                                            else */if(a == static_cast<TSize>(1u))
                                             {
                                                 return false;
                                             }
-                                            else if(b == 1u)
+                                            else if(b == static_cast<TSize>(1u))
                                             {
                                                 return true;
                                             }
@@ -303,7 +303,7 @@ namespace alpaka
                                                 return a < b;
                                             }
                                         }))));
-                        blockThreadExtent[minElemIdx] = blockThreadExtent[minElemIdx] / 2u;
+                        blockThreadExtent[minElemIdx] = blockThreadExtent[minElemIdx] / static_cast<TSize>(2u);
                     }
                 }
             }
