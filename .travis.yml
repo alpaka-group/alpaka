@@ -53,6 +53,7 @@ compiler:
 # ALPAKA_CI_CMAKE_VER                           : {3.3.2, 3.4.3, 3.5.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan+UBsan, TSan+UBsan, MSan+UBsan}
 # ALPAKA_CI_ANALYSIS                            : {ON, OFF}
+# ALPAKA_CI_COVERAGE                            : {ON, OFF}
 # ALPAKA_DEBUG                                  : {0, 1, 2}
 # ALPAKA_ACC_GPU_CUDA_ONLY_MODE                 : {ON, OFF}
 # ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE             : {ON, OFF}
@@ -72,6 +73,7 @@ compiler:
 env:
     global:
         - ALPAKA_CI_ANALYSIS=OFF
+        - ALPAKA_CI_COVERAGE=OFF
         - ALPAKA_DEBUG=0
         - ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=ON
         - ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=ON
@@ -88,6 +90,9 @@ env:
         # Analysis builds
         - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.61.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang
         - ALPAKA_GCC_VER=6   ALPAKA_CLANG_VER=3.8.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
+
+        # Coverage builds
+        - ALPAKA_GCC_VER=6   ALPAKA_CLANG_VER=3.8.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.61.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_COVERAGE=ON OMP_NUM_THREADS=4
 
         # Debug builds
         - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=           ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang ALPAKA_ACC_GPU_CUDA_ONLY_MODE=ON ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE=OFF
@@ -242,6 +247,17 @@ install:
     - git --version
     - travis_retry sudo apt-get -y install git
     - git --version
+
+    #-------------------------------------------------------------------------------
+    # We only want to generate coverage for a single gcc build.
+    - if [ "${ALPAKA_CI_COVERAGE}" == "ON" ]
+      ; then
+          if [ "${CXX}" != "g++" ]
+          ;then
+              export ALPAKA_CI_COVERAGE=OFF
+              && echo ALPAKA_CI_COVERAGE=${ALPAKA_CI_COVERAGE} because we only generate coverage for gcc!
+          ;fi
+      ; fi
 
     #-------------------------------------------------------------------------------
     # We can only use clang as a CUDA compiler when clang is used as the main compiler.
@@ -504,6 +520,13 @@ install:
     # Install TBB
     - travis_retry sudo apt-get -y install libtbb-dev
 
+    #-------------------------------------------------------------------------------
+    # Install cpp-coveralls
+    - if [ "${ALPAKA_CI_COVERAGE}" == "ON" ]
+      ; then
+           pip install --user cpp-coveralls
+      ; fi
+
 
 ################################################################################
 # Use this to prepare your build for testing.
@@ -526,6 +549,11 @@ before_script:
               && nvcc -V
           ;fi
       ;fi
+
+    - if [ "${ALPAKA_CI_COVERAGE}" == "ON" ]
+      ; then
+           gcov --version
+      ; fi
 
 ################################################################################
 # All commands must exit with code 0 on success. Anything else is considered failure.
@@ -618,6 +646,16 @@ script:
     - if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./travis/compileExec.sh "test/analysis/headerCheck/" ./headerCheck ;fi
 
     #-------------------------------------------------------------------------------
+    # code-coverage
+    # Compiling with -O0 provides much better results because inlining and other optimizations have influence on the coverage.
+    # -coverage resolves to -fprofile-arcs -ftest-coverage (compile) and -lgcov (link)
+    - if [ "${ALPAKA_CI_COVERAGE}" == "ON" ]
+      ; then
+          export CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -O0 -coverage"
+          export CMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS} -coverage"
+      ; fi
+
+    #-------------------------------------------------------------------------------
     # FIXME: Not all tests are running successfully on all platforms:
     # - clang as CUDA compiler currently fails for some of the tests with:
     #   build/boost/boost/test/utils/lazy_ostream.hpp:35:29: Generating code for declaration 'boost::unit_test::lazy_ostream::instance'
@@ -657,3 +695,19 @@ script:
 ################################################################################
 notifications:
     email: false
+
+after_success:
+    #-------------------------------------------------------------------------------
+    # code-coverage
+    # Push coverage info on coveralls.io.
+    # The "example" and "test" folders can not be excluded as header-only template code is only really compiled
+    # within the executables resulting in a wrong coverage if their results are not included.
+    - if [ "${ALPAKA_CI_COVERAGE}" == "ON" ]
+      ; then
+           oldPath=${PWD}
+           && cd "../../alpaka_build/"
+           && coveralls
+               --verbose
+               --gcov-options '\--long-file-names --preserve-paths'
+           && cd "${oldPath}"
+      ;fi
