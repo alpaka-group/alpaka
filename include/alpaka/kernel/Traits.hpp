@@ -24,6 +24,7 @@
 #include <alpaka/vec/Vec.hpp>               // Vec
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
+#include <boost/predef.h>                   // BOOST_COMP_CLANG
 #if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
@@ -57,6 +58,10 @@ namespace alpaka
                 typename TSfinae = void>
             struct BlockSharedMemDynSizeBytes
             {
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdocumentation"  // clang does not support the syntax for variadic template arguments "args,..."
+#endif
                 //-----------------------------------------------------------------------------
                 //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
                 //! \param blockThreadExtent The block thread extent.
@@ -66,6 +71,9 @@ namespace alpaka
                 //! \return The size of the shared memory allocated for a block in bytes.
                 //! The default version always returns zero.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TDim,
@@ -89,6 +97,10 @@ namespace alpaka
             };
         }
 
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdocumentation"  // clang does not support the syntax for variadic template arguments "args,..."
+#endif
         //-----------------------------------------------------------------------------
         //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
         //! \param blockThreadExtent The block thread extent.
@@ -98,6 +110,9 @@ namespace alpaka
         //! \return The size of the shared memory allocated for a block in bytes.
         //! The default implementation always returns zero.
         //-----------------------------------------------------------------------------
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TAcc,

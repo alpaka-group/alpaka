@@ -80,7 +80,7 @@ namespace alpaka
                             TViewSrc const & viewSrc,
                             TExtent const & extent) :
                                 m_extentWidth(extent::getWidth(extent)),
-                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TViewDst>))),
+                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * static_cast<Size>(sizeof(elem::Elem<TViewDst>)))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
                                 m_dstBufWidth(static_cast<Size>(extent::getWidth(viewDst))),

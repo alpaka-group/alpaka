@@ -40,7 +40,7 @@ public:
     //! \tparam TAcc The type of the accelerator the kernel is executed on..
     //! \tparam TElem The matrix element type.
     //! \param acc The accelerator the kernel is executed on.
-    //! \param n Specifies the number of elements of the vectors X and Y.
+    //! \param numElements Specifies the number of elements of the vectors X and Y.
     //! \param alpha Scalar the X vector is multiplied with.
     //! \param X Vector of at least n elements.
     //! \param Y Vector of at least n elements.
@@ -210,7 +210,14 @@ struct AxpyKernelTester
         {
             auto const & val(pHostResultData[i]);
             auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe" but we want to do exactly this
+#endif
             if(val != correctResult)
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
             {
                 std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
                 resultCorrect = false;

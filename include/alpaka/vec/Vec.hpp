@@ -435,7 +435,7 @@ namespace alpaka
             TFnObj const & f) const
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
-#if (BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))) || __INTEL_COMPILER
+#if (BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))) || BOOST_COMP_INTEL
             this->foldrByIndices(
 #else
             foldrByIndices(
@@ -462,7 +462,7 @@ namespace alpaka
                 ->TSize
 #endif
                 {
-                    return a * b;
+                    return static_cast<TSize>(a * b);
                 });
         }
         //-----------------------------------------------------------------------------
@@ -478,7 +478,7 @@ namespace alpaka
                 ->TSize
 #endif
                 {
-                    return a + b;
+                    return static_cast<TSize>(a + b);
                 });
         }
         //-----------------------------------------------------------------------------
@@ -985,7 +985,7 @@ namespace alpaka
             TExtent const & extent = TExtent())
         -> Vec<TDim, size::Size<TExtent>>
         {
-            using IdxOffset = std::integral_constant<std::intmax_t, ((std::intmax_t)dim::Dim<TExtent>::value)-((std::intmax_t)TDim::value)>;
+            using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
             return
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
             Vec<TDim, size::Size<TExtent>>::template
@@ -1026,7 +1026,7 @@ namespace alpaka
             };
         }
         //-----------------------------------------------------------------------------
-        //! \tparam TExtent has to specialize offset::GetOffset.
+        //! \tparam TOffsets has to specialize offset::GetOffset.
         //! \return The offset vector.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
@@ -1048,7 +1048,7 @@ namespace alpaka
                         offsets);
         }
         //-----------------------------------------------------------------------------
-        //! \tparam TExtent has to specialize offset::GetOffset.
+        //! \tparam TOffsets has to specialize offset::GetOffset.
         //! \return The offset vector but only the last N elements.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
@@ -1059,7 +1059,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> Vec<TDim, size::Size<TOffsets>>
         {
-            using IdxOffset = std::integral_constant<std::size_t, (std::size_t)(((std::intmax_t)dim::Dim<TOffsets>::value)-((std::intmax_t)TDim::value))>;
+            using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(dim::Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
             return
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
             Vec<TDim, size::Size<TOffsets>>::template

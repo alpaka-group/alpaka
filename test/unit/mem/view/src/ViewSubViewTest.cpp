@@ -138,7 +138,14 @@ struct CompareBufferKernel
         (void)acc;
         for(; beginA != endA; ++beginA, ++beginB)
         {
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
+#endif
             BOOST_VERIFY(*beginA == *beginB);
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
         }
     }
 };
@@ -189,8 +196,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
         {
             BOOST_REQUIRE_EQUAL(
-                pitchBuf[i-1u],
-                pitchView[i-1u]);
+                pitchBuf[i-static_cast<Size>(1u)],
+                pitchView[i-static_cast<Size>(1u)]);
         }
     }
 
@@ -205,7 +212,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
         {
             auto const pitch = (i < static_cast<Size>(Dim::value)) ? pitchBuf[i] : static_cast<Size>(sizeof(Elem));
-            viewPtrNative += offsetView[i - 1u] * pitch;
+            viewPtrNative += offsetView[i - static_cast<Size>(1u)] * pitch;
         }
         BOOST_REQUIRE_EQUAL(
             reinterpret_cast<Elem *>(viewPtrNative),
@@ -395,7 +402,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         //-----------------------------------------------------------------------------
         // alpaka::mem::view::copy
         // Init buf with increasing values
-        std::vector<Elem> v(extentBuf.prod(), static_cast<Elem>(0));
+        std::vector<Elem> v(static_cast<std::size_t>(extentBuf.prod()), static_cast<Elem>(0));
         std::iota(v.begin(), v.end(), static_cast<Elem>(0));
         ViewPlainPtr plainBuf(v.data(), devHost, extentBuf);
         alpaka::mem::view::copy(stream, buf, plainBuf, extentBuf);

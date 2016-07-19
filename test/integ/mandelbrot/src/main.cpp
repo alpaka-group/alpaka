@@ -142,7 +142,7 @@ public:
     //! \param pColors The output image.
     //! \param numRows The number of rows in the image
     //! \param numCols The number of columns in the image.
-    //! \param pitchElems The pitch size in elements in the image.
+    //! \param pitchBytes The pitch in bytes.
     //! \param fMinR The left border.
     //! \param fMaxR The right border.
     //! \param fMinI The bottom border.
@@ -313,10 +313,10 @@ auto writeTgaColorImage(
     ofs.put(0x00);
     ofs.put(0x00);                      // Y Origin of Image.
     ofs.put(0x00);
-    ofs.put((bufWidthColors & 0xFF)); // Width of Image.
-    ofs.put((bufWidthColors >> 8) & 0xFF);
-    ofs.put((bufHeightColors & 0xFF));// Height of Image.
-    ofs.put((bufHeightColors >> 8) & 0xFF);
+    ofs.put(static_cast<char>(bufWidthColors & 0xFFu)); // Width of Image.
+    ofs.put(static_cast<char>((bufWidthColors >> 8) & 0xFFu));
+    ofs.put(static_cast<char>(bufHeightColors & 0xFFu));// Height of Image.
+    ofs.put(static_cast<char>((bufHeightColors >> 8) & 0xFFu));
     ofs.put(0x20);                      // Image Pixel Size.
     ofs.put(0x20);                      // Image Descriptor Byte.
 
@@ -327,7 +327,7 @@ auto writeTgaColorImage(
     {
         ofs.write(
             pData,
-            bufWidthColors*bufHeightColors);
+            static_cast<std::streamsize>(bufWidthColors*bufHeightColors));
     }
     // ... else we have to write row by row.
     else
@@ -336,7 +336,7 @@ auto writeTgaColorImage(
         {
             ofs.write(
                 pData + bufPitchBytes*row,
-                bufWidthColors);
+                static_cast<std::streamsize>(bufWidthColors));
         }
     }
 }

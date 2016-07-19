@@ -76,8 +76,8 @@ namespace alpaka
                                 mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>(),
                                 m_dev(dev),
                                 m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                                m_pMem(mem::alloc::alloc<TElem>(*this, computeElementCount(extent))),
-                                m_pitchBytes(static_cast<TSize>(extent::getWidth(extent) * sizeof(TElem)))
+                                m_pMem(mem::alloc::alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
+                                m_pitchBytes(static_cast<TSize>(extent::getWidth(extent) * static_cast<TSize>(sizeof(TElem))))
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                                 ,m_bPinned(false)
 #endif

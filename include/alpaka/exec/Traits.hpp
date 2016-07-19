@@ -23,6 +23,8 @@
 
 #include <alpaka/dim/Traits.hpp>            // dim::Dim
 #include <alpaka/size/Traits.hpp>           // size::Size
+
+#include <alpaka/core/Debug.hpp>            // ALPAKA_DEBUG_FULL
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     #include <alpaka/workdiv/Traits.hpp>    // workdiv::getWorkDiv
 #endif

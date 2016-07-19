@@ -30,8 +30,6 @@
 #include <alpaka/core/Common.hpp>   // BOOST_LANG_CUDA, BOOST_ARCH_CUDA_DEVICE
 
 #include <boost/predef.h>           // workarounds
-#include <boost/version.hpp>        // workarounds
-
 #include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
 #include <queue>                    // std::queue
@@ -113,9 +111,18 @@ namespace alpaka
             //#############################################################################
             // \NOTE: We can not use C++11 std::packaged_task as it forces the use of std::future
             // but we additionally support boost::fibers::promise.
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
             class ITaskPkg
             {
             public:
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                virtual ~ITaskPkg() = default;
+
                 //-----------------------------------------------------------------------------
                 //! Runs this task.
                 //-----------------------------------------------------------------------------
@@ -152,6 +159,9 @@ namespace alpaka
                 -> void = 0;
 #endif
             };
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
             //#############################################################################
             //! TaskPkg with return type.
@@ -514,8 +524,8 @@ namespace alpaka
                     m_vConcurrentExecs(),
                     m_qTasks(static_cast<std::size_t>(queueSize)),
                     m_mtxWakeup(),
-                    m_bShutdownFlag(false),
-                    m_cvWakeup()
+                    m_cvWakeup(),
+                    m_bShutdownFlag(false)
                 {
                     if(concurrentExecutionCount < 1)
                     {
@@ -705,8 +715,8 @@ namespace alpaka
                 ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
 
                 TMutex m_mtxWakeup;
-                std::atomic<bool> m_bShutdownFlag;
                 TCondVar m_cvWakeup;
+                std::atomic<bool> m_bShutdownFlag;
             };
         }
     }

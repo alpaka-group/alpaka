@@ -174,7 +174,14 @@ auto main()
     {
         auto const & val(pHostData[i]);
         auto const correctResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe" but we want to do exactly this
+#endif
         if(val != correctResult)
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
         {
             std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
