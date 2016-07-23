@@ -85,6 +85,14 @@ SET(_ALPAKA_FOUND TRUE)
 # Add module search path
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 
+IF(${ALPAKA_DEBUG} GREATER 1)
+    MESSAGE(STATUS "_ALPAKA_ROOT_DIR : ${_ALPAKA_ROOT_DIR}")
+    MESSAGE(STATUS "_ALPAKA_COMMON_FILE : ${_ALPAKA_COMMON_FILE}")
+    MESSAGE(STATUS "_ALPAKA_ADD_EXECUTABLE_FILE : ${_ALPAKA_ADD_EXECUTABLE_FILE}")
+    MESSAGE(STATUS "_ALPAKA_ADD_LIBRARY_FILE : ${_ALPAKA_ADD_LIBRARY_FILE}")
+    MESSAGE(STATUS "CMAKE_BUILD_TYPE : ${CMAKE_BUILD_TYPE}")
+ENDIF()
+
 #-------------------------------------------------------------------------------
 # Options.
 #-------------------------------------------------------------------------------
@@ -205,8 +213,9 @@ IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
         MESSAGE(WARNING "Optional alpaka dependency TBB could not be found! TBB grid block back-end disabled!")
         SET(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OFF CACHE BOOL "Enable the TBB grid block back-end" FORCE)
     ELSE()
-        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${TBB_LIBRARIES}")
+        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC ${TBB_LIBRARIES})
         LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC ${TBB_INCLUDE_DIRS})
+        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC ${TBB_DEFINITIONS})
     ENDIF()
 ENDIF()
 
@@ -324,7 +333,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     SET(CUDA_HOST_COMPILER "${CMAKE_CXX_COMPILER}")
                 ENDIF()
 
-                IF(CMAKE_BUILD_TYPE MATCHES "Debug")
+                if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
                     LIST(APPEND CUDA_NVCC_FLAGS "-g" "-G")
                 ENDIF()
 
