@@ -46,6 +46,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         namespace view
         {
+            //-----------------------------------------------------------------------------
+            //! The view traits.
+            //-----------------------------------------------------------------------------
             namespace traits
             {
                 //#############################################################################
@@ -602,6 +605,8 @@ namespace alpaka
                 return
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
                 Vec<dim::Dim<TPitch>, size::Size<TPitch>>::template
+#else
+                vec::
 #endif
                     createVecFromIndexedFn<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
@@ -625,6 +630,8 @@ namespace alpaka
                 return
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
                 Vec<TDim, size::Size<TPitch>>::template
+#else
+                vec::
 #endif
                     createVecFromIndexedFnOffset<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS

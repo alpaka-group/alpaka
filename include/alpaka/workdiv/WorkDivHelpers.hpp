@@ -52,7 +52,7 @@ namespace alpaka
         {
             EqualExtent,       //!< The block thread extent will be equal in all dimensions.
             CloseToEqualExtent,//!< The block thread extent will be as close to equal as possible in all dimensions.
-            Unrestricted,
+            Unrestricted,      //!< The block thread extent will not have any restrictions.
         };
 
         namespace detail

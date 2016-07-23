@@ -81,10 +81,11 @@ static auto createVecFromIndexedFn()
 -> alpaka::Vec<TDim, TSize>
 {
     return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        alpaka::Vec<TDim, TSize>::template
-#else
         alpaka::
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+        Vec<TDim, TSize>::template
+#else
+        vec::
 #endif
         createVecFromIndexedFn<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
