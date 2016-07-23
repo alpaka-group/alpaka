@@ -96,7 +96,6 @@
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/core/Debug.hpp>
 #include <alpaka/core/Fibers.hpp>
-#include <alpaka/core/MapIdx.hpp>
 #include <alpaka/core/OpenMp.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unroll.hpp>
@@ -153,6 +152,7 @@
 #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/Traits.hpp>
+#include <alpaka/idx/MapIdx.hpp>
 
 //-----------------------------------------------------------------------------
 // kernel

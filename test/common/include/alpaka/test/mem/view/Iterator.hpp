@@ -152,7 +152,7 @@ namespace alpaka
                             using Dim1 = dim::DimInt<1>;
 
                             Vec<Dim1, Size> const currentIdxDim1{m_currentIdx};
-                            Vec<Dim, Size> const currentIdxDimx(core::mapIdx<Dim::value>(currentIdxDim1, m_extents));
+                            Vec<Dim, Size> const currentIdxDimx(idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
                             Elem * ptr = m_nativePtr;
 

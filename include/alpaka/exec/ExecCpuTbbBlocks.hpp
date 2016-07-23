@@ -34,10 +34,10 @@
 // Implementation details.
 #include <alpaka/acc/AccCpuTbbBlocks.hpp>       // acc:AccCpuTbbBlocks
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/idx/MapIdx.hpp>                // idx::mapIdx
 #include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
-#include <alpaka/core/MapIdx.hpp>               // core::mapIdx
 #include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
@@ -172,7 +172,7 @@ namespace alpaka
                              blockSharedMemDynSizeBytes);
 
                          acc.m_gridBlockIdx =
-                             core::mapIdx<TDim::value>(
+                             idx::mapIdx<TDim::value>(
                                  Vec<dim::DimInt<1u>, TSize>(
                                      static_cast<TSize>(i)
                                   ),

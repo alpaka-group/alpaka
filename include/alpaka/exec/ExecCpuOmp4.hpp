@@ -38,11 +38,11 @@
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp4.hpp>            // acc:AccCpuOmp4
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/idx/MapIdx.hpp>                // idx::mapIdx
 #include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/MapIdx.hpp>               // core::mapIdx
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
@@ -196,7 +196,7 @@ namespace alpaka
                             // error: gridBlockExtent referenced in target region does not have a mappable type
                             auto const gridBlockExtent2(
                                 workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this)));
-                            acc.m_gridBlockIdx = core::mapIdx<TDim::value>(
+                            acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(
                                 gridBlockIdx,
                                 gridBlockExtent2);
 
