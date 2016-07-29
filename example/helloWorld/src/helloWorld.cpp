@@ -53,7 +53,7 @@ struct HelloWorldKernel
          * one dimensional thread index space. We call it
          * linearize the thread index.
          */
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 

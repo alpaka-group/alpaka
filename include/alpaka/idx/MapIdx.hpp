@@ -30,7 +30,7 @@
 
 namespace alpaka
 {
-    namespace core
+    namespace idx
     {
         namespace detail
         {

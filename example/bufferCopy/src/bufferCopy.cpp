@@ -44,7 +44,7 @@ struct PrintBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
@@ -78,7 +78,7 @@ struct TestBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
@@ -108,7 +108,7 @@ struct InitBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
@@ -137,7 +137,7 @@ struct FillBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
