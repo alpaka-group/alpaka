@@ -46,6 +46,7 @@
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
+#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
@@ -164,6 +165,7 @@ namespace alpaka
                 // The number of threads in this block.
                 TSize const blockThreadCount(blockThreadExtent.prod());
                 int const iBlockThreadCount(static_cast<int>(blockThreadCount));
+                boost::ignore_unused(iBlockThreadCount);
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
                 ::omp_set_dynamic(0);
