@@ -116,14 +116,14 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::bt::IdxBtOmp<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     boost::ignore_unused(idx);
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return idx::mapIdx<TDim::value>(
-                        Vec<dim::DimInt<1u>, TSize>(static_cast<TSize>(::omp_get_thread_num())),
+                        vec::Vec<dim::DimInt<1u>, TSize>(static_cast<TSize>(::omp_get_thread_num())),
                         workdiv::getWorkDiv<Block, Threads>(workDiv));
                 }
             };

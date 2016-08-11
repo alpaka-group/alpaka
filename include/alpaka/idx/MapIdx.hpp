@@ -60,9 +60,9 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<1u>, TElem> const & extent)
-                -> Vec<dim::DimInt<1u>, TElem>
+                    vec::Vec<dim::DimInt<1u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<1u>, TElem> const & extent)
+                -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
 #if !BOOST_ARCH_CUDA_DEVICE
                     boost::ignore_unused(extent);
@@ -88,9 +88,9 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<2u>, TElem> const & extent)
-                -> Vec<dim::DimInt<2u>, TElem>
+                    vec::Vec<dim::DimInt<1u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<2u>, TElem> const & extent)
+                -> vec::Vec<dim::DimInt<2u>, TElem>
                 {
                     TElem const & idx1d(idx[0u]);
                     TElem const & extentX(extent[1u]);
@@ -118,9 +118,9 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<3u>, TElem> const & extent)
-                -> Vec<dim::DimInt<3u>, TElem>
+                    vec::Vec<dim::DimInt<1u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<3u>, TElem> const & extent)
+                -> vec::Vec<dim::DimInt<3u>, TElem>
                 {
                     TElem const & idx1d(idx[0u]);
                     TElem const & extentX(extent[2]);
@@ -150,9 +150,9 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<4u>, TElem> const & extent)
-                -> Vec<dim::DimInt<4u>, TElem>
+                    vec::Vec<dim::DimInt<1u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<4u>, TElem> const & extent)
+                -> vec::Vec<dim::DimInt<4u>, TElem>
                 {
                     TElem const & idx1d(idx[0u]);
                     TElem const & extentX(extent[3]);
@@ -184,9 +184,9 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<2u>, TElem> const & idx,
-                    Vec<dim::DimInt<2u>, TElem> const & extent)
-                -> Vec<dim::DimInt<1u>, TElem>
+                    vec::Vec<dim::DimInt<2u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<2u>, TElem> const & extent)
+                -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
                     return {
                         idx[0u] * extent[1u] + idx[1u]};
@@ -210,9 +210,9 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<3u>, TElem> const & idx,
-                    Vec<dim::DimInt<3u>, TElem> const & extent)
-                -> Vec<dim::DimInt<1u>, TElem>
+                    vec::Vec<dim::DimInt<3u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<3u>, TElem> const & extent)
+                -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
                     return {
                         (idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u]};
@@ -236,9 +236,9 @@ namespace alpaka
                 template<
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
-                    Vec<dim::DimInt<4u>, TElem> const & idx,
-                    Vec<dim::DimInt<4u>, TElem> const & extent)
-                -> Vec<dim::DimInt<1u>, TElem>
+                    vec::Vec<dim::DimInt<4u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<4u>, TElem> const & extent)
+                -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
                     return {
                         ((idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u]) * extent[3u] + idx[3u]};
@@ -259,9 +259,9 @@ namespace alpaka
             std::size_t TidxDimIn,
             typename TElem>
         ALPAKA_FN_HOST_ACC auto mapIdx(
-            Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
-            Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extent)
-        -> Vec<dim::DimInt<TidxDimOut>, TElem>
+            vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
+            vec::Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extent)
+        -> vec::Vec<dim::DimInt<TidxDimOut>, TElem>
         {
             return
                 detail::MapIdx<

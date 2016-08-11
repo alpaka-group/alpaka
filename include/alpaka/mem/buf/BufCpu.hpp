@@ -147,7 +147,7 @@ namespace alpaka
 
                     public:
                         dev::DevCpu const m_dev;
-                        Vec<TDim, TSize> const m_extentElements;
+                        vec::Vec<TDim, TSize> const m_extentElements;
                         TElem * const m_pMem;
                         TSize const m_pitchBytes;
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA

@@ -187,7 +187,7 @@ namespace alpaka
                 "The values in the IndexSequence have to be unique!");
 
             auto idx(
-                Vec<dim::Dim<TExtentVec>, size::Size<TExtentVec>>::zeros());
+                vec::Vec<dim::Dim<TExtentVec>, size::Size<TExtentVec>>::zeros());
 
             detail::NdLoop<
                 meta::IndexSequence<Tdims...>>

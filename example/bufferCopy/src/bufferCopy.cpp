@@ -181,17 +181,17 @@ auto main()
     /***************************************************************************
      * Init workdiv
      **************************************************************************/
-    alpaka::Vec<Dim, Size> const elementsPerThread(
+    alpaka::vec::Vec<Dim, Size> const elementsPerThread(
         static_cast<Size>(1),
         static_cast<Size>(1),
         static_cast<Size>(1));
 
-    alpaka::Vec<Dim, Size> const threadsPerBlock(
+    alpaka::vec::Vec<Dim, Size> const threadsPerBlock(
         static_cast<Size>(1),
         static_cast<Size>(1),
         static_cast<Size>(1));
 
-    alpaka::Vec<Dim, Size> const blocksPerGrid(
+    alpaka::vec::Vec<Dim, Size> const blocksPerGrid(
         static_cast<Size>(4),
         static_cast<Size>(8),
         static_cast<Size>(16));
@@ -215,7 +215,7 @@ auto main()
     using Data = std::uint32_t;
     constexpr Extents nElementsPerDim = 2;
 
-    const alpaka::Vec<Dim, Size> extents(
+    const alpaka::vec::Vec<Dim, Size> extents(
         static_cast<Size>(nElementsPerDim),
         static_cast<Size>(nElementsPerDim),
         static_cast<Size>(nElementsPerDim));

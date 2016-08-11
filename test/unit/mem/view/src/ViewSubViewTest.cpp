@@ -103,14 +103,12 @@ template<
     typename TSize,
     template<std::size_t> class TCreate>
 static auto createVecFromIndexedFn()
--> alpaka::Vec<TDim, TSize>
+-> alpaka::vec::Vec<TDim, TSize>
 {
     return
-        alpaka::
+        alpaka::vec::
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
         Vec<TDim, TSize>::template
-#else
-        vec::
 #endif
         createVecFromIndexedFn<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
@@ -176,7 +174,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     // TODO: Test failing cases of view extents larger then the underlying buffer extents.
     auto const extentView(createVecFromIndexedFn<Dim, Size, CreateExtentViewVal>());
-    auto const offsetView(alpaka::Vec<Dim, Size>::all(sizeof(Size)));
+    auto const offsetView(alpaka::vec::Vec<Dim, Size>::all(sizeof(Size)));
     View view(buf, extentView, offsetView);
 
     //-----------------------------------------------------------------------------
@@ -252,7 +250,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
     StreamAcc stream(devAcc);
 
-    using Vec = alpaka::Vec<Dim, Size>;
+    using Vec = alpaka::vec::Vec<Dim, Size>;
 
     const auto elementsPerThread(Vec::ones());
     const auto threadsPerBlock(Vec::ones());
@@ -395,7 +393,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
         auto const extentBuf(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
         auto const extentView(createVecFromIndexedFn<Dim, Size, CreateExtentViewVal>());
-        auto const offsetView(alpaka::Vec<Dim, Size>::all(sizeof(Size)));
+        auto const offsetView(alpaka::vec::Vec<Dim, Size>::all(sizeof(Size)));
         auto buf(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentBuf));
         auto buf2(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentView));
         View view(buf, extentView, offsetView);
@@ -412,9 +410,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         alpaka::mem::view::copy(stream, buf2, view, extentView);
 
         // Check values in 2nd buf
-        alpaka::Vec<Dim, Size> elementsPerThread(alpaka::Vec<Dim, Size>::all(static_cast<Size>(1)));
-        alpaka::Vec<Dim, Size> threadsPerBlock(alpaka::Vec<Dim, Size>::all(static_cast<Size>(1)));
-        alpaka::Vec<Dim, Size> const blocksPerGrid(alpaka::Vec<Dim, Size>::all(static_cast<Size>(1)));
+        alpaka::vec::Vec<Dim, Size> const elementsPerThread(alpaka::vec::Vec<Dim, Size>::all(static_cast<Size>(1)));
+        alpaka::vec::Vec<Dim, Size> const threadsPerBlock(alpaka::vec::Vec<Dim, Size>::all(static_cast<Size>(1)));
+        alpaka::vec::Vec<Dim, Size> const blocksPerGrid(alpaka::vec::Vec<Dim, Size>::all(static_cast<Size>(1)));
 
         WorkDiv const workdiv(
             alpaka::workdiv::WorkDivMembers<Dim, Size>(

@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::Vec<Dim, Size> const extent(3u, 2u);
+    alpaka::vec::Vec<Dim, Size> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(extent);
 
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::Vec<Dim, Size> const extent(3u, 2u);
+    alpaka::vec::Vec<Dim, Size> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(extent);
 

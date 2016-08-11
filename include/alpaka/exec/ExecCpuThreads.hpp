@@ -203,8 +203,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & gridBlockIdx,
-                Vec<TDim, TSize> const & blockThreadExtent,
+                vec::Vec<TDim, TSize> const & gridBlockIdx,
+                vec::Vec<TDim, TSize> const & blockThreadExtent,
                 ThreadPool & threadPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -255,7 +255,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
                 std::vector<std::future<void>> & futuresInBlock,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 ThreadPool & threadPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -285,7 +285,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecAcc(
                 acc::AccCpuThreads<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void

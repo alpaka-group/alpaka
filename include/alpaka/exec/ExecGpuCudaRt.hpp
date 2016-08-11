@@ -83,7 +83,7 @@ namespace alpaka
                     typename TKernelFnObj,
                     typename... TArgs>
                 __global__ void cudaKernel(
-                    Vec<TDim, TSize> const threadElemExtent,
+                    vec::Vec<TDim, TSize> const threadElemExtent,
                     TKernelFnObj const kernelFnObj,
                     TArgs ... args)
                 {

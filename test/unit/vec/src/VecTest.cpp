@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(
 {
     using Dim = alpaka::dim::DimInt<3u>;
     using Size = std::size_t;
-    using Vec = alpaka::Vec<Dim, Size>;
+    using Vec = alpaka::vec::Vec<Dim, Size>;
 
     Vec const vec(
         static_cast<std::size_t>(0u),
@@ -149,11 +149,11 @@ struct NonAlpakaVec
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    operator ::alpaka::Vec<
+    operator ::alpaka::vec::Vec<
         TDim,
         TSize>() const
     {
-        using AlpakaVector = ::alpaka::Vec<
+        using AlpakaVector = ::alpaka::vec::Vec<
             TDim,
             TSize
         >;
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = std::size_t;
 
     NonAlpakaVec<TDim, Size> nonAlpakaVec;
-    auto const alpakaVec(static_cast<alpaka::Vec<TDim, Size>>(nonAlpakaVec));
+    auto const alpakaVec(static_cast<alpaka::vec::Vec<TDim, Size>>(nonAlpakaVec));
 
     for(Size d(0); d < TDim::value; ++d)
     {

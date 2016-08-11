@@ -205,8 +205,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & gridBlockIdx,
-                Vec<TDim, TSize> const & blockThreadExtent,
+                vec::Vec<TDim, TSize> const & gridBlockIdx,
+                vec::Vec<TDim, TSize> const & blockThreadExtent,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -255,7 +255,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
                 std::vector<boost::fibers::future<void>> & futuresInBlock,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -285,7 +285,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadFiberFn(
                 acc::AccCpuFibers<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void

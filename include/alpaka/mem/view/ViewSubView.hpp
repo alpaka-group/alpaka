@@ -70,7 +70,7 @@ namespace alpaka
                             extent::getExtentVecEnd<TDim>(view),
                             mem::view::getPitchBytesVecEnd<TDim>(view)),
                         m_extentElements(extent::getExtentVecEnd<TDim>(view)),
-                        m_offsetsElements(Vec<TDim, TSize>::all(0))
+                        m_offsetsElements(vec::Vec<TDim, TSize>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 }
@@ -88,7 +88,7 @@ namespace alpaka
                             extent::getExtentVecEnd<TDim>(view),
                             mem::view::getPitchBytesVecEnd<TDim>(view)),
                         m_extentElements(extent::getExtentVecEnd<TDim>(view)),
-                        m_offsetsElements(Vec<TDim, TSize>::all(0))
+                        m_offsetsElements(vec::Vec<TDim, TSize>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -175,8 +175,8 @@ namespace alpaka
 
             public:
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> m_viewParentView; // This wraps the parent view.
-                Vec<TDim, TSize> m_extentElements;      // The extent of this view.
-                Vec<TDim, TSize> m_offsetsElements;     // The offset relative to the parent view.
+                vec::Vec<TDim, TSize> m_extentElements;     // The extent of this view.
+                vec::Vec<TDim, TSize> m_offsetsElements;    // The offset relative to the parent view.
             };
         }
     }

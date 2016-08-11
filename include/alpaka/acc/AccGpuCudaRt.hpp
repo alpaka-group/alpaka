@@ -103,7 +103,7 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt(
-                Vec<TDim, TSize> const & threadElemExtent) :
+                vec::Vec<TDim, TSize> const & threadElemExtent) :
                     workdiv::WorkDivCudaBuiltIn<TDim, TSize>(threadElemExtent),
                     idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
                     idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
@@ -188,7 +188,7 @@ namespace alpaka
                         static_cast<TSize>(cudaDevProp.multiProcessorCount),
                         // m_gridBlockExtentMax
                         extent::getExtentVecEnd<TDim>(
-                            Vec<dim::DimInt<3u>, TSize>(
+                            vec::Vec<dim::DimInt<3u>, TSize>(
                                 static_cast<TSize>(cudaDevProp.maxGridSize[2]),
                                 static_cast<TSize>(cudaDevProp.maxGridSize[1]),
                                 static_cast<TSize>(cudaDevProp.maxGridSize[0]))),
@@ -196,14 +196,14 @@ namespace alpaka
                         std::numeric_limits<TSize>::max(),
                         // m_blockThreadExtentMax
                         extent::getExtentVecEnd<TDim>(
-                            Vec<dim::DimInt<3u>, TSize>(
+                            vec::Vec<dim::DimInt<3u>, TSize>(
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[2]),
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[1]),
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[0]))),
                         // m_blockThreadCountMax
                         static_cast<TSize>(cudaDevProp.maxThreadsPerBlock),
                         // m_threadElemExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TSize>::max()};
                 }

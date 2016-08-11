@@ -383,7 +383,7 @@ struct MandelbrotKernelTester
         StreamAcc stream(
             devAcc);
 
-        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extent(
+        alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize> const extent(
             static_cast<TSize>(numRows),
             static_cast<TSize>(numCols));
 
@@ -392,7 +392,7 @@ struct MandelbrotKernelTester
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 extent,
-                alpaka::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
+                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 

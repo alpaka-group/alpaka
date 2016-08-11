@@ -110,7 +110,7 @@ auto main()
     StreamAcc stream(devAcc);
 
     // The data extent.
-    alpaka::Vec<alpaka::dim::DimInt<1u>, Size> const extent(
+    alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Size> const extent(
         numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.

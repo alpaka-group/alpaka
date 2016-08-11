@@ -460,7 +460,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        Vec<dim::Dim<TView>, size::Size<TView>> const & extent,
+                        vec::Vec<dim::Dim<TView>, size::Size<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -509,7 +509,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        Vec<dim::Dim<TView>, size::Size<TView>> const & extent,
+                        vec::Vec<dim::Dim<TView>, size::Size<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -600,13 +600,12 @@ namespace alpaka
                 typename TPitch>
             ALPAKA_FN_HOST_ACC auto getPitchBytesVec(
                 TPitch const & pitch = TPitch())
-            -> Vec<dim::Dim<TPitch>, size::Size<TPitch>>
+            -> vec::Vec<dim::Dim<TPitch>, size::Size<TPitch>>
             {
                 return
+                    vec::
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<dim::Dim<TPitch>, size::Size<TPitch>>::template
-#else
-                vec::
+                    Vec<dim::Dim<TPitch>, size::Size<TPitch>>::template
 #endif
                     createVecFromIndexedFn<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
@@ -624,14 +623,13 @@ namespace alpaka
                 typename TPitch>
             ALPAKA_FN_HOST_ACC auto getPitchBytesVecEnd(
                 TPitch const & pitch = TPitch())
-            -> Vec<TDim, size::Size<TPitch>>
+            -> vec::Vec<TDim, size::Size<TPitch>>
             {
                 using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TPitch>::value) - static_cast<std::intmax_t>(TDim::value)>;
                 return
+                    vec::
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, size::Size<TPitch>>::template
-#else
-                vec::
+                    Vec<TDim, size::Size<TPitch>>::template
 #endif
                     createVecFromIndexedFnOffset<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
