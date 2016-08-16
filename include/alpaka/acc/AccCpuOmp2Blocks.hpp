@@ -130,7 +130,7 @@ namespace alpaka
                     block::sync::BlockSyncNoOp(),
                     rand::RandStl(),
                     time::TimeOmp(),
-                    m_gridBlockIdx(Vec<TDim, TSize>::zeros())
+                    m_gridBlockIdx(vec::Vec<TDim, TSize>::zeros())
             {}
 
         public:
@@ -157,7 +157,7 @@ namespace alpaka
 
         private:
             // getIdx
-            Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
+            vec::Vec<TDim, TSize> mutable m_gridBlockIdx;   //!< The index of the currently executed block.
         };
     }
 
@@ -198,15 +198,15 @@ namespace alpaka
                         // m_multiProcessorCount
                         static_cast<TSize>(1),
                         // m_gridBlockExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_gridBlockCountMax
                         std::numeric_limits<TSize>::max(),
                         // m_blockThreadExtentMax
-                        Vec<TDim, TSize>::ones(),
+                        vec::Vec<TDim, TSize>::ones(),
                         // m_blockThreadCountMax
                         static_cast<TSize>(1),
                         // m_threadElemExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TSize>::max()};
                 }

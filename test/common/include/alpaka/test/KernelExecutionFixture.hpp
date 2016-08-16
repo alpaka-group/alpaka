@@ -56,7 +56,7 @@ namespace alpaka
                         alpaka::workdiv::getValidWorkDiv<Acc>(
                             m_devAcc,
                             extent,
-                            alpaka::Vec<Dim, Size>::ones(),
+                            alpaka::vec::Vec<Dim, Size>::ones(),
                             false,
                             alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted))
             {}

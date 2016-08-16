@@ -78,13 +78,12 @@ template<
     typename TSize,
     template<std::size_t> class TCreate>
 static auto createVecFromIndexedFn()
--> alpaka::Vec<TDim, TSize>
+-> alpaka::vec::Vec<TDim, TSize>
 {
     return
+        alpaka::vec::
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        alpaka::Vec<TDim, TSize>::template
-#else
-        alpaka::
+        Vec<TDim, TSize>::template
 #endif
         createVecFromIndexedFn<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
@@ -100,7 +99,7 @@ static auto createVecFromIndexedFn()
 template<
     typename TAcc>
 static auto basicBufferOperationsTest(
-    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::size::Size<TAcc>> const & extent)
+    alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::size::Size<TAcc>> const & extent)
 -> void
 {
     using Dev = alpaka::dev::Dev<TAcc>;
@@ -116,7 +115,7 @@ static auto basicBufferOperationsTest(
     // alpaka::mem::buf::alloc
     auto buf(alpaka::mem::buf::alloc<Elem, Size>(dev, extent));
 
-    auto const offset(alpaka::Vec<Dim, Size>::zeros());
+    auto const offset(alpaka::vec::Vec<Dim, Size>::zeros());
     viewTest<
         Elem>(
             buf,
@@ -156,7 +155,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    auto const extent(alpaka::Vec<Dim, Size>::zeros());
+    auto const extent(alpaka::vec::Vec<Dim, Size>::zeros());
 
     basicBufferOperationsTest<
         TAcc>(

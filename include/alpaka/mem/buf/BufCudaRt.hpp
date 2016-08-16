@@ -125,7 +125,7 @@ namespace alpaka
 
             public:
                 dev::DevCudaRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
-                Vec<TDim, TSize> m_extentElements;
+                vec::Vec<TDim, TSize> m_extentElements;
                 std::shared_ptr<TElem> m_spMem;
                 TSize m_pitchBytes;
             };

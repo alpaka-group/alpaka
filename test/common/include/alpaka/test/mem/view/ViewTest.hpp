@@ -44,8 +44,8 @@ template<
 static auto viewTest(
     TView const & view,
     TDev const & dev,
-    alpaka::Vec<TDim, TSize> const & extent,
-    alpaka::Vec<TDim, TSize> const & offset)
+    alpaka::vec::Vec<TDim, TSize> const & extent,
+    alpaka::vec::Vec<TDim, TSize> const & offset)
 -> void
 {
     //-----------------------------------------------------------------------------
@@ -91,7 +91,7 @@ static auto viewTest(
     // alpaka::mem::view::traits::GetPitchBytes
     {
         // The pitches have to be at least as large as the values we calculate here.
-        auto pitchMinimum(alpaka::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TSize>::ones());
+        auto pitchMinimum(alpaka::vec::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TSize>::ones());
         // Initialize the pitch between two elements of the X dimension ...
         pitchMinimum[TDim::value] = sizeof(TElem);
         // ... and fill all the other dimensions.

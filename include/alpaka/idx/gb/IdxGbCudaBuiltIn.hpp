@@ -121,7 +121,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getIdx(
                     idx::gb::IdxGbCudaBuiltIn<TDim, TSize> const & /*idx*/,
                     TWorkDiv const &)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(idx);
                     return vec::cast<TSize>(offset::getOffsetVecEnd<TDim>(blockIdx));

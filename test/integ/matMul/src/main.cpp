@@ -234,7 +234,7 @@ struct MatMulTester
         std::cout << "################################################################################" << std::endl;
 
         using Val = std::uint32_t;
-        using Vec2 = alpaka::Vec<alpaka::dim::DimInt<2u>, TSize>;
+        using Vec2 = alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>;
         using DevAcc = alpaka::dev::Dev<TAcc>;
         using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
         using StreamAcc = alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>>;
@@ -279,7 +279,7 @@ struct MatMulTester
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 extentC,
-                alpaka::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
+                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::EqualExtent));
 

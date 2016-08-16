@@ -281,7 +281,7 @@ struct TestAtomicOperations
         using Size = alpaka::size::Size<TAcc>;
 
         alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::Vec<Dim, Size>::ones());
+            alpaka::vec::Vec<Dim, Size>::ones());
 
         AtomicTestKernel kernel;
 

@@ -159,7 +159,7 @@ namespace alpaka
         private:
             // getIdx
             typename idx::bt::IdxBtRefFiberIdMap<TDim, TSize>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
-            Vec<TDim, TSize> mutable m_gridBlockIdx;                    //!< The index of the currently executed block.
+            vec::Vec<TDim, TSize> mutable m_gridBlockIdx;                    //!< The index of the currently executed block.
 
             // allocBlockSharedArr
             boost::fibers::fiber::id mutable m_masterFiberId;           //!< The id of the master fiber.
@@ -208,15 +208,15 @@ namespace alpaka
                         // m_multiProcessorCount
                         std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency())),   // \TODO: This may be inaccurate.
                         // m_gridBlockExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_gridBlockCountMax
                         std::numeric_limits<TSize>::max(),
                         // m_blockThreadExtentMax
-                        Vec<TDim, TSize>::all(blockThreadCountMax),
+                        vec::Vec<TDim, TSize>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TSize>::max()};
                 }

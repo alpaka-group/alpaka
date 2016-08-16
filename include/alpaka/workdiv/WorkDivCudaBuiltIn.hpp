@@ -56,7 +56,7 @@ namespace alpaka
             //! Default constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(
-                Vec<TDim, TSize> const & threadElemExtent) :
+                vec::Vec<TDim, TSize> const & threadElemExtent) :
                     m_threadElemExtent(threadElemExtent)
             {}
             //-----------------------------------------------------------------------------
@@ -83,7 +83,7 @@ namespace alpaka
         public:
             // \TODO: Optimize! Add WorkDivCudaBuiltInNoElems that has no member m_threadElemExtent as well as AccGpuCudaRtNoElems.
             // Use it instead of AccGpuCudaRt if the thread element extent is one to reduce the register usage.
-            Vec<TDim, TSize> const & m_threadElemExtent;
+            vec::Vec<TDim, TSize> const & m_threadElemExtent;
         };
     }
 
@@ -141,7 +141,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & /*workDiv*/)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);
                     return vec::cast<TSize>(extent::getExtentVecEnd<TDim>(gridDim));
@@ -164,7 +164,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & /*workDiv*/)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);
                     return vec::cast<TSize>(extent::getExtentVecEnd<TDim>(blockDim));
@@ -187,7 +187,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     return workDiv.m_threadElemExtent;
                 }

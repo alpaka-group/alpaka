@@ -52,7 +52,7 @@ namespace alpaka
         {
             EqualExtent,       //!< The block thread extent will be equal in all dimensions.
             CloseToEqualExtent,//!< The block thread extent will be as close to equal as possible in all dimensions.
-            Unrestricted,
+            Unrestricted,      //!< The block thread extent will not have any restrictions.
         };
 
         namespace detail
@@ -179,8 +179,8 @@ namespace alpaka
             typename TDim,
             typename TSize>
         ALPAKA_FN_HOST auto subDivideGridElems(
-            Vec<TDim, TSize> const & gridElemExtent,
-            Vec<TDim, TSize> threadElemExtent,
+            vec::Vec<TDim, TSize> const & gridElemExtent,
+            vec::Vec<TDim, TSize> threadElemExtent,
             acc::AccDevProps<TDim, TSize> const & accDevProps,
             bool requireBlockThreadExtentToDivideGridThreadExtent = true,
             GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
@@ -207,7 +207,7 @@ namespace alpaka
             }
 
             // Calculate the grid thread extent.
-            auto gridThreadExtent(Vec<TDim, TSize>::zeros());
+            auto gridThreadExtent(vec::Vec<TDim, TSize>::zeros());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridThreadExtent[i] =
@@ -368,7 +368,7 @@ namespace alpaka
             // Compute the gridBlockExtent.
 
             // Set the grid block extent (rounded to the next integer not less then the quotient.
-            auto gridBlockExtent(Vec<TDim, TSize>::ones());
+            auto gridBlockExtent(vec::Vec<TDim, TSize>::ones());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridBlockExtent[i] =

@@ -165,17 +165,17 @@ auto main()
      * Thus, a thread can process data element size wise with its
      * vector processing unit.
      */
-    alpaka::Vec<Dim, Size> const elementsPerThread(
+    alpaka::vec::Vec<Dim, Size> const elementsPerThread(
         static_cast<Size>(1),
         static_cast<Size>(1),
         static_cast<Size>(1));
 
-    alpaka::Vec<Dim, Size> const threadsPerBlock(
+    alpaka::vec::Vec<Dim, Size> const threadsPerBlock(
         static_cast<Size>(1),
         static_cast<Size>(1),
         static_cast<Size>(1));
 
-    alpaka::Vec<Dim, Size> const blocksPerGrid(
+    alpaka::vec::Vec<Dim, Size> const blocksPerGrid(
         static_cast<Size>(4),
         static_cast<Size>(8),
         static_cast<Size>(16));

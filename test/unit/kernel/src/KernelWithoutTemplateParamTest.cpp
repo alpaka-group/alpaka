@@ -85,7 +85,7 @@ struct KernelNoTemplateCpu
 BOOST_AUTO_TEST_CASE(kernelNoTemplateCpu)
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     KernelNoTemplateCpu kernel;
 
@@ -121,7 +121,7 @@ struct KernelNoTemplateGpu
 BOOST_AUTO_TEST_CASE(kernelNoTemplateGpu)
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     KernelNoTemplateGpu kernel;
 
@@ -159,7 +159,7 @@ struct KernelWithoutTemplateParamCpu
 BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamCpu)
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     KernelWithoutTemplateParamCpu kernel;
 
@@ -197,7 +197,7 @@ struct KernelWithoutTemplateParamGpu
 BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamGpu)
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     KernelWithoutTemplateParamGpu kernel;
 

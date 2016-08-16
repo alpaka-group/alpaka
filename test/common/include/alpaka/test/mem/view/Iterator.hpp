@@ -151,8 +151,8 @@ namespace alpaka
                         {
                             using Dim1 = dim::DimInt<1>;
 
-                            Vec<Dim1, Size> const currentIdxDim1{m_currentIdx};
-                            Vec<Dim, Size> const currentIdxDimx(idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
+                            vec::Vec<Dim1, Size> const currentIdxDim1{m_currentIdx};
+                            vec::Vec<Dim, Size> const currentIdxDimx(idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
                             Elem * ptr = m_nativePtr;
 
@@ -168,8 +168,8 @@ namespace alpaka
 
                         Elem * m_nativePtr;
                         Size  m_currentIdx;
-                        alpaka::Vec<Dim, Size> const m_extents;
-                        alpaka::Vec<Dim, Size> const m_pitchBytes;
+                        vec::Vec<Dim, Size> const m_extents;
+                        vec::Vec<Dim, Size> const m_pitchBytes;
                     };
 
                     //#############################################################################

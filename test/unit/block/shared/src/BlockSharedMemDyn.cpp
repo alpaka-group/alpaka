@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = alpaka::size::Size<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     BlockSharedMemDynTestKernel kernel;
 

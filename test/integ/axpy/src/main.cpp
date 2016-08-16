@@ -116,7 +116,7 @@ struct AxpyKernelTester
         // Get a stream on this device.
         StreamAcc stream(devAcc);
 
-        alpaka::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
+        alpaka::vec::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
             numElements);
 
         // Let alpaka calculate good block and grid sizes given our full problem extent.

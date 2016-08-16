@@ -48,7 +48,7 @@ namespace alpaka
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxGbRef(
-                    Vec<TDim, TSize> const & gridBlockIdx) :
+                    vec::Vec<TDim, TSize> const & gridBlockIdx) :
                         m_gridBlockIdx(gridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
 
             public:
-                Vec<TDim, TSize> const & m_gridBlockIdx;
+                vec::Vec<TDim, TSize> const & m_gridBlockIdx;
             };
         }
     }
@@ -118,7 +118,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::gb::IdxGbRef<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
                     return idx.m_gridBlockIdx;
