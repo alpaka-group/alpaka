@@ -85,14 +85,6 @@ SET(_ALPAKA_FOUND TRUE)
 # Add module search path
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 
-IF(${ALPAKA_DEBUG} GREATER 1)
-    MESSAGE(STATUS "_ALPAKA_ROOT_DIR : ${_ALPAKA_ROOT_DIR}")
-    MESSAGE(STATUS "_ALPAKA_COMMON_FILE : ${_ALPAKA_COMMON_FILE}")
-    MESSAGE(STATUS "_ALPAKA_ADD_EXECUTABLE_FILE : ${_ALPAKA_ADD_EXECUTABLE_FILE}")
-    MESSAGE(STATUS "_ALPAKA_ADD_LIBRARY_FILE : ${_ALPAKA_ADD_LIBRARY_FILE}")
-    MESSAGE(STATUS "CMAKE_BUILD_TYPE : ${CMAKE_BUILD_TYPE}")
-ENDIF()
-
 #-------------------------------------------------------------------------------
 # Options.
 #-------------------------------------------------------------------------------
@@ -121,6 +113,17 @@ ENDIF()
 # Drop-down combo box in cmake-gui.
 SET(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
 SET_PROPERTY(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
+
+#-------------------------------------------------------------------------------
+# Debug output of common variables.
+#-------------------------------------------------------------------------------
+IF(${ALPAKA_DEBUG} GREATER 1)
+    MESSAGE(STATUS "_ALPAKA_ROOT_DIR : ${_ALPAKA_ROOT_DIR}")
+    MESSAGE(STATUS "_ALPAKA_COMMON_FILE : ${_ALPAKA_COMMON_FILE}")
+    MESSAGE(STATUS "_ALPAKA_ADD_EXECUTABLE_FILE : ${_ALPAKA_ADD_EXECUTABLE_FILE}")
+    MESSAGE(STATUS "_ALPAKA_ADD_LIBRARY_FILE : ${_ALPAKA_ADD_LIBRARY_FILE}")
+    MESSAGE(STATUS "CMAKE_BUILD_TYPE : ${CMAKE_BUILD_TYPE}")
+ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find Boost.
