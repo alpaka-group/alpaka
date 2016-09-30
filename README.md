@@ -60,14 +60,14 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|Accelerator Back-end|gcc 4.9.2|gcc 5.3|gcc 6.1|clang 3.5/3.6|clang 3.7|clang 3.8/3.9|MSVC 2015|
+|Accelerator Back-end|gcc 4.9.2|gcc 5.3|gcc 6.1|clang 3.5/3.6|clang 3.7|clang 3.8/3.9|MSVC 2015.3|
 |---|---|---|---|---|---|---|---|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:x:|:x:|:x:|:x:|:white_check_mark: (native)|:x:|
+|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:white_check_mark: (native)|:white_check_mark: (nvcc 8.0+)|
 
 
 Dependencies

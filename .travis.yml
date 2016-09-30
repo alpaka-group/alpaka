@@ -65,7 +65,7 @@ compiler:
 # ALPAKA_ACC_CPU_BT_OMP4_ENABLE                 : {ON, OFF}
 #   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
 # ALPAKA_ACC_GPU_CUDA_ENABLE                    : {ON, OFF}
-#   [ON] ALPAKA_CUDA_VER                        : {7.0, 7.5}
+#   [ON] ALPAKA_CUDA_VER                        : {7.0, 7.5, 8.0}
 #   [ON] ALPAKA_CUDA_COMPILER                   : {nvcc, [CXX==clang++]:clang}
 # ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE             : {ON, OFF}
 ################################################################################
@@ -86,13 +86,13 @@ env:
 
     matrix:
         # Analysis builds
-        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.61.0 ALPAKA_CI_CMAKE_VER=3.6.1 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.61.0 ALPAKA_CI_CMAKE_VER=3.6.1 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=8.0 ALPAKA_CUDA_COMPILER=clang
         - ALPAKA_GCC_VER=6   ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=           ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
 
         # Debug builds
         - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.8.1 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.59.0 ALPAKA_CI_CMAKE_VER=3.5.2 ALPAKA_CI_SANITIZERS=           ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang ALPAKA_ACC_GPU_CUDA_ONLY_MODE=ON ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE=OFF
-        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5.2 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.61.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=TSan+UBSan OMP_NUM_THREADS=3 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.0 ALPAKA_CUDA_COMPILER=nvcc
-        #- ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6.2 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.3.2 ALPAKA_CI_SANITIZERS=ASan+UBSan OMP_NUM_THREADS=2
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.61.0 ALPAKA_CI_CMAKE_VER=3.4.3 ALPAKA_CI_SANITIZERS=TSan+UBSan OMP_NUM_THREADS=3 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=8.0 ALPAKA_CUDA_COMPILER=nvcc
+        - ALPAKA_GCC_VER=6   ALPAKA_CLANG_VER=3.8.1 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.60.0 ALPAKA_CI_CMAKE_VER=3.3.2 ALPAKA_CI_SANITIZERS=ASan+UBSan OMP_NUM_THREADS=2 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=8.0 ALPAKA_CUDA_COMPILER=nvcc
         - ALPAKA_GCC_VER=6   ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=develop      ALPAKA_CI_CMAKE_VER=3.6.1 ALPAKA_CI_SANITIZERS=TSan+UBSan OMP_NUM_THREADS=4
 
         # Release builds
@@ -191,21 +191,20 @@ before_install:
           && ALPAKA_CUDA_VER_MINOR=${ALPAKA_CUDA_VER:2:1}
           && echo ${ALPAKA_CUDA_VER_MINOR}
           && ALPAKA_CUDA_CACHE_DIR=${HOME}/cache/CUDA/CUDA-${ALPAKA_CUDA_VER}
-          && if [ ${ALPAKA_CUDA_VER_MAJOR} == 7 ]
+          && if (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 0 )) ))
           ;then
-              if [ ${ALPAKA_CUDA_VER_MINOR} == 0 ]
-              ;then
-                  ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-${ALPAKA_CUDA_VER_MAJOR}-${ALPAKA_CUDA_VER_MINOR}-local_${ALPAKA_CUDA_VER}-28_amd64.deb
-                  && ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/${ALPAKA_CUDA_VER_MAJOR}_${ALPAKA_CUDA_VER_MINOR}/Prod/local_installers/rpmdeb/${ALPAKA_CUDA_PKG_FILE_NAME}
-              ;elif [ ${ALPAKA_CUDA_VER_MINOR} == 5 ]
-              ;then
-                  ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-${ALPAKA_CUDA_VER_MAJOR}-${ALPAKA_CUDA_VER_MINOR}-local_${ALPAKA_CUDA_VER}-18_amd64.deb
-                  && ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/${ALPAKA_CUDA_VER}/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-              ;else
-                  echo CUDA versions other then 7.0 and 7.5 are not currently supported!
-              ;fi
+              ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-7-0-local_7.0-28_amd64.deb
+              && ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/7_0/prod/local_installers/rpmdeb/${ALPAKA_CUDA_PKG_FILE_NAME}
+          ;elif (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 5 )) ))
+          ;then
+              ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-7-5-local_7.5-18_amd64.deb
+              && ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/7.5/prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+          ;elif (( (( ${ALPAKA_CUDA_VER_MAJOR} == 8 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 0 )) ))
+          ;then
+              ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-8-0-local_8.0.44-1_amd64-deb
+              && ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
           ;else
-              echo CUDA versions other then 7.0 and 7.5 are not currently supported!
+              echo CUDA versions other then 7.0, 7.5 and 8.0 are not currently supported!
           ;fi
           && if [ -z "$(ls -A ${ALPAKA_CUDA_CACHE_DIR})" ]
           ;then
@@ -363,9 +362,9 @@ install:
           ;then
               if [ "${CXX}" == "g++" ]
               ;then
-                  if (( (( ${ALPAKA_GCC_VER_MAJOR} > 4 )) || ( (( ${ALPAKA_GCC_VER_MAJOR} == 4 )) && (( ${ALPAKA_GCC_VER_MINOR} > 9 )) ) ))
+                  if (( ${ALPAKA_CUDA_VER_MAJOR} > 6 ))
                   ;then
-                      if (( ${ALPAKA_CUDA_VER_MAJOR} > 6 ))
+                      if (( (( ${ALPAKA_GCC_VER_MAJOR} > 4 )) || ( (( ${ALPAKA_GCC_VER_MAJOR} == 4 )) && (( ${ALPAKA_GCC_VER_MINOR} > 9 )) ) ))
                       ;then
                           export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
                           && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because CUDA 7.x does not support the gcc version!
@@ -400,21 +399,6 @@ install:
                           ;fi
                       ;fi
                   ;fi
-              ;fi
-          ;fi
-      ;fi
-    # nvcc < 7.5 does not support boost correctly so fibers / threads have to be disabled.
-    # boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
-    - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
-      ;then
-          if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
-          ;then
-              if (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} < 5 )) ))
-              ;then
-                  export ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-                  && echo ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} because nvcc does not support boost correctly!
-                  && export ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=OFF
-                  && echo ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE} because nvcc does not support boost correctly!
               ;fi
           ;fi
       ;fi
