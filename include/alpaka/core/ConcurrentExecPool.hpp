@@ -391,14 +391,13 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                // NOTE: The first argument to the get_future() function call is the this pointer.
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+                -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
                 {
                     auto boundTask(std::bind(task, args...));
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
+                    using FnObjReturn = decltype(task(args...));
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
 
                     auto pTaskPackage(new TaskPackage(std::move(boundTask)));
@@ -613,14 +612,13 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                // NOTE: The first argument to the get_future() function call is the this pointer.
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+                -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
                 {
                     auto boundTask(std::bind(task, args...));
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
+                    using FnObjReturn = decltype(task(args...));
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
 
                     auto pTaskPackage(new TaskPackage(std::move(boundTask)));

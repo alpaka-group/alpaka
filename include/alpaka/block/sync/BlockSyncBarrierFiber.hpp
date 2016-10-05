@@ -25,7 +25,7 @@
 
 #include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
 
-#include <alpaka/core/BarrierFiber.hpp> // BarrierFibers
+#include <alpaka/core/Fibers.hpp>       // boost::fibers::barrier
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
 
@@ -48,14 +48,12 @@ namespace alpaka
             public:
                 using BlockSyncBase = BlockSyncBarrierFiber;
 
-                using Barrier = core::fibers::BarrierFiber<TSize>;
-
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(
                     TSize const & blockThreadCount) :
-                        m_barrier(blockThreadCount)
+                        m_barrier(static_cast<std::size_t>(blockThreadCount))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -78,7 +76,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierFiber() = default;
 
-                Barrier mutable m_barrier;
+                boost::fibers::barrier mutable m_barrier;
             };
 
             namespace traits

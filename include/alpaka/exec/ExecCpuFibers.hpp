@@ -77,7 +77,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Yields the current fiber.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto yield()
+                ALPAKA_FN_HOST static auto yield()
                 -> void
                 {
                     boost::this_fiber::yield();

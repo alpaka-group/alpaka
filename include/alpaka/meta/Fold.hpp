@@ -29,7 +29,7 @@
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
-#if !(__cplusplus >= 201402L)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
     #include <type_traits>                  // std::result_of
 #endif
 

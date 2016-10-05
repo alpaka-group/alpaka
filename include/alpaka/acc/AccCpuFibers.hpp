@@ -131,7 +131,7 @@ namespace alpaka
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStl(),
                     time::TimeStl(),
-                    m_gridBlockIdx(Vec<TDim, TSize>::zeros())
+                    m_gridBlockIdx(vec::Vec<TDim, TSize>::zeros())
             {}
 
         public:
