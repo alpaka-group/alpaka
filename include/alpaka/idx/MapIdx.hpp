@@ -61,7 +61,11 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
                     vec::Vec<dim::DimInt<1u>, TElem> const & idx,
+#if !BOOST_ARCH_CUDA_DEVICE
                     vec::Vec<dim::DimInt<1u>, TElem> const & extent)
+#else
+                    vec::Vec<dim::DimInt<1u>, TElem> const &)
+#endif
                 -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
 #if !BOOST_ARCH_CUDA_DEVICE

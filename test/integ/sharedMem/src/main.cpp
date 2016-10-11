@@ -110,9 +110,9 @@ public:
         if(blockThreadIdx1d==0)
         {
             // Calculate linearized block id.
-            std::size_t const blockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
+            std::size_t const gridBlockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
-            puiBlockRetVals[blockIdx] = pBlockShared[0] * m_mult * mult2;
+            puiBlockRetVals[gridBlockIdx] = pBlockShared[0] * m_mult * mult2;
         }
     }
 

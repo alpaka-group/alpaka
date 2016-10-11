@@ -41,7 +41,7 @@
 
 //-----------------------------------------------------------------------------
 // CUDA language detection
-// - clang defines __CUDA__ when compiling CUDA code ('-x cuda')
+// - clang defines __CUDA__ and __CUDACC__ when compiling CUDA code ('-x cuda')
 // - nvcc defines __CUDACC__ when compiling CUDA code
 //-----------------------------------------------------------------------------
 #if defined(__CUDA__) || defined(__CUDACC__)
@@ -66,7 +66,7 @@
 #if defined(__CUDACC__) && defined(__NVCC__)
     // The __CUDACC_VER__, __CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__ and __CUDACC_VER_BUILD__
     // have been added with nvcc 7.5 and have not been available before.
-    #if !(__CUDACC_VER_MAJOR__ || __CUDACC_VER_MINOR__ || __CUDACC_VER_BUILD__)
+    #if !defined(__CUDACC_VER_MAJOR__) || !defined(__CUDACC_VER_MINOR__) || !defined(__CUDACC_VER_BUILD__)
         #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER_AVAILABLE
     #else
         #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER(__CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__, __CUDACC_VER_BUILD__)
@@ -79,7 +79,7 @@
 // clang CUDA compiler detection
 // Currently __CUDA__ is only defined by clang when compiling CUDA code.
 //-----------------------------------------------------------------------------
-#if defined(__CUDA__)
+#if defined(__clang__) && defined(__CUDA__)
     #define BOOST_COMP_CLANG_CUDA BOOST_COMP_CLANG
 #else
     #define BOOST_COMP_CLANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
@@ -95,11 +95,11 @@
 #endif
 
 //-----------------------------------------------------------------------------
-// Boost 1.61 disabled variadic templates for nvcc 7.0 because it was buggy.
+// Boost disables variadic templates for nvcc (in some cases because it was buggy).
 // However, we rely on it being enabled, as it was in all previous boost versions we support.
 // After explicitly including <boost/config.hpp> we can safely undefine the wrong setting.
 //-----------------------------------------------------------------------------
-#if BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(7, 5, 0) && BOOST_PREDEF_MAKE_10_VVRRPP(BOOST_VERSION) >= BOOST_VERSION_NUMBER(1, 61, 0)
+#if BOOST_COMP_NVCC
     #include <boost/config.hpp>
     #undef BOOST_NO_CXX11_VARIADIC_TEMPLATES
 #endif

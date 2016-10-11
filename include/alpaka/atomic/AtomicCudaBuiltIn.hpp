@@ -201,11 +201,14 @@ namespace alpaka
                     do
                     {
                         assumed = old;
-                        old = atomicCAS(address_as_ull, assumed, __double_as_longlong(value + __longlong_as_double(assumed)));
+                        old = atomicCAS(
+                            address_as_ull,
+                            assumed,
+                            static_cast<unsigned long long>(__double_as_longlong(value + __longlong_as_double(static_cast<long long>(assumed)))));
                         // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
                     }
                     while(assumed != old);
-                    return __longlong_as_double(old);
+                    return __longlong_as_double(static_cast<long long>(old));
                 }
             };
             //-----------------------------------------------------------------------------

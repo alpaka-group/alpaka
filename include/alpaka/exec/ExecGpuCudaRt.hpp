@@ -330,8 +330,8 @@ namespace alpaka
                     // \FIXME: CUDA currently supports a maximum of 3 dimensions!
                     for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
                     {
-                        reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
-                        reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&gridDim)[i] = static_cast<unsigned int>(gridBlockExtent[TDim::value-1u-i]);
+                        reinterpret_cast<unsigned int *>(&blockDim)[i] = static_cast<unsigned int>(blockThreadExtent[TDim::value-1u-i]);
 
                     }
                     // Assert that all extent of the higher dimensions are 1!
@@ -407,7 +407,7 @@ namespace alpaka
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                blockSharedMemDynSizeBytes,
+                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,

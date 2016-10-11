@@ -45,7 +45,11 @@ namespace alpaka
             typename TFnObj,
             typename T>
         ALPAKA_FN_HOST_ACC auto foldr(
+#if BOOST_ARCH_CUDA_DEVICE
+            TFnObj const &,
+#else
             TFnObj const & f,
+#endif
             T const & t)
         -> T
         {

@@ -79,10 +79,17 @@ namespace alpaka
                     typename TDim,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+#if !BOOST_ARCH_CUDA_DEVICE
                     TKernelFnObj const & kernelFnObj,
                     vec::Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
                     vec::Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
+#else
+                    TKernelFnObj const &,
+                    vec::Vec<TDim, size::Size<TAcc>> const &,
+                    vec::Vec<TDim, size::Size<TAcc>> const &,
+                    TArgs const & ...)
+#endif
                 -> size::Size<TAcc>
                 {
 #if !BOOST_ARCH_CUDA_DEVICE

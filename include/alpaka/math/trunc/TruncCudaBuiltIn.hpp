@@ -67,6 +67,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(::trunc(arg))
                 {
+                    //boost::ignore_unused(trunc);
                     return ::trunc(arg);
                 }
             };

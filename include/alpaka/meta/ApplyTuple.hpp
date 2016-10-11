@@ -21,9 +21,13 @@
 
 #pragma once
 
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+
 #include <alpaka/meta/IntegerSequence.hpp>
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#if !BOOST_ARCH_CUDA_DEVICE
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
 #include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
 #include <utility>                          // std::forward
@@ -98,7 +102,9 @@ namespace alpaka
 #endif
             {
                 // If the the index sequence is empty, t will not be used at all.
+#if !BOOST_ARCH_CUDA_DEVICE
                 boost::ignore_unused(t);
+#endif
                 return
                     meta::invoke(
                         std::forward<F>(f),

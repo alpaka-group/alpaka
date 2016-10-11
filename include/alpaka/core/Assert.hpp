@@ -23,7 +23,7 @@
 
 #include <alpaka/core/Common.hpp>           // BOOST_ARCH_CUDA_DEVICE
 
-#if (!BOOST_ARCH_CUDA_DEVICE) || defined(NDEBUG)
+#if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 #include <boost/predef.h>                   // workarounds
@@ -54,11 +54,21 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
+#ifdef NDEBUG
+#if !BOOST_ARCH_CUDA_DEVICE
                     TArg const & arg)
+#else
+                    TArg const &)
+#endif
+#else
+                    TArg const & arg)
+#endif
                 -> void
                 {
 #ifdef NDEBUG
+#if !BOOST_ARCH_CUDA_DEVICE
                     boost::ignore_unused(arg);
+#endif
 #else
                     assert(arg >= 0);
 #endif
@@ -75,7 +85,11 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
+#if !BOOST_ARCH_CUDA_DEVICE
                     TArg const & arg)
+#else
+                    TArg const &)
+#endif
                 -> void
                 {
 #if !BOOST_ARCH_CUDA_DEVICE

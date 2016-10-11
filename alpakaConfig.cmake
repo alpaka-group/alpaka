@@ -270,8 +270,8 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
     ENDIF()
 
     IF(ALPAKA_CUDA_VERSION VERSION_LESS 7.0)
-        MESSAGE(WARNING "CUDA Toolkit < 7.0 is not supported! CUDA back-end disabled!")
-        SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU back-end" FORCE)
+        MESSAGE(WARNING "CUDA Toolkit < 7.0 is not supported!")
+        SET(_ALPAKA_FOUND FALSE)
 
     ELSE()
         FIND_PACKAGE(CUDA "${ALPAKA_CUDA_VERSION}")
@@ -328,6 +328,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDIF()
 
                 SET(CUDA_PROPAGATE_HOST_FLAGS ON)
+
+                IF(ALPAKA_CUDA_VERSION VERSION_EQUAL 8.0)
+                    LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
+                ENDIF()
 
                 LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
 
