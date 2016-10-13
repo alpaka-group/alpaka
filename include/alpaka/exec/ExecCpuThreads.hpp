@@ -254,9 +254,15 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 std::vector<std::future<void>> & futuresInBlock,
                 vec::Vec<TDim, TSize> const & blockThreadIdx,
                 ThreadPool & threadPool,
+#else
+                std::vector<std::future<void>> &,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
+                ThreadPool &,
+#endif
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void

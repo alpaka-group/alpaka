@@ -204,7 +204,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -311,7 +311,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -440,7 +440,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TView, TExtent> const & task)
                 -> void
                 {

@@ -74,7 +74,11 @@ namespace alpaka
             typename TIdxSize,
             TIdxSize... TIndices>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
+#if BOOST_ARCH_CUDA_DEVICE
+            meta::IntegerSequence<TIdxSize, TIndices...> const &,
+#else
             meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
+#endif
             TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
@@ -202,7 +206,11 @@ namespace alpaka
                 typename TIdxSize,
                 TIdxSize... TIndices>
             ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
+#if BOOST_ARCH_CUDA_DEVICE
+                meta::IntegerSequence<TIdxSize, TIndices...> const &,
+#else
                 meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
+#endif
                 TArgs && ... args)
             -> Vec<TDim, TSize>
             {
@@ -411,7 +419,11 @@ namespace alpaka
                 std::size_t... TIndices>
             ALPAKA_FN_HOST_ACC auto foldrByIndices(
                 TFnObj const & f,
+#if BOOST_ARCH_CUDA_DEVICE
+                meta::IntegerSequence<std::size_t, TIndices...> const &) const
+#else
                 meta::IntegerSequence<std::size_t, TIndices...> const & indices) const
+#endif
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 meta::foldr(
@@ -437,7 +449,7 @@ namespace alpaka
                 TFnObj const & f) const
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
-#if (BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))) || BOOST_COMP_INTEL
+#if (BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))) || BOOST_COMP_INTEL || BOOST_COMP_NVCC
                 this->foldrByIndices(
 #else
                 foldrByIndices(

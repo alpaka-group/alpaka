@@ -252,7 +252,11 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> & spStreamImpl,
+#else
+                    std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> &,
+#endif
                     event::EventCpu & event)
                 -> void
                 {
@@ -491,7 +495,11 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> & spStreamImpl,
+#else
+                    std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> &,
+#endif
                     event::EventCpu const & event)
                 -> void
                 {

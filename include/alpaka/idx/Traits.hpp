@@ -226,7 +226,11 @@ namespace alpaka
             typename TGridThreadIdx,
             typename TThreadElemExtent>
         ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
+#if BOOST_ARCH_CUDA_DEVICE
+            TIdxWorkDiv const &,
+#else
             TIdxWorkDiv const & idxWorkDiv,
+#endif
             TGridThreadIdx const & gridThreadIdx,
             TThreadElemExtent const & threadElemExtent)
         -> vec::Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>

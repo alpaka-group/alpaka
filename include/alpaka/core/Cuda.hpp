@@ -147,12 +147,19 @@ namespace alpaka
         ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
 #else
+    #if BOOST_COMP_CLANG
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+    #endif
     //-----------------------------------------------------------------------------
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
         ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+    #if BOOST_COMP_CLANG
+        #pragma clang diagnostic pop
+    #endif
 #endif
 
 //-----------------------------------------------------------------------------
