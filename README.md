@@ -18,7 +18,7 @@ There is no need to write special CUDA, OpenMP or custom threading code.
 Accelerator back-ends can be mixed within a device stream.
 The decision which accelerator back-end executes which kernel can be made at runtime.
 
-The **alpaka** API is currently unstable (alpha state).
+The **alpaka** API is currently unstable (beta state).
 
 The abstraction used is very similar to the CUDA grid-blocks-threads division strategy.
 Algorithms that should be parallelized have to be divided into a multi-dimensional grid consisting of small uniform work items.
@@ -39,7 +39,8 @@ Software License
 Documentation
 -------------
 
-The source code documentation generated with [doxygen](http://www.doxygen.org) is available [here](http://computationalradiationphysics.github.io/alpaka/).
+The [general documentation](doc/markdown/Index.md) is located within the `doc/markdown` subfolder of the repository.
+The [source code documentation](http://computationalradiationphysics.github.io/alpaka/) is generated with [doxygen](http://www.doxygen.org).
 
 
 Accelerator Back-ends

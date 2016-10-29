@@ -1,3 +1,5 @@
+[:arrow_up: Up](../Index.md)
+
 Publishing doxygen documentation on gh-pages
 ============================================
 
