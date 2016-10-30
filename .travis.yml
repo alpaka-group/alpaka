@@ -728,8 +728,8 @@ script:
     # Build and execute all examples.
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./travis/compileExec.sh "example/bufferCopy" ./bufferCopy ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./travis/compileExec.sh "example/helloWorld" ./helloWorld ;fi
+    - if ([ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ]) && (([ ${ALPAKA_CUDA_VER_MAJOR} -ge 8 ]) || ([ "${ALPAKA_CUDA_VER_MAJOR}" == "7" -a  "${ALPAKA_CUDA_VER_MINOR}" == "5" ]));then ./travis/compileExec.sh "example/helloWorldLambda" ./helloWorldLambda ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./travis/compileExec.sh "example/vectorAdd" ./vectorAdd ;fi
-
 
 ################################################################################
 #

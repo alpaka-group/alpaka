@@ -333,6 +333,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
                 ENDIF()
 
+                IF(NOT ALPAKA_CUDA_VERSION VERSION_LESS 7.5)
+                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
+                ENDIF()
+
                 LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
 
                 IF(NOT MSVC)
