@@ -176,11 +176,16 @@ auto main()
         auto const correctResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe" but we want to do exactly this
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
+#elif BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
 #endif
         if(val != correctResult)
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
+#elif BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
 #endif
         {
             std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;

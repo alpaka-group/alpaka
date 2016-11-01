@@ -174,7 +174,7 @@ namespace alpaka
                 template<typename TFnObjReturn> class TPromise,
                 typename TFnObj,
                 typename TFnObjReturn>
-            class TaskPkg :
+            class TaskPkg final :
                 public ITaskPkg
             {
             public:
@@ -228,7 +228,7 @@ namespace alpaka
             class TaskPkg<
                 TPromise,
                 TFnObj,
-                void> :
+                void> final :
                 public ITaskPkg
             {
             public:
