@@ -114,8 +114,6 @@ namespace alpaka
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
             static_assert(
                 meta::Conjunction<
-                    // This true_ is required for the zero argument case because and_ requires at least two arguments.
-                    std::true_type,
                     std::is_trivially_copyable<
                         TKernelFnObj>,
                     std::is_trivially_copyable<
