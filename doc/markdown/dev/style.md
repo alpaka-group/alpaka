@@ -1,3 +1,5 @@
+[:arrow_up: Up](../Index.md)
+
 Style
 =====
 
@@ -77,7 +79,7 @@ Functions
 ---------
 
 * Always use the trailing return type syntax with the return type on a new line even if the return type is void: 
-```
+```C++
 auto func() 
 -> bool
 ```
@@ -85,7 +87,7 @@ auto func()
   * This leads to a consistent style for constructs where there is no alternative style (lambdas, functions templates with dependent return types) and standard functions.
 
 * Each function parameter is on a new indented line:
-```
+```C++
 auto func(
     float f1,
     float f2) 
@@ -94,7 +96,7 @@ auto func(
     return true
 }
 ```
-```
+```C++
 func(
     1.0f,
     2.0f);
@@ -108,7 +110,7 @@ Templates
 * Template parameters are prefixed with `T` to differentiate them from class or function local typedefs.
 
 * Each template parameter is on a new indented line:
-```
+```C++
 template<
     typename TParam,
     typename TArgs...>
@@ -124,7 +126,7 @@ Traits
 ------
 
 * Trait classes always have one more template parameter (with default parameter) then is required for enabling SFINAE in the specialization:
-```
+```C++
 template<
     typename T, 
     typename TSfinae = void>
@@ -139,6 +141,6 @@ Includes
 --------
 
 * The order of includes is from the most specialized header to the most general one.
-This order helps to find missing includes in more specialized headers becausethe general ones are always included afterwards.
+This order helps to find missing includes in more specialized headers because the general ones are always included afterwards.
 
 * A comment with the types or functions included by a include file make it easier to find out why a special header is included.
