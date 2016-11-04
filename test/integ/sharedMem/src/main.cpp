@@ -299,7 +299,7 @@ auto main()
         alpaka::meta::forEachType<
             alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, std::uint32_t>>(
                 sharedMemTester,
-                static_cast<std::uint32_t>(512u),
+                512u,
                 mult2);
 
         return sharedMemTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;

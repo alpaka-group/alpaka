@@ -86,6 +86,10 @@ public:
 //#############################################################################
 struct AxpyKernelTester
 {
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
+#endif
     template<
         typename TAcc,
         typename TSize>
@@ -212,7 +216,7 @@ struct AxpyKernelTester
             auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe" but we want to do exactly this
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
 #endif
             if(val != correctResult)
 #if BOOST_COMP_CLANG
@@ -233,6 +237,9 @@ struct AxpyKernelTester
 
         allResultsCorrect = allResultsCorrect && resultCorrect;
     }
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
 
 public:
     bool allResultsCorrect = true;

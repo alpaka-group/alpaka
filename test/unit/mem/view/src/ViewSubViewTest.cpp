@@ -121,6 +121,10 @@ static auto createVecFromIndexedFn()
 //#############################################################################
 //! Compares iterators element-wise
 //#############################################################################
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
+#endif
 struct CompareBufferKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
@@ -148,6 +152,9 @@ struct CompareBufferKernel
         }
     }
 };
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
 
 //-----------------------------------------------------------------------------
 //
