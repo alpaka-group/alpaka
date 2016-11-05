@@ -32,106 +32,132 @@
     #pragma clang diagnostic pop
 #endif
 
-//-----------------------------------------------------------------------------
-//!
-//-----------------------------------------------------------------------------
-template<
-    typename TElem,
-    typename TDim,
-    typename TSize,
-    typename TDev,
-    typename TView>
-static auto viewTest(
-    TView const & view,
-    TDev const & dev,
-    alpaka::vec::Vec<TDim, TSize> const & extent,
-    alpaka::vec::Vec<TDim, TSize> const & offset)
--> void
+namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    // alpaka::dev::traits::DevType
-    {
-        static_assert(
-            std::is_same<alpaka::dev::Dev<TView>, TDev>::value,
-            "The device type of the view has to be equal to the specified one.");
-    }
-
+    //! The test specifics.
     //-----------------------------------------------------------------------------
-    // alpaka::dev::traits::GetDev
+    namespace test
     {
-        BOOST_REQUIRE(
-            dev == alpaka::dev::getDev(view));
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::dim::traits::DimType
-    {
-        static_assert(
-            alpaka::dim::Dim<TView>::value == TDim::value,
-            "The dimensionality of the view has to be equal to the specified one.");
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::elem::traits::ElemType
-    {
-        static_assert(
-            std::is_same<alpaka::elem::Elem<TView>, TElem>::value,
-            "The element type of the view has to be equal to the specified one.");
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::extent::traits::GetExtent
-    {
-        BOOST_REQUIRE_EQUAL(
-            extent,
-            alpaka::extent::getExtentVec(view));
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::mem::view::traits::GetPitchBytes
-    {
-        // The pitches have to be at least as large as the values we calculate here.
-        auto pitchMinimum(alpaka::vec::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TSize>::ones());
-        // Initialize the pitch between two elements of the X dimension ...
-        pitchMinimum[TDim::value] = sizeof(TElem);
-        // ... and fill all the other dimensions.
-        for(TSize i = TDim::value; i > static_cast<TSize>(0u); --i)
+        //-----------------------------------------------------------------------------
+        //! The test mem specifics.
+        //-----------------------------------------------------------------------------
+        namespace mem
         {
-            pitchMinimum[i-1] = extent[i-1] * pitchMinimum[i];
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            namespace view
+            {
+
+
+
+
+
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TElem,
+                    typename TDim,
+                    typename TSize,
+                    typename TDev,
+                    typename TView>
+                static auto viewTestImmutable(
+                    TView const & view,
+                    TDev const & dev,
+                    alpaka::vec::Vec<TDim, TSize> const & extent,
+                    alpaka::vec::Vec<TDim, TSize> const & offset)
+                -> void
+                {
+                    //-----------------------------------------------------------------------------
+                    // alpaka::dev::traits::DevType
+                    {
+                        static_assert(
+                            std::is_same<alpaka::dev::Dev<TView>, TDev>::value,
+                            "The device type of the view has to be equal to the specified one.");
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::dev::traits::GetDev
+                    {
+                        BOOST_REQUIRE(
+                            dev == alpaka::dev::getDev(view));
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::dim::traits::DimType
+                    {
+                        static_assert(
+                            alpaka::dim::Dim<TView>::value == TDim::value,
+                            "The dimensionality of the view has to be equal to the specified one.");
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::elem::traits::ElemType
+                    {
+                        static_assert(
+                            std::is_same<alpaka::elem::Elem<TView>, TElem>::value,
+                            "The element type of the view has to be equal to the specified one.");
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::extent::traits::GetExtent
+                    {
+                        BOOST_REQUIRE_EQUAL(
+                            extent,
+                            alpaka::extent::getExtentVec(view));
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::mem::view::traits::GetPitchBytes
+                    {
+                        // The pitches have to be at least as large as the values we calculate here.
+                        auto pitchMinimum(alpaka::vec::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TSize>::ones());
+                        // Initialize the pitch between two elements of the X dimension ...
+                        pitchMinimum[TDim::value] = sizeof(TElem);
+                        // ... and fill all the other dimensions.
+                        for(TSize i = TDim::value; i > static_cast<TSize>(0u); --i)
+                        {
+                            pitchMinimum[i-1] = extent[i-1] * pitchMinimum[i];
+                        }
+
+                        auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
+
+                        for(TSize i = TDim::value; i > static_cast<TSize>(0u); --i)
+                        {
+                            BOOST_REQUIRE_GE(
+                                pitchView[i-1],
+                                pitchMinimum[i-1]);
+                        }
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::mem::view::traits::GetPtrNative
+                    {
+                        TElem const * const invalidPtr(nullptr);
+                        BOOST_REQUIRE_NE(
+                            invalidPtr,
+                            alpaka::mem::view::getPtrNative(view));
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::offset::traits::GetOffset
+                    {
+                        BOOST_REQUIRE_EQUAL(
+                            offset,
+                            alpaka::offset::getOffsetVec(view));
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::size::traits::SizeType
+                    {
+                        static_assert(
+                            std::is_same<alpaka::size::Size<TView>, TSize>::value,
+                            "The size type of the view has to be equal to the specified one.");
+                    }
+                }
+            }
         }
-
-        auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
-
-        for(TSize i = TDim::value; i > static_cast<TSize>(0u); --i)
-        {
-            BOOST_REQUIRE_GE(
-                pitchView[i-1],
-                pitchMinimum[i-1]);
-        }
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::mem::view::traits::GetPtrNative
-    {
-        TElem const * const invalidPtr(nullptr);
-        BOOST_REQUIRE_NE(
-            invalidPtr,
-            alpaka::mem::view::getPtrNative(view));
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::offset::traits::GetOffset
-    {
-        BOOST_REQUIRE_EQUAL(
-            offset,
-            alpaka::offset::getOffsetVec(view));
-    }
-
-    //-----------------------------------------------------------------------------
-    // alpaka::size::traits::SizeType
-    {
-        static_assert(
-            std::is_same<alpaka::size::Size<TView>, TSize>::value,
-            "The size type of the view has to be equal to the specified one.");
     }
 }

@@ -115,8 +115,9 @@ static auto basicBufferOperationsTest(
     // alpaka::mem::buf::alloc
     auto buf(alpaka::mem::buf::alloc<Elem, Size>(dev, extent));
 
+    //-----------------------------------------------------------------------------
     auto const offset(alpaka::vec::Vec<Dim, Size>::zeros());
-    viewTest<
+    alpaka::test::mem::view::viewTestImmutable<
         Elem>(
             buf,
             dev,
