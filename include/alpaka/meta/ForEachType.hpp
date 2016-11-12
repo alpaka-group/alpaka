@@ -96,7 +96,7 @@ namespace alpaka
                 -> void
                 {
                     // Call the function object template call operator.
-#if BOOST_COMP_MSVC
+#if BOOST_COMP_MSVC && !BOOST_COMP_NVCC
                     f.operator()<T>(
                         std::forward<TArgs>(args)...);
 #else
