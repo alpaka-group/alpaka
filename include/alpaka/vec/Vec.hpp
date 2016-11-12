@@ -472,9 +472,6 @@ namespace alpaka
             {
                 return foldrAll(
                     [](TSize a, TSize b)
-#if BOOST_COMP_MSVC // MSVC deduces a wrong return type.
-                    ->TSize
-#endif
                     {
                         return static_cast<TSize>(a * b);
                     });
@@ -488,9 +485,6 @@ namespace alpaka
             {
                 return foldrAll(
                     [](TSize a, TSize b)
-#if BOOST_COMP_MSVC // MSVC deduces a wrong return type.
-                    ->TSize
-#endif
                     {
                         return static_cast<TSize>(a + b);
                     });
@@ -504,9 +498,6 @@ namespace alpaka
             {
                 return foldrAll(
                     [](TSize a, TSize b)
-#if BOOST_COMP_MSVC // MSVC deduces a wrong return type.
-                    ->TSize
-#endif
                     {
                         return (b < a) ? b : a;
                     });
@@ -520,9 +511,6 @@ namespace alpaka
             {
                 return foldrAll(
                     [](TSize a, TSize b)
-#if BOOST_COMP_MSVC // MSVC deduces a wrong return type.
-                    ->TSize
-#endif
                     {
                         return (b > a) ? b : a;
                     });
