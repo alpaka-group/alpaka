@@ -161,7 +161,7 @@ namespace alpaka
                 // The number of blocks in the grid.
                 TSize const numBlocksInGrid(gridBlockExtent.prod());
                 // There is only ever one thread in a block in the OpenMP 2.0 block accelerator.
-                assert(blockThreadExtent.prod() == 1u);
+                assert(blockThreadExtent.prod() == static_cast<TSize>(1u));
 
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());

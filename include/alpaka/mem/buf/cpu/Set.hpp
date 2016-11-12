@@ -73,12 +73,12 @@ namespace alpaka
                                 m_extentWidth(static_cast<Size>(extent::getWidth(extent))),
                                 m_extentHeight(static_cast<Size>(extent::getHeight(extent))),
                                 m_extentDepth(static_cast<Size>(extent::getDepth(extent))),
+#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                                 m_dstWidth(static_cast<Size>(extent::getWidth(view))),
                                 m_dstHeight(static_cast<Size>(extent::getHeight(view))),
-#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                                 m_dstDepth(static_cast<Size>(extent::getDepth(view))),
 #endif
-                                m_extentWidthBytes(m_extentWidth * sizeof(elem::Elem<TView>)),
+                                m_extentWidthBytes(m_extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>))),
                                 m_dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view)),
                                 m_dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view)),
                                 m_dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view))),
@@ -98,7 +98,7 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-        #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " ew: " << m_extentWidth
                                 << " eh: " << m_extentHeight
@@ -113,36 +113,33 @@ namespace alpaka
                                 << " dbufw: " << m_dstBufWidth
                                 << " dbufh: " << m_dstBufHeight
                                 << std::endl;
-        #endif
-
-
+#endif
 
                             for(Size z = static_cast<Size>(0); z < m_extentDepth; ++z)
                             {
-
-                                    for(Size y = static_cast<Size>(0); y < m_extentHeight; ++y)
-                                    {
-                                            std::memset(
-                                                        reinterpret_cast<void *>(m_dstNativePtr + y*m_dstPitchBytesX + z*m_dstPitchBytesY),
-                                                        m_byte,
-                                                        m_extentWidthBytes);
-                                        }
+                                for(Size y = static_cast<Size>(0); y < m_extentHeight; ++y)
+                                {
+                                    std::memset(
+                                        reinterpret_cast<void *>(m_dstNativePtr + y*m_dstPitchBytesX + z*m_dstPitchBytesY),
+                                        m_byte,
+                                        static_cast<std::size_t>(m_extentWidthBytes));
                                 }
+                            }
                         }
 
                         std::uint8_t const m_byte;
                         Size const m_extentWidth;
                         Size const m_extentHeight;
                         Size const m_extentDepth;
+#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                         Size const m_dstWidth;
                         Size const m_dstHeight;
-#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                         Size const m_dstDepth;
 #endif
                         Size const m_extentWidthBytes;
                         Size const m_dstPitchBytesX;
                         Size const m_dstPitchBytesY;
-                        std::uint8_t * m_dstNativePtr;
+                        std::uint8_t * const m_dstNativePtr;
                         Size const m_dstBufWidth;
                         Size const m_dstBufHeight;
 
