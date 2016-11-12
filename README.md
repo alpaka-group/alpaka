@@ -70,7 +70,7 @@ This library uses C++11 (or newer when available).
 |OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|:x:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:x:|:white_check_mark: (native/nvcc 8.0+)|:white_check_mark: (native)|:white_check_mark: (nvcc 8.0+)|
+|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:x:|:white_check_mark: (native/nvcc 8.0+)|:white_check_mark: (native)|:x:|
 
 
 Dependencies
