@@ -157,7 +157,7 @@ namespace alpaka
                     blockSharedMemDynSizeBytes);
 
                 // There is only ever one thread in a block in the serial accelerator.
-                assert(blockThreadExtent.prod() == 1u);
+                assert(blockThreadExtent.prod() == static_cast<TSize>(1u));
 
                 // Execute the blocks serially.
                 meta::ndLoopIncIdx(

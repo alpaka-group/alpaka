@@ -161,7 +161,7 @@ namespace alpaka
                 TSize const numBlocksInGrid(gridBlockExtent.prod());
 
                 // There is only ever one thread in a block in the TBB accelerator.
-                assert(blockThreadExtent.prod() == 1u);
+                assert(blockThreadExtent.prod() == static_cast<TSize>(1u));
 
                 tbb::parallel_for(
                     static_cast<TSize>(0),
