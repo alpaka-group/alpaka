@@ -38,6 +38,9 @@ UNSET(common_LIBRARIES)
 # Internal usage.
 UNSET(_COMMON_FOUND)
 UNSET(_COMMON_INCLUDE_DIRECTORY)
+UNSET(_COMMON_INCLUDE_DIRECTORIES_PUBLIC)
+UNSET(_COMMON_COMPILE_DEFINITIONS_PUBLIC)
+UNSET(_COMMON_LINK_LIBRARIES_PUBLIC)
 UNSET(_COMMON_SOURCE_DIRECTORY)
 UNSET(_COMMON_TARGET_NAME)
 UNSET(_COMMON_FILES_HEADER)
@@ -69,12 +72,14 @@ IF(NOT alpaka_FOUND)
     SET(_COMMON_FOUND FALSE)
 
 ELSE()
-    LIST(APPEND common_DEFINITIONS ${alpaka_DEFINITIONS})
-    LIST(APPEND common_INCLUDE_DIRS ${alpaka_INCLUDE_DIRS})
-    LIST(APPEND common_LIBRARIES ${alpaka_LIBRARIES})
+    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
+        LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC ${alpaka_DEFINITIONS})
+        LIST(APPEND _COMMON_INCLUDE_DIRECTORIES_PUBLIC ${alpaka_INCLUDE_DIRS})
+        LIST(APPEND _COMMON_LINK_LIBRARIES_PUBLIC ${alpaka_LIBRARIES})
+    ENDIF()
 
     INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
-    LIST(APPEND common_DEFINITIONS ${ALPAKA_DEV_COMPILE_OPTIONS})
+    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
 ENDIF()
 
 #-------------------------------------------------------------------------------
@@ -82,8 +87,7 @@ ENDIF()
 #-------------------------------------------------------------------------------
 
 SET(_COMMON_INCLUDE_DIRECTORY "${_COMMON_ROOT_DIR}/include")
-SET(common_INCLUDE_DIR "${_COMMON_INCLUDE_DIRECTORY}")
-LIST(APPEND common_INCLUDE_DIRS "${common_INCLUDE_DIR}")
+LIST(APPEND _COMMON_INCLUDE_DIRECTORIES_PUBLIC "${_COMMON_INCLUDE_DIRECTORY}")
 SET(_COMMON_SOURCE_DIRECTORY "${_COMMON_ROOT_DIR}/src")
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
@@ -92,60 +96,79 @@ append_recursive_files_add_to_src_group("${_COMMON_SOURCE_DIRECTORY}" "${_COMMON
 LIST(APPEND _COMMON_FILES_CMAKE "${_COMMON_ROOT_DIR}/commonConfig.cmake" "${_COMMON_ROOT_DIR}/Findcommon.cmake")
 
 IF(MSVC)
-    LIST(APPEND common_DEFINITIONS "/bigobj")
-    LIST(APPEND common_DEFINITIONS "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
+    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC "/bigobj")
+    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
 ENDIF()
 
 #-------------------------------------------------------------------------------
 # Target.
 #-------------------------------------------------------------------------------
 IF(NOT TARGET ${_COMMON_TARGET_NAME})
-    INCLUDE_DIRECTORIES(
-        ${common_INCLUDE_DIRS})
-    ADD_DEFINITIONS(
-        ${common_DEFINITIONS})
+    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
+        INCLUDE_DIRECTORIES(
+            ${_COMMON_INCLUDE_DIRECTORIES_PUBLIC})
+        ADD_DEFINITIONS(
+            ${_COMMON_COMPILE_DEFINITIONS_PUBLIC})
+    ENDIF()
     # Always add all files to the target executable build call to add them to the build project.
     ADD_LIBRARY(
         ${_COMMON_TARGET_NAME}
         STATIC
         ${_COMMON_FILES_HEADER} ${_COMMON_FILES_SOURCE} ${_COMMON_FILES_CMAKE})
     # Set the link libraries for this library (adds libs, include directories, defines and compile options).
-    TARGET_LINK_LIBRARIES(
-        ${_COMMON_TARGET_NAME}
-        PUBLIC "alpaka" ${common_LIBRARIES})
+    IF(NOT CMAKE_VERSION VERSION_LESS 3.7.0)
+        TARGET_INCLUDE_DIRECTORIES(
+            ${_COMMON_TARGET_NAME}
+            PUBLIC ${_COMMON_INCLUDE_DIRECTORIES_PUBLIC})
+        TARGET_COMPILE_OPTIONS(
+            ${_COMMON_TARGET_NAME}
+            PUBLIC ${_COMMON_COMPILE_DEFINITIONS_PUBLIC})
+        TARGET_LINK_LIBRARIES(
+            ${_COMMON_TARGET_NAME}
+            PUBLIC "alpaka")
+        # TODO: Remove _COMMON_LINK_LIBRARIES_PUBLIC when removing the else.
+    ELSE()
+        TARGET_LINK_LIBRARIES(
+            ${_COMMON_TARGET_NAME}
+            PUBLIC "alpaka" ${_COMMON_LINK_LIBRARIES_PUBLIC})
+    ENDIF()
     SET_TARGET_PROPERTIES(
         ${_COMMON_TARGET_NAME}
         PROPERTIES FOLDER "test")
 ENDIF()
 
 # Unset already set variables if not found.
-IF(NOT _COMMON_FOUND)
-    UNSET(common_FOUND)
-    UNSET(common_DEFINITIONS)
-    UNSET(common_INCLUDE_DIR)
-    UNSET(common_INCLUDE_DIRS)
-    UNSET(common_LIBRARIES)
+IF(_COMMON_FOUND)
+    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
+        SET(common_INCLUDE_DIR "${_COMMON_INCLUDE_DIRECTORY}")
+        MARK_AS_ADVANCED(common_INCLUDE_DIR)
+        SET(common_INCLUDE_DIRS "${_COMMON_INCLUDE_DIRECTORIES_PUBLIC}")
+        SET(common_DEFINITIONS "${_COMMON_COMPILE_DEFINITIONS_PUBLIC}")
+        SET(common_LIBRARIES "${_COMMON_LINK_LIBRARIES_PUBLIC}")
+    ENDIF()
 
-    UNSET(_COMMON_FOUND)
-    UNSET(_COMMON_INCLUDE_DIRECTORY)
-    UNSET(_COMMON_SOURCE_DIRECTORY)
-    UNSET(_COMMON_TARGET_NAME)
-    UNSET(_COMMON_FILES_HEADER)
-    UNSET(_COMMON_FILES_SOURCE)
-    UNSET(_COMMON_FILES_CMAKE)
-ELSE()
-    # Make internal variables advanced options in the GUI.
-    MARK_AS_ADVANCED(
-        common_INCLUDE_DIR)
+    # Handles the REQUIRED, QUIET and version-related arguments for FIND_PACKAGE.
+    INCLUDE(FindPackageHandleStandardArgs)
+    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
+        FIND_PACKAGE_HANDLE_STANDARD_ARGS(
+            ${_COMMON_TARGET_NAME}
+            FOUND_VAR common_FOUND
+            REQUIRED_VARS common_INCLUDE_DIR)
+    ELSE()
+        FIND_PACKAGE_HANDLE_STANDARD_ARGS(
+            ${_COMMON_TARGET_NAME}
+            FOUND_VAR common_FOUND
+            REQUIRED_VARS _COMMON_INCLUDE_DIRECTORY)
+    ENDIF()
 ENDIF()
 
-###############################################################################
-# FindPackage options
-###############################################################################
-
-# Handles the REQUIRED, QUIET and version-related arguments for FIND_PACKAGE.
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(
-    ${_COMMON_TARGET_NAME}
-    FOUND_VAR common_FOUND
-    REQUIRED_VARS common_INCLUDE_DIR)
+UNSET(_COMMON_FOUND)
+UNSET(_COMMON_INCLUDE_DIRECTORY)
+UNSET(_COMMON_INCLUDE_DIRECTORIES_PUBLIC)
+UNSET(_COMMON_COMPILE_DEFINITIONS_PUBLIC)
+UNSET(_COMMON_LINK_LIBRARIES_PUBLIC)
+UNSET(_COMMON_SOURCE_DIRECTORY)
+UNSET(_COMMON_TARGET_NAME)
+UNSET(_COMMON_FILES_HEADER)
+UNSET(_COMMON_FILES_SOURCE)
+UNSET(_COMMON_FILES_CMAKE)

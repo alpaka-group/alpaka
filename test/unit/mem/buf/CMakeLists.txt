@@ -67,16 +67,26 @@ SET(_SOURCE_DIR "src/")
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "cpp" _FILES_SOURCE)
 
-INCLUDE_DIRECTORIES(
-    ${_INCLUDE_DIRECTORIES_PRIVATE}
-    ${common_INCLUDE_DIRS})
-ADD_DEFINITIONS(
-    ${_DEFINITIONS_PRIVATE}
-    ${common_DEFINITIONS})
+IF(CMAKE_VERSION VERSION_LESS 3.7.0)
+    INCLUDE_DIRECTORIES(
+        ${_INCLUDE_DIRECTORIES_PRIVATE}
+        ${common_INCLUDE_DIRS})
+    ADD_DEFINITIONS(
+        ${_DEFINITIONS_PRIVATE}
+        ${common_DEFINITIONS})
+ENDIF()
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
     ${_TARGET_NAME}
     ${_FILES_SOURCE})
+IF(NOT CMAKE_VERSION VERSION_LESS 3.7.0)
+  TARGET_INCLUDE_DIRECTORIES(
+      ${_TARGET_NAME}
+      PRIVATE ${_INCLUDE_DIRECTORIES_PRIVATE})
+  TARGET_COMPILE_OPTIONS(
+      ${_TARGET_NAME}
+      PRIVATE ${_DEFINITIONS_PRIVATE})
+ENDIF()
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
     ${_TARGET_NAME}
