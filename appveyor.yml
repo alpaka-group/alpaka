@@ -74,7 +74,7 @@ environment:
         - OMP_NUM_THREADS: 1
           ALPAKA_BOOST_BRANCH: boost-1.59.0
         - OMP_NUM_THREADS: 3
-          ALPAKA_BOOST_BRANCH: boost-1.62.0
+          ALPAKA_BOOST_BRANCH: boost-1.63.0
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: develop
 
