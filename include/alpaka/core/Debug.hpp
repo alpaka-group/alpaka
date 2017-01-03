@@ -22,7 +22,7 @@
 #pragma once
 
 #include <boost/current_function.hpp>
-#include <boost/predef.h>                   // workarounds
+#include <alpaka/core/BoostPredefWorkaround.hpp> // workarounds
 /*#include <boost/preprocessor/stringize.hpp> // BOOST_PP_STRINGIZE
 
 #include <stdexcept>                        // std::runtime_error*/
