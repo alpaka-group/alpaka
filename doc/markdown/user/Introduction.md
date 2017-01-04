@@ -36,7 +36,7 @@ Even more specialized architectures will appear and find their way into HPC.
 New hardware will not only allow to execute faster or calculate more but will furthermore enable the usage of new algorithms for more precise simulations.
 For example, some tasks may require random searches for only a few values in a lookup table of up to hundreds of gigabytes.
 This would perfectly fit to a CPUs, while the rest of the simulation would still be running on the GPUs.
-With new hardware bringing those two worlds closer together, exploting the heterogeneous hardware with heterogenous algorithms will likealy be the way to go in the future.
+With new hardware bringing those two worlds closer together, exploiting the heterogeneous hardware with heterogenous algorithms will likely be the way to go in the future.
 Being able to express both of those parallel tasks in the same way would greatly enhance the productivity of the programmer and the clarity of the code.
 
 Porting a complicated simulation code from *CUDA* to x86 and possibly to other hardware architectures is a non-trivial task.
@@ -126,7 +126,7 @@ Additionally there is no supported free emulator allowing to execute *CUDA* code
 
 The *CUDA* API is a higher level part of the programming model which allows to access and execute code on GPUs from multiple host languages including C++.
 The *CUDA* C/C++ language on the other hand is a mid level construct based on standard C++ with some extensions for accelerator programming and limitations in the supported constructs.
-For example, throwing and catching exceptions as well as runt-time type information (RTTI) are not supported.
+For example, throwing and catching exceptions as well as run-time type information (RTTI) are not supported.
 *CUDA* C/C++ is compiled to a low level virtual instruction set called PTX (Parallel Thread Execution).
 The PTX code is later compiled to assembler code by the GPU driver.
 
@@ -136,7 +136,7 @@ After the compilation steps both binaries are linked together to form the final 
 
 *CUDA* defines a heterogeneous programming model where tasks are offloaded from the host CPU to the device GPU.
 Functions that should be offloaded to the GPU are called kernels.
-As can be seen in figure below a grid of such kernels is executed in parallel by multiple threads organized in blocks.
+As can be seen in the figure below a grid of such kernels is executed in parallel by multiple threads organized in blocks.
 Threads within a block can synchronize, while blocks are executed independently and possibly in sequential order depending on the underlying hardware.
 ![grid-of-thread-blocks](https://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/grid-of-thread-blocks.png)
 
@@ -219,7 +219,7 @@ As of now there is no usable free compiler implementation available that has goo
 
 ### [C++ AMP (Accelerated Massive Parallelism)](https://msdn.microsoft.com/en-us/library/hh265136.aspx)
 is an open specification from *Microsoft* currently implemented on top of *DirectX 11*.
-It is an language extension requiring compiler support that allows to annotate C++ code that can then be run on multiple accelerators.
+It is a language extension requiring compiler support that allows to annotate C++ code that can then be run on multiple accelerators.
 *C++ AMP* requires the usage of the `array` data structure or the `array_view` wrapper responsible for copying data to and from the accelerator devices.
 The `parallel_for_each` function is responsible for offloading the provided function object whose `operator()` has to be annotated with `restrict(amp)`.
 The threads can access shared memory and synchronize.
@@ -265,8 +265,8 @@ U\PC++
 Distinction of the *alpaka* Library
 ------------------------------------------
 
-In section about the problems we saw that all the portability problems of current HPC codes could be solved with an abstract interface unifying the underlying accelerator back-ends.
-The previos section showed that there is currently no project available that could solve all of the problems highlighted.
+In the section about the problems we saw that all portability problems of current HPC codes could be solved with an abstract interface unifying the underlying accelerator back-ends.
+The previous section showed that there is currently no project available that could solve all of the problems highlighted.
 The C++ interface library proposed to solve all those problems is called *alpaka*.
 The subsequent enumeration will summarize the purpose of the library:
 
@@ -277,7 +277,7 @@ The subsequent enumeration will summarize the purpose of the library:
 
 * solving the **heterogeneity** problem. An identical algorithm / kernel can be executed on heterogeneous parallel systems by selecting the target device.
 
-* reducing the **maintainability** burden by not requiring to duplicate all the parts of the simulation that are directly facing the parallelization framework. Instead, it allows to provide a single version of the algorithm / kernel that can be used by all back-ends. All the accelerator depending implementation details are hidden within the *alpaka* library.
+* reducing the **maintainability** burden by not requiring to duplicate all the parts of the simulation that are directly facing the parallelization framework. Instead, it allows to provide a single version of the algorithm / kernel that can be used by all back-ends. All the accelerator dependent implementation details are hidden within the *alpaka* library.
 
 * simplifying the **testability** by enabling **easy back-end switching**. No special hardware is required for testing the kernels. Even if the simulation itself will always use the *CUDA* back-end, the tests can completely run on a CPU. As long as the *alpaka* library is thoroughly tested for compatibility between the acceleration back-ends, the user simulation code is guaranteed to generate identical results (ignoring rounding errors / non-determinism) and is portable without any changes.
 
