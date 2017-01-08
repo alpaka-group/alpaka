@@ -46,21 +46,35 @@ namespace alpaka
                 namespace traits
                 {
                     //#############################################################################
+                    // \tparam T Type to conditionally make const.
+                    // \tparam TSource Type to mimic the constness of.
+                    //#############################################################################
+                    template<
+                        typename T,
+                        typename TSource>
+                    using MimicConst = typename std::conditional<
+                        std::is_const<TSource>::value,
+                        typename std::add_const<T>::type,
+                        typename std::remove_const<T>::type>;
+
+                    //#############################################################################
                     //!
                     //#############################################################################
                     template<
                         typename TView,
                         typename TSfinae = void>
-                    struct IteratorType
+                    class IteratorView
                     {
-                        using Dim  = alpaka::dim::Dim<TView>;
-                        using Size = alpaka::size::Size<TView>;
-                        using Elem = alpaka::elem::Elem<TView>;
+                        using TViewDecayed = typename std::decay<TView>::type;
+                        using Dim = alpaka::dim::Dim<TViewDecayed>;
+                        using Size = alpaka::size::Size<TViewDecayed>;
+                        using Elem = typename MimicConst<alpaka::elem::Elem<TViewDecayed>, TView>::type;
 
+                    public:
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST IteratorType(
+                        ALPAKA_FN_HOST IteratorView(
                             TView & view,
                             Size const idx) :
                                 m_nativePtr(alpaka::mem::view::getPtrNative(view)),
@@ -72,16 +86,16 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST IteratorType(
+                        ALPAKA_FN_HOST IteratorView(
                             TView & view) :
-                                IteratorType(view, 0)
+                                IteratorView(view, 0)
                         {}
 
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator++()
-                        -> IteratorType&
+                        -> IteratorView&
                         {
                             ++m_currentIdx;
                             return *this;
@@ -91,7 +105,7 @@ namespace alpaka
                         //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator--()
-                        -> IteratorType&
+                        -> IteratorView&
                         {
                             --m_currentIdx;
                             return *this;
@@ -102,9 +116,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator++(
                             int)
-                        -> IteratorType
+                        -> IteratorView
                         {
-                            IteratorType iterCopy = *this;
+                            IteratorView iterCopy = *this;
                             m_currentIdx++;
                             return iterCopy;
                         }
@@ -114,9 +128,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator--(
                             int)
-                        -> IteratorType
+                        -> IteratorView
                         {
-                            IteratorType iterCopy = *this;
+                            IteratorView iterCopy = *this;
                             m_currentIdx--;
                             return iterCopy;
                         }
@@ -166,8 +180,9 @@ namespace alpaka
                             return *ptr;
                         }
 
-                        Elem * m_nativePtr;
-                        Size  m_currentIdx;
+                    private:
+                        Elem * const m_nativePtr;
+                        Size m_currentIdx;
                         vec::Vec<Dim, Size> const m_extents;
                         vec::Vec<Dim, Size> const m_pitchBytes;
                     };
@@ -185,9 +200,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto begin(
                             TView & view)
-                        -> IteratorType<TView>
+                        -> IteratorView<TView>
                         {
-                            return IteratorType<TView>(view);
+                            return IteratorView<TView>(view);
                         }
                     };
 
@@ -204,10 +219,10 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto end(
                             TView & view)
-                        -> IteratorType<TView>
+                        -> IteratorView<TView>
                         {
                             auto extents = alpaka::extent::getExtentVec(view);
-                            return IteratorType<TView>(view, extents.prod());
+                            return IteratorView<TView>(view, extents.prod());
                         }
                     };
                 }
@@ -217,8 +232,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TView>
-                using Iterator = traits::IteratorType<TView>;
-
+                using Iterator = traits::IteratorView<TView>;
 
                 //-----------------------------------------------------------------------------
                 //!
