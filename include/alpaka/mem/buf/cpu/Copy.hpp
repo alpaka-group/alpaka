@@ -218,31 +218,31 @@ namespace alpaka
                             }
                         }
 
-                        Size m_extentWidth;
-                        Size m_extentWidthBytes;
-                        Size m_dstWidth;
-                        Size m_srcWidth;
-                        Size m_dstBufWidth;
-                        Size m_srcBufWidth;
+                        Size const m_extentWidth;
+                        Size const m_extentWidthBytes;
+                        Size const m_dstWidth;
+                        Size const m_srcWidth;
+                        Size const m_dstBufWidth;
+                        Size const m_srcBufWidth;
 
-                        Size m_extentHeight;
-                        Size m_dstHeight;
-                        Size m_srcHeight;
-                        Size m_dstBufHeight;
-                        Size m_srcBufHeight;
+                        Size const m_extentHeight;
+                        Size const m_dstHeight;
+                        Size const m_srcHeight;
+                        Size const m_dstBufHeight;
+                        Size const m_srcBufHeight;
 
-                        Size m_extentDepth;
+                        Size const m_extentDepth;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        Size m_dstDepth;
-                        Size m_srcDepth;
+                        Size const m_dstDepth;
+                        Size const m_srcDepth;
 #endif
-                        Size m_dstPitchBytesX;
-                        Size m_srcPitchBytesX;
-                        Size m_dstPitchBytesY;
-                        Size m_srcPitchBytesY;
+                        Size const m_dstPitchBytesX;
+                        Size const m_srcPitchBytesX;
+                        Size const m_dstPitchBytesY;
+                        Size const m_srcPitchBytesY;
 
-                        std::uint8_t * m_dstMemNative;
-                        std::uint8_t const * m_srcMemNative;
+                        std::uint8_t * const m_dstMemNative;
+                        std::uint8_t const * const m_srcMemNative;
                     };
                 }
             }
