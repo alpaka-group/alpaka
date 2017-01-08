@@ -193,7 +193,7 @@ namespace alpaka
                 "The dimension of the extent given to ndLoop has to be larger than zero!");
             static_assert(
                 meta::IntegerSequenceValuesInRange<meta::IndexSequence<Tdims...>, std::size_t, 0, dim::Dim<TExtentVec>::value>::value,
-                "The values in the IndexSequence have to in the rang [0,dim-1]!");
+                "The values in the IndexSequence have to be in the range [0,dim-1]!");
             static_assert(
                 meta::IntegerSequenceValuesUnique<meta::IndexSequence<Tdims...>>::value,
                 "The values in the IndexSequence have to be unique!");
