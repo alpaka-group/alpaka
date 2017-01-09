@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     View view(buf, extentView, offsetView);
 
     //-----------------------------------------------------------------------------
-    viewTest<
+    alpaka::test::mem::view::viewTestImmutable<
         Elem>(
             view,
             dev,
