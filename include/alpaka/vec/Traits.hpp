@@ -65,6 +65,15 @@ namespace alpaka
                 typename TVec,
                 typename TSfinae = void>
             struct Reverse;
+
+            //#############################################################################
+            //! Trait for concatenating two vectors.
+            //#############################################################################
+            template<
+                typename TVecL,
+                typename TVecR,
+                typename TSfinae = void>
+            struct Concat;
         }
 
         //-----------------------------------------------------------------------------
@@ -216,6 +225,35 @@ namespace alpaka
                     TVec>
                 ::reverse(
                     vec);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The concatenated vector.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TVecL,
+            typename TVecR>
+        ALPAKA_FN_HOST_ACC auto concat(
+            TVecL const & vecL,
+            TVecR const & vecR)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+        -> decltype(
+            traits::Concat<
+                TVecL,
+                TVecR>
+            ::concat(
+                vecL,
+                vecR))
+#endif
+        {
+            return
+                traits::Concat<
+                    TVecL,
+                    TVecR>
+                ::concat(
+                    vecL,
+                    vecR);
         }
     }
 }

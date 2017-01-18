@@ -928,6 +928,66 @@ namespace alpaka
                 }
             };
         }
+
+        namespace detail
+        {
+            //#############################################################################
+            //! A function object that returns the value at the index from the back of the vector.
+            //#############################################################################
+            template<
+                std::size_t Tidx>
+            struct CreateConcat
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TDimL,
+                    typename TDimR,
+                    typename TSize>
+                ALPAKA_FN_HOST_ACC static auto create(
+                    Vec<TDimL, TSize> const & vecL,
+                    Vec<TDimR, TSize> const & vecR)
+                -> TSize
+                {
+                    return Tidx < TDimL::value ? vecL[Tidx] : vecR[Tidx - TDimL::value];
+                }
+            };
+        }
+        namespace traits
+        {
+            //#############################################################################
+            //! Concatenation specialization for Vec.
+            //#############################################################################
+            template<
+                typename TDimL,
+                typename TDimR,
+                typename TSize>
+            struct Concat<
+                Vec<TDimL, TSize>,
+                Vec<TDimR, TSize>>
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto concat(
+                    Vec<TDimL, TSize> const & vecL,
+                    Vec<TDimR, TSize> const & vecR)
+                -> Vec<dim::DimInt<TDimL::value + TDimR::value>, TSize>
+                {
+                    return
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                        Vec<dim::DimInt<TDimL::value + TDimR::value>, TSize>::template
+#endif
+                        createVecFromIndexedFn<
+#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                            dim::DimInt<TDimL::value + TDimR::value>,
+#endif
+                            vec::detail::CreateConcat>(
+                                vecL,
+                                vecR);
+                }
+            };
+        }
     }
 
     namespace extent
