@@ -159,8 +159,6 @@ namespace alpaka
         class Vec final
         {
         public:
-            static_assert(TDim::value>0, "Dimensionality of the vector is required to be greater then zero!");
-
             using Dim = TDim;
             static constexpr auto s_uiDim = TDim::value;
             using Val = TSize;
@@ -172,8 +170,16 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            // NOTE: No default constructor!
+            // The default constructor is only available when the vector is zero-dimensional.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<
+                bool B = (TDim::value == 0u),
+                typename = typename std::enable_if<B>::type>
+            ALPAKA_FN_HOST_ACC Vec() :
+                m_data{static_cast<TSize>(0u)}
+            {}
+
 
             //-----------------------------------------------------------------------------
             //! Value constructor.
@@ -545,7 +551,8 @@ namespace alpaka
             }
 
         private:
-            TSize m_data[TDim::value];
+            // Zero sized arrays are not allowed, therefore zero-dimensional vectors have one member.
+            TSize m_data[TDim::value == 0u ? 1u : TDim::value];
         };
 
         namespace detail
@@ -786,6 +793,11 @@ namespace alpaka
                     Vec<TDim, TSize> const & vec)
                 -> Vec<dim::DimInt<sizeof...(TIndices)>, TSize>
                 {
+#if !BOOST_ARCH_CUDA_DEVICE
+                    // In the case of a zero dimensional vector, vec is unused.
+                    boost::ignore_unused(vec);
+#endif
+
                     static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
                     return Vec<dim::DimInt<sizeof...(TIndices)>, TSize>(vec[TIndices]...);
