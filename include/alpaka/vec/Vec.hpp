@@ -1,23 +1,23 @@
 /**
-* \file
-* Copyright 2014-2015 Benjamin Worpitz
-*
-* This file is part of alpaka.
-*
-* alpaka is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* alpaka is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public License
-* along with alpaka.
-* If not, see <http://www.gnu.org/licenses/>.
-*/
+ * \file
+ * Copyright 2014-2017 Benjamin Worpitz
+ *
+ * This file is part of alpaka.
+ *
+ * alpaka is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * alpaka is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with alpaka.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #pragma once
 
@@ -700,6 +700,57 @@ namespace alpaka
                         q);
         }
 
+        namespace detail
+        {
+            //#############################################################################
+            //! A function object that returns the element wise less than relation of two vectors.
+            //#############################################################################
+            template<
+                std::size_t Tidx>
+            struct CreateLessEqual
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TDim,
+                    typename TSize>
+                ALPAKA_FN_HOST_ACC static auto create(
+                    Vec<TDim, TSize> const & p,
+                    Vec<TDim, TSize> const & q)
+                -> bool
+                {
+                    return p[Tidx] <= q[Tidx];
+                }
+            };
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The element wise less than relation of two vectors.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TDim,
+            typename TSize>
+        ALPAKA_FN_HOST_ACC auto operator<=(
+            Vec<TDim, TSize> const & p,
+            Vec<TDim, TSize> const & q)
+        -> Vec<TDim, bool>
+        {
+            return
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                Vec<TDim, bool>::template
+#endif
+                createVecFromIndexedFn<
+#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                    TDim,
+#endif
+                    detail::CreateLessEqual>(
+                        p,
+                        q);
+        }
+
         //-----------------------------------------------------------------------------
         //! Stream out operator.
         //-----------------------------------------------------------------------------
@@ -842,7 +893,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! Specialization for selecting a sub-vector.
+            //! Cast specialization for Vec.
             //#############################################################################
             template<
                 typename TSizeNew,
@@ -853,11 +904,11 @@ namespace alpaka
                 Vec<TDim, TSize>>
             {
                 //-----------------------------------------------------------------------------
-                //! Cast constructor.
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto cast(
-                    Vec<TDim, TSize> const & other)
+                    Vec<TDim, TSize> const & vec)
                 -> Vec<TDim, TSizeNew>
                 {
                     return
@@ -870,7 +921,29 @@ namespace alpaka
 #endif
                             vec::detail::CreateCast>(
                                 TSizeNew(),
-                                other);
+                                vec);
+                }
+            };
+
+            //#############################################################################
+            //! (Non-)Cast specialization for Vec when src and dst types are identical.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct Cast<
+                TSize,
+                Vec<TDim, TSize>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto cast(
+                    Vec<TDim, TSize> const & vec)
+                -> Vec<TDim, TSize>
+                {
+                    return vec;
                 }
             };
         }
@@ -902,7 +975,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! Specialization for selecting a sub-vector.
+            //! Reverse specialization for Vec.
             //#############################################################################
             template<
                 typename TDim,
@@ -925,6 +998,23 @@ namespace alpaka
 #endif
                             vec::detail::CreateReverse>(
                                 vec);
+                }
+            };
+
+            //#############################################################################
+            //! (Non-)Reverse specialization for 1D Vec.
+            //#############################################################################
+            template<
+                typename TSize>
+            struct Reverse<
+                Vec<dim::DimInt<1u>, TSize>>
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto reverse(
+                    Vec<dim::DimInt<1u>, TSize> const & vec)
+                -> Vec<dim::DimInt<1u>, TSize>
+                {
+                    return vec;
                 }
             };
         }
