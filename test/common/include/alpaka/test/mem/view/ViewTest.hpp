@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2015 Benjamin Worpitz
+ * Copyright 2015-2017 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -22,6 +22,8 @@
 #pragma once
 
 #include <alpaka/alpaka.hpp>
+
+#include <alpaka/test/mem/view/Iterator.hpp>    // Iterator
 
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
@@ -49,11 +51,6 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             namespace view
             {
-
-
-
-
-
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
@@ -155,6 +152,253 @@ namespace alpaka
                         static_assert(
                             std::is_same<alpaka::size::Size<TView>, TSize>::value,
                             "The size type of the view has to be equal to the specified one.");
+                    }
+                }
+
+                //#############################################################################
+                //! Compares element-wise that all bytes are set to the same value.
+                //#############################################################################
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
+#endif
+                struct VerifyBytesSetKernel
+                {
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    template<
+                        typename TAcc,
+                        typename TIter>
+                    ALPAKA_FN_ACC void operator()(
+                        TAcc const & acc,
+                        TIter const & begin,
+                        TIter const & end,
+                        std::uint8_t const & byte) const
+                    {
+                        constexpr auto elemSizeInByte = sizeof(decltype(*begin));
+                        (void)acc;
+                        for(auto it = begin; it != end; ++it)
+                        {
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
+#endif
+                            auto const& elem = *it;
+                            auto const pBytes = reinterpret_cast<std::uint8_t const *>(&elem);
+                            for(std::size_t i = 0u; i < elemSizeInByte; ++i)
+                            {
+                                BOOST_VERIFY(pBytes[i] == byte);
+                            }
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
+                        }
+                    }
+                };
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TAcc,
+                    typename TView,
+                    typename TStream>
+                static auto verifyBytesSet(
+                    TStream & stream,
+                    TView const & view,
+                    std::uint8_t const & byte)
+                -> void
+                {
+                    using Dim = alpaka::dim::Dim<TView>;
+                    using Size = alpaka::size::Size<TView>;
+
+                    using Vec = alpaka::vec::Vec<Dim, Size>;
+                    auto const elementsPerThread(Vec::ones());
+                    auto const threadsPerBlock(Vec::ones());
+                    auto const blocksPerGrid(Vec::ones());
+
+                    auto const workdiv(
+                        alpaka::workdiv::WorkDivMembers<Dim, Size>(
+                            blocksPerGrid,
+                            threadsPerBlock,
+                            elementsPerThread));
+                    VerifyBytesSetKernel verifyBytesSet;
+                    auto const compare(
+                        alpaka::exec::create<TAcc>(
+                            workdiv,
+                            verifyBytesSet,
+                            alpaka::test::mem::view::begin(view),
+                            alpaka::test::mem::view::end(view),
+                            byte));
+                    alpaka::stream::enqueue(stream, compare);
+                    alpaka::wait::wait(stream);
+                }
+
+                //#############################################################################
+                //! Compares iterators element-wise
+                //#############################################################################
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
+#endif
+                struct VerifyViewsEqualKernel
+                {
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    template<
+                        typename TAcc,
+                        typename TIterA,
+                        typename TIterB>
+                    ALPAKA_FN_ACC void operator()(
+                        TAcc const & acc,
+                        TIterA beginA,
+                        TIterA const & endA,
+                        TIterB beginB) const
+                    {
+                        (void)acc;
+                        for(; beginA != endA; ++beginA, ++beginB)
+                        {
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
+#endif
+                            BOOST_VERIFY(*beginA == *beginB);
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
+                        }
+                    }
+                };
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
+
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TAcc,
+                    typename TViewB,
+                    typename TViewA,
+                    typename TStream>
+                static auto verifyViewsEqual(
+                    TStream & stream,
+                    TViewA const & viewA,
+                    TViewB const & viewB)
+                -> void
+                {
+                    using DimA = alpaka::dim::Dim<TViewA>;
+                    using DimB = alpaka::dim::Dim<TViewB>;
+                    static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
+                    using SizeA = alpaka::size::Size<TViewA>;
+                    using SizeB = alpaka::size::Size<TViewB>;
+                    static_assert(std::is_same<SizeA, SizeB>::value, "viewA and viewB are required to have identical Size");
+
+                    using Vec = alpaka::vec::Vec<DimA, SizeA>;
+                    auto const elementsPerThread(Vec::ones());
+                    auto const threadsPerBlock(Vec::ones());
+                    auto const blocksPerGrid(Vec::ones());
+
+                    auto const workdiv(
+                        alpaka::workdiv::WorkDivMembers<DimA, SizeA>(
+                            blocksPerGrid,
+                            threadsPerBlock,
+                            elementsPerThread));
+                    VerifyViewsEqualKernel verifyViewsEqualKernel;
+                    auto const compare(
+                        alpaka::exec::create<TAcc>(
+                            workdiv,
+                            verifyViewsEqualKernel,
+                            alpaka::test::mem::view::begin(viewA),
+                            alpaka::test::mem::view::end(viewA),
+                            alpaka::test::mem::view::begin(viewB)));
+                    alpaka::stream::enqueue(stream, compare);
+                    alpaka::wait::wait(stream);
+                }
+
+                //-----------------------------------------------------------------------------
+                //! Fills the given view with increasing values starting at 0.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TView,
+                    typename TStream>
+                static auto iotaFillView(
+                    TStream & stream,
+                    TView & view)
+                -> void
+                {
+                    using Dim = alpaka::dim::Dim<TView>;
+                    using Size = alpaka::size::Size<TView>;
+
+                    using DevHost = alpaka::dev::DevCpu;
+                    using PltfHost = alpaka::pltf::Pltf<DevHost>;
+
+                    using Elem = alpaka::elem::Elem<TView>;
+
+                    using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
+
+                    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0));
+
+                    auto const extent(alpaka::extent::getExtentVec(view));
+
+                    // Init buf with increasing values
+                    std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
+                    std::iota(v.begin(), v.end(), static_cast<Elem>(0));
+                    ViewPlainPtr plainBuf(v.data(), devHost, extent);
+
+                    // Copy the generated content into the given view.
+                    alpaka::mem::view::copy(stream, view, plainBuf, extent);
+
+                    alpaka::wait::wait(stream);
+                }
+
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TAcc,
+                    typename TView,
+                    typename TStream>
+                static auto viewTestMutable(
+                    TStream & stream,
+                    TView & view)
+                -> void
+                {
+                    using Size = alpaka::size::Size<TView>;
+
+                    auto const extent(alpaka::extent::getExtentVec(view));
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::mem::view::set
+                    {
+                        std::uint8_t const byte(static_cast<uint8_t>(42u));
+                        alpaka::mem::view::set(stream, view, byte, extent);
+                        verifyBytesSet<TAcc>(stream, view, byte);
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::mem::view::copy
+                    {
+                        using Elem = alpaka::elem::Elem<TView>;
+
+                        auto const devAcc = alpaka::dev::getDev(view);
+
+                        //-----------------------------------------------------------------------------
+                        // alpaka::mem::view::copy into given view
+                        {
+                            auto srcBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extent));
+                            iotaFillView(stream, srcBufAcc);
+                            alpaka::mem::view::copy(stream, view, srcBufAcc, extent);
+                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(stream, view, srcBufAcc);
+                        }
+
+                        //-----------------------------------------------------------------------------
+                        // alpaka::mem::view::copy from given view
+                        {
+                            auto dstBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extent));
+                            alpaka::mem::view::copy(stream, dstBufAcc, view, extent);
+                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(stream, dstBufAcc, view);
+                        }
                     }
                 }
             }

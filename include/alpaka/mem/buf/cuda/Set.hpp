@@ -99,7 +99,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The CPU device memory set trait specialization.
+                //! The CUDA device memory set trait specialization.
                 //#############################################################################
                 template<
                     typename TDim>

@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2015 Benjamin Worpitz
+ * Copyright 2015-2017 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -104,12 +104,14 @@ static auto basicBufferOperationsTest(
 {
     using Dev = alpaka::dev::Dev<TAcc>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Stream = alpaka::test::stream::DefaultStream<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Stream stream(dev);
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::buf::alloc
@@ -123,6 +125,12 @@ static auto basicBufferOperationsTest(
             dev,
             extent,
             offset);
+
+    //-----------------------------------------------------------------------------
+    alpaka::test::mem::view::viewTestMutable<
+        TAcc>(
+            stream,
+            buf);
 }
 
 //-----------------------------------------------------------------------------

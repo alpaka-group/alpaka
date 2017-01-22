@@ -72,6 +72,10 @@ namespace alpaka
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
                             "The source and the destination view are required to have the same element type!");
 
+                        static_assert(
+                            dim::Dim<TExtent>::value <= 3u,
+                            "TaskCopy for DevCpu does not currently support views with more than 3 dimensions!");
+
                         //-----------------------------------------------------------------------------
                         //! Constructor.
                         //-----------------------------------------------------------------------------

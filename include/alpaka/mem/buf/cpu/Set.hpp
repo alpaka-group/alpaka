@@ -62,6 +62,10 @@ namespace alpaka
                             dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                             "The destination view and the extent are required to have the same dimensionality!");
 
+                        static_assert(
+                            dim::Dim<TView>::value <= 3u,
+                            "TaskSet for DevCpu does not currently support views with more than 3 dimensions!");
+
                         //-----------------------------------------------------------------------------
                         //! Constructor.
                         //-----------------------------------------------------------------------------

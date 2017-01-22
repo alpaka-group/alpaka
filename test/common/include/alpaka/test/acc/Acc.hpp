@@ -27,7 +27,8 @@
 #include <type_traits>                      // std::is_class
 #include <iosfwd>                           // std::ostream
 
-// When compiling the tests with nvcc on the CI infrastructure we have to dramatically reduce the number of tested combinations.
+// When compiling the tests with CUDA enabled (nvcc or native clang) on the CI infrastructure
+// we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && ALPAKA_CI
     #define ALPAKA_CUDA_CI
@@ -218,8 +219,12 @@ namespace alpaka
                 std::tuple<
                     alpaka::dim::DimInt<1u>,
                     //alpaka::dim::DimInt<2u>,
-                    alpaka::dim::DimInt<3u>/*,
-                    alpaka::dim::DimInt<4u>*/>;
+                    alpaka::dim::DimInt<3u>
+            // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
+#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
+                    /*,alpaka::dim::DimInt<4u>*/
+#endif
+                >;
 
             //#############################################################################
             //! A std::tuple holding size types.
@@ -244,10 +249,13 @@ namespace alpaka
                 std::tuple<
                     alpaka::dim::DimInt<1u>,
                     alpaka::dim::DimInt<2u>,
-                    alpaka::dim::DimInt<3u>,
+                    alpaka::dim::DimInt<3u>
+            // The CPU buffers do not support copy and set with more than 3 dimensions
+#if 0
             // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
-                    alpaka::dim::DimInt<4u>
+                    ,alpaka::dim::DimInt<4u>
+#endif
 #endif
                 >;
 
