@@ -49,6 +49,15 @@ BOOST_AUTO_TEST_CASE(
         static_cast<std::size_t>(8u),
         static_cast<std::size_t>(15u));
 
+
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::Vec zero elements
+    {
+        using Dim0 = alpaka::dim::DimInt<0u>;
+        alpaka::vec::Vec<Dim0, Size> const vec0{};
+    }
+
     //-----------------------------------------------------------------------------
     // alpaka::vec::subVecFromIndices
     {
