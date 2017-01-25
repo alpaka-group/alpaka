@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2015 Benjamin Worpitz
+ * Copyright 2015-2017 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -31,7 +31,6 @@
 #include <alpaka/test/acc/Acc.hpp>              // alpaka::test::acc::TestAccs
 #include <alpaka/test/stream/Stream.hpp>        // DefaultStream
 #include <alpaka/test/mem/view/ViewTest.hpp>    // viewTest
-#include <alpaka/test/mem/view/Iterator.hpp>    // Iterator
 
 #include <boost/assert.hpp>                     // BOOST_VERIFY
 #include <boost/predef.h>                       // BOOST_COMP_MSVC, BOOST_COMP_CLANG
@@ -118,54 +117,17 @@ static auto createVecFromIndexedFn()
                 TSize());
 }
 
-//#############################################################################
-//! Compares iterators element-wise
-//#############################################################################
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
-#endif
-struct CompareBufferKernel
-{
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc,
-        typename TIterA,
-        typename TIterB>
-    ALPAKA_FN_ACC void operator()(
-        TAcc const & acc,
-        TIterA beginA,
-        TIterA const & endA,
-        TIterB beginB) const
-    {
-        (void)acc;
-        for(; beginA != endA; ++beginA, ++beginB)
-        {
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
-#endif
-            BOOST_VERIFY(*beginA == *beginB);
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
-        }
-    }
-};
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic pop
-#endif
-
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    basicViewSubViewOperations,
+    viewSubViewTest,
     TAcc,
     alpaka::test::acc::TestAccs)
 {
     using Dev = alpaka::dev::Dev<TAcc>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Stream = alpaka::test::stream::DefaultStream<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
@@ -173,6 +135,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using View = alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Size>;
 
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Stream stream(dev);
 
     // We have to be careful with the extents used.
     // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
@@ -191,6 +154,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             dev,
             extentView,
             offsetView);
+
+    //-----------------------------------------------------------------------------
+    alpaka::test::mem::view::viewTestMutable<
+        TAcc>(
+            stream,
+            view);
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::view::traits::GetPitchBytes
@@ -223,221 +192,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         BOOST_REQUIRE_EQUAL(
             reinterpret_cast<Elem *>(viewPtrNative),
             alpaka::mem::view::getPtrNative(view));
-    }
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    copyViewSubViewStatic,
-    TAcc,
-    alpaka::test::acc::TestAccs)
-{
-    using Elem = float;
-    using Dim = alpaka::dim::Dim<TAcc>;
-    using Size = alpaka::size::Size<TAcc>;
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
-
-    using DevAcc = alpaka::dev::Dev<TAcc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
-
-    using DevHost = alpaka::dev::DevCpu;
-    using PltfHost = alpaka::pltf::Pltf<DevHost>;
-
-    using ViewSubView = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
-    using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
-
-    const Size nElementsPerDim = static_cast<Size>(4u);
-    const Size nElementsPerDimView = static_cast<Size>(2u);
-    const Size offsetInAllDims = static_cast<Size>(1u);
-
-    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
-    DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
-    StreamAcc stream(devAcc);
-
-    using Vec = alpaka::vec::Vec<Dim, Size>;
-
-    const auto elementsPerThread(Vec::ones());
-    const auto threadsPerBlock(Vec::ones());
-    const auto blocksPerGrid(Vec::ones());
-
-    WorkDiv const workdiv(
-        alpaka::workdiv::WorkDivMembers<Dim, Size>(
-            blocksPerGrid,
-            threadsPerBlock,
-            elementsPerThread));
-
-    // Init buf with increasing values
-    auto const extentBuf(Vec::all(nElementsPerDim));
-    auto bufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentBuf));
-    std::vector<Elem> v(static_cast<std::size_t>(extentBuf.prod()), static_cast<Elem>(0u));
-    std::iota(v.begin(), v.end(), static_cast<Elem>(0u));
-    ViewPlainPtr viewHost(v.data(), devHost, extentBuf);
-    alpaka::mem::view::copy(stream, bufAcc, viewHost, extentBuf);
-
-    // Create sub-view for buf.
-    auto const extentView(Vec::all(nElementsPerDimView));
-    auto const offsetView(Vec::all(offsetInAllDims));
-    ViewSubView subViewAcc(bufAcc, extentView, offsetView);
-
-    // Create 2nd buffer only containing the sub-view.
-    auto referenceBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentView));
-
-    CompareBufferKernel compareBufferKernel;
-
-    switch(Dim::value)
-    {
-    case 1:
-        {
-            std::vector<Elem> v2{1,2};
-            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
-            auto const compare(
-                alpaka::exec::create<TAcc>(
-                    workdiv,
-                    compareBufferKernel,
-                    alpaka::test::mem::view::begin(referenceBufAcc),
-                    alpaka::test::mem::view::end(referenceBufAcc),
-                    alpaka::test::mem::view::begin(subViewAcc)));
-            alpaka::stream::enqueue(stream, compare);
-            alpaka::wait::wait(stream);
-        break;
-        }
-    case 2:
-        {
-            std::vector<Elem> v2{5, 6, 9, 10};
-            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
-            auto const compare(
-                alpaka::exec::create<TAcc>(
-                    workdiv,
-                    compareBufferKernel,
-                    alpaka::test::mem::view::begin(referenceBufAcc),
-                    alpaka::test::mem::view::end(referenceBufAcc),
-                    alpaka::test::mem::view::begin(subViewAcc)));
-            alpaka::stream::enqueue(stream, compare);
-            alpaka::wait::wait(stream);
-            break;
-        }
-    case 3:
-        {
-            std::vector<Elem> v2{21, 22, 25, 26, 37, 38, 41, 42};
-            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
-            auto const compare(
-                alpaka::exec::create<TAcc>(
-                    workdiv,
-                    compareBufferKernel,
-                    alpaka::test::mem::view::begin(referenceBufAcc),
-                    alpaka::test::mem::view::end(referenceBufAcc),
-                    alpaka::test::mem::view::begin(subViewAcc)));
-            alpaka::stream::enqueue(stream, compare);
-            alpaka::wait::wait(stream);
-            break;
-        }
-    case 4:
-        {
-            /*
-            std::vector<Elem> v2{75, 76, 78, 79, 91, 92, 95, 96, 139, 140, 143, 144, 155, 156, 159, 160};
-            ViewPlainPtr referenceViewHost(v2.data(), devHost, extentView);
-            alpaka::mem::view::copy(stream, referenceBufAcc, referenceViewHost, extentView);
-            auto const compare(
-                alpaka::exec::create<TAcc>(
-                    workdiv,
-                    compareBufferKernel,
-                    alpaka::test::mem::view::begin(referenceBufAcc),
-                    alpaka::test::mem::view::end(referenceBufAcc),
-                    alpaka::test::mem::view::begin(subViewAcc)));
-            */
-            alpaka::wait::wait(stream);
-            break;
-        }
-    default:
-        alpaka::wait::wait(stream);
-        break;
-    };
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    copyViewSubViewGeneric,
-    TAcc,
-    alpaka::test::acc::TestAccs)
-{
-    using Elem = float;
-    using Dim = alpaka::dim::Dim<TAcc>;
-    using Size = alpaka::size::Size<TAcc>;
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
-
-    using DevAcc = alpaka::dev::Dev<TAcc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
-
-    using DevHost = alpaka::dev::DevCpu;
-    using PltfHost = alpaka::pltf::Pltf<DevHost>;
-
-    using View = alpaka::mem::view::ViewSubView<DevAcc, Elem, Dim, Size>;
-    using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
-
-#if BOOST_COMP_MSVC
-    #pragma warning(push)
-    #pragma warning(disable: 4127) // conditional expression is constant
-#endif
-
-    if(Dim::value != 4)
-
-#if BOOST_COMP_MSVC
-    #pragma warning(pop)
-#endif
-    {
-        DevHost const devHost (alpaka::pltf::getDevByIdx<PltfHost>(0));
-        DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
-        StreamAcc stream (devAcc);
-
-        auto const extentBuf(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
-        auto const extentView(createVecFromIndexedFn<Dim, Size, CreateExtentViewVal>());
-        auto const offsetView(alpaka::vec::Vec<Dim, Size>::all(sizeof(Size)));
-        auto buf(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentBuf));
-        auto buf2(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extentView));
-        View view(buf, extentView, offsetView);
-
-        //-----------------------------------------------------------------------------
-        // alpaka::mem::view::copy
-        // Init buf with increasing values
-        std::vector<Elem> v(static_cast<std::size_t>(extentBuf.prod()), static_cast<Elem>(0));
-        std::iota(v.begin(), v.end(), static_cast<Elem>(0));
-        ViewPlainPtr plainBuf(v.data(), devHost, extentBuf);
-        alpaka::mem::view::copy(stream, buf, plainBuf, extentBuf);
-
-        // Copy view into 2nd buf
-        alpaka::mem::view::copy(stream, buf2, view, extentView);
-
-        // Check values in 2nd buf
-        alpaka::vec::Vec<Dim, Size> const elementsPerThread(alpaka::vec::Vec<Dim, Size>::all(static_cast<Size>(1)));
-        alpaka::vec::Vec<Dim, Size> const threadsPerBlock(alpaka::vec::Vec<Dim, Size>::all(static_cast<Size>(1)));
-        alpaka::vec::Vec<Dim, Size> const blocksPerGrid(alpaka::vec::Vec<Dim, Size>::all(static_cast<Size>(1)));
-
-        WorkDiv const workdiv(
-            alpaka::workdiv::WorkDivMembers<Dim, Size>(
-                blocksPerGrid,
-                threadsPerBlock,
-                elementsPerThread));
-
-        CompareBufferKernel compareBufferKernel;
-        auto const compare(
-            alpaka::exec::create<TAcc>(
-                workdiv,
-                compareBufferKernel,
-                alpaka::test::mem::view::begin(buf2),
-                alpaka::test::mem::view::end(buf2),
-                alpaka::test::mem::view::begin(view)));
-
-        alpaka::stream::enqueue(stream, compare);
-        alpaka::wait::wait(stream);
     }
 }
 
