@@ -185,14 +185,18 @@
 //-----------------------------------------------------------------------------
 #include <alpaka/meta/Apply.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
-#include <alpaka/meta/Concatenate.hpp>
 #include <alpaka/meta/CartesianProduct.hpp>
+#include <alpaka/meta/Concatenate.hpp>
 #include <alpaka/meta/DependentFalseType.hpp>
 #include <alpaka/meta/Filter.hpp>
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/meta/ForEachType.hpp>
+#include <alpaka/meta/IntegerSequence.hpp>
+#include <alpaka/meta/IsIntegralSuperset.hpp>
+#include <alpaka/meta/IsStrictBase.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 #include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/Set.hpp>
 #include <alpaka/meta/StdTupleAsMplSequence.hpp>
 #include <alpaka/meta/Transform.hpp>
 
