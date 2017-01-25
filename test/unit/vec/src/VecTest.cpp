@@ -136,6 +136,59 @@ BOOST_AUTO_TEST_CASE(
             BOOST_REQUIRE_EQUAL(vecReverse[i], vec[Dim::value - 1u - i]);
         }
     }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::concat
+    {
+        using Dim2 = alpaka::dim::DimInt<2u>;
+        alpaka::vec::Vec<Dim2, Size> const vec2(
+            static_cast<std::size_t>(47u),
+            static_cast<std::size_t>(11u));
+
+        auto const vecConcat(
+            alpaka::vec::concat(
+                vec,
+                vec2));
+
+        static_assert(
+            std::is_same<alpaka::dim::Dim<std::decay<decltype(vecConcat)>::type>, alpaka::dim::DimInt<5u>>::value,
+            "Result dimension type of concatenation incorrect!");
+
+        for(typename Dim::value_type i(0); i < Dim::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecConcat[i], vec[i]);
+        }
+        for(typename Dim2::value_type i(0); i < Dim2::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecConcat[Dim::value + i], vec2[i]);
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::Vec operator <=
+    {
+        alpaka::vec::Vec<Dim, Size> const vec3(
+            static_cast<std::size_t>(47u),
+            static_cast<std::size_t>(11u),
+            static_cast<std::size_t>(3u));
+
+        auto const vecLessEqual(vec <= vec3);
+
+        static_assert(
+            std::is_same<alpaka::dim::Dim<std::decay<decltype(vecLessEqual)>::type>, Dim>::value,
+            "Result dimension type of operator <= incorrect!");
+
+        static_assert(
+            std::is_same<alpaka::size::Size<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
+            "Result size type of operator <= incorrect!");
+
+        alpaka::vec::Vec<Dim, bool> const referenceLessEqualVec(
+            true,
+            true,
+            false);
+
+        BOOST_REQUIRE_EQUAL(referenceLessEqualVec, vecLessEqual);
+    }
 }
 
 //#############################################################################
@@ -162,7 +215,7 @@ struct NonAlpakaVec
         for(TSize d(0); d < TDim::value; ++d)
         {
             result[TDim::value - 1 - d] = (*this)[d];
-        }    
+        }
 
         return result;
     }
