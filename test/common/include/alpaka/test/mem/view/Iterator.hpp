@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2016 Erik Zenker
+* Copyright 2014-2017 Erik Zenker, Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -164,20 +164,37 @@ namespace alpaka
                         -> Elem &
                         {
                             using Dim1 = dim::DimInt<1>;
+                            using DimMin1 = dim::DimInt<Dim::value - 1u>;
 
                             vec::Vec<Dim1, Size> const currentIdxDim1{m_currentIdx};
                             vec::Vec<Dim, Size> const currentIdxDimx(idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
-                            Elem * ptr = m_nativePtr;
+                            // [pz, py, px] -> [py, px]
+                            auto const pitchWithoutOutermost(vec::subVecEnd<DimMin1>(m_pitchBytes));
+                            // [ElemSize]
+                            vec::Vec<Dim1, Size> const elementSizeVec(static_cast<Size>(sizeof(Elem)));
+                            // [py, px] ++ [ElemSize] -> [py, px, ElemSize]
+                            vec::Vec<Dim, Size> const dstPitchBytes(vec::concat(pitchWithoutOutermost, elementSizeVec));
+                            // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
+                            auto const dimensionalOffsetsInByte(currentIdxDimx * dstPitchBytes);
+                            // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
+                            auto const offsetInByte(dimensionalOffsetsInByte.foldrAll(std::plus<Size>()));
 
-                            for(Size dim_i(0); dim_i + 1 < static_cast<Size>(Dim::value); ++dim_i)
-                            {
-                                ptr += static_cast<Size>(currentIdxDimx[dim_i] * m_pitchBytes[dim_i+1]) / static_cast<Size>(sizeof(Elem));
-                            }
+                            using Byte = typename MimicConst<std::uint8_t, Elem>::type;
+                            Byte* ptr(reinterpret_cast<Byte*>(m_nativePtr) + offsetInByte);
 
-                            ptr += currentIdxDimx[Dim::value - 1];
+#if 0
+                            std::cout
+                                << " i1: " << currentIdxDim1
+                                << " in: " << currentIdxDimx
+                                << " dpb: " << dstPitchBytes
+                                << " offb: " << offsetInByte
+                                << " ptr: " << reinterpret_cast<void const *>(ptr)
+                                << " v: " << *reinterpret_cast<Elem *>(ptr)
+                                << std::endl;
+#endif
 
-                            return *ptr;
+                            return *reinterpret_cast<Elem *>(ptr);
                         }
 
                     private:

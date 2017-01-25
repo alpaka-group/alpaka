@@ -144,8 +144,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    // We have to be careful with the extents used.
-    // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
     auto const extent(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
 
     basicBufferOperationsTest<
