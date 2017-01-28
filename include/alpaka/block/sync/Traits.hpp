@@ -50,11 +50,11 @@ namespace alpaka
                 template<
                     typename TBlockSync,
                     typename TSfinae = void>
-                struct SyncBlockThread;
+                struct SyncBlockThreads;
             }
 
             //-----------------------------------------------------------------------------
-            //! Allocates a variable in block shared memory.
+            //! Synchronizes all threads within the current block (independently for all blocks).
             //!
             //! \tparam TBlockSync The block synchronization implementation type.
             //! \param blockSync The block synchronization implementation.
@@ -66,7 +66,7 @@ namespace alpaka
                 TBlockSync const & blockSync)
             -> void
             {
-                traits::SyncBlockThread<
+                traits::SyncBlockThreads<
                     TBlockSync>
                 ::syncBlockThreads(
                     blockSync);
@@ -79,7 +79,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TBlockSync>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     TBlockSync,
                     typename std::enable_if<
                         meta::IsStrictBase<
@@ -98,7 +98,7 @@ namespace alpaka
                     {
                         // Delegate the call to the base class.
                         block::sync::syncBlockThreads(
-                                static_cast<typename TBlockSync::BlockSyncBase const &>(blockSync));
+                            static_cast<typename TBlockSync::BlockSyncBase const &>(blockSync));
                     }
                 };
             }

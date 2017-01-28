@@ -23,7 +23,7 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 #include <alpaka/core/BarrierThread.hpp>// BarrierThread
 
@@ -89,7 +89,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TSize>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncBarrierThread<TSize>>
                 {
                     //-----------------------------------------------------------------------------

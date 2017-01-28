@@ -29,7 +29,7 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 namespace alpaka
 {
@@ -77,7 +77,7 @@ namespace alpaka
                 //!
                 //#############################################################################
                 template<>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncCudaBuiltIn>
                 {
                     //-----------------------------------------------------------------------------

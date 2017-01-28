@@ -23,7 +23,7 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
 
@@ -75,7 +75,7 @@ namespace alpaka
                 //!
                 //#############################################################################
                 template<>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncBarrierOmp>
                 {
                     //-----------------------------------------------------------------------------
@@ -87,8 +87,8 @@ namespace alpaka
                     {
                         boost::ignore_unused(blockSync);
 
-                        // TODO: Use a barrier implementation not waiting for all threads:
-                        // http://berenger.eu/blog/copenmp-custom-barrier-a-barrier-for-a-group-of-threads/
+                        // NOTE: This waits for all threads in all blocks.
+                        // If multiple blocks are executed in parallel this is not optimal.
                         #pragma omp barrier
                     }
                 };
