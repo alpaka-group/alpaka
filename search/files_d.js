@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['set_2ehpp',['Set.hpp',['../mem_2buf_2cpu_2Set_8hpp.html',1,'']]],
-  ['set_2ehpp',['Set.hpp',['../meta_2Set_8hpp.html',1,'']]],
-  ['set_2ehpp',['Set.hpp',['../mem_2buf_2cuda_2Set_8hpp.html',1,'']]],
+  ['set_2ehpp',['Set.hpp',['../mem_2buf_2cpu_2Set_8hpp.html',1,'(Global Namespace)'],['../mem_2buf_2cuda_2Set_8hpp.html',1,'(Global Namespace)'],['../meta_2Set_8hpp.html',1,'(Global Namespace)']]],
   ['sincudabuiltin_2ehpp',['SinCudaBuiltIn.hpp',['../SinCudaBuiltIn_8hpp.html',1,'']]],
   ['sinstl_2ehpp',['SinStl.hpp',['../SinStl_8hpp.html',1,'']]],
   ['sqrtcudabuiltin_2ehpp',['SqrtCudaBuiltIn.hpp',['../SqrtCudaBuiltIn_8hpp.html',1,'']]],

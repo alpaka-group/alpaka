@@ -1,0 +1,4 @@
+var structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4 =
+[
+    [ "value", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html#a40a66c644ae849d912adbd40525c9dd9", null ]
+];

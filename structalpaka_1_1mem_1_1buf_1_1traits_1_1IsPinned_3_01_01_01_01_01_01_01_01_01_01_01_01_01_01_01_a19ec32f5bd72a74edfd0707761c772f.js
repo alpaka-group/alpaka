@@ -1,4 +1,0 @@
-var structalpaka_1_1mem_1_1buf_1_1traits_1_1IsPinned_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a19ec32f5bd72a74edfd0707761c772f =
-[
-    [ "isPinned", "structalpaka_1_1mem_1_1buf_1_1traits_1_1IsPinned_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a19ec32f5bd72a74edfd0707761c772f.html#aee603c4873376f4b34d1fa863d8bdd49", null ]
-];

@@ -1,0 +1,4 @@
+var structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01std_1_1shared__ptr_3_01event_1_1cpu_12d4c534530d748d7a90b4469bea5180b =
+[
+    [ "currentThreadWaitFor", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01std_1_1shared__ptr_3_01event_1_1cpu_12d4c534530d748d7a90b4469bea5180b.html#add8fb3a99295cdd1e2354fa854fa771e", null ]
+];

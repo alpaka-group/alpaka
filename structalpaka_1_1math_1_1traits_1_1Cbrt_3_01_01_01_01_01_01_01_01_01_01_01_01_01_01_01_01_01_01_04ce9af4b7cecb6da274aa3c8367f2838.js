@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Cbrt_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_04ce9af4b7cecb6da274aa3c8367f2838 =
-[
-    [ "cbrt", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_04ce9af4b7cecb6da274aa3c8367f2838.html#aed152d4a685c5987e9ecd328db6babd6", null ]
-];

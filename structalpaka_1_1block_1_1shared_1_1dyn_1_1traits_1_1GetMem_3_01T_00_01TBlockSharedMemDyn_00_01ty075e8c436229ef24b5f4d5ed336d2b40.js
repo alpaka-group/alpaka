@@ -1,0 +1,4 @@
+var structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01TBlockSharedMemDyn_00_01ty075e8c436229ef24b5f4d5ed336d2b40 =
+[
+    [ "getMem", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01TBlockSharedMemDyn_00_01ty075e8c436229ef24b5f4d5ed336d2b40.html#aafa7588c6d7f9e23c47c34daca4f62a5", null ]
+];

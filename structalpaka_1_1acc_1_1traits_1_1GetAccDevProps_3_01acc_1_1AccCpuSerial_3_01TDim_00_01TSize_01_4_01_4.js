@@ -1,0 +1,4 @@
+var structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccCpuSerial_3_01TDim_00_01TSize_01_4_01_4 =
+[
+    [ "getAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccCpuSerial_3_01TDim_00_01TSize_01_4_01_4.html#ae84a09fec22156b3a47226a4a0bd1176", null ]
+];

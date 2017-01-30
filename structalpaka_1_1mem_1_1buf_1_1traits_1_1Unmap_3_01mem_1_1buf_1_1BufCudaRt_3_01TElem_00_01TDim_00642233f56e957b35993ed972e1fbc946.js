@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1buf_1_1traits_1_1Unmap_3_01mem_1_1buf_1_1BufCudaRt_3_01TElem_00_01TDim_00642233f56e957b35993ed972e1fbc946 =
+[
+    [ "unmap", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Unmap_3_01mem_1_1buf_1_1BufCudaRt_3_01TElem_00_01TDim_00642233f56e957b35993ed972e1fbc946.html#a484addd0f84eb8d54064468dabcc6baa", null ]
+];

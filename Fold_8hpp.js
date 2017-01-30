@@ -1,5 +1,5 @@
 var Fold_8hpp =
 [
-    [ "foldr", "Fold_8hpp.html#a134eb079fd164fc609976403c401c985", null ],
-    [ "foldr", "Fold_8hpp.html#a3824fa5d69e8eb614a481f45b030462d", null ]
+    [ "foldr", "Fold_8hpp.html#a758b5c99d392487e6b567b4d4dc5ab1e", null ],
+    [ "foldr", "Fold_8hpp.html#ac639184c745981e545479ec110cb290e", null ]
 ];

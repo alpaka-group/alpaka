@@ -1,0 +1,4 @@
+var structboost_1_1mpl_1_1pop__front__impl_3_01aux_1_1std__tuple_01_4_1_1apply_3_01std_1_1tuple_3_01b845b3f8773486142564fc90ef1faca7 =
+[
+    [ "type", "structboost_1_1mpl_1_1pop__front__impl_3_01aux_1_1std__tuple_01_4_1_1apply_3_01std_1_1tuple_3_01b845b3f8773486142564fc90ef1faca7.html#ab44df18b140641a9560864adcadb0788", null ]
+];

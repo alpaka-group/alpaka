@@ -1,0 +1,4 @@
+var structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01stream_1_1StreamCudaRtSync_01_4 =
+[
+    [ "currentThreadWaitFor", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01stream_1_1StreamCudaRtSync_01_4.html#a97e705de06c2989a05e1755657353f8e", null ]
+];

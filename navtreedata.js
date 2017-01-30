@@ -2,13 +2,11 @@ var NAVTREE =
 [
   [ "alpaka", "index.html", [
     [ "**alpaka** - Abstraction Library for Parallel Kernel Acceleration", "index.html", null ],
-    [ "Rationale", "md_C:_dev_alpaka_doc_Rationale.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
-        [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ]
       ] ]
@@ -37,18 +35,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AbsCudaBuiltIn_8hpp.html",
-"MaxCudaBuiltIn_8hpp.html",
-"classalpaka_1_1atomic_1_1AtomicOmpCritSec.html#ab04a768a0b9c55cfbacecb9f093c6252",
-"classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#ac830515c1a96e349683e0ce38302cb3e",
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html#a8bb867e97454559a6279e1f96c6676b2",
-"extent_2Traits_8hpp.html",
-"namespacealpaka_1_1detail.html",
-"structalpaka_1_1acc_1_1traits_1_1GetAccName.html",
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01f2366b37d2ce136f96dfa2e4d08e9752.html",
-"structalpaka_1_1math_1_1traits_1_1Asin.html",
-"structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#ac03b5027ae7fba6a651c7ba0ec894cc4",
-"structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence_3_01_01_01_01_01_01_01_01_01_01_01_01eea76b07e546e8b4cd722319baac73e9.html",
-"structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01_01_01_01_01_01_01_01_01_01_01_01_01_698dbe491aa1f8e64dcc0174f697c739.html#a575d863397ef9ff4e8d8d3cec03b8613"
+"MathCudaBuiltIn_8hpp_source.html",
+"classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynBoostAlignedAlloc.html#acc7e58d7f01a5a25315036b19b7393c4",
+"classalpaka_1_1exec_1_1ExecCpuSerial.html#aeb8ab62230a9c10756fff9969a20bbe1",
+"classalpaka_1_1rand_1_1distribution_1_1cuda_1_1UniformUint_3_01unsigned_01int_01_4.html#a55deb82560b83be40ff8608dc3681cf6",
+"extent_2Traits_8hpp.html#a61837968639dbbe2c1f125d3162098b9",
+"namespacealpaka_1_1dim.html",
+"structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TSize_01_4_01_4.html",
+"structalpaka_1_1dev_1_1traits_1_1GetFreeMemBytes.html",
+"structalpaka_1_1math_1_1traits_1_1Asin_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01metc42a87522fe84ccddb60135363c30368.html#a8f5694bf287159e72feba2c6b5af5a6a",
+"structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetBase.html#a2be7706bc2c19202dcc753f888f38db5",
+"structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type_01_4.html#a819ebe43bcf30570ddc02a5a8cb10f59",
+"structalpaka_1_1vec_1_1traits_1_1Reverse_3_01Vec_3_01dim_1_1DimInt_3_011u_01_4_00_01TSize_01_4_01_4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

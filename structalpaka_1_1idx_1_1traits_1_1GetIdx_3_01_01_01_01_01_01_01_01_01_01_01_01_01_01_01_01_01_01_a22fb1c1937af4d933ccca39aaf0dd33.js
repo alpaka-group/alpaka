@@ -1,4 +1,0 @@
-var structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a22fb1c1937af4d933ccca39aaf0dd33 =
-[
-    [ "getIdx", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a22fb1c1937af4d933ccca39aaf0dd33.html#a583d382c531124c799ba7c5971543550", null ]
-];

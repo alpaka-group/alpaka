@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Cos_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_010b8c0985ea414da220338fcdbb02be1f =
-[
-    [ "cos", "structalpaka_1_1math_1_1traits_1_1Cos_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_010b8c0985ea414da220338fcdbb02be1f.html#a9fc8b98b5346dc8306d76bbe58e57372", null ]
-];

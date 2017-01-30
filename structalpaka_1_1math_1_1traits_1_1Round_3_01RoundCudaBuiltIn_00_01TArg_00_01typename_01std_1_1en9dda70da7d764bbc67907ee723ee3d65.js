@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Round_3_01RoundCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en9dda70da7d764bbc67907ee723ee3d65 =
+[
+    [ "round", "structalpaka_1_1math_1_1traits_1_1Round_3_01RoundCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en9dda70da7d764bbc67907ee723ee3d65.html#ae76d5a7ab1fa550a6819caf1f2999683", null ]
+];

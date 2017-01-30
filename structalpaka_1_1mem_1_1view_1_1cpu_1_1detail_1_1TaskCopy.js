@@ -1,27 +1,5 @@
 var structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy =
 [
-    [ "Size", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#ac03b5027ae7fba6a651c7ba0ec894cc4", null ],
-    [ "TaskCopy", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a2462bd9c4ce3262cad0b9a5831f7e98f", null ],
-    [ "operator()", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a72e6736fba147afcae1394682d2e3f31", null ],
-    [ "printDebug", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#aaf4bb913d103d3a850adcb1be0af1abb", null ],
-    [ "m_dstBufHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#abfd34ca75d682965d45e0719a64269b9", null ],
-    [ "m_dstBufWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a39842a21e50519b15a07e6a5c7f2c95d", null ],
-    [ "m_dstDepth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a435de9a07dc64e1557be84ac097eeb22", null ],
-    [ "m_dstHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a6771dc74230a466340777cd9b1810a62", null ],
-    [ "m_dstMemNative", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#acae7b380848df776843bd4230410ffdf", null ],
-    [ "m_dstPitchBytesX", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#aa77447a942354ce23b8c68f53d550577", null ],
-    [ "m_dstPitchBytesY", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a8bd568a007d5502cb17d1e4231b56fb2", null ],
-    [ "m_dstWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#ae6efa422a185ad2a4a4d408ea1be6722", null ],
-    [ "m_extentDepth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#af3fe8189034da8ff4c464c394cf6aa52", null ],
-    [ "m_extentHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a95660ddc0d3c25e82621cf64da150e25", null ],
-    [ "m_extentWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a40d6182cbd4fc4a93e7c0d10f2650e05", null ],
-    [ "m_extentWidthBytes", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a48f7aa818fdec473f4fd30acf03ff3bf", null ],
-    [ "m_srcBufHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a9d12beb8c2e031317ef848d75f55d267", null ],
-    [ "m_srcBufWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#ace11846072a67fb9d091ce8773ae01bc", null ],
-    [ "m_srcDepth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a80b78eb019d406f154effa6603f29093", null ],
-    [ "m_srcHeight", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a0ee923fa5a5185506674c2e1b562587c", null ],
-    [ "m_srcMemNative", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#abbf4332a90b91f760318dfbe1292e370", null ],
-    [ "m_srcPitchBytesX", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a95e82dbfbfb7de2ccf74e7eca9d21d6c", null ],
-    [ "m_srcPitchBytesY", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a429b476b5e46d7f8543dc405fc000306", null ],
-    [ "m_srcWidth", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a43c86ecb7d9cbf027c6a91a3d7659da7", null ]
+    [ "DimMin1", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a7e3aef6bf15a45bcb499fb9b7f068a95", null ],
+    [ "operator()", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopy.html#a8496b5482d63cda32292a61fd35e95ba", null ]
 ];

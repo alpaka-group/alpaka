@@ -7,8 +7,8 @@ var classalpaka_1_1mem_1_1view_1_1ViewPlainPtr =
     [ "~ViewPlainPtr", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a26a80957a4f8a8d269062d5aaf1c6df8", null ],
     [ "operator=", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a3977e95f625b6c843a36b951ec71655f", null ],
     [ "operator=", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a23af746fc41fe95ed95f6d874f19da97", null ],
-    [ "m_dev", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a602b01cea9d4c9684468c8f5c73d6572", null ],
-    [ "m_extentElements", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a50fec3d079758437e5513d3115e0e87a", null ],
-    [ "m_pitchBytes", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#abb1a31835f7b9d1471d8df5725091185", null ],
-    [ "m_pMem", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a8f34fa610a1f6066d9da6657d787a6c5", null ]
+    [ "m_dev", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a1ad089cd4eebddb958cfd4d3a472a667", null ],
+    [ "m_extentElements", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#ae98bf4fb6f8b7ff00f2b649802e14212", null ],
+    [ "m_pitchBytes", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#ad97b21e361ce6a5636d0c01c07c2fcd8", null ],
+    [ "m_pMem", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a721cce4761166da31d3129e6e0cafd93", null ]
 ];

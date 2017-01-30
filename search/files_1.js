@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['barrierfiber_2ehpp',['BarrierFiber.hpp',['../BarrierFiber_8hpp.html',1,'']]],
   ['barrierthread_2ehpp',['BarrierThread.hpp',['../BarrierThread_8hpp.html',1,'']]],
   ['blocksharedmemdynboostalignedalloc_2ehpp',['BlockSharedMemDynBoostAlignedAlloc.hpp',['../BlockSharedMemDynBoostAlignedAlloc_8hpp.html',1,'']]],
   ['blocksharedmemdyncudabuiltin_2ehpp',['BlockSharedMemDynCudaBuiltIn.hpp',['../BlockSharedMemDynCudaBuiltIn_8hpp.html',1,'']]],
@@ -12,6 +11,7 @@ var searchData=
   ['blocksyncbarrierthread_2ehpp',['BlockSyncBarrierThread.hpp',['../BlockSyncBarrierThread_8hpp.html',1,'']]],
   ['blocksynccudabuiltin_2ehpp',['BlockSyncCudaBuiltIn.hpp',['../BlockSyncCudaBuiltIn_8hpp.html',1,'']]],
   ['blocksyncnoop_2ehpp',['BlockSyncNoOp.hpp',['../BlockSyncNoOp_8hpp.html',1,'']]],
+  ['boostpredefworkaround_2ehpp',['BoostPredefWorkaround.hpp',['../BoostPredefWorkaround_8hpp.html',1,'']]],
   ['bufcpu_2ehpp',['BufCpu.hpp',['../BufCpu_8hpp.html',1,'']]],
   ['bufcudart_2ehpp',['BufCudaRt.hpp',['../BufCudaRt_8hpp.html',1,'']]]
 ];

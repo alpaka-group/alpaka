@@ -5,7 +5,6 @@ var namespacealpaka =
     [ "block", "namespacealpaka_1_1block.html", "namespacealpaka_1_1block" ],
     [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cuda", "namespacealpaka_1_1cuda.html", "namespacealpaka_1_1cuda" ],
-    [ "detail", "namespacealpaka_1_1detail.html", "namespacealpaka_1_1detail" ],
     [ "dev", "namespacealpaka_1_1dev.html", "namespacealpaka_1_1dev" ],
     [ "dim", "namespacealpaka_1_1dim.html", "namespacealpaka_1_1dim" ],
     [ "elem", "namespacealpaka_1_1elem.html", "namespacealpaka_1_1elem" ],
@@ -26,6 +25,5 @@ var namespacealpaka =
     [ "time", "namespacealpaka_1_1time.html", "namespacealpaka_1_1time" ],
     [ "vec", "namespacealpaka_1_1vec.html", "namespacealpaka_1_1vec" ],
     [ "wait", "namespacealpaka_1_1wait.html", "namespacealpaka_1_1wait" ],
-    [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ],
-    [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ]
+    [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ]
 ];

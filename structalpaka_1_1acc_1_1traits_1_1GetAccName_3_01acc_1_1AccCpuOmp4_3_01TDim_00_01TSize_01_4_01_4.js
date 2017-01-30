@@ -1,0 +1,4 @@
+var structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TSize_01_4_01_4 =
+[
+    [ "getAccName", "structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TSize_01_4_01_4.html#a2a3ee9e72dc2fc50e1fa0cfb80449d81", null ]
+];

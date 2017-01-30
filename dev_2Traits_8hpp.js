@@ -8,8 +8,8 @@ var dev_2Traits_8hpp =
     [ "Reset", "structalpaka_1_1dev_1_1traits_1_1Reset.html", null ],
     [ "Dev", "dev_2Traits_8hpp.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8", null ],
     [ "getDev", "dev_2Traits_8hpp.html#ae0990877ae9f023a501b62de6fbbeb1b", null ],
-    [ "getFreeMemBytes", "dev_2Traits_8hpp.html#ad9162e6e40f0ceb4c0fadc8b382c449b", null ],
-    [ "getMemBytes", "dev_2Traits_8hpp.html#a9df9788044d44b182112087246d1b945", null ],
-    [ "getName", "dev_2Traits_8hpp.html#ab5b7fe483080e77f11a9c3ecb4246b9a", null ],
-    [ "reset", "dev_2Traits_8hpp.html#a47405a54b9ef03f7ccc34994196d388d", null ]
+    [ "getFreeMemBytes", "dev_2Traits_8hpp.html#a8f29e10833d19fd15971c2f655c2f522", null ],
+    [ "getMemBytes", "dev_2Traits_8hpp.html#ae1100fdb4a7503995035c32c46842470", null ],
+    [ "getName", "dev_2Traits_8hpp.html#a544f4f17c37407999a2a41da1279802b", null ],
+    [ "reset", "dev_2Traits_8hpp.html#a9525b6a978b6e07598b88d708cd97f84", null ]
 ];

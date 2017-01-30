@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01TDim_00_01dev_1_1DevCpu_00_01dev_1_1DevCudaRt_01_4 =
+[
+    [ "taskCopy", "structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01TDim_00_01dev_1_1DevCpu_00_01dev_1_1DevCudaRt_01_4.html#aadabacfb918642c095a50424a8466ae8", null ]
+];

@@ -1,4 +1,0 @@
-var structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a1ccc438c8a3327387a3be0973bc035a =
-[
-    [ "getOffset", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_a1ccc438c8a3327387a3be0973bc035a.html#a7c09625d92050ce6efdd0258584551f3", null ]
-];

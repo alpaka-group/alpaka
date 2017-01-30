@@ -1,4 +1,0 @@
-var structalpaka_1_1core_1_1detail_1_1MapIdx_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01745d56d397ab64aec1a1c02439183f52 =
-[
-    [ "mapIdx", "structalpaka_1_1core_1_1detail_1_1MapIdx_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01745d56d397ab64aec1a1c02439183f52.html#ad4f188fa09ed335ebdeb667a89c991f8", null ]
-];

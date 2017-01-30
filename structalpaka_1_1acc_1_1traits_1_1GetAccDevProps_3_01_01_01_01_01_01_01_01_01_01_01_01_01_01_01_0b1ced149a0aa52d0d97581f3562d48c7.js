@@ -1,4 +1,0 @@
-var structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0b1ced149a0aa52d0d97581f3562d48c7 =
-[
-    [ "getAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0b1ced149a0aa52d0d97581f3562d48c7.html#ab71a5b7f3d60e3f32cc09ee87175a98a", null ]
-];

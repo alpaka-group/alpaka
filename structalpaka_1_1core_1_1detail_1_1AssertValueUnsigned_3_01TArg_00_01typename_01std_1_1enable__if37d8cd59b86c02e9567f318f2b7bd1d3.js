@@ -1,0 +1,4 @@
+var structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01typename_01std_1_1enable__if37d8cd59b86c02e9567f318f2b7bd1d3 =
+[
+    [ "assertValueUnsigned", "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01typename_01std_1_1enable__if37d8cd59b86c02e9567f318f2b7bd1d3.html#a5a502df29012fb8029f8cfae7815a75e", null ]
+];

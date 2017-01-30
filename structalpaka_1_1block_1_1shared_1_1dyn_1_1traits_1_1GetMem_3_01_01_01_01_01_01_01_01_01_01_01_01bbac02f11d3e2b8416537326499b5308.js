@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01_01_01_01_01_01_01_01_01_01_01_01bbac02f11d3e2b8416537326499b5308 =
-[
-    [ "getMem", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01_01_01_01_01_01_01_01_01_01_01_01bbac02f11d3e2b8416537326499b5308.html#a1f50e7b889f1acb0c837032217438164", null ]
-];

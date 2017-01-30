@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Erf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01ec627aa5154ba27befe7b639919a9db7 =
-[
-    [ "erf", "structalpaka_1_1math_1_1traits_1_1Erf_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01ec627aa5154ba27befe7b639919a9db7.html#abcc6ed0f71e1a4c0479c3a74f3b500a7", null ]
-];

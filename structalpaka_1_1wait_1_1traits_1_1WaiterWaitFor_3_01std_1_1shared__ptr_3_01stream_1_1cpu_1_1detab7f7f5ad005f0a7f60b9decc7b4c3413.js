@@ -1,0 +1,4 @@
+var structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1detab7f7f5ad005f0a7f60b9decc7b4c3413 =
+[
+    [ "waiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1detab7f7f5ad005f0a7f60b9decc7b4c3413.html#aa386da05b51ad08c0f08e77de2fe0434", null ]
+];

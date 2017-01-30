@@ -1,0 +1,4 @@
+var structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence_3_01TList_00_01T_00_01TOp_00_01Integeb694a6371b0c049b842099d028765556 =
+[
+    [ "type", "structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence_3_01TList_00_01T_00_01TOp_00_01Integeb694a6371b0c049b842099d028765556.html#aff4abe3685658cb1bf85be92e328be39", null ]
+];

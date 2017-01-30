@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1buf_1_1traits_1_1IsPinned_3_01mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl_3333372b81d80ee9f88c38f6c29be44be =
+[
+    [ "isPinned", "structalpaka_1_1mem_1_1buf_1_1traits_1_1IsPinned_3_01mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl_3333372b81d80ee9f88c38f6c29be44be.html#a5b6741a91da390e8abed046195453be7", null ]
+];

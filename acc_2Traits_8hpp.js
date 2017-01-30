@@ -4,6 +4,6 @@ var acc_2Traits_8hpp =
     [ "GetAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps.html", null ],
     [ "GetAccName", "structalpaka_1_1acc_1_1traits_1_1GetAccName.html", "structalpaka_1_1acc_1_1traits_1_1GetAccName" ],
     [ "Acc", "acc_2Traits_8hpp.html#a9c1f52fe72bb5b7b0b9124ddda895d50", null ],
-    [ "getAccDevProps", "acc_2Traits_8hpp.html#a9f0bd923a4e4cbe9197fe45f403664e8", null ],
-    [ "getAccName", "acc_2Traits_8hpp.html#a0722a8705eabb5709187595274166c91", null ]
+    [ "getAccDevProps", "acc_2Traits_8hpp.html#a82e7b8b0e64f2f0ac501a7adeb88ca7e", null ],
+    [ "getAccName", "acc_2Traits_8hpp.html#a7b905023ee74aad8eb3b3c23f26e022f", null ]
 ];

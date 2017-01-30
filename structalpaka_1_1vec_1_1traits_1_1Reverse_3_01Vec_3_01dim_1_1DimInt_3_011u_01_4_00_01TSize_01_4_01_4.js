@@ -1,0 +1,4 @@
+var structalpaka_1_1vec_1_1traits_1_1Reverse_3_01Vec_3_01dim_1_1DimInt_3_011u_01_4_00_01TSize_01_4_01_4 =
+[
+    [ "reverse", "structalpaka_1_1vec_1_1traits_1_1Reverse_3_01Vec_3_01dim_1_1DimInt_3_011u_01_4_00_01TSize_01_4_01_4.html#a41dba61e0cb41f7d0b67be24e11f2414", null ]
+];

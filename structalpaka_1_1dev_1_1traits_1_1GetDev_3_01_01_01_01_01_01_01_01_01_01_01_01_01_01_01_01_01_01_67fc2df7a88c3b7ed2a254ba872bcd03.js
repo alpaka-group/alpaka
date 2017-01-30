@@ -1,4 +1,0 @@
-var structalpaka_1_1dev_1_1traits_1_1GetDev_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_67fc2df7a88c3b7ed2a254ba872bcd03 =
-[
-    [ "getDev", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_67fc2df7a88c3b7ed2a254ba872bcd03.html#a9a12d83b452acf53fa436aec1216fdac", null ]
-];

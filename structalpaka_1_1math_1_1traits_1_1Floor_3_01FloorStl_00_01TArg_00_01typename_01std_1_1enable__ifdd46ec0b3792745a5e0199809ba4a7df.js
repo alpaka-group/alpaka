@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Floor_3_01FloorStl_00_01TArg_00_01typename_01std_1_1enable__ifdd46ec0b3792745a5e0199809ba4a7df =
+[
+    [ "floor", "structalpaka_1_1math_1_1traits_1_1Floor_3_01FloorStl_00_01TArg_00_01typename_01std_1_1enable__ifdd46ec0b3792745a5e0199809ba4a7df.html#a85a2d96a3595a302367ee224ef059789", null ]
+];

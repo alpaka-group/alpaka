@@ -1,4 +1,0 @@
-var structalpaka_1_1time_1_1traits_1_1Clock_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_6cdb69da37b52799f751c74a62bb8c55 =
-[
-    [ "clock", "structalpaka_1_1time_1_1traits_1_1Clock_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_6cdb69da37b52799f751c74a62bb8c55.html#a7ca0fcc491db00336ae63448d7ae5987", null ]
-];

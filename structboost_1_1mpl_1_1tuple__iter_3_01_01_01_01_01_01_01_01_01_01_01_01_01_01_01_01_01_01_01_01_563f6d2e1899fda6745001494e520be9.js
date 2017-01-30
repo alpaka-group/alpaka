@@ -1,5 +1,0 @@
-var structboost_1_1mpl_1_1tuple__iter_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_563f6d2e1899fda6745001494e520be9 =
-[
-    [ "category", "structboost_1_1mpl_1_1tuple__iter_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_563f6d2e1899fda6745001494e520be9.html#a5fca18fcd946086ad663e69bc97d0c31", null ],
-    [ "tag", "structboost_1_1mpl_1_1tuple__iter_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_563f6d2e1899fda6745001494e520be9.html#ae0eb21c08d65deaceccdcb8d9713f68a", null ]
-];

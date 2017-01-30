@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Min_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_017a3c3b27bd1a0e0f43e496e908f23d44 =
-[
-    [ "min", "structalpaka_1_1math_1_1traits_1_1Min_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_017a3c3b27bd1a0e0f43e496e908f23d44.html#ab0d89ff2d67722074a1f6ec289fc48e2", null ]
-];

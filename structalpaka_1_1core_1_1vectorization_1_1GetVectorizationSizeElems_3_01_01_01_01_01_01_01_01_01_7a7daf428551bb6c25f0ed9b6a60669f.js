@@ -1,4 +1,0 @@
-var structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01_01_01_01_01_01_01_01_01_7a7daf428551bb6c25f0ed9b6a60669f =
-[
-    [ "value", "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01_01_01_01_01_01_01_01_01_7a7daf428551bb6c25f0ed9b6a60669f.html#a68cd8d6cf87b60b2ef000f7e9b948757", null ]
-];

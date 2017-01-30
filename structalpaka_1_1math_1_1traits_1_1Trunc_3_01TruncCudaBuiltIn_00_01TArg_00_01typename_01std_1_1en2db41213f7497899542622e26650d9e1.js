@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en2db41213f7497899542622e26650d9e1 =
+[
+    [ "trunc", "structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en2db41213f7497899542622e26650d9e1.html#a38e5636ff6da69acc8375121ce9acb46", null ]
+];

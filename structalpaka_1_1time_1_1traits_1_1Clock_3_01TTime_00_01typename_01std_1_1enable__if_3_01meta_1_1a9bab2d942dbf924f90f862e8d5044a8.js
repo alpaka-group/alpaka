@@ -1,0 +1,4 @@
+var structalpaka_1_1time_1_1traits_1_1Clock_3_01TTime_00_01typename_01std_1_1enable__if_3_01meta_1_1a9bab2d942dbf924f90f862e8d5044a8 =
+[
+    [ "clock", "structalpaka_1_1time_1_1traits_1_1Clock_3_01TTime_00_01typename_01std_1_1enable__if_3_01meta_1_1a9bab2d942dbf924f90f862e8d5044a8.html#afcd2b7b08f6c9052ca7956b5f8ad08fd", null ]
+];
