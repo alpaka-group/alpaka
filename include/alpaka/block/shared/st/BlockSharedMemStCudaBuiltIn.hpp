@@ -32,6 +32,7 @@
 #include <alpaka/block/shared/st/Traits.hpp>// AllocVar
 
 #include <type_traits>                      // std::is_trivially_default_constructible, std::is_trivially_destructible
+#include <cstdint>                          // uint8_t
 
 namespace alpaka
 {
@@ -88,15 +89,6 @@ namespace alpaka
                         TuniqueId,
                         BlockSharedMemStCudaBuiltIn>
                     {
-                        // NOTE: CUDA requires the constructor and destructor of shared objects to be empty.
-                        //  That means it is either std::is_trivially_default_constructible or of the form Type(){}.
-                        //static_assert(
-                        //    std::is_trivially_default_constructible<T>::value,
-                        //    "The type of the object to allocate in block shared memory has to be trivially default constructible!");
-                        //static_assert(
-                        //    std::is_trivially_destructible<T>::value,
-                        //    "The type of the object to allocate in block shared memory has to be trivially destructible!");
-
                         //-----------------------------------------------------------------------------
                         //
                         //-----------------------------------------------------------------------------
@@ -104,8 +96,9 @@ namespace alpaka
                             block::shared::st::BlockSharedMemStCudaBuiltIn const &)
                         -> T &
                         {
-                            __shared__ T shMem;
-                            return shMem;
+                            __shared__ uint8_t shMem alignas(alignof(T)) [sizeof(T)];
+                            return *(
+                                reinterpret_cast<T*>( shMem ));
                         }
                     };
                     //#############################################################################
