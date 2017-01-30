@@ -433,7 +433,7 @@ struct MandelbrotKernelTester
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
-            << alpaka::integ::measureKernelRunTimeMs(
+            << alpaka::test::integ::measureKernelRunTimeMs(
                 stream,
                 exec)
             << " ms"
