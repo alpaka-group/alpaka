@@ -23,7 +23,7 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 #include <alpaka/core/Fibers.hpp>       // boost::fibers::barrier
 
@@ -49,7 +49,7 @@ namespace alpaka
                 using BlockSyncBase = BlockSyncBarrierFiber;
 
                 //-----------------------------------------------------------------------------
-                //! Default constructor.
+                //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(
                     TSize const & blockThreadCount) :
@@ -86,7 +86,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TSize>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncBarrierFiber<TSize>>
                 {
                     //-----------------------------------------------------------------------------

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
 
@@ -73,7 +73,7 @@ namespace alpaka
                 //!
                 //#############################################################################
                 template<>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncNoOp>
                 {
                     //-----------------------------------------------------------------------------
