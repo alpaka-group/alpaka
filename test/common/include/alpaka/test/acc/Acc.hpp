@@ -238,6 +238,8 @@ namespace alpaka
                     //std::uint32_t,
                     //std::int16_t,
                     std::uint16_t/*,
+                    // When Size is a 8 bit integer, extents within the tests would be extremely limited
+                    // (especially when Dim is 4). Therefore, we do not test it.
                     std::int8_t,
                     std::uint8_t*/>;
 #else
@@ -250,12 +252,9 @@ namespace alpaka
                     alpaka::dim::DimInt<1u>,
                     alpaka::dim::DimInt<2u>,
                     alpaka::dim::DimInt<3u>
-            // The CPU buffers do not support copy and set with more than 3 dimensions
-#if 0
             // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
                     ,alpaka::dim::DimInt<4u>
-#endif
 #endif
                 >;
 
@@ -271,6 +270,8 @@ namespace alpaka
                     std::uint32_t,
                     //std::int16_t,
                     std::uint16_t/*,
+                    // When Size is a 8 bit integer, extents within the tests would be extremely limited
+                    // (especially when Dim is 4). Therefore, we do not test it.
                     std::int8_t,
                     std::uint8_t*/>;
 #endif
