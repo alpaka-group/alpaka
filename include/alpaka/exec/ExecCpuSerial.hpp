@@ -41,7 +41,6 @@
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <cassert>                              // assert
 #include <tuple>                                // std::tuple

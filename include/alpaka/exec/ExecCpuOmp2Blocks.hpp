@@ -45,8 +45,6 @@
 #include <alpaka/core/OpenMp.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
-#include <boost/align.hpp>                      // boost::aligned_alloc
-
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
 #include <tuple>                                // std::tuple
