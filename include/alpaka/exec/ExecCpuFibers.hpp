@@ -43,7 +43,6 @@
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/predef.h>                       // workarounds
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <algorithm>                            // std::for_each
 #include <vector>                               // std::vector

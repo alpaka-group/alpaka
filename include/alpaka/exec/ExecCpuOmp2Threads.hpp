@@ -45,7 +45,6 @@
 #include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
-#include <boost/align.hpp>                      // boost::aligned_alloc
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 
 #include <cassert>                              // assert

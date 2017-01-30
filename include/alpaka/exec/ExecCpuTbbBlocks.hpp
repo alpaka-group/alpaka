@@ -41,8 +41,6 @@
 #include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
-#include <boost/align.hpp>                      // boost::aligned_alloc
-
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
 #include <tuple>                                // std::tuple
