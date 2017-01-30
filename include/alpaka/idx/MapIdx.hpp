@@ -193,7 +193,7 @@ namespace alpaka
                 -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
                     return {
-                        idx[0u] * extent[1u] + idx[1u]};
+                        static_cast<TElem>(idx[0u] * extent[1u] + idx[1u])};
                 }
             };
             //#############################################################################
@@ -219,7 +219,7 @@ namespace alpaka
                 -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
                     return {
-                        (idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u]};
+                        static_cast<TElem>((idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u])};
                 }
             };
             //#############################################################################
@@ -245,7 +245,7 @@ namespace alpaka
                 -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
                     return {
-                        ((idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u]) * extent[3u] + idx[3u]};
+                        static_cast<TElem>(((idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u]) * extent[3u] + idx[3u])};
                 }
             };
         }
