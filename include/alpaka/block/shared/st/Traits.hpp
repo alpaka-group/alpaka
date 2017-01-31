@@ -70,6 +70,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Allocates a variable in block shared static memory.
                 //!
+                //! The allocated variable is uninitialized and not default constructed!
+                //!
                 //! \tparam T The element type.
                 //! \tparam TuniqueId id those is unique inside a kernel
                 //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
