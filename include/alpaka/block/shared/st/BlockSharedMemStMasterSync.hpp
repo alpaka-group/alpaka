@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <alpaka/core/Vectorize.hpp>        // defaultAlignment
 #include <alpaka/block/shared/st/Traits.hpp>// AllocVar
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_NO_CUDA
@@ -117,7 +118,7 @@ namespace alpaka
                             {
                                 blockSharedMemSt.m_sharedAllocs.emplace_back(
                                     reinterpret_cast<uint8_t *>(
-                                        boost::alignment::aligned_alloc(16u, sizeof(T))));
+                                        boost::alignment::aligned_alloc(core::vectorization::defaultAlignment, sizeof(T))));
                             }
                             blockSharedMemSt.m_syncFn();
 
