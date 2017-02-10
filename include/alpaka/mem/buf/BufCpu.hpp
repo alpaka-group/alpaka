@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <alpaka/core/Vectorize.hpp>            // defaultAlignment
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
 
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
@@ -62,7 +63,7 @@ namespace alpaka
                         typename TDim,
                         typename TSize>
                     class BufCpuImpl :
-                        public mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>
+                        public mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
                     {
                     public:
                         //-----------------------------------------------------------------------------
@@ -73,7 +74,7 @@ namespace alpaka
                         ALPAKA_FN_HOST BufCpuImpl(
                             dev::DevCpu const & dev,
                             TExtent const & extent) :
-                                mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>(),
+                                mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
                                 m_dev(dev),
                                 m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
                                 m_pMem(mem::alloc::alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),

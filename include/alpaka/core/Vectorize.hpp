@@ -54,6 +54,19 @@ namespace alpaka
         namespace vectorization
         {
             //-----------------------------------------------------------------------------
+            // The alignment required to enable optimal performance dependant on the target architecture.
+            //-----------------------------------------------------------------------------
+            constexpr std::size_t defaultAlignment =
+#if defined(__AVX512BW__) || defined(__AVX512F__) || defined(__MIC__)
+                64u
+#elif defined(__AVX__) || defined(__AVX2__)
+                32u
+#else
+                16u
+#endif
+            ;
+
+            //-----------------------------------------------------------------------------
             // Number of elements of the given type that can be processed in parallel in a vector register.
             // By default there is no vectorization.
             //-----------------------------------------------------------------------------
