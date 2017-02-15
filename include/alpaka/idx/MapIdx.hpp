@@ -106,13 +106,13 @@ namespace alpaka
                     MyVec idxnd( MyVec::all( 0u ) );
                     MyVec hyperPlanesBefore( MyVec::all( 1u ) );
 
-                    for( std::size_t d = 1u; d < TidxDimIn; ++d )
-                        hyperPlanesBefore[d] = hyperPlanesBefore[d-1] * extent[d-1];
+                    for( std::size_t d = 2u; d <= TidxDimOut; ++d )
+                        hyperPlanesBefore[TidxDimOut - d] = hyperPlanesBefore[TidxDimOut - d + 1] * extent[TidxDimOut - d + 1];
 
-                    for( std::size_t d = 0u; d < TidxDimIn; ++d )
+                    for( std::size_t d = 0u; d < TidxDimOut; ++d )
                     {
-                        // optimization 1: % can be skipped for (d == TidxDimIn - 1u)
-                        // optimization 2: hyperPlanesBefore[d] is 1u for (d == 0u)
+                        // optimization 1: % can be skipped for (d == 0u)
+                        // optimization 2: hyperPlanesBefore[d] is 1u for (d == TidxDimOut - 1u)
                         idxnd[d] = idx[d] / hyperPlanesBefore[d] % extent[d];
                     }
                     return idxnd;
@@ -146,8 +146,8 @@ namespace alpaka
                     std::size_t hyperPlanesVolume( 1u );
                     for( std::size_t d = 0u; d < TidxDimIn; ++d )
                     {
-                        idx1d += idx[d] * hyperPlanesVolume;
-                        hyperPlanesVolume *= extent[d];
+                        idx1d += idx[TidxDimIn - 1u - d] * hyperPlanesVolume;
+                        hyperPlanesVolume *= extent[TidxDimIn - 1u - d];
                     }
                     return {
                         static_cast<TElem>( idx1d )};
