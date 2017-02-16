@@ -40,7 +40,6 @@ namespace alpaka
             template<
                 std::size_t TidxDimOut,
                 std::size_t TidxDimIn,
-                bool isSame = ( TidxDimOut == TidxDimIn ),
                 typename TSfinae = void>
             struct MapIdx;
             //#############################################################################
@@ -50,8 +49,7 @@ namespace alpaka
                 std::size_t TidxDim>
             struct MapIdx<
                 TidxDim,
-                TidxDim,
-                true>
+                TidxDim>
             {
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
@@ -85,7 +83,7 @@ namespace alpaka
             struct MapIdx<
                 TidxDimOut,
                 1u,
-                false>
+                typename std::enable_if<TidxDimOut != 1u>::type>
             {
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
@@ -101,21 +99,26 @@ namespace alpaka
                     vec::Vec<dim::DimInt<TidxDimOut>, TElem> const & extent)
                 -> vec::Vec<dim::DimInt<TidxDimOut>, TElem>
                 {
-                    // wrong constructor!
-                    using MyVec = vec::Vec<dim::DimInt<TidxDimOut>, TElem>;
-                    MyVec idxnd( MyVec::all( 0u ) );
-                    MyVec hyperPlanesBefore( MyVec::all( 1u ) );
+                    auto idxNd(vec::Vec<dim::DimInt<TidxDimOut>, TElem>::all(0u));
 
-                    for( std::size_t d = 2u; d <= TidxDimOut; ++d )
-                        hyperPlanesBefore[TidxDimOut - d] = hyperPlanesBefore[TidxDimOut - d + 1] * extent[TidxDimOut - d + 1];
+                    constexpr std::size_t lastIdx(TidxDimOut - 1u);
 
-                    for( std::size_t d = 0u; d < TidxDimOut; ++d )
+                    // fast-dim
+                    idxNd[lastIdx] = static_cast<TElem>(idx[0u] % extent[lastIdx]);
+
+                    // in-between
+                    TElem hyperPlanesBefore = extent[lastIdx];
+                    for(std::size_t r(1u); r < lastIdx; ++r)
                     {
-                        // optimization 1: % can be skipped for (d == 0u)
-                        // optimization 2: hyperPlanesBefore[d] is 1u for (d == TidxDimOut - 1u)
-                        idxnd[d] = idx[d] / hyperPlanesBefore[d] % extent[d];
+                        std::size_t const d = lastIdx - r;
+                        idxNd[d] = static_cast<TElem>(idx[0u] / hyperPlanesBefore % extent[d]);
+                        hyperPlanesBefore *= extent[d];
                     }
-                    return idxnd;
+
+                    // slow-dim
+                    idxNd[0u] = static_cast<TElem>(idx[0u] / hyperPlanesBefore);
+
+                    return idxNd;
                 }
             };
             //#############################################################################
@@ -126,7 +129,7 @@ namespace alpaka
             struct MapIdx<
                 1u,
                 TidxDimIn,
-                false>
+                typename std::enable_if<TidxDimIn != 1u>::type>
             {
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
@@ -142,15 +145,12 @@ namespace alpaka
                     vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & extent)
                 -> vec::Vec<dim::DimInt<1u>, TElem>
                 {
-                    std::size_t idx1d( 0u );
-                    std::size_t hyperPlanesVolume( 1u );
-                    for( std::size_t d = 0u; d < TidxDimIn; ++d )
+                    TElem idx1d(idx[0u]);
+                    for(std::size_t d(1u); d < TidxDimIn; ++d)
                     {
-                        idx1d += idx[TidxDimIn - 1u - d] * hyperPlanesVolume;
-                        hyperPlanesVolume *= extent[TidxDimIn - 1u - d];
+                        idx1d = static_cast<TElem>(idx1d * extent[d] + idx[d]);
                     }
-                    return {
-                        static_cast<TElem>( idx1d )};
+                    return {idx1d};
                 }
             };
         }
@@ -172,6 +172,9 @@ namespace alpaka
             vec::Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extent)
         -> vec::Vec<dim::DimInt<TidxDimOut>, TElem>
         {
+            static_assert(TidxDimOut > 0u, "The dimension of the output vector has to be greater than zero!");
+            static_assert(TidxDimIn > 0u, "The dimension of the input vector has to be greater than zero!");
+
             return
                 detail::MapIdx<
                     TidxDimOut,
