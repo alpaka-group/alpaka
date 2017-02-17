@@ -90,6 +90,66 @@ namespace alpaka
                         __syncthreads();
                     }
                 };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct SyncBlockThreadsPredicate<
+                    block::sync::op::Count,
+                    BlockSyncCudaBuiltIn>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncCudaBuiltIn const & /*blockSync*/,
+                        int predicate)
+                    -> int
+                    {
+                        return __syncthreads_count(predicate);
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct SyncBlockThreadsPredicate<
+                    block::sync::op::LogicalAnd,
+                    BlockSyncCudaBuiltIn>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncCudaBuiltIn const & /*blockSync*/,
+                        int predicate)
+                    -> int
+                    {
+                        return __syncthreads_and(predicate);
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct SyncBlockThreadsPredicate<
+                    block::sync::op::LogicalOr,
+                    BlockSyncCudaBuiltIn>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncCudaBuiltIn const & /*blockSync*/,
+                        int predicate)
+                    -> int
+                    {
+                        return __syncthreads_or(predicate);
+                    }
+                };
             }
         }
     }

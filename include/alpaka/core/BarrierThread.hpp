@@ -24,14 +24,14 @@
 // Uncomment this to disable the standard spinlock behaviour of the threads
 //#define ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/block/sync/Traits.hpp> // block::sync::op::LogicalOr, LogicalAnd, Count
 
-#ifdef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
-    #include <mutex>                // std::mutex
-    #include <condition_variable>   // std::condition_variable
-#else
-    #include <atomic>               // std::atomic
-    #include <thread>               // std::this_thread::yield
+#include <mutex>                        // std::mutex
+#include <condition_variable>           // std::condition_variable
+#ifndef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
+    #include <atomic>                   // std::atomic
+    #include <thread>                   // std::this_thread::yield
 #endif
 
 namespace alpaka
@@ -123,6 +123,135 @@ namespace alpaka
                 std::atomic<TSize> m_curThreadCount;
                 std::atomic<TSize> m_generation;
 #endif
+            };
+
+            namespace detail
+            {
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<
+                    typename TOp>
+                struct AtomicOp;
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct AtomicOp<
+                    block::sync::op::Count>
+                {
+                    void operator()(std::atomic<int>& result, bool value)
+                    {
+                        result += static_cast<int>(value);
+                    }
+                };
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct AtomicOp<
+                    block::sync::op::LogicalAnd>
+                {
+                    void operator()(std::atomic<int>& result, bool value)
+                    {
+                        result &= static_cast<int>(value);
+                    }
+                };
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct AtomicOp<
+                    block::sync::op::LogicalOr>
+                {
+                    void operator()(std::atomic<int>& result, bool value)
+                    {
+                        result |= static_cast<int>(value);
+                    }
+                };
+            }
+
+            //#############################################################################
+            //! A self-resetting barrier with barrier.
+            //#############################################################################
+            template<
+                typename TSize>
+            class BarrierThreadWithPredicate final
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA explicit BarrierThreadWithPredicate(
+                    TSize const & threadCount) :
+                    m_threadCount(threadCount),
+                    m_curThreadCount(threadCount),
+                    m_generation(0)
+                {}
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA BarrierThreadWithPredicate(
+                    BarrierThreadWithPredicate const & other) = delete;
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA BarrierThreadWithPredicate(BarrierThreadWithPredicate &&) = delete;
+                //-----------------------------------------------------------------------------
+                //! Copy assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThreadWithPredicate const &) -> BarrierThreadWithPredicate & = delete;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThreadWithPredicate &&) -> BarrierThreadWithPredicate & = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_ACC_NO_CUDA ~BarrierThreadWithPredicate() = default;
+
+                //-----------------------------------------------------------------------------
+                //! Waits for all the other threads to reach the barrier.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOp>
+                ALPAKA_FN_ACC_NO_CUDA auto wait(int predicate)
+                -> int
+                {
+                    TSize const generationWhenEnteredTheWait = m_generation;
+                    std::unique_lock<std::mutex> lock(m_mtxBarrier);
+
+                    auto const generationMod2(m_generation % 2u);
+                    if(m_curThreadCount == m_threadCount)
+                    {
+                        m_result[generationMod2] = TOp::InitialValue;
+                    }
+
+                    std::atomic<int>& result(m_result[generationMod2]);
+                    bool const predicateBool(predicate != 0);
+
+                    detail::AtomicOp<TOp>()(result, predicateBool);
+
+                    if(--m_curThreadCount == 0)
+                    {
+                        m_curThreadCount = m_threadCount;
+                        ++m_generation;
+                        m_cvAllThreadsReachedBarrier.notify_all();
+                    }
+                    else
+                    {
+                        m_cvAllThreadsReachedBarrier.wait(lock, [this, generationWhenEnteredTheWait] { return generationWhenEnteredTheWait != m_generation; });
+                    }
+                    return m_result[generationMod2];
+                }
+
+            private:
+                std::mutex m_mtxBarrier;
+                std::condition_variable m_cvAllThreadsReachedBarrier;
+                const TSize m_threadCount;
+                TSize m_curThreadCount;
+                TSize m_generation;
+                std::atomic<int> m_result[2];
             };
         }
     }
