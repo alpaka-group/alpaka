@@ -327,7 +327,7 @@ auto writeTgaColorImage(
     {
         ofs.write(
             pData,
-            static_cast<std::streamsize>(bufWidthColors*bufHeightColors));
+            static_cast<std::streamsize>(bufWidthBytes*bufHeightColors));
     }
     // ... else we have to write row by row.
     else
@@ -336,7 +336,7 @@ auto writeTgaColorImage(
         {
             ofs.write(
                 pData + bufPitchBytes*row,
-                static_cast<std::streamsize>(bufWidthColors));
+                static_cast<std::streamsize>(bufWidthBytes));
         }
     }
 }
