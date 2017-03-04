@@ -267,7 +267,7 @@ auto main()
         AxpyKernelTester axpyKernelTester;
 
         // For different sizes.
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
         for(std::size_t vecSize(1u); vecSize <= 1u<<9u; vecSize *= 8u)
 #else
         for(std::size_t vecSize(1u); vecSize <= 1u<<16u; vecSize *= 2u)
