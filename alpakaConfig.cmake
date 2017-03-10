@@ -280,6 +280,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU back-end" FORCE)
 
         ELSE()
+            SET(ALPAKA_CUDA_VERSION "${CUDA_VERSION}")
             SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "GPU architecture")
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
@@ -329,11 +330,11 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 SET(CUDA_PROPAGATE_HOST_FLAGS ON)
 
-                IF(ALPAKA_CUDA_VERSION VERSION_EQUAL 8.0)
+                IF(CUDA_VERSION VERSION_EQUAL 8.0)
                     LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
                 ENDIF()
 
-                IF(NOT ALPAKA_CUDA_VERSION VERSION_LESS 7.5)
+                IF(NOT CUDA_VERSION VERSION_LESS 7.5)
                     LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
                 ENDIF()
 
