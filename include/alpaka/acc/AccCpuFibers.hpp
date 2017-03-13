@@ -199,7 +199,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TSize>(3));
 #else
                     auto const blockThreadCountMax(static_cast<TSize>(4));  // \TODO: What is the maximum? Just set a reasonable value?

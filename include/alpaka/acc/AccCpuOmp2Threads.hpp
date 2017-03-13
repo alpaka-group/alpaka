@@ -195,7 +195,7 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
                     // m_blockThreadCountMax
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TSize>(4));
 #else
                     auto const blockThreadCountMax(static_cast<TSize>(omp::getMaxOmpThreads()));

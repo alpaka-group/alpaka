@@ -196,7 +196,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TSize>(8));
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
