@@ -26,6 +26,7 @@
 #include <alpaka/meta/Fold.hpp>             // meta::foldr
 #include <alpaka/size/Traits.hpp>           // size::Size
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt
+#include <alpaka/vec/Vec.hpp>               // Vec
 
 #if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -36,6 +37,12 @@
 
 namespace alpaka
 {
+
+    template<
+        typename TDim,
+        typename TSize>
+    class Vec;
+
     //-----------------------------------------------------------------------------
     //! The extent specifics.
     //-----------------------------------------------------------------------------
@@ -67,6 +74,15 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The extent get trait for all dimensions.
+            //!
+            //#############################################################################
+            template<
+                typename TExtent,
+                typename TSfinae = void>
+            struct GetExtents;
+
+            //#############################################################################
             //! The extent set trait.
             //#############################################################################
             template<
@@ -95,6 +111,23 @@ namespace alpaka
                 ::getExtent(
                     extent);
         }
+        //-----------------------------------------------------------------------------
+        //! \return The extent in all dimension.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TExtent>
+        ALPAKA_FN_HOST_ACC auto getExtents(
+            TExtent const & extent = TExtent())
+            -> Vec<dim::Dim<TExtent>, size::Size<TExtent> >
+        {
+            return
+                traits::GetExtents<
+                    TExtent>
+                ::getExtents(
+                    extent);
+        }
+        
         //-----------------------------------------------------------------------------
         //! \return The width.
         //-----------------------------------------------------------------------------
