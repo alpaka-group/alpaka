@@ -35,23 +35,6 @@ skip_tags: false
 # Environment configuration.
 ################################################################################
 
-os:
-    - Visual Studio 2015
-
-init:
-    - cmd: cmake --version
-    - cmd: git --version
-    - cmd: msbuild /version
-    # Fixes the line endings on Windows.
-    - cmd: git config --global core.autocrlf true
-
-# Clone directory.
-clone_folder: c:\projects\alpaka
-# Fetch repository as zip archive.
-shallow_clone: false
-# Set the clone depth.
-clone_depth: 1
-
 environment:
     global:
         ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: ON
@@ -68,15 +51,23 @@ environment:
     matrix:
         - ALPAKA_DEBUG: 2
           OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: boost-1.64.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+        - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: boost-1.61.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
         - OMP_NUM_THREADS: 3
           ALPAKA_BOOST_BRANCH: boost-1.60.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
         - OMP_NUM_THREADS: 1
           ALPAKA_BOOST_BRANCH: boost-1.59.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
         - OMP_NUM_THREADS: 3
           ALPAKA_BOOST_BRANCH: boost-1.63.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: develop
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 
 matrix:
     fast_finish: true
@@ -84,6 +75,21 @@ matrix:
     allow_failures:
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: develop
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+
+init:
+    - cmd: cmake --version
+    - cmd: git --version
+    - cmd: msbuild /version
+    # Fixes the line endings on Windows.
+    - cmd: git config --global core.autocrlf true
+
+# Clone directory.
+clone_folder: c:\projects\alpaka
+# Fetch repository as zip archive.
+shallow_clone: false
+# Set the clone depth.
+clone_depth: 1
 
 ################################################################################
 # Build configuration.
@@ -104,6 +110,7 @@ before_build:
     - cmd: echo "%CI%"
     - cmd: echo "%APPVEYOR_API_URL%"
     - cmd: echo "%APPVEYOR_ACCOUNT_NAME%"
+    - cmd: echo "%APPVEYOR_BUILD_WORKER_IMAGE%"
     - cmd: echo "%APPVEYOR_PROJECT_ID%"
     - cmd: echo "%APPVEYOR_PROJECT_NAME%"
     - cmd: echo "%APPVEYOR_PROJECT_SLUG%"
@@ -156,15 +163,17 @@ before_build:
     # Create file links.
     - cmd: b2 headers
 
-    - cmd: if "%PLATFORM%"=="Win32" set BOOST_ADDRESS_MODEL=32
-    - cmd: if "%PLATFORM%"=="x64" set BOOST_ADDRESS_MODEL=64
-    - cmd: if "%CONFIGURATION%"=="Debug" set BOOST_VARIANT=debug
-    - cmd: if "%CONFIGURATION%"=="Release" set BOOST_VARIANT=release
+    - cmd: if "%PLATFORM%"=="Win32" set ALPAKA_BOOST_ADDRESS_MODEL=32
+    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_BOOST_ADDRESS_MODEL=64
+    - cmd: if "%CONFIGURATION%"=="Debug" set ALPAKA_BOOST_VARIANT=debug
+    - cmd: if "%CONFIGURATION%"=="Release" set ALPAKA_BOOST_VARIANT=release
     # Select the libraries required.
     - cmd: set ALPAKA_BOOST_B2=--with-test
     - cmd: if "%ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE%"=="ON" set ALPAKA_BOOST_B2=%ALPAKA_BOOST_B2% --with-fiber --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time
 
-    - cmd: b2 -j2 --toolset=msvc-14.0 --layout=versioned %ALPAKA_BOOST_B2% architecture=x86 address-model=%BOOST_ADDRESS_MODEL% variant=%BOOST_VARIANT% link=static threading=multi runtime-link=shared define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS --stagedir="%ALPAKA_B2_STAGE_DIR%"
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" set ALPAKA_BOOST_TOOLSET=msvc-14.0
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_BOOST_TOOLSET=msvc-14.1
+    - cmd: b2 -j2 --toolset=%ALPAKA_BOOST_TOOLSET% --layout=versioned %ALPAKA_BOOST_B2% architecture=x86 address-model=%ALPAKA_BOOST_ADDRESS_MODEL% variant=%ALPAKA_BOOST_VARIANT% link=static threading=multi runtime-link=shared define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS --stagedir="%ALPAKA_B2_STAGE_DIR%"
 
     #-------------------------------------------------------------------------------
     # Install TBB
@@ -181,14 +190,27 @@ before_build:
     - cmd: set PATH=%PATH%;%ALPAKA_TBB_BIN_DIR%
 
     #-------------------------------------------------------------------------------
+    #FIXME: CMake-3.8.0 does not recognize boost builds because it searches for 15.0 but this has been changed in the final release of boost-1.64.0 to 14.1.
+    # This is fixed in CMake-3.8.1
+    # Install CMake
+    - cmd: cmake --version
+    - cmd: set CMAKE_URL="https://cmake.org/files/v3.8/cmake-3.8.1-win64-x64.zip"
+    - cmd: appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
+    - cmd: 7z x cmake.zip -oC:\projects\deps > nul
+    - cmd: move C:\projects\deps\cmake-* C:\projects\deps\cmake
+    - cmd: set PATH=C:\projects\deps\cmake\bin;%PATH%
+    - cmd: cmake --version
+
+    #-------------------------------------------------------------------------------
     # Build the visual studio soultion from the cmake files.
     - cmd: cd C:\projects\alpaka
 
-    - cmd: if "%PLATFORM%"=="Win32" set ALPAKA_CMAKE_GENERATOR_NAME=Visual Studio 14 2015
-    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" set ALPAKA_CMAKE_GENERATOR=Visual Studio 14 2015
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_CMAKE_GENERATOR=Visual Studio 15 2017
+    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_CMAKE_GENERATOR=%ALPAKA_CMAKE_GENERATOR% Win64
     - cmd: mkdir build
     - cmd: cd build
-    - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DTBB_ROOT_DIR="%TBB_ROOT_DIR%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF -DALPAKA_DEBUG="%ALPAKA_DEBUG%" -DALPAKA_CI=ON ".."
+    - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DTBB_ROOT_DIR="%TBB_ROOT_DIR%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF -DALPAKA_DEBUG="%ALPAKA_DEBUG%" -DALPAKA_CI=ON ".."
 
 build:
     project: C:\projects\alpaka\build\alpakaAll.sln
