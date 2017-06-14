@@ -216,8 +216,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
                     return "AccCpuSerial<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
