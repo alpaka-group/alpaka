@@ -79,7 +79,7 @@ namespace alpaka
                         dev::DevCpu const & dev) :
                             m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev),
-                            m_workerThread(1u, 128u)
+                            m_workerThread(1u)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
