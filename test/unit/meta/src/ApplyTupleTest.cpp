@@ -45,6 +45,7 @@ struct Foo {
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
+auto abs_num(int i) -> int;
 auto abs_num(int i) -> int
 {
     return std::abs(i);
@@ -85,7 +86,8 @@ BOOST_AUTO_TEST_CASE(invoke)
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-int add(int first, int second)
+auto add(int first, int second) -> int;
+auto add(int first, int second) -> int
 {
     return first + second;
 }
