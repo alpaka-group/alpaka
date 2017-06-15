@@ -296,6 +296,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             SET_PROPERTY(CACHE ALPAKA_CUDA_COMPILER PROPERTY STRINGS "nvcc;clang")
 
             OPTION(ALPAKA_CUDA_FAST_MATH "Enable fast-math" ON)
+            OPTION(ALPAKA_CUDA_FTZ "Set flush to zero for GPU" OFF)
             OPTION(ALPAKA_CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
             OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
 
@@ -313,6 +314,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 IF(ALPAKA_CUDA_FAST_MATH)
                     # -ffp-contract=fast enables the usage of FMA
                     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ffast-math" "-ffp-contract=fast")
+                ENDIF()
+
+                IF(ALPAKA_CUDA_FTZ)
+                    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-fcuda-flush-denormals-to-zero")
                 ENDIF()
 
                 IF(ALPAKA_CUDA_SHOW_REGISTER)
@@ -353,7 +358,6 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND CUDA_NVCC_FLAGS "--use_fast_math")
                 ENDIF()
 
-                OPTION(ALPAKA_CUDA_FTZ "Set flush to zero for GPU" OFF)
                 IF(ALPAKA_CUDA_FTZ)
                     LIST(APPEND CUDA_NVCC_FLAGS "--ftz=true")
                 ELSE()
