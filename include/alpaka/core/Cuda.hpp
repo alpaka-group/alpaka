@@ -56,12 +56,12 @@
 #include <stdexcept>                        // std::runtime_error
 #include <cstddef>                          // std::size_t
 
-#if (!defined(CUDART_VERSION) || (CUDART_VERSION < 7000))
-    #error "CUDA version 7.0 or greater required!"
+#if (!defined(CUDART_VERSION) || (CUDART_VERSION < 7050))
+    #error "CUDA version 7.5 or greater required!"
 #endif
 
-/*#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 7000))
-    #error "CUDA version 7.0 or greater required!"
+/*#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 7050))
+    #error "CUDA version 7.5 or greater required!"
 #endif*/
 
 namespace alpaka

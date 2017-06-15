@@ -100,7 +100,7 @@
 
 //-----------------------------------------------------------------------------
 // Boost disables variadic templates for nvcc (in some cases because it was buggy).
-// However, we rely on it being enabled, as it was in all previous boost versions we support.
+// However, we rely on it being enabled.
 // After explicitly including <boost/config.hpp> we can safely undefine the wrong setting.
 //-----------------------------------------------------------------------------
 #if BOOST_COMP_NVCC
