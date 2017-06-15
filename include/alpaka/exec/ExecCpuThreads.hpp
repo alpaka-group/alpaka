@@ -171,7 +171,7 @@ namespace alpaka
                     blockSharedMemDynSizeBytes);
 
                 auto const blockThreadCount(blockThreadExtent.prod());
-                ThreadPool threadPool(blockThreadCount, blockThreadCount);
+                ThreadPool threadPool(blockThreadCount);
 
                 // Bind the kernel and its arguments to the grid block function.
                 auto const boundGridBlockExecHost(

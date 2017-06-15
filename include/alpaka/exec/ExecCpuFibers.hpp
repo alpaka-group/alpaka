@@ -178,7 +178,7 @@ namespace alpaka
 #endif
 
                 auto const blockThreadCount(blockThreadExtent.prod());
-                FiberPool fiberPool(blockThreadCount, blockThreadCount);
+                FiberPool fiberPool(blockThreadCount);
 
                 auto const boundGridBlockExecHost(
                     meta::apply(

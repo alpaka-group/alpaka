@@ -59,8 +59,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ThreadSafeQueue(
-                    std::size_t)
+                ThreadSafeQueue()
                 {}
                 //-----------------------------------------------------------------------------
                 //! \return If the queue is empty.
@@ -300,24 +299,16 @@ namespace alpaka
                 //! \param concurrentExecutionCount
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
-                //! \param queueSize
-                //!    The maximum number of tasks that can be queued for completion.
-                //!    Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount,
-                    TSize queueSize = 128u) :
+                    TSize concurrentExecutionCount) :
                     m_vConcurrentExecs(),
-                    m_qTasks(static_cast<std::size_t>(queueSize)),
+                    m_qTasks(),
                     m_bShutdownFlag(false)
                 {
                     if(concurrentExecutionCount < 1)
                     {
                         throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
-                    }
-                    if(queueSize < 1)
-                    {
-                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
                     }
 
                     m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
@@ -513,15 +504,11 @@ namespace alpaka
                 //! \param concurrentExecutionCount
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
-                //! \param queueSize
-                //!    The maximum number of tasks that can be queued for completion.
-                //!    Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount,
-                    TSize queueSize = 128u) :
+                    TSize concurrentExecutionCount) :
                     m_vConcurrentExecs(),
-                    m_qTasks(static_cast<std::size_t>(queueSize)),
+                    m_qTasks(),
                     m_mtxWakeup(),
                     m_cvWakeup(),
                     m_bShutdownFlag(false)
@@ -529,10 +516,6 @@ namespace alpaka
                     if(concurrentExecutionCount < 1)
                     {
                         throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
-                    }
-                    if(queueSize < 1)
-                    {
-                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
                     }
 
                     m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
