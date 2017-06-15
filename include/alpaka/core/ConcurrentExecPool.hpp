@@ -300,8 +300,11 @@ namespace alpaka
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
                 //-----------------------------------------------------------------------------
+                template<
+                    typename... TArgs>
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount) :
+                    TSize concurrentExecutionCount,
+                    TArgs... args) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
                     m_bShutdownFlag(false)
@@ -316,7 +319,10 @@ namespace alpaka
                     // Create all concurrent executors.
                     for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
-                        m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
+                        m_vConcurrentExecs.emplace_back(
+                            std::tuple_cat(
+                                std::make_tuple(args...),
+                                std::make_tuple(std::bind(&ConcurrentExecPool::concurrentExecFn, this))));
                     }
                 }
                 //-----------------------------------------------------------------------------
@@ -505,8 +511,11 @@ namespace alpaka
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
                 //-----------------------------------------------------------------------------
+                template<
+                    typename... TArgs>
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount) :
+                    TSize concurrentExecutionCount,
+                    TArgs ... args) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
                     m_mtxWakeup(),
@@ -523,7 +532,10 @@ namespace alpaka
                     // Create all concurrent executors.
                     for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
-                        m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
+                        m_vConcurrentExecs.emplace_back(
+                            std::tuple_cat(
+                                std::make_tuple(args...),
+                                std::make_tuple(std::bind(&ConcurrentExecPool::concurrentExecFn, this))));
                     }
                 }
                 //-----------------------------------------------------------------------------

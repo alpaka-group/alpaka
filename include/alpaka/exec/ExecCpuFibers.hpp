@@ -174,11 +174,15 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " Fiber stack size: " << boost::fibers::fixedsize_stack::traits_type::default_size() << " B" << std::endl;
+                    << " Fiber stack size: " << m_perFiberStackSizeInByte << " B"
+                    << ", default fiber stack size: " << boost::fibers::fixedsize_stack::traits_type::default_size() << " B" << std::endl;
 #endif
 
                 auto const blockThreadCount(blockThreadExtent.prod());
-                FiberPool fiberPool(blockThreadCount);
+                FiberPool fiberPool(
+                    blockThreadCount,
+                    std::allocator_arg,
+                    boost::fibers::fixedsize_stack(m_perFiberStackSizeInByte));
 
                 auto const boundGridBlockExecHost(
                     meta::apply(
@@ -216,7 +220,7 @@ namespace alpaka
                 TArgs const & ... args)
             -> void
             {
-                    // The futures of the threads in the current block.
+                // The futures of the threads in the current block.
                 std::vector<boost::fibers::future<void>> futuresInBlock;
 
                 // Set the index of the current block
@@ -318,6 +322,7 @@ namespace alpaka
                 syncBlockThreads(acc);
             }
 
+            static std::size_t const m_perFiberStackSizeInByte = 64u * 1024u;
             TKernelFnObj m_kernelFnObj;
             std::tuple<TArgs...> m_args;
         };
