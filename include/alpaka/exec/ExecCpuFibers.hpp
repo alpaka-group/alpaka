@@ -172,6 +172,11 @@ namespace alpaka
                     *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this),
                     blockSharedMemDynSizeBytes);
 
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << BOOST_CURRENT_FUNCTION
+                    << " Fiber stack size: " << boost::fibers::fixedsize_stack::traits_type::default_size() << " B" << std::endl;
+#endif
+
                 auto const blockThreadCount(blockThreadExtent.prod());
                 FiberPool fiberPool(blockThreadCount, blockThreadCount);
 
