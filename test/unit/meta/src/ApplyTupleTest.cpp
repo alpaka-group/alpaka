@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(invoke)
     BOOST_REQUIRE_EQUAL(-314158, alpaka::meta::invoke(&Foo::add, foo, 1));
 
     // invoke (access) a data member
-    BOOST_REQUIRE_EQUAL(314159, alpaka::meta::invoke(&Foo::num_, foo));
+    BOOST_REQUIRE_EQUAL(-314159, alpaka::meta::invoke(&Foo::num_, foo));
 
     // invoke a function object
     BOOST_REQUIRE_EQUAL(18, alpaka::meta::invoke(AbsNum(), -18));
