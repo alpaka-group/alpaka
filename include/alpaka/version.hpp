@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2016 Erik Zenker
+* Copyright 2016-2017 Erik Zenker, Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -28,7 +28,7 @@
 //#############################################################################
 
 #define ALPAKA_VERSION_MAJOR 0
-#define ALPAKA_VERSION_MINOR 1
+#define ALPAKA_VERSION_MINOR 2
 #define ALPAKA_VERSION_PATCH 0
 
 //! The alpaka library version number
