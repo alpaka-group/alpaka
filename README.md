@@ -170,10 +170,10 @@ Authors
 ### Maintainers and Core Developers
 
 - Benjamin Worpitz (original author)
-- Erik Zenker
 - Rene Widera
 
 ### Former Members, Contributions and Thanks
 
 - Dr. Michael Bussmann
 - Axel Huebl
+- Erik Zenker
