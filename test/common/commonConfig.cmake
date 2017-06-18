@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Benjamin Worpitz
+# Copyright 2014-2017 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -64,7 +64,7 @@ PROJECT(${_COMMON_TARGET_NAME})
 
 SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
-FIND_PACKAGE("alpaka" REQUIRED)
+FIND_PACKAGE(alpaka REQUIRED)
 
 IF(NOT alpaka_FOUND)
     MESSAGE(WARNING "Required alpaka test common dependency alpaka could not be found!")
@@ -111,7 +111,7 @@ IF(NOT TARGET ${_COMMON_TARGET_NAME})
         PUBLIC ${_COMMON_COMPILE_DEFINITIONS_PUBLIC})
     TARGET_LINK_LIBRARIES(
         ${_COMMON_TARGET_NAME}
-        PUBLIC "alpaka")
+        PUBLIC alpaka)
     SET_TARGET_PROPERTIES(
         ${_COMMON_TARGET_NAME}
         PROPERTIES FOLDER "test")
