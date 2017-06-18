@@ -703,7 +703,7 @@ script:
     #      && scan-build -analyze-headers --status-bugs make VERBOSE=1
     #      && cd ../../../
     #  ;fi
-    - if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./travis/compileExec.sh "test/analysis/headerCheck/" ./headerCheck ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "ON" -a "ALPAKA_ACC_GPU_CUDA_ENABLE" == "OFF" ] ;then ./travis/compileExec.sh "test/analysis/headerCheck/" ./headerCheck ;fi
 
     #-------------------------------------------------------------------------------
     # FIXME: Not all tests are running successfully on all platforms:
