@@ -30,6 +30,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
 #include <alpaka/test/stream/Stream.hpp>            // alpaka::test::stream::DefaultStream
+#include <alpaka/test/Array.hpp>                    // alpaka::test::Array
 #include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
 
 #include <boost/assert.hpp>                         // BOOST_VERIFY
@@ -44,32 +45,6 @@
 #endif
 
 BOOST_AUTO_TEST_SUITE(blockSharedMemSt)
-
-//#############################################################################
-//!
-//#############################################################################
-template<
-    typename TType,
-    size_t TSize>
-struct Array {
-    TType m_data[TSize];
-
-    template<
-        typename T_Idx>
-    ALPAKA_FN_HOST_ACC const TType &operator[](
-        const T_Idx idx) const
-    {
-        return m_data[idx];
-    }
-
-    template<
-        typename TIdx>
-    ALPAKA_FN_HOST_ACC TType & operator[](
-        const TIdx idx)
-    {
-        return m_data[idx];
-    }
-};
 
 //#############################################################################
 //!
@@ -107,13 +82,13 @@ public:
         BOOST_VERIFY(static_cast<std::uint64_t *>(nullptr) != &e);
 
 
-        auto && f = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        auto && f = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
         BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &f[0]);
 
-        auto && g = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        auto && g = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
         BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &g[0]);
 
-        auto && h = alpaka::block::shared::st::allocVar<Array<double, 16>, __COUNTER__>(acc);
+        auto && h = alpaka::block::shared::st::allocVar<alpaka::test::Array<double, 16>, __COUNTER__>(acc);
         BOOST_VERIFY(static_cast<double *>(nullptr) != &h[0]);
 #if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0)
     #pragma GCC diagnostic pop
@@ -133,7 +108,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = alpaka::size::Size<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     BlockSharedMemStNonNullTestKernel kernel;
 
@@ -167,11 +142,11 @@ public:
         BOOST_VERIFY(&a != &c);
         BOOST_VERIFY(&b != &c);
 
-        auto && d = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        auto && d = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
         BOOST_VERIFY(&a != &d[0]);
         BOOST_VERIFY(&b != &d[0]);
         BOOST_VERIFY(&c != &d[0]);
-        auto && e = alpaka::block::shared::st::allocVar<Array<std::uint32_t, 32>, __COUNTER__>(acc);
+        auto && e = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
         BOOST_VERIFY(&a != &e[0]);
         BOOST_VERIFY(&b != &e[0]);
         BOOST_VERIFY(&c != &e[0]);
@@ -191,7 +166,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = alpaka::size::Size<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     BlockSharedMemStSameTypeDifferentAdressTestKernel kernel;
 

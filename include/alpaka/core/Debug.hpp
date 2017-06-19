@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2015 Benjamin Worpitz
+ * Copyright 2014-2017 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -22,10 +22,8 @@
 #pragma once
 
 #include <boost/current_function.hpp>
-#include <boost/predef.h>                   // workarounds
-/*#include <boost/preprocessor/stringize.hpp> // BOOST_PP_STRINGIZE
+#include <alpaka/core/BoostPredefWorkaround.hpp> // workarounds
 
-#include <stdexcept>                        // std::runtime_error*/
 #include <string>                           // std::string
 #include <iostream>                         // std::cout
 
@@ -47,14 +45,6 @@
     //! Set the minimum log level if it is not defined.
     //-----------------------------------------------------------------------------
     #define ALPAKA_DEBUG ALPAKA_DEBUG_DISABLED
-#endif
-
-//-----------------------------------------------------------------------------
-// Boost does not define BOOST_CURRENT_FUNCTION for MSVC correctly.
-//-----------------------------------------------------------------------------
-#if BOOST_COMP_MSVC
-    #undef BOOST_CURRENT_FUNCTION
-    #define BOOST_CURRENT_FUNCTION __FUNCTION__
 #endif
 
 namespace alpaka

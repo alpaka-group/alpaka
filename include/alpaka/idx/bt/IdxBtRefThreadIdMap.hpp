@@ -47,7 +47,7 @@ namespace alpaka
             public:
                 using IdxBtBase = IdxBtRefThreadIdMap;
 
-                using ThreadIdToIdxMap = std::map<std::thread::id, Vec<TDim, TSize>>;
+                using ThreadIdToIdxMap = std::map<std::thread::id, vec::Vec<TDim, TSize>>;
 
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -123,7 +123,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::bt::IdxBtRefThreadIdMap<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
                     auto const threadId(std::this_thread::get_id());

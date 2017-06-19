@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <alpaka/core/Vectorize.hpp>            // defaultAlignment
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
 
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
@@ -62,7 +63,7 @@ namespace alpaka
                         typename TDim,
                         typename TSize>
                     class BufCpuImpl :
-                        public mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>
+                        public mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
                     {
                     public:
                         //-----------------------------------------------------------------------------
@@ -73,11 +74,11 @@ namespace alpaka
                         ALPAKA_FN_HOST BufCpuImpl(
                             dev::DevCpu const & dev,
                             TExtent const & extent) :
-                                mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>(),
+                                mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
                                 m_dev(dev),
                                 m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                                m_pMem(mem::alloc::alloc<TElem>(*this, computeElementCount(extent))),
-                                m_pitchBytes(static_cast<TSize>(extent::getWidth(extent) * sizeof(TElem)))
+                                m_pMem(mem::alloc::alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
+                                m_pitchBytes(static_cast<TSize>(extent::getWidth(extent) * static_cast<TSize>(sizeof(TElem))))
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                                 ,m_bPinned(false)
 #endif
@@ -147,7 +148,7 @@ namespace alpaka
 
                     public:
                         dev::DevCpu const m_dev;
-                        Vec<TDim, TSize> const m_extentElements;
+                        vec::Vec<TDim, TSize> const m_extentElements;
                         TElem * const m_pMem;
                         TSize const m_pitchBytes;
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA

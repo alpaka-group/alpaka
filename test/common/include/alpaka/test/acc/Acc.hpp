@@ -27,7 +27,8 @@
 #include <type_traits>                      // std::is_class
 #include <iosfwd>                           // std::ostream
 
-// When compiling the tests with nvcc on th CI infrastructure we have to dramatically reduce the number of tested combinations.
+// When compiling the tests with CUDA enabled (nvcc or native clang) on the CI infrastructure
+// we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && ALPAKA_CI
     #define ALPAKA_CUDA_CI
@@ -83,6 +84,17 @@ namespace alpaka
                     typename TSize>
                 using AccCpuFibersIfAvailableElseVoid = int;
 #endif
+#if defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
+                template<
+                    typename TDim,
+                    typename TSize>
+                using AccCpuTbbIfAvailableElseVoid = alpaka::acc::AccCpuTbbBlocks<TDim, TSize>;
+#else
+                template<
+                    typename TDim,
+                    typename TSize>
+                using AccCpuTbbIfAvailableElseVoid = int;
+#endif
 #if defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
                 template<
                     typename TDim,
@@ -127,17 +139,6 @@ namespace alpaka
                     typename TSize>
                 using AccGpuCudaRtIfAvailableElseVoid = int;
 #endif
-#if defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
-                template<
-                    typename TDim,
-                    typename TSize>
-                using AccCpuTbbIfAvailableElseVoid = alpaka::acc::AccCpuTbbBlocks<TDim, TSize>;
-#else
-                template<
-                    typename TDim,
-                    typename TSize>
-                using AccCpuTbbIfAvailableElseVoid = int;
-#endif                
                 //#############################################################################
                 //! A vector containing all available accelerators and void's.
                 //#############################################################################
@@ -149,10 +150,10 @@ namespace alpaka
                         AccCpuSerialIfAvailableElseVoid<TDim, TSize>,
                         AccCpuThreadsIfAvailableElseVoid<TDim, TSize>,
                         AccCpuFibersIfAvailableElseVoid<TDim, TSize>,
+                        AccCpuTbbIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp2BlocksIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp2ThreadsIfAvailableElseVoid<TDim, TSize>,
                         AccCpuOmp4IfAvailableElseVoid<TDim, TSize>,
-                        AccCpuTbbIfAvailableElseVoid<TDim, TSize>,
                         AccGpuCudaRtIfAvailableElseVoid<TDim, TSize>
                     >;
             }
@@ -218,8 +219,12 @@ namespace alpaka
                 std::tuple<
                     alpaka::dim::DimInt<1u>,
                     //alpaka::dim::DimInt<2u>,
-                    alpaka::dim::DimInt<3u>/*,
-                    alpaka::dim::DimInt<4u>*/>;
+                    alpaka::dim::DimInt<3u>
+            // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
+#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
+                    /*,alpaka::dim::DimInt<4u>*/
+#endif
+                >;
 
             //#############################################################################
             //! A std::tuple holding size types.
@@ -233,6 +238,8 @@ namespace alpaka
                     //std::uint32_t,
                     //std::int16_t,
                     std::uint16_t/*,
+                    // When Size is a 8 bit integer, extents within the tests would be extremely limited
+                    // (especially when Dim is 4). Therefore, we do not test it.
                     std::int8_t,
                     std::uint8_t*/>;
 #else
@@ -244,10 +251,10 @@ namespace alpaka
                 std::tuple<
                     alpaka::dim::DimInt<1u>,
                     alpaka::dim::DimInt<2u>,
-                    alpaka::dim::DimInt<3u>,
+                    alpaka::dim::DimInt<3u>
             // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
-                    alpaka::dim::DimInt<4u>
+                    ,alpaka::dim::DimInt<4u>
 #endif
                 >;
 
@@ -263,6 +270,8 @@ namespace alpaka
                     std::uint32_t,
                     //std::int16_t,
                     std::uint16_t/*,
+                    // When Size is a 8 bit integer, extents within the tests would be extremely limited
+                    // (especially when Dim is 4). Therefore, we do not test it.
                     std::int8_t,
                     std::uint8_t*/>;
 #endif

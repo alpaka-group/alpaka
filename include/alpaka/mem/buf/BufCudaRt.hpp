@@ -125,7 +125,7 @@ namespace alpaka
 
             public:
                 dev::DevCudaRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
-                Vec<TDim, TSize> m_extentElements;
+                vec::Vec<TDim, TSize> m_extentElements;
                 std::shared_ptr<TElem> m_spMem;
                 TSize m_pitchBytes;
             };
@@ -368,7 +368,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        auto const widthBytes(width * sizeof(T));
+                        auto const widthBytes(width * static_cast<TSize>(sizeof(T)));
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -379,7 +379,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMalloc(
                                 &memPtr,
-                                widthBytes));
+                                static_cast<std::size_t>(widthBytes)));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -392,7 +392,7 @@ namespace alpaka
                             mem::buf::BufCudaRt<T, dim::DimInt<1u>, TSize>(
                                 dev,
                                 reinterpret_cast<T *>(memPtr),
-                                widthBytes,
+                                static_cast<TSize>(widthBytes),
                                 extent);
                     }
                 };
@@ -421,7 +421,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        auto const widthBytes(width * sizeof(T));
+                        auto const widthBytes(width * static_cast<TSize>(sizeof(T)));
                         auto const height(extent::getHeight(extent));
 
                         // Set the current device.
@@ -435,8 +435,8 @@ namespace alpaka
                             cudaMallocPitch(
                                 &memPtr,
                                 &pitchBytes,
-                                widthBytes,
-                                height));
+                                static_cast<std::size_t>(widthBytes),
+                                static_cast<std::size_t>(height)));
                         assert(pitchBytes>=widthBytes||(width*height)==0);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -482,9 +482,9 @@ namespace alpaka
 
                         cudaExtent const cudaExtentVal(
                             make_cudaExtent(
-                                extent::getWidth(extent) * sizeof(T),
-                                extent::getHeight(extent),
-                                extent::getDepth(extent)));
+                                static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TSize>(sizeof(T))),
+                                static_cast<std::size_t>(extent::getHeight(extent)),
+                                static_cast<std::size_t>(extent::getDepth(extent))));
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -588,7 +588,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto pin(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
+                        mem::buf::BufCudaRt<TElem, TDim, TSize> &)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -610,7 +610,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto unpin(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
+                        mem::buf::BufCudaRt<TElem, TDim, TSize> &)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -632,7 +632,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isPinned(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
+                        mem::buf::BufCudaRt<TElem, TDim, TSize> const &)
                     -> bool
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -789,7 +789,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TSize> const & buf,
-                        dev::DevCudaRt const & dev)
+                        dev::DevCudaRt const &)
                     -> TElem const *
                     {
                         // TODO: Check if the memory is mapped at all!
@@ -806,7 +806,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf,
-                        dev::DevCudaRt const & dev)
+                        dev::DevCudaRt const &)
                     -> TElem *
                     {
                         // TODO: Check if the memory is mapped at all!

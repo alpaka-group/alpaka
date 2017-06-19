@@ -35,8 +35,47 @@ skip_tags: false
 # Environment configuration.
 ################################################################################
 
-os:
-    - Visual Studio 2015
+environment:
+    global:
+        ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: ON
+        ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: ON
+        ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: ON
+        ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: ON
+        ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON
+        ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON
+        ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF
+        ALPAKA_ACC_GPU_CUDA_ENABLE: OFF
+        ALPAKA_ACC_GPU_CUDA_ONLY_MODE: OFF
+        ALPAKA_DEBUG: 0
+
+    matrix:
+        - ALPAKA_DEBUG: 2
+          OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: boost-1.64.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+        - OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: boost-1.61.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        - OMP_NUM_THREADS: 3
+          ALPAKA_BOOST_BRANCH: boost-1.60.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        - OMP_NUM_THREADS: 1
+          ALPAKA_BOOST_BRANCH: boost-1.59.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        - OMP_NUM_THREADS: 3
+          ALPAKA_BOOST_BRANCH: boost-1.63.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        - OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: develop
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+
+matrix:
+    fast_finish: true
+
+    allow_failures:
+        - OMP_NUM_THREADS: 4
+          ALPAKA_BOOST_BRANCH: develop
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 
 init:
     - cmd: cmake --version
@@ -51,38 +90,6 @@ clone_folder: c:\projects\alpaka
 shallow_clone: false
 # Set the clone depth.
 clone_depth: 1
-
-environment:
-    global:
-        ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: ON
-        ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: ON
-        ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: ON
-        ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF
-        ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: ON
-        ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: ON
-
-    matrix:
-        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF
-          ALPAKA_DEBUG: 0
-          OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: boost-1.60.0
-        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF
-          ALPAKA_DEBUG: 0
-          OMP_NUM_THREADS: 3
-          ALPAKA_BOOST_BRANCH: boost-1.59.0
-        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF
-          ALPAKA_DEBUG: 0
-          OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: develop
-
-matrix:
-    fast_finish: true
-
-    allow_failures:
-        - ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: ON
-          ALPAKA_DEBUG: 2
-          OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: develop
 
 ################################################################################
 # Build configuration.
@@ -103,6 +110,7 @@ before_build:
     - cmd: echo "%CI%"
     - cmd: echo "%APPVEYOR_API_URL%"
     - cmd: echo "%APPVEYOR_ACCOUNT_NAME%"
+    - cmd: echo "%APPVEYOR_BUILD_WORKER_IMAGE%"
     - cmd: echo "%APPVEYOR_PROJECT_ID%"
     - cmd: echo "%APPVEYOR_PROJECT_NAME%"
     - cmd: echo "%APPVEYOR_PROJECT_SLUG%"
@@ -133,12 +141,14 @@ before_build:
 
     #-------------------------------------------------------------------------------
     # Clone boost.
-    # If fibers are enabled we need boost develop branch.
+    # If fibers are enabled we need boost-1.62.0+ or develop branch.
     - ps: |
         if ($env:ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE -eq "ON") {
             if ($env:ALPAKA_BOOST_BRANCH -ne "develop") {
-                $env:ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE = "OFF"
-                write-warning "ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF set because boost fibers requires boost develop branch!"
+                if ([Int]$env:ALPAKA_BOOST_BRANCH.Substring(8, 2) -lt 62) {
+                    $env:ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE = "OFF"
+                    write-warning "ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF set because boost fibers requires boost-1.62.0+ or develop branch!"
+                }
             }
         }
 
@@ -148,46 +158,47 @@ before_build:
     - cmd: git clone -b %ALPAKA_BOOST_BRANCH% --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git %BOOST_ROOT%
     - cmd: cd %BOOST_ROOT%
 
-    # Clone boost.fiber.
-    - cmd: cd libs
-    - cmd: if "%ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE%"=="ON" git clone -b develop --single-branch --depth 1 https://github.com/olk/boost-fiber.git fiber
-    - cmd: cd ..
-
     # Prepare building of boost.
     - cmd: call bootstrap.bat
     # Create file links.
     - cmd: b2 headers
 
-    - cmd: if "%PLATFORM%"=="Win32" set BOOST_ADDRESS_MODEL=32
-    - cmd: if "%PLATFORM%"=="x64" set BOOST_ADDRESS_MODEL=64
-    - cmd: if "%CONFIGURATION%"=="Debug" set BOOST_VARIANT=debug
-    - cmd: if "%CONFIGURATION%"=="Release" set BOOST_VARIANT=release
+    - cmd: if "%PLATFORM%"=="Win32" set ALPAKA_BOOST_ADDRESS_MODEL=32
+    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_BOOST_ADDRESS_MODEL=64
+    - cmd: if "%CONFIGURATION%"=="Debug" set ALPAKA_BOOST_VARIANT=debug
+    - cmd: if "%CONFIGURATION%"=="Release" set ALPAKA_BOOST_VARIANT=release
     # Select the libraries required.
     - cmd: set ALPAKA_BOOST_B2=--with-test
     - cmd: if "%ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE%"=="ON" set ALPAKA_BOOST_B2=%ALPAKA_BOOST_B2% --with-fiber --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time
 
-    - cmd: b2 -j2 --toolset=msvc-14.0 --layout=versioned %ALPAKA_BOOST_B2% architecture=x86 address-model=%BOOST_ADDRESS_MODEL% variant=%BOOST_VARIANT% link=static threading=multi runtime-link=shared define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS --stagedir="%ALPAKA_B2_STAGE_DIR%"
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" set ALPAKA_BOOST_TOOLSET=msvc-14.0
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_BOOST_TOOLSET=msvc-14.1
+    - cmd: b2 -j2 --toolset=%ALPAKA_BOOST_TOOLSET% --layout=versioned %ALPAKA_BOOST_B2% architecture=x86 address-model=%ALPAKA_BOOST_ADDRESS_MODEL% variant=%ALPAKA_BOOST_VARIANT% link=static threading=multi runtime-link=shared define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS --stagedir="%ALPAKA_B2_STAGE_DIR%"
 
     #-------------------------------------------------------------------------------
     # Install TBB
+    - cmd: set TBB_ARCHIVE_VER=tbb44_20160526oss
+    - cmd: set TBB_DOWNLOAD_URL=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/windows/%TBB_ARCHIVE_VER%_win_0.zip
     - cmd: set TBB_ROOT_DIR=C:\projects\tbb
-
+    - cmd: set TBB_DST_PATH=%TBB_ROOT_DIR%\tbb.zip
+    - cmd: mkdir %TBB_ROOT_DIR%
+    - ps: Invoke-WebRequest $env:TBB_DOWNLOAD_URL -OutFile $env:TBB_DST_PATH
+    - cmd: 7z x %TBB_DST_PATH% -o%TBB_ROOT_DIR% -y
+    - cmd: set TBB_ROOT_DIR=%TBB_ROOT_DIR%\%TBB_ARCHIVE_VER%
+    - cmd: if "%PLATFORM%"=="Win32" set ALPAKA_TBB_BIN_DIR=%TBB_ROOT_DIR%\bin\ia32\vc14
+    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_TBB_BIN_DIR=%TBB_ROOT_DIR%\bin\intel64\vc14
+    - cmd: set PATH=%PATH%;%ALPAKA_TBB_BIN_DIR%
 
     #-------------------------------------------------------------------------------
     # Build the visual studio soultion from the cmake files.
     - cmd: cd C:\projects\alpaka
 
-    - cmd: if "%PLATFORM%"=="Win32" set ALPAKA_CMAKE_GENERATOR_NAME=Visual Studio 14 2015
-    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" set ALPAKA_CMAKE_GENERATOR=Visual Studio 14 2015
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_CMAKE_GENERATOR=Visual Studio 15 2017
+    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_CMAKE_GENERATOR=%ALPAKA_CMAKE_GENERATOR% Win64
     - cmd: mkdir build
     - cmd: cd build
-    - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR_NAME%" -DTBB_ROOT_DIR=%TBB_ROOT_DIR% -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF -DALPAKA_DEBUG="%ALPAKA_DEBUG%" -DALPAKA_CI=ON ".."
-
-    # TODO: Use something like the following if clang fully supports to build alpaka on Windows.
-    #- cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -T LLVM-vs2014 -DCMAKE_CXX_COMPILER="C:\\Program Files\\LLVM\\msbuild-bin\\cl.exe" ..
-    #- cmd: cmake .. -DCMAKE_CXX_COMPILER="C:\\projects\\alpaka\\$_OUTDIR\\bin\\clang++.exe"
-
-
+    - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DTBB_ROOT_DIR="%TBB_ROOT_DIR%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF -DALPAKA_DEBUG="%ALPAKA_DEBUG%" -DALPAKA_CI=ON ".."
 
 build:
     project: C:\projects\alpaka\build\alpakaAll.sln

@@ -34,14 +34,12 @@
 // Implementation details.
 #include <alpaka/acc/AccCpuTbbBlocks.hpp>       // acc:AccCpuTbbBlocks
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/idx/MapIdx.hpp>                // idx::mapIdx
 #include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
-#include <alpaka/core/MapIdx.hpp>               // core::mapIdx
 #include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
-
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
@@ -161,7 +159,7 @@ namespace alpaka
                 TSize const numBlocksInGrid(gridBlockExtent.prod());
 
                 // There is only ever one thread in a block in the TBB accelerator.
-                assert(blockThreadExtent.prod() == 1u);
+                assert(blockThreadExtent.prod() == static_cast<TSize>(1u));
 
                 tbb::parallel_for(
                     static_cast<TSize>(0),
@@ -172,8 +170,8 @@ namespace alpaka
                              blockSharedMemDynSizeBytes);
 
                          acc.m_gridBlockIdx =
-                             core::mapIdx<TDim::value>(
-                                 Vec<dim::DimInt<1u>, TSize>(
+                             idx::mapIdx<TDim::value>(
+                                 vec::Vec<dim::DimInt<1u>, TSize>(
                                      static_cast<TSize>(i)
                                   ),
                                   gridBlockExtent

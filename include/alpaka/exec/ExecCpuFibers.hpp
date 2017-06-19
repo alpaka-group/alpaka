@@ -43,7 +43,6 @@
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/predef.h>                       // workarounds
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <algorithm>                            // std::for_each
 #include <vector>                               // std::vector
@@ -77,7 +76,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Yields the current fiber.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto yield()
+                ALPAKA_FN_HOST static auto yield()
                 -> void
                 {
                     boost::this_fiber::yield();
@@ -173,8 +172,13 @@ namespace alpaka
                     *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this),
                     blockSharedMemDynSizeBytes);
 
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << BOOST_CURRENT_FUNCTION
+                    << " Fiber stack size: " << boost::fibers::fixedsize_stack::traits_type::default_size() << " B" << std::endl;
+#endif
+
                 auto const blockThreadCount(blockThreadExtent.prod());
-                FiberPool fiberPool(blockThreadCount, blockThreadCount);
+                FiberPool fiberPool(blockThreadCount);
 
                 auto const boundGridBlockExecHost(
                     meta::apply(
@@ -205,8 +209,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & gridBlockIdx,
-                Vec<TDim, TSize> const & blockThreadExtent,
+                vec::Vec<TDim, TSize> const & gridBlockIdx,
+                vec::Vec<TDim, TSize> const & blockThreadExtent,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -255,7 +259,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
                 std::vector<boost::fibers::future<void>> & futuresInBlock,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -285,7 +289,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadFiberFn(
                 acc::AccCpuFibers<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void

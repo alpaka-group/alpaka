@@ -1,8 +1,11 @@
 **alpaka** - Abstraction Library for Parallel Kernel Acceleration
 =================================================================
 
-[![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
-[![Build status](https://ci.appveyor.com/api/projects/status/xjeyugcg1cb0662s/branch/develop?svg=true)](https://ci.appveyor.com/project/BenjaminW3/alpaka-vuiya/branch/develop)
+[![Travis CI Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
+[![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/xjeyugcg1cb0662s/branch/develop?svg=true)](https://ci.appveyor.com/project/BenjaminW3/alpaka-vuiya/branch/develop)
+[![Language](https://img.shields.io/badge/language-C%2B%2B11-orange.svg)](https://isocpp.org/)
+[![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey.svg)](https://github.com/ComputationalRadiationPhysics/alpaka)
+[![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.de.html)
 
 The **alpaka** library is a header-only C++11 abstraction library for accelerator development.
 
@@ -15,7 +18,7 @@ There is no need to write special CUDA, OpenMP or custom threading code.
 Accelerator back-ends can be mixed within a device stream.
 The decision which accelerator back-end executes which kernel can be made at runtime.
 
-The **alpaka** API is currently unstable (alpha state).
+The **alpaka** API is currently unstable (beta state).
 
 The abstraction used is very similar to the CUDA grid-blocks-threads division strategy.
 Algorithms that should be parallelized have to be divided into a multi-dimensional grid consisting of small uniform work items.
@@ -36,7 +39,8 @@ Software License
 Documentation
 -------------
 
-The source code documentation generated with [doxygen](http://www.doxygen.org) is available [here](http://computationalradiationphysics.github.io/alpaka/).
+The [general documentation](doc/markdown/Index.md) is located within the `doc/markdown` subfolder of the repository.
+The [source code documentation](http://computationalradiationphysics.github.io/alpaka/) is generated with [doxygen](http://www.doxygen.org).
 
 
 Accelerator Back-ends
@@ -49,6 +53,8 @@ Accelerator Back-ends
 |OpenMP 2.0+ threads|OpenMP 2.0+|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 |OpenMP 4.0+ (CPU)|OpenMP 4.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
+| Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
+|TBB 2.2+ blocks|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
 |CUDA 7.0+|CUDA 7.0+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
 
 
@@ -57,14 +63,16 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|Accelerator Back-end|gcc 4.9.2|gcc 5.3|gcc 6.1|clang 3.5/3.6|clang 3.7|clang 3.8|MSVC 2015|
-|---|---|---|---|---|---|---|---|
-|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|
-| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:x:|:x:|:x:|:x:|:white_check_mark: (native)|:x:|
+|Accelerator Back-end|gcc 4.9.2|gcc 5.4|gcc 6.2|clang 3.5/3.6|clang 3.7|clang 3.8|clang 3.9|MSVC 2015.3/2017|
+|---|---|---|---|---|---|---|---|---|
+|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|:x:|
+| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|TBB 2.2+|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:x:|:white_check_mark: (native/nvcc 8.0+)|:white_check_mark: (native)|:x:|
 
 
 Dependencies
@@ -74,10 +82,16 @@ Dependencies
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
+When an accelerator back-end using *Boost.Fiber* is enabled, boost 1.62+ is required.
+`boost-fiber`, `boost-context` and all of its dependencies are required to be build in C++11 mode `./b2 cxxflags="-std=c++11"`.
+
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
-*NOTE*: When using *CUDA* 7.0, the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
+*NOTE*: When using nvcc as *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
+*NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with any *OpenMP accelerator back-end* because this combination is currently unsupported.
 
 When an accelerator back-end using *OpenMP* is enabled, the compiler and the platform have to support the corresponding minimum *OpenMP* version.
+
+When an accelerator back-end using *TBB* is enabled, the compiler and the platform have to support the corresponding minimum *TBB* version.
 
 
 Usage
@@ -160,10 +174,10 @@ Authors
 ### Maintainers and Core Developers
 
 - Benjamin Worpitz (original author)
-- Erik Zenker
 - Rene Widera
 
 ### Former Members, Contributions and Thanks
 
 - Dr. Michael Bussmann
 - Axel Huebl
+- Erik Zenker

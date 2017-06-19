@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2015 Benjamin Worpitz
+ * Copyright 2015-2017 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -78,13 +78,12 @@ template<
     typename TSize,
     template<std::size_t> class TCreate>
 static auto createVecFromIndexedFn()
--> alpaka::Vec<TDim, TSize>
+-> alpaka::vec::Vec<TDim, TSize>
 {
     return
+        alpaka::vec::
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        alpaka::Vec<TDim, TSize>::template
-#else
-        alpaka::
+        Vec<TDim, TSize>::template
 #endif
         createVecFromIndexedFn<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
@@ -100,29 +99,38 @@ static auto createVecFromIndexedFn()
 template<
     typename TAcc>
 static auto basicBufferOperationsTest(
-    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::size::Size<TAcc>> const & extent)
+    alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::size::Size<TAcc>> const & extent)
 -> void
 {
     using Dev = alpaka::dev::Dev<TAcc>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Stream = alpaka::test::stream::DefaultStream<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Stream stream(dev);
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::buf::alloc
     auto buf(alpaka::mem::buf::alloc<Elem, Size>(dev, extent));
 
-    auto const offset(alpaka::Vec<Dim, Size>::zeros());
-    viewTest<
+    //-----------------------------------------------------------------------------
+    auto const offset(alpaka::vec::Vec<Dim, Size>::zeros());
+    alpaka::test::mem::view::viewTestImmutable<
         Elem>(
             buf,
             dev,
             extent,
             offset);
+
+    //-----------------------------------------------------------------------------
+    alpaka::test::mem::view::viewTestMutable<
+        TAcc>(
+            stream,
+            buf);
 }
 
 //-----------------------------------------------------------------------------
@@ -136,8 +144,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    // We have to be careful with the extents used.
-    // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
     auto const extent(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
 
     basicBufferOperationsTest<
@@ -156,7 +162,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    auto const extent(alpaka::Vec<Dim, Size>::zeros());
+    auto const extent(alpaka::vec::Vec<Dim, Size>::zeros());
 
     basicBufferOperationsTest<
         TAcc>(

@@ -29,7 +29,7 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 namespace alpaka
 {
@@ -77,7 +77,7 @@ namespace alpaka
                 //!
                 //#############################################################################
                 template<>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncCudaBuiltIn>
                 {
                     //-----------------------------------------------------------------------------
@@ -88,6 +88,66 @@ namespace alpaka
                     -> void
                     {
                         __syncthreads();
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct SyncBlockThreadsPredicate<
+                    block::sync::op::Count,
+                    BlockSyncCudaBuiltIn>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncCudaBuiltIn const & /*blockSync*/,
+                        int predicate)
+                    -> int
+                    {
+                        return __syncthreads_count(predicate);
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct SyncBlockThreadsPredicate<
+                    block::sync::op::LogicalAnd,
+                    BlockSyncCudaBuiltIn>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncCudaBuiltIn const & /*blockSync*/,
+                        int predicate)
+                    -> int
+                    {
+                        return __syncthreads_and(predicate);
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<>
+                struct SyncBlockThreadsPredicate<
+                    block::sync::op::LogicalOr,
+                    BlockSyncCudaBuiltIn>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncCudaBuiltIn const & /*blockSync*/,
+                        int predicate)
+                    -> int
+                    {
+                        return __syncthreads_or(predicate);
                     }
                 };
             }

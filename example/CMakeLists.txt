@@ -32,4 +32,5 @@ PROJECT("alpakaExamples")
 
 ADD_SUBDIRECTORY("bufferCopy/")
 ADD_SUBDIRECTORY("helloWorld/")
+ADD_SUBDIRECTORY("helloWorldLambda/")
 ADD_SUBDIRECTORY("vectorAdd/")

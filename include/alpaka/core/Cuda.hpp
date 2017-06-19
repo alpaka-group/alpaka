@@ -107,7 +107,9 @@ namespace alpaka
                     if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
                     {
                         std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "'!");
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                         std::cerr << sError << std::endl;
+#endif
                         ALPAKA_DEBUG_BREAK;
                         throw std::runtime_error(sError);
                     }
@@ -126,7 +128,9 @@ namespace alpaka
                 if(lastError != cudaSuccess)
                 {
                     std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' A previous CUDA call (not this one) set the error: '" + std::string(cudaGetErrorString(lastError)) + "'!");
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     std::cerr << sError << std::endl;
+#endif
                     ALPAKA_DEBUG_BREAK;
                     throw std::runtime_error(sError);
                 }
@@ -143,12 +147,19 @@ namespace alpaka
         ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
 #else
+    #if BOOST_COMP_CLANG
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+    #endif
     //-----------------------------------------------------------------------------
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
         ::alpaka::cuda::detail::cudaRtCheckLastError(#cmd, __FILE__, __LINE__);\
         ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+    #if BOOST_COMP_CLANG
+        #pragma clang diagnostic pop
+    #endif
 #endif
 
 //-----------------------------------------------------------------------------
@@ -177,7 +188,9 @@ namespace alpaka
                 if(error != CUDA_SUCCESS)
                 {
                     std::string const sError(std::to_string(file) + "(" + std::to_string(line) + ") '" + std::to_string(cmd) + "' returned error: '" + std::to_string(error) + "' (possibly from a previous CUDA call)!");
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     std::cerr << sError << std::endl;
+#endif
                     ALPAKA_DEBUG_BREAK;
                     throw std::runtime_error(sError);
                 }

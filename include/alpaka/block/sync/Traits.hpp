@@ -50,11 +50,20 @@ namespace alpaka
                 template<
                     typename TBlockSync,
                     typename TSfinae = void>
-                struct SyncBlockThread;
+                struct SyncBlockThreads;
+
+                //#############################################################################
+                //! The block synchronization and predicate operation trait.
+                //#############################################################################
+                template<
+                    typename TOp,
+                    typename TBlockSync,
+                    typename TSfinae = void>
+                struct SyncBlockThreadsPredicate;
             }
 
             //-----------------------------------------------------------------------------
-            //! Allocates a variable in block shared memory.
+            //! Synchronizes all threads within the current block (independently for all blocks).
             //!
             //! \tparam TBlockSync The block synchronization implementation type.
             //! \param blockSync The block synchronization implementation.
@@ -66,7 +75,7 @@ namespace alpaka
                 TBlockSync const & blockSync)
             -> void
             {
-                traits::SyncBlockThread<
+                traits::SyncBlockThreads<
                     TBlockSync>
                 ::syncBlockThreads(
                     blockSync);
@@ -79,7 +88,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TBlockSync>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     TBlockSync,
                     typename std::enable_if<
                         meta::IsStrictBase<
@@ -98,7 +107,133 @@ namespace alpaka
                     {
                         // Delegate the call to the base class.
                         block::sync::syncBlockThreads(
-                                static_cast<typename TBlockSync::BlockSyncBase const &>(blockSync));
+                            static_cast<typename TBlockSync::BlockSyncBase const &>(blockSync));
+                    }
+                };
+            }
+
+            //-----------------------------------------------------------------------------
+            //! Defines operation functors.
+            //-----------------------------------------------------------------------------
+            namespace op
+            {
+                //#############################################################################
+                //! The addition function object.
+                //#############################################################################
+                struct Count
+                {
+                    enum { InitialValue = 0u};
+
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    template<
+                        typename T>
+                    ALPAKA_FN_HOST_ACC auto operator()(
+                        T const & currentResult,
+                        T const & value) const
+                    -> T
+                    {
+                        return currentResult + static_cast<T>(value != static_cast<T>(0));
+                    }
+                };
+                //#############################################################################
+                //! The logical and function object.
+                //#############################################################################
+                struct LogicalAnd
+                {
+                    enum { InitialValue = 1u};
+
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    template<
+                        typename T>
+                    ALPAKA_FN_HOST_ACC auto operator()(
+                        T const & currentResult,
+                        T const & value) const
+                    -> T
+                    {
+                        return static_cast<T>(currentResult && (value != static_cast<T>(0)));
+                    }
+                };
+                //#############################################################################
+                //! The logical or function object.
+                //#############################################################################
+                struct LogicalOr
+                {
+                    enum { InitialValue = 0u};
+
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    template<
+                        typename T>
+                    ALPAKA_FN_HOST_ACC auto operator()(
+                        T const & currentResult,
+                        T const & value) const
+                    -> T
+                    {
+                        return static_cast<T>(currentResult || (value != static_cast<T>(0)));
+                    }
+                };
+            }
+
+            //-----------------------------------------------------------------------------
+            //! Synchronizes all threads within the current block (independently for all blocks),
+            //! evaluates the predicate for all threads and returns the combination of all the results
+            //! computed via TOp.
+            //!
+            //! \tparam TOp The operation used to combine the predicate values of all threads.
+            //! \tparam TBlockSync The block synchronization implementation type.
+            //! \param blockSync The block synchronization implementation.
+            //! \param predicate The predicate value of the current thread.
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            template<
+                typename TOp,
+                typename TBlockSync>
+            ALPAKA_FN_ACC auto syncBlockThreadsPredicate(
+                TBlockSync const & blockSync,
+                int predicate)
+            -> int
+            {
+                return
+                    traits::SyncBlockThreadsPredicate<
+                        TOp,
+                        TBlockSync>
+                    ::syncBlockThreadsPredicate(
+                        blockSync,
+                        predicate);
+            }
+
+            namespace traits
+            {
+                //#############################################################################
+                //! The AllocVar trait specialization for classes with BlockSyncBase member type.
+                //#############################################################################
+                template<
+                    typename TOp,
+                    typename TBlockSync>
+                struct SyncBlockThreadsPredicate<
+                    TOp,
+                    TBlockSync,
+                    typename std::enable_if<
+                        meta::IsStrictBase<
+                            typename TBlockSync::BlockSyncBase,
+                            TBlockSync
+                        >::value
+                    >::type>
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
+                        TBlockSync const & blockSync,
+                        int predicate)
+                    -> int
+                    {
+                        // Delegate the call to the base class.
+                        return
+                            block::sync::syncBlockThreadsPredicate<
+                                TOp>(
+                                    static_cast<typename TBlockSync::BlockSyncBase const &>(blockSync),
+                                    predicate);
                     }
                 };
             }

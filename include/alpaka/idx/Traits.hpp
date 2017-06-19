@@ -75,7 +75,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto getIdx(
             TIdx const & idx,
             TWorkDiv const & workDiv)
-        -> Vec<dim::Dim<TWorkDiv>, size::Size<TIdx>>
+        -> vec::Vec<dim::Dim<TWorkDiv>, size::Size<TIdx>>
         {
             return
                 traits::GetIdx<
@@ -96,7 +96,7 @@ namespace alpaka
             typename TIdxWorkDiv>
         ALPAKA_FN_HOST_ACC auto getIdx(
             TIdxWorkDiv const & idxWorkDiv)
-        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
+        -> vec::Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
             return
                 traits::GetIdx<
@@ -135,7 +135,7 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdxGb const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<typename TIdxGb::IdxGbBase>, size::Size<typename TIdxGb::IdxGbBase>>
+                -> vec::Vec<dim::Dim<typename TIdxGb::IdxGbBase>, size::Size<typename TIdxGb::IdxGbBase>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -172,7 +172,7 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdxBt const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<typename TIdxBt::IdxBtBase>, size::Size<typename TIdxBt::IdxBtBase>>
+                -> vec::Vec<dim::Dim<typename TIdxBt::IdxBtBase>, size::Size<typename TIdxBt::IdxBtBase>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -226,10 +226,14 @@ namespace alpaka
             typename TGridThreadIdx,
             typename TThreadElemExtent>
         ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
+#if BOOST_ARCH_CUDA_DEVICE
+            TIdxWorkDiv const &,
+#else
             TIdxWorkDiv const & idxWorkDiv,
+#endif
             TGridThreadIdx const & gridThreadIdx,
             TThreadElemExtent const & threadElemExtent)
-        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
+        -> vec::Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
 #if !BOOST_ARCH_CUDA_DEVICE
             boost::ignore_unused(idxWorkDiv);
@@ -246,7 +250,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
             TIdxWorkDiv const & idxWorkDiv,
             TGridThreadIdx const & gridThreadIdx)
-        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
+        -> vec::Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
             auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
             return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx, threadElemExtent);
@@ -259,7 +263,7 @@ namespace alpaka
             typename TIdxWorkDiv>
         ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
             TIdxWorkDiv const & idxWorkDiv)
-        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
+        -> vec::Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
             auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(idxWorkDiv));
             return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx);

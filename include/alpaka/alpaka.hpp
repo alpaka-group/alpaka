@@ -36,11 +36,11 @@
 #include <alpaka/acc/AccCpuSerial.hpp>
 #include <alpaka/acc/AccCpuThreads.hpp>
 #include <alpaka/acc/AccCpuFibers.hpp>
+#include <alpaka/acc/AccCpuTbbBlocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #include <alpaka/acc/AccCpuOmp4.hpp>
 #include <alpaka/acc/AccGpuCudaRt.hpp>
-#include <alpaka/acc/AccCpuTbbBlocks.hpp>
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/acc/Traits.hpp>
 
@@ -89,14 +89,13 @@
 //-----------------------------------------------------------------------------
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Align.hpp>
-#include <alpaka/core/BarrierFiber.hpp>
 #include <alpaka/core/BarrierThread.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/ConcurrentExecPool.hpp>
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/core/Debug.hpp>
 #include <alpaka/core/Fibers.hpp>
-#include <alpaka/core/MapIdx.hpp>
+#include <alpaka/core/OpenMp.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unroll.hpp>
 #include <alpaka/core/Vectorize.hpp>
@@ -129,11 +128,11 @@
 #include <alpaka/exec/ExecCpuSerial.hpp>
 #include <alpaka/exec/ExecCpuThreads.hpp>
 #include <alpaka/exec/ExecCpuFibers.hpp>
+#include <alpaka/exec/ExecCpuTbbBlocks.hpp>
 #include <alpaka/exec/ExecCpuOmp2Blocks.hpp>
 #include <alpaka/exec/ExecCpuOmp2Threads.hpp>
 #include <alpaka/exec/ExecCpuOmp4.hpp>
 #include <alpaka/exec/ExecGpuCudaRt.hpp>
-#include <alpaka/exec/ExecCpuTbbBlocks.hpp>
 #include <alpaka/exec/Traits.hpp>
 
 //-----------------------------------------------------------------------------
@@ -152,6 +151,7 @@
 #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/Traits.hpp>
+#include <alpaka/idx/MapIdx.hpp>
 
 //-----------------------------------------------------------------------------
 // kernel
@@ -185,14 +185,18 @@
 //-----------------------------------------------------------------------------
 #include <alpaka/meta/Apply.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
-#include <alpaka/meta/Concatenate.hpp>
 #include <alpaka/meta/CartesianProduct.hpp>
+#include <alpaka/meta/Concatenate.hpp>
 #include <alpaka/meta/DependentFalseType.hpp>
 #include <alpaka/meta/Filter.hpp>
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/meta/ForEachType.hpp>
+#include <alpaka/meta/IntegerSequence.hpp>
+#include <alpaka/meta/IsIntegralSuperset.hpp>
+#include <alpaka/meta/IsStrictBase.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 #include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/Set.hpp>
 #include <alpaka/meta/StdTupleAsMplSequence.hpp>
 #include <alpaka/meta/Transform.hpp>
 

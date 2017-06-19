@@ -40,7 +40,7 @@ public:
     //! \tparam TAcc The type of the accelerator the kernel is executed on..
     //! \tparam TElem The matrix element type.
     //! \param acc The accelerator the kernel is executed on.
-    //! \param n Specifies the number of elements of the vectors X and Y.
+    //! \param numElements Specifies the number of elements of the vectors X and Y.
     //! \param alpha Scalar the X vector is multiplied with.
     //! \param X Vector of at least n elements.
     //! \param Y Vector of at least n elements.
@@ -86,6 +86,10 @@ public:
 //#############################################################################
 struct AxpyKernelTester
 {
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
+#endif
     template<
         typename TAcc,
         typename TSize>
@@ -116,7 +120,7 @@ struct AxpyKernelTester
         // Get a stream on this device.
         StreamAcc stream(devAcc);
 
-        alpaka::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
+        alpaka::vec::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
             numElements);
 
         // Let alpaka calculate good block and grid sizes given our full problem extent.
@@ -190,7 +194,7 @@ struct AxpyKernelTester
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
-            << alpaka::integ::measureKernelRunTimeMs(
+            << alpaka::test::integ::measureKernelRunTimeMs(
                 stream,
                 exec)
             << " ms"
@@ -210,7 +214,14 @@ struct AxpyKernelTester
         {
             auto const & val(pHostResultData[i]);
             auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
+#endif
             if(val != correctResult)
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
             {
                 std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
                 resultCorrect = false;
@@ -226,6 +237,9 @@ struct AxpyKernelTester
 
         allResultsCorrect = allResultsCorrect && resultCorrect;
     }
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
 
 public:
     bool allResultsCorrect = true;
@@ -253,7 +267,7 @@ auto main()
         AxpyKernelTester axpyKernelTester;
 
         // For different sizes.
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
         for(std::size_t vecSize(1u); vecSize <= 1u<<9u; vecSize *= 8u)
 #else
         for(std::size_t vecSize(1u); vecSize <= 1u<<16u; vecSize *= 2u)

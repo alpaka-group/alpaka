@@ -100,7 +100,8 @@ namespace alpaka
                 -> size::Size<TAcc>
                 {
                     boost::ignore_unused(blockSharedMemDyn);
-                    return sizeof(std::uint32_t) * blockThreadExtent.prod() * threadElemExtent.prod();
+                    return
+                        static_cast<size::Size<TAcc>>(sizeof(std::uint32_t)) * blockThreadExtent.prod() * threadElemExtent.prod();
                 }
             };
         }
@@ -121,7 +122,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = alpaka::size::Size<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     BlockSharedMemDynTestKernel kernel;
 

@@ -44,7 +44,7 @@ struct PrintBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
@@ -78,7 +78,7 @@ struct TestBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
@@ -108,7 +108,7 @@ struct InitBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
@@ -137,7 +137,7 @@ struct FillBufferKernel
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::core::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 
@@ -181,17 +181,17 @@ auto main()
     /***************************************************************************
      * Init workdiv
      **************************************************************************/
-    alpaka::Vec<Dim, Size> const elementsPerThread(
+    alpaka::vec::Vec<Dim, Size> const elementsPerThread(
         static_cast<Size>(1),
         static_cast<Size>(1),
         static_cast<Size>(1));
 
-    alpaka::Vec<Dim, Size> const threadsPerBlock(
+    alpaka::vec::Vec<Dim, Size> const threadsPerBlock(
         static_cast<Size>(1),
         static_cast<Size>(1),
         static_cast<Size>(1));
 
-    alpaka::Vec<Dim, Size> const blocksPerGrid(
+    alpaka::vec::Vec<Dim, Size> const blocksPerGrid(
         static_cast<Size>(4),
         static_cast<Size>(8),
         static_cast<Size>(16));
@@ -215,7 +215,7 @@ auto main()
     using Data = std::uint32_t;
     constexpr Extents nElementsPerDim = 2;
 
-    const alpaka::Vec<Dim, Size> extents(
+    const alpaka::vec::Vec<Dim, Size> extents(
         static_cast<Size>(nElementsPerDim),
         static_cast<Size>(nElementsPerDim),
         static_cast<Size>(nElementsPerDim));

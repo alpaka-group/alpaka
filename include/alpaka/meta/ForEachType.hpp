@@ -58,8 +58,13 @@ namespace alpaka
                     typename TFnObj,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto forEachTypeHelper(
+#if !BOOST_ARCH_CUDA_DEVICE
                     TFnObj && f,
                     TArgs && ... args)
+#else
+                    TFnObj &&,
+                    TArgs && ...)
+#endif
                 -> void
                 {
 #if !BOOST_ARCH_CUDA_DEVICE
@@ -91,7 +96,7 @@ namespace alpaka
                 -> void
                 {
                     // Call the function object template call operator.
-#if BOOST_COMP_MSVC
+#if BOOST_COMP_MSVC && !BOOST_COMP_NVCC
                     f.operator()<T>(
                         std::forward<TArgs>(args)...);
 #else

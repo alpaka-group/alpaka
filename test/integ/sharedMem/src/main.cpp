@@ -110,9 +110,9 @@ public:
         if(blockThreadIdx1d==0)
         {
             // Calculate linearized block id.
-            std::size_t const blockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
+            std::size_t const gridBlockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
-            puiBlockRetVals[blockIdx] = pBlockShared[0] * m_mult * mult2;
+            puiBlockRetVals[gridBlockIdx] = pBlockShared[0] * m_mult * mult2;
         }
     }
 
@@ -229,7 +229,7 @@ struct SharedMemTester
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
-            << alpaka::integ::measureKernelRunTimeMs(
+            << alpaka::test::integ::measureKernelRunTimeMs(
                 stream,
                 exec)
             << " ms"
@@ -299,7 +299,7 @@ auto main()
         alpaka::meta::forEachType<
             alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, std::uint32_t>>(
                 sharedMemTester,
-                static_cast<std::uint32_t>(512u),
+                512u,
                 mult2);
 
         return sharedMemTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;

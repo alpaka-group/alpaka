@@ -37,11 +37,18 @@
 //-----------------------------------------------------------------------------
 //! Native CUDA function.
 //-----------------------------------------------------------------------------
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmissing-prototypes"
+#endif
 __device__ auto userDefinedThreadFence()
 -> void
 {
     __threadfence();
 }
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 //#############################################################################
 //!
@@ -55,7 +62,7 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const &) const
     -> void
     {
         // We should be able to call some native CUDA functions when ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled.
@@ -77,7 +84,7 @@ BOOST_AUTO_TEST_CASE(cudaOnlyModeWorking)
     using Size = alpaka::size::Size<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Size>::ones());
 
     CudaOnlyTestKernel kernel;
 

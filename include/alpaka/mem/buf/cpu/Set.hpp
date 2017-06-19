@@ -1,32 +1,34 @@
-            /**
-* \file
-* Copyright 2014-2015 Benjamin Worpitz, Erik Zenker
-*
-* This file is part of alpaka.
-*
-* alpaka is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* alpaka is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public License
-* along with alpaka.
-* If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * \file
+ * Copyright 2014-2017 Benjamin Worpitz, Erik Zenker
+ *
+ * This file is part of alpaka.
+ *
+ * alpaka is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * alpaka is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with alpaka.
+ * If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #pragma once
 
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
-#include <alpaka/extent/Traits.hpp>         // mem::view::getXXX
-#include <alpaka/mem/view/Traits.hpp>       // mem::view::Set, ...
+#include <alpaka/dim/DimIntegralConst.hpp>      // dim::DimInt<N>
+#include <alpaka/extent/Traits.hpp>             // extent::getXXX
+#include <alpaka/mem/view/Traits.hpp>           // mem::view::Set, ...
+#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
+#include <alpaka/meta/IsIntegralSuperset.hpp>   // meta::IsIntegralSuperset
 
-#include <cassert>                          // assert
-#include <cstring>                          // std::memset
+#include <cassert>                              // assert
+#include <cstring>                              // std::memset
 
 namespace alpaka
 {
@@ -47,49 +49,92 @@ namespace alpaka
                 namespace detail
                 {
                     //#############################################################################
-                    //! The CPU device memory set task.
-                    //!
-                    //! Set CPU memory.
+                    //! The CPU device ND memory set task base.
                     //#############################################################################
                     template<
+                        typename TDim,
                         typename TView,
                         typename TExtent>
-                    struct TaskSet
+                    struct TaskSetBase
                     {
-                        using Size = size::Size<TExtent>;
+                        using ExtentSize = size::Size<TExtent>;
+                        using DstSize = size::Size<TView>;
+                        using Elem = elem::Elem<TView>;
 
                         static_assert(
                             dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                             "The destination view and the extent are required to have the same dimensionality!");
+                        static_assert(
+                            dim::Dim<TView>::value == TDim::value,
+                            "The destination view and the input TDim are required to have the same dimensionality!");
+
+                        static_assert(
+                            meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
+                            "The view and the extent are required to have compatible size type!");
 
                         //-----------------------------------------------------------------------------
                         //! Constructor.
                         //-----------------------------------------------------------------------------
-                        TaskSet(
+                        TaskSetBase(
                             TView & view,
                             std::uint8_t const & byte,
                             TExtent const & extent) :
                                 m_byte(byte),
-                                m_extentWidth(static_cast<Size>(extent::getWidth(extent))),
-                                m_extentHeight(static_cast<Size>(extent::getHeight(extent))),
-                                m_extentDepth(static_cast<Size>(extent::getDepth(extent))),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(view))),
-                                m_dstHeight(static_cast<Size>(extent::getHeight(view))),
+                                m_extent(extent::getExtentVec(extent)),
+                                m_extentWidthBytes(m_extent[TDim::value - 1u] * static_cast<ExtentSize>(sizeof(Elem))),
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                                m_dstDepth(static_cast<Size>(extent::getDepth(view))),
+                                m_dstExtent(extent::getExtentVec(view)),
 #endif
-                                m_extentWidthBytes(m_extentWidth * sizeof(elem::Elem<TView>)),
-                                m_dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view)),
-                                m_dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view)),
-                                m_dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view))),
-                                m_dstBufWidth(static_cast<Size>(extent::getWidth(view))),
-                                m_dstBufHeight(static_cast<Size>(extent::getHeight(view)))
+                                m_dstPitchBytes(mem::view::getPitchBytesVec(view)),
+                                m_dstMemNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view)))
                         {
-                            assert(m_extentWidth <= m_dstWidth);
-                            assert(m_extentHeight <= m_dstHeight);
-                            assert(m_extentDepth <= m_dstDepth);
-                            assert(m_extentWidthBytes <= m_dstPitchBytesX);
+                            assert((vec::cast<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
+                            assert(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
                         }
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                        //-----------------------------------------------------------------------------
+                        //!
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FN_HOST auto printDebug() const
+                        -> void
+                        {
+                            std::cout << BOOST_CURRENT_FUNCTION
+                                << " e: " << this->m_extent
+                                << " ewb: " << this->m_extentWidthBytes
+                                << " de: " << this->m_dstExtent
+                                << " dptr: " << reinterpret_cast<void *>(this->m_dstMemNative)
+                                << " dpitchb: " << this->m_dstPitchBytes
+                                << std::endl;
+                        }
+#endif
+
+                        std::uint8_t const m_byte;
+                        vec::Vec<TDim, ExtentSize> const m_extent;
+                        ExtentSize const m_extentWidthBytes;
+#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+                        vec::Vec<TDim, DstSize> const m_dstExtent;
+#endif
+                        vec::Vec<TDim, DstSize> const m_dstPitchBytes;
+                        std::uint8_t * const m_dstMemNative;
+                    };
+
+                    //#############################################################################
+                    //! The CPU device ND memory set task.
+                    //#############################################################################
+                    template<
+                        typename TDim,
+                        typename TView,
+                        typename TExtent>
+                    struct TaskSet : public TaskSetBase<TDim, TView, TExtent>
+                    {
+                        using DimMin1 = dim::DimInt<TDim::value - 1u>;
+
+                        //-----------------------------------------------------------------------------
+                        //! Constructor.
+                        //-----------------------------------------------------------------------------
+                        using TaskSetBase<TDim, TView, TExtent>::TaskSetBase;
+
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
@@ -98,54 +143,66 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-        #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            std::cout << BOOST_CURRENT_FUNCTION
-                                << " ew: " << m_extentWidth
-                                << " eh: " << m_extentHeight
-                                << " ed: " << m_extentDepth
-                                << " ewb: " << m_extentWidthBytes
-                                << " dw: " << m_dstWidth
-                                << " dh: " << m_dstHeight
-                                << " dd: " << m_dstDepth
-                                << " dptr: " << reinterpret_cast<void *>(m_dstNativePtr)
-                                << " dpitchbX: " << m_dstPitchBytesX
-                                << " dpitchbY: " << m_dstPitchBytesY
-                                << " dbufw: " << m_dstBufWidth
-                                << " dbufh: " << m_dstBufHeight
-                                << std::endl;
-        #endif
-
-
-
-                            for(Size z = static_cast<Size>(0); z < m_extentDepth; ++z)
-                            {
-
-                                    for(Size y = static_cast<Size>(0); y < m_extentHeight; ++y)
-                                    {
-                                            std::memset(
-                                                        reinterpret_cast<void *>(m_dstNativePtr + y*m_dstPitchBytesX + z*m_dstPitchBytesY),
-                                                        m_byte,
-                                                        m_extentWidthBytes);
-                                        }
-                                }
-                        }
-
-                        std::uint8_t const m_byte;
-                        Size const m_extentWidth;
-                        Size const m_extentHeight;
-                        Size const m_extentDepth;
-                        Size const m_dstWidth;
-                        Size const m_dstHeight;
-#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                        Size const m_dstDepth;
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                            this->printDebug();
 #endif
-                        Size const m_extentWidthBytes;
-                        Size const m_dstPitchBytesX;
-                        Size const m_dstPitchBytesY;
-                        std::uint8_t * m_dstNativePtr;
-                        Size const m_dstBufWidth;
-                        Size const m_dstBufHeight;
+                            // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one iteration.
+                            using ExtentSize = typename TaskSetBase<TDim, TView, TExtent>::ExtentSize;
+                            vec::Vec<DimMin1, ExtentSize> const extentWithoutInnermost(vec::subVecBegin<DimMin1>(this->m_extent));
+                            // [z, y, x] -> [y, x] because the z pitch (the full size of the buffer) is not required.
+                            using DstSize = typename TaskSetBase<TDim, TView, TExtent>::DstSize;
+                            vec::Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(vec::subVecEnd<DimMin1>(this->m_dstPitchBytes));
 
+                            if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+                            {
+                                meta::ndLoopIncIdx(
+                                    extentWithoutInnermost,
+                                    [&](vec::Vec<DimMin1, ExtentSize> const & idx)
+                                    {
+                                        std::memset(
+                                            reinterpret_cast<void *>(this->m_dstMemNative + (vec::cast<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
+                                            this->m_byte,
+                                            static_cast<std::size_t>(this->m_extentWidthBytes));
+                                    });
+                            }
+                        }
+                    };
+
+                    //#############################################################################
+                    //! The CPU device 1D memory set task.
+                    //#############################################################################
+                    template<
+                        typename TView,
+                        typename TExtent>
+                    struct TaskSet<
+                        dim::DimInt<1u>,
+                        TView,
+                        TExtent> : public TaskSetBase<dim::DimInt<1u>, TView, TExtent>
+                    {
+                        //-----------------------------------------------------------------------------
+                        //! Constructor.
+                        //-----------------------------------------------------------------------------
+                        using TaskSetBase<dim::DimInt<1u>, TView, TExtent>::TaskSetBase;
+
+                        //-----------------------------------------------------------------------------
+                        //!
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FN_HOST auto operator()() const
+                        -> void
+                        {
+                            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                            this->printDebug();
+#endif
+                            if(static_cast<std::size_t>(this->m_extent.prod()) != 0u)
+                            {
+                                std::memset(
+                                    reinterpret_cast<void *>(this->m_dstMemNative),
+                                    this->m_byte,
+                                    static_cast<std::size_t>(this->m_extentWidthBytes));
+                            }
+                        }
                     };
                 }
             }
@@ -172,11 +229,13 @@ namespace alpaka
                         std::uint8_t const & byte,
                         TExtent const & extent)
                     -> cpu::detail::TaskSet<
+                        TDim,
                         TView,
                         TExtent>
                     {
                         return
                             cpu::detail::TaskSet<
+                                TDim,
                                 TView,
                                 TExtent>(
                                     view,

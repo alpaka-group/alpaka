@@ -23,27 +23,29 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
+#include <alpaka/core/Common.hpp>   // BOOST_COMP_MSVC
+
 #if BOOST_COMP_MSVC
     #pragma warning(push)
-    #pragma warning(disable: 4267)  // boost/asio/detail/impl/socket_ops.ipp(1968): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-                                    // boost/asio/detail/impl/socket_ops.ipp(2172): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-    #pragma warning(disable: 4297)  // boost/coroutine/detail/symmetric_coroutine_impl.hpp(409) : warning C4297 : 'boost::coroutines::detail::symmetric_coroutine_impl<void>::yield' : function assumed not to throw an exception but does
-    #pragma warning(disable: 4996)  // boost/asio/detail/impl/socket_ops.ipp(1363) : warning C4996 : 'WSASocketA' : Use WSASocketW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-    #pragma warning(disable: 4456)  // boost/fiber/condition.hpp(174): warning C4456: declaration of 'lk' hides previous local declaration
-                                    // boost/fiber/condition.hpp(217): warning C4456: declaration of 'lk' hides previous local declaration
+
+    #pragma warning(disable: 4100)  // boost/context/detail/apply.hpp(31): warning C4100: "tpl": unreferenced formal parameter
+    #pragma warning(disable: 4245)  // boost/fiber/detail/futex.hpp(52): warning C4245: 'argument': conversion from 'int' to 'DWORD', signed/unsigned mismatch
+    #pragma warning(disable: 4324)  // boost/fiber/detail/context_mpsc_queue.hpp(41): warning C4324: 'boost::fibers::detail::context_mpsc_queue': structure was padded due to alignment specifier
+    #pragma warning(disable: 4456)  // boost/context/execution_context_v2.hpp(301): warning C4456: declaration of 'p' hides previous local declaration
+    #pragma warning(disable: 4702)  // boost/context/execution_context_v2.hpp(49): warning C4702: unreachable code
     // Boost.Fiber indirectly includes windows.h for which we need to define some things.
     #define NOMINMAX
 #endif
 
 // Boost fiber:
-// http://olk.github.io/libs/fiber/doc/html/index.html
-// https://github.com/olk/boost-fiber
+// http://www.boost.org/doc/libs/develop/libs/fiber/doc/html/index.html
+// https://github.com/boostorg/fiber
 #include <boost/fiber/fiber.hpp>                // boost::fibers::fiber
 #include <boost/fiber/operations.hpp>           // boost::this_fiber
 #include <boost/fiber/condition_variable.hpp>   // boost::fibers::condition_variable
 #include <boost/fiber/mutex.hpp>                // boost::fibers::mutex
 #include <boost/fiber/future.hpp>               // boost::fibers::future
-//#include <boost/fiber/barrier.hpp>            // boost::fibers::barrier
+#include <boost/fiber/barrier.hpp>              // boost::fibers::barrier
 
 #if BOOST_COMP_MSVC
     #undef NOMINMAX

@@ -45,7 +45,7 @@
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
+#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
@@ -55,7 +55,7 @@
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 
-#include <memory>                               // std::unique_ptr
+#include <limits>                               // std::numeric_limits
 #include <typeinfo>                             // typeid
 
 namespace alpaka
@@ -130,7 +130,7 @@ namespace alpaka
                     block::sync::BlockSyncBarrierOmp(),
                     rand::RandStl(),
                     time::TimeOmp(),
-                    m_gridBlockIdx(Vec<TDim, TSize>::zeros())
+                    m_gridBlockIdx(vec::Vec<TDim, TSize>::zeros())
             {}
 
         public:
@@ -157,7 +157,7 @@ namespace alpaka
 
         private:
             // getIdx
-            Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
+            vec::Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
         };
     }
 
@@ -194,7 +194,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TSize>(4));
 #else
                     // NOTE: ::omp_get_thread_limit() returns 2^31-1 (largest positive int value)...
@@ -204,15 +204,15 @@ namespace alpaka
                         // m_multiProcessorCount
                         static_cast<TSize>(1),
                         // m_gridBlockExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_gridBlockCountMax
                         std::numeric_limits<TSize>::max(),
                         // m_blockThreadExtentMax
-                        Vec<TDim, TSize>::all(blockThreadCountMax),
+                        vec::Vec<TDim, TSize>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TSize>::max()};
                 }
@@ -229,8 +229,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
                     return "AccCpuOmp4<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";

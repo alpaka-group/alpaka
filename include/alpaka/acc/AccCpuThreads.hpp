@@ -127,7 +127,7 @@ namespace alpaka
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStl(),
                     time::TimeStl(),
-                    m_gridBlockIdx(Vec<TDim, TSize>::zeros())
+                    m_gridBlockIdx(vec::Vec<TDim, TSize>::zeros())
             {}
 
         public:
@@ -156,7 +156,7 @@ namespace alpaka
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
             typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
-            Vec<TDim, TSize> mutable m_gridBlockIdx;                        //!< The index of the currently executed block.
+            vec::Vec<TDim, TSize> mutable m_gridBlockIdx;                   //!< The index of the currently executed block.
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
@@ -196,7 +196,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TSize>(8));
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
@@ -207,15 +207,15 @@ namespace alpaka
                         // m_multiProcessorCount
                         static_cast<TSize>(1),
                         // m_gridBlockExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_gridBlockCountMax
                         std::numeric_limits<TSize>::max(),
                         // m_blockThreadExtentMax
-                        Vec<TDim, TSize>::all(blockThreadCountMax),
+                        vec::Vec<TDim, TSize>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TSize>::max()};
                 }
@@ -232,8 +232,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
                     return "AccCpuThreads<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";

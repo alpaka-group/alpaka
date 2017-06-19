@@ -108,7 +108,7 @@ namespace alpaka
                                 m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
 #endif
-                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extent) * sizeof(elem::Elem<TViewDst>))),
+                                m_extentWidthBytes(extent::getWidth(extent) * static_cast<Size>(sizeof(elem::Elem<TViewDst>))),
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
@@ -191,7 +191,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_extentWidth(extent::getWidth(extent)),
 #endif
-                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extent) * sizeof(elem::Elem<TViewDst>))),
+                                m_extentWidthBytes(extent::getWidth(extent) * static_cast<Size>(sizeof(elem::Elem<TViewDst>))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),      // required for 3D peer copy
                                 m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),      // required for 3D peer copy
 
@@ -307,7 +307,7 @@ namespace alpaka
                                 m_iSrcDevice(iSrcDevice),
 
                                 m_extentWidth(extent::getWidth(extent)),
-                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TViewDst>))),
+                                m_extentWidthBytes(m_extentWidth * static_cast<Size>(sizeof(elem::Elem<TViewDst>))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
 
@@ -575,29 +575,29 @@ namespace alpaka
                         auto const & srcNativePtr(task.m_srcMemNative);
 
                         // Fill CUDA parameter structure.
-                        cudaMemcpy3DParms cudaMemCpy3DParms = {0};
+                        cudaMemcpy3DParms cudaMemCpy3DParms = {};
                         //cudaMemCpy3DParms.srcArray;     // Either srcArray or srcPtr.
                         //cudaMemCpy3DParms.srcPos;       // Optional. Offset in bytes.
 
                         cudaMemCpy3DParms.srcPtr =
                             make_cudaPitchedPtr(
                                 const_cast<void *>(srcNativePtr),
-                                srcPitchBytesX,
-                                srcWidth,
-                                srcPitchBytesY/srcPitchBytesX);
+                                static_cast<std::size_t>(srcPitchBytesX),
+                                static_cast<std::size_t>(srcWidth),
+                                static_cast<std::size_t>(srcPitchBytesY/srcPitchBytesX));
                         //cudaMemCpy3DParms.dstArray;     // Either dstArray or dstPtr.
                         //cudaMemCpy3DParms.dstPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DParms.dstPtr =
                             make_cudaPitchedPtr(
                                 dstNativePtr,
-                                dstPitchBytesX,
-                                dstWidth,
-                                dstPitchBytesY/dstPitchBytesX);
+                                static_cast<std::size_t>(dstPitchBytesX),
+                                static_cast<std::size_t>(dstWidth),
+                                static_cast<std::size_t>(dstPitchBytesY/dstPitchBytesX));
                         cudaMemCpy3DParms.extent =
                             make_cudaExtent(
-                                extentWidthBytes,
-                                extentHeight,
-                                extentDepth);
+                                static_cast<std::size_t>(extentWidthBytes),
+                                static_cast<std::size_t>(extentHeight),
+                                static_cast<std::size_t>(extentDepth));
                         cudaMemCpy3DParms.kind = task.m_cudaMemCpyKind;
 
                         return cudaMemCpy3DParms;
@@ -637,30 +637,30 @@ namespace alpaka
                         auto const & srcNativePtr(task.m_srcMemNative);
 
                         // Fill CUDA parameter structure.
-                        cudaMemcpy3DPeerParms cudaMemCpy3DPeerParms = {0};
+                        cudaMemcpy3DPeerParms cudaMemCpy3DPeerParms = {};
                         //cudaMemCpy3DPeerParms.dstArray;     // Either dstArray or dstPtr.
                         cudaMemCpy3DPeerParms.dstDevice = iDstDev;
                         //cudaMemCpy3DPeerParms.dstPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DPeerParms.dstPtr =
                             make_cudaPitchedPtr(
                                 dstNativePtr,
-                                dstPitchBytesX,
-                                dstWidth,
-                                dstPitchBytesY/dstPitchBytesX);
+                                static_cast<std::size_t>(dstPitchBytesX),
+                                static_cast<std::size_t>(dstWidth),
+                                static_cast<std::size_t>(dstPitchBytesY/dstPitchBytesX));
                         cudaMemCpy3DPeerParms.extent =
                             make_cudaExtent(
-                                extentWidthBytes,
-                                extentHeight,
-                                extentDepth);
+                                static_cast<std::size_t>(extentWidthBytes),
+                                static_cast<std::size_t>(extentHeight),
+                                static_cast<std::size_t>(extentDepth));
                         //cudaMemCpy3DPeerParms.srcArray;     // Either srcArray or srcPtr.
                         cudaMemCpy3DPeerParms.srcDevice = iSrcDev;
                         //cudaMemCpy3DPeerParms.srcPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DPeerParms.srcPtr =
                             make_cudaPitchedPtr(
                                 const_cast<void *>(srcNativePtr),
-                                srcPitchBytesX,
-                                srcWidth,
-                                srcPitchBytesY/srcPitchBytesX);
+                                static_cast<std::size_t>(srcPitchBytesX),
+                                static_cast<std::size_t>(srcWidth),
+                                static_cast<std::size_t>(srcPitchBytesY/srcPitchBytesX));
 
                         return cudaMemCpy3DPeerParms;
                     }
@@ -699,30 +699,30 @@ namespace alpaka
                         auto const & srcNativePtr(task.m_srcMemNative);
 
                         // Fill CUDA parameter structure.
-                        cudaMemcpy3DPeerParms cudaMemCpy3DPeerParms = {0};
+                        cudaMemcpy3DPeerParms cudaMemCpy3DPeerParms = {};
                         //cudaMemCpy3DPeerParms.dstArray;     // Either dstArray or dstPtr.
                         cudaMemCpy3DPeerParms.dstDevice = iDstDev;
                         //cudaMemCpy3DPeerParms.dstPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DPeerParms.dstPtr =
                             make_cudaPitchedPtr(
                                 dstNativePtr,
-                                dstPitchBytesX,
-                                dstWidth,
-                                dstPitchBytesY/dstPitchBytesX);
+                                static_cast<std::size_t>(dstPitchBytesX),
+                                static_cast<std::size_t>(dstWidth),
+                                static_cast<std::size_t>(dstPitchBytesY/dstPitchBytesX));
                         cudaMemCpy3DPeerParms.extent =
                             make_cudaExtent(
-                                extentWidthBytes,
-                                extentHeight,
-                                extentDepth);
+                                static_cast<std::size_t>(extentWidthBytes),
+                                static_cast<std::size_t>(extentHeight),
+                                static_cast<std::size_t>(extentDepth));
                         //cudaMemCpy3DPeerParms.srcArray;     // Either srcArray or srcPtr.
                         cudaMemCpy3DPeerParms.srcDevice = iSrcDev;
                         //cudaMemCpy3DPeerParms.srcPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DPeerParms.srcPtr =
                             make_cudaPitchedPtr(
                                 const_cast<void *>(srcNativePtr),
-                                srcPitchBytesX,
-                                srcWidth,
-                                srcPitchBytesY/srcPitchBytesX);
+                                static_cast<std::size_t>(srcPitchBytesX),
+                                static_cast<std::size_t>(srcWidth),
+                                static_cast<std::size_t>(srcPitchBytesY/srcPitchBytesX));
 
                         return cudaMemCpy3DPeerParms;
                     }
@@ -779,7 +779,7 @@ namespace alpaka
                             cudaMemcpyAsync(
                                 dstNativePtr,
                                 srcNativePtr,
-                                extentWidthBytes,
+                                static_cast<std::size_t>(extentWidthBytes),
                                 cudaMemCpyKind,
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
                     }
@@ -792,7 +792,7 @@ namespace alpaka
                                 iDstDev,
                                 srcNativePtr,
                                 iSrcDev,
-                                extentWidthBytes,
+                                static_cast<std::size_t>(extentWidthBytes),
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
                     }
                 }
@@ -812,7 +812,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
@@ -842,7 +842,7 @@ namespace alpaka
                             cudaMemcpy(
                                 dstNativePtr,
                                 srcNativePtr,
-                                extentWidthBytes,
+                                static_cast<std::size_t>(extentWidthBytes),
                                 cudaMemCpyKind));
                     }
                     else
@@ -854,7 +854,7 @@ namespace alpaka
                                 iDstDev,
                                 srcNativePtr,
                                 iSrcDev,
-                                extentWidthBytes));
+                                static_cast<std::size_t>(extentWidthBytes)));
                     }
                 }
             };
@@ -906,11 +906,11 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2DAsync(
                                 dstNativePtr,
-                                dstPitchBytesX,
+                                static_cast<std::size_t>(dstPitchBytesX),
                                 srcNativePtr,
-                                srcPitchBytesX,
-                                extentWidthBytes,
-                                extentHeight,
+                                static_cast<std::size_t>(srcPitchBytesX),
+                                static_cast<std::size_t>(extentWidthBytes),
+                                static_cast<std::size_t>(extentHeight),
                                 cudaMemCpyKind,
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
                     }
@@ -944,7 +944,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
@@ -977,11 +977,11 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2D(
                                 dstNativePtr,
-                                dstPitchBytesX,
+                                static_cast<std::size_t>(dstPitchBytesX),
                                 srcNativePtr,
-                                srcPitchBytesX,
-                                extentWidthBytes,
-                                extentHeight,
+                                static_cast<std::size_t>(srcPitchBytesX),
+                                static_cast<std::size_t>(extentWidthBytes),
+                                static_cast<std::size_t>(extentHeight),
                                 cudaMemCpyKind));
                     }
                     else
@@ -1070,7 +1070,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {

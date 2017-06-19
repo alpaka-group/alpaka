@@ -23,7 +23,7 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 #include <alpaka/core/BarrierThread.hpp>// BarrierThread
 
@@ -50,13 +50,15 @@ namespace alpaka
                 using BlockSyncBase = BlockSyncBarrierThread;
 
                 using Barrier = core::threads::BarrierThread<TSize>;
+                using BarrierWithPredicate = core::threads::BarrierThreadWithPredicate<TSize>;
 
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(
                     TSize const & blockThreadCount) :
-                        m_barrier(blockThreadCount)
+                        m_barrier(blockThreadCount),
+                        m_barrierWithPredicate(blockThreadCount)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -80,6 +82,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierThread() = default;
 
                 Barrier mutable m_barrier;
+                BarrierWithPredicate mutable m_barrierWithPredicate;
             };
 
             namespace traits
@@ -89,7 +92,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TSize>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncBarrierThread<TSize>>
                 {
                     //-----------------------------------------------------------------------------
@@ -100,6 +103,29 @@ namespace alpaka
                     -> void
                     {
                         blockSync.m_barrier.wait();
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<
+                    typename TOp,
+                    typename TSize>
+                struct SyncBlockThreadsPredicate<
+                    TOp,
+                    BlockSyncBarrierThread<TSize>>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncBarrierThread<TSize> const & blockSync,
+                        int predicate)
+                    -> int
+                    {
+                        return blockSync.m_barrierWithPredicate.template wait<TOp>(predicate);
                     }
                 };
             }

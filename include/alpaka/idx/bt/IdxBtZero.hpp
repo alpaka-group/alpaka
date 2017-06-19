@@ -110,11 +110,11 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::bt::IdxBtZero<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     boost::ignore_unused(idx);
                     boost::ignore_unused(workDiv);
-                    return Vec<TDim, TSize>::zeros();
+                    return vec::Vec<TDim, TSize>::zeros();
                 }
             };
         }

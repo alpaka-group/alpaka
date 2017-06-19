@@ -52,7 +52,7 @@ namespace alpaka
         {
             EqualExtent,       //!< The block thread extent will be equal in all dimensions.
             CloseToEqualExtent,//!< The block thread extent will be as close to equal as possible in all dimensions.
-            Unrestricted,
+            Unrestricted,      //!< The block thread extent will not have any restrictions.
         };
 
         namespace detail
@@ -179,8 +179,8 @@ namespace alpaka
             typename TDim,
             typename TSize>
         ALPAKA_FN_HOST auto subDivideGridElems(
-            Vec<TDim, TSize> const & gridElemExtent,
-            Vec<TDim, TSize> threadElemExtent,
+            vec::Vec<TDim, TSize> const & gridElemExtent,
+            vec::Vec<TDim, TSize> threadElemExtent,
             acc::AccDevProps<TDim, TSize> const & accDevProps,
             bool requireBlockThreadExtentToDivideGridThreadExtent = true,
             GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
@@ -207,7 +207,7 @@ namespace alpaka
             }
 
             // Calculate the grid thread extent.
-            auto gridThreadExtent(Vec<TDim, TSize>::zeros());
+            auto gridThreadExtent(vec::Vec<TDim, TSize>::zeros());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridThreadExtent[i] =
@@ -266,7 +266,7 @@ namespace alpaka
                     while(blockThreadExtent.prod() > blockThreadCountMax)
                     {
                         auto const maxElemIdx(blockThreadExtent.maxElem());
-                        blockThreadExtent[maxElemIdx] = blockThreadExtent[maxElemIdx] / 2u;
+                        blockThreadExtent[maxElemIdx] = blockThreadExtent[maxElemIdx] / static_cast<TSize>(2u);
                     }
                 }
                 else
@@ -290,11 +290,11 @@ namespace alpaka
                                             {
                                                 return false;
                                             }
-                                            else */if(a == 1u)
+                                            else */if(a == static_cast<TSize>(1u))
                                             {
                                                 return false;
                                             }
-                                            else if(b == 1u)
+                                            else if(b == static_cast<TSize>(1u))
                                             {
                                                 return true;
                                             }
@@ -303,7 +303,7 @@ namespace alpaka
                                                 return a < b;
                                             }
                                         }))));
-                        blockThreadExtent[minElemIdx] = blockThreadExtent[minElemIdx] / 2u;
+                        blockThreadExtent[minElemIdx] = blockThreadExtent[minElemIdx] / static_cast<TSize>(2u);
                     }
                 }
             }
@@ -368,7 +368,7 @@ namespace alpaka
             // Compute the gridBlockExtent.
 
             // Set the grid block extent (rounded to the next integer not less then the quotient.
-            auto gridBlockExtent(Vec<TDim, TSize>::ones());
+            auto gridBlockExtent(vec::Vec<TDim, TSize>::ones());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridBlockExtent[i] =

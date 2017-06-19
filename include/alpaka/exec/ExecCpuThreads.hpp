@@ -42,7 +42,6 @@
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/predef.h>                       // workarounds
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <algorithm>                            // std::for_each
 #include <thread>                               // std::thread
@@ -172,7 +171,7 @@ namespace alpaka
                     blockSharedMemDynSizeBytes);
 
                 auto const blockThreadCount(blockThreadExtent.prod());
-                ThreadPool threadPool(blockThreadCount, blockThreadCount);
+                ThreadPool threadPool(blockThreadCount);
 
                 // Bind the kernel and its arguments to the grid block function.
                 auto const boundGridBlockExecHost(
@@ -203,8 +202,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & gridBlockIdx,
-                Vec<TDim, TSize> const & blockThreadExtent,
+                vec::Vec<TDim, TSize> const & gridBlockIdx,
+                vec::Vec<TDim, TSize> const & blockThreadExtent,
                 ThreadPool & threadPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -254,9 +253,15 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 std::vector<std::future<void>> & futuresInBlock,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 ThreadPool & threadPool,
+#else
+                std::vector<std::future<void>> &,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
+                ThreadPool &,
+#endif
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
@@ -285,7 +290,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecAcc(
                 acc::AccCpuThreads<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & blockThreadIdx,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void

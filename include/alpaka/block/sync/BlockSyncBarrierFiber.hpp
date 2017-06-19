@@ -23,9 +23,9 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
-#include <alpaka/core/BarrierFiber.hpp> // BarrierFibers
+#include <alpaka/core/Fibers.hpp>       // boost::fibers::barrier
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
 
@@ -48,14 +48,13 @@ namespace alpaka
             public:
                 using BlockSyncBase = BlockSyncBarrierFiber;
 
-                using Barrier = core::fibers::BarrierFiber<TSize>;
-
                 //-----------------------------------------------------------------------------
-                //! Default constructor.
+                //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(
                     TSize const & blockThreadCount) :
-                        m_barrier(blockThreadCount)
+                        m_barrier(static_cast<std::size_t>(blockThreadCount)),
+                        m_threadCount(blockThreadCount)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -78,7 +77,12 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierFiber() = default;
 
-                Barrier mutable m_barrier;
+                boost::fibers::barrier mutable m_barrier;
+
+                TSize mutable m_threadCount;
+                TSize mutable m_curThreadCount;
+                TSize mutable m_generation;
+                int mutable m_result[2u];
             };
 
             namespace traits
@@ -88,7 +92,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TSize>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncBarrierFiber<TSize>>
                 {
                     //-----------------------------------------------------------------------------
@@ -99,6 +103,52 @@ namespace alpaka
                     -> void
                     {
                         blockSync.m_barrier.wait();
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<
+                    typename TOp,
+                    typename TSize>
+                struct SyncBlockThreadsPredicate<
+                    TOp,
+                    BlockSyncBarrierFiber<TSize>>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncBarrierFiber<TSize> const & blockSync,
+                        int predicate)
+                    -> int
+                    {
+                        if(blockSync.m_curThreadCount == blockSync.m_threadCount)
+                        {
+                            blockSync.m_curThreadCount = 0;
+                            ++blockSync.m_generation;
+                        }
+
+                        auto const generationMod2(blockSync.m_generation % 2u);
+
+                        // The first fiber will reset the value to the initial value.
+                        if(blockSync.m_curThreadCount == 0u)
+                        {
+                            blockSync.m_result[generationMod2] = TOp::InitialValue;
+                        }
+
+                        ++blockSync.m_curThreadCount;
+
+                        // We do not have to lock because there is only ever one fiber active per block.
+                        blockSync.m_result[generationMod2] = TOp()(blockSync.m_result[generationMod2], predicate);
+
+                        // After all block threads have combined their values ...
+                        blockSync.m_barrier.wait();
+
+                        // ... the result can be returned.
+                        return blockSync.m_result[generationMod2];
                     }
                 };
             }

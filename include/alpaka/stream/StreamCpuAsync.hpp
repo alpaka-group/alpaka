@@ -79,7 +79,7 @@ namespace alpaka
                         dev::DevCpu const & dev) :
                             m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev),
-                            m_workerThread(1u, 128u)
+                            m_workerThread(1u)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -235,8 +235,13 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     stream::StreamCpuAsync & stream,
                     TTask & task)
+#else
+                    stream::StreamCpuAsync &,
+                    TTask &)
+#endif
                 -> void
                 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
@@ -249,8 +254,13 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     stream::StreamCpuAsync & stream,
                     TTask const & task)
+#else
+                    stream::StreamCpuAsync &,
+                    TTask const &)
+#endif
                 -> void
                 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.

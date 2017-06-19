@@ -38,14 +38,12 @@
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp4.hpp>            // acc:AccCpuOmp4
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/idx/MapIdx.hpp>                // idx::mapIdx
 #include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/MapIdx.hpp>               // core::mapIdx
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
-
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
@@ -158,7 +156,7 @@ namespace alpaka
                         m_args));
 
                 // The number of blocks in the grid.
-                TSize const numBlocksInGrid(gridBlockExtent.prod());
+                TSize const gridBlockCount(gridBlockExtent.prod());
                 // The number of threads in a block.
                 TSize const blockThreadCount(blockThreadExtent.prod());
 
@@ -169,7 +167,7 @@ namespace alpaka
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 #pragma omp target if(0)
                 {
-                    #pragma omp teams/* num_teams(numBlocksInGrid) thread_limit(blockThreadCount)*/
+                    #pragma omp teams/* num_teams(gridBlockCount) thread_limit(blockThreadCount)*/
                     {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                         // The first team does some checks ...
@@ -180,7 +178,7 @@ namespace alpaka
                             printf("%s omp_get_num_teams: %d\n", BOOST_CURRENT_FUNCTION, iNumTeams);
                             if(iNumTeams <= 0)    // NOTE: No throw inside target region
                             {
-                                throw std::runtime_error("The CPU OpenMP4 runtime did not use a valid number of teams!");
+                                throw std::runtime_error("ERROR: The OpenMP runtime did not use a valid number of teams!");
                             }
                         }
 #endif
@@ -189,14 +187,14 @@ namespace alpaka
                             blockSharedMemDynSizeBytes);
 
                         #pragma omp distribute
-                        for(TSize b = 0u; b<numBlocksInGrid; ++b)
+                        for(TSize b = 0u; b<gridBlockCount; ++b)
                         {
-                            Vec<dim::DimInt<1u>, TSize> const gridBlockIdx(b);
+                            vec::Vec<dim::DimInt<1u>, TSize> const gridBlockIdx(b);
                             // When this is not repeated here:
                             // error: gridBlockExtent referenced in target region does not have a mappable type
                             auto const gridBlockExtent2(
                                 workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this)));
-                            acc.m_gridBlockIdx = core::mapIdx<TDim::value>(
+                            acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(
                                 gridBlockIdx,
                                 gridBlockExtent2);
 
@@ -217,7 +215,7 @@ namespace alpaka
                                     printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, numThreads);
                                     if(numThreads != static_cast<int>(blockThreadCount))
                                     {
-                                        throw std::runtime_error("The CPU OpenMP4 runtime did not use the number of threads that had been required!");
+                                        throw std::runtime_error("ERROR: The OpenMP runtime did not use the number of threads that had been required!");
                                     }
                                 }
 #endif
@@ -249,7 +247,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP4 executor accelerator type trait specialization.
+            //! The CPU OpenMP 4.0 executor accelerator type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
@@ -268,7 +266,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP4 executor device type trait specialization.
+            //! The CPU OpenMP 4.0 executor device type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
@@ -287,7 +285,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP4 executor dimension getter trait specialization.
+            //! The CPU OpenMP 4.0 executor dimension getter trait specialization.
             //#############################################################################
             template<
                 typename TDim,
@@ -306,7 +304,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP4 executor executor type trait specialization.
+            //! The CPU OpenMP 4.0 executor executor type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
@@ -327,7 +325,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP4 executor platform type trait specialization.
+            //! The CPU OpenMP 4.0 executor platform type trait specialization.
             //#############################################################################
             template<
                 typename TDim,

@@ -38,14 +38,12 @@
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>      // acc::AccCpuOmp2Blocks
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/idx/MapIdx.hpp>                // idx::mapIdx
 #include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/MapIdx.hpp>               // core::mapIdx
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
-
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
@@ -161,7 +159,7 @@ namespace alpaka
                 // The number of blocks in the grid.
                 TSize const numBlocksInGrid(gridBlockExtent.prod());
                 // There is only ever one thread in a block in the OpenMP 2.0 block accelerator.
-                assert(blockThreadExtent.prod() == 1u);
+                assert(blockThreadExtent.prod() == static_cast<TSize>(1u));
 
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
@@ -195,11 +193,11 @@ namespace alpaka
 #endif
                     {
                         acc.m_gridBlockIdx =
-                            core::mapIdx<TDim::value>(
+                            idx::mapIdx<TDim::value>(
 #if _OPENMP < 200805
-                                Vec<dim::DimInt<1u>, TSize>(static_cast<TSize>(i)),
+                                vec::Vec<dim::DimInt<1u>, TSize>(static_cast<TSize>(i)),
 #else
-                                Vec<dim::DimInt<1u>, TSize>(i),
+                                vec::Vec<dim::DimInt<1u>, TSize>(i),
 #endif
                                 gridBlockExtent);
 

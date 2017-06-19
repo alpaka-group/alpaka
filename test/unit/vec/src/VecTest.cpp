@@ -42,12 +42,21 @@ BOOST_AUTO_TEST_CASE(
 {
     using Dim = alpaka::dim::DimInt<3u>;
     using Size = std::size_t;
-    using Vec = alpaka::Vec<Dim, Size>;
+    using Vec = alpaka::vec::Vec<Dim, Size>;
 
     Vec const vec(
         static_cast<std::size_t>(0u),
         static_cast<std::size_t>(8u),
         static_cast<std::size_t>(15u));
+
+
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::Vec zero elements
+    {
+        using Dim0 = alpaka::dim::DimInt<0u>;
+        alpaka::vec::Vec<Dim0, Size> const vec0{};
+    }
 
     //-----------------------------------------------------------------------------
     // alpaka::vec::subVecFromIndices
@@ -136,6 +145,59 @@ BOOST_AUTO_TEST_CASE(
             BOOST_REQUIRE_EQUAL(vecReverse[i], vec[Dim::value - 1u - i]);
         }
     }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::concat
+    {
+        using Dim2 = alpaka::dim::DimInt<2u>;
+        alpaka::vec::Vec<Dim2, Size> const vec2(
+            static_cast<std::size_t>(47u),
+            static_cast<std::size_t>(11u));
+
+        auto const vecConcat(
+            alpaka::vec::concat(
+                vec,
+                vec2));
+
+        static_assert(
+            std::is_same<alpaka::dim::Dim<std::decay<decltype(vecConcat)>::type>, alpaka::dim::DimInt<5u>>::value,
+            "Result dimension type of concatenation incorrect!");
+
+        for(typename Dim::value_type i(0); i < Dim::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecConcat[i], vec[i]);
+        }
+        for(typename Dim2::value_type i(0); i < Dim2::value; ++i)
+        {
+            BOOST_REQUIRE_EQUAL(vecConcat[Dim::value + i], vec2[i]);
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    // alpaka::vec::Vec operator <=
+    {
+        alpaka::vec::Vec<Dim, Size> const vec3(
+            static_cast<std::size_t>(47u),
+            static_cast<std::size_t>(11u),
+            static_cast<std::size_t>(3u));
+
+        auto const vecLessEqual(vec <= vec3);
+
+        static_assert(
+            std::is_same<alpaka::dim::Dim<std::decay<decltype(vecLessEqual)>::type>, Dim>::value,
+            "Result dimension type of operator <= incorrect!");
+
+        static_assert(
+            std::is_same<alpaka::size::Size<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
+            "Result size type of operator <= incorrect!");
+
+        alpaka::vec::Vec<Dim, bool> const referenceLessEqualVec(
+            true,
+            true,
+            false);
+
+        BOOST_REQUIRE_EQUAL(referenceLessEqualVec, vecLessEqual);
+    }
 }
 
 //#############################################################################
@@ -149,11 +211,11 @@ struct NonAlpakaVec
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    operator ::alpaka::Vec<
+    operator ::alpaka::vec::Vec<
         TDim,
         TSize>() const
     {
-        using AlpakaVector = ::alpaka::Vec<
+        using AlpakaVector = ::alpaka::vec::Vec<
             TDim,
             TSize
         >;
@@ -162,7 +224,7 @@ struct NonAlpakaVec
         for(TSize d(0); d < TDim::value; ++d)
         {
             result[TDim::value - 1 - d] = (*this)[d];
-        }    
+        }
 
         return result;
     }
@@ -187,7 +249,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = std::size_t;
 
     NonAlpakaVec<TDim, Size> nonAlpakaVec;
-    auto const alpakaVec(static_cast<alpaka::Vec<TDim, Size>>(nonAlpakaVec));
+    auto const alpakaVec(static_cast<alpaka::vec::Vec<TDim, Size>>(nonAlpakaVec));
 
     for(Size d(0); d < TDim::value; ++d)
     {

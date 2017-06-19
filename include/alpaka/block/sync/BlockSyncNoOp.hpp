@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
 
@@ -73,7 +73,7 @@ namespace alpaka
                 //!
                 //#############################################################################
                 template<>
-                struct SyncBlockThread<
+                struct SyncBlockThreads<
                     BlockSyncNoOp>
                 {
                     //-----------------------------------------------------------------------------
@@ -86,6 +86,29 @@ namespace alpaka
                     {
                         //boost::ignore_unused(blockSync);
                         // Nothing to do.
+                    }
+                };
+
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<
+                    typename TOp>
+                struct SyncBlockThreadsPredicate<
+                    TOp,
+                    BlockSyncNoOp>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
+                        block::sync::BlockSyncNoOp const & /*blockSync*/,
+                        int predicate)
+                    -> int
+                    {
+                        //boost::ignore_unused(blockSync);
+                        return predicate;
                     }
                 };
             }

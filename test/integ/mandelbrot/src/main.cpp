@@ -142,7 +142,7 @@ public:
     //! \param pColors The output image.
     //! \param numRows The number of rows in the image
     //! \param numCols The number of columns in the image.
-    //! \param pitchElems The pitch size in elements in the image.
+    //! \param pitchBytes The pitch in bytes.
     //! \param fMinR The left border.
     //! \param fMaxR The right border.
     //! \param fMinI The bottom border.
@@ -313,10 +313,10 @@ auto writeTgaColorImage(
     ofs.put(0x00);
     ofs.put(0x00);                      // Y Origin of Image.
     ofs.put(0x00);
-    ofs.put((bufWidthColors & 0xFF)); // Width of Image.
-    ofs.put((bufWidthColors >> 8) & 0xFF);
-    ofs.put((bufHeightColors & 0xFF));// Height of Image.
-    ofs.put((bufHeightColors >> 8) & 0xFF);
+    ofs.put(static_cast<char>(bufWidthColors & 0xFFu)); // Width of Image.
+    ofs.put(static_cast<char>((bufWidthColors >> 8) & 0xFFu));
+    ofs.put(static_cast<char>(bufHeightColors & 0xFFu));// Height of Image.
+    ofs.put(static_cast<char>((bufHeightColors >> 8) & 0xFFu));
     ofs.put(0x20);                      // Image Pixel Size.
     ofs.put(0x20);                      // Image Descriptor Byte.
 
@@ -327,7 +327,7 @@ auto writeTgaColorImage(
     {
         ofs.write(
             pData,
-            bufWidthColors*bufHeightColors);
+            static_cast<std::streamsize>(bufWidthBytes*bufHeightColors));
     }
     // ... else we have to write row by row.
     else
@@ -336,7 +336,7 @@ auto writeTgaColorImage(
         {
             ofs.write(
                 pData + bufPitchBytes*row,
-                bufWidthColors);
+                static_cast<std::streamsize>(bufWidthBytes));
         }
     }
 }
@@ -383,7 +383,7 @@ struct MandelbrotKernelTester
         StreamAcc stream(
             devAcc);
 
-        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extent(
+        alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize> const extent(
             static_cast<TSize>(numRows),
             static_cast<TSize>(numCols));
 
@@ -392,7 +392,7 @@ struct MandelbrotKernelTester
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 extent,
-                alpaka::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
+                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
@@ -433,7 +433,7 @@ struct MandelbrotKernelTester
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
-            << alpaka::integ::measureKernelRunTimeMs(
+            << alpaka::test::integ::measureKernelRunTimeMs(
                 stream,
                 exec)
             << " ms"
@@ -480,7 +480,7 @@ auto main()
 
         // For different sizes.
         for(std::uint32_t imageSize(1u<<3u);
-#if ALPAKA_CI
+#ifdef ALPAKA_CI
             imageSize <= 1u<<8u;
 #else
             imageSize <= 1u<<13u;

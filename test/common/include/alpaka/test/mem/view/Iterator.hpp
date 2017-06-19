@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2016 Erik Zenker
+* Copyright 2014-2017 Erik Zenker, Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -46,21 +46,35 @@ namespace alpaka
                 namespace traits
                 {
                     //#############################################################################
+                    // \tparam T Type to conditionally make const.
+                    // \tparam TSource Type to mimic the constness of.
+                    //#############################################################################
+                    template<
+                        typename T,
+                        typename TSource>
+                    using MimicConst = typename std::conditional<
+                        std::is_const<TSource>::value,
+                        typename std::add_const<T>::type,
+                        typename std::remove_const<T>::type>;
+
+                    //#############################################################################
                     //!
                     //#############################################################################
                     template<
                         typename TView,
                         typename TSfinae = void>
-                    struct IteratorType
+                    class IteratorView
                     {
-                        using Dim  = alpaka::dim::Dim<TView>;
-                        using Size = alpaka::size::Size<TView>;
-                        using Elem = alpaka::elem::Elem<TView>;
+                        using TViewDecayed = typename std::decay<TView>::type;
+                        using Dim = alpaka::dim::Dim<TViewDecayed>;
+                        using Size = alpaka::size::Size<TViewDecayed>;
+                        using Elem = typename MimicConst<alpaka::elem::Elem<TViewDecayed>, TView>::type;
 
+                    public:
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST IteratorType(
+                        ALPAKA_FN_HOST IteratorView(
                             TView & view,
                             Size const idx) :
                                 m_nativePtr(alpaka::mem::view::getPtrNative(view)),
@@ -72,16 +86,16 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST IteratorType(
+                        ALPAKA_FN_HOST IteratorView(
                             TView & view) :
-                                IteratorType(view, 0)
+                                IteratorView(view, 0)
                         {}
 
                         //-----------------------------------------------------------------------------
                         //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator++()
-                        -> IteratorType&
+                        -> IteratorView&
                         {
                             ++m_currentIdx;
                             return *this;
@@ -91,7 +105,7 @@ namespace alpaka
                         //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator--()
-                        -> IteratorType&
+                        -> IteratorView&
                         {
                             --m_currentIdx;
                             return *this;
@@ -102,9 +116,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator++(
                             int)
-                        -> IteratorType
+                        -> IteratorView
                         {
-                            IteratorType iterCopy = *this;
+                            IteratorView iterCopy = *this;
                             m_currentIdx++;
                             return iterCopy;
                         }
@@ -114,9 +128,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST_ACC auto operator--(
                             int)
-                        -> IteratorType
+                        -> IteratorView
                         {
-                            IteratorType iterCopy = *this;
+                            IteratorView iterCopy = *this;
                             m_currentIdx--;
                             return iterCopy;
                         }
@@ -150,26 +164,44 @@ namespace alpaka
                         -> Elem &
                         {
                             using Dim1 = dim::DimInt<1>;
+                            using DimMin1 = dim::DimInt<Dim::value - 1u>;
 
-                            Vec<Dim1, Size> const currentIdxDim1{m_currentIdx};
-                            Vec<Dim, Size> const currentIdxDimx(core::mapIdx<Dim::value>(currentIdxDim1, m_extents));
+                            vec::Vec<Dim1, Size> const currentIdxDim1{m_currentIdx};
+                            vec::Vec<Dim, Size> const currentIdxDimx(idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
-                            Elem * ptr = m_nativePtr;
+                            // [pz, py, px] -> [py, px]
+                            auto const pitchWithoutOutermost(vec::subVecEnd<DimMin1>(m_pitchBytes));
+                            // [ElemSize]
+                            vec::Vec<Dim1, Size> const elementSizeVec(static_cast<Size>(sizeof(Elem)));
+                            // [py, px] ++ [ElemSize] -> [py, px, ElemSize]
+                            vec::Vec<Dim, Size> const dstPitchBytes(vec::concat(pitchWithoutOutermost, elementSizeVec));
+                            // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
+                            auto const dimensionalOffsetsInByte(currentIdxDimx * dstPitchBytes);
+                            // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
+                            auto const offsetInByte(dimensionalOffsetsInByte.foldrAll(std::plus<Size>()));
 
-                            for(Size dim_i = 0; dim_i + 1 < static_cast<Size>(Dim::value); dim_i++)
-                            {
-                                ptr += (currentIdxDimx[dim_i] * m_pitchBytes[dim_i+1]) / sizeof(Elem);
-                            }
+                            using Byte = typename MimicConst<std::uint8_t, Elem>::type;
+                            Byte* ptr(reinterpret_cast<Byte*>(m_nativePtr) + offsetInByte);
 
-                            ptr += currentIdxDimx[Dim::value - 1];
+#if 0
+                            std::cout
+                                << " i1: " << currentIdxDim1
+                                << " in: " << currentIdxDimx
+                                << " dpb: " << dstPitchBytes
+                                << " offb: " << offsetInByte
+                                << " ptr: " << reinterpret_cast<void const *>(ptr)
+                                << " v: " << *reinterpret_cast<Elem *>(ptr)
+                                << std::endl;
+#endif
 
-                            return *ptr;
+                            return *reinterpret_cast<Elem *>(ptr);
                         }
 
-                        Elem * m_nativePtr;
-                        Size  m_currentIdx;
-                        alpaka::Vec<Dim, Size> const m_extents;
-                        alpaka::Vec<Dim, Size> const m_pitchBytes;
+                    private:
+                        Elem * const m_nativePtr;
+                        Size m_currentIdx;
+                        vec::Vec<Dim, Size> const m_extents;
+                        vec::Vec<Dim, Size> const m_pitchBytes;
                     };
 
                     //#############################################################################
@@ -185,9 +217,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto begin(
                             TView & view)
-                        -> IteratorType<TView>
+                        -> IteratorView<TView>
                         {
-                            return IteratorType<TView>(view);
+                            return IteratorView<TView>(view);
                         }
                     };
 
@@ -204,10 +236,10 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto end(
                             TView & view)
-                        -> IteratorType<TView>
+                        -> IteratorView<TView>
                         {
                             auto extents = alpaka::extent::getExtentVec(view);
-                            return IteratorType<TView>(view, extents.prod());
+                            return IteratorView<TView>(view, extents.prod());
                         }
                     };
                 }
@@ -217,8 +249,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TView>
-                using Iterator = traits::IteratorType<TView>;
-
+                using Iterator = traits::IteratorView<TView>;
 
                 //-----------------------------------------------------------------------------
                 //!

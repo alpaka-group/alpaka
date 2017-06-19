@@ -30,8 +30,6 @@
 #include <alpaka/core/Common.hpp>   // BOOST_LANG_CUDA, BOOST_ARCH_CUDA_DEVICE
 
 #include <boost/predef.h>           // workarounds
-#include <boost/version.hpp>        // workarounds
-
 #include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
 #include <queue>                    // std::queue
@@ -61,8 +59,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ThreadSafeQueue(
-                    std::size_t)
+                ThreadSafeQueue()
                 {}
                 //-----------------------------------------------------------------------------
                 //! \return If the queue is empty.
@@ -113,9 +110,18 @@ namespace alpaka
             //#############################################################################
             // \NOTE: We can not use C++11 std::packaged_task as it forces the use of std::future
             // but we additionally support boost::fibers::promise.
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
             class ITaskPkg
             {
             public:
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                virtual ~ITaskPkg() = default;
+
                 //-----------------------------------------------------------------------------
                 //! Runs this task.
                 //-----------------------------------------------------------------------------
@@ -152,6 +158,9 @@ namespace alpaka
                 -> void = 0;
 #endif
             };
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
             //#############################################################################
             //! TaskPkg with return type.
@@ -164,7 +173,7 @@ namespace alpaka
                 template<typename TFnObjReturn> class TPromise,
                 typename TFnObj,
                 typename TFnObjReturn>
-            class TaskPkg :
+            class TaskPkg final :
                 public ITaskPkg
             {
             public:
@@ -218,7 +227,7 @@ namespace alpaka
             class TaskPkg<
                 TPromise,
                 TFnObj,
-                void> :
+                void> final :
                 public ITaskPkg
             {
             public:
@@ -290,24 +299,16 @@ namespace alpaka
                 //! \param concurrentExecutionCount
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
-                //! \param queueSize
-                //!    The maximum number of tasks that can be queued for completion.
-                //!    Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount,
-                    TSize queueSize = 128u) :
+                    TSize concurrentExecutionCount) :
                     m_vConcurrentExecs(),
-                    m_qTasks(static_cast<std::size_t>(queueSize)),
+                    m_qTasks(),
                     m_bShutdownFlag(false)
                 {
                     if(concurrentExecutionCount < 1)
                     {
                         throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
-                    }
-                    if(queueSize < 1)
-                    {
-                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
                     }
 
                     m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
@@ -381,14 +382,13 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                // NOTE: The first argument to the get_future() function call is the this pointer.
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+                -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
                 {
                     auto boundTask(std::bind(task, args...));
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
+                    using FnObjReturn = decltype(task(args...));
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
 
                     auto pTaskPackage(new TaskPackage(std::move(boundTask)));
@@ -504,26 +504,18 @@ namespace alpaka
                 //! \param concurrentExecutionCount
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
-                //! \param queueSize
-                //!    The maximum number of tasks that can be queued for completion.
-                //!    Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount,
-                    TSize queueSize = 128u) :
+                    TSize concurrentExecutionCount) :
                     m_vConcurrentExecs(),
-                    m_qTasks(static_cast<std::size_t>(queueSize)),
+                    m_qTasks(),
                     m_mtxWakeup(),
-                    m_bShutdownFlag(false),
-                    m_cvWakeup()
+                    m_cvWakeup(),
+                    m_bShutdownFlag(false)
                 {
                     if(concurrentExecutionCount < 1)
                     {
                         throw std::invalid_argument("The argument 'concurrentExecutionCount' has to be greate or equal to one!");
-                    }
-                    if(queueSize < 1)
-                    {
-                        throw std::invalid_argument("The argument 'queueSize' has to be greate or equal to one!");
                     }
 
                     m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
@@ -603,14 +595,13 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                // NOTE: The first argument to the get_future() function call is the this pointer.
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type> *) >::type
+                -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
                 {
                     auto boundTask(std::bind(task, args...));
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
+                    using FnObjReturn = decltype(task(args...));
                     using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
 
                     auto pTaskPackage(new TaskPackage(std::move(boundTask)));
@@ -705,8 +696,8 @@ namespace alpaka
                 ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
 
                 TMutex m_mtxWakeup;
-                std::atomic<bool> m_bShutdownFlag;
                 TCondVar m_cvWakeup;
+                std::atomic<bool> m_bShutdownFlag;
             };
         }
     }

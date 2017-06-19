@@ -48,6 +48,13 @@ using Elem = std::uint32_t;
 using Dim = alpaka::dim::DimInt<2u>;
 using Size = std::uint32_t;
 
+// These forward declarations are only necessary when you want to access those variables
+// from a different compilation unit and should be moved to a common header.
+// Here they are used to silence clang`s -Wmissing-variable-declarations warning
+// that forces every non-static variable to be declared with extern before the are defined.
+extern ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DInitialized[3][2];
+extern ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
+
 ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DInitialized[3][2] =
     {
         {0u, 1u},
@@ -96,7 +103,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::Vec<Dim, Size> const extent(3u, 2u);
+    alpaka::vec::Vec<Dim, Size> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(extent);
 
@@ -147,6 +154,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     }
 }
 
+// These forward declarations are only necessary when you want to access those variables
+// from a different compilation unit and should be moved to a common header.
+// Here they are used to silence clang`s -Wmissing-variable-declarations warning
+// that forces every non-static variable to be declared with extern before the are defined.
+extern ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2];
+extern ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
+
 ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2] =
     {
         {0u, 1u},
@@ -168,7 +182,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::Vec<Dim, Size> const extent(3u, 2u);
+    alpaka::vec::Vec<Dim, Size> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(extent);
 

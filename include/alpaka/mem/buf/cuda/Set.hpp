@@ -99,7 +99,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The CPU device memory set trait specialization.
+                //! The CUDA device memory set trait specialization.
                 //#############################################################################
                 template<
                     typename TDim>
@@ -166,14 +166,18 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
+                    using Size = size::Size<TExtent>;
+
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TView>));
+                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
+#if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
+#endif
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
 
@@ -186,7 +190,7 @@ namespace alpaka
                         cudaMemsetAsync(
                             dstNativePtr,
                             static_cast<int>(byte),
-                            extentWidthBytes,
+                            static_cast<size_t>(extentWidthBytes),
                             stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
                 }
             };
@@ -204,7 +208,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -217,14 +221,18 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
+                    using Size = size::Size<TExtent>;
+
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TView>));
+                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
+#if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
+#endif
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
 
@@ -237,7 +245,7 @@ namespace alpaka
                         cudaMemset(
                             dstNativePtr,
                             static_cast<int>(byte),
-                            extentWidthBytes));
+                            static_cast<size_t>(extentWidthBytes)));
                 }
             };
             //#############################################################################
@@ -267,16 +275,20 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
+                    using Size = size::Size<TExtent>;
+
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TView>));
+                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
                     auto const extentHeight(extent::getHeight(extent));
+#if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));
+#endif
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
@@ -290,10 +302,10 @@ namespace alpaka
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2DAsync(
                             dstNativePtr,
-                            dstPitchBytesX,
+                            static_cast<size_t>(dstPitchBytesX),
                             static_cast<int>(byte),
-                            extentWidthBytes,
-                            extentHeight,
+                            static_cast<size_t>(extentWidthBytes),
+                            static_cast<size_t>(extentHeight),
                             stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
                 }
             };
@@ -311,7 +323,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -324,16 +336,20 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
+                    using Size = size::Size<TExtent>;
+
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TView>));
+                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
                     auto const extentHeight(extent::getHeight(extent));
+#if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));
+#endif
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
@@ -347,10 +363,10 @@ namespace alpaka
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2D(
                             dstNativePtr,
-                            dstPitchBytesX,
+                            static_cast<size_t>(dstPitchBytesX),
                             static_cast<int>(byte),
-                            extentWidthBytes,
-                            extentHeight));
+                            static_cast<size_t>(extentWidthBytes),
+                            static_cast<size_t>(extentHeight)));
                 }
             };
             //#############################################################################
@@ -380,6 +396,9 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
+                    using Elem = alpaka::elem::Elem<TView>;
+                    using Size = size::Size<TExtent>;
+
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
@@ -389,12 +408,13 @@ namespace alpaka
                     auto const extentHeight(extent::getHeight(extent));
                     auto const extentDepth(extent::getDepth(extent));
                     auto const dstWidth(extent::getWidth(buf));
+#if !defined(NDEBUG)
                     auto const dstHeight(extent::getHeight(buf));
                     auto const dstDepth(extent::getDepth(buf));
+#endif
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
                     auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    using Elem = alpaka::elem::Elem<TView>;
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
                     assert(extentDepth <= dstDepth);
@@ -403,15 +423,15 @@ namespace alpaka
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
                             dstNativePtr,
-                            dstPitchBytesX,
-                            dstWidth * sizeof(Elem),
-                            dstPitchBytesY/dstPitchBytesX));
+                            static_cast<size_t>(dstPitchBytesX),
+                            static_cast<size_t>(dstWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(dstPitchBytesY/dstPitchBytesX)));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            extentWidth * sizeof(Elem),
-                            extentHeight,
-                            extentDepth));
+                            static_cast<size_t>(extentWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(extentHeight),
+                            static_cast<size_t>(extentDepth)));
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -440,7 +460,7 @@ namespace alpaka
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    stream::StreamCudaRtSync &,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -453,6 +473,9 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
+                    using Elem = alpaka::elem::Elem<TView>;
+                    using Size = size::Size<TExtent>;
+
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
@@ -462,12 +485,13 @@ namespace alpaka
                     auto const extentHeight(extent::getHeight(extent));
                     auto const extentDepth(extent::getDepth(extent));
                     auto const dstWidth(extent::getWidth(buf));
+#if !defined(NDEBUG)
                     auto const dstHeight(extent::getHeight(buf));
                     auto const dstDepth(extent::getDepth(buf));
+#endif
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
                     auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    using Elem = alpaka::elem::Elem<TView>;
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
                     assert(extentDepth <= dstDepth);
@@ -476,15 +500,15 @@ namespace alpaka
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
                             dstNativePtr,
-                            dstPitchBytesX,
-                            dstWidth * sizeof(Elem),
-                            dstPitchBytesY/dstPitchBytesX));
+                            static_cast<size_t>(dstPitchBytesX),
+                            static_cast<size_t>(dstWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(dstPitchBytesY/dstPitchBytesX)));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            extentWidth * sizeof(Elem),
-                            extentHeight,
-                            extentDepth));
+                            static_cast<size_t>(extentWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(extentHeight),
+                            static_cast<size_t>(extentDepth)));
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(

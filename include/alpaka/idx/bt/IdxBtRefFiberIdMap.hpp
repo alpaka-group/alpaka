@@ -48,7 +48,7 @@ namespace alpaka
             public:
                 using IdxBtBase = IdxBtRefFiberIdMap;
 
-                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<TDim, TSize>>;
+                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, vec::Vec<TDim, TSize>>;
 
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -124,7 +124,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::bt::IdxBtRefFiberIdMap<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim, TSize>
+                -> vec::Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
                     auto const fiberId(boost::this_fiber::get_id());

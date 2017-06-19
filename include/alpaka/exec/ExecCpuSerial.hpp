@@ -41,7 +41,6 @@
 #include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <cassert>                              // assert
 #include <tuple>                                // std::tuple
@@ -157,12 +156,12 @@ namespace alpaka
                     blockSharedMemDynSizeBytes);
 
                 // There is only ever one thread in a block in the serial accelerator.
-                assert(blockThreadExtent.prod() == 1u);
+                assert(blockThreadExtent.prod() == static_cast<TSize>(1u));
 
                 // Execute the blocks serially.
                 meta::ndLoopIncIdx(
                     gridBlockExtent,
-                    [&](Vec<TDim, TSize> const & blockThreadIdx)
+                    [&](vec::Vec<TDim, TSize> const & blockThreadIdx)
                     {
                         acc.m_gridBlockIdx = blockThreadIdx;
 
