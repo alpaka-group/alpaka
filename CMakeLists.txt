@@ -1,5 +1,5 @@
 #
-# Copyright 2015 Benjamin Worpitz
+# Copyright 2015-2017 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -22,7 +22,7 @@
 # Required CMake version.
 ################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 PROJECT("alpakaAll")
 

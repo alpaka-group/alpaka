@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2016 Benjamin Worpitz, Erik Zenker
+# Copyright 2014-2017 Benjamin Worpitz, Erik Zenker
 #
 # This file is part of alpaka.
 #
@@ -22,7 +22,7 @@
 # Required cmake version.
 ################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 ################################################################################
 # alpaka.
