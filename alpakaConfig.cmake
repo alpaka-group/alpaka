@@ -128,7 +128,7 @@ ENDIF()
 #-------------------------------------------------------------------------------
 # Find Boost.
 #-------------------------------------------------------------------------------
-SET(_ALPAKA_BOOST_MIN_VER "1.59.0") # minimum version for basic features
+SET(_ALPAKA_BOOST_MIN_VER "1.62.0")
 IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DEBUG ON)
     SET(Boost_DETAILED_FAILURE_MSG ON)

@@ -54,17 +54,17 @@ environment:
           ALPAKA_BOOST_BRANCH: boost-1.64.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: boost-1.61.0
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-        - OMP_NUM_THREADS: 3
-          ALPAKA_BOOST_BRANCH: boost-1.60.0
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-        - OMP_NUM_THREADS: 1
-          ALPAKA_BOOST_BRANCH: boost-1.59.0
+          ALPAKA_BOOST_BRANCH: boost-1.64.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
         - OMP_NUM_THREADS: 3
           ALPAKA_BOOST_BRANCH: boost-1.63.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        - OMP_NUM_THREADS: 1
+          ALPAKA_BOOST_BRANCH: boost-1.62.0
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        - OMP_NUM_THREADS: 3
+          ALPAKA_BOOST_BRANCH: develop
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: develop
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
@@ -73,6 +73,9 @@ matrix:
     fast_finish: true
 
     allow_failures:
+        - OMP_NUM_THREADS: 3
+          ALPAKA_BOOST_BRANCH: develop
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: develop
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
@@ -141,17 +144,6 @@ before_build:
 
     #-------------------------------------------------------------------------------
     # Clone boost.
-    # If fibers are enabled we need boost-1.62.0+ or develop branch.
-    - ps: |
-        if ($env:ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE -eq "ON") {
-            if ($env:ALPAKA_BOOST_BRANCH -ne "develop") {
-                if ([Int]$env:ALPAKA_BOOST_BRANCH.Substring(8, 2) -lt 62) {
-                    $env:ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE = "OFF"
-                    write-warning "ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF set because boost fibers requires boost-1.62.0+ or develop branch!"
-                }
-            }
-        }
-
     - cmd: set BOOST_ROOT=C:\projects\boost
     - cmd: set ALPAKA_B2_STAGE_DIR=C:\projects\boost_libs
     - cmd: set BOOST_LIBRARYDIR=%ALPAKA_B2_STAGE_DIR%\lib
