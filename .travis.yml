@@ -431,7 +431,7 @@ before_install:
               cat /var/cuda-repo-7-0-local/Release
               && cat /var/cuda-repo-7-0-local/Packages.gz | sha256sum
               && gunzip -c /var/cuda-repo-7-0-local/Packages.gz | sha256sum
-              && STR=$(printf "SHA256:\n 200fb65a4c5d86b58d3303a2f53fe2a9c85bc71ecb0ad00aab6c8cf8234128b5            63833 Packages\n ffaadac7e13ebd03c9365055b50390c2cc89aaa8e127b69d94f1ad779a52b3b1            19408 Packages.gz")
+              && STR="SHA256:"
               && echo "$STR" | sudo tee -a /var/cuda-repo-7-0-local/Release
               && cat /var/cuda-repo-7-0-local/Release
           ;elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
@@ -439,7 +439,7 @@ before_install:
               cat /var/cuda-repo-7-5-local/Release
               && cat /var/cuda-repo-7-5-local/Packages.gz | sha256sum
               && gunzip -c /var/cuda-repo-7-5-local/Packages.gz | sha256sum
-              && STR=$(printf "SHA256:\n 3aaa653dc0280c8609643ecd3f84a82c84aa9a0508f06e1b32dc4a985018d923            76972 Packages\n da3c0819a5252eeade8219c09d6eac8840af639ccf4e5f8ba319419d897bffce            21992 Packages.gz")
+              && STR="SHA256:"
               && echo "$STR" | sudo tee -a /var/cuda-repo-7-5-local/Release
               && cat /var/cuda-repo-7-5-local/Release
           ;fi

@@ -202,7 +202,8 @@ before_build:
 
 build:
     project: C:\projects\alpaka\build\alpakaAll.sln
-    parallel: true
+    # Setting parallel to true sporadically leads to "fatal error C1060: compiler is out of heap space"
+    parallel: false
     # quiet|minimal|normal|detailed
     verbosity: minimal
 
