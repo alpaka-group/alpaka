@@ -290,7 +290,7 @@ before_install:
                   if [ ${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} == "ON" ]
                   ;then
                       export ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-                      && echo ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} because nvcc does not support boost correctly!
+                      && echo ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} because nvcc does not support boost fibers correctly!
                   ;fi
               ;fi
           ;fi
@@ -304,7 +304,7 @@ before_install:
               if [ ${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} == "ON" ]
               ;then
                   export ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-                  && echo ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} because nvcc does not support boost correctly!
+                  && echo ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} because clang as native CUDA compiler does not support boost fibers correctly!
               ;fi
           ;fi
       ;fi
@@ -398,6 +398,10 @@ before_install:
           ;fi
       ;fi
 
+    # Set the correct CUDA downloads
+    # NOTE: CUDA < 8.0 did not provide SHA256 in their Release files.
+    # Installing them in modern Ubunut versions is therefore not possible.
+    # We simply add those to the Release files and ignore that they can not be verified during instalation.
     - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
       ;then
           ALPAKA_CUDA_CACHE_DIR=${HOME}/cache/CUDA/CUDA-${ALPAKA_CUDA_VER}
@@ -422,6 +426,23 @@ before_install:
               && travis_retry wget -O ${ALPAKA_CUDA_CACHE_DIR}/${ALPAKA_CUDA_PKG_FILE_NAME} ${ALPAKA_CUDA_PKG_FILE_PATH}
           ;fi
           && sudo dpkg -i ${ALPAKA_CUDA_CACHE_DIR}/${ALPAKA_CUDA_PKG_FILE_NAME}
+          && if [ "${ALPAKA_CUDA_VER}" == "7.0" ]
+          ;then
+              cat /var/cuda-repo-7-0-local/Release
+              && cat /var/cuda-repo-7-0-local/Packages.gz | sha256sum
+              && gunzip -c /var/cuda-repo-7-0-local/Packages.gz | sha256sum
+              && STR="SHA256:"
+              && echo "$STR" | sudo tee -a /var/cuda-repo-7-0-local/Release
+              && cat /var/cuda-repo-7-0-local/Release
+          ;elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
+          ;then
+              cat /var/cuda-repo-7-5-local/Release
+              && cat /var/cuda-repo-7-5-local/Packages.gz | sha256sum
+              && gunzip -c /var/cuda-repo-7-5-local/Packages.gz | sha256sum
+              && STR="SHA256:"
+              && echo "$STR" | sudo tee -a /var/cuda-repo-7-5-local/Release
+              && cat /var/cuda-repo-7-5-local/Release
+          ;fi
       ;fi
 
     #-------------------------------------------------------------------------------
@@ -512,7 +533,7 @@ install:
     # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
     - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
       ;then
-          sudo apt-get -y install cuda-core-${ALPAKA_CUDA_VER} cuda-cudart-${ALPAKA_CUDA_VER} cuda-cudart-dev-${ALPAKA_CUDA_VER} cuda-curand-${ALPAKA_CUDA_VER} cuda-curand-dev-${ALPAKA_CUDA_VER}
+          sudo apt-get -y --allow-unauthenticated install cuda-core-${ALPAKA_CUDA_VER} cuda-cudart-${ALPAKA_CUDA_VER} cuda-cudart-dev-${ALPAKA_CUDA_VER} cuda-curand-${ALPAKA_CUDA_VER} cuda-curand-dev-${ALPAKA_CUDA_VER}
           && sudo ln -s /usr/local/cuda-${ALPAKA_CUDA_VER} /usr/local/cuda
           && export PATH=/usr/local/cuda-${ALPAKA_CUDA_VER}/bin:$PATH
           && export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VER}/lib64:$LD_LIBRARY_PATH
