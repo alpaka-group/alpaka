@@ -62,23 +62,9 @@ environment:
         - OMP_NUM_THREADS: 1
           ALPAKA_BOOST_BRANCH: boost-1.62.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-        - OMP_NUM_THREADS: 3
-          ALPAKA_BOOST_BRANCH: develop
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-        - OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: develop
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 
 matrix:
     fast_finish: true
-
-    allow_failures:
-        - OMP_NUM_THREADS: 3
-          ALPAKA_BOOST_BRANCH: develop
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-        - OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: develop
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 
 init:
     - cmd: cmake --version
