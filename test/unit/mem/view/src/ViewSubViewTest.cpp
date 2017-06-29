@@ -95,29 +95,6 @@ struct CreateExtentViewVal
 };
 
 //-----------------------------------------------------------------------------
-//!
-//-----------------------------------------------------------------------------
-template<
-    typename TDim,
-    typename TSize,
-    template<std::size_t> class TCreate>
-static auto createVecFromIndexedFn()
--> alpaka::vec::Vec<TDim, TSize>
-{
-    return
-        alpaka::vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        Vec<TDim, TSize>::template
-#endif
-        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-            TDim,
-#endif
-            TCreate>(
-                TSize());
-}
-
-//-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
@@ -139,11 +116,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     // We have to be careful with the extents used.
     // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
-    auto const extentBuf(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
+    auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentBufVal>(Size()));
     auto buf(alpaka::mem::buf::alloc<Elem, Size>(dev, extentBuf));
 
     // TODO: Test failing cases of view extents larger then the underlying buffer extents.
-    auto const extentView(createVecFromIndexedFn<Dim, Size, CreateExtentViewVal>());
+    auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentViewVal>(Size()));
     auto const offsetView(alpaka::vec::Vec<Dim, Size>::all(sizeof(Size)));
     View view(buf, extentView, offsetView);
 

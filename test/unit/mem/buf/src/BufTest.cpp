@@ -74,29 +74,6 @@ struct CreateExtentBufVal
 //!
 //-----------------------------------------------------------------------------
 template<
-    typename TDim,
-    typename TSize,
-    template<std::size_t> class TCreate>
-static auto createVecFromIndexedFn()
--> alpaka::vec::Vec<TDim, TSize>
-{
-    return
-        alpaka::vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        Vec<TDim, TSize>::template
-#endif
-        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-            TDim,
-#endif
-            TCreate>(
-                TSize());
-}
-
-//-----------------------------------------------------------------------------
-//!
-//-----------------------------------------------------------------------------
-template<
     typename TAcc>
 static auto basicBufferOperationsTest(
     alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::size::Size<TAcc>> const & extent)
@@ -144,7 +121,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    auto const extent(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
+    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentBufVal>(Size()));
 
     basicBufferOperationsTest<
         TAcc>(
