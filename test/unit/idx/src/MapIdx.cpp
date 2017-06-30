@@ -58,29 +58,6 @@ struct CreateExtentBufVal
 };
 
 //-----------------------------------------------------------------------------
-//!
-//-----------------------------------------------------------------------------
-template<
-    typename TDim,
-    typename TSize,
-    template<std::size_t> class TCreate>
-static auto createVecFromIndexedFn()
--> alpaka::vec::Vec<TDim, TSize>
-{
-    return
-        alpaka::vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        Vec<TDim, TSize>::template
-#endif
-        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-            TDim,
-#endif
-            TCreate>(
-                TSize());
-}
-
-//-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
@@ -91,7 +68,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Size = std::size_t;
     using Vec = alpaka::vec::Vec<TDim, Size>;
 
-    auto const extentNd(createVecFromIndexedFn<TDim, Size, CreateExtentBufVal>());
+    auto const extentNd(alpaka::vec::createVecFromIndexedFnWorkaround<TDim, Size, CreateExtentBufVal>(Size()));
     auto const idxNd(extentNd - Vec::all(4u));
 
     auto const idx1d(alpaka::idx::mapIdx<1u>(idxNd, extentNd));

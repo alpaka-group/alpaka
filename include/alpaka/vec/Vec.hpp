@@ -47,7 +47,7 @@
 #include <algorithm>                        // std::min, std::max, std::min_element, std::max_element
 
 // Some compilers do not support the out of class versions:
-// - the nvcc 7.0 CUDA compiler
+// - the nvcc CUDA compiler (at least 7.0, 7.5 and 8.0)
 // - the intel compiler
 #if BOOST_COMP_NVCC || BOOST_COMP_INTEL
     #define ALPAKA_CREATE_VEC_IN_CLASS
@@ -555,6 +555,68 @@ namespace alpaka
             TSize m_data[TDim::value == 0u ? 1u : TDim::value];
         };
 
+        //-----------------------------------------------------------------------------
+        //! This is a conveniance method to have a out-of-class factory method even though the out-of-class version is not supported by all compilers.
+        //! Depending of the compiler conformance, the internal or external factory function is called.
+        //! This has the draw-back, that it requires the TSize parameter even though it should not be necessary.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TDim,
+            typename TSize,
+            template<std::size_t> class TTFnObj,
+            typename... TArgs>
+        ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnWorkaround(
+            TArgs && ... args)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+        -> alpaka::vec::Vec<TDim, TSize>
+#endif
+        {
+            return
+                alpaka::vec::
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                Vec<TDim, TSize>::template
+#endif
+                createVecFromIndexedFn<
+#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                    TDim,
+#endif
+                    TTFnObj>(
+                        std::forward<TArgs>(args)...);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! This is a conveniance method to have a out-of-class factory method even though the out-of-class version is not supported by all compilers.
+        //! Depending of the compiler conformance, the internal or external factory function is called.
+        //! This has the draw-back, that it requires the TSize parameter even though it should not be necessary.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TDim,
+            typename TSize,
+            template<std::size_t> class TTFnObj,
+            typename TIdxOffset,
+            typename... TArgs>
+        ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnOffsetWorkaround(
+            TArgs && ... args)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+        -> alpaka::vec::Vec<TDim, TSize>
+#endif
+        {
+            return
+                alpaka::vec::
+#ifdef ALPAKA_CREATE_VEC_IN_CLASS
+                Vec<TDim, TSize>::template
+#endif
+                createVecFromIndexedFnOffset<
+#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                    TDim,
+#endif
+                    TTFnObj,
+                    TIdxOffset>(
+                        std::forward<TArgs>(args)...);
+        }
+
         namespace detail
         {
             //#############################################################################
@@ -593,13 +655,9 @@ namespace alpaka
         -> Vec<TDim, TSize>
         {
             return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, TSize>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                createVecFromIndexedFnWorkaround<
                     TDim,
-#endif
+                    TSize,
                     detail::CreateAdd>(
                         p,
                         q);
@@ -644,13 +702,9 @@ namespace alpaka
         -> Vec<TDim, TSize>
         {
             return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, TSize>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                createVecFromIndexedFnWorkaround<
                     TDim,
-#endif
+                    TSize,
                     detail::CreateSub>(
                         p,
                         q);
@@ -695,13 +749,9 @@ namespace alpaka
         -> Vec<TDim, TSize>
         {
             return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, TSize>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                createVecFromIndexedFnWorkaround<
                     TDim,
-#endif
+                    TSize,
                     detail::CreateMul>(
                         p,
                         q);
@@ -746,13 +796,9 @@ namespace alpaka
         -> Vec<TDim, bool>
         {
             return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, bool>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                createVecFromIndexedFnWorkaround<
                     TDim,
-#endif
+                    bool,
                     detail::CreateLessEqual>(
                         p,
                         q);
@@ -924,13 +970,9 @@ namespace alpaka
                 -> Vec<TDim, TSizeNew>
                 {
                     return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                    Vec<TDim, TSizeNew>::template
-#endif
-                        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                        createVecFromIndexedFnWorkaround<
                             TDim,
-#endif
+                            TSizeNew,
                             vec::detail::CreateCast>(
                                 TSizeNew(),
                                 vec);
@@ -1001,13 +1043,9 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                        Vec<TDim, TSize>::template
-#endif
-                        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                        createVecFromIndexedFnWorkaround<
                             TDim,
-#endif
+                            TSize,
                             vec::detail::CreateReverse>(
                                 vec);
                 }
@@ -1077,13 +1115,9 @@ namespace alpaka
                 -> Vec<dim::DimInt<TDimL::value + TDimR::value>, TSize>
                 {
                     return
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                        Vec<dim::DimInt<TDimL::value + TDimR::value>, TSize>::template
-#endif
-                        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                        createVecFromIndexedFnWorkaround<
                             dim::DimInt<TDimL::value + TDimR::value>,
-#endif
+                            TSize,
                             vec::detail::CreateConcat>(
                                 vecL,
                                 vecR);
@@ -1129,14 +1163,9 @@ namespace alpaka
         -> vec::Vec<dim::Dim<TExtent>, size::Size<TExtent>>
         {
             return
-                vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<dim::Dim<TExtent>, size::Size<TExtent>>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                vec::createVecFromIndexedFnWorkaround<
                     dim::Dim<TExtent>,
-#endif
+                    size::Size<TExtent>,
                     detail::CreateExtent>(
                         extent);
         }
@@ -1154,14 +1183,9 @@ namespace alpaka
         {
             using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
             return
-                vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, size::Size<TExtent>>::template
-#endif
-                createVecFromIndexedFnOffset<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                vec::createVecFromIndexedFnOffsetWorkaround<
                     TDim,
-#endif
+                    size::Size<TExtent>,
                     detail::CreateExtent,
                     IdxOffset>(
                         extent);
@@ -1205,14 +1229,9 @@ namespace alpaka
         -> vec::Vec<dim::Dim<TOffsets>, size::Size<TOffsets>>
         {
             return
-                vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<dim::Dim<TOffsets>, size::Size<TOffsets>>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                vec::createVecFromIndexedFnWorkaround<
                     dim::Dim<TOffsets>,
-#endif
+                    size::Size<TOffsets>,
                     detail::CreateOffset>(
                         offsets);
         }
@@ -1230,14 +1249,9 @@ namespace alpaka
         {
             using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(dim::Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
             return
-                vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, size::Size<TOffsets>>::template
-#endif
-                createVecFromIndexedFnOffset<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
+                vec::createVecFromIndexedFnOffsetWorkaround<
                     TDim,
-#endif
+                    size::Size<TOffsets>,
                     detail::CreateOffset,
                     IdxOffset>(
                         offsets);
