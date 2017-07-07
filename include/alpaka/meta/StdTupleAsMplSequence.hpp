@@ -260,15 +260,15 @@ namespace boost
             //
             //#############################################################################
             template<
-                int ...>
+                std::size_t ...>
             struct tuple_seq
             {};
             //#############################################################################
             //
             //#############################################################################
             template<
-                int N,
-                int ...S>
+                std::size_t N,
+                std::size_t ...S>
             struct tuple_gens :
                 tuple_gens<N-1, N-1, S...>
             {};
@@ -276,7 +276,7 @@ namespace boost
             //
             //#############################################################################
             template<
-                int ...S>
+                std::size_t ...S>
             struct tuple_gens<0, S...>
             {
                 using type = tuple_seq<S...>;
@@ -293,7 +293,7 @@ namespace boost
             //#############################################################################
             template<
                 typename Tuple,
-                int ... S>
+                std::size_t ... S>
             struct apply_impl<Tuple, tuple_seq<S...>>
             {
                 using type = std::tuple<typename std::tuple_element<S, Tuple>::type...>;
