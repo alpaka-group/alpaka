@@ -65,7 +65,7 @@ compiler:
 # ALPAKA_ACC_CPU_BT_OMP4_ENABLE                 : {ON, OFF}
 #   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
 # ALPAKA_ACC_GPU_CUDA_ENABLE                    : {ON, OFF}
-#   [ON] ALPAKA_CUDA_VER                        : {7.0, 7.5, 8.0}
+#   [ON] ALPAKA_CUDA_VER                        : {7.5, 8.0}
 #   [ON] ALPAKA_CUDA_COMPILER                   : {nvcc, [CXX==clang++]:clang}
 # ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE             : {ON, OFF}
 ################################################################################
@@ -96,7 +96,7 @@ env:
         - ALPAKA_GCC_VER=6   ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.63.0 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=TSan+UBSan+ESan OMP_NUM_THREADS=4
 
         # Release builds
-        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.64.0 ALPAKA_CI_CMAKE_VER=3.8.2 ALPAKA_CI_SANITIZERS=ASan+UBSan+ESan OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.0 ALPAKA_CUDA_COMPILER=clang
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.64.0 ALPAKA_CI_CMAKE_VER=3.8.2 ALPAKA_CI_SANITIZERS=ASan+UBSan+ESan OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang
         - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6.2 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.62.0 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=TSan+UBSan+ESan OMP_NUM_THREADS=3 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=nvcc
         - ALPAKA_GCC_VER=7   ALPAKA_CLANG_VER=3.5.2 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.63.0 ALPAKA_CI_CMAKE_VER=3.8.2 ALPAKA_CI_SANITIZERS=ASan+UBSan+ESan OMP_NUM_THREADS=2
         - ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.62.0 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=                OMP_NUM_THREADS=4
@@ -212,7 +212,6 @@ before_install:
           ;fi
       ;fi
 
-    # nvcc 7.0 does not support clang on linux.
     # nvcc 7.5 does not support clang > 3.6 on linux.
     # nvcc 7.5 for clang is buggy and does not compile alpaka correctly.
     - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
@@ -223,11 +222,7 @@ before_install:
               ;then
                   if [ ${TRAVIS_OS_NAME} == "linux" ]
                   ;then
-                      if [ "${ALPAKA_CUDA_VER}" == "7.0" ]
-                      ;then
-                          export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
-                          && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because clang is not a supported compiler for nvcc 7.0 on linux!
-                      ;elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
+                      if [ "${ALPAKA_CUDA_VER}" == "7.5" ]
                       ;then
                           export ALPAKA_ACC_GPU_CUDA_ENABLE=OFF
                           && echo ALPAKA_ACC_GPU_CUDA_ENABLE=${ALPAKA_ACC_GPU_CUDA_ENABLE} because the nvcc 7.5 clang support is buggy!
@@ -382,11 +377,7 @@ before_install:
     - if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
       ;then
           ALPAKA_CUDA_CACHE_DIR=${HOME}/cache/CUDA/CUDA-${ALPAKA_CUDA_VER}
-          && if [ "${ALPAKA_CUDA_VER}" == "7.0" ]
-          ;then
-              ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-7-0-local_7.0-28_amd64.deb
-              && ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/rpmdeb/${ALPAKA_CUDA_PKG_FILE_NAME}
-          ;elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
+          && if [ "${ALPAKA_CUDA_VER}" == "7.5" ]
           ;then
               ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-7-5-local_7.5-18_amd64.deb
               && ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
@@ -395,7 +386,7 @@ before_install:
               ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1404-8-0-local_8.0.44-1_amd64-deb
               && ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
           ;else
-              echo CUDA versions other then 7.0, 7.5 and 8.0 are not currently supported!
+              echo CUDA versions other then 7.5 and 8.0 are not currently supported!
           ;fi
           && if [ -z "$(ls -A ${ALPAKA_CUDA_CACHE_DIR})" ]
           ;then
@@ -403,15 +394,7 @@ before_install:
               && travis_retry wget -O ${ALPAKA_CUDA_CACHE_DIR}/${ALPAKA_CUDA_PKG_FILE_NAME} ${ALPAKA_CUDA_PKG_FILE_PATH}
           ;fi
           && sudo dpkg -i ${ALPAKA_CUDA_CACHE_DIR}/${ALPAKA_CUDA_PKG_FILE_NAME}
-          && if [ "${ALPAKA_CUDA_VER}" == "7.0" ]
-          ;then
-              cat /var/cuda-repo-7-0-local/Release
-              && cat /var/cuda-repo-7-0-local/Packages.gz | sha256sum
-              && gunzip -c /var/cuda-repo-7-0-local/Packages.gz | sha256sum
-              && STR="SHA256:"
-              && echo "$STR" | sudo tee -a /var/cuda-repo-7-0-local/Release
-              && cat /var/cuda-repo-7-0-local/Release
-          ;elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
+          && if [ "${ALPAKA_CUDA_VER}" == "7.5" ]
           ;then
               cat /var/cuda-repo-7-5-local/Release
               && cat /var/cuda-repo-7-5-local/Packages.gz | sha256sum
@@ -725,7 +708,7 @@ script:
     # Build and execute all examples.
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./travis/compileExec.sh "example/bufferCopy" ./bufferCopy ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./travis/compileExec.sh "example/helloWorld" ./helloWorld ;fi
-    - if ([ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ]) && (([ ${ALPAKA_CUDA_VER_MAJOR} -ge 8 ]) || ([ "${ALPAKA_CUDA_VER_MAJOR}" == "7" -a  "${ALPAKA_CUDA_VER_MINOR}" == "5" ]));then ./travis/compileExec.sh "example/helloWorldLambda" ./helloWorldLambda ;fi
+    - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./travis/compileExec.sh "example/helloWorldLambda" ./helloWorldLambda ;fi
     - if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" -a "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./travis/compileExec.sh "example/vectorAdd" ./vectorAdd ;fi
 
 ################################################################################

@@ -55,7 +55,7 @@ Accelerator Back-ends
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 | Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |TBB 2.2+ blocks|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
-|CUDA 7.0+|CUDA 7.0+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+|CUDA 7.5+|CUDA 7.5+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
 
 
 Supported Compilers
@@ -72,7 +72,7 @@ This library uses C++11 (or newer when available).
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |TBB 2.2+|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:x:|:white_check_mark: (native/nvcc 8.0+)|:white_check_mark: (native)|:x:|
+|CUDA 7.5+|:white_check_mark: (nvcc 7.5+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:x:|:white_check_mark: (native/nvcc 8.0+)|:white_check_mark: (native)|:x:|
 
 
 Dependencies
@@ -84,7 +84,7 @@ However some of the accelerator back-end implementations require different boost
 
 When an accelerator back-end using *Boost.Fiber* is enabled, `boost-fiber`, `boost-context` and all of its dependencies are required to be build in C++11 mode `./b2 cxxflags="-std=c++11"`.
 
-When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
+When an accelerator back-end using *CUDA* is enabled, version *7.5* of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using nvcc as *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
 *NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with any *OpenMP accelerator back-end* because this combination is currently unsupported.
 

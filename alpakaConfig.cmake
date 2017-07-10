@@ -266,11 +266,11 @@ ENDIF()
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
     IF(NOT DEFINED ALPAKA_CUDA_VERSION)
-        SET(ALPAKA_CUDA_VERSION 7.0)
+        SET(ALPAKA_CUDA_VERSION 7.5)
     ENDIF()
 
-    IF(ALPAKA_CUDA_VERSION VERSION_LESS 7.0)
-        MESSAGE(WARNING "CUDA Toolkit < 7.0 is not supported!")
+    IF(ALPAKA_CUDA_VERSION VERSION_LESS 7.5)
+        MESSAGE(WARNING "CUDA Toolkit < 7.5 is not supported!")
         SET(_ALPAKA_FOUND FALSE)
 
     ELSE()
@@ -288,7 +288,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
 
             IF(IS_CUDA_ARCH_UNSUPPORTED)
-                MESSAGE(WARNING "Unsupported CUDA architecture ${ALPAKA_CUDA_ARCH} specified. SM 2.0 or higher is required for CUDA 7.0. Using sm_20 instead.")
+                MESSAGE(WARNING "Unsupported CUDA architecture ${ALPAKA_CUDA_ARCH} specified. SM 2.0 or higher is required for CUDA 7.5. Using sm_20 instead.")
                 SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture" FORCE)
             ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
 
@@ -339,9 +339,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
                 ENDIF()
 
-                IF(NOT CUDA_VERSION VERSION_LESS 7.5)
-                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
-                ENDIF()
+                LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
 
                 LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
 
