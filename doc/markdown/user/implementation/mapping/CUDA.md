@@ -23,15 +23,54 @@ NOTE: The CUDA-accelerator back-end can change the current CUDA device and will 
 
 The following tables list the functions available in the [CUDA Runtime API](http://docs.nvidia.com/cuda/cuda-runtime-api/modules.html#modules) and their equivalent alpaka functions:
 
+### Programming Interface
+
+*Function Attributes*
+
+|CUDA|alpaka|
+|---|---|
+|\_\_host\_\_|ALPAKA_FN_HOST|
+|\_\_global\_\_|ALPAKA_FN_HOST_ACC|
+|\_\_device\_\_ \_\_host\_\_|ALPAKA_FN_HOST_ACC|
+|\_\_device\_\_|ALPAKA_FN_ACC_CUDA_ONLY|
+
+
+*Memory*
+
+|CUDA|alpaka|
+|---|---|
+|\_\_shared\_\_|../../../../../test/unit/block/shared/src/BlockSharedMemSt.cpp#L69|
+|\_\_constant\_\_|[ALPAKA_STATIC_DEV_MEM_CONSTANT](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L58-L63)|
+|\_\_device\_\_|[ALPAKA_STATIC_DEV_MEM_GLOBAL](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L164-L169)|
+
+*Work Division*
+
+|CUDA|alpaka|
+|---|---|
+|threadIdx||
+|blockIdx||
+|blockDim||
+
+*Types*
+
+|CUDA|alpaka|
+|---|---|
+|dim3|[alpaka::vec::Vec< TDim, TSize >](../../../../../test/unit/vec/src/VecTest.cpp#L43-L45)|
+
+
+### CUDA Runtime API
+
+
 *Device Management*
 
 |CUDA|alpaka|
 |---|---|
 |cudaChooseDevice|-|
-|cudaDeviceGetByPCIBusId|-|
 |cudaDeviceGetAttribute|-|
+|cudaDeviceGetByPCIBusId|-|
 |cudaDeviceGetCacheConfig|-|
 |cudaDeviceGetLimit|-|
+|cudaDeviceGetP2PAttribute|-|
 |cudaDeviceGetPCIBusId|-|
 |cudaDeviceGetSharedMemConfig|-|
 |cudaDeviceGetStreamPriorityRange|-|
@@ -41,8 +80,9 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaDeviceSetSharedMemConfig|-|
 |cudaDeviceSynchronize|void alpaka::wait::wait(device)|
 |cudaGetDevice|n/a (no current device)|
-|cudaGetDeviceCount|std::size_t alpaka::dev::DevMan< TAcc >::getDeviceCount()|
-|cudaGetDeviceProperties|<ul><li>alpaka::dev::DevProps alpaka::dev::getProps(device)</li><li>alpaka::acc::getAccDevProps(acc)</li></ul> *NOTE: Only some properties available*|
+|cudaGetDeviceCount|std::size_t alpaka::pltf::DevMan< TPltf >::getDevCount()|
+|cudaGetDeviceFlags|-|
+|cudaGetDeviceProperties|alpaka::acc::getAccDevProps(dev) *NOTE: Only some properties available*|
 |cudaIpcCloseMemHandle|-|
 |cudaIpcGetEventHandle|-|
 |cudaIpcGetMemHandle|-|
@@ -52,19 +92,28 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaSetDeviceFlags|-|
 |cudaSetValidDevices|-|
 
+*Error Handling*
+
+|CUDA|alpaka|
+|---|---|
+|cudaGetErrorName|n/a (handled internally, available in exception message)|
+|cudaGetErrorString|n/a (handled internally, available in exception message)|
+|cudaGetLastError|n/a (handled internally)|
+|cudaPeekAtLastError|n/a (handled internally)|
+
 *Stream Management*
 
 |CUDA|alpaka|
 |---|---|
 |cudaStreamAddCallback|-|
 |cudaStreamAttachMemAsync|-|
-|cudaStreamCreate|alpaka::stream::[StreamType] stream(device);|
-|cudaStreamCreateWithFlags|-|
+|cudaStreamCreate|<ul><li>stream = alpaka::stream::StreamCudaRtAsync(device);</li><li>stream = alpaka::stream::StreamCudaRtSync(device);</li></ul>|
+|cudaStreamCreateWithFlags|see cudaStreamCreate (cudaStreamNonBlocking hard coded)|
 |cudaStreamCreateWithPriority|-|
 |cudaStreamDestroy|n/a (Destructor)|
 |cudaStreamGetFlags|-|
 |cudaStreamGetPriority|-|
-|cudaStreamQuery|bool alpaka::stream::test(stream)|
+|cudaStreamQuery|bool alpaka::stream::empty(stream)|
 |cudaStreamSynchronize|void alpaka::wait::wait(stream)|
 |cudaStreamWaitEvent|void alpaka::wait::wait(stream, event)|
 
@@ -102,10 +151,14 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaMalloc3DArray|-|
 |cudaMallocArray|-|
 |cudaMallocHost|alpaka::mem::buf::alloc<TElement>(device, extents) *1D, 2D, 3D suppoorted!*|
-|cudaMallocManaged|TODO|
+|cudaMallocManaged|-|
 |cudaMallocMipmappedArray|-|
 |cudaMallocPitch|alpaka::mem::alloc<TElement>(device, extents2D)|
+|cudaMemAdvise|-|
 |cudaMemGetInfo|<ul><li>alpaka::dev::getMemBytes</li><li>alpaka::dev::getFreeMemBytes</li><ul>|
+|cudaMemPrefetchAsync|-|
+|cudaMemRangeGetAttribute|-|
+|cudaMemRangeGetAttributes|-|
 |cudaMemcpy|alpaka::mem::view::copy(memBufDst, memBufSrc, extents1D)|
 |cudaMemcpy2D|alpaka::mem::view::copy(memBufDst, memBufSrc, extents2D)|
 |cudaMemcpy2DArrayToArray|-|
@@ -138,32 +191,34 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaMemsetAsync|alpaka::mem::view::set(memBufDst, byte, extents1D, stream)|
 |make_cudaExtent|-|
 |make_cudaPitchedPtr|-|
+|make_cudaPos|-|
+|cudaMemcpyHostToDevice|n/a (direction of copy is determined automatically)|
+|cudaMemcpyDeviceToHost|n/a (direction of copy is determined automatically)|
 
 *Execution Control*
 
 |CUDA|alpaka|
 |---|---|
-|cudaConfigureCall|<ul><li>alpaka::stream::enqueue(stream, kernel, params...)</li><li>alpaka::kernel::BlockSharedExternMemSizeBytes< TKernel< TAcc > >::getBlockSharedExternMemSizeBytes<...>(...)</li></ul>|
 |cudaFuncGetAttributes|-|
 |cudaFuncSetCacheConfig|-|
 |cudaFuncSetSharedMemConfig|-|
-|cudaLaunch|alpaka::stream::enqueue(stream, kernel, params...)|
+|cudaLaunchKernel|<ul><li>exec = alpaka::exec::create< TAcc >(workDiv, kernel, params...);alpaka::stream::enqueue(stream, exec)</li><li>alpaka::kernel::BlockSharedExternMemSizeBytes< TKernel< TAcc > >::getBlockSharedExternMemSizeBytes<...>(...)</li></ul>|
 |cudaSetDoubleForDevice|n/a (alpaka assumes double support)|
 |cudaSetDoubleForHost|n/a (alpaka assumes double support)|
-|cudaSetupArgument|alpaka::stream::enqueue(stream, kernel, params...)|
 
 *Occupancy*
 
 |CUDA|alpaka|
 |---|---|
 |cudaOccupancyMaxActiveBlocksPerMultiprocessor|-|
+|cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags|-|
 
 
 *Unified Addressing*
 
 |CUDA|alpaka|
 |---|---|
-|cudaPointerGetAttributes|alpaka::mem::view::getPtrDev(view, device)|
+|cudaPointerGetAttributes|-|
 
 *Peer Device Memory Access*
 
@@ -173,7 +228,7 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaDeviceDisablePeerAccess|-|
 |cudaDeviceEnablePeerAccess|-|
 
-**OpenGL, DirectX, VDPAU, Graphics Interoperability**
+**OpenGL, Direct3D, VDPAU, EGL, Graphics Interoperability**
 
 *not available*
 
