@@ -6,22 +6,21 @@ CUDA GPUs
 Mapping the abstraction to GPUs supporting *CUDA* is straightforward because the hierarchy levels are identical up to the element level.
 So blocks of warps of threads will be mapped directly to their *CUDA* equivalent.
 
-The element level will be supported through an additional run-time variable containing the extent of elements per thread.
+The element level is supported through an additional run-time variable containing the extent of elements per thread.
 This variable can be accessed by all threads and should optimally be placed in constant device memory for fast access.
 
 Porting CUDA to *alpaka*
 ------------------------
 
 Nearly all CUDA functionality can be directly mapped to alpaka function calls.
-A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order. Alpaka uses the mathematical C/C++ array indexing scheme [z][y][x]. Dimension 0 in this case is z, dimensions 2 is x.
+A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order. Alpaka uses the mathematical C/C++ array indexing scheme [z][y][x]. In both cases x is the innermost / fast running index.
 
 Furthermore alpaka does not require the indices and extents to be 3-dimensional.
 The accelerators are templatized on and support arbitrary dimensionality.
 NOTE: Currently the CUDA implementation is restricted to a maximum of 3 dimensions!
 
-NOTE: The CUDA-accelerator back-end can change the current CUDA device and will NOT set the device back to the one prior to the invocation of the alpaka function!
+NOTE: You have to be careful when mixing alpaka and non alpaka CUDA code. The CUDA-accelerator back-end can change the current CUDA device and will NOT set the device back to the one prior to the invocation of the alpaka function.
 
-The following tables list the functions available in the [CUDA Runtime API](http://docs.nvidia.com/cuda/cuda-runtime-api/modules.html#modules) and their equivalent alpaka functions:
 
 ### Programming Interface
 
@@ -39,17 +38,18 @@ The following tables list the functions available in the [CUDA Runtime API](http
 
 |CUDA|alpaka|
 |---|---|
-|\_\_shared\_\_|../../../../../test/unit/block/shared/src/BlockSharedMemSt.cpp#L69|
+|\_\_shared\_\_|[alpaka::block::shared::st::allocVar<std::uint32_t, \_\_COUNTER\_\_>(acc)](../../../../../test/unit/block/shared/src/BlockSharedMemSt.cpp#L69)|
 |\_\_constant\_\_|[ALPAKA_STATIC_DEV_MEM_CONSTANT](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L58-L63)|
 |\_\_device\_\_|[ALPAKA_STATIC_DEV_MEM_GLOBAL](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L164-L169)|
 
-*Work Division*
+*Index / Work Division*
 
 |CUDA|alpaka|
 |---|---|
-|threadIdx||
-|blockIdx||
-|blockDim||
+|threadIdx|alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)|
+|blockIdx|alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)|
+|blockDim|alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)|
+|gridDim|alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)|
 
 *Types*
 
@@ -60,6 +60,7 @@ The following tables list the functions available in the [CUDA Runtime API](http
 
 ### CUDA Runtime API
 
+The following tables list the functions available in the [CUDA Runtime API](http://docs.nvidia.com/cuda/cuda-runtime-api/modules.html#modules) and their equivalent alpaka functions:
 
 *Device Management*
 
