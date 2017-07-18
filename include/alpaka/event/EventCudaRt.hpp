@@ -251,21 +251,12 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Query is allowed even for events on non current device.
-                    auto const ret(
-                        cudaEventQuery(
-                            event.m_spEventCudaImpl->m_CudaEvent));
-                    if(ret == cudaSuccess)
-                    {
-                        return true;
-                    }
-                    else if(ret == cudaErrorNotReady)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaEventQuery!"));
-                    }
+                    cudaError_t ret = cudaSuccess;
+                    ALPAKA_CUDA_RT_CHECK_IGNORE(
+                        ret = cudaEventQuery(
+                            event.m_spEventCudaImpl->m_CudaEvent),
+                        cudaErrorNotReady);
+                    return (ret == cudaSuccess);
                 }
             };
         }

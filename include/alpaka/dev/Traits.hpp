@@ -161,7 +161,7 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! Resets the device.
-        //! What this method does is dependent of the accelerator.
+        //! What this method does is dependent on the accelerator.
         //-----------------------------------------------------------------------------
         template<
             typename TDev>

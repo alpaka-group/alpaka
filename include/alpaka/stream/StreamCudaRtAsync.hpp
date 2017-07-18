@@ -254,21 +254,12 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Query is allowed even for streams on non current device.
-                    auto const ret(
-                        cudaStreamQuery(
-                            stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
-                    if(ret == cudaSuccess)
-                    {
-                        return true;
-                    }
-                    else if(ret == cudaErrorNotReady)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "' from cudaStreamQuery!"));
-                    }
+                    cudaError_t ret = cudaSuccess;
+                    ALPAKA_CUDA_RT_CHECK_IGNORE(
+                        ret = cudaStreamQuery(
+                            stream.m_spStreamCudaRtAsyncImpl->m_CudaStream),
+                        cudaErrorNotReady);
+                    return (ret == cudaSuccess);
                 }
             };
         }
