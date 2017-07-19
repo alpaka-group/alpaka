@@ -286,7 +286,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA async device stream 1D copy enqueue trait specialization.
+            //! The CUDA asynchronous kernel enqueue trait specialization.
             //#############################################################################
             template<
                 typename TDim,
@@ -418,19 +418,13 @@ namespace alpaka
                     // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
                     cudaStreamSynchronize(
                         stream.m_spStreamCudaRtAsyncImpl->m_CudaStream);
-                    cudaError_t const error(cudaGetLastError());
-                    if(error != cudaSuccess)
-                    {
-                        std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFnObj).name()) + "' failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
-                        std::cerr << sError << std::endl;
-                        ALPAKA_DEBUG_BREAK;
-                        throw std::runtime_error(sError);
-                    }
+                    std::string const kernelName("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
+                    ::alpaka::cuda::detail::cudaRtCheckLastError(kernelName.c_str(), __FILE__, __LINE__);
 #endif
                 }
             };
             //#############################################################################
-            //! The CUDA sync device stream 1D copy enqueue trait specialization.
+            //! The CUDA synchronous kernel enqueue trait specialization.
             //#############################################################################
             template<
                 typename TDim,
@@ -559,14 +553,8 @@ namespace alpaka
                     cudaStreamSynchronize(
                         stream.m_spStreamCudaRtSyncImpl->m_CudaStream);
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    cudaError_t const error(cudaGetLastError());
-                    if(error != cudaSuccess)
-                    {
-                        std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFnObj).name()) + "' failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
-                        std::cerr << sError << std::endl;
-                        ALPAKA_DEBUG_BREAK;
-                        throw std::runtime_error(sError);
-                    }
+                    std::string const kernelName("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
+                    ::alpaka::cuda::detail::cudaRtCheckLastError(kernelName.c_str(), __FILE__, __LINE__);
 #endif
                 }
             };
