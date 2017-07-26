@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/vec/Vec.hpp>               // Vec
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
 
 #include <boost/predef.h>                   // BOOST_COMP_CLANG
 #if !BOOST_ARCH_CUDA_DEVICE

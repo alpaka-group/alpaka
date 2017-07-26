@@ -29,7 +29,7 @@
 #include <alpaka/vec/Vec.hpp>                   // Vec
 
 #include <alpaka/core/Assert.hpp>               // assertValueUnsigned
-#include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>               // ALPAKA_FN_*
 
 #include <cassert>                              // assert
 #include <cmath>                                // std::ceil

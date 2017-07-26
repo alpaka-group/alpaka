@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/acc/AccDevProps.hpp>   // AccDevProps
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <string>                       // std::string
 #include <typeinfo>                     // typeid

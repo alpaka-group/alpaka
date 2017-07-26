@@ -24,7 +24,7 @@
 #include <alpaka/meta/IsStrictBase.hpp>     // meta::IsStrictBase
 
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
 
 #include <alpaka/vec/Vec.hpp>               // Vec<N>
 

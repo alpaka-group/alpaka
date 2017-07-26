@@ -24,7 +24,7 @@
 #include <alpaka/dev/DevCpu.hpp>        // dev::DevCpu
 #include <alpaka/mem/buf/Traits.hpp>    // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
 #include <alpaka/pltf/PltfCpu.hpp>      // pltf::getDevByIndex
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #include <boost/predef.h>               // workarounds

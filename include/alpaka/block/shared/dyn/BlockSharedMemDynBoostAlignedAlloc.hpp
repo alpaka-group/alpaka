@@ -24,7 +24,7 @@
 #include <alpaka/core/Vectorize.hpp>            // defaultAlignment
 #include <alpaka/block/shared/dyn/Traits.hpp>   // AllocVar
 
-#include <alpaka/core/Common.hpp>               // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>               // ALPAKA_FN_*
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
 
