@@ -30,7 +30,7 @@
 // When compiling the tests with CUDA enabled (nvcc or native clang) on the CI infrastructure
 // we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && ALPAKA_CI
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && defined(ALPAKA_CI)
     #define ALPAKA_CUDA_CI
 #endif
 

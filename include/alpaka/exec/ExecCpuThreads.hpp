@@ -283,6 +283,8 @@ namespace alpaka
                 futuresInBlock.emplace_back(
                     threadPool.enqueueTask(
                         boundBlockThreadExecAcc));
+#else
+                (void)boundBlockThreadExecAcc;
 #endif
             }
             //-----------------------------------------------------------------------------

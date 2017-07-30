@@ -258,9 +258,15 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 std::vector<boost::fibers::future<void>> & futuresInBlock,
                 vec::Vec<TDim, TSize> const & blockThreadIdx,
                 FiberPool & fiberPool,
+#else
+                std::vector<boost::fibers::future<void>> &,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
+                FiberPool &,
+#endif
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
@@ -282,6 +288,8 @@ namespace alpaka
                 futuresInBlock.emplace_back(
                     fiberPool.enqueueTask(
                         boundBlockThreadExecAcc));
+#else
+                (void)boundBlockThreadExecAcc;
 #endif
             }
             //-----------------------------------------------------------------------------

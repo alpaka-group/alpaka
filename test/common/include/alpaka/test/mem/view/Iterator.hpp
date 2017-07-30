@@ -178,7 +178,11 @@ namespace alpaka
                             // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
                             auto const dimensionalOffsetsInByte(currentIdxDimx * dstPitchBytes);
                             // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
-                            auto const offsetInByte(dimensionalOffsetsInByte.foldrAll(std::plus<Size>()));
+                            auto const offsetInByte(dimensionalOffsetsInByte.foldrAll(
+                                [](Size a, Size b)
+                                {
+                                    return static_cast<Size>(a + b);
+                                }));
 
                             using Byte = typename MimicConst<std::uint8_t, Elem>::type;
                             Byte* ptr(reinterpret_cast<Byte*>(m_nativePtr) + offsetInByte);

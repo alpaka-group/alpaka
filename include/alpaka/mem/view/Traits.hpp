@@ -581,10 +581,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_NO_HOST_ACC_WARNING
                     template<
                         typename TPitch>
-                    ALPAKA_FN_HOST_ACC static auto create(
+                    ALPAKA_FN_HOST static auto create(
                         TPitch const & pitch)
                     -> size::Size<TPitch>
                     {
@@ -595,10 +594,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The pitch vector.
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TPitch>
-            ALPAKA_FN_HOST_ACC auto getPitchBytesVec(
+            ALPAKA_FN_HOST auto getPitchBytesVec(
                 TPitch const & pitch = TPitch())
             -> vec::Vec<dim::Dim<TPitch>, size::Size<TPitch>>
             {
@@ -612,11 +610,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The pitch but only the last N elements.
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TDim,
                 typename TPitch>
-            ALPAKA_FN_HOST_ACC auto getPitchBytesVecEnd(
+            ALPAKA_FN_HOST auto getPitchBytesVecEnd(
                 TPitch const & pitch = TPitch())
             -> vec::Vec<TDim, size::Size<TPitch>>
             {

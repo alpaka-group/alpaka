@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2015 Erik Zenker
+ * Copyright 2014-2017 Erik Zenker, Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -50,7 +50,8 @@ struct PrintBufferKernel
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
-            std::cout << buffer[i] << " ";
+            // NOTE: hard-coded for unsigned int
+            printf("%u ", buffer[i]);
         }
     }
 };
