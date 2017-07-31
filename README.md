@@ -128,6 +128,28 @@ consider citing us accordingly in your derived work and publications:
 % Peer-Reviewed Publication %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Peer reviewed and accepted publication in
+%   "2nd International Workshop on Performance Portable
+%    Programming Models for Accelerators (P^3MA)"
+% colocated with the
+%   "2017 ISC High Performance Conference"
+%   in Frankfurt, Germany
+@inproceedings{MathesP3MA2017,
+  author    = {{Matthes}, A. and {Widera}, R. and {Zenker}, E. and {Worpitz}, B. and 
+               {Huebl}, A. and {Bussmann}, M.},
+  title     = {Tuning and optimization for a variety of many-core architectures without changing a single line of implementation code
+               using the Alpaka library},
+  archivePrefix = "arXiv",
+  eprint    = {1706.10086},
+  keywords  = {Computer Science - Distributed, Parallel, and Cluster Computing},
+  day       = {30},
+  month     = {Jun},
+  year      = {2017},
+  url       = {https://arxiv.org/abs/1706.10086},
+}
+
+% Peer-Reviewed Publication %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Peer reviewed and accepted publication in
 %   "The Sixth International Workshop on
 %    Accelerators and Hybrid Exascale Systems (AsHES)"
 % at the
