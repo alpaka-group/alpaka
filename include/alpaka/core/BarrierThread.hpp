@@ -24,7 +24,7 @@
 // Uncomment this to disable the standard spinlock behaviour of the threads
 //#define ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 #include <alpaka/block/sync/Traits.hpp> // block::sync::op::LogicalOr, LogicalAnd, Count
 
 #include <mutex>                        // std::mutex

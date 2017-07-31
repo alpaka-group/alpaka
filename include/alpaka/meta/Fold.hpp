@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
 
 #include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 

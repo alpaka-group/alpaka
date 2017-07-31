@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <boost/predef.h>               // Workarounds.
 #if !BOOST_ARCH_CUDA_DEVICE

@@ -23,7 +23,7 @@
 
 #include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 

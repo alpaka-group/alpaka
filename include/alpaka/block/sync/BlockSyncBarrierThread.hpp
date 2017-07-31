@@ -27,7 +27,7 @@
 
 #include <alpaka/core/BarrierThread.hpp>// BarrierThread
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <thread>                       // std::thread
 #include <mutex>                        // std::mutex

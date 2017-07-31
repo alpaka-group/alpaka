@@ -24,7 +24,7 @@
 #include <alpaka/vec/Vec.hpp>               // Vec
 #include <alpaka/dim/Traits.hpp>            // Dim
 #include <alpaka/meta/IntegerSequence.hpp>  // meta::IndexSequence
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
 
 #if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused

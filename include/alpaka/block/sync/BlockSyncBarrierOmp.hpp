@@ -25,7 +25,7 @@
 
 #include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 

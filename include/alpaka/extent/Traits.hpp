@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
 #include <alpaka/meta/Fold.hpp>             // meta::foldr
 #include <alpaka/size/Traits.hpp>           // size::Size
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt

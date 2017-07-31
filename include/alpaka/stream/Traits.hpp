@@ -23,7 +23,7 @@
 
 #include <alpaka/wait/Traits.hpp>   // CurrentThreadWaitFor, WaiterWaitFor
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_*
 
 #include <type_traits>              // std::decay
 #include <utility>                  // std::forward

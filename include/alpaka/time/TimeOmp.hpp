@@ -25,7 +25,7 @@
 
 #include <alpaka/time/Traits.hpp>       // time::Clock
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 

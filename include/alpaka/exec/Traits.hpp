@@ -29,7 +29,7 @@
     #include <alpaka/workdiv/Traits.hpp>    // workdiv::getWorkDiv
 #endif
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
 
 #include <type_traits>                      // std::decay
 

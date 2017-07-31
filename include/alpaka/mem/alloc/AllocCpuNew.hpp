@@ -23,7 +23,7 @@
 
 #include <alpaka/mem/alloc/Traits.hpp>  // mem::alloc::Alloc, mem::alloc::Free
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
