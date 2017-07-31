@@ -46,7 +46,6 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default-constructor
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST AccDevProps(
                 TSize const & multiProcessorCount,
                 vec::Vec<TDim, TSize> const & gridBlockExtentMax,

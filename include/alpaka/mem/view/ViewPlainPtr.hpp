@@ -293,8 +293,7 @@ namespace alpaka
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>,
                     typename std::enable_if<TIdx::value < TDim::value>::type>
                 {
-                    ALPAKA_NO_HOST_ACC_WARNING
-                    ALPAKA_FN_HOST_ACC static auto getPitchBytes(
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
                     -> TSize
                     {
