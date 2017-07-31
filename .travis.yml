@@ -339,7 +339,7 @@ before_install:
                           echo CUDA 7.x does not support the gcc version!
                           && exit 1
                       ;fi
-                  ;elif (( ${ALPAKA_CUDA_VER_MAJOR} < 7 ))
+                  ;elif (( ${ALPAKA_CUDA_VER_MAJOR} < 9 ))
                   ;then
                       if (( ${ALPAKA_GCC_VER_MAJOR} > 5 ))
                       ;then
