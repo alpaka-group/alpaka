@@ -281,17 +281,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
         ELSE()
             SET(ALPAKA_CUDA_VERSION "${CUDA_VERSION}")
-            SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "GPU architecture")
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
-
-            IF(IS_CUDA_ARCH_UNSUPPORTED)
-                MESSAGE(WARNING "Unsupported CUDA architecture ${ALPAKA_CUDA_ARCH} specified. SM 2.0 or higher is required for CUDA 7.0. Using sm_20 instead.")
-                SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture" FORCE)
-            ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
-
+            SET(ALPAKA_CUDA_ARCH "20" CACHE STRING "GPU architecture")
             SET(ALPAKA_CUDA_COMPILER "nvcc" CACHE STRING "CUDA compiler")
             SET_PROPERTY(CACHE ALPAKA_CUDA_COMPILER PROPERTY STRINGS "nvcc;clang")
 
@@ -301,7 +291,9 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
 
             IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
-                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-gpu-arch=${ALPAKA_CUDA_ARCH}")
+                FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
+                    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-gpu-arch=sm_${_CUDA_ARCH_ELEM}")
+                ENDFOREACH()
 
                 # This flag silences the warning produced by the Dummy.cpp files:
                 # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
@@ -343,7 +335,11 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
                 ENDIF()
 
-                LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
+                FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
+                    # set flags to create device code for the given architecture
+                    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}
+                        "--generate-code arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM} --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}")
+                ENDFOREACH()
 
                 IF(NOT MSVC)
                     LIST(APPEND CUDA_NVCC_FLAGS "-std=c++11")
