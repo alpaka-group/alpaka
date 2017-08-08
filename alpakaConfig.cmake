@@ -295,6 +295,8 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-gpu-arch=sm_${_CUDA_ARCH_ELEM}")
                 ENDFOREACH()
 
+                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-path=${CUDA_TOOLKIT_ROOT_DIR}")
+
                 # This flag silences the warning produced by the Dummy.cpp files:
                 # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
                 # This seems to be a false positive as all flags are 'unused' for an empty file.
