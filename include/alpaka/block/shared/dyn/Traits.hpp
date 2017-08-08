@@ -66,6 +66,7 @@ namespace alpaka
                 //! \tparam TBlockSharedMemDyn The block shared dynamic memory implementation type.
                 //! \param blockSharedMemDyn The block shared dynamic memory implementation.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
                     typename TBlockSharedMemDyn>

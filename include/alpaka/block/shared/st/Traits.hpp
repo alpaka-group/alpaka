@@ -77,6 +77,7 @@ namespace alpaka
                 //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
                 //! \param blockSharedMemSt The block shared allocator implementation.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
                     std::size_t TuniqueId,
