@@ -323,6 +323,9 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDIF()
 
             ELSE()
+                # Clean up the flags. Else, multiple find calls would result in duplicate flags. Furthermore, other modules may have set different settings.
+                SET(CUDA_NVCC_FLAGS)
+
                 IF(${ALPAKA_DEBUG} GREATER 1)
                     SET(CUDA_VERBOSE_BUILD ON)
                 ENDIF()
