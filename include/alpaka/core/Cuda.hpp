@@ -119,9 +119,16 @@ namespace alpaka
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wmissing-braces"
 #endif
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#endif
                     std::array<cudaError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{std::forward<TErrors>(ignoredErrorCodes)...};
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
+#endif
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
 #endif
                     // If the error code is not one of the ignored ones.
                     if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
