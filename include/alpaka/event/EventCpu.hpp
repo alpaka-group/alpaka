@@ -63,7 +63,8 @@ namespace alpaka
                             m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev),
                             m_Mutex(),
-                            m_canceledEnqueueCount(0),
+                            m_enqueueCount(0u),
+                            m_canceledEnqueueCount(0u),
                             m_bIsReady(true),
                             m_bIsWaitedFor(false)
                     {}
@@ -103,6 +104,7 @@ namespace alpaka
                     std::mutex mutable m_Mutex;                             //!< The mutex used to synchronize access to the event.
 
                     std::condition_variable mutable m_ConditionVariable;    //!< The condition signaling the event completion.
+                    std::size_t m_enqueueCount;                             //!< The number of times this event has been enqueued.
                     std::size_t m_canceledEnqueueCount;                     //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
                     bool m_bIsReady;                                        //!< If the event is not waiting within a stream (not enqueued or already completed).
 
@@ -294,6 +296,9 @@ namespace alpaka
                         spEventCpuImpl->m_bIsReady = false;
                     }
 
+                    // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
+                    ++spEventCpuImpl->m_enqueueCount;
+
                     // We can not unlock the mutex here, because the order of events enqueued has to be identical to the call order.
                     // Unlocking here would allow a later enqueue call to complete before this event is enqueued.
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
@@ -392,6 +397,9 @@ namespace alpaka
                             spEventCpuImpl->m_bIsReady = false;
                         }
 
+                        // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
+                        ++spEventCpuImpl->m_enqueueCount;
+
                         // NOTE: Difference to async version: directly reset the event flag instead of enqueuing.
 
                         // Nothing to do if it has been re-enqueued to a later position in any queue.
@@ -434,6 +442,25 @@ namespace alpaka
     {
         namespace traits
         {
+            namespace detail
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto currentThreadWaitForEventNoLock(
+                    std::shared_ptr<event::cpu::detail::EventCpuImpl> const & spEventCpuImpl, std::unique_lock<std::mutex> & lk)
+                -> void
+                {
+                    if(!spEventCpuImpl->m_bIsReady)
+                    {
+                        spEventCpuImpl->m_bIsWaitedFor = true;
+                        spEventCpuImpl->m_ConditionVariable.wait(
+                            lk,
+                            [spEventCpuImpl]{return spEventCpuImpl->m_bIsReady;});
+                    }
+                }
+            }
+
             //#############################################################################
             //! The CPU device event thread wait trait specialization.
             //!
@@ -475,13 +502,7 @@ namespace alpaka
                 {
                     std::unique_lock<std::mutex> lk(spEventCpuImpl->m_Mutex);
 
-                    if(!spEventCpuImpl->m_bIsReady)
-                    {
-                        spEventCpuImpl->m_bIsWaitedFor = true;
-                        spEventCpuImpl->m_ConditionVariable.wait(
-                            lk,
-                            [spEventCpuImpl]{return spEventCpuImpl->m_bIsReady;});
-                    }
+                    detail::currentThreadWaitForEventNoLock(spEventCpuImpl, lk);
                 }
             };
             //#############################################################################
@@ -509,16 +530,25 @@ namespace alpaka
                     auto spEventCpuImpl(event.m_spEventCpuImpl);
 
                     std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
+
                     if(!spEventCpuImpl->m_bIsReady)
                     {
                         spEventCpuImpl->m_bIsWaitedFor = true;
+
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+                        auto const enqueueCount = spEventCpuImpl->m_enqueueCount;
+
                         // Enqueue a task that waits for the given event.
                         spStreamImpl->m_workerThread.enqueueTask(
-                            [spEventCpuImpl]()
+                            [spEventCpuImpl, enqueueCount]()
                             {
-                                wait::wait(spEventCpuImpl);
+                                std::unique_lock<std::mutex> lk2(spEventCpuImpl->m_Mutex);
+
+                                if(enqueueCount == spEventCpuImpl->m_enqueueCount)
+                                {
+                                    detail::currentThreadWaitForEventNoLock(spEventCpuImpl, lk2);
+                                }
                             });
 #endif
                     }
