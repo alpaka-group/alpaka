@@ -41,97 +41,50 @@
     #pragma clang diagnostic pop
 #endif
 
-#include <future>
-#include <thread>
-
-BOOST_AUTO_TEST_SUITE(stream)
+BOOST_AUTO_TEST_SUITE(event)
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamCallbackIsWorking,
+    eventTestShouldInitiallyBeTrue,
     TDevStream,
     alpaka::test::stream::TestStreams)
 {
-// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
     using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
     Fixture f;
 
-    std::promise<bool> promise;
+    alpaka::event::Event< typename Fixture::Stream > event(f.m_dev);
 
-    alpaka::stream::enqueue(
-        f.m_stream,
-        [&](){
-            promise.set_value(true);
-        }
-    );
-
-    BOOST_REQUIRE_EQUAL(true, promise.get_future().get());
-#endif
+    BOOST_REQUIRE_EQUAL(
+        true,
+        alpaka::event::test(event));
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamIsInitiallyEmpty,
+    eventTestShouldBeTrueAfterEventProcessed,
     TDevStream,
     alpaka::test::stream::TestStreams)
 {
     using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
     Fixture f;
 
-    BOOST_REQUIRE_EQUAL(true, alpaka::stream::empty(f.m_stream));
-}
+    alpaka::event::Event< typename Fixture::Stream > event(f.m_dev);
 
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamShouldBeEmptyAfterProcessingFinished,
-    TDevStream,
-    alpaka::test::stream::TestStreams)
-{
-    using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
-    Fixture f;
+    alpaka::stream::enqueue(f.m_stream, event);
 
-    bool CallbackFinished = false;
-
-    alpaka::stream::enqueue(f.m_stream, [&CallbackFinished]() noexcept {CallbackFinished = true;});
-
-    // A synchronous stream will always stay empty because the task has been executed immediately.
+    // A synchronous stream will immediately process the event so no need to wait for it.
     if(!alpaka::test::stream::IsSyncStream<typename Fixture::Stream>::value)
     {
-        // Wait that the stream finally gets empty again.
-        while(!alpaka::stream::empty(f.m_stream))
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        alpaka::wait::wait(f.m_stream);
     }
 
-    BOOST_REQUIRE_EQUAL(true, alpaka::stream::empty(f.m_stream));
-    BOOST_REQUIRE_EQUAL(true, CallbackFinished);
-}
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamWaitShouldWork,
-    TDevStream,
-    alpaka::test::stream::TestStreams)
-{
-    using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
-    Fixture f;
-
-    // TODO: better add some long running (~0.5s) task here
-
-    bool CallbackFinished = false;
-    alpaka::stream::enqueue(f.m_stream, [&CallbackFinished]() noexcept {CallbackFinished = true;});
-
-    alpaka::wait::wait(f.m_stream);
-    BOOST_REQUIRE_EQUAL(true, CallbackFinished);
+    BOOST_REQUIRE_EQUAL(
+        true,
+        alpaka::event::test(event));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -122,7 +122,7 @@ The following tables list the functions available in the [CUDA Runtime API](http
 
 |CUDA|alpaka|
 |---|---|
-|cudaEventCreate|alpaka::event::Event< TAcc > event(device);|
+|cudaEventCreate|alpaka::event::Event< TStream > event(dev);|
 |cudaEventCreateWithFlags|-|
 |cudaEventDestroy|n/a (Destructor)|
 |cudaEventElapsedTime|-|
