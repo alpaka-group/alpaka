@@ -60,7 +60,6 @@ public:
         TAcc const & acc) const
     -> void
     {
-        using Dim = alpaka::dim::Dim<TAcc>;
         using Size = alpaka::size::Size<TAcc>;
 
         // Get the index of the current thread within the block and the block extent and map them to 1D.
