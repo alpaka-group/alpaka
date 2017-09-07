@@ -149,7 +149,6 @@ namespace alpaka
                 typename TStream>
             using IsSyncStream = traits::IsSyncStream<TStream>;
 
-
             //#############################################################################
             //! A std::tuple holding tuples of devices and corresponding stream types.
             //#############################################################################
@@ -162,6 +161,15 @@ namespace alpaka
                     std::tuple<alpaka::dev::DevCudaRt, alpaka::stream::StreamCudaRtSync>,
                     std::tuple<alpaka::dev::DevCudaRt, alpaka::stream::StreamCudaRtAsync>
 #endif
+                >;
+
+            //#############################################################################
+            //! A std::tuple holding tuples of devices and corresponding stream types.
+            //#############################################################################
+            using TestStreamsCpu =
+                std::tuple<
+                    std::tuple<alpaka::dev::DevCpu, alpaka::stream::StreamCpuSync>,
+                    std::tuple<alpaka::dev::DevCpu, alpaka::stream::StreamCpuAsync>
                 >;
         }
     }
