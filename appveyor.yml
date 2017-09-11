@@ -51,13 +51,13 @@ environment:
     matrix:
         - ALPAKA_DEBUG: 2
           OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: boost-1.64.0
+          ALPAKA_BOOST_BRANCH: boost-1.65.1
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: boost-1.64.0
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 3
-          ALPAKA_BOOST_BRANCH: boost-1.63.0
+          ALPAKA_BOOST_BRANCH: boost-1.65.1
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
         - OMP_NUM_THREADS: 1
           ALPAKA_BOOST_BRANCH: boost-1.62.0
