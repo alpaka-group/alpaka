@@ -51,9 +51,10 @@ namespace alpaka
                 typename TSfinae>
             friend struct atomic::traits::AtomicOp;
 
-            static constexpr size_t nextPowerOf2(size_t const value, size_t const bit = 0)
+            static constexpr size_t nextPowerOf2(size_t const value, size_t const bit = 0u)
             {
-                return value <= (1u << bit) ? (1u << bit) : nextPowerOf2(value, bit + 1u);
+                return value <= (static_cast<size_t>(1u) << bit) ?
+                    (static_cast<size_t>(1u) << bit) : nextPowerOf2(value, bit + 1u);
             }
 
             //-----------------------------------------------------------------------------
@@ -71,13 +72,6 @@ namespace alpaka
                 // division removes the stride between indices
                 return (ptrAddr / typeSizePowerOf2);
             }
-
-            //-----------------------------------------------------------------------------
-            //! get the size of the hash table
-            //
-            // The size is at least 1 or THashTableSize rounded up to the next power of 2
-            //-----------------------------------------------------------------------------
-            static constexpr size_t hashTableSize = THashTableSize == 0 ? 1u : nextPowerOf2(THashTableSize);
 
             //-----------------------------------------------------------------------------
             //! Default constructor.
@@ -107,10 +101,17 @@ namespace alpaka
             template<typename TPtr>
             std::mutex & getMutex(TPtr const * const ptr) const
             {
+                //-----------------------------------------------------------------------------
+                //! get the size of the hash table
+                //
+                // The size is at least 1 or THashTableSize rounded up to the next power of 2
+                //-----------------------------------------------------------------------------
+                constexpr size_t hashTableSize = THashTableSize == 0u ? 1u : nextPowerOf2(THashTableSize);
+
                 size_t const hashedAddr = hash(ptr) & (hashTableSize - 1u);
                 static std::array<
                     std::mutex,
-                    hashTableSize> m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
+                    hashTableSize> m_mtxAtomic; //!< The mutex protecting access for an atomic operation.
                 return m_mtxAtomic[hashedAddr];
             }
         };
