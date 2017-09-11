@@ -80,9 +80,9 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtRefThreadIdMap<TDim, TSize>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock, // grid atomics
-                atomic::AtomicStlLock, // block atomics
-                atomic::AtomicStlLock  // thread atomics
+                atomic::AtomicStlLock<16>, // grid atomics
+                atomic::AtomicStlLock<16>, // block atomics
+                atomic::AtomicStlLock<16>  // thread atomics
             >,
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
@@ -113,9 +113,9 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_threadToIndexMap),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock, // atomics between grids
-                        atomic::AtomicStlLock, // atomics between blocks
-                        atomic::AtomicStlLock  // atomics between threads
+                        atomic::AtomicStlLock<16>, // atomics between grids
+                        atomic::AtomicStlLock<16>, // atomics between blocks
+                        atomic::AtomicStlLock<16>  // atomics between threads
                     >(),
                     math::MathStl(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
