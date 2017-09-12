@@ -44,9 +44,6 @@
 
 BOOST_AUTO_TEST_SUITE(rand_)
 
-// This is not supported by older clang native CUDA compilers.
-#if !BOOST_COMP_CLANG_CUDA || (BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(3,9,0))
-
 //#############################################################################
 //!
 //#############################################################################
@@ -137,6 +134,5 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         fixture(
             kernel));
 }
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()
