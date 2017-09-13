@@ -46,7 +46,7 @@ compiler:
 # CXX                                           : {g++, clang++}
 #   [g++] ALPAKA_GCC_VER                        : {4.9, 5, 6, 7}
 #   [clang++] ALPAKA_CLANG_LIBSTDCPP_VERSION    : {5}
-#   [clang++] ALPAKA_CLANG_VER                  : {3.5.2, 3.6.2, 3.7.1, 3.8.1, 3.9.0, 4.0.0}
+#   [clang++] ALPAKA_CLANG_VER                  : {3.5.2, 3.6.2, 3.7.1, 3.8.1, 3.9.1, 4.0.0, 5.0.0}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # ALPAKA_CI                                     : {ON}
 # ALPAKA_CI_BOOST_BRANCH                        : {boost-1.62.0, boost-1.63.0, boost-1.64.0, boost-1.65.1}
@@ -86,8 +86,8 @@ env:
 
     matrix:
         # Analysis builds
-        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.62.0 ALPAKA_CI_CMAKE_VER=3.9.1 ALPAKA_CI_SANITIZERS=                ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang
-        - ALPAKA_GCC_VER=7   ALPAKA_CLANG_VER=4.0.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.65.1 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=                ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.1 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.62.0 ALPAKA_CI_CMAKE_VER=3.9.1 ALPAKA_CI_SANITIZERS=                ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang
+        - ALPAKA_GCC_VER=7   ALPAKA_CLANG_VER=5.0.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.65.1 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=                ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
 
         # Debug builds
         - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.63.0 ALPAKA_CI_CMAKE_VER=3.8.2 ALPAKA_CI_SANITIZERS=                ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=clang ALPAKA_CUDA_ARCH="20;35" ALPAKA_ACC_GPU_CUDA_ONLY_MODE=ON ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE=OFF
@@ -96,10 +96,10 @@ env:
         - ALPAKA_GCC_VER=6   ALPAKA_CLANG_VER=4.0.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.64.0 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=TSan+UBSan+ESan OMP_NUM_THREADS=4
 
         # Release builds
-        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.64.0 ALPAKA_CI_CMAKE_VER=3.9.1 ALPAKA_CI_SANITIZERS=ASan+UBSan+ESan OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.0 ALPAKA_CUDA_COMPILER=clang
+        - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.9.1 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.64.0 ALPAKA_CI_CMAKE_VER=3.9.1 ALPAKA_CI_SANITIZERS=ASan+UBSan+ESan OMP_NUM_THREADS=4 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.0 ALPAKA_CUDA_COMPILER=clang
         - ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6.2 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.62.0 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=TSan+UBSan+ESan OMP_NUM_THREADS=3 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VER=7.5 ALPAKA_CUDA_COMPILER=nvcc
         - ALPAKA_GCC_VER=7   ALPAKA_CLANG_VER=3.5.2 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.63.0 ALPAKA_CI_CMAKE_VER=3.8.2 ALPAKA_CI_SANITIZERS=ASan+UBSan+ESan OMP_NUM_THREADS=2
-        - ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.9.0 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.65.1 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=                OMP_NUM_THREADS=4
+        - ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=5.0.0 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.65.1 ALPAKA_CI_CMAKE_VER=3.7.2 ALPAKA_CI_SANITIZERS=                OMP_NUM_THREADS=4
 
 branches:
     except:
@@ -158,7 +158,12 @@ before_install:
           ALPAKA_CLANG_CACHE_DIR=${HOME}/cache/llvm/llvm-${ALPAKA_CLANG_VER}
           && if [ -z "$(ls -A ${ALPAKA_CLANG_CACHE_DIR})" ]
           ;then
-              ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CLANG_VER}-x86_64-linux-gnu-ubuntu-14.04.tar.xz
+              if (( ALPAKA_CLANG_VER_MAJOR >= 5 ))
+              ;then
+                  ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CLANG_VER}-linux-x86_64-ubuntu14.04.tar.xz
+              ;else
+                  ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CLANG_VER}-x86_64-linux-gnu-ubuntu-14.04.tar.xz
+              ;fi
               && travis_retry wget --no-verbose http://llvm.org/releases/${ALPAKA_CLANG_VER}/${ALPAKA_CLANG_PKG_FILE_NAME}
               && mkdir -p ${ALPAKA_CLANG_CACHE_DIR}
               && xzcat ${ALPAKA_CLANG_PKG_FILE_NAME} | tar -xf - --strip 1 -C ${ALPAKA_CLANG_CACHE_DIR}
@@ -352,7 +357,8 @@ before_install:
       ;fi
 
     # clang versions lower than 3.7 do not support OpenMP 2.0.
-    # clang versions lower than 5.0 do not support OpenMP 4.0.
+    # clang versions lower than 3.9 do not support OpenMP 4.0
+    # OpenMP 4.0 curently leads to test errors and is therefore disabled.
     - if [ "${CXX}" == "clang++" ]
       ;then
           if (( (( ${ALPAKA_CLANG_VER_MAJOR} < 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} < 7 )) ) ))
@@ -368,14 +374,8 @@ before_install:
                   && echo ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} because the clang version does not support it!
               ;fi
           ;fi
-          && if (( (( ${ALPAKA_CLANG_VER_MAJOR} < 5 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 5 )) && (( ${ALPAKA_CLANG_VER_MINOR} < 0 )) ) ))
-          ;then
-              if [ "${ALPAKA_ACC_CPU_BT_OMP4_ENABLE}" == "ON" ]
-              ;then
-                  export ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF
-                  && echo ALPAKA_ACC_CPU_BT_OMP4_ENABLE=${ALPAKA_ACC_CPU_BT_OMP4_ENABLE} because the clang version does not support it!
-              ;fi
-          ;fi
+          && export ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF
+          && echo ALPAKA_ACC_CPU_BT_OMP4_ENABLE=${ALPAKA_ACC_CPU_BT_OMP4_ENABLE} because the clang version does not support it!
       ;fi
 
     # Set the correct CUDA downloads
