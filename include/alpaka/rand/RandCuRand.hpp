@@ -29,9 +29,6 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-// This is not supported by older clang native CUDA compilers.
-#if !BOOST_COMP_CLANG_CUDA || (BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(3,9,0))
-
 #include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
 
 #include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
@@ -356,5 +353,4 @@ namespace alpaka
     }
 }
 
-#endif
 #endif
