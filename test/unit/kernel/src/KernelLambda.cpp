@@ -139,6 +139,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             // Do something useless on the accelerator.
             alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
 
+            (void)arg;
             BOOST_VERIFY(42u == arg);
         };
 

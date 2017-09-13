@@ -141,7 +141,7 @@ namespace alpaka
             template<
                 typename TExtent,
                 size_t... TIndices>
-            ALPAKA_FN_HOST_ACC static auto getProductOfExtentInternal(
+            ALPAKA_FN_HOST_ACC auto getProductOfExtentInternal(
                 TExtent const & extent,
 #if BOOST_ARCH_CUDA_DEVICE
                 alpaka::meta::IndexSequence<TIndices...> const &)
