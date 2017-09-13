@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2014-2016 Benjamin Worpitz
+# Copyright 2014-2017 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -24,17 +24,14 @@
 
 #-------------------------------------------------------------------------------
 # e: exit as soon as one command returns a non-zero exit code.
-# v: all lines are printed before executing them.
-set -ev
+set -e
 
 #-------------------------------------------------------------------------------
 # Build and execute all tests.
 oldPath=${PWD}
-cd ${1}
-mkdir build/
-cd build/
-mkdir make/
-cd make/
+cd "${1}"
+mkdir --parents build/make/
+cd build/make/
 cmake -G "Unix Makefiles" \
     -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}" -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}" -DCMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS}" \
     -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF \

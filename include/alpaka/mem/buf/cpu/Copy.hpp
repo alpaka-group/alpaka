@@ -107,8 +107,8 @@ namespace alpaka
                         {
                             assert((vec::cast<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
                             assert((vec::cast<SrcSize>(m_extent) <= m_srcExtent).foldrAll(std::logical_or<bool>()));
-                            assert(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
-                            assert(m_extentWidthBytes <= m_srcPitchBytes[TDim::value - 1u]);
+                            assert(static_cast<DstSize>(m_extentWidthBytes) <= m_dstPitchBytes[TDim::value - 1u]);
+                            assert(static_cast<SrcSize>(m_extentWidthBytes) <= m_srcPitchBytes[TDim::value - 1u]);
                         }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
