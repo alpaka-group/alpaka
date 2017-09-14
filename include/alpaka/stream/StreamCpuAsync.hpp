@@ -119,9 +119,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST StreamCpuAsync(
                 dev::DevCpu const & dev) :
-                    m_spAsyncStreamCpu(std::make_shared<cpu::detail::StreamCpuAsyncImpl>(dev))
+                    m_spStreamImpl(std::make_shared<cpu::detail::StreamCpuAsyncImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterAsyncStream(m_spAsyncStreamCpu);
+                dev.m_spDevCpuImpl->RegisterAsyncStream(m_spStreamImpl);
             }
             //-----------------------------------------------------------------------------
             //! Copy constructor.
@@ -145,7 +145,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCpuAsync const & rhs) const
             -> bool
             {
-                return (m_spAsyncStreamCpu == rhs.m_spAsyncStreamCpu);
+                return (m_spStreamImpl == rhs.m_spStreamImpl);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
@@ -161,7 +161,7 @@ namespace alpaka
             ALPAKA_FN_HOST ~StreamCpuAsync() = default;
 
         public:
-            std::shared_ptr<cpu::detail::StreamCpuAsyncImpl> m_spAsyncStreamCpu;
+            std::shared_ptr<cpu::detail::StreamCpuAsyncImpl> m_spStreamImpl;
         };
     }
 
@@ -192,7 +192,7 @@ namespace alpaka
                     stream::StreamCpuAsync const & stream)
                 -> dev::DevCpu
                 {
-                    return stream.m_spAsyncStreamCpu->m_dev;
+                    return stream.m_spStreamImpl->m_dev;
                 }
             };
         }
@@ -241,7 +241,7 @@ namespace alpaka
                 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
-                    stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                    stream.m_spStreamImpl->m_workerThread.enqueueTask(
                         task);
 #endif
                 }
@@ -260,7 +260,7 @@ namespace alpaka
                     stream::StreamCpuAsync const & stream)
                 -> bool
                 {
-                    return stream.m_spAsyncStreamCpu->m_workerThread.isQueueEmpty();
+                    return stream.m_spStreamImpl->m_workerThread.isQueueEmpty();
                 }
             };
         }

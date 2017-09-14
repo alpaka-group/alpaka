@@ -315,7 +315,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    stream::enqueue(stream.m_spAsyncStreamCpu, event);
+                    stream::enqueue(stream.m_spStreamImpl, event);
                 }
             };
             //#############################################################################
@@ -410,7 +410,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    stream::enqueue(stream.m_spSyncStreamCpu, event);
+                    stream::enqueue(stream.m_spStreamImpl, event);
                 }
             };
         }
@@ -547,7 +547,7 @@ namespace alpaka
                     event::EventCpu const & event)
                 -> void
                 {
-                    wait::wait(stream.m_spAsyncStreamCpu, event);
+                    wait::wait(stream.m_spStreamImpl, event);
                 }
             };
             //#############################################################################
@@ -591,7 +591,7 @@ namespace alpaka
                     event::EventCpu const & event)
                 -> void
                 {
-                    wait::wait(stream.m_spSyncStreamCpu, event);
+                    wait::wait(stream.m_spStreamImpl, event);
                 }
             };
             //#############################################################################

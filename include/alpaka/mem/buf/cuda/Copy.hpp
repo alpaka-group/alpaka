@@ -780,7 +780,7 @@ namespace alpaka
                                 srcNativePtr,
                                 static_cast<std::size_t>(extentWidthBytes),
                                 cudaMemCpyKind,
-                                stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                                stream.m_spStreamImpl->m_CudaStream));
                     }
                     else
                     {
@@ -792,7 +792,7 @@ namespace alpaka
                                 srcNativePtr,
                                 iSrcDev,
                                 static_cast<std::size_t>(extentWidthBytes),
-                                stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                                stream.m_spStreamImpl->m_CudaStream));
                     }
                 }
             };
@@ -911,7 +911,7 @@ namespace alpaka
                                 static_cast<std::size_t>(extentWidthBytes),
                                 static_cast<std::size_t>(extentHeight),
                                 cudaMemCpyKind,
-                                stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                                stream.m_spStreamImpl->m_CudaStream));
                     }
                     else
                     {
@@ -924,7 +924,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &cudaMemCpy3DPeerParms,
-                                stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                                stream.m_spStreamImpl->m_CudaStream));
                     }
                 }
             };
@@ -1038,7 +1038,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DAsync(
                                 &cudaMemCpy3DParms,
-                                stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                                stream.m_spStreamImpl->m_CudaStream));
                     }
                     else
                     {
@@ -1050,7 +1050,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &cudaMemCpy3DPeerParms,
-                                stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                                stream.m_spStreamImpl->m_CudaStream));
                     }
                 }
             };

@@ -97,7 +97,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST StreamCpuSync(
                 dev::DevCpu const & dev) :
-                    m_spSyncStreamCpu(std::make_shared<cpu::detail::StreamCpuSyncImpl>(dev))
+                    m_spStreamImpl(std::make_shared<cpu::detail::StreamCpuSyncImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
@@ -121,7 +121,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCpuSync const & rhs) const
             -> bool
             {
-                return (m_spSyncStreamCpu == rhs.m_spSyncStreamCpu);
+                return (m_spStreamImpl == rhs.m_spStreamImpl);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
@@ -137,7 +137,7 @@ namespace alpaka
             ALPAKA_FN_HOST ~StreamCpuSync() = default;
 
         public:
-            std::shared_ptr<cpu::detail::StreamCpuSyncImpl> m_spSyncStreamCpu;
+            std::shared_ptr<cpu::detail::StreamCpuSyncImpl> m_spStreamImpl;
         };
     }
 
@@ -168,7 +168,7 @@ namespace alpaka
                     stream::StreamCpuSync const & stream)
                 -> dev::DevCpu
                 {
-                    return stream.m_spSyncStreamCpu->m_dev;
+                    return stream.m_spStreamImpl->m_dev;
                 }
             };
         }

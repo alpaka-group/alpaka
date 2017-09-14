@@ -191,7 +191,7 @@ namespace alpaka
                             dstNativePtr,
                             static_cast<int>(byte),
                             static_cast<size_t>(extentWidthBytes),
-                            stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                            stream.m_spStreamImpl->m_CudaStream));
                 }
             };
             //#############################################################################
@@ -306,7 +306,7 @@ namespace alpaka
                             static_cast<int>(byte),
                             static_cast<size_t>(extentWidthBytes),
                             static_cast<size_t>(extentHeight),
-                            stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                            stream.m_spStreamImpl->m_CudaStream));
                 }
             };
             //#############################################################################
@@ -443,7 +443,7 @@ namespace alpaka
                             cudaPitchedPtrVal,
                             static_cast<int>(byte),
                             cudaExtentVal,
-                            stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                            stream.m_spStreamImpl->m_CudaStream));
                 }
             };
             //#############################################################################

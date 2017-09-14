@@ -258,7 +258,7 @@ namespace alpaka
 
                     ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
                         event.m_spEventImpl->m_CudaEvent,
-                        stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                        stream.m_spStreamImpl->m_CudaStream));
                 }
             };
             //#############################################################################
@@ -281,7 +281,7 @@ namespace alpaka
 
                     ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
                         event.m_spEventImpl->m_CudaEvent,
-                        stream.m_spStreamCudaRtSyncImpl->m_CudaStream));
+                        stream.m_spStreamImpl->m_CudaStream));
                 }
             };
         }
@@ -333,7 +333,7 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
-                        stream.m_spStreamCudaRtAsyncImpl->m_CudaStream,
+                        stream.m_spStreamImpl->m_CudaStream,
                         event.m_spEventImpl->m_CudaEvent,
                         0));
                 }
@@ -357,7 +357,7 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
-                        stream.m_spStreamCudaRtSyncImpl->m_CudaStream,
+                        stream.m_spStreamImpl->m_CudaStream,
                         event.m_spEventImpl->m_CudaEvent,
                         0));
                 }
