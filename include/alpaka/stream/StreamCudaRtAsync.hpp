@@ -166,7 +166,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCudaRtAsync const & rhs) const
             -> bool
             {
-                return (m_spStreamCudaRtAsyncImpl->m_CudaStream == rhs.m_spStreamCudaRtAsyncImpl->m_CudaStream);
+                return (m_spStreamCudaRtAsyncImpl == rhs.m_spStreamCudaRtAsyncImpl);
             }
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
