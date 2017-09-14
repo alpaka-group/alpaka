@@ -30,8 +30,6 @@
 #include <alpaka/wait/Traits.hpp>           // CurrentThreadWaitFor
 #include <alpaka/dev/Traits.hpp>            // GetDev
 
-#include <boost/uuid/uuid.hpp>              // boost::uuids::uuid
-#include <boost/uuid/uuid_generators.hpp>   // boost::uuids::random_generator
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
 #include <cassert>                          // assert
@@ -60,7 +58,6 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST EventCpuImpl(
                         dev::DevCpu const & dev) :
-                            m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev),
                             m_mutex(),
                             m_enqueueCount(0u),
@@ -98,7 +95,6 @@ namespace alpaka
                     = default;
 #endif
                 public:
-                    boost::uuids::uuid const m_uuid;                        //!< The unique ID.
                     dev::DevCpu const m_dev;                                //!< The device this event is bound to.
 
                     std::mutex mutable m_mutex;                             //!< The mutex used to synchronize access to the event.
@@ -148,7 +144,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(EventCpu const & rhs) const
             -> bool
             {
-                return (m_spEventImpl->m_uuid == rhs.m_spEventImpl->m_uuid);
+                return (m_spEventImpl == rhs.m_spEventImpl);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.

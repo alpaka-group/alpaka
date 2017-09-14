@@ -30,9 +30,6 @@
 
 #include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
 
-#include <boost/uuid/uuid.hpp>                  // boost::uuids::uuid
-#include <boost/uuid/uuid_generators.hpp>       // boost::uuids::random_generator
-
 #include <type_traits>                          // std::is_base
 #include <thread>                               // std::thread
 #include <mutex>                                // std::mutex
@@ -77,7 +74,6 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST StreamCpuAsyncImpl(
                         dev::DevCpu const & dev) :
-                            m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev),
                             m_workerThread(1u)
                     {}
@@ -105,7 +101,6 @@ namespace alpaka
                         m_dev.m_spDevCpuImpl->UnregisterAsyncStream(this);
                     }
                 public:
-                    boost::uuids::uuid const m_uuid;    //!< The unique ID.
                     dev::DevCpu const m_dev;            //!< The device this stream is bound to.
 
                     ThreadPool m_workerThread;
@@ -150,7 +145,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCpuAsync const & rhs) const
             -> bool
             {
-                return (m_spAsyncStreamCpu->m_uuid == rhs.m_spAsyncStreamCpu->m_uuid);
+                return (m_spAsyncStreamCpu == rhs.m_spAsyncStreamCpu);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.

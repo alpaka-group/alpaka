@@ -29,8 +29,6 @@
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
-#include <boost/uuid/uuid.hpp>                  // boost::uuids::uuid
-#include <boost/uuid/uuid_generators.hpp>       // boost::uuids::random_generator
 
 namespace alpaka
 {
@@ -59,7 +57,6 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST StreamCpuSyncImpl(
                         dev::DevCpu const & dev) :
-                            m_uuid(boost::uuids::random_generator()()),
                             m_dev(dev)
                     {}
                     //-----------------------------------------------------------------------------
@@ -84,7 +81,6 @@ namespace alpaka
                     ALPAKA_FN_HOST ~StreamCpuSyncImpl() = default;
 
                 public:
-                    boost::uuids::uuid const m_uuid;    //!< The unique ID.
                     dev::DevCpu const m_dev;            //!< The device this stream is bound to.
                 };
             }
@@ -125,7 +121,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCpuSync const & rhs) const
             -> bool
             {
-                return (m_spSyncStreamCpu->m_uuid == rhs.m_spSyncStreamCpu->m_uuid);
+                return (m_spSyncStreamCpu == rhs.m_spSyncStreamCpu);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
