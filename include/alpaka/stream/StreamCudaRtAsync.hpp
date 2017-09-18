@@ -142,7 +142,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST StreamCudaRtAsync(
                 dev::DevCudaRt const & dev) :
-                m_spStreamCudaRtAsyncImpl(std::make_shared<cuda::detail::StreamCudaRtAsyncImpl>(dev))
+                m_spStreamImpl(std::make_shared<cuda::detail::StreamCudaRtAsyncImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
@@ -166,7 +166,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCudaRtAsync const & rhs) const
             -> bool
             {
-                return (m_spStreamCudaRtAsyncImpl->m_CudaStream == rhs.m_spStreamCudaRtAsyncImpl->m_CudaStream);
+                return (m_spStreamImpl == rhs.m_spStreamImpl);
             }
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
@@ -182,7 +182,7 @@ namespace alpaka
             ALPAKA_FN_HOST ~StreamCudaRtAsync() = default;
 
         public:
-            std::shared_ptr<cuda::detail::StreamCudaRtAsyncImpl> m_spStreamCudaRtAsyncImpl;
+            std::shared_ptr<cuda::detail::StreamCudaRtAsyncImpl> m_spStreamImpl;
         };
     }
 
@@ -213,7 +213,7 @@ namespace alpaka
                     stream::StreamCudaRtAsync const & stream)
                 -> dev::DevCudaRt
                 {
-                    return stream.m_spStreamCudaRtAsyncImpl->m_dev;
+                    return stream.m_spStreamImpl->m_dev;
                 }
             };
         }
@@ -282,7 +282,7 @@ namespace alpaka
                     auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
 
                     ALPAKA_CUDA_RT_CHECK(cudaStreamAddCallback(
-                        stream.m_spStreamCudaRtAsyncImpl->m_CudaStream,
+                        stream.m_spStreamImpl->m_CudaStream,
                         cudaRtCallback,
                         pCallbackSynchronizationData.get(),
                         0u));
@@ -329,7 +329,7 @@ namespace alpaka
                     cudaError_t ret = cudaSuccess;
                     ALPAKA_CUDA_RT_CHECK_IGNORE(
                         ret = cudaStreamQuery(
-                            stream.m_spStreamCudaRtAsyncImpl->m_CudaStream),
+                            stream.m_spStreamImpl->m_CudaStream),
                         cudaErrorNotReady);
                     return (ret == cudaSuccess);
                 }
@@ -361,7 +361,7 @@ namespace alpaka
                     // Sync is allowed even for streams on non current device.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaStreamSynchronize(
-                            stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                            stream.m_spStreamImpl->m_CudaStream));
                 }
             };
         }
