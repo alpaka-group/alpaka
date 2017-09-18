@@ -53,9 +53,9 @@ environment:
           OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: boost-1.65.1
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-        - OMP_NUM_THREADS: 4
-          ALPAKA_BOOST_BRANCH: boost-1.64.0
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+        #- OMP_NUM_THREADS: 4
+        #  ALPAKA_BOOST_BRANCH: boost-1.64.0
+        #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 3
           ALPAKA_BOOST_BRANCH: boost-1.65.1
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
