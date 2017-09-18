@@ -39,14 +39,6 @@ class SharedMemKernel
 {
 public:
     //-----------------------------------------------------------------------------
-    //! Constructor.
-    //-----------------------------------------------------------------------------
-    SharedMemKernel(
-        std::int32_t const mult = 2) :
-        m_mult(mult)
-    {}
-
-    //-----------------------------------------------------------------------------
     //! The kernel.
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
@@ -54,8 +46,7 @@ public:
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
-        std::int32_t * const puiBlockRetVals,
-        std::int32_t const mult2) const
+        std::int32_t * const puiBlockRetVals) const
     -> void
     {
         using Size = alpaka::size::Size<TAcc>;
@@ -114,12 +105,9 @@ public:
             // Calculate linearized block id.
             Size const gridBlockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
-            puiBlockRetVals[gridBlockIdx] = pBlockShared[0] * m_mult * mult2;
+            puiBlockRetVals[gridBlockIdx] = pBlockShared[0];
         }
     }
-
-public:
-    std::int32_t const m_mult;
 };
 
 namespace alpaka
@@ -163,16 +151,15 @@ namespace alpaka
 //! Profiles the example kernel and checks the result.
 //#############################################################################
 template<
-    typename TnumUselessWork>
+    typename TnumUselessWork,
+    typename TVal>
 struct SharedMemTester
 {
     template<
         typename TAcc,
-        typename TSize,
-        typename TVal>
+        typename TSize>
     auto operator()(
-        TSize const numElements,
-        TVal const mult2)
+        TSize const numElements)
     -> void
     {
         std::cout << std::endl;
@@ -183,7 +170,7 @@ struct SharedMemTester
         using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
 
         // Create the kernel function object.
-        SharedMemKernel<TnumUselessWork> kernel(42);
+        SharedMemKernel<TnumUselessWork> kernel;
 
         // Select a device to execute on.
         auto const devAcc(
@@ -226,8 +213,7 @@ struct SharedMemTester
         auto const exec(alpaka::exec::create<TAcc>(
             workDiv,
             kernel,
-            alpaka::mem::view::getPtrNative(blockRetValsAcc),
-            mult2));
+            alpaka::mem::view::getPtrNative(blockRetValsAcc)));
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
@@ -245,9 +231,7 @@ struct SharedMemTester
 
         // Assert that the results are correct.
         TVal const correctResult(
-            static_cast<TVal>(blockThreadCount*blockThreadCount)
-            * kernel.m_mult
-            * mult2);
+            static_cast<TVal>(blockThreadCount*blockThreadCount));
 
         bool resultCorrect(true);
         for(TSize i(0); i<gridBlocksCount; ++i)
@@ -294,16 +278,14 @@ auto main()
         std::cout << std::endl;
 
         using TnumUselessWork = std::integral_constant<std::int32_t, 100>;
-        std::int32_t const mult2(5);
 
-        SharedMemTester<TnumUselessWork> sharedMemTester;
+        SharedMemTester<TnumUselessWork, std::int32_t> sharedMemTester;
 
         // Execute the kernel on all enabled accelerators.
         alpaka::meta::forEachType<
             alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, std::int32_t>>(
                 sharedMemTester,
-                512,
-                mult2);
+                512);
 
         return sharedMemTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
     }
