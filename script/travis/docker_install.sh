@@ -81,8 +81,6 @@ then
   docker rm "${ALPAKA_DOCKER_CONTAINER_NAME}"
   docker rmi "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}"
 
-  find / -printf '%s %p\n'|sort -nr|head
-
   docker save "${ALPAKA_CI_DOCKER_IMAGE_NAME}" | gzip > "${ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH}"
 
   docker images
