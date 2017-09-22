@@ -22,29 +22,27 @@
 
 #-------------------------------------------------------------------------------
 # e: exit as soon as one command returns a non-zero exit code.
-set -e
+#set -e
 
-export ALPAKA_BOOST_ROOT_DIR
-export ALPAKA_BOOST_LIB_DIR
-export ALPAKA_BOOST_COMPILER
-
-ALPAKA_BOOST_ROOT_DIR=${HOME}/boost
-echo "ALPAKA_BOOST_ROOT_DIR=${ALPAKA_BOOST_ROOT_DIR}"
+: ${ALPAKA_CI_BOOST_ROOT_DIR?"ALPAKA_CI_BOOST_ROOT_DIR must be specified"}
+: ${ALPAKA_CI_BOOST_LIB_DIR?"ALPAKA_CI_BOOST_LIB_DIR must be specified"}
+: ${CXX?"CXX must be specified"}
+: ${CC?"CC must be specified"}
 
 # --depth 1 does not necessarily always work.
 # There seem to be problems when the super-project references a non-HEAD commit
 # as the submodules are also cloned with --depth 1.
-git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch https://github.com/boostorg/boost.git "${ALPAKA_BOOST_ROOT_DIR}"
+git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch https://github.com/boostorg/boost.git "${ALPAKA_CI_BOOST_ROOT_DIR}"
 
 # Prepare building of boost.
-(cd "${ALPAKA_BOOST_ROOT_DIR}"; sudo ./bootstrap.sh --with-toolset="${CC}")
+(cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; sudo ./bootstrap.sh --with-toolset="${CC}")
+(cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; cat ./bootstrap.log)
+
 # Create file links.
-(cd "${ALPAKA_BOOST_ROOT_DIR}"; sudo ./b2 headers)
+(cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; sudo ./b2 headers)
 
 # Prepare the library destination directory.
-mkdir --parents "${HOME}"/boost_libs/x64
-ALPAKA_BOOST_LIB_DIR=${HOME}/boost_libs/x64/lib
-echo "ALPAKA_BOOST_LIB_DIR=${ALPAKA_BOOST_LIB_DIR}"
+mkdir --parents "${ALPAKA_CI_BOOST_LIB_DIR}"
 
 # Create the boost build command.
 #  --layout=versioned
@@ -56,10 +54,8 @@ ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 variant=debug,release link=
 # boost (especially old versions) produces too much warnings when using clang (newer versions) so that the 4 MiB log is too short.
 if [ "${CXX}" == "clang++" ]
 then
-    ALPAKA_BOOST_COMPILER=-clang${ALPAKA_CLANG_VER_MAJOR}${ALPAKA_CLANG_VER_MINOR}
-    echo "ALPAKA_BOOST_COMPILER=${ALPAKA_BOOST_COMPILER}"
     ALPAKA_BOOST_B2_CXXFLAGS+=" -Wunused-private-field -Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros"
-    if ( (( ALPAKA_CLANG_VER_MAJOR >= 4 )) || ( (( ALPAKA_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CLANG_VER_MINOR >= 6 )) ) )
+    if ( (( ALPAKA_CI_CLANG_VER_MAJOR >= 4 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR >= 6 )) ) )
     then
         ALPAKA_BOOST_B2_CXXFLAGS+=" -Wno-unused-local-typedef"
     fi
@@ -83,10 +79,10 @@ then
     ALPAKA_BOOST_B2+="${ALPAKA_BOOST_B2_CXXFLAGS}"
     ALPAKA_BOOST_B2+='"'
 fi
-ALPAKA_BOOST_B2+=" --stagedir=${HOME}/boost_libs/x64 stage"
+ALPAKA_BOOST_B2+=" --stagedir=${ALPAKA_CI_BOOST_LIB_DIR} stage"
 # Build boost.
 echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
-(cd "${ALPAKA_BOOST_ROOT_DIR}"; eval "${ALPAKA_BOOST_B2}")
+(cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; eval "${ALPAKA_BOOST_B2}")
 
 # Clean the intermediate build files.
 sudo rm -rf bin.v2

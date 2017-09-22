@@ -39,7 +39,8 @@
 #include <exception>                // std::runtime_error
 #include <utility>                  // std::forward
 #include <atomic>                   // std::atomic
-#include <future>                   // std::future
+#include <functional>               // std::bind
+#include <memory>                   // std::shared_ptr
 
 namespace alpaka
 {

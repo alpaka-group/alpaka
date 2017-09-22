@@ -20,11 +20,20 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-source ./script/travis/travis_retry.sh
-
 #-------------------------------------------------------------------------------
 # e: exit as soon as one command returns a non-zero exit code.
 set -e
 
-# Install TBB
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
+#run tests
+ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI=${ALPAKA_CI}")
+ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
+ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_ACC_GPU_CUDA_ONLY_MODE=${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}")
+ALPAKA_DOCKER_ENV_LIST+=("--env" "CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
+
+# If we have created the image in the current run, we do not have to load it again, because it is already available.
+if [ "${ALPAKA_DOCKER_BUILD_REQUIRED}" -eq 0 ]
+then
+    gzip -dc "${ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH}" | docker load
+fi
+
+docker run -v $(pwd):$(pwd) -w $(pwd) "${ALPAKA_DOCKER_ENV_LIST[@]}" --rm "${ALPAKA_CI_DOCKER_IMAGE_NAME}" /bin/bash ./script/travis/run.sh

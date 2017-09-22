@@ -26,12 +26,19 @@ source ./script/travis/travis_retry.sh
 # e: exit as soon as one command returns a non-zero exit code.
 set -e
 
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated install g++-"${ALPAKA_GCC_VER}"
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-"${ALPAKA_GCC_VER}" 50
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-"${ALPAKA_GCC_VER}" 50
+: ${ALPAKA_CI_GCC_VER?"ALPAKA_CI_GCC_VER must be specified"}
+: ${ALPAKA_CI_SANITIZERS?"ALPAKA_CI_SANITIZERS must be specified"}
+: ${CXX?"CXX must be specified"}
+
+travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+travis_retry sudo apt-get -y --quiet update
+
+travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install g++-"${ALPAKA_CI_GCC_VER}"
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-"${ALPAKA_CI_GCC_VER}" 50
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-"${ALPAKA_CI_GCC_VER}" 50
 if [[ "${ALPAKA_CI_SANITIZERS}" == *"TSan"* ]]
 then
-    travis_retry sudo apt-get -y --quiet --allow-unauthenticated install libtsan0
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtsan0
 fi
 
 which "${CXX}"

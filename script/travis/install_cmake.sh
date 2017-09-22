@@ -26,22 +26,21 @@ source ./script/travis/travis_retry.sh
 # e: exit as soon as one command returns a non-zero exit code.
 set -e
 
+: ${ALPAKA_CI_CMAKE_DIR?"ALPAKA_CI_CMAKE_DIR must be specified"}
+: ${ALPAKA_CI_CMAKE_VER?"ALPAKA_CI_CMAKE_VER must be specified"}
+
 #-------------------------------------------------------------------------------
 # Remove the old CMake version.
-sudo apt-get -y --quiet remove cmake
+if [ "${TRAVIS}" == "true" ] ;then sudo apt-get -y --quiet remove cmake ;fi
 
-# Replace it with the new version.
-ALPAKA_CMAKE_CACHE_DIR=${HOME}/cache/CMake/CMake-${ALPAKA_CI_CMAKE_VER}
-if [ -z "$(ls -A "${ALPAKA_CMAKE_CACHE_DIR}")" ]
+# Download the selected version.
+if [ -z "$(ls -A "${ALPAKA_CI_CMAKE_DIR}")" ]
 then
     ALPAKA_CMAKE_PKG_FILE_NAME_BASE=cmake-${ALPAKA_CI_CMAKE_VER}-Linux-x86_64
     ALPAKA_CMAKE_PKG_FILE_NAME=${ALPAKA_CMAKE_PKG_FILE_NAME_BASE}.tar.gz
-    travis_retry wget --no-verbose https://cmake.org/files/v"${ALPAKA_CMAKE_VER_MAJOR}"."${ALPAKA_CMAKE_VER_MINOR}"/"${ALPAKA_CMAKE_PKG_FILE_NAME}"
-    mkdir -p "${ALPAKA_CMAKE_CACHE_DIR}"
-    tar -xzf "${ALPAKA_CMAKE_PKG_FILE_NAME}" -C "${ALPAKA_CMAKE_CACHE_DIR}"
-    sudo cp -fR "${ALPAKA_CMAKE_CACHE_DIR}"/"${ALPAKA_CMAKE_PKG_FILE_NAME_BASE}"/* "${ALPAKA_CMAKE_CACHE_DIR}"
-    sudo rm -rf "${ALPAKA_CMAKE_PKG_FILE_NAME}" "${ALPAKA_CMAKE_CACHE_DIR}"/"${ALPAKA_CMAKE_PKG_FILE_NAME_BASE}"
+    travis_retry wget --no-verbose https://cmake.org/files/v"${ALPAKA_CI_CMAKE_VER_MAJOR}"."${ALPAKA_CI_CMAKE_VER_MINOR}"/"${ALPAKA_CMAKE_PKG_FILE_NAME}"
+    mkdir -p "${ALPAKA_CI_CMAKE_DIR}"
+    tar -xzf "${ALPAKA_CMAKE_PKG_FILE_NAME}" -C "${ALPAKA_CI_CMAKE_DIR}"
+    sudo cp -fR "${ALPAKA_CI_CMAKE_DIR}"/"${ALPAKA_CMAKE_PKG_FILE_NAME_BASE}"/* "${ALPAKA_CI_CMAKE_DIR}"
+    sudo rm -rf "${ALPAKA_CMAKE_PKG_FILE_NAME}" "${ALPAKA_CI_CMAKE_DIR}"/"${ALPAKA_CMAKE_PKG_FILE_NAME_BASE}"
 fi
-
-export PATH=${ALPAKA_CMAKE_CACHE_DIR}/bin:${PATH}
-cmake --version

@@ -24,20 +24,18 @@
 # e: exit as soon as one command returns a non-zero exit code.
 set -e
 
-ls "${HOME}"/cache
-
 #-------------------------------------------------------------------------------
 # Print the travis environment variables: http://docs.travis-ci.com/user/ci-environment/
-echo "${TRAVIS_BRANCH}"
-echo "${TRAVIS_BUILD_DIR}"
-echo "${TRAVIS_BUILD_ID}"
-echo "${TRAVIS_BUILD_NUMBER}"
-echo "${TRAVIS_COMMIT}"
-echo "${TRAVIS_COMMIT_RANGE}"
-echo "${TRAVIS_JOB_ID}"
-echo "${TRAVIS_JOB_NUMBER}"
-echo "${TRAVIS_PULL_REQUEST}"
-echo "${TRAVIS_SECURE_ENV_VARS}"
-echo "${TRAVIS_REPO_SLUG}"
-echo "${TRAVIS_OS_NAME}"
-echo "${TRAVIS_TAG}"
+echo TRAVIS_BRANCH: "${TRAVIS_BRANCH}"
+echo TRAVIS_BUILD_DIR: "${TRAVIS_BUILD_DIR}"
+echo TRAVIS_BUILD_ID: "${TRAVIS_BUILD_ID}"
+echo TRAVIS_BUILD_NUMBER: "${TRAVIS_BUILD_NUMBER}"
+echo TRAVIS_COMMIT: "${TRAVIS_COMMIT}"
+echo TRAVIS_COMMIT_RANGE: "${TRAVIS_COMMIT_RANGE}"
+echo TRAVIS_JOB_ID: "${TRAVIS_JOB_ID}"
+echo TRAVIS_JOB_NUMBER: "${TRAVIS_JOB_NUMBER}"
+echo TRAVIS_PULL_REQUEST: "${TRAVIS_PULL_REQUEST}"
+echo TRAVIS_SECURE_ENV_VARS: "${TRAVIS_SECURE_ENV_VARS}"
+echo TRAVIS_REPO_SLUG: "${TRAVIS_REPO_SLUG}"
+echo TRAVIS_OS_NAME: "${TRAVIS_OS_NAME}"
+echo TRAVIS_TAG: "${TRAVIS_TAG}"
