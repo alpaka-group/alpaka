@@ -20,47 +20,40 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-source ./script/travis/travis_retry.sh
-
 #-------------------------------------------------------------------------------
 # e: exit as soon as one command returns a non-zero exit code.
 set -e
 
 #-------------------------------------------------------------------------------
 # CMake
-ALPAKA_CMAKE_VER_MAJOR=${ALPAKA_CI_CMAKE_VER:0:1}
-echo "${ALPAKA_CMAKE_VER_MAJOR}"
-ALPAKA_CMAKE_VER_MINOR=${ALPAKA_CI_CMAKE_VER:2:1}
-echo "${ALPAKA_CMAKE_VER_MINOR}"
-
-#-------------------------------------------------------------------------------
-# g++ / clang dependencies
-travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-travis_retry sudo apt-get -y --quiet update
+ALPAKA_CI_CMAKE_VER_MAJOR=${ALPAKA_CI_CMAKE_VER:0:1}
+echo ALPAKA_CI_CMAKE_VER_MAJOR: "${ALPAKA_CI_CMAKE_VER_MAJOR}"
+ALPAKA_CI_CMAKE_VER_MINOR=${ALPAKA_CI_CMAKE_VER:2:1}
+echo ALPAKA_CI_CMAKE_VER_MINOR: "${ALPAKA_CI_CMAKE_VER_MINOR}"
 
 #-------------------------------------------------------------------------------
 # gcc
 if [ "${CXX}" == "g++" ]
 then
-    ALPAKA_GCC_VER_MAJOR=${ALPAKA_GCC_VER:0:1}
-    echo "${ALPAKA_GCC_VER_MAJOR}"
-    ALPAKA_GCC_VER_MINOR=${ALPAKA_GCC_VER:2:1}
-    echo "${ALPAKA_GCC_VER_MINOR}"
+    ALPAKA_CI_GCC_VER_MAJOR=${ALPAKA_CI_GCC_VER:0:1}
+    echo ALPAKA_CI_GCC_VER_MAJOR: "${ALPAKA_CI_GCC_VER_MAJOR}"
+    ALPAKA_CI_GCC_VER_MINOR=${ALPAKA_CI_GCC_VER:2:1}
+    echo ALPAKA_CI_GCC_VER_MINOR: "${ALPAKA_CI_GCC_VER_MINOR}"
 fi
 
 #-------------------------------------------------------------------------------
 # clang
 if [ "${CXX}" == "clang++" ]
 then
-    ALPAKA_CLANG_VER_MAJOR=${ALPAKA_CLANG_VER:0:1}
-    echo "${ALPAKA_CLANG_VER_MAJOR}"
-    ALPAKA_CLANG_VER_MINOR=${ALPAKA_CLANG_VER:2:1}
-    echo "${ALPAKA_CLANG_VER_MINOR}"
+    ALPAKA_CI_CLANG_VER_MAJOR=${ALPAKA_CI_CLANG_VER:0:1}
+    echo ALPAKA_CI_CLANG_VER_MAJOR: "${ALPAKA_CI_CLANG_VER_MAJOR}"
+    ALPAKA_CI_CLANG_VER_MINOR=${ALPAKA_CI_CLANG_VER:2:1}
+    echo ALPAKA_CI_CLANG_VER_MINOR: "${ALPAKA_CI_CLANG_VER_MINOR}"
 
     # clang versions lower than 3.7 do not support OpenMP 2.0.
     # clang versions lower than 3.9 do not support OpenMP 4.0
     # OpenMP 4.0 curently leads to test errors and is therefore disabled.
-    if (( (( ALPAKA_CLANG_VER_MAJOR < 3 )) || ( (( ALPAKA_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CLANG_VER_MINOR < 7 )) ) ))
+    if (( (( ALPAKA_CI_CLANG_VER_MAJOR < 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR < 7 )) ) ))
     then
         if [ "${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" == "ON" ]
         then
@@ -75,23 +68,25 @@ then
     fi
     export ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF
     echo ALPAKA_ACC_CPU_BT_OMP4_ENABLE=${ALPAKA_ACC_CPU_BT_OMP4_ENABLE} because the clang version does not support it!
+
+    export ALPAKA_BOOST_COMPILER=-clang${ALPAKA_CI_CLANG_VER_MAJOR}${ALPAKA_CI_CLANG_VER_MINOR}
 fi
 
 #-------------------------------------------------------------------------------
 # Boost.
 ALPAKA_CI_BOOST_BRANCH_MAJOR=${ALPAKA_CI_BOOST_BRANCH:6:1}
-echo "${ALPAKA_CI_BOOST_BRANCH_MAJOR}"
+echo ALPAKA_CI_BOOST_BRANCH_MAJOR: "${ALPAKA_CI_BOOST_BRANCH_MAJOR}"
 ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
-echo "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
+echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 #-------------------------------------------------------------------------------
 # CUDA
 if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
 then
     ALPAKA_CUDA_VER_MAJOR=${ALPAKA_CUDA_VER:0:1}
-    echo "${ALPAKA_CUDA_VER_MAJOR}"
+    echo ALPAKA_CUDA_VER_MAJOR: "${ALPAKA_CUDA_VER_MAJOR}"
     ALPAKA_CUDA_VER_MINOR=${ALPAKA_CUDA_VER:2:1}
-    echo "${ALPAKA_CUDA_VER_MINOR}"
+    echo ALPAKA_CUDA_VER_MINOR: "${ALPAKA_CUDA_VER_MINOR}"
 
     if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
     then
@@ -101,16 +96,16 @@ then
         then
             if (( ALPAKA_CUDA_VER_MAJOR < 8 ))
             then
-                if (( ALPAKA_GCC_VER_MAJOR > 4 ))
+                if (( ALPAKA_CI_GCC_VER_MAJOR > 4 ))
                 then
-                    echo CUDA 7.x does not support the gcc version!
+                    echo nvcc 7.x does not support gcc "${ALPAKA_CI_GCC_VER}"!
                     exit 1
                 fi
             elif (( ALPAKA_CUDA_VER_MAJOR < 9 ))
             then
-                if (( ALPAKA_GCC_VER_MAJOR > 5 ))
+                if (( ALPAKA_CI_GCC_VER_MAJOR > 5 ))
                 then
-                    echo CUDA 8.x does not support the gcc version!
+                    echo nvcc 8.x does not support gcc "${ALPAKA_CI_GCC_VER}"!
                     exit 1
                 fi
             fi
@@ -129,14 +124,14 @@ then
             then
                 echo nvcc 7.5 clang support is too buggy for alpaka!
                 exit 1
-                if (( (( ALPAKA_CLANG_VER_MAJOR > 3 )) || ( (( ALPAKA_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CLANG_VER_MINOR > 6 )) ) ))
+                if (( (( ALPAKA_CI_CLANG_VER_MAJOR > 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR > 6 )) ) ))
                 then
                     echo clang versions higher than 3.6 are not a supported compiler for nvcc 7.5 on linux!
                     exit 1
                 fi
             elif [ "${ALPAKA_CUDA_VER}" == "8.0" ]
             then
-                if (( (( ALPAKA_CLANG_VER_MAJOR > 3 )) || ( (( ALPAKA_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CLANG_VER_MINOR > 8 )) ) ))
+                if (( (( ALPAKA_CI_CLANG_VER_MAJOR > 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR > 8 )) ) ))
                 then
                     echo clang versions higher than 3.8 are not a supported compiler for nvcc 8.0 on linux!
                     exit 1
@@ -173,21 +168,21 @@ then
 
         # clang <= 3.7 does not support native CUDA compilation.
         # clang 3.8 used as CUDA compiler is not supported (no cuRand support).
-        if (( (( ALPAKA_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CLANG_VER_MINOR <= 9 )) ))
+        if (( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR <= 9 )) ))
         then
             if [ "${ALPAKA_CUDA_VER}" == "8.0" ]
             then
-                echo clang "${ALPAKA_CLANG_VER}" used as CUDA compiler is not supported!
+                echo clang "${ALPAKA_CI_CLANG_VER}" used as CUDA compiler is not supported!
                 exit 1
             fi
         fi
 
         # clang <= 3.9 used as CUDA compiler does not support CUDA 8.0.
-        if (( (( ALPAKA_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CLANG_VER_MINOR <= 9 )) ))
+        if (( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR <= 9 )) ))
         then
             if [ "${ALPAKA_CUDA_VER}" == "8.0" ]
             then
-                echo clang "${ALPAKA_CLANG_VER}" used as CUDA compiler does not support CUDA 8.0!
+                echo clang "${ALPAKA_CI_CLANG_VER}" used as CUDA compiler does not support CUDA 8.0!
                 exit 1
             fi
         fi

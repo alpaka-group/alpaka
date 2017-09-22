@@ -24,6 +24,10 @@
 # v: all lines are printed before executing them.
 set -v
 
+: ${ALPAKA_ACC_GPU_CUDA_ONLY_MODE?"ALPAKA_ACC_GPU_CUDA_ONLY_MODE must be specified"}
+: ${ALPAKA_CUDA_VER_MAJOR?"ALPAKA_CUDA_VER_MAJOR must be specified"}
+: ${ALPAKA_CUDA_VER_MINOR?"ALPAKA_CUDA_VER_MINOR must be specified"}
+
 # https://stackoverflow.com/questions/42218009/how-to-tell-if-any-command-in-bash-script-failed-non-zero-exit-status
 err=0
 trap 'err=1' ERR
@@ -55,10 +59,13 @@ if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "ON" ] ;then ./script/travis/compileE
 
 #-------------------------------------------------------------------------------
 # Build and execute all examples.
-# NOTE: Some of the examples are hard-coded to use a CPU accelerator which is not available in ALPAKA_ACC_GPU_CUDA_ONLY_MODE
-if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./script/travis/compileExec.sh "example/bufferCopy" ./bufferCopy ;fi
-if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./script/travis/compileExec.sh "example/helloWorld" ./helloWorld ;fi
-if ([ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ]) && ( (( ALPAKA_CUDA_VER_MAJOR >= 8 ))  || ( (( ALPAKA_CUDA_VER_MAJOR == 7 )) && (( ALPAKA_CUDA_VER_MINOR == 5 )) ) );then ./script/travis/compileExec.sh "example/helloWorldLambda" ./helloWorldLambda ;fi
-if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ] ;then ./script/travis/compileExec.sh "example/vectorAdd" ./vectorAdd ;fi
+# NOTE: The examples are hard-coded to use a CPU accelerator which is not available in ALPAKA_ACC_GPU_CUDA_ONLY_MODE
+if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ]
+then
+    ./script/travis/compileExec.sh "example/bufferCopy" ./bufferCopy
+    ./script/travis/compileExec.sh "example/helloWorld" ./helloWorld
+    ./script/travis/compileExec.sh "example/helloWorldLambda" ./helloWorldLambda
+    ./script/travis/compileExec.sh "example/vectorAdd" ./vectorAdd
+fi
 
 test $err = 0 # Return non-zero if any command failed

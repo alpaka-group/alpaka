@@ -48,6 +48,7 @@
 #include <vector>                               // std::vector
 #include <tuple>                                // std::tuple
 #include <type_traits>                          // std::decay
+#include <future>                               // std::future
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                         // std::cout
 #endif

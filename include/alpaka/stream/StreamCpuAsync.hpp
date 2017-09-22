@@ -33,6 +33,7 @@
 #include <type_traits>                          // std::is_base
 #include <thread>                               // std::thread
 #include <mutex>                                // std::mutex
+#include <future>                               // std::promise
 
 namespace alpaka
 {

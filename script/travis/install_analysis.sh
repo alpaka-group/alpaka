@@ -28,10 +28,10 @@ set -e
 
 #-------------------------------------------------------------------------------
 # Install sloc
-travis_retry sudo apt-get --quiet --allow-unauthenticated install sloccount
+travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install sloccount
 sloccount --version
 
 #-------------------------------------------------------------------------------
 # Install shellcheck
-travis_retry sudo apt-get --quiet --allow-unauthenticated install shellcheck
+travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install shellcheck
 shellcheck --version
