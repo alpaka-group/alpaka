@@ -44,5 +44,3 @@ if [ "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}" == "ON" ] ;then ./script/travis/inst
 sudo apt-get --quiet --purge autoremove
 sudo apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-find / -printf '%s %p\n'|sort -nr|head
