@@ -61,7 +61,7 @@ namespace alpaka
                             m_dev(dev),
                             m_mutex(),
                             m_enqueueCount(0u),
-                            m_bIsReady(true)
+                            m_LastReadyEnqueueCount(0u)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -84,13 +84,31 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ~EventCpuImpl() noexcept = default;
 
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    auto isReady() noexcept -> bool
+                    {
+                        return (m_LastReadyEnqueueCount == m_enqueueCount);
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    auto hasBeenReadieadSince(const std::size_t & enqueueCount) noexcept -> bool
+                    {
+                        return (m_LastReadyEnqueueCount >= enqueueCount);
+                    }
+
                 public:
                     dev::DevCpu const m_dev;                                //!< The device this event is bound to.
 
                     std::mutex mutable m_mutex;                             //!< The mutex used to synchronize access to the event.
                     std::condition_variable mutable m_conditionVariable;    //!< The condition signaling the event completion.
                     std::size_t m_enqueueCount;                             //!< The number of times this event has been enqueued.
-                    bool m_bIsReady;                                        //!< If the event is not waiting within a stream (not enqueued or already completed).
+                    std::size_t m_LastReadyEnqueueCount;                    //!< The time this event has been ready the last time.
+                                                                            //!< Ready means that the event was not waiting within a stream (not enqueued or already completed).
+                                                                            //!< If m_enqueueCount == m_LastReadyEnqueueCount, the event is currently not enqueued
                 };
             }
         }
@@ -193,7 +211,7 @@ namespace alpaka
                 {
                     std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
 
-                    return event.m_spEventImpl->m_bIsReady;
+                    return event.m_spEventImpl->isReady();
                 }
             };
         }
@@ -231,14 +249,8 @@ namespace alpaka
                     // Setting the event state and enqueuing it has to be atomic.
                     std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                    // Set its state to enqueued, even if it is already enqueued
-                    spEventImpl->m_bIsReady = false;
-
-                    // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
                     ++spEventImpl->m_enqueueCount;
 
-                    // We can not unlock the mutex here, because the order of events enqueued has to be identical to the call order.
-                    // Unlocking here would allow a later enqueue call to complete before this event is enqueued.
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
@@ -252,7 +264,7 @@ namespace alpaka
                             // Nothing to do if it has been re-enqueued to a later position in the queue.
                             if(enqueueCount == spEventImpl->m_enqueueCount)
                             {
-                                spEventImpl->m_bIsReady = true;
+                                spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
                                 lk2.unlock();
                                 spEventImpl->m_conditionVariable.notify_all();
                             }
@@ -301,21 +313,17 @@ namespace alpaka
 
                     boost::ignore_unused(spStreamImpl);
 
-                    {
-                        // Copy the shared pointer of the event implementation.
-                        // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
-                        auto spEventImpl(event.m_spEventImpl);
+                    auto spEventImpl(event.m_spEventImpl);
 
+                    {
                         // Setting the event state and enqueuing it has to be atomic.
                         std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                        // NOTE: Difference to async version: directly reset the event flag instead of enqueuing.
-                        spEventImpl->m_bIsReady = true;
-
-                        // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
                         ++spEventImpl->m_enqueueCount;
+                        // NOTE: Difference to async version: directly set the event state instead of enqueuing.
+                        spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
                     }
-                    event.m_spEventImpl->m_conditionVariable.notify_all();
+                    spEventImpl->m_conditionVariable.notify_all();
                 }
             };
             //#############################################################################
@@ -345,24 +353,6 @@ namespace alpaka
     {
         namespace traits
         {
-            namespace detail
-            {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitForEventNoLock(
-                    std::shared_ptr<event::cpu::detail::EventCpuImpl> const & spEventImpl, std::unique_lock<std::mutex> & lk)
-                -> void
-                {
-                    if(!spEventImpl->m_bIsReady)
-                    {
-                        spEventImpl->m_conditionVariable.wait(
-                            lk,
-                            [spEventImpl]{return spEventImpl->m_bIsReady;});
-                    }
-                }
-            }
-
             //#############################################################################
             //! The CPU device event thread wait trait specialization.
             //!
@@ -404,7 +394,13 @@ namespace alpaka
                 {
                     std::unique_lock<std::mutex> lk(spEventImpl->m_mutex);
 
-                    detail::currentThreadWaitForEventNoLock(spEventImpl, lk);
+                    if(!spEventImpl->isReady())
+                    {
+                        auto const enqueueCount = spEventImpl->m_enqueueCount;
+                        spEventImpl->m_conditionVariable.wait(
+                            lk,
+                            [spEventImpl, enqueueCount]{return spEventImpl->hasBeenReadieadSince(enqueueCount);});
+                    }
                 }
             };
             //#############################################################################
@@ -433,7 +429,7 @@ namespace alpaka
 
                     std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                    if(!spEventImpl->m_bIsReady)
+                    if(!spEventImpl->isReady())
                     {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
@@ -445,9 +441,11 @@ namespace alpaka
                             {
                                 std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
 
-                                if(enqueueCount == spEventImpl->m_enqueueCount)
+                                if(!spEventImpl->hasBeenReadieadSince(enqueueCount))
                                 {
-                                    detail::currentThreadWaitForEventNoLock(spEventImpl, lk2);
+                                    spEventImpl->m_conditionVariable.wait(
+                                        lk2,
+                                        [spEventImpl, enqueueCount]{return spEventImpl->hasBeenReadieadSince(enqueueCount);});
                                 }
                             });
 #endif
