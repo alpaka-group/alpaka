@@ -26,10 +26,13 @@ source ./script/travis/travis_retry.sh
 # e: exit as soon as one command returns a non-zero exit code.
 set -e
 
-travis_retry sudo apt-get -y --quiet update
+travis_retry apt-get -y --quiet update
+travis_retry apt-get -y install sudo
+
 # software-properties-common: 'add-apt-repository' and certificates for wget https download
 # binutils: ld
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils
+# xz-utils: xzcat
+travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils xz-utils
 
 ./script/travis/install_cmake.sh
 if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/install_analysis.sh ;fi
