@@ -143,7 +143,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuTbbBlocks() = default;
+            /*virtual*/ ~AccCpuTbbBlocks() = default;
 
         private:
             // getIdx

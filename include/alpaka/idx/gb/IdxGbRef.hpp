@@ -70,7 +70,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
+                /*virtual*/ ~IdxGbRef() = default;
 
             public:
                 vec::Vec<TDim, TSize> const & m_gridBlockIdx;

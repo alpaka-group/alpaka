@@ -76,7 +76,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSharedMemStMasterSync() = default;
+                    /*virtual*/ ~BlockSharedMemStMasterSync() = default;
 
                 public:
                     // TODO: We should add the size of the (current) allocation.

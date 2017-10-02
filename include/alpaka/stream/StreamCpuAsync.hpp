@@ -81,19 +81,19 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCpuAsyncImpl(StreamCpuAsyncImpl const &) = delete;
+                    StreamCpuAsyncImpl(StreamCpuAsyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCpuAsyncImpl(StreamCpuAsyncImpl &&) = default;
+                    StreamCpuAsyncImpl(StreamCpuAsyncImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(StreamCpuAsyncImpl const &) -> StreamCpuAsyncImpl & = delete;
+                    auto operator=(StreamCpuAsyncImpl const &) -> StreamCpuAsyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(StreamCpuAsyncImpl &&) -> StreamCpuAsyncImpl & = default;
+                    auto operator=(StreamCpuAsyncImpl &&) -> StreamCpuAsyncImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
@@ -127,19 +127,19 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCpuAsync(StreamCpuAsync const &) = default;
+            StreamCpuAsync(StreamCpuAsync const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCpuAsync(StreamCpuAsync &&) = default;
+            StreamCpuAsync(StreamCpuAsync &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(StreamCpuAsync const &) -> StreamCpuAsync & = default;
+            auto operator=(StreamCpuAsync const &) -> StreamCpuAsync & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(StreamCpuAsync &&) -> StreamCpuAsync & = default;
+            auto operator=(StreamCpuAsync &&) -> StreamCpuAsync & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
@@ -159,7 +159,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~StreamCpuAsync() = default;
+            ~StreamCpuAsync() = default;
 
         public:
             std::shared_ptr<cpu::detail::StreamCpuAsyncImpl> m_spStreamImpl;

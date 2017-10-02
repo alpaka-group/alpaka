@@ -79,7 +79,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSharedMemDynBoostAlignedAlloc() = default;
+                    /*virtual*/ ~BlockSharedMemDynBoostAlignedAlloc() = default;
 
                 public:
                     std::unique_ptr<

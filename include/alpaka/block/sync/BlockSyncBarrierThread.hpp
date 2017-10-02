@@ -79,7 +79,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierThread() = default;
+                /*virtual*/ ~BlockSyncBarrierThread() = default;
 
                 Barrier mutable m_barrier;
                 BarrierWithPredicate mutable m_barrierWithPredicate;

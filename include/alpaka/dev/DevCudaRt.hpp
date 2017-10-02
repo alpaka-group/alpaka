@@ -63,24 +63,24 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST DevCudaRt() = default;
+            DevCudaRt() = default;
         public:
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST DevCudaRt(DevCudaRt const &) = default;
+            DevCudaRt(DevCudaRt const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST DevCudaRt(DevCudaRt &&) = default;
+            DevCudaRt(DevCudaRt &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(DevCudaRt const &) -> DevCudaRt & = default;
+            auto operator=(DevCudaRt const &) -> DevCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(DevCudaRt &&) -> DevCudaRt & = default;
+            auto operator=(DevCudaRt &&) -> DevCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
@@ -97,6 +97,10 @@ namespace alpaka
             {
                 return !((*this) == rhs);
             }
+            //-----------------------------------------------------------------------------
+            //! Destructor.
+            //-----------------------------------------------------------------------------
+            ~DevCudaRt() = default;
 
         public:
             int m_iDevice;

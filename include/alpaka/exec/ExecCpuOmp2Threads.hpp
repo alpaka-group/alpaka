@@ -90,23 +90,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Threads(ExecCpuOmp2Threads const &) = default;
+            ExecCpuOmp2Threads(ExecCpuOmp2Threads const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Threads(ExecCpuOmp2Threads &&) = default;
+            ExecCpuOmp2Threads(ExecCpuOmp2Threads &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Threads const &) -> ExecCpuOmp2Threads & = default;
+            auto operator=(ExecCpuOmp2Threads const &) -> ExecCpuOmp2Threads & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Threads &&) -> ExecCpuOmp2Threads & = default;
+            auto operator=(ExecCpuOmp2Threads &&) -> ExecCpuOmp2Threads & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuOmp2Threads() = default;
+            ~ExecCpuOmp2Threads() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.

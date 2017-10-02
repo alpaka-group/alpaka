@@ -76,7 +76,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicStlLock() = default;
+            AtomicStlLock() = default;
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicStlLock() = default;
+            /*virtual*/ ~AtomicStlLock() = default;
 
             template<typename TPtr>
             std::mutex & getMutex(TPtr const * const ptr) const

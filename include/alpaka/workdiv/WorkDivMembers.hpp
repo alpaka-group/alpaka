@@ -47,7 +47,6 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC WorkDivMembers() = delete;
             //-----------------------------------------------------------------------------
             //! Constructor from values.
@@ -90,18 +89,15 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC WorkDivMembers(WorkDivMembers &&) = default;
+            WorkDivMembers(WorkDivMembers &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC auto operator=(WorkDivMembers const &) -> WorkDivMembers & = default;
+            auto operator=(WorkDivMembers const &) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC auto operator=(WorkDivMembers &&) -> WorkDivMembers & = default;
+            auto operator=(WorkDivMembers &&) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
@@ -120,8 +116,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC /*virtual*/ ~WorkDivMembers() = default;
+            /*virtual*/ ~WorkDivMembers() = default;
 
         public:
             vec::Vec<TDim, TSize> m_gridBlockExtent;

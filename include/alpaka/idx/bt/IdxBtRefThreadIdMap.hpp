@@ -76,7 +76,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefThreadIdMap() = default;
+                /*virtual*/ ~IdxBtRefThreadIdMap() = default;
 
             public:
                 ThreadIdToIdxMap const & m_threadToIndexMap;   //!< The mapping of thread id's to thread indices.

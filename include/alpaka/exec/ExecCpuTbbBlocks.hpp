@@ -90,23 +90,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuTbbBlocks(ExecCpuTbbBlocks const &) = default;
+            ExecCpuTbbBlocks(ExecCpuTbbBlocks const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuTbbBlocks(ExecCpuTbbBlocks &&) = default;
+            ExecCpuTbbBlocks(ExecCpuTbbBlocks &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuTbbBlocks const &) -> ExecCpuTbbBlocks & = default;
+            auto operator=(ExecCpuTbbBlocks const &) -> ExecCpuTbbBlocks & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuTbbBlocks &&) -> ExecCpuTbbBlocks & = default;
+            auto operator=(ExecCpuTbbBlocks &&) -> ExecCpuTbbBlocks & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuTbbBlocks() = default;
+            ~ExecCpuTbbBlocks() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.

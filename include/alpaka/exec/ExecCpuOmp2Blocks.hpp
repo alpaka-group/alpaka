@@ -91,23 +91,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks const &) = default;
+            ExecCpuOmp2Blocks(ExecCpuOmp2Blocks const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks &&) = default;
+            ExecCpuOmp2Blocks(ExecCpuOmp2Blocks &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Blocks const &) -> ExecCpuOmp2Blocks & = default;
+            auto operator=(ExecCpuOmp2Blocks const &) -> ExecCpuOmp2Blocks & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Blocks &&) -> ExecCpuOmp2Blocks & = default;
+            auto operator=(ExecCpuOmp2Blocks &&) -> ExecCpuOmp2Blocks & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuOmp2Blocks() = default;
+            ~ExecCpuOmp2Blocks() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.

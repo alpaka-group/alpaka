@@ -85,23 +85,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuSerial(ExecCpuSerial const &) = default;
+            ExecCpuSerial(ExecCpuSerial const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuSerial(ExecCpuSerial &&) = default;
+            ExecCpuSerial(ExecCpuSerial &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = default;
+            auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuSerial &&) -> ExecCpuSerial & = default;
+            auto operator=(ExecCpuSerial &&) -> ExecCpuSerial & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuSerial() = default;
+            ~ExecCpuSerial() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.

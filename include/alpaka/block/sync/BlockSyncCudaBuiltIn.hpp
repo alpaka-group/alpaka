@@ -48,7 +48,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY BlockSyncCudaBuiltIn() = default;
+                BlockSyncCudaBuiltIn() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~BlockSyncCudaBuiltIn() = default;
+                /*virtual*/ ~BlockSyncCudaBuiltIn() = default;
             };
 
             namespace traits

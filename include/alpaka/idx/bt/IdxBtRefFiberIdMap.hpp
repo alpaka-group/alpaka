@@ -77,7 +77,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefFiberIdMap() = default;
+                /*virtual*/ ~IdxBtRefFiberIdMap() = default;
 
             public:
                 FiberIdToIdxMap const & m_fibersToIndices; //!< The mapping of fiber id's to fiber indices.
