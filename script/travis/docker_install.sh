@@ -71,7 +71,7 @@ ALPAKA_DOCKER_ENV_LIST+=("--env" "OMP_NUM_THREADS=${OMP_NUM_THREADS}")
 
 if [ "${ALPAKA_DOCKER_BUILD_REQUIRED}" -eq 1 ]
 then
-  docker run -v $(pwd):$(pwd) -w $(pwd) "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash ./script/travis/install.sh
+  docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash ./script/travis/install.sh
 
   ALPAKA_DOCKER_CONTAINER_NAME=$(docker ps -l -q)
   docker commit "${ALPAKA_DOCKER_CONTAINER_NAME}" "${ALPAKA_CI_DOCKER_IMAGE_NAME}"

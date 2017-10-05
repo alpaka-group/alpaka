@@ -46,7 +46,6 @@ namespace alpaka
             typedef IntegerSequence<T, Tvals...> type;
             typedef T value_type;
 
-            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto size() noexcept
             -> std::size_t
             {
