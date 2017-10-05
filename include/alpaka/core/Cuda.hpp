@@ -95,7 +95,7 @@ namespace alpaka
             // NOTE: All ignored errors have to be convertible to cudaError_t.
             //-----------------------------------------------------------------------------
             template<
-                typename... TErrors,
+                typename... TErrors/*,
                 typename = typename std::enable_if<
                     meta::Conjunction<
                         std::true_type,
@@ -103,7 +103,7 @@ namespace alpaka
                             TErrors,
                             cudaError_t
                         >...
-                    >::value>::type>
+                    >::value>::type*/>
             ALPAKA_FN_HOST auto cudaRtCheckIgnore(
                 cudaError_t const & error,
                 char const * cmd,

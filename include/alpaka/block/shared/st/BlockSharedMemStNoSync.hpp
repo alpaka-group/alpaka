@@ -50,7 +50,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Default constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA BlockSharedMemStNoSync() = default;
+                    BlockSharedMemStNoSync() = default;
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSharedMemStNoSync() = default;
+                    /*virtual*/ ~BlockSharedMemStNoSync() = default;
 
                 public:
                     // TODO: We should add the size of the (current) allocation.

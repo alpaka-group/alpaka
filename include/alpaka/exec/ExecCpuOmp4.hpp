@@ -88,23 +88,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
+            ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp4(ExecCpuOmp4 && other) = default;
+            ExecCpuOmp4(ExecCpuOmp4 && other) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
+            auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
+            auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuOmp4() = default;
+            ~ExecCpuOmp4() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.

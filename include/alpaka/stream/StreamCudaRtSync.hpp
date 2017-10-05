@@ -67,7 +67,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    StreamCudaRtSyncImpl(
+                    ALPAKA_FN_HOST StreamCudaRtSyncImpl(
                         dev::DevCudaRt const & dev) :
                             m_dev(dev),
                             m_CudaStream()
@@ -92,23 +92,23 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCudaRtSyncImpl(StreamCudaRtSyncImpl const &) = delete;
+                    StreamCudaRtSyncImpl(StreamCudaRtSyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCudaRtSyncImpl(StreamCudaRtSyncImpl &&) = default;
+                    StreamCudaRtSyncImpl(StreamCudaRtSyncImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(StreamCudaRtSyncImpl const &) -> StreamCudaRtSyncImpl & = delete;
+                    auto operator=(StreamCudaRtSyncImpl const &) -> StreamCudaRtSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(StreamCudaRtSyncImpl &&) -> StreamCudaRtSyncImpl & = default;
+                    auto operator=(StreamCudaRtSyncImpl &&) -> StreamCudaRtSyncImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ~StreamCudaRtSyncImpl()
+                    ALPAKA_FN_HOST ~StreamCudaRtSyncImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -147,19 +147,19 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCudaRtSync(StreamCudaRtSync const &) = default;
+            StreamCudaRtSync(StreamCudaRtSync const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCudaRtSync(StreamCudaRtSync &&) = default;
+            StreamCudaRtSync(StreamCudaRtSync &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(StreamCudaRtSync const &) -> StreamCudaRtSync & = default;
+            auto operator=(StreamCudaRtSync const &) -> StreamCudaRtSync & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(StreamCudaRtSync &&) -> StreamCudaRtSync & = default;
+            auto operator=(StreamCudaRtSync &&) -> StreamCudaRtSync & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
@@ -179,7 +179,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~StreamCudaRtSync() = default;
+            ~StreamCudaRtSync() = default;
 
         public:
             std::shared_ptr<cuda::detail::StreamCudaRtSyncImpl> m_spStreamImpl;

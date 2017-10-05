@@ -77,7 +77,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierFiber() = default;
+                /*virtual*/ ~BlockSyncBarrierFiber() = default;
 
                 boost::fibers::barrier mutable m_barrier;
 

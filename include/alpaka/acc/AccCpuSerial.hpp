@@ -146,7 +146,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() = default;
+            /*virtual*/ ~AccCpuSerial() = default;
 
         private:
             // getIdx

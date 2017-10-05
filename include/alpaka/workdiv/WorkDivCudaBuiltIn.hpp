@@ -78,7 +78,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCudaBuiltIn() = default;
+            /*virtual*/ ~WorkDivCudaBuiltIn() = default;
 
         public:
             // \TODO: Optimize! Add WorkDivCudaBuiltInNoElems that has no member m_threadElemExtent as well as AccGpuCudaRtNoElems.

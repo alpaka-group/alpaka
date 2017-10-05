@@ -68,7 +68,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierOmp() = default;
+                /*virtual*/ ~BlockSyncBarrierOmp() = default;
 
                 std::uint8_t mutable m_generation;
                 int mutable m_result[2];

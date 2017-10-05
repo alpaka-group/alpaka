@@ -85,19 +85,19 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST EventCudaImpl(EventCudaImpl const &) = delete;
+                    EventCudaImpl(EventCudaImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST EventCudaImpl(EventCudaImpl &&) = default;
+                    EventCudaImpl(EventCudaImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(EventCudaImpl const &) -> EventCudaImpl & = delete;
+                    auto operator=(EventCudaImpl const &) -> EventCudaImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(EventCudaImpl &&) -> EventCudaImpl & = default;
+                    auto operator=(EventCudaImpl &&) -> EventCudaImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
@@ -141,19 +141,19 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST EventCudaRt(EventCudaRt const &) = default;
+            EventCudaRt(EventCudaRt const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST EventCudaRt(EventCudaRt &&) = default;
+            EventCudaRt(EventCudaRt &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(EventCudaRt const &) -> EventCudaRt & = default;
+            auto operator=(EventCudaRt const &) -> EventCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(EventCudaRt &&) -> EventCudaRt & = default;
+            auto operator=(EventCudaRt &&) -> EventCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~EventCudaRt() = default;
+            ~EventCudaRt() = default;
 
         public:
             std::shared_ptr<cuda::detail::EventCudaImpl> m_spEventImpl;

@@ -116,23 +116,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuFibers(ExecCpuFibers const &) = default;
+            ExecCpuFibers(ExecCpuFibers const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuFibers(ExecCpuFibers &&) = default;
+            ExecCpuFibers(ExecCpuFibers &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuFibers const &) -> ExecCpuFibers & = default;
+            auto operator=(ExecCpuFibers const &) -> ExecCpuFibers & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuFibers &&) -> ExecCpuFibers & = default;
+            auto operator=(ExecCpuFibers &&) -> ExecCpuFibers & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuFibers() = default;
+            ~ExecCpuFibers() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.

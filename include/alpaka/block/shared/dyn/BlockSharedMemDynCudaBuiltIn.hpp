@@ -52,7 +52,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Default constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY BlockSharedMemDynCudaBuiltIn() = default;
+                    BlockSharedMemDynCudaBuiltIn() = default;
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~BlockSharedMemDynCudaBuiltIn() = default;
+                    /*virtual*/ ~BlockSharedMemDynCudaBuiltIn() = default;
                 };
 
                 namespace traits

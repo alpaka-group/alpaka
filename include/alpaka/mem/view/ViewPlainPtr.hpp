@@ -86,28 +86,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC ViewPlainPtr(ViewPlainPtr const &) = delete;
+                ViewPlainPtr(ViewPlainPtr const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC ViewPlainPtr(ViewPlainPtr &&) = default;
+                ViewPlainPtr(ViewPlainPtr &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC auto operator=(ViewPlainPtr const &) -> ViewPlainPtr & = delete;
+                auto operator=(ViewPlainPtr const &) -> ViewPlainPtr & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC auto operator=(ViewPlainPtr &&) -> ViewPlainPtr & = default;
+                auto operator=(ViewPlainPtr &&) -> ViewPlainPtr & = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC ~ViewPlainPtr() = default;
+                ~ViewPlainPtr() = default;
 
             private:
                 //-----------------------------------------------------------------------------

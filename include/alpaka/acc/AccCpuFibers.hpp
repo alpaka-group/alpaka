@@ -153,7 +153,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuFibers() = default;
+            /*virtual*/ ~AccCpuFibers() = default;
 
         private:
             // getIdx
