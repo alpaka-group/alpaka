@@ -166,7 +166,7 @@ namespace alpaka
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 #pragma omp target if(0)
                 {
-                    #pragma omp teams/* num_teams(gridBlockCount) thread_limit(blockThreadCount)*/
+                    #pragma omp teams num_teams(gridBlockCount) thread_limit(blockThreadCount)
                     {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                         // The first team does some checks ...

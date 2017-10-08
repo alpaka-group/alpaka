@@ -249,10 +249,18 @@ IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
         SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU block and thread back-end" FORCE)
 
     ELSE()
+        # clang versions beginning with 3.9 support OpenMP 4.0 but only when given the corresponding flag
+        IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            IF(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
+                LIST(APPEND OpenMP_CXX_FLAGS "-fopenmp-version=40")
+            ENDIF()
+        ENDIF()
+
         LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC ${OpenMP_CXX_FLAGS})
         IF(NOT MSVC)
             LIST(APPEND _ALPAKA_LINK_FLAGS_PUBLIC ${OpenMP_CXX_FLAGS})
         ENDIF()
+
         # CUDA requires some special handling
         IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
