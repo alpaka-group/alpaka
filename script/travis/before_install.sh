@@ -51,8 +51,6 @@ then
     echo ALPAKA_CI_CLANG_VER_MINOR: "${ALPAKA_CI_CLANG_VER_MINOR}"
 
     # clang versions lower than 3.7 do not support OpenMP 2.0.
-    # clang versions lower than 3.9 do not support OpenMP 4.0
-    # OpenMP 4.0 curently leads to test errors and is therefore disabled.
     if (( (( ALPAKA_CI_CLANG_VER_MAJOR < 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR < 7 )) ) ))
     then
         if [ "${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" == "ON" ]
@@ -66,8 +64,16 @@ then
             echo ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} because the clang version does not support it!
         fi
     fi
-    export ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF
-    echo ALPAKA_ACC_CPU_BT_OMP4_ENABLE=${ALPAKA_ACC_CPU_BT_OMP4_ENABLE} because the clang version does not support it!
+
+    # clang versions lower than 3.9 do not support OpenMP 4.0
+    if (( (( ALPAKA_CI_CLANG_VER_MAJOR < 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR < 9 )) ) ))
+    then
+        if [ "${ALPAKA_ACC_CPU_BT_OMP4_ENABLE}" == "ON" ]
+        then
+            export ALPAKA_ACC_CPU_BT_OMP4_ENABLE=OFF
+            echo ALPAKA_ACC_CPU_BT_OMP4_ENABLE=${ALPAKA_ACC_CPU_BT_OMP4_ENABLE} because the clang version does not support it!
+        fi
+    fi
 
     export ALPAKA_BOOST_COMPILER=-clang${ALPAKA_CI_CLANG_VER_MAJOR}${ALPAKA_CI_CLANG_VER_MINOR}
 fi

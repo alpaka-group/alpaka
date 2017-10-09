@@ -477,7 +477,7 @@ auto main()
         // For different sizes.
         for(std::uint32_t imageSize(1u<<3u);
 #ifdef ALPAKA_CI
-            imageSize <= 1u<<8u;
+            imageSize <= 1u<<5u;
 #else
             imageSize <= 1u<<13u;
 #endif
