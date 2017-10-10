@@ -43,8 +43,8 @@ namespace alpaka
         {
             static_assert(std::is_integral<T>::value, "IntegerSequence<T, I...> requires T to be an integral type.");
 
-            typedef IntegerSequence<T, Tvals...> type;
-            typedef T value_type;
+            using type = IntegerSequence<T, Tvals...>;
+            using value_type = T;
 
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto size() noexcept
