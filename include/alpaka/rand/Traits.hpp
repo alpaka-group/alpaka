@@ -27,7 +27,6 @@
 
 #include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
 
-#include <utility>                      // std::declval
 #include <type_traits>                  // std::is_integral, std::is_floating_point, ...
 
 namespace alpaka
@@ -90,7 +89,7 @@ namespace alpaka
                     TRand,
                     T>
                 ::createNormalReal(
-                    std::declval<TRand const &>()))
+                    rand))
 #endif
             {
                 static_assert(
@@ -119,7 +118,7 @@ namespace alpaka
                     TRand,
                     T>
                 ::createUniformReal(
-                    std::declval<TRand const &>()))
+                    rand))
 #endif
             {
                 static_assert(
@@ -148,7 +147,7 @@ namespace alpaka
                     TRand,
                     T>
                 ::createUniformUint(
-                    std::declval<TRand const &>()))
+                    rand))
 #endif
             {
                 static_assert(
@@ -292,9 +291,9 @@ namespace alpaka
                 traits::CreateDefault<
                     TRand>
                 ::createDefault(
-                    std::declval<TRand const &>(),
-                    std::declval<std::uint32_t const &>(),
-                    std::declval<std::uint32_t const &>()))
+                    rand,
+                    seed,
+                    subsequence))
 #endif
             {
                 return

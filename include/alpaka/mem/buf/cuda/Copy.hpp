@@ -550,7 +550,7 @@ namespace alpaka
                         typename TExtent,
                         typename TViewSrc,
                         typename TViewDst>
-                    ALPAKA_FN_HOST static auto buildCudaMemcpy3DParms(
+                    ALPAKA_FN_HOST auto buildCudaMemcpy3DParms(
                         mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DParms
                     {
@@ -608,7 +608,7 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    ALPAKA_FN_HOST static auto buildCudaMemcpy3DPeerParms(
+                    ALPAKA_FN_HOST auto buildCudaMemcpy3DPeerParms(
                         mem::view::cuda::detail::TaskCopy<dim::DimInt<2>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DPeerParms
                     {
@@ -670,7 +670,7 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    ALPAKA_FN_HOST static auto buildCudaMemcpy3DPeerParms(
+                    ALPAKA_FN_HOST auto buildCudaMemcpy3DPeerParms(
                         mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DPeerParms
                     {
