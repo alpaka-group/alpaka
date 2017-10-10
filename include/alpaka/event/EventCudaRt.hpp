@@ -388,7 +388,7 @@ namespace alpaka
                             dev.m_iDevice));
 
                     ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
-                        0,
+                        nullptr,
                         event.m_spEventImpl->m_CudaEvent,
                         0));
                 }
