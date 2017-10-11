@@ -18,7 +18,9 @@
  * along with alpaka.
  * If not, see <http://www.gnu.org/licenses/>.
  */
-
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#   define BOOST_TEST_DYN_LINK
+#endif
 #define BOOST_TEST_MODULE event
 
 #include <boost/predef.h>   // BOOST_COMP_CLANG
