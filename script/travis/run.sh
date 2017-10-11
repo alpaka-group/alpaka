@@ -37,6 +37,8 @@ cmake --version
 # CUDA
 export PATH=/usr/local/cuda-${ALPAKA_CUDA_VER}/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VER}/lib64:$LD_LIBRARY_PATH
+# We have to explicitly add the stub libcuda.so to CUDA_LIB_PATH because the real one would be installed by the driver (which we can not install).
+export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs/
 
 if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
 then

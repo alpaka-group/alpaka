@@ -46,7 +46,7 @@
 //  For example, the execution configuration syntax to invoke kernels is only available in source code compiled with nvcc.
 #include <cuda_runtime.h>
 // cuda.h: CUDA Driver API
-//#include <cuda.h>
+#include <cuda.h>
 
 #include <array>                            // std::array
 #include <type_traits>                      // std::enable_if
@@ -60,9 +60,9 @@
     #error "CUDA version 7.0 or greater required!"
 #endif
 
-/*#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 7000))
+#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 7000))
     #error "CUDA version 7.0 or greater required!"
-#endif*/
+#endif
 
 namespace alpaka
 {
@@ -169,7 +169,7 @@ namespace alpaka
 #define ALPAKA_CUDA_RT_CHECK(cmd)\
     ALPAKA_CUDA_RT_CHECK_IGNORE(cmd)
 
-/*namespace alpaka
+namespace alpaka
 {
     namespace cuda
     {
@@ -178,17 +178,16 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! CUDA driver API error checking with log and exception, ignoring specific error values
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto cudaDrvCheck(
-                cudaError_t const & error,
-                char const * cmd,
+            ALPAKA_FN_HOST inline auto cudaDrvCheck(
+                CUresult const & error,
+                char const * desc,
                 char const * file,
                 int const & line)
             -> void
             {
-                // Even if we get the error directly from the command, we have to reset the global error state by getting it.
                 if(error != CUDA_SUCCESS)
                 {
-                    std::string const sError(std::to_string(file) + "(" + std::to_string(line) + ") '" + std::to_string(cmd) + "' returned error: '" + std::to_string(error) + "' (possibly from a previous CUDA call)!");
+                    std::string const sError(std::string(file) + "(" + std::to_string(line) + ") " + std::string(desc) + " : '" + cudaGetErrorName(static_cast<cudaError_t>(error)) +  "': '" + std::string(cudaGetErrorString(static_cast<cudaError_t>(error))) + "'!");
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     std::cerr << sError << std::endl;
 #endif
@@ -204,7 +203,7 @@ namespace alpaka
 //! CUDA driver error checking with log and exception.
 //-----------------------------------------------------------------------------
 #define ALPAKA_CUDA_DRV_CHECK(cmd)\
-    ::cuda::detail::cudaDrvCheck(cmd, #cmd, __FILE__, __LINE__)*/
+    ::alpaka::cuda::detail::cudaDrvCheck(cmd, #cmd, __FILE__, __LINE__)
 
 
 //-----------------------------------------------------------------------------
