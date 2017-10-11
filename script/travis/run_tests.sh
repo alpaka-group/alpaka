@@ -34,20 +34,21 @@ trap 'err=1' ERR
 
 #-------------------------------------------------------------------------------
 # Build and execute all unit tests.
-./script/travis/compileExec.sh "test/unit/acc/" ./acc
-./script/travis/compileExec.sh "test/unit/atomic/" ./atomic
-./script/travis/compileExec.sh "test/unit/block/shared/" ./blockShared
-./script/travis/compileExec.sh "test/unit/block/sync/" ./blockSync
-./script/travis/compileExec.sh "test/unit/event/" ./event
-./script/travis/compileExec.sh "test/unit/idx/" ./idx
-./script/travis/compileExec.sh "test/unit/kernel/" ./kernel
-./script/travis/compileExec.sh "test/unit/mem/buf/" ./memBuf
-./script/travis/compileExec.sh "test/unit/mem/view/" ./memView
-./script/travis/compileExec.sh "test/unit/meta/" ./meta
-./script/travis/compileExec.sh "test/unit/rand/" ./rand
-./script/travis/compileExec.sh "test/unit/stream/" ./stream
-./script/travis/compileExec.sh "test/unit/time/" ./time
-./script/travis/compileExec.sh "test/unit/vec/" ./vec
+BOOST_TEST_OPTIONS="--log_level=test_suite --color_output=true"
+./script/travis/compileExec.sh "test/unit/acc/" "./acc ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/atomic/" "./atomic ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/block/shared/" "./blockShared ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/block/sync/" "./blockSync ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/event/" "./event ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/idx/" "./idx ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/kernel/" "./kernel ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/mem/buf/" "./memBuf ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/mem/view/" "./memView ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/meta/" "./meta ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/rand/" "./rand ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/stream/" "./stream ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/time/" "./time ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/vec/" "./vec ${BOOST_TEST_OPTIONS}"
 
 #-------------------------------------------------------------------------------
 # Build and execute all integration tests.
