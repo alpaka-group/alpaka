@@ -350,6 +350,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 IF(NOT CUDA_VERSION VERSION_LESS 7.5)
                     LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
+                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
+                ELSE()
+                    # CUDA 7.0
+                    LIST(APPEND CUDA_NVCC_FLAGS "--relaxed-constexpr")
                 ENDIF()
 
                 FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
