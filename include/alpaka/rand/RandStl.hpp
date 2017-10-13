@@ -43,6 +43,131 @@ namespace alpaka
             using RandBase = RandStl;
         };
 
+        namespace generator
+        {
+            namespace cpu
+            {
+                //#############################################################################
+                //! The STL mersenne twister random number generator.
+                //#############################################################################
+                class MersenneTwister
+                {
+                public:
+
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_NO_CUDA MersenneTwister() = default;
+
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_NO_CUDA MersenneTwister(
+                        std::uint32_t const & seed,
+                        std::uint32_t const & subsequence = 0,
+                        std::uint32_t const & offset = 0) :
+                        // NOTE: XOR the seed and the subsequence to generate a unique seed.
+                        m_State((seed ^ subsequence) + offset)
+                    {
+                    }
+
+                public:
+                    std::mt19937 m_State;
+                };
+            }
+        }
+
+        namespace distribution
+        {
+            namespace cpu
+            {
+                //#############################################################################
+                //! The CPU random number normal distribution.
+                //#############################################################################
+                template<
+                    typename T>
+                class NormalReal
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    NormalReal() = default;
+
+                    //-----------------------------------------------------------------------------
+                    //! Call operator.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TGenerator>
+                    ALPAKA_FN_ACC_NO_CUDA auto operator()(
+                        TGenerator & generator)
+                    -> T
+                    {
+                        return m_dist(generator.m_State);
+                    }
+                    std::normal_distribution<T> m_dist;
+                };
+
+                //#############################################################################
+                //! The CPU random number uniform distribution.
+                //#############################################################################
+                template<
+                    typename T>
+                class UniformReal
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    UniformReal() = default;
+
+                    //-----------------------------------------------------------------------------
+                    //! Call operator.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TGenerator>
+                    ALPAKA_FN_ACC_NO_CUDA auto operator()(
+                        TGenerator & generator)
+                    -> T
+                    {
+                        return m_dist(generator.m_State);
+                    }
+                    std::uniform_real_distribution<T> m_dist;
+                };
+
+                //#############################################################################
+                //! The CPU random number normal distribution.
+                //#############################################################################
+                template<
+                    typename T>
+                class UniformUint
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    UniformUint() :
+                        m_dist(
+                            0,  // For signed integer: std::numeric_limits<T>::lowest()
+                            std::numeric_limits<T>::max())
+                    {}
+
+                    //-----------------------------------------------------------------------------
+                    //! Call operator.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TGenerator>
+                    ALPAKA_FN_ACC_NO_CUDA auto operator()(
+                        TGenerator & generator)
+                    -> T
+                    {
+                        return m_dist(generator.m_State);
+                    }
+                    std::uniform_int_distribution<T> m_dist;
+                };
+            }
+        }
+
         namespace distribution
         {
             namespace traits
@@ -63,10 +188,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createNormalReal(
                         RandStl const & rand)
-                    -> std::normal_distribution<T>
+                    -> rand::distribution::cpu::NormalReal<T>
                     {
                         boost::ignore_unused(rand);
-                        return std::normal_distribution<T>();
+                        return rand::distribution::cpu::NormalReal<T>();
                     }
                 };
                 //#############################################################################
@@ -85,10 +210,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createUniformReal(
                         RandStl const & rand)
-                    -> std::uniform_real_distribution<T>
+                    -> rand::distribution::cpu::UniformReal<T>
                     {
                         boost::ignore_unused(rand);
-                        return std::uniform_real_distribution<T>();
+                        return rand::distribution::cpu::UniformReal<T>();
                     }
                 };
                 //#############################################################################
@@ -107,12 +232,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createUniformUint(
                         RandStl const & rand)
-                    -> std::uniform_int_distribution<T>
+                    -> rand::distribution::cpu::UniformUint<T>
                     {
                         boost::ignore_unused(rand);
-                        return std::uniform_int_distribution<T>(
-                            0,  // For signed integer: std::numeric_limits<T>::lowest()
-                            std::numeric_limits<T>::max());
+                        return rand::distribution::cpu::UniformUint<T>();
                     }
                 };
             }
@@ -135,11 +258,12 @@ namespace alpaka
                         RandStl const & rand,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
-                    -> std::mt19937
+                    -> rand::generator::cpu::MersenneTwister
                     {
                         boost::ignore_unused(rand);
-                        // NOTE: XOR the seed and the subsequence to generate a unique seed.
-                        return std::mt19937(seed ^ subsequence);
+                        return rand::generator::cpu::MersenneTwister(
+                            seed,
+                            subsequence);
                     }
                 };
             }
