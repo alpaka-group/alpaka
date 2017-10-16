@@ -30,6 +30,7 @@
 
 #include <alpaka/meta/IntegerSequence.hpp>  // meta::MakeIntegerSequence
 #include <alpaka/meta/Fold.hpp>             // meta::foldr
+#include <alpaka/meta/Metafunctions.hpp>    // meta::Conjunction
 #include <alpaka/core/Align.hpp>            // ALPAKA_OPTIMAL_ALIGNMENT_SIZE
 #include <alpaka/core/Assert.hpp>           // assertValueUnsigned
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
@@ -187,18 +188,22 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
-                typename TArg0,
                 typename... TArgs,
                 typename = typename std::enable_if<
                     // There have to be dim arguments.
-                    (sizeof...(TArgs)+1 == TDim::value)
+                    (sizeof...(TArgs) == TDim::value)
                     &&
-                    (std::is_same<TSize, typename std::decay<TArg0>::type>::value)
-                    >::type>
+                    // They all have to have type TSize
+                    meta::Conjunction<
+                        std::is_same<
+                            typename std::decay<TArgs>::type,
+                            TSize
+                        >...
+                    >::value
+                >::type>
             ALPAKA_FN_HOST_ACC Vec(
-                TArg0 && arg0,
                 TArgs && ... args) :
-                    m_data{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
+                    m_data{std::forward<TArgs>(args)...}
             {}
 
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
