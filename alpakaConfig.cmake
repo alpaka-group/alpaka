@@ -289,7 +289,11 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
         ELSE()
             SET(ALPAKA_CUDA_VERSION "${CUDA_VERSION}")
-            SET(ALPAKA_CUDA_ARCH "20" CACHE STRING "GPU architecture")
+            IF(CUDA_VERSION VERSION_LESS 9.0)
+                SET(ALPAKA_CUDA_ARCH "20" CACHE STRING "GPU architecture")
+            ELSE()
+                SET(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
+            ENDIF()
             SET(ALPAKA_CUDA_COMPILER "nvcc" CACHE STRING "CUDA compiler")
             SET_PROPERTY(CACHE ALPAKA_CUDA_COMPILER PROPERTY STRINGS "nvcc;clang")
 
