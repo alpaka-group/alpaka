@@ -361,7 +361,7 @@ namespace alpaka
             {
                 core::assertValueUnsigned(iIdx);
                 auto const idx(static_cast<typename TDim::value_type>(iIdx));
-                assert(idx<TDim::value);
+                assert(TDim::value > 0u && idx<TDim::value);
                 return m_data[idx];
             }
 
@@ -380,7 +380,7 @@ namespace alpaka
             {
                 core::assertValueUnsigned(iIdx);
                 auto const idx(static_cast<typename TDim::value_type>(iIdx));
-                assert(idx<TDim::value);
+                assert(TDim::value > 0u && idx<TDim::value);
                 return m_data[idx];
             }
 
