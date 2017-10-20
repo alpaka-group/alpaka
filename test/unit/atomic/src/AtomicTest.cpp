@@ -104,7 +104,7 @@ public:
                         &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
-            T const reference = std::min(operandOrig, value);
+            T const reference = (operandOrig < value) ? operandOrig : value;
             BOOST_VERIFY(operand == reference);
         }
 
@@ -120,7 +120,7 @@ public:
                         &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
-            T const reference = std::max(operandOrig, value);
+            T const reference = (operandOrig > value) ? operandOrig : value;
             BOOST_VERIFY(operand == reference);
         }
 
