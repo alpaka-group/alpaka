@@ -23,24 +23,24 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
+#include <alpaka/dev/DevCudaRt.hpp>
 
-#include <alpaka/dev/Traits.hpp>        // dev::GetDev, dev::DevType
-#include <alpaka/event/Traits.hpp>      // event::EventType
-#include <alpaka/stream/Traits.hpp>     // stream::traits::Enqueue, ...
-#include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/event/Traits.hpp>
+#include <alpaka/stream/Traits.hpp>
+#include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK
+#include <alpaka/core/Cuda.hpp>
 
-#include <stdexcept>                    // std::runtime_error
-#include <memory>                       // std::shared_ptr
-#include <functional>                   // std::bind
+#include <stdexcept>
+#include <memory>
+#include <functional>
 
 namespace alpaka
 {

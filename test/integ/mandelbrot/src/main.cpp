@@ -19,16 +19,16 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>                        // alpaka::exec::create
-#include <alpaka/test/MeasureKernelRunTime.hpp>     // measureKernelRunTimeMs
-#include <alpaka/test/acc/Acc.hpp>                  // EnabledAccs
-#include <alpaka/test/stream/Stream.hpp>            // DefaultStream
+#include <alpaka/alpaka.hpp>
+#include <alpaka/test/MeasureKernelRunTime.hpp>
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/stream/Stream.hpp>
 
-#include <iostream>                                 // std::cout
-#include <typeinfo>                                 // typeid
-#include <cassert>                                  // assert
-#include <fstream>                                  // std::ofstream
-#include <algorithm>                                // std::replace
+#include <iostream>
+#include <typeinfo>
+#include <cassert>
+#include <fstream>
+#include <algorithm>
 
 //#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
 

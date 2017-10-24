@@ -21,19 +21,19 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/dev/DevCpu.hpp>
 
-#include <alpaka/dev/Traits.hpp>                // dev::GetDev, dev::DevType
-#include <alpaka/event/Traits.hpp>              // event::EventType
-#include <alpaka/stream/Traits.hpp>             // stream::traits::Enqueue, ...
-#include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/event/Traits.hpp>
+#include <alpaka/stream/Traits.hpp>
+#include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
+#include <alpaka/core/ConcurrentExecPool.hpp>
 
-#include <type_traits>                          // std::is_base
-#include <thread>                               // std::thread
-#include <mutex>                                // std::mutex
-#include <future>                               // std::promise
+#include <type_traits>
+#include <thread>
+#include <mutex>
+#include <future>
 
 namespace alpaka
 {

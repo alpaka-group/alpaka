@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_*
-#include <alpaka/meta/Set.hpp>      // core::IsSet
+#include <alpaka/core/Common.hpp>
+#include <alpaka/meta/Set.hpp>
 
-#include <boost/predef.h>           // workarounds
+#include <boost/predef.h>
 
-#include <type_traits>              // std::is_integral
-#include <cstddef>                  // std::size_t
+#include <type_traits>
+#include <cstddef>
 
 namespace alpaka
 {

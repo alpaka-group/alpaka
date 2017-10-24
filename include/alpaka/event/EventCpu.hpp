@@ -21,22 +21,22 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>            // dev::DevCpu
-#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
-#include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
+#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/stream/StreamCpuAsync.hpp>
+#include <alpaka/stream/StreamCpuSync.hpp>
 
-#include <alpaka/dev/Traits.hpp>            // GetDev
-#include <alpaka/event/Traits.hpp>          // event::traits::Test, ...
-#include <alpaka/wait/Traits.hpp>           // CurrentThreadWaitFor
-#include <alpaka/dev/Traits.hpp>            // GetDev
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/event/Traits.hpp>
+#include <alpaka/wait/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <cassert>                          // assert
-#include <mutex>                            // std::mutex
-#include <condition_variable>               // std::condition_variable
+#include <cassert>
+#include <mutex>
+#include <condition_variable>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-    #include <iostream>                     // std::cout
+    #include <iostream>
 #endif
 
 namespace alpaka

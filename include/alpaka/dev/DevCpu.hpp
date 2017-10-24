@@ -21,19 +21,19 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
-#include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
-#include <alpaka/pltf/Traits.hpp>       // pltf::traits::PltfType
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/mem/buf/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
 
-#include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getTotalGlobalMemSizeBytes, getFreeGlobalMemSizeBytes
+#include <alpaka/dev/cpu/SysInfo.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <map>                          // std::map
-#include <mutex>                        // std::mutex
-#include <memory>                       // std::shared_ptr
-#include <vector>                       // std::vector
-#include <algorithm>                    // std::find_if
+#include <map>
+#include <mutex>
+#include <memory>
+#include <vector>
+#include <algorithm>
 
 namespace alpaka
 {

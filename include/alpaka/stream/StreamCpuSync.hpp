@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/dev/DevCpu.hpp>
 
-#include <alpaka/dev/Traits.hpp>                // dev::GetDev, dev::DevType
-#include <alpaka/event/Traits.hpp>              // event::EventType
-#include <alpaka/stream/Traits.hpp>             // stream::traits::Enqueue, ...
-#include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/event/Traits.hpp>
+#include <alpaka/stream/Traits.hpp>
+#include <alpaka/wait/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {

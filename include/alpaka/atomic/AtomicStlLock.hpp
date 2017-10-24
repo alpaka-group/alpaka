@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/atomic/Traits.hpp>                 // AtomicOp
+#include <alpaka/atomic/Traits.hpp>
 
-#include <mutex>                                    // std::mutex, std::lock_guard
+#include <mutex>
 #include <array>
 
 namespace alpaka

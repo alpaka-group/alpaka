@@ -23,15 +23,15 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/idx/Traits.hpp>            // idx::GetIdx
+#include <alpaka/idx/Traits.hpp>
 
-#include <alpaka/idx/MapIdx.hpp>            // idx::mapIdx
+#include <alpaka/idx/MapIdx.hpp>
 
 #include <alpaka/core/OpenMp.hpp>
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <cassert>                          // assert
+#include <cassert>
 
 namespace alpaka
 {

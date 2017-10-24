@@ -23,13 +23,13 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/time/Traits.hpp>       // time::Clock
+#include <alpaka/time/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
+#include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <omp.h>                        // omp_get_wtime
+#include <omp.h>
 
 namespace alpaka
 {

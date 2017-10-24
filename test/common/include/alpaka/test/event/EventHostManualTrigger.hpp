@@ -23,8 +23,8 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <mutex>                        // std::mutex
-#include <condition_variable>           // std::condition_variable
+#include <mutex>
+#include <condition_variable>
 
 namespace alpaka
 {
@@ -348,7 +348,7 @@ namespace alpaka
 
 #include <cuda.h>
 
-#include <alpaka/core/Common.hpp>                   // ALPAKA_FN_*, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
@@ -356,7 +356,7 @@ namespace alpaka
 
 #if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(8, 0, 0)
 
-#include <alpaka/core/Cuda.hpp>                     // ALPAKA_CUDA_RT_CHECK
+#include <alpaka/core/Cuda.hpp>
 
 namespace alpaka
 {

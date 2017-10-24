@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
+#include <alpaka/rand/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
+#include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <random>                       // std::mt19937, std::uniform_real_distribution, ...
-#include <type_traits>                  // std::enable_if
+#include <random>
+#include <type_traits>
 
 namespace alpaka
 {

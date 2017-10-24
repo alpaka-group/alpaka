@@ -23,7 +23,7 @@
 
 #include <alpaka/core/Debug.hpp>
 
-#include <boost/predef/version_number.h>    // BOOST_VERSION_NUMBER
+#include <boost/predef/version_number.h>
 
 // Boost.Uuid errors with VS2017 when intrin.h is not included
 #if defined(_MSC_VER) && _MSC_VER >= 1910
