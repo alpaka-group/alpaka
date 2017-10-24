@@ -369,10 +369,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 IF(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
                     LIST(APPEND CUDA_NVCC_FLAGS "-g")
                     # https://github.com/ComputationalRadiationPhysics/alpaka/issues/428
-                    IF(CMAKE_COMPILER_IS_GNUCXX AND
-                       CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0 AND
-                       CUDA_VERSION VERSION_EQUAL 8.0)
-                        MESSAGE(WARNING "GCC 4.9 does not support -G with CUDA8! "
+                    IF(((CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0) OR
+                        (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.8)) AND
+                        CUDA_VERSION VERSION_LESS 9.0)
+                        MESSAGE(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} not support -G with CUDA <= 8! "
                                         "Device debug symbols NOT added.")
                     ELSE()
                         LIST(APPEND CUDA_NVCC_FLAGS "-G")
