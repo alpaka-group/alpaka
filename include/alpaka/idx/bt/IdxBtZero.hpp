@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>            // idx::getIdx
+#include <alpaka/idx/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {

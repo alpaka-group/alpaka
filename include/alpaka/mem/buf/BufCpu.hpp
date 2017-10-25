@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Vectorize.hpp>            // defaultAlignment
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/core/Vectorize.hpp>
+#include <alpaka/dev/DevCpu.hpp>
 
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/mem/buf/Traits.hpp>            // mem::buf::Alloc, ...
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/mem/buf/Traits.hpp>
 
-#include <alpaka/vec/Vec.hpp>                   // Vec
+#include <alpaka/vec/Vec.hpp>
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
@@ -36,13 +36,13 @@
 
 #include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
 
-#include <alpaka/meta/DependentFalseType.hpp>   // meta::DependentFalseType
+#include <alpaka/meta/DependentFalseType.hpp>
 
 #if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+    #include <boost/core/ignore_unused.hpp>
 #endif
 
-#include <memory>                               // std::shared_ptr
+#include <memory>
 
 namespace alpaka
 {

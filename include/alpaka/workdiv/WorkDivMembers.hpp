@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/workdiv/Traits.hpp>    // GetWorkDiv
-#include <alpaka/size/Traits.hpp>       // size::Size
+#include <alpaka/workdiv/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
-#include <alpaka/vec/Vec.hpp>           // Vec
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
+#include <alpaka/vec/Vec.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <iosfwd>                       // std::ostream
+#include <iosfwd>
 
 namespace alpaka
 {

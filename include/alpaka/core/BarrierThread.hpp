@@ -24,14 +24,14 @@
 // Uncomment this to disable the standard spinlock behaviour of the threads
 //#define ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
-#include <alpaka/block/sync/Traits.hpp> // block::sync::op::LogicalOr, LogicalAnd, Count
+#include <alpaka/core/Common.hpp>
+#include <alpaka/block/sync/Traits.hpp>
 
-#include <mutex>                        // std::mutex
-#include <condition_variable>           // std::condition_variable
+#include <mutex>
+#include <condition_variable>
 #ifndef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
-    #include <atomic>                   // std::atomic
-    #include <thread>                   // std::this_thread::yield
+    #include <atomic>
+    #include <thread>
 #endif
 
 namespace alpaka

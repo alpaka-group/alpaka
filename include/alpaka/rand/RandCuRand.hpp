@@ -23,21 +23,21 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
+#include <alpaka/rand/Traits.hpp>
 
-#include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
+#include <alpaka/dev/DevCudaRt.hpp>
 
-#include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK
+#include <alpaka/core/Cuda.hpp>
 
-#include <curand_kernel.h>              // curand_init, ...
+#include <curand_kernel.h>
 
-#include <type_traits>                  // std::enable_if
+#include <type_traits>
 
 namespace alpaka
 {

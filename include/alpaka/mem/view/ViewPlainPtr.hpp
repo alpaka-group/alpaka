@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/mem/view/Traits.hpp>   // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
+#include <alpaka/mem/view/Traits.hpp>
 
-#include <alpaka/vec/Vec.hpp>           // Vec<N>
-#include <alpaka/dev/DevCpu.hpp>        // DevCpu
-#include <alpaka/dev/DevCudaRt.hpp>     // DevCudaRt
+#include <alpaka/vec/Vec.hpp>
+#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/dev/DevCudaRt.hpp>
 
 namespace alpaka
 {

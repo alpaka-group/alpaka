@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/time/Traits.hpp>       // time::Clock
+#include <alpaka/time/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_*
+#include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-//#include <ctime>                        // std::clock
-#include <chrono>                       // std::chrono::high_resolution_clock
+//#include <ctime>
+#include <chrono>
 
 namespace alpaka
 {

@@ -21,18 +21,18 @@
 
 #pragma once
 
-#include <alpaka/meta/IntegerSequence.hpp>  // IntegerSequence
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_*
-#include <alpaka/meta/Fold.hpp>             // meta::foldr
-#include <alpaka/size/Traits.hpp>           // size::Size
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt
+#include <alpaka/meta/IntegerSequence.hpp>
+#include <alpaka/core/Common.hpp>
+#include <alpaka/meta/Fold.hpp>
+#include <alpaka/size/Traits.hpp>
+#include <alpaka/dim/DimIntegralConst.hpp>
 
 #if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+    #include <boost/core/ignore_unused.hpp>
 #endif
 
-#include <type_traits>                      // std::enable_if
-#include <functional>                       // std::multiplies
+#include <type_traits>
+#include <functional>
 
 namespace alpaka
 {

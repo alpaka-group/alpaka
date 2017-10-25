@@ -23,39 +23,39 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>                   // ALPAKA_FN_*, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 // Base classes.
-#include <alpaka/workdiv/WorkDivCudaBuiltIn.hpp>    // WorkDivCudaBuiltIn
-#include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>       // IdxGbCudaBuiltIn
-#include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>       // IdxBtCudaBuiltIn
-#include <alpaka/atomic/AtomicCudaBuiltIn.hpp>      // AtomicCudaBuiltIn
-#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
-#include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
-#include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp> // BlockSharedMemDynCudaBuiltIn
-#include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>   // BlockSharedMemStCudaBuiltIn
-#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>               // BlockSyncCudaBuiltIn
-#include <alpaka/rand/RandCuRand.hpp>               // RandCuRand
-#include <alpaka/time/TimeCudaBuiltIn.hpp>          // TimeCudaBuiltIn
+#include <alpaka/workdiv/WorkDivCudaBuiltIn.hpp>
+#include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>
+#include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>
+#include <alpaka/atomic/AtomicCudaBuiltIn.hpp>
+#include <alpaka/atomic/AtomicHierarchy.hpp>
+#include <alpaka/math/MathCudaBuiltIn.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp>
+#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>
+#include <alpaka/rand/RandCuRand.hpp>
+#include <alpaka/time/TimeCudaBuiltIn.hpp>
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>                    // dev::traits::DevType
-#include <alpaka/exec/Traits.hpp>                   // exec::traits::ExecType
-#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>                   // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/dev/DevCudaRt.hpp>                 // dev::DevCudaRt
-#include <alpaka/core/Cuda.hpp>                     // ALPAKA_CUDA_RT_CHECK
+#include <alpaka/dev/DevCudaRt.hpp>
+#include <alpaka/core/Cuda.hpp>
 
-#include <boost/predef.h>                           // workarounds
+#include <boost/predef.h>
 
-#include <typeinfo>                                 // typeid
+#include <typeinfo>
 
 namespace alpaka
 {
