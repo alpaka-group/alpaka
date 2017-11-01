@@ -36,13 +36,10 @@
 //! Computes C += A*B. LxM * MxN -> LxN
 //! This is an adaption of the algorithm from the CUDA developers guide.
 //! \tparam TAcc The accelerator environment to be executed on.
-//#############################################################################
 class MatMulKernel
 {
 public:
     //-----------------------------------------------------------------------------
-    //! The kernel entrypoint.
-    //!
     //! \tparam TElem The matrix element type.
     //! \param acc The accelerator to be executed on.
     //! \param m The height of the A matrix.
@@ -54,7 +51,6 @@ public:
     //! \param ldb The pitch of the B matrix in elements.
     //! \param C The pointer to the matrix C data.
     //! \param ldc The pitch of the C matrix in elements.
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TAcc,
@@ -164,7 +160,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The trait for getting the size of the block shared dynamic memory for a kernel.
-            //#############################################################################
             template<
                 typename TAcc>
             struct BlockSharedMemDynSizeBytes<
@@ -173,7 +168,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The size of the shared memory allocated for a block.
-                //-----------------------------------------------------------------------------
                 template<
                     typename TVec,
                     typename TIndex,
@@ -218,7 +212,6 @@ namespace alpaka
 
 //#############################################################################
 //! Profiles the example kernel and checks the result.
-//#############################################################################
 struct MatMulTester
 {
     template<
@@ -386,9 +379,6 @@ public:
     bool allResultsCorrect = true;
 };
 
-//-----------------------------------------------------------------------------
-//! Program entry point.
-//-----------------------------------------------------------------------------
 auto main()
 -> int
 {

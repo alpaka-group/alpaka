@@ -26,11 +26,11 @@
 #include <cstdint>
 #include <cassert>
 
-/**
- * Prints all elements of the buffer.
- */
+//#############################################################################
+//! Prints all elements of the buffer.
 struct PrintBufferKernel
 {
+    //-----------------------------------------------------------------------------
     template<
         typename TAcc,
         typename TData,
@@ -57,11 +57,11 @@ struct PrintBufferKernel
 };
 
 
-/**
- * Tests if the value of the buffer on index i is equal to i.
- */
+//#############################################################################
+//! Tests if the value of the buffer on index i is equal to i.
 struct TestBufferKernel
 {
+    //-----------------------------------------------------------------------------
     template<
         typename TAcc,
         typename TData,
@@ -90,11 +90,11 @@ struct TestBufferKernel
     }
 };
 
-/**
- * Inits all values of a buffer with initValue.
- */
+//#############################################################################
+//! Inits all values of a buffer with initValue.
 struct InitBufferKernel
 {
+    //-----------------------------------------------------------------------------
     template<
         typename TAcc,
         typename TData,
@@ -120,9 +120,8 @@ struct InitBufferKernel
     }
 };
 
-/**
- * Fills values of buffer with increasing elements starting from 0
- */
+//#############################################################################
+//! Fills values of buffer with increasing elements starting from 0
 struct FillBufferKernel
 {
     template<
@@ -152,9 +151,7 @@ struct FillBufferKernel
 auto main()
 -> int
 {
-    /***************************************************************************
-     * Configure types
-     **************************************************************************/
+    // Configure types
     using Dim = alpaka::dim::DimInt<3>;
     using Size = std::size_t;
     using Extents = Size;
@@ -167,21 +164,15 @@ auto main()
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
     using Stream = alpaka::stream::StreamCpuSync;
 
-    /***************************************************************************
-     * Get the first device
-     **************************************************************************/
+    // Get the first device
     DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
     DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
-    /***************************************************************************
-     * Create sync stream
-     **************************************************************************/
+    // Create sync stream
     Stream stream(devAcc);
 
 
-    /***************************************************************************
-     * Init workdiv
-     **************************************************************************/
+    // Init workdiv
     alpaka::vec::Vec<Dim, Size> const elementsPerThread(
         static_cast<Size>(1),
         static_cast<Size>(1),
@@ -203,16 +194,14 @@ auto main()
         elementsPerThread);
 
 
-    /**
-     * Create host and device buffers
-     *
-     * A buffer is an n-dimensional structure with a
-     * particular data type and size which corresponds
-     * to memory on the desired device. Buffers can be
-     * allocated on the device or can be obtained from
-     * already existing allocations e.g. std::array,
-     * std::vector or a simple call to new.
-     **/
+    // Create host and device buffers
+    //
+    // A buffer is an n-dimensional structure with a
+    // particular data type and size which corresponds
+    // to memory on the desired device. Buffers can be
+    // allocated on the device or can be obtained from
+    // already existing allocations e.g. std::array,
+    // std::vector or a simple call to new.
     using Data = std::uint32_t;
     constexpr Extents nElementsPerDim = 2;
 
@@ -228,18 +217,16 @@ auto main()
     alpaka::mem::buf::Buf<DevAcc, Data, Dim, Size> deviceBuffer2(alpaka::mem::buf::alloc<Data, Size>(devAcc, extents));
 
 
-    /**
-     * Init plain host buffer
-     *
-     * The buffer obtained from a plain pointer
-     * of the host is initialized here with the
-     * value zero. It is recommended to use a
-     * kernel for such a task, since a kernel
-     * can speed up the initialization process.
-     * The buffer can be provided to a kernel
-     * by passing the native pointer of the memory
-     * within the buffer (getPtrNative).
-     */
+    // Init plain host buffer
+    //
+    // The buffer obtained from a plain pointer
+    // of the host is initialized here with the
+    // value zero. It is recommended to use a
+    // kernel for such a task, since a kernel
+    // can speed up the initialization process.
+    // The buffer can be provided to a kernel
+    // by passing the native pointer of the memory
+    // within the buffer (getPtrNative).
     InitBufferKernel initBufferKernel;
     Data const initValue = 0u;
 
@@ -254,34 +241,30 @@ auto main()
     alpaka::stream::enqueue(stream, init);
 
 
-    /**
-     * Write some data to the host buffer
-     *
-     * The buffer can not access the inner
-     * elements by some access operator
-     * directly, but it can return the
-     * pointer to the memory within the
-     * buffer (getPtrNative). This pointer
-     * can be used to write some values into
-     * the buffer memory. Mind, that only a host
-     * can write on host memory. The same holds
-     * for device memory.
-     */
+    // Write some data to the host buffer
+    //
+    // The buffer can not access the inner
+    // elements by some access operator
+    // directly, but it can return the
+    // pointer to the memory within the
+    // buffer (getPtrNative). This pointer
+    // can be used to write some values into
+    // the buffer memory. Mind, that only a host
+    // can write on host memory. The same holds
+    // for device memory.
     for(size_t i(0); i < extents.prod(); ++i)
     {
         alpaka::mem::view::getPtrNative(hostBuffer)[i] = static_cast<Data>(i);
     }
 
 
-    /**
-     * Fill plain host with increasing data
-     *
-     * A buffer can also be filled by a special
-     * buffer fill kernel. This has the advantage,
-     * that the kernel can be performed on any
-     * buffer (device or host) and can be
-     * run in parallel.
-     */
+    // Fill plain host with increasing data
+    //
+    // A buffer can also be filled by a special
+    // buffer fill kernel. This has the advantage,
+    // that the kernel can be performed on any
+    // buffer (device or host) and can be
+    // run in parallel.
     FillBufferKernel fillBufferKernel;
     auto const fill(
         alpaka::exec::create<Host>(
@@ -293,36 +276,32 @@ auto main()
     alpaka::stream::enqueue(stream, fill);
 
 
-    /**
-     * Copy host to device Buffer
-     *
-     * A copy operation of one buffer into
-     * another buffer is enqueued into a stream
-     * like it is done for kernel execution, but
-     * more automatically. Copy is only possible
-     * from host to host, host to device and
-     * device to host. Some devices also support
-     * device to device copy, but this is not true
-     * in general. However, currently all
-     * (both CPU and GPU) devices support it.
-     * As always within alpaka, you will get a compile
-     * time error if the desired copy coperation
-     * (e.g. between various accelerator devices) is
-     * not currently supported.
-     * In this example both host buffers are copied
-     * into device buffers.
-     */
+    // Copy host to device Buffer
+    //
+    // A copy operation of one buffer into
+    // another buffer is enqueued into a stream
+    // like it is done for kernel execution, but
+    // more automatically. Copy is only possible
+    // from host to host, host to device and
+    // device to host. Some devices also support
+    // device to device copy, but this is not true
+    // in general. However, currently all
+    // (both CPU and GPU) devices support it.
+    // As always within alpaka, you will get a compile
+    // time error if the desired copy coperation
+    // (e.g. between various accelerator devices) is
+    // not currently supported.
+    // In this example both host buffers are copied
+    // into device buffers.
     alpaka::mem::view::copy(stream, deviceBuffer1, hostBufferPlain, extents);
     alpaka::mem::view::copy(stream, deviceBuffer2, hostBuffer, extents);
 
 
-    /**
-     * Test device Buffer
-     *
-     * This kernel tests if the copy operations
-     * were successful. In the case something
-     * went wrong an assert will fail.
-     */
+    // Test device Buffer
+    //
+    // This kernel tests if the copy operations
+    // were successful. In the case something
+    // went wrong an assert will fail.
     TestBufferKernel testBufferKernel;
     auto const test1(
         alpaka::exec::create<Acc>(
@@ -342,17 +321,15 @@ auto main()
     alpaka::stream::enqueue(stream, test2);
 
 
-    /**
-     * Print device Buffer
-     *
-     * Because we really like to flood our
-     * terminal with numbers, the following
-     * kernel prints all numbers of the
-     * device buffer to stdout on the terminal.
-     * Since this possibly is a parallel operation,
-     * the output can appear in any order or even
-     * completely distorted.
-     */
+    // Print device Buffer
+    //
+    // Because we really like to flood our
+    // terminal with numbers, the following
+    // kernel prints all numbers of the
+    // device buffer to stdout on the terminal.
+    // Since this possibly is a parallel operation,
+    // the output can appear in any order or even
+    // completely distorted.
     PrintBufferKernel printBufferKernel;
     auto const print1(
         alpaka::exec::create<Acc>(
@@ -373,8 +350,5 @@ auto main()
     std::cout << std::endl;
     alpaka::stream::enqueue(stream, print2);
 
-    /**
-     * No copy failure, so lets return :)
-     */
     return EXIT_SUCCESS;
 }
