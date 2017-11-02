@@ -42,7 +42,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library remainder.
-        //#############################################################################
         class RemainderCudaBuiltIn
         {
         public:
@@ -53,7 +52,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library remainder trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Remainder<

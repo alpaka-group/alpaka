@@ -47,8 +47,6 @@
 BOOST_AUTO_TEST_SUITE(stream)
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     streamCallbackIsWorking,
     TDevStream,
@@ -73,8 +71,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 }
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     streamIsInitiallyEmpty,
     TDevStream,
@@ -86,8 +82,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     BOOST_REQUIRE_EQUAL(true, alpaka::stream::empty(f.m_stream));
 }
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     streamShouldBeEmptyAfterProcessingFinished,
@@ -114,8 +108,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     BOOST_REQUIRE_EQUAL(true, alpaka::stream::empty(f.m_stream));
     BOOST_REQUIRE_EQUAL(true, CallbackFinished);
 }
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     streamWaitShouldWork,

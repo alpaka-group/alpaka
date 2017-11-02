@@ -20,13 +20,11 @@
 
 ################################################################################
 # Required cmake version.
-################################################################################
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 ################################################################################
 # alpaka.
-################################################################################
 
 # Return values.
 UNSET(alpaka_FOUND)
@@ -60,7 +58,6 @@ UNSET(_ALPAKA_VER_PATCH)
 
 #-------------------------------------------------------------------------------
 # Common.
-#-------------------------------------------------------------------------------
 
 # Directory of this file.
 SET(_ALPAKA_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
@@ -87,7 +84,6 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 
 #-------------------------------------------------------------------------------
 # Options.
-#-------------------------------------------------------------------------------
 OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
 
 OPTION(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU back-end" ON)
@@ -116,7 +112,6 @@ SET_PROPERTY(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
-#-------------------------------------------------------------------------------
 IF(${ALPAKA_DEBUG} GREATER 1)
     MESSAGE(STATUS "_ALPAKA_ROOT_DIR : ${_ALPAKA_ROOT_DIR}")
     MESSAGE(STATUS "_ALPAKA_COMMON_FILE : ${_ALPAKA_COMMON_FILE}")
@@ -127,7 +122,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find Boost.
-#-------------------------------------------------------------------------------
 SET(_ALPAKA_BOOST_MIN_VER "1.62.0")
 IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DEBUG ON)
@@ -209,7 +203,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find TBB.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
     FIND_PACKAGE(TBB 2.2)
     IF(NOT TBB_FOUND)
@@ -224,7 +217,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find OpenMP.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
     FIND_PACKAGE(OpenMP)
 
@@ -270,7 +262,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find CUDA.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
     IF(NOT DEFINED ALPAKA_CUDA_VERSION)
@@ -420,7 +411,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Compiler settings.
-#-------------------------------------------------------------------------------
 IF(MSVC)
     # Empty append to define it if it does not already exist.
     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC)
@@ -445,7 +435,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # alpaka.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
     LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_GPU_CUDA_ONLY_MODE")
     MESSAGE(STATUS ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
@@ -516,7 +505,6 @@ SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_OTHER} PROPERTIES HEADER_FILE_ONLY T
 
 #-------------------------------------------------------------------------------
 # Target.
-#-------------------------------------------------------------------------------
 IF(NOT TARGET "alpaka")
     ADD_LIBRARY(
         "alpaka"
@@ -583,7 +571,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find alpaka version.
-#-------------------------------------------------------------------------------
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_MAJOR_HPP REGEX "#define ALPAKA_VERSION_MAJOR ")
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_MINOR_HPP REGEX "#define ALPAKA_VERSION_MINOR ")
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_PATCH_HPP REGEX "#define ALPAKA_VERSION_PATCH ")
@@ -596,7 +583,6 @@ SET(PACKAGE_VERSION "${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VE
 
 #-------------------------------------------------------------------------------
 # Set return values.
-#-------------------------------------------------------------------------------
 SET(alpaka_VERSION "${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VERSION_PATCH}")
 SET(alpaka_COMPILE_OPTIONS ${_ALPAKA_COMPILE_OPTIONS_PUBLIC})
 SET(alpaka_COMPILE_DEFINITIONS ${_ALPAKA_COMPILE_DEFINITIONS_PUBLIC})
@@ -613,7 +599,6 @@ LIST(APPEND alpaka_LIBRARIES ${_ALPAKA_LINK_LIBRARIES_PUBLIC})
 
 #-------------------------------------------------------------------------------
 # Print the return values.
-#-------------------------------------------------------------------------------
 IF(${ALPAKA_DEBUG} GREATER 0)
     MESSAGE(STATUS "alpaka_FOUND: ${alpaka_FOUND}")
     MESSAGE(STATUS "alpaka_VERSION: ${alpaka_VERSION}")
@@ -684,7 +669,6 @@ ENDIF()
 
 ###############################################################################
 # FindPackage options
-###############################################################################
 
 # Handles the REQUIRED, QUIET and version-related arguments for FIND_PACKAGE.
 # NOTE: We do not check for alpaka_LIBRARIES and alpaka_DEFINITIONS because they can be empty.

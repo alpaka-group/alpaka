@@ -30,16 +30,12 @@
 
 //#############################################################################
 //! A kernel using atomicOp, syncBlockThreads, getMem, getIdx, getWorkDiv and global memory to compute a (useless) result.
-//! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TnumUselessWork The number of useless calculations done in each kernel execution.
-//#############################################################################
 template<
     typename TnumUselessWork>
 class SharedMemKernel
 {
 public:
-    //-----------------------------------------------------------------------------
-    //! The kernel.
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -118,7 +114,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The trait for getting the size of the block shared dynamic memory for a kernel.
-            //#############################################################################
             template<
                 typename TnumUselessWork,
                 typename TAcc>
@@ -128,7 +123,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The size of the shared memory allocated for a block.
-                //-----------------------------------------------------------------------------
                 template<
                     typename TVec,
                     typename... TArgs>
@@ -149,7 +143,6 @@ namespace alpaka
 
 //#############################################################################
 //! Profiles the example kernel and checks the result.
-//#############################################################################
 template<
     typename TnumUselessWork,
     typename TVal>
@@ -258,9 +251,6 @@ public:
     bool allResultsCorrect = true;
 };
 
-//-----------------------------------------------------------------------------
-//! Program entry point.
-//-----------------------------------------------------------------------------
 auto main()
 -> int
 {

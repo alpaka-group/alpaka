@@ -57,8 +57,6 @@ BOOST_AUTO_TEST_SUITE(kernel)
 
 #if !ALPAKA_CI
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     lambdaKernelIsWorking,
     TAcc,
@@ -85,8 +83,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 }
 #endif
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     lambdaKernelWithArgumentIsWorking,
@@ -117,8 +113,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             arg));
 }
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     lambdaKernelWithCapturingIsWorking,
@@ -153,8 +147,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 #if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
 #if !ALPAKA_CI
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     genericLambdaKernelIsWorking,
     TAcc,
@@ -181,8 +173,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 }
 #endif
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     variadicGenericLambdaKernelIsWorking,
