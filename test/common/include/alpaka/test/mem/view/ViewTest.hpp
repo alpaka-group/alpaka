@@ -126,10 +126,19 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::mem::view::traits::GetPtrNative
                     {
-                        TElem const * const invalidPtr(nullptr);
-                        BOOST_REQUIRE_NE(
-                            invalidPtr,
-                            alpaka::mem::view::getPtrNative(view));
+                        if(alpaka::extent::getProductOfExtent(view) != static_cast<TSize>(0u))
+                        {
+                            // The pointer is only required to be non-null when the extent is > 0.
+                            TElem const * const invalidPtr(nullptr);
+                            BOOST_REQUIRE_NE(
+                                invalidPtr,
+                                alpaka::mem::view::getPtrNative(view));
+                        }
+                        else
+                        {
+                            // When the extent is 0, the pointer is undefined but it should still be possible get it.
+                            alpaka::mem::view::getPtrNative(view);
+                        }
                     }
 
                     //-----------------------------------------------------------------------------
