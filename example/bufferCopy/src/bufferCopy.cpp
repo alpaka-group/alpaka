@@ -85,7 +85,8 @@ struct TestBufferKernel
         data
 #endif
         ,
-        TExtent const & extents) const
+        TExtent const & extents,
+        size_t const pitch) const
     -> void
     {
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
@@ -97,7 +98,7 @@ struct TestBufferKernel
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
-            assert(data[i] == i);
+            assert(data[logIdToPitchedId<2>(i,pitch)] == i);
         }
     }
 };
@@ -330,6 +331,8 @@ auto main()
     alpaka::mem::view::copy(devStream, deviceBuffer1, hostBufferPlain, extents);
     alpaka::mem::view::copy(devStream, deviceBuffer2, hostBuffer, extents);
 
+    auto devicePitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(deviceBuffer1) / sizeof(Data));
+    auto hostPitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(hostBuffer) / sizeof(Data));
 
     // Test device Buffer
     //
@@ -342,14 +345,16 @@ auto main()
             workdiv,
             testBufferKernel,
             alpaka::mem::view::getPtrNative(deviceBuffer1), // 1st kernel argument
-            extents));                                      // 2nd kernel argument
+            extents,                                        // 2nd kernel argument
+            devicePitch));                                  // 3rd kernel argument
 
     auto const test2(
         alpaka::exec::create<Acc>(
             workdiv,
             testBufferKernel,
             alpaka::mem::view::getPtrNative(deviceBuffer1), // 1st kernel argument
-            extents));                                      // 2nd kernel argument
+            extents,                                        // 2nd kernel argument
+            devicePitch));                                  // 3rd kernel argument
 
     alpaka::stream::enqueue(devStream, test1);
     alpaka::stream::enqueue(devStream, test2);
@@ -364,8 +369,6 @@ auto main()
     // Since this possibly is a parallel operation,
     // the output can appear in any order or even
     // completely distorted.
-    auto devicePitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(deviceBuffer1) / sizeof(Data));
-    auto hostPitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(hostBuffer) / sizeof(Data));
 
     PrintBufferKernel printBufferKernel;
     auto const printDeviceBuffer1(
