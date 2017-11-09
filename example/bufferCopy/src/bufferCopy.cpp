@@ -63,7 +63,7 @@ struct PrintBufferKernel
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
             // NOTE: hard-coded for unsigned int
-            printf("%u:%u ", static_cast<int32_t>(i), buffer[logIdToPitchedId<2>(i,pitch)]);
+            printf("%u:%u ", static_cast<uint32_t>(i), static_cast<uint32_t>(buffer[logIdToPitchedId<2>(i,pitch)]));
         }
     }
 };
