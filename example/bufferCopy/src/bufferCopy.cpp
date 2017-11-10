@@ -31,11 +31,11 @@
 //#############################################################################
 
 template <size_t width>
-ALPAKA_FN_ACC size_t logIdToPitchedId(size_t const globalId,size_t const pitch)
+ALPAKA_FN_ACC size_t linIdxToPitchedIdx(size_t const globalIdx, size_t const pitch)
 {
-    const size_t id_x = globalId % width;
-    const size_t id_y = globalId / width;
-    return id_x + id_y * pitch;
+    const size_t idx_x = globalIdx % width;
+    const size_t idx_y = globalIdx / width;
+    return idx_x + idx_y * pitch;
 }
 
 //! Prints all elements of the buffer.
@@ -63,7 +63,7 @@ struct PrintBufferKernel
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
             // NOTE: hard-coded for unsigned int
-            printf("%u:%u ", static_cast<uint32_t>(i), static_cast<uint32_t>(buffer[logIdToPitchedId<2>(i,pitch)]));
+            printf("%u:%u ", static_cast<uint32_t>(i), static_cast<uint32_t>(buffer[linIdxToPitchedIdx<2>(i,pitch)]));
         }
     }
 };
@@ -98,7 +98,7 @@ struct TestBufferKernel
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
-            assert(data[logIdToPitchedId<2>(i,pitch)] == i);
+            assert(data[linIdxToPitchedIdx<2>(i,pitch)] == i);
         }
     }
 };
