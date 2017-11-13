@@ -86,7 +86,11 @@ struct TestBufferKernel
 #endif
         ,
         TExtent const & extents,
-        size_t const pitch) const
+        size_t const
+#ifndef NDEBUG
+        pitch
+#endif
+        ) const
     -> void
     {
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
