@@ -133,6 +133,16 @@ IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
         MESSAGE(STATUS "Optional alpaka dependency Boost fiber could not be found! Fibers back-end disabled!")
         SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers CPU back-end" FORCE)
         FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET)
+    ELSE()
+        # On Win32 boost context triggers:
+        # libboost_context-vc141-mt-gd-1_64.lib(jump_i386_ms_pe_masm.obj) : error LNK2026: module unsafe for SAFESEH image.
+        IF(MSVC)
+            IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+                SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
+                SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
+                SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
+            ENDIF()
+        ENDIF()
     ENDIF()
 
 ELSE()
