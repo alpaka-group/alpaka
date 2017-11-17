@@ -57,7 +57,7 @@ namespace alpaka
                 T,
                 typename std::enable_if<std::is_arithmetic<T>::value>::type>
             {
-                using type = T;
+                using type = typename std::decay<T>::type;
             };
         }
     }
