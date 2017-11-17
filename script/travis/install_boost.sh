@@ -32,7 +32,7 @@
 # --depth 1 does not necessarily always work.
 # There seem to be problems when the super-project references a non-HEAD commit
 # as the submodules are also cloned with --depth 1.
-git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch https://github.com/boostorg/boost.git "${ALPAKA_CI_BOOST_ROOT_DIR}"
+git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --jobs 4 --single-branch https://github.com/boostorg/boost.git "${ALPAKA_CI_BOOST_ROOT_DIR}"
 
 # Prepare building of boost.
 (cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; sudo ./bootstrap.sh --with-toolset="${CC}")
