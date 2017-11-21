@@ -41,8 +41,6 @@
     #pragma clang diagnostic pop
 #endif
 
-#include <tuple>
-
 BOOST_AUTO_TEST_SUITE(kernel)
 
 // nvcc < 7.5 does not support lambdas as kernels.
