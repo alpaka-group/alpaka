@@ -290,7 +290,7 @@ namespace alpaka
                     // Create all concurrent executors.
                     for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
-                        m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
+                        m_vConcurrentExecs.emplace_back([this](){concurrentExecFn();});
                     }
                 }
                 //-----------------------------------------------------------------------------
@@ -347,7 +347,11 @@ namespace alpaka
                 -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
                 {
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
                     auto boundTask(std::bind(task, args...));
+#else
+                    auto boundTask([=](){task(args...);});
+#endif
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
                     using FnObjReturn = decltype(task(args...));
@@ -476,7 +480,7 @@ namespace alpaka
                     // Create all concurrent executors.
                     for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
-                        m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
+                        m_vConcurrentExecs.emplace_back([this](){concurrentExecFn();});
                     }
                 }
                 //-----------------------------------------------------------------------------
@@ -539,7 +543,11 @@ namespace alpaka
                 -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
                 {
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
                     auto boundTask(std::bind(task, args...));
+#else
+                    auto boundTask([=](){task(args...);});
+#endif
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
                     using FnObjReturn = decltype(task(args...));
