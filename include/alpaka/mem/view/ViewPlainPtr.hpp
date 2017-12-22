@@ -76,7 +76,7 @@ namespace alpaka
                 ViewPlainPtr(ViewPlainPtr const &) = default;
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST
-                ViewPlainPtr(ViewPlainPtr && other) :
+                ViewPlainPtr(ViewPlainPtr && other) noexcept :
                         m_pMem(other.m_pMem),
                         m_dev(other.m_dev),
                         m_extentElements(other.m_extentElements),

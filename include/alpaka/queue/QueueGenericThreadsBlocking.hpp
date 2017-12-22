@@ -56,7 +56,7 @@ namespace alpaka
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    QueueGenericThreadsBlockingImpl(
+                    explicit QueueGenericThreadsBlockingImpl(
                         TDev const & dev) noexcept :
                             m_dev(dev),
                             m_bCurrentlyExecutingTask(false)
@@ -101,7 +101,7 @@ namespace alpaka
         {
         public:
             //-----------------------------------------------------------------------------
-            QueueGenericThreadsBlocking(
+            explicit QueueGenericThreadsBlocking(
                 TDev const & dev) :
                     m_spQueueImpl(std::make_shared<generic::detail::QueueGenericThreadsBlockingImpl<TDev>>(dev))
             {

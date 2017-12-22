@@ -155,7 +155,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC
-            Vec(Vec &&) = default;
+            Vec(Vec &&) noexcept = default;
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC
@@ -163,7 +163,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC
-            auto operator=(Vec &&) -> Vec & = default;
+            auto operator=(Vec &&) noexcept -> Vec & = default;
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC ~Vec() = default;

@@ -42,7 +42,7 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                ScopeLogStdOut(
+                explicit ScopeLogStdOut(
                     std::string const & sScope) :
                         m_sScope(sScope)
                 {

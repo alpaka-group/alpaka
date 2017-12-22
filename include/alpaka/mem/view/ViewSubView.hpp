@@ -150,7 +150,7 @@ namespace alpaka
                 //! \param view The view this view is a sub-view of.
                 template<
                     typename TView>
-                ViewSubView(
+                explicit ViewSubView(
                     TView const & view) :
                         ViewSubView(
                             view,
@@ -164,7 +164,7 @@ namespace alpaka
                 //! \param view The view this view is a sub-view of.
                 template<
                     typename TView>
-                ViewSubView(
+                explicit ViewSubView(
                     TView & view) :
                         ViewSubView(
                             view,
