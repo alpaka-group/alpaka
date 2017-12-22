@@ -99,7 +99,7 @@ append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/docs/markdown" "${_
 set_source_files_properties(${_ALPAKA_FILES_DOC} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/.github" "${_ALPAKA_ROOT_DIR}" "yml" _ALPAKA_FILES_OTHER)
-list(APPEND _ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/.gitignore" "${_ALPAKA_ROOT_DIR}/.zenodo.json" "${_ALPAKA_ROOT_DIR}/LICENSE" "${_ALPAKA_ROOT_DIR}/README.md")
+list(APPEND _ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/.clang-format" "${_ALPAKA_ROOT_DIR}/.gitignore" "${_ALPAKA_ROOT_DIR}/.zenodo.json" "${_ALPAKA_ROOT_DIR}/LICENSE" "${_ALPAKA_ROOT_DIR}/README.md")
 set_source_files_properties(${_ALPAKA_FILES_OTHER} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 if(TARGET alpaka)

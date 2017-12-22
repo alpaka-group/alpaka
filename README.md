@@ -203,6 +203,10 @@ consider citing us accordingly in your derived work and publications:
 }
 ```
 
+Contributing
+------------
+
+Rules for contributions can be found in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 Authors
 -------
