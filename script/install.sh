@@ -35,10 +35,7 @@ then
     ./script/install_cmake.sh
 fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
-then
-    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/install_analysis.sh ;fi
-fi
+if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/install_analysis.sh ;fi
 
 # Install CUDA before installing gcc as it installs gcc-4.8 and overwrites our selected compiler
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/install_cuda.sh ;fi

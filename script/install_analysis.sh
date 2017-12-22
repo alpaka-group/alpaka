@@ -14,12 +14,28 @@ source ./script/travis_retry.sh
 
 source ./script/set.sh
 
-#-------------------------------------------------------------------------------
-# Install sloc
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install sloccount
-sloccount --version
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+    #-------------------------------------------------------------------------------
+    # Install sloc
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install sloccount
+    sloccount --version
 
-#-------------------------------------------------------------------------------
-# Install shellcheck
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install shellcheck
-shellcheck --version
+    #-------------------------------------------------------------------------------
+    # Install shellcheck
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install shellcheck
+    shellcheck --version
+
+elif [ "$TRAVIS_OS_NAME" = "osx" ]
+then
+    #-------------------------------------------------------------------------------
+    # Install sloc
+    brew install sloccount
+    sloccount --version
+
+    #-------------------------------------------------------------------------------
+    # Install shellcheck
+    brew install shellcheck
+    shellcheck --version
+
+fi
