@@ -124,35 +124,57 @@ then
                     echo nvcc "${ALPAKA_CUDA_VER}" does not compile alpaka correctly when using gcc "${ALPAKA_CI_GCC_VER}"!
                     exit 1
                 fi
+            else
+                echo unknown CUDA version. Update this script!
+                exit 1
             fi
         fi
 
         # nvcc 7.0 does not support clang on linux.
-        # nvcc 7.5 does not support clang > 3.6 on linux.
+        # nvcc 7.5 does support clang 3.5-3.6 on linux.
         # nvcc 7.5 for clang is buggy and does not compile alpaka correctly.
-        # nvcc 8.0 does not support clang > 3.8 on linux.
+        # nvcc 8.0 does support clang 3.8+ on linux. However it fails with errors (e.g. error: calling a __host__ function("__builtin_logl") from a __device__ function("std::log") is not allowed). clang 3.7 on the other hand works.
+        # nvcc 9.0 does support clang 3.9 on linux.
+        # nvcc 9.1 does support clang 4.0 on linux.
         if [ "${CXX}" == "clang++" ]
         then
             if [ "${ALPAKA_CUDA_VER}" == "7.0" ]
             then
-                echo nvcc 7.0 does not support clang on linux!
+                echo nvcc {ALPAKA_CUDA_VER} does not support clang on linux!
                 exit 1
             elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
             then
                 echo nvcc 7.5 clang support is too buggy for alpaka!
                 exit 1
-                if (( (( ALPAKA_CI_CLANG_VER_MAJOR > 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR > 6 )) ) ))
+                if (( (( ALPAKA_CI_CLANG_VER_MAJOR != 3 )) || ( (( ALPAKA_CI_CLANG_VER_MINOR != 5 )) || (( ALPAKA_CI_CLANG_VER_MINOR != 6 )) ) ))
                 then
-                    echo clang versions higher than 3.6 are not a supported compiler for nvcc 7.5 on linux!
+                    echo clang versions other than 3.5 or 3.6 are not a supported compiler for nvcc {ALPAKA_CUDA_VER} on linux!
                     exit 1
                 fi
             elif [ "${ALPAKA_CUDA_VER}" == "8.0" ]
             then
-                if (( (( ALPAKA_CI_CLANG_VER_MAJOR > 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR > 8 )) ) ))
+                if (( (( ALPAKA_CI_CLANG_VER_MAJOR < 3 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR < 7 )) ) ))
                 then
-                    echo clang versions higher than 3.8 are not a supported compiler for nvcc 8.0 on linux!
+                    echo clang versions lower than 3.7 are not a supported compiler for nvcc {ALPAKA_CUDA_VER} on linux!
                     exit 1
                 fi
+            elif [ "${ALPAKA_CUDA_VER}" == "9.0" ]
+            then
+                if (( (( ALPAKA_CI_CLANG_VER_MAJOR != 3 )) || (( ALPAKA_CI_CLANG_VER_MINOR != 9 )) ))
+                then
+                    echo clang versions other than 3.9 are not a supported compiler for nvcc {ALPAKA_CUDA_VER} on linux!
+                    exit 1
+                fi
+            elif [ "${ALPAKA_CUDA_VER}" == "9.1" ]
+            then
+                if (( (( ALPAKA_CI_CLANG_VER_MAJOR != 4 )) || (( ALPAKA_CI_CLANG_VER_MINOR != 0 )) ))
+                then
+                    echo clang versions other than 4.0 are not a supported compiler for nvcc {ALPAKA_CUDA_VER} on linux!
+                    exit 1
+                fi
+            else
+                echo unknown CUDA version. Update this script!
+                exit 1
             fi
         fi
 
@@ -171,8 +193,8 @@ then
             export CMAKE_BUILD_TYPE=Debug
         fi
 
-        # nvcc <= 9.0 does not support boost correctly so fibers have to be disabled.
-        if (( (( ALPAKA_CUDA_VER_MAJOR < 9 )) || ( (( ALPAKA_CUDA_VER_MAJOR == 9 )) && (( ALPAKA_CUDA_VER_MINOR == 0 )) ) ))
+        # nvcc <= 9.1 does not support boost correctly so fibers have to be disabled.
+        if (( (( ALPAKA_CUDA_VER_MAJOR < 9 )) || ( (( ALPAKA_CUDA_VER_MAJOR == 9 )) && (( ALPAKA_CUDA_VER_MINOR <= 1 )) ) ))
         then
             if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]
             then
