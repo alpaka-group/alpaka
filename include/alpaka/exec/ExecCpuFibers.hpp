@@ -24,32 +24,32 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
-#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
-#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/acc/AccCpuFibers.hpp>          // acc:AccCpuFibers
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
+#include <alpaka/acc/AccCpuFibers.hpp>
+#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/kernel/Traits.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #include <alpaka/core/Fibers.hpp>
-#include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
-#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
-#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
+#include <alpaka/core/ConcurrentExecPool.hpp>
+#include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/ApplyTuple.hpp>
 
-#include <boost/predef.h>                       // workarounds
+#include <boost/predef.h>
 
-#include <algorithm>                            // std::for_each
-#include <vector>                               // std::vector
-#include <tuple>                                // std::tuple
-#include <type_traits>                          // std::decay
+#include <algorithm>
+#include <vector>
+#include <tuple>
+#include <type_traits>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-    #include <iostream>                         // std::cout
+    #include <iostream>
 #endif
 
 namespace alpaka
@@ -58,7 +58,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU fibers accelerator executor.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize,
@@ -70,12 +69,10 @@ namespace alpaka
         private:
             //#############################################################################
             //! The type given to the ConcurrentExecPool for yielding the current fiber.
-            //#############################################################################
             struct FiberPoolYield
             {
                 //-----------------------------------------------------------------------------
                 //! Yields the current fiber.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto yield()
                 -> void
                 {
@@ -85,7 +82,6 @@ namespace alpaka
             //#############################################################################
             // Yielding is not faster for fibers. Therefore we use condition variables.
             // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
-            //#############################################################################
             using FiberPool = alpaka::core::detail::ConcurrentExecPool<
                 TSize,
                 boost::fibers::fiber,               // The concurrent execution type.
@@ -96,8 +92,6 @@ namespace alpaka
                 false>;                             // If the threads should yield.
 
         public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
@@ -114,29 +108,18 @@ namespace alpaka
                     "The work division and the executor have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
+            ExecCpuFibers(ExecCpuFibers const &) = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuFibers(ExecCpuFibers const &) = default;
+            ExecCpuFibers(ExecCpuFibers &&) = default;
             //-----------------------------------------------------------------------------
-            //! Move constructor.
+            auto operator=(ExecCpuFibers const &) -> ExecCpuFibers & = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuFibers(ExecCpuFibers &&) = default;
+            auto operator=(ExecCpuFibers &&) -> ExecCpuFibers & = default;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuFibers const &) -> ExecCpuFibers & = default;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuFibers &&) -> ExecCpuFibers & = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuFibers() = default;
+            ~ExecCpuFibers() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST auto operator()() const
             -> void
             {
@@ -206,7 +189,6 @@ namespace alpaka
         private:
             //-----------------------------------------------------------------------------
             //! The function executed for each grid block.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
                 vec::Vec<TDim, TSize> const & gridBlockIdx,
@@ -255,12 +237,17 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             //! The function executed for each block thread.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
                 std::vector<boost::fibers::future<void>> & futuresInBlock,
                 vec::Vec<TDim, TSize> const & blockThreadIdx,
                 FiberPool & fiberPool,
+#else
+                std::vector<boost::fibers::future<void>> &,
+                vec::Vec<TDim, TSize> const & blockThreadIdx,
+                FiberPool &,
+#endif
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
@@ -282,11 +269,12 @@ namespace alpaka
                 futuresInBlock.emplace_back(
                     fiberPool.enqueueTask(
                         boundBlockThreadExecAcc));
+#else
+                (void)boundBlockThreadExecAcc;
 #endif
             }
             //-----------------------------------------------------------------------------
             //! The fiber entry point.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadFiberFn(
                 acc::AccCpuFibers<TDim, TSize> & acc,
                 vec::Vec<TDim, TSize> const & blockThreadIdx,
@@ -329,7 +317,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers executor accelerator type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -348,7 +335,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers executor device type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -367,7 +353,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers executor dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -386,7 +371,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers executor executor type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -407,7 +391,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers executor platform type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -426,7 +409,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers executor size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,

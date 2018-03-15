@@ -28,11 +28,11 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
-#include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>                         // BOOST_VERIFY
-#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#include <boost/assert.hpp>
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -43,15 +43,11 @@
 #endif
 
 //#############################################################################
-//!
-//#############################################################################
 class BlockSyncTestKernel
 {
 public:
     static const std::uint8_t gridThreadExtentPerDim = 4u;
 
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -60,7 +56,6 @@ public:
         TAcc const & acc) const
     -> void
     {
-        using Dim = alpaka::dim::Dim<TAcc>;
         using Size = alpaka::size::Size<TAcc>;
 
         // Get the index of the current thread within the block and the block extent and map them to 1D.
@@ -94,7 +89,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The trait for getting the size of the block shared dynamic memory for a kernel.
-            //#############################################################################
             template<
                 typename TAcc>
             struct BlockSharedMemDynSizeBytes<
@@ -103,7 +97,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The size of the shared memory allocated for a block.
-                //-----------------------------------------------------------------------------
                 template<
                     typename TVec>
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
@@ -126,8 +119,6 @@ namespace alpaka
 
 BOOST_AUTO_TEST_SUITE(blockSync)
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     synchronize,

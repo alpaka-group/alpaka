@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt
+#include <alpaka/dim/DimIntegralConst.hpp>
 
-#include <type_traits>                      // std::is_arithmetic, std::integral_constant
+#include <type_traits>
 
 namespace alpaka
 {
@@ -31,12 +31,10 @@ namespace alpaka
     {
         //-----------------------------------------------------------------------------
         // Trait specializations for unsigned integral types.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The arithmetic type dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename T>
             struct DimType<

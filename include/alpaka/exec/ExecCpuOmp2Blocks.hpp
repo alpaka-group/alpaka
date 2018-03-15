@@ -28,29 +28,30 @@
 #endif
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
-#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
-#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/acc/AccCpuOmp2Blocks.hpp>      // acc::AccCpuOmp2Blocks
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/idx/MapIdx.hpp>                // idx::mapIdx
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
+#include <alpaka/acc/AccCpuOmp2Blocks.hpp>
+#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/idx/MapIdx.hpp>
+#include <alpaka/kernel/Traits.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
+#include <alpaka/meta/ApplyTuple.hpp>
 
-#include <cassert>                              // assert
-#include <stdexcept>                            // std::runtime_error
-#include <tuple>                                // std::tuple
-#include <type_traits>                          // std::decay
+#include <boost/assert.hpp>
+
+#include <stdexcept>
+#include <tuple>
+#include <type_traits>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-    #include <iostream>                         // std::cout
+    #include <iostream>
 #endif
 
 namespace alpaka
@@ -59,7 +60,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU OpenMP 2.0 block accelerator executor.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize,
@@ -69,8 +69,6 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TSize>
         {
         public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
@@ -88,29 +86,18 @@ namespace alpaka
                     "The work division and the executor have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
+            ExecCpuOmp2Blocks(ExecCpuOmp2Blocks const &) = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks const &) = default;
+            ExecCpuOmp2Blocks(ExecCpuOmp2Blocks &&) = default;
             //-----------------------------------------------------------------------------
-            //! Move constructor.
+            auto operator=(ExecCpuOmp2Blocks const &) -> ExecCpuOmp2Blocks & = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks &&) = default;
+            auto operator=(ExecCpuOmp2Blocks &&) -> ExecCpuOmp2Blocks & = default;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Blocks const &) -> ExecCpuOmp2Blocks & = default;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Blocks &&) -> ExecCpuOmp2Blocks & = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuOmp2Blocks() = default;
+            ~ExecCpuOmp2Blocks() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST auto operator()() const
             -> void
             {
@@ -159,7 +146,7 @@ namespace alpaka
                 // The number of blocks in the grid.
                 TSize const numBlocksInGrid(gridBlockExtent.prod());
                 // There is only ever one thread in a block in the OpenMP 2.0 block accelerator.
-                assert(blockThreadExtent.prod() == static_cast<TSize>(1u));
+                BOOST_VERIFY(blockThreadExtent.prod() == static_cast<TSize>(1u));
 
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
@@ -224,7 +211,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 grid block executor accelerator type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -243,7 +229,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 grid block executor device type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -262,7 +247,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 grid block executor dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -281,7 +265,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 grid block executor executor type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -302,7 +285,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 grid block executor platform type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -321,7 +303,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 block executor size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,

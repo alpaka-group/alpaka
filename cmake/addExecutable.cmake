@@ -23,7 +23,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.3.0)
 
 #------------------------------------------------------------------------------
 # Calls CUDA_ADD_EXECUTABLE or ADD_EXECUTABLE depending on the enabled alpaka accelerators.
-#------------------------------------------------------------------------------
 FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name)
     IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
         IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
@@ -41,7 +40,11 @@ FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name)
                     SET_SOURCE_FILES_PROPERTIES(${_file} PROPERTIES CUDA_SOURCE_PROPERTY_FORMAT OBJ)
                 ENDIF()
             ENDFOREACH()
-            CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
+            IF (CMAKE_VERSION VERSION_LESS 3.9.0)
+                CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
+            ELSE()
+                SET(CUDA_LINK_LIBRARIES_KEYWORD "PUBLIC")
+            ENDIF()
             CUDA_ADD_EXECUTABLE(
                 ${In_Name}
                 ${ARGN})

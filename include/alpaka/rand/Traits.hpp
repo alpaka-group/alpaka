@@ -21,35 +21,30 @@
 
 #pragma once
 
-#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
+#include <alpaka/meta/IsStrictBase.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/config.hpp>
 
-#include <utility>                      // std::declval
-#include <type_traits>                  // std::is_integral, std::is_floating_point, ...
+#include <type_traits>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The random number generation specifics.
-    //-----------------------------------------------------------------------------
     namespace rand
     {
         //-----------------------------------------------------------------------------
         //! The random number generator distribution specifics.
-        //-----------------------------------------------------------------------------
         namespace distribution
         {
             //-----------------------------------------------------------------------------
             //! The random number generator distribution traits.
-            //-----------------------------------------------------------------------------
             namespace traits
             {
                 //#############################################################################
                 //! The random number float normal distribution get trait.
-                //#############################################################################
                 template<
                     typename TRand,
                     typename T,
@@ -58,7 +53,6 @@ namespace alpaka
 
                 //#############################################################################
                 //! The random number float uniform distribution get trait.
-                //#############################################################################
                 template<
                     typename TRand,
                     typename T,
@@ -67,7 +61,6 @@ namespace alpaka
 
                 //#############################################################################
                 //! The random number integer uniform distribution get trait.
-                //#############################################################################
                 template<
                     typename TRand,
                     typename T,
@@ -77,7 +70,6 @@ namespace alpaka
 
             //-----------------------------------------------------------------------------
             //! \return A normal float distribution with mean 0.0f and standard deviation 1.0f.
-            //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
@@ -90,7 +82,7 @@ namespace alpaka
                     TRand,
                     T>
                 ::createNormalReal(
-                    std::declval<TRand const &>()))
+                    rand))
 #endif
             {
                 static_assert(
@@ -106,7 +98,6 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             //! \return A uniform floating point distribution [0.0, 1.0).
-            //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
@@ -119,7 +110,7 @@ namespace alpaka
                     TRand,
                     T>
                 ::createUniformReal(
-                    std::declval<TRand const &>()))
+                    rand))
 #endif
             {
                 static_assert(
@@ -135,7 +126,6 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             //! \return A uniform integer distribution [0, UINT_MAX].
-            //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
@@ -148,7 +138,7 @@ namespace alpaka
                     TRand,
                     T>
                 ::createUniformUint(
-                    std::declval<TRand const &>()))
+                    rand))
 #endif
             {
                 static_assert(
@@ -166,7 +156,6 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CreateNormalReal specialization for classes with RandBase member type.
-                //#############################################################################
                 template<
                     typename TRand,
                     typename T>
@@ -177,8 +166,6 @@ namespace alpaka
                         std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
                         && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto createNormalReal(
@@ -197,7 +184,6 @@ namespace alpaka
                 };
                 //#############################################################################
                 //! The CreateUniformReal specialization for classes with RandBase member type.
-                //#############################################################################
                 template<
                     typename TRand,
                     typename T>
@@ -208,8 +194,6 @@ namespace alpaka
                         std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
                         && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto createUniformReal(
@@ -228,7 +212,6 @@ namespace alpaka
                 };
                 //#############################################################################
                 //! The CreateUniformUint specialization for classes with RandBase member type.
-                //#############################################################################
                 template<
                     typename TRand,
                     typename T>
@@ -239,8 +222,6 @@ namespace alpaka
                         std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
                         && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto createUniformUint(
@@ -261,17 +242,14 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! The random number generator specifics.
-        //-----------------------------------------------------------------------------
         namespace generator
         {
             //-----------------------------------------------------------------------------
             //! The random number generator traits.
-            //-----------------------------------------------------------------------------
             namespace traits
             {
                 //#############################################################################
                 //! The random number default generator get trait.
-                //#############################################################################
                 template<
                     typename TRand,
                     typename TSfinae = void>
@@ -279,7 +257,6 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             //! \return A default random number generator.
-            //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TRand>
@@ -292,9 +269,9 @@ namespace alpaka
                 traits::CreateDefault<
                     TRand>
                 ::createDefault(
-                    std::declval<TRand const &>(),
-                    std::declval<std::uint32_t const &>(),
-                    std::declval<std::uint32_t const &>()))
+                    rand,
+                    seed,
+                    subsequence))
 #endif
             {
                 return
@@ -309,7 +286,6 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CreateDefault specialization for classes with RandBase member type.
-                //#############################################################################
                 template<
                     typename TRand>
                 struct CreateDefault<
@@ -321,8 +297,6 @@ namespace alpaka
                         >::value
                     >::type>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto createDefault(

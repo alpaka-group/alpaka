@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/math/round/Traits.hpp> // Round
+#include <alpaka/math/round/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <cmath>                        // std::round
+#include <type_traits>
+#include <cmath>
 
 namespace alpaka
 {
@@ -34,7 +34,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library round.
-        //#############################################################################
         class RoundStl
         {
         public:
@@ -45,7 +44,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library round trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Round<
@@ -65,7 +63,6 @@ namespace alpaka
             };
             //#############################################################################
             //! The standard library round trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Lround<
@@ -85,7 +82,6 @@ namespace alpaka
             };
             //#############################################################################
             //! The standard library round trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Llround<

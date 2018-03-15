@@ -21,14 +21,15 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // BOOST_ARCH_CUDA_DEVICE
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+    #include <boost/core/ignore_unused.hpp>
 #endif
-#include <boost/predef.h>                   // workarounds
+#include <boost/predef.h>
 
-#include <type_traits>                      // std::enable_if
+#include <cassert>
+#include <type_traits>
 
 namespace alpaka
 {
@@ -37,14 +38,10 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //!
-            //#############################################################################
             template<
                 typename TArg,
                 typename TSfinae = void>
             struct AssertValueUnsigned;
-            //#############################################################################
-            //!
             //#############################################################################
             template<
                 typename TArg>
@@ -75,8 +72,6 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //!
-            //#############################################################################
             template<
                 typename TArg>
             struct AssertValueUnsigned<
@@ -102,7 +97,6 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! This method checks integral values if they are greater or equal zero.
         //! The implementation prevents warnings for checking this for unsigned types.
-        //-----------------------------------------------------------------------------
         template<
             typename TArg>
         ALPAKA_NO_HOST_ACC_WARNING

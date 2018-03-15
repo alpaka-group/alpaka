@@ -23,16 +23,16 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/block/shared/st/Traits.hpp>// AllocVar
+#include <alpaka/block/shared/st/Traits.hpp>
 
-#include <type_traits>                      // std::is_trivially_default_constructible, std::is_trivially_destructible
-#include <cstdint>                          // uint8_t
+#include <type_traits>
+#include <cstdint>
 
 namespace alpaka
 {
@@ -44,42 +44,27 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The GPU CUDA block shared memory allocator.
-                //#############################################################################
                 class BlockSharedMemStCudaBuiltIn
                 {
                 public:
                     using BlockSharedMemStBase = BlockSharedMemStCudaBuiltIn;
 
                     //-----------------------------------------------------------------------------
-                    //! Default constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY BlockSharedMemStCudaBuiltIn() = default;
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
+                    BlockSharedMemStCudaBuiltIn() = default;
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY BlockSharedMemStCudaBuiltIn(BlockSharedMemStCudaBuiltIn const &) = delete;
                     //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY BlockSharedMemStCudaBuiltIn(BlockSharedMemStCudaBuiltIn &&) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator=(BlockSharedMemStCudaBuiltIn const &) -> BlockSharedMemStCudaBuiltIn & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Move assignment operator.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator=(BlockSharedMemStCudaBuiltIn &&) -> BlockSharedMemStCudaBuiltIn & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~BlockSharedMemStCudaBuiltIn() = default;
+                    /*virtual*/ ~BlockSharedMemStCudaBuiltIn() = default;
                 };
 
                 namespace traits
                 {
-                    //#############################################################################
-                    //!
                     //#############################################################################
                     template<
                         typename T,
@@ -89,8 +74,6 @@ namespace alpaka
                         TuniqueId,
                         BlockSharedMemStCudaBuiltIn>
                     {
-                        //-----------------------------------------------------------------------------
-                        //
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC_CUDA_ONLY static auto allocVar(
                             block::shared::st::BlockSharedMemStCudaBuiltIn const &)
@@ -102,14 +85,10 @@ namespace alpaka
                         }
                     };
                     //#############################################################################
-                    //!
-                    //#############################################################################
                     template<>
                     struct FreeMem<
                         BlockSharedMemStCudaBuiltIn>
                     {
-                        //-----------------------------------------------------------------------------
-                        //
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC_CUDA_ONLY static auto freeMem(
                             block::shared::st::BlockSharedMemStCudaBuiltIn const &)

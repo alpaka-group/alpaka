@@ -21,37 +21,32 @@
 
 #pragma once
 
-#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
+#include <alpaka/meta/IsStrictBase.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <type_traits>                  // std::enable_if
+#include <type_traits>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The grid block specifics
-    //-----------------------------------------------------------------------------
     namespace block
     {
         //-----------------------------------------------------------------------------
         //! The block shared memory operation specifics.
-        //-----------------------------------------------------------------------------
         namespace shared
         {
             //-----------------------------------------------------------------------------
             //! The block shared dynamic memory operation specifics.
-            //-----------------------------------------------------------------------------
             namespace dyn
             {
                 //-----------------------------------------------------------------------------
                 //! The block shared dynamic memory operation traits.
-                //-----------------------------------------------------------------------------
                 namespace traits
                 {
                     //#############################################################################
                     //! The block shared dynamic memory get trait.
-                    //#############################################################################
                     template<
                         typename T,
                         typename TBlockSharedMemDyn,
@@ -65,7 +60,7 @@ namespace alpaka
                 //! \tparam T The element type.
                 //! \tparam TBlockSharedMemDyn The block shared dynamic memory implementation type.
                 //! \param blockSharedMemDyn The block shared dynamic memory implementation.
-                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
                     typename TBlockSharedMemDyn>
@@ -85,7 +80,6 @@ namespace alpaka
                 {
                     //#############################################################################
                     //! The AllocVar trait specialization for classes with BlockSharedMemDynBase member type.
-                    //#############################################################################
                     template<
                         typename T,
                         typename TBlockSharedMemDyn>
@@ -99,8 +93,6 @@ namespace alpaka
                             >::value
                         >::type>
                     {
-                        //-----------------------------------------------------------------------------
-                        //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC static auto getMem(
                             TBlockSharedMemDyn const & blockSharedMemDyn)

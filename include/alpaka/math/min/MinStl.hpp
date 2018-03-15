@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/math/min/Traits.hpp>   // Min
+#include <alpaka/math/min/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <cmath>                        // std::fmin
-#include <algorithm>                    // std::min
+#include <type_traits>
+#include <cmath>
+#include <algorithm>
 
 namespace alpaka
 {
@@ -35,7 +35,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library min.
-        //#############################################################################
         class MinStl
         {
         public:
@@ -46,7 +45,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library integral min trait specialization.
-            //#############################################################################
             template<
                 typename Tx,
                 typename Ty>
@@ -70,7 +68,6 @@ namespace alpaka
             };
             //#############################################################################
             //! The standard library mixed integral floating point min trait specialization.
-            //#############################################################################
             template<
                 typename Tx,
                 typename Ty>

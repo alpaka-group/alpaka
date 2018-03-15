@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/mem/view/Traits.hpp>   // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
+#include <alpaka/mem/view/Traits.hpp>
 
-#include <alpaka/vec/Vec.hpp>           // Vec<N>
-#include <alpaka/dev/DevCpu.hpp>        // DevCpu
-#include <alpaka/dev/DevCudaRt.hpp>     // DevCudaRt
+#include <alpaka/vec/Vec.hpp>
+#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/dev/DevCudaRt.hpp>
 
 namespace alpaka
 {
@@ -35,7 +35,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The memory view to wrap plain pointers.
-            //#############################################################################
             template<
                 typename TDev,
                 typename TElem,
@@ -44,8 +43,6 @@ namespace alpaka
             class ViewPlainPtr final
             {
             public:
-                //-----------------------------------------------------------------------------
-                //! Constructor
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -60,8 +57,6 @@ namespace alpaka
                         m_pitchBytes(calculatePitchesFromExtents(m_extentElements))
                 {}
 
-                //-----------------------------------------------------------------------------
-                //! Constructor
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -84,35 +79,19 @@ namespace alpaka
                 {}
 
                 //-----------------------------------------------------------------------------
-                //! Copy constructor.
+                ViewPlainPtr(ViewPlainPtr const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC ViewPlainPtr(ViewPlainPtr const &) = delete;
+                ViewPlainPtr(ViewPlainPtr &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Move constructor.
+                auto operator=(ViewPlainPtr const &) -> ViewPlainPtr & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC ViewPlainPtr(ViewPlainPtr &&) = default;
+                auto operator=(ViewPlainPtr &&) -> ViewPlainPtr & = default;
                 //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC auto operator=(ViewPlainPtr const &) -> ViewPlainPtr & = delete;
-                //-----------------------------------------------------------------------------
-                //! Move assignment operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC auto operator=(ViewPlainPtr &&) -> ViewPlainPtr & = default;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC ~ViewPlainPtr() = default;
+                ~ViewPlainPtr() = default;
 
             private:
                 //-----------------------------------------------------------------------------
                 //! Calculate the pitches purely from the extents.
-                //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TExtent>
@@ -140,14 +119,12 @@ namespace alpaka
 
     //-----------------------------------------------------------------------------
     // Trait specializations for ViewPlainPtr.
-    //-----------------------------------------------------------------------------
     namespace dev
     {
         namespace traits
         {
             //#############################################################################
             //! The ViewPlainPtr device type trait specialization.
-            //#############################################################################
             template<
                 typename TDev,
                 typename TElem,
@@ -161,7 +138,6 @@ namespace alpaka
 
             //#############################################################################
             //! The ViewPlainPtr device get trait specialization.
-            //#############################################################################
             template<
                 typename TDev,
                 typename TElem,
@@ -186,7 +162,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The ViewPlainPtr dimension getter trait.
-            //#############################################################################
             template<
                 typename TDev,
                 typename TElem,
@@ -205,7 +180,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The ViewPlainPtr memory element type get trait specialization.
-            //#############################################################################
             template<
                 typename TDev,
                 typename TElem,
@@ -224,7 +198,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The ViewPlainPtr width get trait specialization.
-            //#############################################################################
             template<
                 typename TIdx,
                 typename TDev,
@@ -254,7 +227,6 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The ViewPlainPtr native pointer get trait specialization.
-                //#############################################################################
                 template<
                     typename TDev,
                     typename TElem,
@@ -281,7 +253,6 @@ namespace alpaka
 
                 //#############################################################################
                 //! The ViewPlainPtr memory pitch get trait specialization.
-                //#############################################################################
                 template<
                     typename TIdx,
                     typename TDev,
@@ -293,8 +264,7 @@ namespace alpaka
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>,
                     typename std::enable_if<TIdx::value < TDim::value>::type>
                 {
-                    ALPAKA_NO_HOST_ACC_WARNING
-                    ALPAKA_FN_HOST_ACC static auto getPitchBytes(
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
                     -> TSize
                     {
@@ -304,13 +274,10 @@ namespace alpaka
 
                 //#############################################################################
                 //! The CPU device CreateStaticDevMemView trait specialization.
-                //#############################################################################
                 template<>
                 struct CreateStaticDevMemView<
                     dev::DevCpu>
                 {
-                    //-----------------------------------------------------------------------------
-                    //!
                     //-----------------------------------------------------------------------------
                     template<
                         typename TElem,
@@ -338,13 +305,10 @@ namespace alpaka
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                 //#############################################################################
                 //! The CUDA RT device CreateStaticDevMemView trait specialization.
-                //#############################################################################
                 template<>
                 struct CreateStaticDevMemView<
                     dev::DevCudaRt>
                 {
-                    //-----------------------------------------------------------------------------
-                    //!
                     //-----------------------------------------------------------------------------
                     template<
                         typename TElem,
@@ -383,7 +347,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The ViewPlainPtr offset get trait specialization.
-            //#############################################################################
             template<
                 typename TIdx,
                 typename TDev,
@@ -394,8 +357,6 @@ namespace alpaka
                 TIdx,
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
@@ -413,7 +374,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The ViewPlainPtr size type trait specialization.
-            //#############################################################################
             template<
                 typename TDev,
                 typename TElem,

@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Benjamin Worpitz
+# Copyright 2014-2012017 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -20,15 +20,13 @@
 
 ################################################################################
 # Required CMake version.
-################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ################################################################################
 # Project.
-################################################################################
 
 SET(_TARGET_NAME "vectorAdd")
 
@@ -36,7 +34,6 @@ PROJECT(${_TARGET_NAME})
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
-#-------------------------------------------------------------------------------
 
 SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
@@ -44,14 +41,12 @@ FIND_PACKAGE("alpaka" REQUIRED)
 
 #-------------------------------------------------------------------------------
 # Common.
-#-------------------------------------------------------------------------------
 
 INCLUDE("${ALPAKA_ROOT}cmake/common.cmake")
 INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
 
 #-------------------------------------------------------------------------------
 # Add executable.
-#-------------------------------------------------------------------------------
 
 SET(_SOURCE_DIR "src/")
 
@@ -62,23 +57,14 @@ IF(MSVC)
     LIST(APPEND _COMPILE_DEFINITIONS_PRIVATE "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
 ENDIF()
 
-IF(CMAKE_VERSION VERSION_LESS 3.7.0)
-    INCLUDE_DIRECTORIES(
-        ${alpaka_INCLUDE_DIRS})
-    ADD_DEFINITIONS(
-        ${alpaka_DEFINITIONS})
-ENDIF()
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
     ${_TARGET_NAME}
     ${_FILES_SOURCE})
-IF(NOT CMAKE_VERSION VERSION_LESS 3.7.0)
-  TARGET_COMPILE_OPTIONS(
-      ${_TARGET_NAME}
-      PRIVATE ${_COMPILE_DEFINITIONS_PRIVATE}
-      PRIVATE ${ALPAKA_DEV_COMPILE_OPTIONS})
-ENDIF()
-# Set the link libraries for this library (adds libs, include directories, defines and compile options).
+TARGET_COMPILE_OPTIONS(
+    ${_TARGET_NAME}
+    PRIVATE ${_COMPILE_DEFINITIONS_PRIVATE}
+    PRIVATE ${ALPAKA_DEV_COMPILE_OPTIONS})
 TARGET_LINK_LIBRARIES(
     ${_TARGET_NAME}
     PUBLIC "alpaka")

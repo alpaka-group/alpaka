@@ -23,15 +23,15 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
+#include <alpaka/block/sync/Traits.hpp>
 
-#include <alpaka/core/BarrierThread.hpp>// BarrierThread
+#include <alpaka/core/BarrierThread.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <thread>                       // std::thread
-#include <mutex>                        // std::mutex
-#include <map>                          // std::map
+#include <thread>
+#include <mutex>
+#include <map>
 
 namespace alpaka
 {
@@ -41,7 +41,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The thread id map barrier block synchronization.
-            //#############################################################################
             template<
                 typename TSize>
             class BlockSyncBarrierThread
@@ -53,33 +52,21 @@ namespace alpaka
                 using BarrierWithPredicate = core::threads::BarrierThreadWithPredicate<TSize>;
 
                 //-----------------------------------------------------------------------------
-                //! Default constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(
                     TSize const & blockThreadCount) :
                         m_barrier(blockThreadCount),
                         m_barrierWithPredicate(blockThreadCount)
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(BlockSyncBarrierThread const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(BlockSyncBarrierThread &&) = delete;
                 //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierThread const &) -> BlockSyncBarrierThread & = delete;
-                //-----------------------------------------------------------------------------
-                //! Move assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierThread &&) -> BlockSyncBarrierThread & = delete;
                 //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierThread() = default;
+                /*virtual*/ ~BlockSyncBarrierThread() = default;
 
                 Barrier mutable m_barrier;
                 BarrierWithPredicate mutable m_barrierWithPredicate;
@@ -88,15 +75,11 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<
                     typename TSize>
                 struct SyncBlockThreads<
                     BlockSyncBarrierThread<TSize>>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
                         block::sync::BlockSyncBarrierThread<TSize> const & blockSync)
@@ -107,8 +90,6 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<
                     typename TOp,
                     typename TSize>
@@ -116,8 +97,6 @@ namespace alpaka
                     TOp,
                     BlockSyncBarrierThread<TSize>>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(

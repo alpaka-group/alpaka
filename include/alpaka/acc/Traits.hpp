@@ -21,27 +21,24 @@
 
 #pragma once
 
-#include <alpaka/acc/AccDevProps.hpp>   // AccDevProps
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/acc/AccDevProps.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <string>                       // std::string
-#include <typeinfo>                     // typeid
+#include <string>
+#include <typeinfo>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The accelerator specifics.
-    //-----------------------------------------------------------------------------
     namespace acc
     {
         //-----------------------------------------------------------------------------
         //! The accelerator traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The accelerator type trait.
-            //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
@@ -49,7 +46,6 @@ namespace alpaka
 
             //#############################################################################
             //! The device properties get trait.
-            //#############################################################################
             template<
                 typename TAcc,
                 typename TSfinae = void>
@@ -59,12 +55,12 @@ namespace alpaka
             //! The accelerator name trait.
             //!
             //! The default implementation returns the mangled class name.
-            //#############################################################################
             template<
                 typename TAcc,
                 typename TSfinae = void>
             struct GetAccName
             {
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
@@ -75,14 +71,12 @@ namespace alpaka
 
         //#############################################################################
         //! The accelerator type trait alias template to remove the ::type.
-        //#############################################################################
         template<
             typename T>
         using Acc = typename traits::AccType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! \return The acceleration properties on the given device.
-        //-----------------------------------------------------------------------------
         template<
             typename TAcc,
             typename TDev>
@@ -101,7 +95,6 @@ namespace alpaka
         //! Writes the accelerator name to the given stream.
         //!
         //! \tparam TAcc The accelerator type to write the name of.
-        //-----------------------------------------------------------------------------
         template<
             typename TAcc>
         ALPAKA_FN_HOST auto getAccName()

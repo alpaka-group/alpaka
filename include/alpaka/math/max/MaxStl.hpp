@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/math/max/Traits.hpp>   // Max
+#include <alpaka/math/max/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <cmath>                        // std::fmax
-#include <algorithm>                    // std::max
+#include <type_traits>
+#include <cmath>
+#include <algorithm>
 
 namespace alpaka
 {
@@ -35,7 +35,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library max.
-        //#############################################################################
         class MaxStl
         {
         public:
@@ -46,7 +45,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library integral max trait specialization.
-            //#############################################################################
             template<
                 typename Tx,
                 typename Ty>
@@ -70,7 +68,6 @@ namespace alpaka
             };
             //#############################################################################
             //! The standard library mixed integral floating point max trait specialization.
-            //#############################################################################
             template<
                 typename Tx,
                 typename Ty>

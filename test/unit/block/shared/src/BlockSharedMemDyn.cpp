@@ -28,12 +28,12 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
-#include <alpaka/test/stream/Stream.hpp>            // alpaka::test::stream::DefaultStream
-#include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>                         // BOOST_VERIFY
-#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#include <boost/assert.hpp>
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -44,13 +44,9 @@
 #endif
 
 //#############################################################################
-//!
-//#############################################################################
 class BlockSharedMemDynTestKernel
 {
 public:
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -81,7 +77,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The trait for getting the size of the block shared dynamic memory for a kernel.
-            //#############################################################################
             template<
                 typename TAcc>
             struct BlockSharedMemDynSizeBytes<
@@ -90,7 +85,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The size of the shared memory allocated for a block.
-                //-----------------------------------------------------------------------------
                 template<
                     typename TVec>
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
@@ -110,8 +104,6 @@ namespace alpaka
 
 BOOST_AUTO_TEST_SUITE(blockSharedMemDyn)
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     sameNonNullAdress,

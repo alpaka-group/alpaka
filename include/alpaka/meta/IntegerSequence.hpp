@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
-#include <alpaka/meta/Set.hpp>      // core::IsSet
+#include <alpaka/core/Common.hpp>
+#include <alpaka/meta/Set.hpp>
 
-#include <boost/predef.h>           // workarounds
+#include <boost/predef.h>
 
-#include <type_traits>              // std::is_integral
-#include <cstddef>                  // std::size_t
+#include <type_traits>
+#include <cstddef>
 
 namespace alpaka
 {
@@ -35,7 +35,6 @@ namespace alpaka
     {
         //#############################################################################
         // This could be replaced with c++14 std::IntegerSequence if we raise the minimum.
-        //#############################################################################
         template<
             typename T,
             T... Tvals>
@@ -43,10 +42,9 @@ namespace alpaka
         {
             static_assert(std::is_integral<T>::value, "IntegerSequence<T, I...> requires T to be an integral type.");
 
-            typedef IntegerSequence<T, Tvals...> type;
-            typedef T value_type;
+            using type = IntegerSequence<T, Tvals...>;
+            using value_type = T;
 
-            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto size() noexcept
             -> std::size_t
             {
@@ -57,14 +55,10 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //!
-            //#############################################################################
             template<
                 typename TDstType,
                 typename TIntegerSequence>
             struct ConvertIntegerSequence;
-            //#############################################################################
-            //!
             //#############################################################################
             template<
                 typename TDstType,
@@ -78,8 +72,6 @@ namespace alpaka
             };
         }
         //#############################################################################
-        //!
-        //#############################################################################
         template<
             typename TDstType,
             typename TIntegerSequence>
@@ -88,16 +80,12 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //!
-            //#############################################################################
             template<
                 template<typename...> class TList,
                 typename T,
                 template<T> class TOp,
                 typename TIntegerSequence>
             struct TransformIntegerSequence;
-            //#############################################################################
-            //!
             //#############################################################################
             template<
                 template<typename...> class TList,
@@ -116,8 +104,6 @@ namespace alpaka
             };
         }
         //#############################################################################
-        //!
-        //#############################################################################
         template<
             template<typename...> class TList,
             typename T,
@@ -128,22 +114,16 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //!
-            //#############################################################################
             template<bool TisSizeNegative, bool TbIsBegin, typename T, T Tbegin, typename TIntCon, typename TIntSeq>
             struct MakeIntegerSequenceHelper
             {
                 static_assert(!TisSizeNegative, "MakeIntegerSequence<T, N> requires N to be non-negative.");
             };
             //#############################################################################
-            //!
-            //#############################################################################
             template<typename T, T Tbegin, T... Tvals>
             struct MakeIntegerSequenceHelper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, IntegerSequence<T, Tvals...> > :
                 IntegerSequence<T, Tvals...>
             {};
-            //#############################################################################
-            //!
             //#############################################################################
             template<typename T, T Tbegin, T TIdx, T... Tvals>
             struct MakeIntegerSequenceHelper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, IntegerSequence<T, Tvals...> > :
@@ -152,27 +132,19 @@ namespace alpaka
         }
 
         //#############################################################################
-        //!
-        //#############################################################################
         template<typename T, T Tbegin, T Tsize>
         using MakeIntegerSequenceOffset = typename detail::MakeIntegerSequenceHelper<(Tsize < 0), (Tsize == 0), T, Tbegin, std::integral_constant<T, Tbegin+Tsize>, IntegerSequence<T> >::type;
 
-        //#############################################################################
-        //!
         //#############################################################################
         template<typename T, T Tsize>
         using MakeIntegerSequence = MakeIntegerSequenceOffset<T, 0u, Tsize>;
 
 
         //#############################################################################
-        //!
-        //#############################################################################
         template<
             std::size_t... Tvals>
         using IndexSequence = IntegerSequence<std::size_t, Tvals...>;
 
-        //#############################################################################
-        //!
         //#############################################################################
         template<
             typename T,
@@ -181,14 +153,10 @@ namespace alpaka
         using MakeIndexSequenceOffset = MakeIntegerSequenceOffset<std::size_t, Tbegin, Tsize>;
 
         //#############################################################################
-        //!
-        //#############################################################################
         template<
             std::size_t Tsize>
         using MakeIndexSequence = MakeIntegerSequence<std::size_t, Tsize>;
 
-        //#############################################################################
-        //!
         //#############################################################################
         template<
             typename... Ts>
@@ -197,7 +165,6 @@ namespace alpaka
 
         //#############################################################################
         //! Checks if the integral values are unique.
-        //#############################################################################
         template<
             typename T,
             T... Tvals>
@@ -208,13 +175,11 @@ namespace alpaka
 
         //#############################################################################
         //! Checks if the values in the index sequence are unique.
-        //#############################################################################
         template<
             typename TIntegerSequence>
         struct IntegerSequenceValuesUnique;
         //#############################################################################
         //! Checks if the values in the index sequence are unique.
-        //#############################################################################
         template<
             typename T,
             T... Tvals>
@@ -226,7 +191,6 @@ namespace alpaka
 
         //#############################################################################
         //! Checks if the integral values are within the given range.
-        //#############################################################################
         template<
             typename T,
             T Tmin,
@@ -235,7 +199,6 @@ namespace alpaka
         struct IntegralValuesInRange;
         //#############################################################################
         //! Checks if the integral values are within the given range.
-        //#############################################################################
         template<
             typename T,
             T Tmin,
@@ -249,7 +212,6 @@ namespace alpaka
         };
         //#############################################################################
         //! Checks if the integral values are within the given range.
-        //#############################################################################
         template<
             typename T,
             T Tmin,
@@ -268,7 +230,6 @@ namespace alpaka
 
         //#############################################################################
         //! Checks if the values in the index sequence are within the given range.
-        //#############################################################################
         template<
             typename TIntegerSequence,
             typename T,
@@ -277,7 +238,6 @@ namespace alpaka
         struct IntegerSequenceValuesInRange;
         //#############################################################################
         //! Checks if the values in the index sequence are within the given range.
-        //#############################################################################
         template<
             typename T,
             T... Tvals,

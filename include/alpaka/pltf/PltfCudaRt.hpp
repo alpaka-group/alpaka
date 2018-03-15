@@ -23,20 +23,20 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
-#include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/dev/DevCudaRt.hpp>
 
-#include <alpaka/core/Cuda.hpp>         // cudaGetDeviceCount, ...
+#include <alpaka/core/Cuda.hpp>
 
-#include <iostream>                     // std::cout
-#include <sstream>                      // std::stringstream
-#include <stdexcept>                    // std::runtime_error
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
 
 namespace alpaka
 {
@@ -44,12 +44,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The CUDA RT device manager.
-        //#############################################################################
         class PltfCudaRt
         {
         public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST PltfCudaRt() = delete;
         };
@@ -61,7 +58,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CUDA RT device manager device type trait specialization.
-            //#############################################################################
             template<>
             struct DevType<
                 pltf::PltfCudaRt>
@@ -76,13 +72,10 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU platform device count get trait specialization.
-            //#############################################################################
             template<>
             struct GetDevCount<
                 pltf::PltfCudaRt>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDevCount()
                 -> std::size_t
@@ -90,7 +83,9 @@ namespace alpaka
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     int iNumDevices(0);
-                    ALPAKA_CUDA_RT_CHECK(cudaGetDeviceCount(&iNumDevices));
+                    cudaError_t error = cudaGetDeviceCount(&iNumDevices);
+                    if(error != cudaSuccess)
+                        iNumDevices = 0;
 
                     return static_cast<std::size_t>(iNumDevices);
                 }
@@ -98,13 +93,10 @@ namespace alpaka
 
             //#############################################################################
             //! The CPU platform device get trait specialization.
-            //#############################################################################
             template<>
             struct GetDevByIdx<
                 pltf::PltfCudaRt>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDevByIdx(
                     std::size_t const & devIdx)
@@ -150,7 +142,6 @@ namespace alpaka
             private:
                 //-----------------------------------------------------------------------------
                 //! \return If the device is usable.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto isDevUsable(
                     std::size_t iDevice)
                 -> bool
@@ -189,7 +180,6 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 //-----------------------------------------------------------------------------
                 //! Prints all the device properties to std::cout.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto printDeviceProperties(
                     cudaDeviceProp const & devProp)
                 -> void

@@ -28,12 +28,11 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>              // alpaka::test::acc::TestAccs
-#include <alpaka/test/stream/Stream.hpp>        // DefaultStream
-#include <alpaka/test/mem/view/ViewTest.hpp>    // viewTest
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/mem/view/ViewTest.hpp>
 
-#include <boost/assert.hpp>                     // BOOST_VERIFY
-#include <boost/predef.h>                       // BOOST_COMP_MSVC, BOOST_COMP_CLANG
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -43,8 +42,8 @@
     #pragma clang diagnostic pop
 #endif
 
-#include <type_traits>                          // std::is_same
-#include <numeric>                              // std::iota
+#include <type_traits>
+#include <numeric>
 
 BOOST_AUTO_TEST_SUITE(memView)
 
@@ -76,13 +75,10 @@ struct CreateExtentBufVal
 //! 2D: sizeof(TSize) * (4, 3)
 //! 3D: sizeof(TSize) * (4, 3, 2)
 //! 4D: sizeof(TSize) * (4, 3, 2, 1)
-//#############################################################################
 template<
     std::size_t Tidx>
 struct CreateExtentViewVal
 {
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     template<
         typename TSize>
@@ -94,31 +90,6 @@ struct CreateExtentViewVal
     }
 };
 
-//-----------------------------------------------------------------------------
-//!
-//-----------------------------------------------------------------------------
-template<
-    typename TDim,
-    typename TSize,
-    template<std::size_t> class TCreate>
-static auto createVecFromIndexedFn()
--> alpaka::vec::Vec<TDim, TSize>
-{
-    return
-        alpaka::vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        Vec<TDim, TSize>::template
-#endif
-        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-            TDim,
-#endif
-            TCreate>(
-                TSize());
-}
-
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     viewSubViewTest,
@@ -139,11 +110,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     // We have to be careful with the extents used.
     // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
-    auto const extentBuf(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
+    auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentBufVal>(Size()));
     auto buf(alpaka::mem::buf::alloc<Elem, Size>(dev, extentBuf));
 
     // TODO: Test failing cases of view extents larger then the underlying buffer extents.
-    auto const extentView(createVecFromIndexedFn<Dim, Size, CreateExtentViewVal>());
+    auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentViewVal>(Size()));
     auto const offsetView(alpaka::vec::Vec<Dim, Size>::all(sizeof(Size)));
     View view(buf, extentView, offsetView);
 

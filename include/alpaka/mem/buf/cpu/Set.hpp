@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/dim/DimIntegralConst.hpp>      // dim::DimInt<N>
-#include <alpaka/extent/Traits.hpp>             // extent::getXXX
-#include <alpaka/mem/view/Traits.hpp>           // mem::view::Set, ...
-#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
-#include <alpaka/meta/IsIntegralSuperset.hpp>   // meta::IsIntegralSuperset
+#include <alpaka/dim/DimIntegralConst.hpp>
+#include <alpaka/extent/Traits.hpp>
+#include <alpaka/mem/view/Traits.hpp>
+#include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/IsIntegralSuperset.hpp>
 
-#include <cassert>                              // assert
-#include <cstring>                              // std::memset
+#include <cassert>
+#include <cstring>
 
 namespace alpaka
 {
@@ -50,7 +50,6 @@ namespace alpaka
                 {
                     //#############################################################################
                     //! The CPU device ND memory set task base.
-                    //#############################################################################
                     template<
                         typename TDim,
                         typename TView,
@@ -73,8 +72,6 @@ namespace alpaka
                             "The view and the extent are required to have compatible size type!");
 
                         //-----------------------------------------------------------------------------
-                        //! Constructor.
-                        //-----------------------------------------------------------------------------
                         TaskSetBase(
                             TView & view,
                             std::uint8_t const & byte,
@@ -93,8 +90,6 @@ namespace alpaka
                         }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        //-----------------------------------------------------------------------------
-                        //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto printDebug() const
                         -> void
@@ -121,7 +116,6 @@ namespace alpaka
 
                     //#############################################################################
                     //! The CPU device ND memory set task.
-                    //#############################################################################
                     template<
                         typename TDim,
                         typename TView,
@@ -131,12 +125,8 @@ namespace alpaka
                         using DimMin1 = dim::DimInt<TDim::value - 1u>;
 
                         //-----------------------------------------------------------------------------
-                        //! Constructor.
-                        //-----------------------------------------------------------------------------
                         using TaskSetBase<TDim, TView, TExtent>::TaskSetBase;
 
-                        //-----------------------------------------------------------------------------
-                        //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const
                         -> void
@@ -170,7 +160,6 @@ namespace alpaka
 
                     //#############################################################################
                     //! The CPU device 1D memory set task.
-                    //#############################################################################
                     template<
                         typename TView,
                         typename TExtent>
@@ -180,12 +169,8 @@ namespace alpaka
                         TExtent> : public TaskSetBase<dim::DimInt<1u>, TView, TExtent>
                     {
                         //-----------------------------------------------------------------------------
-                        //! Constructor.
-                        //-----------------------------------------------------------------------------
                         using TaskSetBase<dim::DimInt<1u>, TView, TExtent>::TaskSetBase;
 
-                        //-----------------------------------------------------------------------------
-                        //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const
                         -> void
@@ -211,15 +196,12 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CPU device memory set trait specialization.
-                //#############################################################################
                 template<
                     typename TDim>
                 struct TaskSet<
                     TDim,
                     dev::DevCpu>
                 {
-                    //-----------------------------------------------------------------------------
-                    //!
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,

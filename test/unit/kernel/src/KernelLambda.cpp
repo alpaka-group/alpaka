@@ -19,11 +19,19 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
-#include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
+// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
+// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
+// For each template parameter this leads to:
+// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
+// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
+// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
+#define BOOST_MPL_CFG_GPU_ENABLED
 
-#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#include <alpaka/alpaka.hpp>
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
+
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -32,8 +40,6 @@
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
-
-#include <tuple>
 
 BOOST_AUTO_TEST_SUITE(kernel)
 
@@ -48,8 +54,6 @@ BOOST_AUTO_TEST_SUITE(kernel)
 #if !BOOST_COMP_CLANG_CUDA || BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(4, 0, 0)
 
 #if !ALPAKA_CI
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     lambdaKernelIsWorking,
@@ -77,8 +81,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 }
 #endif
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     lambdaKernelWithArgumentIsWorking,
@@ -110,8 +112,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 }
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     lambdaKernelWithCapturingIsWorking,
     TAcc,
@@ -131,6 +131,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             // Do something useless on the accelerator.
             alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
 
+            (void)arg;
             BOOST_VERIFY(42u == arg);
         };
 
@@ -143,8 +144,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 // Generic lambdas are a C++14 feature.
 #if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
 #if !ALPAKA_CI
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     genericLambdaKernelIsWorking,
@@ -172,8 +171,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 }
 #endif
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     variadicGenericLambdaKernelIsWorking,

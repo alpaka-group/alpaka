@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2016 Benjamin Worpitz, Erik Zenker
+# Copyright 2014-2017 Benjamin Worpitz, Erik Zenker
 #
 # This file is part of alpaka.
 #
@@ -20,13 +20,11 @@
 
 ################################################################################
 # Required cmake version.
-################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 ################################################################################
 # alpaka.
-################################################################################
 
 # Return values.
 UNSET(alpaka_FOUND)
@@ -60,7 +58,6 @@ UNSET(_ALPAKA_VER_PATCH)
 
 #-------------------------------------------------------------------------------
 # Common.
-#-------------------------------------------------------------------------------
 
 # Directory of this file.
 SET(_ALPAKA_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR})
@@ -87,7 +84,6 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 
 #-------------------------------------------------------------------------------
 # Options.
-#-------------------------------------------------------------------------------
 OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
 
 OPTION(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU back-end" ON)
@@ -116,7 +112,6 @@ SET_PROPERTY(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
-#-------------------------------------------------------------------------------
 IF(${ALPAKA_DEBUG} GREATER 1)
     MESSAGE(STATUS "_ALPAKA_ROOT_DIR : ${_ALPAKA_ROOT_DIR}")
     MESSAGE(STATUS "_ALPAKA_COMMON_FILE : ${_ALPAKA_COMMON_FILE}")
@@ -127,18 +122,27 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find Boost.
-#-------------------------------------------------------------------------------
-SET(_ALPAKA_BOOST_MIN_VER "1.59.0") # minimum version for basic features
+SET(_ALPAKA_BOOST_MIN_VER "1.62.0")
 IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DEBUG ON)
     SET(Boost_DETAILED_FAILURE_MSG ON)
 ENDIF()
 IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
-    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread atomic chrono date_time)
+    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread chrono date_time)
     IF(NOT Boost_FIBER_FOUND)
-        MESSAGE(WARNING "Optional alpaka dependency Boost fiber could not be found! Fibers back-end disabled!")
+        MESSAGE(STATUS "Optional alpaka dependency Boost fiber could not be found! Fibers back-end disabled!")
         SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers CPU back-end" FORCE)
         FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET)
+    ELSE()
+        # On Win32 boost context triggers:
+        # libboost_context-vc141-mt-gd-1_64.lib(jump_i386_ms_pe_masm.obj) : error LNK2026: module unsafe for SAFESEH image.
+        IF(MSVC)
+            IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+                SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
+                SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
+                SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
+            ENDIF()
+        ENDIF()
     ENDIF()
 
 ELSE()
@@ -209,11 +213,10 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find TBB.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
     FIND_PACKAGE(TBB 2.2)
     IF(NOT TBB_FOUND)
-        MESSAGE(WARNING "Optional alpaka dependency TBB could not be found! TBB grid block back-end disabled!")
+        MESSAGE(STATUS "Optional alpaka dependency TBB could not be found! TBB grid block back-end disabled!")
         SET(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OFF CACHE BOOL "Enable the TBB grid block back-end" FORCE)
     ELSE()
         LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC ${TBB_LIBRARIES})
@@ -224,7 +227,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find OpenMP.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
     FIND_PACKAGE(OpenMP)
 
@@ -243,26 +245,34 @@ IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
     ENDIF()
 
     IF(NOT OPENMP_FOUND)
-        MESSAGE(WARNING "Optional alpaka dependency OpenMP could not be found! OpenMP back-ends disabled!")
+        MESSAGE(STATUS "Optional alpaka dependency OpenMP could not be found! OpenMP back-ends disabled!")
         SET(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU grid block back-end" FORCE)
         SET(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU block thread back-end" FORCE)
         SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU block and thread back-end" FORCE)
 
     ELSE()
+        # CUDA requires some special handling
+        IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
+            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        ENDIF()
+
         LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC ${OpenMP_CXX_FLAGS})
         IF(NOT MSVC)
             LIST(APPEND _ALPAKA_LINK_FLAGS_PUBLIC ${OpenMP_CXX_FLAGS})
         ENDIF()
-        # CUDA requires some special handling
-        IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+
+        # clang versions beginning with 3.9 support OpenMP 4.0 but only when given the corresponding flag
+        IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            IF(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
+                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-fopenmp-version=40")
+                SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp-version=40")
+            ENDIF()
         ENDIF()
     ENDIF()
 ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find CUDA.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
     IF(NOT DEFINED ALPAKA_CUDA_VERSION)
@@ -276,22 +286,16 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
     ELSE()
         FIND_PACKAGE(CUDA "${ALPAKA_CUDA_VERSION}")
         IF(NOT CUDA_FOUND)
-            MESSAGE(WARNING "Optional alpaka dependency CUDA could not be found! CUDA back-end disabled!")
+            MESSAGE(STATUS "Optional alpaka dependency CUDA could not be found! CUDA back-end disabled!")
             SET(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU back-end" FORCE)
 
         ELSE()
             SET(ALPAKA_CUDA_VERSION "${CUDA_VERSION}")
-            SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "GPU architecture")
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
-            STRING(COMPARE EQUAL "${ALPAKA_CUDA_ARCH}" "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
-
-            IF(IS_CUDA_ARCH_UNSUPPORTED)
-                MESSAGE(WARNING "Unsupported CUDA architecture ${ALPAKA_CUDA_ARCH} specified. SM 2.0 or higher is required for CUDA 7.0. Using sm_20 instead.")
-                SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture" FORCE)
-            ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
-
+            IF(CUDA_VERSION VERSION_LESS 9.0)
+                SET(ALPAKA_CUDA_ARCH "20" CACHE STRING "GPU architecture")
+            ELSE()
+                SET(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
+            ENDIF()
             SET(ALPAKA_CUDA_COMPILER "nvcc" CACHE STRING "CUDA compiler")
             SET_PROPERTY(CACHE ALPAKA_CUDA_COMPILER PROPERTY STRINGS "nvcc;clang")
 
@@ -301,7 +305,11 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
 
             IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
-                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-gpu-arch=${ALPAKA_CUDA_ARCH}")
+                FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
+                    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-gpu-arch=sm_${_CUDA_ARCH_ELEM}")
+                ENDFOREACH()
+
+                LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-path=${CUDA_TOOLKIT_ROOT_DIR}")
 
                 # This flag silences the warning produced by the Dummy.cpp files:
                 # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
@@ -329,6 +337,9 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDIF()
 
             ELSE()
+                # Clean up the flags. Else, multiple find calls would result in duplicate flags. Furthermore, other modules may have set different settings.
+                SET(CUDA_NVCC_FLAGS)
+
                 IF(${ALPAKA_DEBUG} GREATER 1)
                     SET(CUDA_VERBOSE_BUILD ON)
                 ENDIF()
@@ -341,17 +352,37 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 IF(NOT CUDA_VERSION VERSION_LESS 7.5)
                     LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
+                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
+                ELSE()
+                    # CUDA 7.0
+                    LIST(APPEND CUDA_NVCC_FLAGS "--relaxed-constexpr")
                 ENDIF()
 
-                LIST(APPEND CUDA_NVCC_FLAGS "-arch=${ALPAKA_CUDA_ARCH}")
+                FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
+                    # set flags to create device code for the given architecture
+                    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}
+                        "--generate-code arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM} --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}")
+                ENDFOREACH()
 
                 IF(NOT MSVC)
                     LIST(APPEND CUDA_NVCC_FLAGS "-std=c++11")
-                    SET(CUDA_HOST_COMPILER "${CMAKE_CXX_COMPILER}")
+                ELSE()
+                    LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "_HAS_ITERATOR_DEBUGGING=0")
                 ENDIF()
 
-                if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-                    LIST(APPEND CUDA_NVCC_FLAGS "-g" "-G")
+                SET(CUDA_HOST_COMPILER "${CMAKE_CXX_COMPILER}")
+
+                IF(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+                    LIST(APPEND CUDA_NVCC_FLAGS "-g")
+                    # https://github.com/ComputationalRadiationPhysics/alpaka/issues/428
+                    IF(((CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0) OR
+                        (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.8)) AND
+                        CUDA_VERSION VERSION_LESS 9.0)
+                        MESSAGE(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} not support -G with CUDA <= 8! "
+                                        "Device debug symbols NOT added.")
+                    ELSE()
+                        LIST(APPEND CUDA_NVCC_FLAGS "-G")
+                    ENDIF()
                 ENDIF()
 
                 IF(ALPAKA_CUDA_FAST_MATH)
@@ -391,7 +422,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Compiler settings.
-#-------------------------------------------------------------------------------
 IF(MSVC)
     # Empty append to define it if it does not already exist.
     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC)
@@ -416,7 +446,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # alpaka.
-#-------------------------------------------------------------------------------
 IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
     LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "ALPAKA_ACC_GPU_CUDA_ONLY_MODE")
     MESSAGE(STATUS ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
@@ -472,8 +501,8 @@ LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${_ALPAKA_LINK_LIBRARY}")
 append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" _ALPAKA_FILES_HEADER)
 append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "cpp" _ALPAKA_FILES_SOURCE)
 
-append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/travis" "${_ALPAKA_ROOT_DIR}" "sh" _ALPAKA_FILES_TRAVIS)
-SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_TRAVIS} PROPERTIES HEADER_FILE_ONLY TRUE)
+append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/script" "${_ALPAKA_ROOT_DIR}" "sh" _ALPAKA_FILES_SCRIPT)
+SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_SCRIPT} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/cmake" "${_ALPAKA_ROOT_DIR}" "cmake" _ALPAKA_FILES_CMAKE)
 LIST(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/alpakaConfig.cmake" "${_ALPAKA_ROOT_DIR}/Findalpaka.cmake" "${_ALPAKA_ROOT_DIR}/CMakeLists.txt" "${_ALPAKA_ROOT_DIR}/cmake/dev.cmake" "${_ALPAKA_ROOT_DIR}/cmake/common.cmake" "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake" "${_ALPAKA_ADD_LIBRRAY_FILE}")
@@ -487,11 +516,10 @@ SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_OTHER} PROPERTIES HEADER_FILE_ONLY T
 
 #-------------------------------------------------------------------------------
 # Target.
-#-------------------------------------------------------------------------------
 IF(NOT TARGET "alpaka")
     ADD_LIBRARY(
         "alpaka"
-        ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SOURCE} ${_ALPAKA_FILES_TRAVIS} ${_ALPAKA_FILES_CMAKE} ${_ALPAKA_FILES_DOC} ${_ALPAKA_FILES_OTHER})
+        ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SOURCE} ${_ALPAKA_FILES_SCRIPT} ${_ALPAKA_FILES_CMAKE} ${_ALPAKA_FILES_DOC} ${_ALPAKA_FILES_OTHER})
 
     # Compile options.
     IF(${ALPAKA_DEBUG} GREATER 1)
@@ -554,7 +582,6 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find alpaka version.
-#-------------------------------------------------------------------------------
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_MAJOR_HPP REGEX "#define ALPAKA_VERSION_MAJOR ")
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_MINOR_HPP REGEX "#define ALPAKA_VERSION_MINOR ")
 file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/include/alpaka/version.hpp" ALPAKA_VERSION_PATCH_HPP REGEX "#define ALPAKA_VERSION_PATCH ")
@@ -567,7 +594,6 @@ SET(PACKAGE_VERSION "${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VE
 
 #-------------------------------------------------------------------------------
 # Set return values.
-#-------------------------------------------------------------------------------
 SET(alpaka_VERSION "${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VERSION_PATCH}")
 SET(alpaka_COMPILE_OPTIONS ${_ALPAKA_COMPILE_OPTIONS_PUBLIC})
 SET(alpaka_COMPILE_DEFINITIONS ${_ALPAKA_COMPILE_DEFINITIONS_PUBLIC})
@@ -584,7 +610,6 @@ LIST(APPEND alpaka_LIBRARIES ${_ALPAKA_LINK_LIBRARIES_PUBLIC})
 
 #-------------------------------------------------------------------------------
 # Print the return values.
-#-------------------------------------------------------------------------------
 IF(${ALPAKA_DEBUG} GREATER 0)
     MESSAGE(STATUS "alpaka_FOUND: ${alpaka_FOUND}")
     MESSAGE(STATUS "alpaka_VERSION: ${alpaka_VERSION}")
@@ -655,7 +680,6 @@ ENDIF()
 
 ###############################################################################
 # FindPackage options
-###############################################################################
 
 # Handles the REQUIRED, QUIET and version-related arguments for FIND_PACKAGE.
 # NOTE: We do not check for alpaka_LIBRARIES and alpaka_DEFINITIONS because they can be empty.

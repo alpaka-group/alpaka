@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <boost/predef.h>               // Workarounds.
+#include <boost/predef.h>
 #if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+    #include <boost/core/ignore_unused.hpp>
 #endif
 
-#include <utility>                      // std::forward
+#include <utility>
 
 namespace alpaka
 {
@@ -37,21 +37,15 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //
-            //#############################################################################
             template<
                 typename TList>
             struct ForEachTypeHelper;
-            //#############################################################################
-            //
             //#############################################################################
             template<
                 template<typename...> class TList>
             struct ForEachTypeHelper<
                 TList<>>
             {
-                //-----------------------------------------------------------------------------
-                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -74,8 +68,6 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //
-            //#############################################################################
             template<
                 template<typename...> class TList,
                 typename T,
@@ -83,8 +75,6 @@ namespace alpaka
             struct ForEachTypeHelper<
                 TList<T, Ts...>>
             {
-                //-----------------------------------------------------------------------------
-                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -115,7 +105,6 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible.
         //! This function does not create instances of the types instead it passes the types as template parameter.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TList,

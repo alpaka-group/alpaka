@@ -21,24 +21,22 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/config.hpp>
 
 #if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+    #include <boost/core/ignore_unused.hpp>
 #endif
 
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-    #include <type_traits>                  // std::result_of
+    #include <type_traits>
 #endif
 
 namespace alpaka
 {
     namespace meta
     {
-        //-----------------------------------------------------------------------------
-        //!
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
@@ -62,14 +60,10 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //!
-            //#############################################################################
             template<
                 typename TFnObj,
                 typename... T>
             struct TypeOfFold;
-            //#############################################################################
-            //!
             //#############################################################################
             template<
                 typename TFnObj,
@@ -80,8 +74,6 @@ namespace alpaka
             {
                 using type = T;
             };
-            //#############################################################################
-            //!
             //#############################################################################
             template<
                 typename TFnObj,
@@ -98,8 +90,6 @@ namespace alpaka
             };
         }
 
-        //-----------------------------------------------------------------------------
-        //!
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
@@ -123,8 +113,6 @@ namespace alpaka
             return f(t0, foldr(f, t1, ts...));
         }
 #else
-        //-----------------------------------------------------------------------------
-        //!
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<

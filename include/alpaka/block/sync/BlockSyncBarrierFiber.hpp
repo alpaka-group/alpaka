@@ -23,14 +23,14 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
+#include <alpaka/block/sync/Traits.hpp>
 
-#include <alpaka/core/Fibers.hpp>       // boost::fibers::barrier
+#include <alpaka/core/Fibers.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>
 
-#include <mutex>                        // std::mutex
-#include <map>                          // std::map
+#include <mutex>
+#include <map>
 
 namespace alpaka
 {
@@ -40,7 +40,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The thread id map barrier block synchronization.
-            //#############################################################################
             template<
                 typename TSize>
             class BlockSyncBarrierFiber
@@ -49,33 +48,23 @@ namespace alpaka
                 using BlockSyncBase = BlockSyncBarrierFiber;
 
                 //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(
                     TSize const & blockThreadCount) :
                         m_barrier(static_cast<std::size_t>(blockThreadCount)),
-                        m_threadCount(blockThreadCount)
+                        m_threadCount(blockThreadCount),
+                        m_curThreadCount(static_cast<TSize>(0u)),
+                        m_generation(static_cast<TSize>(0u))
                 {}
-                //-----------------------------------------------------------------------------
-                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(BlockSyncBarrierFiber const &) = delete;
                 //-----------------------------------------------------------------------------
-                //! Move constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(BlockSyncBarrierFiber &&) = delete;
-                //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierFiber const &) -> BlockSyncBarrierFiber & = delete;
                 //-----------------------------------------------------------------------------
-                //! Move assignment operator.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierFiber &&) -> BlockSyncBarrierFiber & = delete;
                 //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierFiber() = default;
+                /*virtual*/ ~BlockSyncBarrierFiber() = default;
 
                 boost::fibers::barrier mutable m_barrier;
 
@@ -88,15 +77,11 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<
                     typename TSize>
                 struct SyncBlockThreads<
                     BlockSyncBarrierFiber<TSize>>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
                         block::sync::BlockSyncBarrierFiber<TSize> const & blockSync)
@@ -107,8 +92,6 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<
                     typename TOp,
                     typename TSize>
@@ -116,8 +99,6 @@ namespace alpaka
                     TOp,
                     BlockSyncBarrierFiber<TSize>>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
@@ -127,14 +108,14 @@ namespace alpaka
                     {
                         if(blockSync.m_curThreadCount == blockSync.m_threadCount)
                         {
-                            blockSync.m_curThreadCount = 0;
+                            blockSync.m_curThreadCount = static_cast<TSize>(0u);
                             ++blockSync.m_generation;
                         }
 
-                        auto const generationMod2(blockSync.m_generation % 2u);
+                        auto const generationMod2(blockSync.m_generation % static_cast<TSize>(2u));
 
                         // The first fiber will reset the value to the initial value.
-                        if(blockSync.m_curThreadCount == 0u)
+                        if(blockSync.m_curThreadCount == static_cast<TSize>(0u))
                         {
                             blockSync.m_result[generationMod2] = TOp::InitialValue;
                         }

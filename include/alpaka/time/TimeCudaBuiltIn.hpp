@@ -23,13 +23,13 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/time/Traits.hpp>       // time::Clock
+#include <alpaka/time/Traits.hpp>
 
 namespace alpaka
 {
@@ -37,49 +37,33 @@ namespace alpaka
     {
         //#############################################################################
         //! The GPU CUDA accelerator time implementation.
-        //#############################################################################
         class TimeCudaBuiltIn
         {
         public:
             using TimeBase = TimeCudaBuiltIn;
 
             //-----------------------------------------------------------------------------
-            //! Default constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY TimeCudaBuiltIn() = default;
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
+            TimeCudaBuiltIn() = default;
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY TimeCudaBuiltIn(TimeCudaBuiltIn const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY TimeCudaBuiltIn(TimeCudaBuiltIn &&) = delete;
-            //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY auto operator=(TimeCudaBuiltIn const &) -> TimeCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY auto operator=(TimeCudaBuiltIn &&) -> TimeCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~TimeCudaBuiltIn() = default;
+            /*virtual*/ ~TimeCudaBuiltIn() = default;
         };
 
         namespace traits
         {
             //#############################################################################
             //! The CUDA built-in clock operation.
-            //#############################################################################
             template<>
             struct Clock<
                 time::TimeCudaBuiltIn>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto clock(
                     time::TimeCudaBuiltIn const &)

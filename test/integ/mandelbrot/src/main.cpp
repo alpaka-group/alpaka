@@ -19,29 +19,26 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>                        // alpaka::exec::create
-#include <alpaka/test/MeasureKernelRunTime.hpp>     // measureKernelRunTimeMs
-#include <alpaka/test/acc/Acc.hpp>                  // EnabledAccs
-#include <alpaka/test/stream/Stream.hpp>            // DefaultStream
+#include <alpaka/alpaka.hpp>
+#include <alpaka/test/MeasureKernelRunTime.hpp>
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/stream/Stream.hpp>
 
-#include <iostream>                                 // std::cout
-#include <typeinfo>                                 // typeid
-#include <cassert>                                  // assert
-#include <fstream>                                  // std::ofstream
-#include <algorithm>                                // std::replace
+#include <iostream>
+#include <typeinfo>
+#include <cassert>
+#include <fstream>
+#include <algorithm>
 
 //#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
 
 //#############################################################################
 //! Complex Number.
-//#############################################################################
 template<
     typename T>
 class SimpleComplex
 {
 public:
-    //-----------------------------------------------------------------------------
-    //! Constructor.
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC SimpleComplex(
@@ -51,16 +48,12 @@ public:
             i(b)
     {}
     //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto absSq()
     -> T
     {
         return r*r + i*i;
     }
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(SimpleComplex const & a)
@@ -69,8 +62,6 @@ public:
         return SimpleComplex(r*a.r - i*a.i, i*a.r + r*a.i);
     }
     //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(float const & a)
     -> SimpleComplex
@@ -78,16 +69,12 @@ public:
         return SimpleComplex(r*a, i*a);
     }
     //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(SimpleComplex const & a)
     -> SimpleComplex
     {
         return SimpleComplex(r+a.r, i+a.i);
     }
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(float const & a)
@@ -103,17 +90,12 @@ public:
 
 //#############################################################################
 //! A Mandelbrot kernel.
-//! \tparam TAcc The accelerator environment to be executed on.
-//#############################################################################
 class MandelbrotKernel
 {
 public:
 #ifndef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
     //-----------------------------------------------------------------------------
-    //! Constructor.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC MandelbrotKernel()
+    ALPAKA_FN_HOST_ACC MandelbrotKernel()
     {
         // Banding can be prevented by a continuous color functions.
         m_colors[0u] = convertRgbSingleToBgra(66, 30, 15);
@@ -136,8 +118,6 @@ public:
 #endif
 
     //-----------------------------------------------------------------------------
-    //! The kernel entry point.
-    //!
     //! \param acc The accelerator to be executed on.
     //! \param pColors The output image.
     //! \param numRows The number of rows in the image
@@ -148,7 +128,6 @@ public:
     //! \param fMinI The bottom border.
     //! \param fMaxI The top border.
     //! \param maxIterations The maximum number of iterations.
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TAcc>
@@ -193,8 +172,6 @@ public:
     //-----------------------------------------------------------------------------
     //! \return The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
     //!     Only does maxIterations steps and returns maxIterations if the value would be higher.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC static auto iterateMandelbrot(
         SimpleComplex<float> const & c,
         std::uint32_t const & maxIterations)
@@ -213,10 +190,7 @@ public:
     }
 
     //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC static auto convertRgbSingleToBgra(
+    ALPAKA_FN_HOST_ACC static auto convertRgbSingleToBgra(
         std::uint32_t const & r,
         std::uint32_t const & g,
         std::uint32_t const & b)
@@ -229,7 +203,6 @@ public:
     //-----------------------------------------------------------------------------
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC static auto iterationCountToContinousColor(
         std::uint32_t const & iterationCount,
@@ -249,8 +222,6 @@ public:
     //-----------------------------------------------------------------------------
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto iterationCountToRepeatedColor(
         std::uint32_t const & iterationCount) const
     -> std::uint32_t
@@ -264,7 +235,6 @@ public:
 
 //-----------------------------------------------------------------------------
 //! Writes the buffer color data to a file.
-//-----------------------------------------------------------------------------
 template<
     typename TBuf>
 auto writeTgaColorImage(
@@ -343,7 +313,6 @@ auto writeTgaColorImage(
 
 //#############################################################################
 //! Profiles the Mandelbrot kernel.
-//#############################################################################
 struct MandelbrotKernelTester
 {
     template<
@@ -457,9 +426,6 @@ struct MandelbrotKernelTester
     }
 };
 
-//-----------------------------------------------------------------------------
-//! Program entry point.
-//-----------------------------------------------------------------------------
 auto main()
 -> int
 {
@@ -481,7 +447,7 @@ auto main()
         // For different sizes.
         for(std::uint32_t imageSize(1u<<3u);
 #ifdef ALPAKA_CI
-            imageSize <= 1u<<8u;
+            imageSize <= 1u<<5u;
 #else
             imageSize <= 1u<<13u;
 #endif

@@ -24,37 +24,36 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
 // Base classes.
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
-#include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
-#include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp> // IdxBtRefFiberIdMap
-#include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
-#include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
-#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
-#include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
-#include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>            // BlockSharedMemStMasterSync
-#include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>                      // BlockSyncBarrierFiber
-#include <alpaka/rand/RandStl.hpp>              // RandStl
-#include <alpaka/time/TimeStl.hpp>              // TimeStl
+#include <alpaka/workdiv/WorkDivMembers.hpp>
+#include <alpaka/idx/gb/IdxGbRef.hpp>
+#include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
+#include <alpaka/atomic/AtomicNoOp.hpp>
+#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicHierarchy.hpp>
+#include <alpaka/math/MathStl.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
+#include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
+#include <alpaka/rand/RandStl.hpp>
+#include <alpaka/time/TimeStl.hpp>
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
-#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/dev/DevCpu.hpp>
 
 #include <alpaka/core/Fibers.hpp>
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
-#include <boost/predef.h>                       // workarounds
+#include <boost/core/ignore_unused.hpp>
+#include <boost/predef.h>
 
-#include <cassert>                              // assert
-#include <memory>                               // std::unique_ptr
-#include <typeinfo>                             // typeid
+#include <memory>
+#include <typeinfo>
 
 namespace alpaka
 {
@@ -76,7 +75,6 @@ namespace alpaka
         //! It uses boost::fibers to implement the cooperative parallelism.
         //! By using fibers the shared memory can reside in the closest memory/cache available.
         //! Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize>
@@ -85,9 +83,9 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtRefFiberIdMap<TDim, TSize>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock, // grid atomics
-                atomic::AtomicStlLock, // block atomics
-                atomic::AtomicNoOp     // thread atomics
+                atomic::AtomicStlLock<16>, // grid atomics
+                atomic::AtomicStlLock<16>, // block atomics
+                atomic::AtomicNoOp         // thread atomics
             >,
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
@@ -107,8 +105,6 @@ namespace alpaka
 
         private:
             //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(
@@ -118,9 +114,9 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtRefFiberIdMap<TDim, TSize>(m_fibersToIndices),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock, // atomics between grids
-                        atomic::AtomicStlLock, // atomics between blocks
-                        atomic::AtomicNoOp     // atomics between threads
+                        atomic::AtomicStlLock<16>, // atomics between grids
+                        atomic::AtomicStlLock<16>, // atomics between blocks
+                        atomic::AtomicNoOp         // atomics between threads
                     >(),
                     math::MathStl(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
@@ -136,25 +132,15 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(AccCpuFibers const &) = delete;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(AccCpuFibers &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuFibers const &) -> AccCpuFibers & = delete;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuFibers &&) -> AccCpuFibers & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuFibers() = default;
+            /*virtual*/ ~AccCpuFibers() = default;
 
         private:
             // getIdx
@@ -172,7 +158,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers accelerator accelerator type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -183,15 +168,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU fibers accelerator device properties get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccDevProps<
                 acc::AccCpuFibers<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
@@ -223,15 +205,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU fibers accelerator name trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccName<
                 acc::AccCpuFibers<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
@@ -247,7 +226,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers accelerator device type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -264,7 +242,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers accelerator dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -281,7 +258,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers accelerator executor type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -302,7 +278,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers executor platform type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -319,7 +294,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU fibers accelerator size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>

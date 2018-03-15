@@ -23,7 +23,7 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>
 
 #include <omp.h>
 
@@ -33,7 +33,6 @@ namespace alpaka
     {
         //-----------------------------------------------------------------------------
         //! \return The maximum number of threads the OpenMP 2.0 runtime is capable of.
-        //-----------------------------------------------------------------------------
         ALPAKA_FN_HOST inline auto getMaxOmpThreads()
         -> int
         {

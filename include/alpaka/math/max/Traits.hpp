@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
+#include <alpaka/meta/IsStrictBase.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <boost/config.hpp>             // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/config.hpp>
 
-#include <type_traits>                  // std::enable_if
+#include <type_traits>
 
 namespace alpaka
 {
@@ -37,7 +37,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The max trait.
-            //#############################################################################
             template<
                 typename T,
                 typename Tx,
@@ -56,7 +55,6 @@ namespace alpaka
         //! \param max The object specializing Max.
         //! \param x The first argument.
         //! \param y The second argument.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
@@ -93,7 +91,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The Max specialization for classes with MaxBase member type.
-            //#############################################################################
             template<
                 typename T,
                 typename Tx,
@@ -109,8 +106,6 @@ namespace alpaka
                     >::value
                 >::type>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto max(

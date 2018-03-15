@@ -21,37 +21,32 @@
 
 #pragma once
 
-#include <alpaka/meta/IsStrictBase.hpp> // meta::IsStrictBase
+#include <alpaka/meta/IsStrictBase.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <type_traits>                  // std::enable_if
+#include <type_traits>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The grid block specifics
-    //-----------------------------------------------------------------------------
     namespace block
     {
         //-----------------------------------------------------------------------------
         //! The block shared memory operation specifics.
-        //-----------------------------------------------------------------------------
         namespace shared
         {
             //-----------------------------------------------------------------------------
             //! The block shared static memory operation specifics.
-            //-----------------------------------------------------------------------------
             namespace st
             {
                 //-----------------------------------------------------------------------------
                 //! The block shared static memory operation traits.
-                //-----------------------------------------------------------------------------
                 namespace traits
                 {
                     //#############################################################################
                     //! The block shared static memory variable allocation operation trait.
-                    //#############################################################################
                     template<
                         typename T,
                         std::size_t TuniqueId,
@@ -60,7 +55,6 @@ namespace alpaka
                     struct AllocVar;
                     //#############################################################################
                     //! The block shared static memory free operation trait.
-                    //#############################################################################
                     template<
                         typename TBlockSharedMemSt,
                         typename TSfinae = void>
@@ -76,7 +70,7 @@ namespace alpaka
                 //! \tparam TuniqueId id those is unique inside a kernel
                 //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
                 //! \param blockSharedMemSt The block shared allocator implementation.
-                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T,
                     std::size_t TuniqueId,
@@ -99,7 +93,6 @@ namespace alpaka
                 //!
                 //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
                 //! \param blockSharedMemSt The block shared allocator implementation.
-                //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TBlockSharedMemSt>
@@ -117,7 +110,6 @@ namespace alpaka
                 {
                     //#############################################################################
                     //! The AllocVar trait specialization for classes with BlockSharedMemStBase member type.
-                    //#############################################################################
                     template<
                         typename T,
                         std::size_t TuniqueId,
@@ -134,8 +126,6 @@ namespace alpaka
                         >::type>
                     {
                         //-----------------------------------------------------------------------------
-                        //!
-                        //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC static auto allocVar(
                             TBlockSharedMemSt const & blockSharedMemSt)
                         -> T &
@@ -150,7 +140,6 @@ namespace alpaka
                     };
                     //#############################################################################
                     //! The FreeMem trait specialization for classes with BlockSharedMemStBase member type.
-                    //#############################################################################
                     template<
                         typename TBlockSharedMemSt>
                     struct FreeMem<
@@ -162,8 +151,6 @@ namespace alpaka
                             >::value
                         >::type>
                     {
-                        //-----------------------------------------------------------------------------
-                        //!
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC static auto freeMem(
                             TBlockSharedMemSt & blockSharedMemSt)

@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/math/floor/Traits.hpp> // Floor
+#include <alpaka/math/floor/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <cmath>                        // std::floor
+#include <type_traits>
+#include <cmath>
 
 namespace alpaka
 {
@@ -34,7 +34,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library floor.
-        //#############################################################################
         class FloorStl
         {
         public:
@@ -45,7 +44,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library floor trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Floor<

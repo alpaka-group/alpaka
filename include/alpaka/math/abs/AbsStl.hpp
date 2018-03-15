@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/math/abs/Traits.hpp>   // Abs
+#include <alpaka/math/abs/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic, std::is_signed
-#include <cstdlib>                      // std::abs(int)
-#include <cmath>                        // std::abs(float)
+#include <type_traits>
+#include <cstdlib>
+#include <cmath>
 
 namespace alpaka
 {
@@ -35,7 +35,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library abs.
-        //#############################################################################
         class AbsStl
         {
         public:
@@ -46,7 +45,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library abs trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Abs<

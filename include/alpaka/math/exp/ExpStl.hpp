@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/math/exp/Traits.hpp>   // Exp
+#include <alpaka/math/exp/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <cmath>                        // std::exp
+#include <type_traits>
+#include <cmath>
 
 namespace alpaka
 {
@@ -34,7 +34,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library exp.
-        //#############################################################################
         class ExpStl
         {
         public:
@@ -45,7 +44,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library exp trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Exp<

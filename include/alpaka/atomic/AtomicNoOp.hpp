@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/atomic/Traits.hpp>                 // AtomicOp
+#include <alpaka/atomic/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {
@@ -31,42 +31,28 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU fibers accelerator atomic ops.
-        //#############################################################################
         class AtomicNoOp
         {
         public:
 
             //-----------------------------------------------------------------------------
-            //! Default constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicNoOp() = default;
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
+            AtomicNoOp() = default;
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AtomicNoOp(AtomicNoOp const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AtomicNoOp(AtomicNoOp &&) = delete;
-            //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicNoOp() = default;
+            /*virtual*/ ~AtomicNoOp() = default;
         };
 
         namespace traits
         {
             //#############################################################################
             //! The CPU fibers accelerator atomic operation.
-            //#############################################################################
             template<
                 typename TOp,
                 typename T,
@@ -78,8 +64,6 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicNoOp const & atomic,
                     T * const addr,
@@ -89,8 +73,6 @@ namespace alpaka
                     boost::ignore_unused(atomic);
                     return TOp()(addr, value);
                 }
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicNoOp const & atomic,

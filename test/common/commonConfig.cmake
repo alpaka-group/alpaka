@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2015 Benjamin Worpitz
+# Copyright 2014-2017 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -20,13 +20,11 @@
 
 ################################################################################
 # Required CMake version.
-################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 ################################################################################
 # alpaka test common.
-################################################################################
 
 # Return values.
 UNSET(common_FOUND)
@@ -40,6 +38,7 @@ UNSET(_COMMON_FOUND)
 UNSET(_COMMON_INCLUDE_DIRECTORY)
 UNSET(_COMMON_INCLUDE_DIRECTORIES_PUBLIC)
 UNSET(_COMMON_COMPILE_DEFINITIONS_PUBLIC)
+UNSET(_COMMON_COMPILE_OPTIONS_PUBLIC)
 UNSET(_COMMON_LINK_LIBRARIES_PUBLIC)
 UNSET(_COMMON_SOURCE_DIRECTORY)
 UNSET(_COMMON_TARGET_NAME)
@@ -61,30 +60,27 @@ PROJECT(${_COMMON_TARGET_NAME})
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
-#-------------------------------------------------------------------------------
 
 SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
-FIND_PACKAGE("alpaka" REQUIRED)
+FIND_PACKAGE(alpaka REQUIRED)
 
 IF(NOT alpaka_FOUND)
     MESSAGE(WARNING "Required alpaka test common dependency alpaka could not be found!")
     SET(_COMMON_FOUND FALSE)
 
 ELSE()
-    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
-        LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC ${alpaka_DEFINITIONS})
-        LIST(APPEND _COMMON_INCLUDE_DIRECTORIES_PUBLIC ${alpaka_INCLUDE_DIRS})
-        LIST(APPEND _COMMON_LINK_LIBRARIES_PUBLIC ${alpaka_LIBRARIES})
-    ENDIF()
-
     INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
-    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
+    LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
+ENDIF()
+
+IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
+    LIST(APPEND _COMMON_LINK_LIBRARIES_PUBLIC "general;${CUDA_CUDA_LIBRARY}")
+    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC "CUDA_API_PER_THREAD_DEFAULT_STREAM")
 ENDIF()
 
 #-------------------------------------------------------------------------------
 # Add library.
-#-------------------------------------------------------------------------------
 
 SET(_COMMON_INCLUDE_DIRECTORY "${_COMMON_ROOT_DIR}/include")
 LIST(APPEND _COMMON_INCLUDE_DIRECTORIES_PUBLIC "${_COMMON_INCLUDE_DIRECTORY}")
@@ -96,42 +92,38 @@ append_recursive_files_add_to_src_group("${_COMMON_SOURCE_DIRECTORY}" "${_COMMON
 LIST(APPEND _COMMON_FILES_CMAKE "${_COMMON_ROOT_DIR}/commonConfig.cmake" "${_COMMON_ROOT_DIR}/Findcommon.cmake")
 
 IF(MSVC)
-    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC "/bigobj")
-    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
+    LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC "/bigobj")
+    LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
 ENDIF()
+
 
 #-------------------------------------------------------------------------------
 # Target.
-#-------------------------------------------------------------------------------
 IF(NOT TARGET ${_COMMON_TARGET_NAME})
-    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
-        INCLUDE_DIRECTORIES(
-            ${_COMMON_INCLUDE_DIRECTORIES_PUBLIC})
-        ADD_DEFINITIONS(
-            ${_COMMON_COMPILE_DEFINITIONS_PUBLIC})
-    ENDIF()
     # Always add all files to the target executable build call to add them to the build project.
     ADD_LIBRARY(
         ${_COMMON_TARGET_NAME}
         STATIC
         ${_COMMON_FILES_HEADER} ${_COMMON_FILES_SOURCE} ${_COMMON_FILES_CMAKE})
     # Set the link libraries for this library (adds libs, include directories, defines and compile options).
-    IF(NOT CMAKE_VERSION VERSION_LESS 3.7.0)
-        TARGET_INCLUDE_DIRECTORIES(
-            ${_COMMON_TARGET_NAME}
-            PUBLIC ${_COMMON_INCLUDE_DIRECTORIES_PUBLIC})
-        TARGET_COMPILE_OPTIONS(
+    TARGET_INCLUDE_DIRECTORIES(
+        ${_COMMON_TARGET_NAME}
+        PUBLIC ${_COMMON_INCLUDE_DIRECTORIES_PUBLIC})
+    LIST(
+        LENGTH
+        _COMMON_COMPILE_DEFINITIONS_PUBLIC
+        _COMMON_COMPILE_DEFINITIONS_PUBLIC_LENGTH)
+    IF(${_COMMON_COMPILE_DEFINITIONS_PUBLIC_LENGTH} GREATER 0)
+        TARGET_COMPILE_DEFINITIONS(
             ${_COMMON_TARGET_NAME}
             PUBLIC ${_COMMON_COMPILE_DEFINITIONS_PUBLIC})
-        TARGET_LINK_LIBRARIES(
-            ${_COMMON_TARGET_NAME}
-            PUBLIC "alpaka")
-        # TODO: Remove _COMMON_LINK_LIBRARIES_PUBLIC when removing the else.
-    ELSE()
-        TARGET_LINK_LIBRARIES(
-            ${_COMMON_TARGET_NAME}
-            PUBLIC "alpaka" ${_COMMON_LINK_LIBRARIES_PUBLIC})
     ENDIF()
+    TARGET_COMPILE_OPTIONS(
+        ${_COMMON_TARGET_NAME}
+        PUBLIC ${_COMMON_COMPILE_OPTIONS_PUBLIC})
+    TARGET_LINK_LIBRARIES(
+        ${_COMMON_TARGET_NAME}
+        PUBLIC alpaka ${_COMMON_LINK_LIBRARIES_PUBLIC})
     SET_TARGET_PROPERTIES(
         ${_COMMON_TARGET_NAME}
         PROPERTIES FOLDER "test")
@@ -139,33 +131,19 @@ ENDIF()
 
 # Unset already set variables if not found.
 IF(_COMMON_FOUND)
-    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
-        SET(common_INCLUDE_DIR "${_COMMON_INCLUDE_DIRECTORY}")
-        MARK_AS_ADVANCED(common_INCLUDE_DIR)
-        SET(common_INCLUDE_DIRS "${_COMMON_INCLUDE_DIRECTORIES_PUBLIC}")
-        SET(common_DEFINITIONS "${_COMMON_COMPILE_DEFINITIONS_PUBLIC}")
-        SET(common_LIBRARIES "${_COMMON_LINK_LIBRARIES_PUBLIC}")
-    ENDIF()
-
     # Handles the REQUIRED, QUIET and version-related arguments for FIND_PACKAGE.
     INCLUDE(FindPackageHandleStandardArgs)
-    IF(CMAKE_VERSION VERSION_LESS 3.7.0)
-        FIND_PACKAGE_HANDLE_STANDARD_ARGS(
-            ${_COMMON_TARGET_NAME}
-            FOUND_VAR common_FOUND
-            REQUIRED_VARS common_INCLUDE_DIR)
-    ELSE()
-        FIND_PACKAGE_HANDLE_STANDARD_ARGS(
-            ${_COMMON_TARGET_NAME}
-            FOUND_VAR common_FOUND
-            REQUIRED_VARS _COMMON_INCLUDE_DIRECTORY)
-    ENDIF()
+    FIND_PACKAGE_HANDLE_STANDARD_ARGS(
+        ${_COMMON_TARGET_NAME}
+        FOUND_VAR common_FOUND
+        REQUIRED_VARS _COMMON_INCLUDE_DIRECTORY)
 ENDIF()
 
 UNSET(_COMMON_FOUND)
 UNSET(_COMMON_INCLUDE_DIRECTORY)
 UNSET(_COMMON_INCLUDE_DIRECTORIES_PUBLIC)
 UNSET(_COMMON_COMPILE_DEFINITIONS_PUBLIC)
+UNSET(_COMMON_COMPILE_OPTIONS_PUBLIC)
 UNSET(_COMMON_LINK_LIBRARIES_PUBLIC)
 UNSET(_COMMON_SOURCE_DIRECTORY)
 UNSET(_COMMON_TARGET_NAME)

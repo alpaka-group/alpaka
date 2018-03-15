@@ -23,9 +23,9 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/atomic/Traits.hpp>                 // AtomicOp
+#include <alpaka/atomic/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {
@@ -36,36 +36,23 @@ namespace alpaka
         //
         //  Atomics can be used in the blocks and threads hierarchy levels.
         //  Atomics are not guaranteed to be save between devices or grids.
-        //#############################################################################
         class AtomicOmpCritSec
         {
         public:
             using AtomicBase = AtomicOmpCritSec;
 
             //-----------------------------------------------------------------------------
-            //! Default constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec() = default;
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
+            AtomicOmpCritSec() = default;
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec &&) = delete;
-            //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicOmpCritSec const &) -> AtomicOmpCritSec & = delete;
             //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicOmpCritSec &&) -> AtomicOmpCritSec & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicOmpCritSec() = default;
+            /*virtual*/ ~AtomicOmpCritSec() = default;
         };
 
         namespace traits
@@ -75,7 +62,6 @@ namespace alpaka
             //
             // NOTE: We can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed.
             // So this would not be fully atomic. Between the store of the old value and the operation could be a context switch.
-            //#############################################################################
             template<
                 typename TOp,
                 typename T,
@@ -86,8 +72,6 @@ namespace alpaka
                 T,
                 THierarchy>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicOmpCritSec const & atomic,
@@ -104,8 +88,6 @@ namespace alpaka
                     }
                     return old;
                 }
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicOmpCritSec const & atomic,

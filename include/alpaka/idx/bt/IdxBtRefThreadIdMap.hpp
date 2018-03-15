@@ -23,12 +23,13 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
-#include <alpaka/idx/Traits.hpp>            // idx::getIdx
+#include <alpaka/idx/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <thread>                           // std::thread
-#include <map>                              // std::map
+#include <thread>
+#include <map>
+#include <cassert>
 
 namespace alpaka
 {
@@ -38,7 +39,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The threads accelerator index provider.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -50,32 +50,20 @@ namespace alpaka
                 using ThreadIdToIdxMap = std::map<std::thread::id, vec::Vec<TDim, TSize>>;
 
                 //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(
                     ThreadIdToIdxMap const & mThreadToIndices) :
                     m_threadToIndexMap(mThreadToIndices)
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap &&) = delete;
                 //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap const &) -> IdxBtRefThreadIdMap & = delete;
-                //-----------------------------------------------------------------------------
-                //! Move assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap &&) -> IdxBtRefThreadIdMap & = delete;
                 //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefThreadIdMap() = default;
+                /*virtual*/ ~IdxBtRefThreadIdMap() = default;
 
             public:
                 ThreadIdToIdxMap const & m_threadToIndexMap;   //!< The mapping of thread id's to thread indices.
@@ -89,7 +77,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads accelerator index dimension get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -106,7 +93,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads accelerator block thread index get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -117,7 +103,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the block.
-                //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
@@ -140,7 +125,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads accelerator block thread index size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>

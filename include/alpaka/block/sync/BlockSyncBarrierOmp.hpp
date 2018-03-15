@@ -23,11 +23,11 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
+#include <alpaka/block/sync/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {
@@ -37,38 +37,25 @@ namespace alpaka
         {
             //#############################################################################
             //! The OpenMP barrier block synchronization.
-            //#############################################################################
             class BlockSyncBarrierOmp
             {
             public:
                 using BlockSyncBase = BlockSyncBarrierOmp;
 
                 //-----------------------------------------------------------------------------
-                //! Default constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp() :
                     m_generation(0u)
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp(BlockSyncBarrierOmp const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp(BlockSyncBarrierOmp &&) = delete;
                 //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierOmp const &) -> BlockSyncBarrierOmp & = delete;
-                //-----------------------------------------------------------------------------
-                //! Move assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierOmp &&) -> BlockSyncBarrierOmp & = delete;
                 //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSyncBarrierOmp() = default;
+                /*virtual*/ ~BlockSyncBarrierOmp() = default;
 
                 std::uint8_t mutable m_generation;
                 int mutable m_result[2];
@@ -77,14 +64,10 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<>
                 struct SyncBlockThreads<
                     BlockSyncBarrierOmp>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
                         block::sync::BlockSyncBarrierOmp const & blockSync)
@@ -101,13 +84,9 @@ namespace alpaka
                 namespace detail
                 {
                     //#############################################################################
-                    //!
-                    //#############################################################################
                     template<
                         typename TOp>
                     struct AtomicOp;
-                    //#############################################################################
-                    //!
                     //#############################################################################
                     template<>
                     struct AtomicOp<
@@ -120,8 +99,6 @@ namespace alpaka
                         }
                     };
                     //#############################################################################
-                    //!
-                    //#############################################################################
                     template<>
                     struct AtomicOp<
                         block::sync::op::LogicalAnd>
@@ -132,8 +109,6 @@ namespace alpaka
                             result &= static_cast<int>(value);
                         }
                     };
-                    //#############################################################################
-                    //!
                     //#############################################################################
                     template<>
                     struct AtomicOp<
@@ -148,16 +123,12 @@ namespace alpaka
                 }
 
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<
                     typename TOp>
                 struct SyncBlockThreadsPredicate<
                     TOp,
                     BlockSyncBarrierOmp>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(

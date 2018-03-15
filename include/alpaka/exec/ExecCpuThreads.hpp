@@ -24,32 +24,33 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
-#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
-#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/acc/AccCpuThreads.hpp>         // acc:AccCpuThreads
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedMemDynSizeBytes
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
+#include <alpaka/acc/AccCpuThreads.hpp>
+#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/kernel/Traits.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 
-#include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
-#include <alpaka/meta/NdLoop.hpp>               // meta::ndLoopIncIdx
-#include <alpaka/meta/ApplyTuple.hpp>           // meta::apply
+#include <alpaka/core/ConcurrentExecPool.hpp>
+#include <alpaka/meta/NdLoop.hpp>
+#include <alpaka/meta/ApplyTuple.hpp>
 
-#include <boost/predef.h>                       // workarounds
+#include <boost/predef.h>
 
-#include <algorithm>                            // std::for_each
-#include <thread>                               // std::thread
-#include <vector>                               // std::vector
-#include <tuple>                                // std::tuple
-#include <type_traits>                          // std::decay
+#include <algorithm>
+#include <thread>
+#include <vector>
+#include <tuple>
+#include <type_traits>
+#include <future>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-    #include <iostream>                         // std::cout
+    #include <iostream>
 #endif
 
 namespace alpaka
@@ -58,7 +59,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU threads executor.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize,
@@ -70,12 +70,10 @@ namespace alpaka
         private:
             //#############################################################################
             //! The type given to the ConcurrentExecPool for yielding the current thread.
-            //#############################################################################
             struct ThreadPoolYield
             {
                 //-----------------------------------------------------------------------------
                 //! Yields the current thread.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto yield()
                 -> void
                 {
@@ -86,7 +84,6 @@ namespace alpaka
             // When using the thread pool the threads are yielding because this is faster.
             // Using condition variables and going to sleep is very costly for real threads.
             // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
-            //#############################################################################
             using ThreadPool = alpaka::core::detail::ConcurrentExecPool<
                 TSize,
                 std::thread,        // The concurrent execution type.
@@ -94,8 +91,6 @@ namespace alpaka
                 ThreadPoolYield>;   // The type yielding the current concurrent execution.
 
         public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
@@ -112,29 +107,18 @@ namespace alpaka
                     "The work division and the executor have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
+            ExecCpuThreads(ExecCpuThreads const &) = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuThreads(ExecCpuThreads const &) = default;
+            ExecCpuThreads(ExecCpuThreads &&) = default;
             //-----------------------------------------------------------------------------
-            //! Move constructor.
+            auto operator=(ExecCpuThreads const &) -> ExecCpuThreads & = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuThreads(ExecCpuThreads &&) = default;
+            auto operator=(ExecCpuThreads &&) -> ExecCpuThreads & = default;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuThreads const &) -> ExecCpuThreads & = default;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuThreads &&) -> ExecCpuThreads & = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuThreads() = default;
+            ~ExecCpuThreads() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST auto operator()() const
             -> void
             {
@@ -199,7 +183,6 @@ namespace alpaka
         private:
             //-----------------------------------------------------------------------------
             //! The function executed for each grid block.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
                 vec::Vec<TDim, TSize> const & gridBlockIdx,
@@ -250,7 +233,6 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             //! The function executed for each block thread on the host.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
@@ -283,11 +265,12 @@ namespace alpaka
                 futuresInBlock.emplace_back(
                     threadPool.enqueueTask(
                         boundBlockThreadExecAcc));
+#else
+                (void)boundBlockThreadExecAcc;
 #endif
             }
             //-----------------------------------------------------------------------------
             //! The thread entry point on the accelerator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecAcc(
                 acc::AccCpuThreads<TDim, TSize> & acc,
                 vec::Vec<TDim, TSize> const & blockThreadIdx,
@@ -336,7 +319,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads executor accelerator type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -355,7 +337,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads executor device type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -374,7 +355,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads executor dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -393,7 +373,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads executor executor type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -414,7 +393,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads executor platform type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -433,7 +411,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU threads executor size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,

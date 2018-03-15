@@ -21,28 +21,25 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>    // dim::DimType
-#include <alpaka/extent/Traits.hpp> // extent::GetExtent
-#include <alpaka/offset/Traits.hpp> // offset::GetOffset
-#include <alpaka/size/Traits.hpp>   // size::traits::SizeType
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/extent/Traits.hpp>
+#include <alpaka/offset/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
-#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/config.hpp>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The vec specifics.
-    //-----------------------------------------------------------------------------
     namespace vec
     {
         //-----------------------------------------------------------------------------
         //! The vec traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! Trait for selecting a sub-vector.
-            //#############################################################################
             template<
                 typename TVec,
                 typename TIndexSequence,
@@ -51,7 +48,6 @@ namespace alpaka
 
             //#############################################################################
             //! Trait for casting a vector.
-            //#############################################################################
             template<
                 typename TSize,
                 typename TVec,
@@ -60,7 +56,6 @@ namespace alpaka
 
             //#############################################################################
             //! Trait for reversing a vector.
-            //#############################################################################
             template<
                 typename TVec,
                 typename TSfinae = void>
@@ -68,7 +63,6 @@ namespace alpaka
 
             //#############################################################################
             //! Trait for concatenating two vectors.
-            //#############################################################################
             template<
                 typename TVecL,
                 typename TVecR,
@@ -80,7 +74,6 @@ namespace alpaka
         //! Builds a new vector by selecting the elements of the source vector in the given order.
         //! Repeating and swizzling elements is allowed.
         //! \return The sub-vector consisting of the elements specified by the indices.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TIndexSequence,
@@ -106,7 +99,6 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \tparam TVec has to specialize SubVecFromIndices.
         //! \return The sub-vector consisting of the first N elements of the source vector.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TSubDim,
@@ -141,7 +133,6 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \tparam TVec has to specialize SubVecFromIndices.
         //! \return The sub-vector consisting of the last N elements of the source vector.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TSubDim,
@@ -180,7 +171,6 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return The casted vector.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TSize,
@@ -206,7 +196,6 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return The reverse vector.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TVec>
@@ -229,7 +218,6 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return The concatenated vector.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TVecL,

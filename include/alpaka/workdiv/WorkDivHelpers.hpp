@@ -21,33 +21,31 @@
 
 #pragma once
 
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 
-#include <alpaka/dev/Traits.hpp>                // dev::DevMan
-#include <alpaka/acc/Traits.hpp>                // getAccDevProps
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/acc/Traits.hpp>
 
-#include <alpaka/vec/Vec.hpp>                   // Vec
+#include <alpaka/vec/Vec.hpp>
 
-#include <alpaka/core/Assert.hpp>               // assertValueUnsigned
-#include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST
+#include <alpaka/core/Assert.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <cassert>                              // assert
-#include <cmath>                                // std::ceil
-#include <algorithm>                            // std::min
-#include <functional>                           // std::bind
-#include <set>                                  // std::set
-#include <array>                                // std::array
+#include <cassert>
+#include <cmath>
+#include <algorithm>
+#include <functional>
+#include <set>
+#include <array>
 
 //-----------------------------------------------------------------------------
 //! The alpaka library.
-//-----------------------------------------------------------------------------
 namespace alpaka
 {
     namespace workdiv
     {
         //#############################################################################
         //! The grid block extent subdivision restrictions.
-        //#############################################################################
         enum class GridBlockExtentSubDivRestrictions
         {
             EqualExtent,       //!< The block thread extent will be equal in all dimensions.
@@ -63,7 +61,6 @@ namespace alpaka
             //! \return The biggest number that satisfies the following conditions:
             //!     1) dividend/ret==0
             //!     2) ret<=maxDivisor
-            //-----------------------------------------------------------------------------
             template<
                 typename T,
                 typename = typename std::enable_if<std::is_integral<T>::value>::type>
@@ -89,7 +86,6 @@ namespace alpaka
             //! \param val The value to find divisors of.
             //! \param maxDivisor The maximum.
             //! \return A list of all divisors less then or equal to the given maximum.
-            //-----------------------------------------------------------------------------
             template<
                 typename T,
                 typename = typename std::enable_if<std::is_integral<T>::value>::type>
@@ -121,7 +117,6 @@ namespace alpaka
         //! \tparam TSize The size type of the accelerator device properties.
         //! \param accDevProps The maxima for the work division.
         //! \return If the accelerator device properties are valid.
-        //-----------------------------------------------------------------------------
         template<
             typename TDim,
             typename TSize>
@@ -174,7 +169,6 @@ namespace alpaka
         //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
         //! \param gridBlockExtentSubDivRestrictions
         //!     The grid block extent subdivision restrictions.
-        //-----------------------------------------------------------------------------
         template<
             typename TDim,
             typename TSize>
@@ -404,7 +398,6 @@ namespace alpaka
         //! \param gridBlockExtentSubDivRestrictions
         //!     The grid block extent subdivision restrictions.
         //! \return The work division.
-        //-----------------------------------------------------------------------------
         template<
             typename TAcc,
             typename TGridElemExtent,
@@ -446,7 +439,6 @@ namespace alpaka
         //! \param accDevProps The maxima for the work division.
         //! \param workDiv The work division to test for validity.
         //! \return If the work division is valid for the given accelerator device properties.
-        //-----------------------------------------------------------------------------
         template<
             typename TDim,
             typename TSize,
@@ -502,7 +494,6 @@ namespace alpaka
         //! \param dev The device to test the work division for validity on.
         //! \param workDiv The work division to test for validity.
         //! \return If the work division is valid on this accelerator.
-        //-----------------------------------------------------------------------------
         template<
             typename TAcc,
             typename TDev,

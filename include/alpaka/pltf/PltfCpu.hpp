@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/pltf/Traits.hpp>       // pltf::traits::GetDevByIdx
-#include <alpaka/dev/DevCpu.hpp>        // dev::DevCpu
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/dev/DevCpu.hpp>
 
-#include <sstream>                      // std::stringstream
-#include <vector>                       // std::vector
+#include <sstream>
+#include <vector>
 
 namespace alpaka
 {
@@ -33,12 +33,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU device platform.
-        //#############################################################################
         class PltfCpu
         {
         public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST PltfCpu() = delete;
         };
@@ -50,7 +47,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU device device type trait specialization.
-            //#############################################################################
             template<>
             struct DevType<
                 pltf::PltfCpu>
@@ -65,13 +61,10 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU platform device count get trait specialization.
-            //#############################################################################
             template<>
             struct GetDevCount<
                 pltf::PltfCpu>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDevCount()
                 -> std::size_t
@@ -84,13 +77,10 @@ namespace alpaka
 
             //#############################################################################
             //! The CPU platform device get trait specialization.
-            //#############################################################################
             template<>
             struct GetDevByIdx<
                 pltf::PltfCpu>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDevByIdx(
                     std::size_t const & devIdx)

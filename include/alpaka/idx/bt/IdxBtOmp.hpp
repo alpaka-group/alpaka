@@ -23,13 +23,15 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/idx/Traits.hpp>            // idx::GetIdx
+#include <alpaka/idx/Traits.hpp>
 
-#include <alpaka/idx/MapIdx.hpp>            // idx::mapIdx
+#include <alpaka/idx/MapIdx.hpp>
 
 #include <alpaka/core/OpenMp.hpp>
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
+
+#include <cassert>
 
 namespace alpaka
 {
@@ -39,7 +41,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The OpenMP accelerator index provider.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -49,29 +50,17 @@ namespace alpaka
                 using IdxBtBase = IdxBtOmp;
 
                 //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtOmp() = default;
-                //-----------------------------------------------------------------------------
-                //! Copy constructor.
+                IdxBtOmp() = default;
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtOmp(IdxBtOmp const &) = delete;
                 //-----------------------------------------------------------------------------
-                //! Move constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtOmp(IdxBtOmp &&) = delete;
-                //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
-                //! Move assignment operator.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtOmp() = default;
+                /*virtual*/ ~IdxBtOmp() = default;
             };
         }
     }
@@ -82,7 +71,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The OpenMP accelerator index dimension get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -99,7 +87,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The OpenMP accelerator block thread index get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -110,7 +97,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the block.
-                //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
@@ -135,7 +121,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The OpenMP accelerator block thread index size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>

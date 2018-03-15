@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>
 
 //-----------------------------------------------------------------------------
 //! Suggests unrolling of the directly following loop to the compiler.
@@ -30,7 +30,6 @@
 //!  `ALPAKA_UNROLL
 //!  for(...){...}`
 // \TODO: Implement for other compilers.
-//-----------------------------------------------------------------------------
 #if BOOST_ARCH_CUDA_DEVICE
     #if BOOST_COMP_MSVC
         #define ALPAKA_UNROLL(...) __pragma(unroll __VA_ARGS__)

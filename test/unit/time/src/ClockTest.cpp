@@ -28,11 +28,11 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
-#include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>                         // BOOST_VERIFY
-#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#include <boost/assert.hpp>
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -43,13 +43,9 @@
 #endif
 
 //#############################################################################
-//!
-//#############################################################################
 class ClockTestKernel
 {
 public:
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -74,8 +70,6 @@ public:
 
 BOOST_AUTO_TEST_SUITE(timeClock)
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     clockIsWorking,

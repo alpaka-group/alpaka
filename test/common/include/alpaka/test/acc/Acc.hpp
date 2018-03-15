@@ -23,14 +23,14 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <tuple>                            // std::tuple
-#include <type_traits>                      // std::is_class
-#include <iosfwd>                           // std::ostream
+#include <tuple>
+#include <type_traits>
+#include <iosfwd>
 
 // When compiling the tests with CUDA enabled (nvcc or native clang) on the CI infrastructure
 // we have to dramatically reduce the number of tested combinations.
 // Else the log length would be exceeded.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && ALPAKA_CI
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA && defined(ALPAKA_CI)
     #define ALPAKA_CUDA_CI
 #endif
 
@@ -38,17 +38,14 @@ namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The test specifics.
-    //-----------------------------------------------------------------------------
     namespace test
     {
         //-----------------------------------------------------------------------------
         //! The test accelerator specifics.
-        //-----------------------------------------------------------------------------
         namespace acc
         {
             //-----------------------------------------------------------------------------
             //! The detail namespace is used to separate implementation details from user accessible code.
-            //-----------------------------------------------------------------------------
             namespace detail
             {
 #if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
@@ -141,7 +138,6 @@ namespace alpaka
 #endif
                 //#############################################################################
                 //! A vector containing all available accelerators and void's.
-                //#############################################################################
                 template<
                     typename TDim,
                     typename TSize>
@@ -160,7 +156,6 @@ namespace alpaka
 
             //#############################################################################
             //! A vector containing all available accelerators.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -174,13 +169,11 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The accelerator name write wrapper.
-                //#############################################################################
                 struct StreamOutAccName
                 {
-                    ALPAKA_NO_HOST_ACC_WARNING
                     template<
                         typename TAcc>
-                    ALPAKA_FN_HOST_ACC auto operator()(
+                    ALPAKA_FN_HOST auto operator()(
                         std::ostream & os)
                     -> void
                     {
@@ -192,12 +185,10 @@ namespace alpaka
 
             //-----------------------------------------------------------------------------
             //! Writes the enabled accelerators to the given stream.
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TDim,
                 typename TSize>
-            ALPAKA_FN_HOST_ACC auto writeEnabledAccs(
+            ALPAKA_FN_HOST auto writeEnabledAccs(
                 std::ostream & os)
             -> void
             {
@@ -214,7 +205,6 @@ namespace alpaka
 #if defined(ALPAKA_CUDA_CI)
             //#############################################################################
             //! A std::tuple holding dimensions.
-            //#############################################################################
             using TestDims =
                 std::tuple<
                     alpaka::dim::DimInt<1u>,
@@ -228,7 +218,6 @@ namespace alpaka
 
             //#############################################################################
             //! A std::tuple holding size types.
-            //#############################################################################
             using TestSizes =
                 std::tuple<
                     std::size_t,
@@ -246,7 +235,6 @@ namespace alpaka
 
             //#############################################################################
             //! A std::tuple holding dimensions.
-            //#############################################################################
             using TestDims =
                 std::tuple<
                     alpaka::dim::DimInt<1u>,
@@ -260,7 +248,6 @@ namespace alpaka
 
             //#############################################################################
             //! A std::tuple holding size types.
-            //#############################################################################
             using TestSizes =
                 std::tuple<
                     std::size_t,
@@ -288,7 +275,6 @@ namespace alpaka
                 //!         tuple<Dim3,Size1>,
                 //!         ...,
                 //!         tuple<DimN,SizeN>>
-                //#############################################################################
                 using TestAccParamSets =
                     meta::CartesianProduct<
                         std::tuple,
@@ -300,7 +286,6 @@ namespace alpaka
                 //! Transforms a std::tuple holding a dimension and a size type to a fully instantiated accelerator.
                 //!
                 //! EnabledAccs<Dim,Size> = tuple<Acc1<Dim,Size>, ..., AccN<Dim,Size>>
-                //#############################################################################
                 template<
                     typename TTestAccParamSet>
                 struct InstantiateEnabledAccsWithTestParamSetImpl
@@ -325,7 +310,6 @@ namespace alpaka
                 //!         tuple<Acc1<Dim2,Size1>, ..., AccN<Dim2,Size1>>,
                 //!         ...,
                 //!         tuple<Acc1<DimN,SizeN>, ..., AccN<DimN,SizeN>>>
-                //#############################################################################
                 using InstantiatedEnabledAccs =
                     meta::Transform<
                         TestAccParamSets,
@@ -342,7 +326,6 @@ namespace alpaka
             //!         Acc1<Dim2,Size1>, ..., AccN<Dim2,Size1>,
             //!         ...,
             //!         Acc1<DimN,SizeN>, ..., AccN<DimN,SizeN>>
-            //#############################################################################
             using TestAccs =
                 alpaka::meta::Apply<
                     detail::InstantiatedEnabledAccs,

@@ -23,13 +23,13 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/time/Traits.hpp>       // time::Clock
+#include <alpaka/time/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY
+#include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <omp.h>                        // omp_get_wtime
+#include <omp.h>
 
 namespace alpaka
 {
@@ -37,49 +37,33 @@ namespace alpaka
     {
         //#############################################################################
         //! The OpenMP accelerator time implementation.
-        //#############################################################################
         class TimeOmp
         {
         public:
             using TimeBase = TimeOmp;
 
             //-----------------------------------------------------------------------------
-            //! Default constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA TimeOmp() = default;
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
+            TimeOmp() = default;
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA TimeOmp(TimeOmp const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA TimeOmp(TimeOmp &&) = delete;
-            //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(TimeOmp const &) -> TimeOmp & = delete;
             //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(TimeOmp &&) -> TimeOmp & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~TimeOmp() = default;
+            /*virtual*/ ~TimeOmp() = default;
         };
 
         namespace traits
         {
             //#############################################################################
             //! The OpenMP accelerator clock operation.
-            //#############################################################################
             template<>
             struct Clock<
                 time::TimeOmp>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto clock(
                     time::TimeOmp const & time)

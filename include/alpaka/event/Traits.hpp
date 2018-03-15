@@ -21,42 +21,29 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>
 
-#include <alpaka/dev/Traits.hpp>    // dev::getDev
+#include <alpaka/dev/Traits.hpp>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The event management specifics.
-    //-----------------------------------------------------------------------------
     namespace event
     {
         //-----------------------------------------------------------------------------
         //! The event management traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The event type trait.
-            //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
             struct EventType;
 
             //#############################################################################
-            //! The event creator trait.
-            //#############################################################################
-            template<
-                typename TEvent,
-                typename TDev,
-                typename TSfinae = void>
-            struct Create;
-
-            //#############################################################################
             //! The event tester trait.
-            //#############################################################################
             template<
                 typename TEvent,
                 typename TSfinae = void>
@@ -65,32 +52,12 @@ namespace alpaka
 
         //#############################################################################
         //! The event type trait alias template to remove the ::type.
-        //#############################################################################
         template<
             typename T>
         using Event = typename traits::EventType<T>::type;
 
         //-----------------------------------------------------------------------------
-        //! Creates an event on a device.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TEvent,
-            typename TDev>
-        ALPAKA_FN_HOST auto create(
-            TDev const & dev)
-        -> TEvent
-        {
-            return
-                traits::Create<
-                    TEvent,
-                    TDev>
-                ::create(
-                    dev);
-        }
-
-        //-----------------------------------------------------------------------------
         //! Tests if the given event has already been completed.
-        //-----------------------------------------------------------------------------
         template<
             typename TEvent>
         ALPAKA_FN_HOST auto test(

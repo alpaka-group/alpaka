@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>            // idx::getIdx
+#include <alpaka/idx/Traits.hpp>
 
-#include <alpaka/dim/Traits.hpp>            // dim::Dim
+#include <alpaka/dim/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {
@@ -35,7 +35,6 @@ namespace alpaka
         {
             //#############################################################################
             //! A IdxGbRef grid block index.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -45,32 +44,20 @@ namespace alpaka
                 using IdxGbBase = IdxGbRef;
 
                 //-----------------------------------------------------------------------------
-                //! Default constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxGbRef(
                     vec::Vec<TDim, TSize> const & gridBlockIdx) :
                         m_gridBlockIdx(gridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxGbRef(IdxGbRef const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxGbRef(IdxGbRef &&) = delete;
                 //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
-                //-----------------------------------------------------------------------------
-                //! Move assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
                 //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
+                /*virtual*/ ~IdxGbRef() = default;
 
             public:
                 vec::Vec<TDim, TSize> const & m_gridBlockIdx;
@@ -84,7 +71,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The IdxGbRef grid block index dimension get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -101,7 +87,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The IdxGbRef grid block index grid block index get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -112,7 +97,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current block in the grid.
-                //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
@@ -132,7 +116,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The IdxGbRef grid block index size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>

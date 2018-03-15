@@ -23,15 +23,15 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>               // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/block/shared/dyn/Traits.hpp>   // AllocVar
+#include <alpaka/block/shared/dyn/Traits.hpp>
 
-#include <type_traits>                          // std::is_trivially_default_constructible, std::is_trivially_destructible
+#include <type_traits>
 
 namespace alpaka
 {
@@ -43,42 +43,27 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The GPU CUDA block shared memory allocator.
-                //#############################################################################
                 class BlockSharedMemDynCudaBuiltIn
                 {
                 public:
                     using BlockSharedMemDynBase = BlockSharedMemDynCudaBuiltIn;
 
                     //-----------------------------------------------------------------------------
-                    //! Default constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY BlockSharedMemDynCudaBuiltIn() = default;
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
+                    BlockSharedMemDynCudaBuiltIn() = default;
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY BlockSharedMemDynCudaBuiltIn(BlockSharedMemDynCudaBuiltIn const &) = delete;
                     //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY BlockSharedMemDynCudaBuiltIn(BlockSharedMemDynCudaBuiltIn &&) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator=(BlockSharedMemDynCudaBuiltIn const &) -> BlockSharedMemDynCudaBuiltIn & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Move assignment operator.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator=(BlockSharedMemDynCudaBuiltIn &&) -> BlockSharedMemDynCudaBuiltIn & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~BlockSharedMemDynCudaBuiltIn() = default;
+                    /*virtual*/ ~BlockSharedMemDynCudaBuiltIn() = default;
                 };
 
                 namespace traits
                 {
-                    //#############################################################################
-                    //!
                     //#############################################################################
                     template<
                         typename T>
@@ -86,8 +71,6 @@ namespace alpaka
                         T,
                         BlockSharedMemDynCudaBuiltIn>
                     {
-                        //-----------------------------------------------------------------------------
-                        //
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC_CUDA_ONLY static auto getMem(
                             block::shared::dyn::BlockSharedMemDynCudaBuiltIn const &)

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <type_traits>  // std::is_base_of, std::is_same, std::decay
+#include <type_traits>
 
 namespace alpaka
 {
@@ -29,7 +29,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The trait is true if TDerived is derived from TBase but is not TBase itself.
-        //#############################################################################
         template<
             typename TBase,
             typename TDerived>

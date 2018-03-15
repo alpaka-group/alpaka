@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/math/tan/Traits.hpp>   // Tan
+#include <alpaka/math/tan/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <cmath>                        // std::tan
+#include <type_traits>
+#include <cmath>
 
 namespace alpaka
 {
@@ -34,7 +34,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library tan.
-        //#############################################################################
         class TanStl
         {
         public:
@@ -45,7 +44,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library tan trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Tan<

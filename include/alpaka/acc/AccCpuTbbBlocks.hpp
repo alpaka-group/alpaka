@@ -24,33 +24,33 @@
 #ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
 
 // Base classes.
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
-#include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
-#include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
-#include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
-#include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
-#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
-#include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
-#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>                // BlockSharedMemStNoSync
-#include <alpaka/block/sync/BlockSyncNoOp.hpp>                        // BlockSyncNoOp
-#include <alpaka/rand/RandStl.hpp>              // RandStl
-#include <alpaka/time/TimeStl.hpp>              // TimeStl
+#include <alpaka/workdiv/WorkDivMembers.hpp>
+#include <alpaka/idx/gb/IdxGbRef.hpp>
+#include <alpaka/idx/bt/IdxBtZero.hpp>
+#include <alpaka/atomic/AtomicNoOp.hpp>
+#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicHierarchy.hpp>
+#include <alpaka/math/MathStl.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
+#include <alpaka/block/sync/BlockSyncNoOp.hpp>
+#include <alpaka/rand/RandStl.hpp>
+#include <alpaka/time/TimeStl.hpp>
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
-#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/dev/DevCpu.hpp>
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <memory>                               // std::unique_ptr
-#include <typeinfo>                             // typeid
+#include <memory>
+#include <typeinfo>
 
 namespace alpaka
 {
@@ -68,7 +68,6 @@ namespace alpaka
 
         //#############################################################################
         //! The CPU TBB block accelerator.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize>
@@ -77,9 +76,9 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtZero<TDim, TSize>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock, // grid atomics
-                atomic::AtomicStlLock, // block atomics
-                atomic::AtomicNoOp     // thread atomics
+                atomic::AtomicStlLock<16>, // grid atomics
+                atomic::AtomicStlLock<16>, // block atomics
+                atomic::AtomicNoOp         // thread atomics
             >,
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
@@ -99,8 +98,6 @@ namespace alpaka
 
         private:
             //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuTbbBlocks(
@@ -110,9 +107,9 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TSize>(),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock, // atomics between grids
-                        atomic::AtomicStlLock, // atomics between blocks
-                        atomic::AtomicNoOp     // atomics between threads
+                        atomic::AtomicStlLock<16>, // atomics between grids
+                        atomic::AtomicStlLock<16>, // atomics between blocks
+                        atomic::AtomicNoOp         // atomics between threads
                     >(),
                     math::MathStl(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
@@ -125,25 +122,15 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuTbbBlocks(AccCpuTbbBlocks const &) = delete;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuTbbBlocks(AccCpuTbbBlocks &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuTbbBlocks const &) -> AccCpuTbbBlocks & = delete;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuTbbBlocks &&) -> AccCpuTbbBlocks & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuTbbBlocks() = default;
+            /*virtual*/ ~AccCpuTbbBlocks() = default;
 
         private:
             // getIdx
@@ -157,7 +144,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU TBB block accelerator type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -168,15 +154,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU TBB block accelerator device properties get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccDevProps<
                 acc::AccCpuTbbBlocks<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                   ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
@@ -204,15 +187,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU TBB block accelerator name trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccName<
                 acc::AccCpuTbbBlocks<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
@@ -228,7 +208,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU TBB block accelerator device type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -245,7 +224,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU TBB block accelerator dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -262,7 +240,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU TBB block accelerator executor type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -283,7 +260,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU TBB block executor platform type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -300,7 +276,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU TBB block accelerator size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>

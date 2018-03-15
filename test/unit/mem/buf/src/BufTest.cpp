@@ -28,11 +28,11 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>              // alpaka::test::acc::TestAccs
-#include <alpaka/test/stream/Stream.hpp>        // DefaultStream
-#include <alpaka/test/mem/view/ViewTest.hpp>    // viewTest
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/mem/view/ViewTest.hpp>
 
-#include <boost/predef.h>                       // BOOST_COMP_CLANG
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -42,8 +42,8 @@
     #pragma clang diagnostic pop
 #endif
 
-#include <type_traits>                          // std::is_same
-#include <numeric>                              // std::iota
+#include <type_traits>
+#include <numeric>
 
 BOOST_AUTO_TEST_SUITE(memBuf)
 
@@ -52,13 +52,10 @@ BOOST_AUTO_TEST_SUITE(memBuf)
 //! 2D: sizeof(TSize) * (5, 4)
 //! 3D: sizeof(TSize) * (5, 4, 3)
 //! 4D: sizeof(TSize) * (5, 4, 3, 2)
-//#############################################################################
 template<
     std::size_t Tidx>
 struct CreateExtentBufVal
 {
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     template<
         typename TSize>
@@ -70,31 +67,6 @@ struct CreateExtentBufVal
     }
 };
 
-//-----------------------------------------------------------------------------
-//!
-//-----------------------------------------------------------------------------
-template<
-    typename TDim,
-    typename TSize,
-    template<std::size_t> class TCreate>
-static auto createVecFromIndexedFn()
--> alpaka::vec::Vec<TDim, TSize>
-{
-    return
-        alpaka::vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-        Vec<TDim, TSize>::template
-#endif
-        createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-            TDim,
-#endif
-            TCreate>(
-                TSize());
-}
-
-//-----------------------------------------------------------------------------
-//!
 //-----------------------------------------------------------------------------
 template<
     typename TAcc>
@@ -134,8 +106,6 @@ static auto basicBufferOperationsTest(
 }
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     memBufBasicTest,
     TAcc,
@@ -144,15 +114,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
-    auto const extent(createVecFromIndexedFn<Dim, Size, CreateExtentBufVal>());
+    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentBufVal>(Size()));
 
     basicBufferOperationsTest<
         TAcc>(
             extent);
 }
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     memBufZeroSizeTest,

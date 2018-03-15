@@ -21,27 +21,24 @@
 
 #pragma once
 
-#include <alpaka/vec/Vec.hpp>               // Vec
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/vec/Vec.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <boost/predef.h>                   // BOOST_COMP_CLANG
+#include <boost/predef.h>
 #if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+    #include <boost/core/ignore_unused.hpp>
 #endif
 
 //-----------------------------------------------------------------------------
 //! The alpaka accelerator library.
-//-----------------------------------------------------------------------------
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The kernel specifics.
-    //-----------------------------------------------------------------------------
     namespace kernel
     {
         //-----------------------------------------------------------------------------
         //! The kernel traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
@@ -51,7 +48,6 @@ namespace alpaka
             //! \tparam TAcc The accelerator.
             //!
             //! The default implementation returns 0.
-            //#############################################################################
             template<
                 typename TKernelFnObj,
                 typename TAcc,
@@ -70,7 +66,6 @@ namespace alpaka
                 //! \param args,... The kernel invocation arguments.
                 //! \return The size of the shared memory allocated for a block in bytes.
                 //! The default version always returns zero.
-                //-----------------------------------------------------------------------------
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
@@ -116,7 +111,6 @@ namespace alpaka
         //! \param args,... The kernel invocation arguments.
         //! \return The size of the shared memory allocated for a block in bytes.
         //! The default implementation always returns zero.
-        //-----------------------------------------------------------------------------
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif

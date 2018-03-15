@@ -41,7 +41,7 @@
 #include <boost/mpl/pop_back.hpp>
 #include <boost/mpl/contains.hpp>
 
-#include <boost/predef.h>   // BOOST_COMP_CLANG
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -60,7 +60,6 @@ BOOST_AUTO_TEST_SUITE(meta)
 //-----------------------------------------------------------------------------
 // This code is based on:
 // http://stackoverflow.com/questions/5099429/how-to-use-stdtuple-types-with-boostmpl-algorithms/15865204#15865204
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(stdTupleAsMplSequence)
 {
     using Tuple = std::tuple<int, char, bool>;
@@ -114,8 +113,6 @@ BOOST_AUTO_TEST_CASE(stdTupleAsMplSequence)
 
 using TestTuple = std::tuple<int, char, bool>;
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     stdTupleAsMplSequenceTemplateTest,

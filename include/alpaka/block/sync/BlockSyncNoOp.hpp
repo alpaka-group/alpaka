@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
+#include <alpaka/block/sync/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {
@@ -35,49 +35,32 @@ namespace alpaka
         {
             //#############################################################################
             //! The no op block synchronization.
-            //#############################################################################
             class BlockSyncNoOp
             {
             public:
                 using BlockSyncBase = BlockSyncNoOp;
 
                 //-----------------------------------------------------------------------------
-                //! Default constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC BlockSyncNoOp() = default;
-                //-----------------------------------------------------------------------------
-                //! Copy constructor.
+                BlockSyncNoOp() = default;
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp const &) = delete;
                 //-----------------------------------------------------------------------------
-                //! Move constructor.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp &&) = delete;
-                //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC auto operator=(BlockSyncNoOp const &) -> BlockSyncNoOp & = delete;
                 //-----------------------------------------------------------------------------
-                //! Move assignment operator.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC auto operator=(BlockSyncNoOp &&) -> BlockSyncNoOp & = delete;
                 //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC /*virtual*/ ~BlockSyncNoOp() = default;
+                /*virtual*/ ~BlockSyncNoOp() = default;
             };
 
             namespace traits
             {
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<>
                 struct SyncBlockThreads<
                     BlockSyncNoOp>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreads(
@@ -90,16 +73,12 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //!
-                //#############################################################################
                 template<
                     typename TOp>
                 struct SyncBlockThreadsPredicate<
                     TOp,
                     BlockSyncNoOp>
                 {
-                    //-----------------------------------------------------------------------------
-                    //
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(

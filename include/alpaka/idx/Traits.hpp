@@ -21,40 +21,37 @@
 
 #pragma once
 
-#include <alpaka/meta/IsStrictBase.hpp>     // meta::IsStrictBase
+#include <alpaka/meta/IsStrictBase.hpp>
 
-#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Positioning.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <alpaka/vec/Vec.hpp>               // Vec<N>
+#include <alpaka/vec/Vec.hpp>
 
-#include <alpaka/dim/Traits.hpp>            // dim::DimType
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
-#include <alpaka/size/Traits.hpp>           // size::traits::SizeType
-#include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/dim/DimIntegralConst.hpp>
+#include <alpaka/size/Traits.hpp>
+#include <alpaka/workdiv/Traits.hpp>
 
-#include <boost/config.hpp>                 // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/config.hpp>
 #if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+    #include <boost/core/ignore_unused.hpp>
 #endif
 
-#include <utility>                          // std::forward
+#include <utility>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The index specifics.
-    //-----------------------------------------------------------------------------
     namespace idx
     {
         //-----------------------------------------------------------------------------
         //! The index traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The index get trait.
-            //#############################################################################
             template<
                 typename TIdx,
                 typename TOrigin,
@@ -65,7 +62,6 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! Get the indices requested.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOrigin,
@@ -88,7 +84,6 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Get the indices requested.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOrigin,
@@ -112,7 +107,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The grid block index get trait specialization for classes with IdxGbBase member type.
-            //#############################################################################
             template<
                 typename TIdxGb>
             struct GetIdx<
@@ -128,7 +122,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
-                //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TWorkDiv>
@@ -149,7 +142,6 @@ namespace alpaka
 
             //#############################################################################
             //! The block thread index get trait specialization for classes with IdxBtBase member type.
-            //#############################################################################
             template<
                 typename TIdxBt>
             struct GetIdx<
@@ -165,7 +157,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
-                //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TWorkDiv>
@@ -186,7 +177,6 @@ namespace alpaka
 
             //#############################################################################
             //! The grid thread index get trait specialization.
-            //#############################################################################
             template<
                 typename TIdx>
             struct GetIdx<
@@ -196,7 +186,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
-                //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TWorkDiv>
@@ -219,7 +208,6 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Get the index of the first element this thread computes.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TIdxWorkDiv,
@@ -242,7 +230,6 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Get the index of the first element this thread computes.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TIdxWorkDiv,
@@ -257,7 +244,6 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Get the index of the first element this thread computes.
-        //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TIdxWorkDiv>

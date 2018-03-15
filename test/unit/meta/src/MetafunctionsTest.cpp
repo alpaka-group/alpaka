@@ -21,7 +21,7 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <boost/predef.h>               // BOOST_COMP_CLANG
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -31,13 +31,11 @@
     #pragma clang diagnostic pop
 #endif
 
-#include <tuple>                        // std::tuple
-#include <type_traits>                  // std::is_same
+#include <tuple>
+#include <type_traits>
 
 BOOST_AUTO_TEST_SUITE(meta)
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(conjunctionTrue)
 {
@@ -54,8 +52,6 @@ BOOST_AUTO_TEST_CASE(conjunctionTrue)
 }
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(conjunctionFalse)
 {
     using ConjunctionResult =
@@ -70,8 +66,6 @@ BOOST_AUTO_TEST_CASE(conjunctionFalse)
         "alpaka::meta::Conjunction failed!");
 }
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(disjunctionTrue)
 {
@@ -88,8 +82,6 @@ BOOST_AUTO_TEST_CASE(disjunctionTrue)
 }
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(disjunctionFalse)
 {
     using DisjunctionResult =
@@ -104,8 +96,6 @@ BOOST_AUTO_TEST_CASE(disjunctionFalse)
         "alpaka::meta::Disjunction failed!");
 }
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(negationFalse)
 {
@@ -125,8 +115,6 @@ BOOST_AUTO_TEST_CASE(negationFalse)
         "alpaka::meta::Negation failed!");
 }
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(negationTrue)
 {

@@ -28,11 +28,11 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::EnabledAccs
-#include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
-#include <alpaka/test/stream/Stream.hpp>            // DefaultStream
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
+#include <alpaka/test/stream/Stream.hpp>
 
-#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -66,7 +66,6 @@ ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
 
 //#############################################################################
 //! Uses static device memory on the defined globally for the whole compilation unit.
-//#############################################################################
 struct StaticDeviceMemoryTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
@@ -91,8 +90,6 @@ struct StaticDeviceMemoryTestKernel
 
 using TestAccs = alpaka::test::acc::EnabledAccs<Dim, Size>;
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     staticDeviceMemoryConstant,
@@ -170,8 +167,6 @@ ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2] =
 
 ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     staticDeviceMemoryGlobal,

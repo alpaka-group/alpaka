@@ -21,33 +21,30 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>            // dim::Dim
-#include <alpaka/size/Traits.hpp>           // size::Size
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
-#include <alpaka/core/Debug.hpp>            // ALPAKA_DEBUG_FULL
+#include <alpaka/core/Debug.hpp>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-    #include <alpaka/workdiv/Traits.hpp>    // workdiv::getWorkDiv
+    #include <alpaka/workdiv/Traits.hpp>
 #endif
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
+#include <alpaka/core/Common.hpp>
 
-#include <type_traits>                      // std::decay
+#include <type_traits>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The executor specifics.
-    //-----------------------------------------------------------------------------
     namespace exec
     {
         //-----------------------------------------------------------------------------
         //! The execution traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The executor type trait.
-            //#############################################################################
             template<
                 typename TExec,
                 typename TKernelFnObj,
@@ -58,7 +55,6 @@ namespace alpaka
 
         //#############################################################################
         //! The executor type trait alias template to remove the ::type.
-        //#############################################################################
         template<
             typename TExec,
             typename TKernelFnObj,
@@ -67,7 +63,6 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return An executor.
-        //-----------------------------------------------------------------------------
         template<
             typename TAcc,
             typename TWorkDiv,

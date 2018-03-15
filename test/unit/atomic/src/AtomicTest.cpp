@@ -28,11 +28,11 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>                  // alpaka::test::acc::TestAccs
-#include <alpaka/test/KernelExecutionFixture.hpp>   // alpaka::test::KernelExecutionFixture
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>                         // BOOST_VERIFY
-#include <boost/predef.h>                           // BOOST_COMP_CLANG
+#include <boost/assert.hpp>
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -43,13 +43,9 @@
 #endif
 
 //#############################################################################
-//!
-//#############################################################################
 class AtomicTestKernel
 {
 public:
-    //-----------------------------------------------------------------------------
-    //!
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -104,7 +100,7 @@ public:
                         &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
-            T const reference = std::min(operandOrig, value);
+            T const reference = (operandOrig < value) ? operandOrig : value;
             BOOST_VERIFY(operand == reference);
         }
 
@@ -120,7 +116,7 @@ public:
                         &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
-            T const reference = std::max(operandOrig, value);
+            T const reference = (operandOrig > value) ? operandOrig : value;
             BOOST_VERIFY(operand == reference);
         }
 
@@ -263,16 +259,12 @@ public:
 BOOST_AUTO_TEST_SUITE(atomic)
 
 //#############################################################################
-//!
-//#############################################################################
 template<
     typename TAcc,
     typename T,
     typename TSfinae = void>
 struct TestAtomicOperations
 {
-    //-----------------------------------------------------------------------------
-    //
     //-----------------------------------------------------------------------------
     static auto testAtomicOperations()
     -> void
@@ -297,7 +289,6 @@ struct TestAtomicOperations
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 //#############################################################################
 // NOTE: std::uint32_t is the only type supported by all atomic CUDA operations.
-//#############################################################################
 template<
     typename TDim,
     typename TSize,
@@ -308,8 +299,6 @@ struct TestAtomicOperations<
     typename std::enable_if<!std::is_same<std::uint32_t, T>::value>::type>
 {
     //-----------------------------------------------------------------------------
-    //
-    //-----------------------------------------------------------------------------
     static auto testAtomicOperations()
     -> void
     {
@@ -318,8 +307,6 @@ struct TestAtomicOperations<
 };
 #endif
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     atomicOperationsWorking,

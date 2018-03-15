@@ -19,18 +19,16 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>                        // alpaka::exec::create
-#include <alpaka/test/MeasureKernelRunTime.hpp>     // measureKernelRunTimeMs
-#include <alpaka/test/acc/Acc.hpp>                  // EnabledAccs
-#include <alpaka/test/stream/Stream.hpp>            // DefaultStream
+#include <alpaka/alpaka.hpp>
+#include <alpaka/test/MeasureKernelRunTime.hpp>
+#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/stream/Stream.hpp>
 
-#include <iostream>                                 // std::cout
-#include <typeinfo>                                 // typeid
+#include <iostream>
+#include <typeinfo>
 
 //#############################################################################
 //! A vector addition kernel.
-//! \tparam TAcc The accelerator environment to be executed on.
-//#############################################################################
 class AxpyKernel
 {
 public:
@@ -44,7 +42,6 @@ public:
     //! \param alpha Scalar the X vector is multiplied with.
     //! \param X Vector of at least n elements.
     //! \param Y Vector of at least n elements.
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TAcc,
@@ -83,7 +80,6 @@ public:
 
 //#############################################################################
 //! Profiles the vector addition kernel.
-//#############################################################################
 struct AxpyKernelTester
 {
 #if BOOST_COMP_GNUC
@@ -245,9 +241,6 @@ public:
     bool allResultsCorrect = true;
 };
 
-//-----------------------------------------------------------------------------
-//! Program entry point.
-//-----------------------------------------------------------------------------
 auto main()
 -> int
 {

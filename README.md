@@ -63,27 +63,26 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|Accelerator Back-end|gcc 4.9.2|gcc 5.4|gcc 6.2|clang 3.5/3.6|clang 3.7|clang 3.8|clang 3.9|MSVC 2015.3/2017|
+|Accelerator Back-end|gcc 4.9.2|gcc 5.4|gcc 6.3/7.2|clang 3.5/3.6|clang 3.7/3.8|clang 3.9|clang 4/5|MSVC 2017.5|
 |---|---|---|---|---|---|---|---|---|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0+ threads|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:x:|:x:|
+|OpenMP 4.0+ (CPU)|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:white_check_mark:|:white_check_mark:|:x:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |TBB 2.2+|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:x:|:x:|:white_check_mark: (native/nvcc 8.0+)|:white_check_mark: (native)|:x:|
+|CUDA 7.0+|:white_check_mark: (nvcc 7.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:white_check_mark: (nvcc 8.0+)|:white_check_mark: (nvcc 8.0+)|:white_check_mark: (native)|:white_check_mark: (native)|:x:|
 
 
 Dependencies
 ------------
 
-[Boost](http://boost.org/) 1.59+ is the only mandatory external dependency.
+[Boost](http://boost.org/) 1.62+ is the only mandatory external dependency.
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
-When an accelerator back-end using *Boost.Fiber* is enabled, boost 1.62+ is required.
-`boost-fiber`, `boost-context` and all of its dependencies are required to be build in C++11 mode `./b2 cxxflags="-std=c++11"`.
+When an accelerator back-end using *Boost.Fiber* is enabled, `boost-fiber` and all of its dependencies are required to be build in C++11 mode `./b2 cxxflags="-std=c++11"`.
 
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 *NOTE*: When using nvcc as *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
@@ -98,7 +97,7 @@ Usage
 -----
 
 The library is header only so nothing has to be build.
-CMake 3.3.0+ is required to provide the correct defines and include paths.
+CMake 3.7.0+ is required to provide the correct defines and include paths.
 Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compiler in handling `.cu` and `.cpp` files are automatically taken care of.
 Source files do not need any special file ending.
 Examples of how to utilize alpaka within CMake can be found in the `example` folder.
@@ -126,6 +125,28 @@ research. For us to justify the importance and impact of our work, please
 consider citing us accordingly in your derived work and publications:
 
 ```latex
+% Peer-Reviewed Publication %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Peer reviewed and accepted publication in
+%   "2nd International Workshop on Performance Portable
+%    Programming Models for Accelerators (P^3MA)"
+% colocated with the
+%   "2017 ISC High Performance Conference"
+%   in Frankfurt, Germany
+@inproceedings{MathesP3MA2017,
+  author    = {{Matthes}, A. and {Widera}, R. and {Zenker}, E. and {Worpitz}, B. and 
+               {Huebl}, A. and {Bussmann}, M.},
+  title     = {Tuning and optimization for a variety of many-core architectures without changing a single line of implementation code
+               using the Alpaka library},
+  archivePrefix = "arXiv",
+  eprint    = {1706.10086},
+  keywords  = {Computer Science - Distributed, Parallel, and Cluster Computing},
+  day       = {30},
+  month     = {Jun},
+  year      = {2017},
+  url       = {https://arxiv.org/abs/1706.10086},
+}
+
 % Peer-Reviewed Publication %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Peer reviewed and accepted publication in

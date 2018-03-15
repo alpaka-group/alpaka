@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <type_traits>  // std::is_unsigned, std::is_integral
+#include <type_traits>
 
 namespace alpaka
 {
@@ -29,7 +29,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The trait is true if all values of TSubset are contained in TSuperset.
-        //#############################################################################
         template<
             typename TSuperset,
             typename TSubset>

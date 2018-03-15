@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <type_traits>  // std::false_type
+#include <type_traits>
 
 namespace alpaka
 {
@@ -30,7 +30,6 @@ namespace alpaka
         //#############################################################################
         //! A false_type being dependent on a ignored template parameter.
         //! This allows to use static_assert in uninstantiated template specializations without triggering.
-        //#############################################################################
         template<
             typename T>
         struct DependentFalseType :

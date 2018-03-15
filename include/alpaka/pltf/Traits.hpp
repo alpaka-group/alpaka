@@ -20,28 +20,25 @@
 */
 
 #pragma once
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
-#include <alpaka/dev/Traits.hpp>    // dev::Dev
+#include <alpaka/core/Common.hpp>
+#include <alpaka/dev/Traits.hpp>
 
-#include <boost/config.hpp>         // BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#include <boost/config.hpp>
 
-#include <vector>                   // std::vector
+#include <vector>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The platform specifics.
-    //-----------------------------------------------------------------------------
     namespace pltf
     {
         //-----------------------------------------------------------------------------
         //! The platform traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The platform type trait.
-            //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
@@ -49,7 +46,6 @@ namespace alpaka
 
             //#############################################################################
             //! The device count get trait.
-            //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
@@ -57,7 +53,6 @@ namespace alpaka
 
             //#############################################################################
             //! The device get trait.
-            //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
@@ -66,14 +61,12 @@ namespace alpaka
 
         //#############################################################################
         //! The platform type trait alias template to remove the ::type.
-        //#############################################################################
         template<
             typename T>
         using Pltf = typename traits::PltfType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! \return The device identified by its index.
-        //-----------------------------------------------------------------------------
         template<
             typename TPltf>
         ALPAKA_FN_HOST auto getDevCount()
@@ -89,7 +82,6 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return The device identified by its index.
-        //-----------------------------------------------------------------------------
         template<
             typename TPltf>
         ALPAKA_FN_HOST auto getDevByIdx(
@@ -107,7 +99,6 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return All the devices available on this accelerator.
-        //-----------------------------------------------------------------------------
         template<
             typename TPltf>
         ALPAKA_FN_HOST auto getDevs()

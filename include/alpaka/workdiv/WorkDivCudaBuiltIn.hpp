@@ -23,19 +23,19 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/workdiv/Traits.hpp>        // workdiv::GetWorkDiv
-#include <alpaka/size/Traits.hpp>           // size::Size
+#include <alpaka/workdiv/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
-#include <alpaka/vec/Vec.hpp>               // Vec, getExtentVecEnd
-#include <alpaka/core/Cuda.hpp>             // getExtent(dim3)
+#include <alpaka/vec/Vec.hpp>
+#include <alpaka/core/Cuda.hpp>
 
-//#include <boost/core/ignore_unused.hpp>   // boost::ignore_unused
+//#include <boost/core/ignore_unused.hpp>
 
 namespace alpaka
 {
@@ -43,7 +43,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The GPU CUDA accelerator work division.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize>
@@ -53,32 +52,20 @@ namespace alpaka
             using WorkDivBase = WorkDivCudaBuiltIn;
 
             //-----------------------------------------------------------------------------
-            //! Default constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(
                 vec::Vec<TDim, TSize> const & threadElemExtent) :
                     m_threadElemExtent(threadElemExtent)
             {}
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn const &) = delete;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn const &) -> WorkDivCudaBuiltIn & = delete;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn &&) -> WorkDivCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCudaBuiltIn() = default;
+            /*virtual*/ ~WorkDivCudaBuiltIn() = default;
 
         public:
             // \TODO: Optimize! Add WorkDivCudaBuiltInNoElems that has no member m_threadElemExtent as well as AccGpuCudaRtNoElems.
@@ -93,7 +80,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The GPU CUDA accelerator work division dimension get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -110,7 +96,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The GPU CUDA accelerator work division size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -127,7 +112,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The GPU CUDA accelerator work division grid block extent trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -138,7 +122,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & /*workDiv*/)
                 -> vec::Vec<TDim, TSize>
@@ -150,7 +133,6 @@ namespace alpaka
 
             //#############################################################################
             //! The GPU CUDA accelerator work division block thread extent trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -161,7 +143,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & /*workDiv*/)
                 -> vec::Vec<TDim, TSize>
@@ -173,7 +154,6 @@ namespace alpaka
 
             //#############################################################################
             //! The GPU CUDA accelerator work division thread element extent trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -184,7 +164,6 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
                 -> vec::Vec<TDim, TSize>

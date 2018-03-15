@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/vec/Vec.hpp>       // Vec
-#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
+#include <alpaka/vec/Vec.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <vector>                   // std::vector
-#include <string>                   // std::string
+#include <vector>
+#include <string>
 
 namespace alpaka
 {
@@ -37,16 +37,12 @@ namespace alpaka
         // \TODO:
         //  TSize m_maxClockFrequencyHz;            //!< Maximum clock frequency of the device in Hz.
         //  TSize m_sharedMemSizeBytes;             //!< Size of the available block shared memory in bytes.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize>
         struct AccDevProps
         {
             //-----------------------------------------------------------------------------
-            //! Default-constructor
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST AccDevProps(
                 TSize const & multiProcessorCount,
                 vec::Vec<TDim, TSize> const & gridBlockExtentMax,

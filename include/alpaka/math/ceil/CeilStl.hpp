@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/math/ceil/Traits.hpp>  // Ceil
+#include <alpaka/math/ceil/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <cmath>                        // std::ceil
+#include <type_traits>
+#include <cmath>
 
 namespace alpaka
 {
@@ -34,7 +34,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library ceil.
-        //#############################################################################
         class CeilStl
         {
         public:
@@ -45,7 +44,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library ceil trait specialization.
-            //#############################################################################
             template<
                 typename TArg>
             struct Ceil<

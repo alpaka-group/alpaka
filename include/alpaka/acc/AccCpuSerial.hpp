@@ -24,33 +24,33 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
 
 // Base classes.
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
-#include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
-#include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
-#include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
-#include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
-#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
-#include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
-#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>                // BlockSharedMemStNoSync
-#include <alpaka/block/sync/BlockSyncNoOp.hpp>  // BlockSyncNoOp
-#include <alpaka/rand/RandStl.hpp>              // RandStl
-#include <alpaka/time/TimeStl.hpp>              // TimeStl
+#include <alpaka/workdiv/WorkDivMembers.hpp>
+#include <alpaka/idx/gb/IdxGbRef.hpp>
+#include <alpaka/idx/bt/IdxBtZero.hpp>
+#include <alpaka/atomic/AtomicNoOp.hpp>
+#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicHierarchy.hpp>
+#include <alpaka/math/MathStl.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
+#include <alpaka/block/sync/BlockSyncNoOp.hpp>
+#include <alpaka/rand/RandStl.hpp>
+#include <alpaka/time/TimeStl.hpp>
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
-#include <alpaka/pltf/Traits.hpp>                   // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/dev/DevCpu.hpp>
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <memory>                               // std::unique_ptr
-#include <typeinfo>                             // typeid
+#include <memory>
+#include <typeinfo>
 
 namespace alpaka
 {
@@ -70,7 +70,6 @@ namespace alpaka
         //!
         //! This accelerator allows serial kernel execution on a CPU device.
         //! The block size is restricted to 1x1x1 and all blocks are executed serially so there is no parallelism at all.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize>
@@ -79,9 +78,9 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtZero<TDim, TSize>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock, // grid atomics
-                atomic::AtomicNoOp,    // block atomics
-                atomic::AtomicNoOp     // thread atomics
+                atomic::AtomicStlLock<16>, // grid atomics
+                atomic::AtomicNoOp,        // block atomics
+                atomic::AtomicNoOp         // thread atomics
             >,
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
@@ -101,8 +100,6 @@ namespace alpaka
 
         private:
             //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(
@@ -112,9 +109,9 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TSize>(),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock, // atomics between grids
-                        atomic::AtomicNoOp,    // atomics between blocks
-                        atomic::AtomicNoOp     // atomics between threads
+                        atomic::AtomicStlLock<16>, // atomics between grids
+                        atomic::AtomicNoOp,        // atomics between blocks
+                        atomic::AtomicNoOp         // atomics between threads
                     >(),
                     math::MathStl(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
@@ -127,26 +124,15 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            // Do not copy most members because they are initialized by the executor for each execution.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(AccCpuSerial const &) = delete;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(AccCpuSerial &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuSerial const &) -> AccCpuSerial & = delete;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuSerial &&) -> AccCpuSerial & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() = default;
+            /*virtual*/ ~AccCpuSerial() = default;
 
         private:
             // getIdx
@@ -160,7 +146,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU serial accelerator accelerator type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -171,15 +156,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU serial accelerator device properties get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccDevProps<
                 acc::AccCpuSerial<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
@@ -206,15 +188,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU serial accelerator name trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccName<
                 acc::AccCpuSerial<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
@@ -230,7 +209,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU serial accelerator device type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -247,7 +225,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU serial accelerator dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -264,7 +241,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU serial accelerator executor type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -285,7 +261,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU serial executor platform type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -302,7 +277,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU serial accelerator size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>

@@ -21,23 +21,20 @@
 
 #pragma once
 
-#include <type_traits>  // std::enable_if, std::is_arithmetic
+#include <type_traits>
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The size specifics.
-    //-----------------------------------------------------------------------------
     namespace size
     {
         //-----------------------------------------------------------------------------
         //! The size traits.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The size type trait.
-            //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
@@ -50,19 +47,17 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         // Trait specializations for unsigned integral types.
-        //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
             //! The arithmetic size type trait specialization.
-            //#############################################################################
             template<
                 typename T>
             struct SizeType<
                 T,
                 typename std::enable_if<std::is_arithmetic<T>::value>::type>
             {
-                using type = T;
+                using type = typename std::decay<T>::type;
             };
         }
     }

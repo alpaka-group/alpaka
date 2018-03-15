@@ -23,19 +23,23 @@
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY, BOOST_LANG_CUDA
+#include <alpaka/core/Common.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/math/min/Traits.hpp>   // Min
+#include <alpaka/math/min/Traits.hpp>
 
-//#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+//#include <boost/core/ignore_unused.hpp>
 
-#include <type_traits>                  // std::enable_if, std::is_arithmetic
-#include <math_functions.hpp>           // ::min
-#include <algorithm>                    // std::min
+#include <type_traits>
+#if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
+    #include <crt/math_functions.hpp>
+#else
+    #include <math_functions.hpp>
+#endif
+#include <algorithm>
 
 namespace alpaka
 {
@@ -43,7 +47,6 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library min.
-        //#############################################################################
         class MinCudaBuiltIn
         {
         public:
@@ -54,7 +57,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library integral min trait specialization.
-            //#############################################################################
             template<
                 typename Tx,
                 typename Ty>
@@ -78,7 +80,6 @@ namespace alpaka
             };
             //#############################################################################
             //! The standard library mixed integral floating point min trait specialization.
-            //#############################################################################
             template<
                 typename Tx,
                 typename Ty>

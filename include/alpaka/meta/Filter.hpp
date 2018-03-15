@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/meta/Concatenate.hpp>  // alpaka::meta::Concatenate
+#include <alpaka/meta/Concatenate.hpp>
 
-#include <type_traits>                  // std::conditional
+#include <type_traits>
 
 namespace alpaka
 {
@@ -32,15 +32,11 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //
-            //#############################################################################
             template<
                 template<typename...> class TList,
                 template<typename> class TPred,
                 typename... Ts>
             struct FilterImplHelper;
-            //#############################################################################
-            //
             //#############################################################################
             template<
                 template<typename...> class TList,
@@ -51,8 +47,6 @@ namespace alpaka
             {
                 using type = TList<>;
             };
-            //#############################################################################
-            //
             //#############################################################################
             template<
                 template<typename...> class TList,
@@ -73,14 +67,10 @@ namespace alpaka
             };
 
             //#############################################################################
-            //
-            //#############################################################################
             template<
                 typename TList,
                 template<typename> class TPred>
             struct FilterImpl;
-            //#############################################################################
-            //
             //#############################################################################
             template<
                 template<typename...> class TList,
@@ -98,8 +88,6 @@ namespace alpaka
                     >::type;
             };
         }
-        //#############################################################################
-        //
         //#############################################################################
         template<
             typename TList,

@@ -23,7 +23,7 @@
 
 #include <alpaka/dim/Traits.hpp>
 
-#include <type_traits>              // std::integral_constant
+#include <type_traits>
 
 namespace alpaka
 {
@@ -31,19 +31,16 @@ namespace alpaka
     {
         //-----------------------------------------------------------------------------
         // N(th) dimension(s).
-        //-----------------------------------------------------------------------------
         template<
             std::size_t N>
         using DimInt = std::integral_constant<std::size_t, N>;
 
         //-----------------------------------------------------------------------------
         // Trait specializations for integral_constant types.
-        //-----------------------------------------------------------------------------
         /*namespace traits
         {
             //#############################################################################
             //! The arithmetic type dimension getter trait specialization.
-            //#############################################################################
             template<
                 std::size_t N>
             struct DimType<

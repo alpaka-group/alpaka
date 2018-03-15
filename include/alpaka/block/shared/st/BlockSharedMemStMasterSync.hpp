@@ -21,16 +21,16 @@
 
 #pragma once
 
-#include <alpaka/core/Vectorize.hpp>        // defaultAlignment
-#include <alpaka/block/shared/st/Traits.hpp>// AllocVar
+#include <alpaka/core/Vectorize.hpp>
+#include <alpaka/block/shared/st/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>
 
-#include <boost/align.hpp>                  // boost::aligned_alloc
+#include <boost/align.hpp>
 
-#include <vector>                           // std::vector
-#include <memory>                           // std::unique_ptr
-#include <functional>                       // std::function
+#include <vector>
+#include <memory>
+#include <functional>
 
 namespace alpaka
 {
@@ -42,14 +42,11 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The block shared memory allocator allocating memory with synchronization on the master thread.
-                //#############################################################################
                 class BlockSharedMemStMasterSync
                 {
                 public:
                     using BlockSharedMemStBase = BlockSharedMemStMasterSync;
 
-                    //-----------------------------------------------------------------------------
-                    //! Default constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA BlockSharedMemStMasterSync(
                         std::function<void()> fnSync,
@@ -58,25 +55,15 @@ namespace alpaka
                             m_isMasterThreadFn(fnIsMasterThread)
                     {}
                     //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA BlockSharedMemStMasterSync(BlockSharedMemStMasterSync const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA BlockSharedMemStMasterSync(BlockSharedMemStMasterSync &&) = delete;
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment operator.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSharedMemStMasterSync const &) -> BlockSharedMemStMasterSync & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSharedMemStMasterSync &&) -> BlockSharedMemStMasterSync & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSharedMemStMasterSync() = default;
+                    /*virtual*/ ~BlockSharedMemStMasterSync() = default;
 
                 public:
                     // TODO: We should add the size of the (current) allocation.
@@ -94,8 +81,6 @@ namespace alpaka
                 namespace traits
                 {
                     //#############################################################################
-                    //!
-                    //#############################################################################
                     template<
                         typename T,
                         std::size_t TuniqueId>
@@ -104,8 +89,6 @@ namespace alpaka
                         TuniqueId,
                         BlockSharedMemStMasterSync>
                     {
-                        //-----------------------------------------------------------------------------
-                        //
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC_NO_CUDA static auto allocVar(
                             block::shared::st::BlockSharedMemStMasterSync const & blockSharedMemSt)
@@ -129,14 +112,10 @@ namespace alpaka
                         }
                     };
                     //#############################################################################
-                    //!
-                    //#############################################################################
                     template<>
                     struct FreeMem<
                         BlockSharedMemStMasterSync>
                     {
-                        //-----------------------------------------------------------------------------
-                        //
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC_NO_CUDA static auto freeMem(
                             block::shared::st::BlockSharedMemStMasterSync const & blockSharedMemSt)

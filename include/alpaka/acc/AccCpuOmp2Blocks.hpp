@@ -28,36 +28,36 @@
 #endif
 
 // Base classes.
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
-#include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
-#include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
-#include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
-#include <alpaka/atomic/AtomicStlLock.hpp>      // AtomicStlLock
-#include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
-#include <alpaka/atomic/AtomicHierarchy.hpp>    // AtomicHierarchy
-#include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>   // BlockSharedMemDynBoostAlignedAlloc
-#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>                // BlockSharedMemStNoSync
-#include <alpaka/block/sync/BlockSyncNoOp.hpp>  // BlockSyncNoOp
-#include <alpaka/rand/RandStl.hpp>              // RandStl
-#include <alpaka/time/TimeOmp.hpp>              // TimeOmp
+#include <alpaka/workdiv/WorkDivMembers.hpp>
+#include <alpaka/idx/gb/IdxGbRef.hpp>
+#include <alpaka/idx/bt/IdxBtZero.hpp>
+#include <alpaka/atomic/AtomicNoOp.hpp>
+#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicOmpCritSec.hpp>
+#include <alpaka/atomic/AtomicHierarchy.hpp>
+#include <alpaka/math/MathStl.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
+#include <alpaka/block/sync/BlockSyncNoOp.hpp>
+#include <alpaka/rand/RandStl.hpp>
+#include <alpaka/time/TimeOmp.hpp>
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
-#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
-#include <alpaka/pltf/Traits.hpp>               // pltf::traits::PltfType
-#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/acc/Traits.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/exec/Traits.hpp>
+#include <alpaka/pltf/Traits.hpp>
+#include <alpaka/size/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/dev/DevCpu.hpp>
 
 #include <alpaka/core/OpenMp.hpp>
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>
 
-#include <limits>                               // std::numeric_limits
-#include <typeinfo>                             // typeid
+#include <limits>
+#include <typeinfo>
 
 namespace alpaka
 {
@@ -78,7 +78,6 @@ namespace alpaka
         //! This accelerator allows parallel kernel execution on a CPU device.
         //! It uses OpenMP 2.0 to implement the grid block parallelism.
         //! The block size is restricted to 1x1x1.
-        //#############################################################################
         template<
             typename TDim,
             typename TSize>
@@ -87,7 +86,7 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtZero<TDim, TSize>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock,       // grid atomics
+                atomic::AtomicStlLock<16>,   // grid atomics
                 atomic::AtomicOmpCritSec,    // block atomics
                 atomic::AtomicNoOp           // thread atomics
             >,
@@ -109,8 +108,6 @@ namespace alpaka
 
         private:
             //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Blocks(
@@ -120,7 +117,7 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TSize>(),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock,    // atomics between grids
+                        atomic::AtomicStlLock<16>,// atomics between grids
                         atomic::AtomicOmpCritSec, // atomics between blocks
                         atomic::AtomicNoOp        // atomics between threads
                     >(),
@@ -135,25 +132,15 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Blocks(AccCpuOmp2Blocks const &) = delete;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Blocks(AccCpuOmp2Blocks &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Blocks const &) -> AccCpuOmp2Blocks & = delete;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Blocks &&) -> AccCpuOmp2Blocks & = delete;
             //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Blocks() = default;
+            /*virtual*/ ~AccCpuOmp2Blocks() = default;
 
         private:
             // getIdx
@@ -167,7 +154,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 block accelerator accelerator type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -178,15 +164,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU OpenMP 2.0 block accelerator device properties get trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccDevProps<
                 acc::AccCpuOmp2Blocks<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
@@ -213,15 +196,12 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU OpenMP 2.0 block accelerator name trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetAccName<
                 acc::AccCpuOmp2Blocks<TDim, TSize>>
             {
-                //-----------------------------------------------------------------------------
-                //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
@@ -237,7 +217,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 block accelerator device type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -254,7 +233,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 block accelerator dimension getter trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -271,7 +249,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 block accelerator executor type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize,
@@ -292,7 +269,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 block executor platform type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
@@ -309,7 +285,6 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU OpenMP 2.0 block accelerator size type trait specialization.
-            //#############################################################################
             template<
                 typename TDim,
                 typename TSize>

@@ -6,20 +6,59 @@ CUDA GPUs
 Mapping the abstraction to GPUs supporting *CUDA* is straightforward because the hierarchy levels are identical up to the element level.
 So blocks of warps of threads will be mapped directly to their *CUDA* equivalent.
 
-The element level will be supported through an additional run-time variable containing the extent of elements per thread.
+The element level is supported through an additional run-time variable containing the extent of elements per thread.
 This variable can be accessed by all threads and should optimally be placed in constant device memory for fast access.
 
 Porting CUDA to *alpaka*
 ------------------------
 
 Nearly all CUDA functionality can be directly mapped to alpaka function calls.
-A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order. Alpaka uses the mathematical C/C++ array indexing scheme [z][y][x]. Dimension 0 in this case is z, dimensions 2 is x.
+A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order. Alpaka uses the mathematical C/C++ array indexing scheme [z][y][x]. In both cases x is the innermost / fast running index.
 
 Furthermore alpaka does not require the indices and extents to be 3-dimensional.
 The accelerators are templatized on and support arbitrary dimensionality.
 NOTE: Currently the CUDA implementation is restricted to a maximum of 3 dimensions!
 
-NOTE: The CUDA-accelerator back-end can change the current CUDA device and will NOT set the device back to the one prior to the invocation of the alpaka function!
+NOTE: You have to be careful when mixing alpaka and non alpaka CUDA code. The CUDA-accelerator back-end can change the current CUDA device and will NOT set the device back to the one prior to the invocation of the alpaka function.
+
+
+### Programming Interface
+
+*Function Attributes*
+
+|CUDA|alpaka|
+|---|---|
+|\_\_host\_\_|ALPAKA_FN_HOST|
+|\_\_global\_\_|ALPAKA_FN_HOST_ACC|
+|\_\_device\_\_ \_\_host\_\_|ALPAKA_FN_HOST_ACC|
+|\_\_device\_\_|ALPAKA_FN_ACC_CUDA_ONLY|
+
+
+*Memory*
+
+|CUDA|alpaka|
+|---|---|
+|\_\_shared\_\_|[alpaka::block::shared::st::allocVar<std::uint32_t, \_\_COUNTER\_\_>(acc)](../../../../../test/unit/block/shared/src/BlockSharedMemSt.cpp#L69)|
+|\_\_constant\_\_|[ALPAKA_STATIC_DEV_MEM_CONSTANT](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L58-L63)|
+|\_\_device\_\_|[ALPAKA_STATIC_DEV_MEM_GLOBAL](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L164-L169)|
+
+*Index / Work Division*
+
+|CUDA|alpaka|
+|---|---|
+|threadIdx|alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)|
+|blockIdx|alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)|
+|blockDim|alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)|
+|gridDim|alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)|
+
+*Types*
+
+|CUDA|alpaka|
+|---|---|
+|dim3|[alpaka::vec::Vec< TDim, TSize >](../../../../../test/unit/vec/src/VecTest.cpp#L43-L45)|
+
+
+### CUDA Runtime API
 
 The following tables list the functions available in the [CUDA Runtime API](http://docs.nvidia.com/cuda/cuda-runtime-api/modules.html#modules) and their equivalent alpaka functions:
 
@@ -28,10 +67,11 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |CUDA|alpaka|
 |---|---|
 |cudaChooseDevice|-|
-|cudaDeviceGetByPCIBusId|-|
 |cudaDeviceGetAttribute|-|
+|cudaDeviceGetByPCIBusId|-|
 |cudaDeviceGetCacheConfig|-|
 |cudaDeviceGetLimit|-|
+|cudaDeviceGetP2PAttribute|-|
 |cudaDeviceGetPCIBusId|-|
 |cudaDeviceGetSharedMemConfig|-|
 |cudaDeviceGetStreamPriorityRange|-|
@@ -41,8 +81,9 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaDeviceSetSharedMemConfig|-|
 |cudaDeviceSynchronize|void alpaka::wait::wait(device)|
 |cudaGetDevice|n/a (no current device)|
-|cudaGetDeviceCount|std::size_t alpaka::dev::DevMan< TAcc >::getDeviceCount()|
-|cudaGetDeviceProperties|<ul><li>alpaka::dev::DevProps alpaka::dev::getProps(device)</li><li>alpaka::acc::getAccDevProps(acc)</li></ul> *NOTE: Only some properties available*|
+|cudaGetDeviceCount|std::size_t alpaka::pltf::DevMan< TPltf >::getDevCount()|
+|cudaGetDeviceFlags|-|
+|cudaGetDeviceProperties|alpaka::acc::getAccDevProps(dev) *NOTE: Only some properties available*|
 |cudaIpcCloseMemHandle|-|
 |cudaIpcGetEventHandle|-|
 |cudaIpcGetMemHandle|-|
@@ -52,19 +93,28 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaSetDeviceFlags|-|
 |cudaSetValidDevices|-|
 
+*Error Handling*
+
+|CUDA|alpaka|
+|---|---|
+|cudaGetErrorName|n/a (handled internally, available in exception message)|
+|cudaGetErrorString|n/a (handled internally, available in exception message)|
+|cudaGetLastError|n/a (handled internally)|
+|cudaPeekAtLastError|n/a (handled internally)|
+
 *Stream Management*
 
 |CUDA|alpaka|
 |---|---|
-|cudaStreamAddCallback|-|
+|cudaStreamAddCallback|alpaka::stream::enqueue(stream, \[\](){do_something();})|
 |cudaStreamAttachMemAsync|-|
-|cudaStreamCreate|alpaka::stream::[StreamType] stream(device);|
-|cudaStreamCreateWithFlags|-|
+|cudaStreamCreate|<ul><li>stream = alpaka::stream::StreamCudaRtAsync(device);</li><li>stream = alpaka::stream::StreamCudaRtSync(device);</li></ul>|
+|cudaStreamCreateWithFlags|see cudaStreamCreate (cudaStreamNonBlocking hard coded)|
 |cudaStreamCreateWithPriority|-|
 |cudaStreamDestroy|n/a (Destructor)|
 |cudaStreamGetFlags|-|
 |cudaStreamGetPriority|-|
-|cudaStreamQuery|bool alpaka::stream::test(stream)|
+|cudaStreamQuery|bool alpaka::stream::empty(stream)|
 |cudaStreamSynchronize|void alpaka::wait::wait(stream)|
 |cudaStreamWaitEvent|void alpaka::wait::wait(stream, event)|
 
@@ -72,7 +122,7 @@ The following tables list the functions available in the [CUDA Runtime API](http
 
 |CUDA|alpaka|
 |---|---|
-|cudaEventCreate|alpaka::event::Event< TAcc > event(device);|
+|cudaEventCreate|alpaka::event::Event< TStream > event(dev);|
 |cudaEventCreateWithFlags|-|
 |cudaEventDestroy|n/a (Destructor)|
 |cudaEventElapsedTime|-|
@@ -102,10 +152,14 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaMalloc3DArray|-|
 |cudaMallocArray|-|
 |cudaMallocHost|alpaka::mem::buf::alloc<TElement>(device, extents) *1D, 2D, 3D suppoorted!*|
-|cudaMallocManaged|TODO|
+|cudaMallocManaged|-|
 |cudaMallocMipmappedArray|-|
 |cudaMallocPitch|alpaka::mem::alloc<TElement>(device, extents2D)|
+|cudaMemAdvise|-|
 |cudaMemGetInfo|<ul><li>alpaka::dev::getMemBytes</li><li>alpaka::dev::getFreeMemBytes</li><ul>|
+|cudaMemPrefetchAsync|-|
+|cudaMemRangeGetAttribute|-|
+|cudaMemRangeGetAttributes|-|
 |cudaMemcpy|alpaka::mem::view::copy(memBufDst, memBufSrc, extents1D)|
 |cudaMemcpy2D|alpaka::mem::view::copy(memBufDst, memBufSrc, extents2D)|
 |cudaMemcpy2DArrayToArray|-|
@@ -138,32 +192,34 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaMemsetAsync|alpaka::mem::view::set(memBufDst, byte, extents1D, stream)|
 |make_cudaExtent|-|
 |make_cudaPitchedPtr|-|
+|make_cudaPos|-|
+|cudaMemcpyHostToDevice|n/a (direction of copy is determined automatically)|
+|cudaMemcpyDeviceToHost|n/a (direction of copy is determined automatically)|
 
 *Execution Control*
 
 |CUDA|alpaka|
 |---|---|
-|cudaConfigureCall|<ul><li>alpaka::stream::enqueue(stream, kernel, params...)</li><li>alpaka::kernel::BlockSharedExternMemSizeBytes< TKernel< TAcc > >::getBlockSharedExternMemSizeBytes<...>(...)</li></ul>|
 |cudaFuncGetAttributes|-|
 |cudaFuncSetCacheConfig|-|
 |cudaFuncSetSharedMemConfig|-|
-|cudaLaunch|alpaka::stream::enqueue(stream, kernel, params...)|
+|cudaLaunchKernel|<ul><li>exec = alpaka::exec::create< TAcc >(workDiv, kernel, params...);alpaka::stream::enqueue(stream, exec)</li><li>alpaka::kernel::BlockSharedExternMemSizeBytes< TKernel< TAcc > >::getBlockSharedExternMemSizeBytes<...>(...)</li></ul>|
 |cudaSetDoubleForDevice|n/a (alpaka assumes double support)|
 |cudaSetDoubleForHost|n/a (alpaka assumes double support)|
-|cudaSetupArgument|alpaka::stream::enqueue(stream, kernel, params...)|
 
 *Occupancy*
 
 |CUDA|alpaka|
 |---|---|
 |cudaOccupancyMaxActiveBlocksPerMultiprocessor|-|
+|cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags|-|
 
 
 *Unified Addressing*
 
 |CUDA|alpaka|
 |---|---|
-|cudaPointerGetAttributes|alpaka::mem::view::getPtrDev(view, device)|
+|cudaPointerGetAttributes|-|
 
 *Peer Device Memory Access*
 
@@ -173,7 +229,7 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaDeviceDisablePeerAccess|-|
 |cudaDeviceEnablePeerAccess|-|
 
-**OpenGL, DirectX, VDPAU, Graphics Interoperability**
+**OpenGL, Direct3D, VDPAU, EGL, Graphics Interoperability**
 
 *not available*
 

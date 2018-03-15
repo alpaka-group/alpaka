@@ -21,7 +21,7 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <boost/predef.h>               // BOOST_COMP_CLANG
+#include <boost/predef.h>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -31,8 +31,8 @@
     #pragma clang diagnostic pop
 #endif
 
-#include <tuple>                        // std::tuple
-#include <type_traits>                  // std::is_same, std::is_integral
+#include <tuple>
+#include <type_traits>
 
 BOOST_AUTO_TEST_SUITE(meta)
 
@@ -40,8 +40,6 @@ class A {};
 class B : A {};
 class C {};
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(isStrictBaseTrue)
 {
@@ -59,8 +57,6 @@ BOOST_AUTO_TEST_CASE(isStrictBaseTrue)
 }
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(isStrictBaseIdentity)
 {
     constexpr bool IsStrictBaseResult =
@@ -77,8 +73,6 @@ BOOST_AUTO_TEST_CASE(isStrictBaseIdentity)
 }
 
 //-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(isStrictBaseNoInheritance)
 {
     constexpr bool IsStrictBaseResult =
@@ -94,8 +88,6 @@ BOOST_AUTO_TEST_CASE(isStrictBaseNoInheritance)
         "alpaka::meta::IsStrictBase failed!");
 }
 
-//-----------------------------------------------------------------------------
-//
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(isStrictBaseWrongOrder)
 {

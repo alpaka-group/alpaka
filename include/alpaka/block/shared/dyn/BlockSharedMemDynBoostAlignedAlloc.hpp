@@ -21,15 +21,15 @@
 
 #pragma once
 
-#include <alpaka/core/Vectorize.hpp>            // defaultAlignment
-#include <alpaka/block/shared/dyn/Traits.hpp>   // AllocVar
+#include <alpaka/core/Vectorize.hpp>
+#include <alpaka/block/shared/dyn/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>               // ALPAKA_FN_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>
 
-#include <boost/align.hpp>                      // boost::aligned_alloc
+#include <boost/align.hpp>
 
-#include <vector>                               // std::vector
-#include <memory>                               // std::unique_ptr
+#include <vector>
+#include <memory>
 
 namespace alpaka
 {
@@ -41,14 +41,11 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The block shared dynamic memory allocator without synchronization.
-                //#############################################################################
                 class BlockSharedMemDynBoostAlignedAlloc
                 {
                 public:
                     using BlockSharedMemDynBase = BlockSharedMemDynBoostAlignedAlloc;
 
-                    //-----------------------------------------------------------------------------
-                    //! Default constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA BlockSharedMemDynBoostAlignedAlloc(
                         std::size_t const & blockSharedMemDynSizeBytes)
@@ -61,25 +58,15 @@ namespace alpaka
                         }
                     }
                     //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc &&) = delete;
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment operator.
-                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSharedMemDynBoostAlignedAlloc const &) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSharedMemDynBoostAlignedAlloc &&) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSharedMemDynBoostAlignedAlloc() = default;
+                    /*virtual*/ ~BlockSharedMemDynBoostAlignedAlloc() = default;
 
                 public:
                     std::unique_ptr<
@@ -91,16 +78,12 @@ namespace alpaka
                 namespace traits
                 {
                     //#############################################################################
-                    //!
-                    //#############################################################################
                     template<
                         typename T>
                     struct GetMem<
                         T,
                         BlockSharedMemDynBoostAlignedAlloc>
                     {
-                        //-----------------------------------------------------------------------------
-                        //
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_ACC_NO_CUDA static auto getMem(
                             block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc const & blockSharedMemDyn)
