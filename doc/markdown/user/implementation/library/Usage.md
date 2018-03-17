@@ -72,7 +72,7 @@ This allows buffers that possibly reside on different devices with different pit
 Kernel Execution
 ----------------
 
-The following source code listing shows the execution of a kernel by enqueuing the execution task into a stream.
+The following source code listing shows the execution of a kernel by enqueuing the execution task into a queue.
 
 ```C++
 // Define the dimensionality of the task.
@@ -81,13 +81,13 @@ using Dim = alpaka::dim::DimInt<1u>;
 using Size = std::size_t;
 // Define the accelerator to use.
 using Acc = alpaka::acc::AccCpuSerial<Dim, Size>;
-// Select the stream type.
-using Stream = a::stream::StreamCpuAsync;
+// Select the queue type.
+using Queue = a::queue::QueueCpuAsync;
 
 // Select a device to execute on.
 auto devAcc(a::dev::DevManT<Acc>::getDevByIdx(0));
-// Create a stream to enqueue the execution into.
-Stream stream(devAcc);
+// Create a queue to enqueue the execution into.
+Queue queue(devAcc);
 
 // Create a 1-dimensional work division with 256 blocks a 16 threads.
 auto const workDiv(alpaka::workdiv::WorkDivMembers<Dim, Size>(256u, 16u);
@@ -95,15 +95,15 @@ auto const workDiv(alpaka::workdiv::WorkDivMembers<Dim, Size>(256u, 16u);
 MyKernel kernel;
 // Create the execution task.
 auto const exec(alpaka::exec::create<Acc>(workDiv, kernel/*, arguments ...*/);
-// Enqueue the task into the stream.
-alpaka::stream::enqueue(stream, exec);
+// Enqueue the task into the queue.
+alpaka::queue::enqueue(queue, exec);
 ```
 
 The dimensionality of the task as well as the type for index and extent sizes have to be defined explicitly.
-Following this, the type of accelerator to execute on, as well as the type of the stream have to be defined.
+Following this, the type of accelerator to execute on, as well as the type of the queue have to be defined.
 For both of these types instances have to be created.
-For the accelerator this has to be done indirectly by enumerating the required device via the device manager, whereas the stream can be created directly.
+For the accelerator this has to be done indirectly by enumerating the required device via the device manager, whereas the queue can be created directly.
 
 To execute the kernel, an instance of the kernel function object has to be constructed.
 Following this, an execution task combining the work division (grid and block sizes) with the kernel function object and the bound invocation arguments has to be created.
-After that this task can be enqueued into a stream for immediate or later execution (depending on the stream used).
+After that this task can be enqueued into a queue for immediate or later execution (depending on the queue used).

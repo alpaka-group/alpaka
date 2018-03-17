@@ -20,7 +20,7 @@
  */
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 namespace alpaka
 {
@@ -38,7 +38,7 @@ namespace alpaka
             using Size = alpaka::size::Size<Acc>;
             using DevAcc = alpaka::dev::Dev<Acc>;
             using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-            using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+            using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
 
         public:
             //-----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ namespace alpaka
                 TExtent const & extent) :
                     m_devHost(alpaka::pltf::getDevByIdx<pltf::PltfCpu>(0u)),
                     m_devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u)),
-                    m_stream(m_devAcc),
+                    m_queue(m_devAcc),
                     m_workDiv(
                         alpaka::workdiv::getValidWorkDiv<Acc>(
                             m_devAcc,
@@ -72,9 +72,9 @@ namespace alpaka
                         kernelFnObj,
                         args...));
 
-                alpaka::stream::enqueue(m_stream, exec);
+                alpaka::queue::enqueue(m_queue, exec);
 
-                alpaka::wait::wait(m_stream);
+                alpaka::wait::wait(m_queue);
 
                 return true;
             }
@@ -85,7 +85,7 @@ namespace alpaka
         private:
             alpaka::dev::DevCpu m_devHost;
             DevAcc m_devAcc;
-            StreamAcc m_stream;
+            QueueAcc m_queue;
             alpaka::workdiv::WorkDivMembers<Dim, Size> m_workDiv;
         };
     }

@@ -26,7 +26,7 @@
 #include <alpaka/elem/Traits.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/offset/Traits.hpp>
-#include <alpaka/stream/Traits.hpp>
+#include <alpaka/queue/Traits.hpp>
 
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/meta/Fold.hpp>
@@ -320,20 +320,20 @@ namespace alpaka
             //! \param view The memory view to fill.
             //! \param byte Value to set for each element of the specified view.
             //! \param extent The extent of the view to fill.
-            //! \param stream The stream to enqueue the view fill task into.
+            //! \param queue The queue to enqueue the view fill task into.
             template<
                 typename TExtent,
                 typename TView,
-                typename TStream>
+                typename TQueue>
             ALPAKA_FN_HOST auto set(
-                TStream & stream,
+                TQueue & queue,
                 TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)
             -> void
             {
-                stream::enqueue(
-                    stream,
+                queue::enqueue(
+                    queue,
                     mem::view::taskSet(
                         view,
                         byte,
@@ -393,21 +393,21 @@ namespace alpaka
             //! \param viewDst The destination memory view.
             //! \param viewSrc The source memory view.
             //! \param extent The extent of the view to copy.
-            //! \param stream The stream to enqueue the view copy task into.
+            //! \param queue The queue to enqueue the view copy task into.
             template<
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst,
-                typename TStream>
+                typename TQueue>
             ALPAKA_FN_HOST auto copy(
-                TStream & stream,
+                TQueue & queue,
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
             -> void
             {
-                stream::enqueue(
-                    stream,
+                queue::enqueue(
+                    queue,
                     mem::view::taskCopy(
                         viewDst,
                         viewSrc,
@@ -503,7 +503,7 @@ namespace alpaka
                 };
             }
             //-----------------------------------------------------------------------------
-            //! Prints the content of the view to the given stream.
+            //! Prints the content of the view to the given queue.
             // \TODO: Add precision flag.
             // \TODO: Add column alignment flag.
             template<

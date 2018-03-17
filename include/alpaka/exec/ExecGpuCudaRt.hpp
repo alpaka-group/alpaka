@@ -36,14 +36,14 @@
 #include <alpaka/exec/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/size/Traits.hpp>
-#include <alpaka/stream/Traits.hpp>
+#include <alpaka/queue/Traits.hpp>
 
 // Implementation details.
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/dev/DevCudaRt.hpp>
 #include <alpaka/kernel/Traits.hpp>
-#include <alpaka/stream/StreamCudaRtAsync.hpp>
-#include <alpaka/stream/StreamCudaRtSync.hpp>
+#include <alpaka/queue/QueueCudaRtAsync.hpp>
+#include <alpaka/queue/QueueCudaRtSync.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -262,7 +262,7 @@ namespace alpaka
             };
         }
     }
-    namespace stream
+    namespace queue
     {
         namespace traits
         {
@@ -274,12 +274,12 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                stream::StreamCudaRtAsync,
+                queue::QueueCudaRtAsync,
                 exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtAsync & stream,
+                    queue::QueueCudaRtAsync & queue,
                     exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {
@@ -327,7 +327,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!workdiv::isValidWorkDiv<acc::AccGpuCudaRt<TDim, TSize>>(dev::getDev(stream), task))
+                    if(!workdiv::isValidWorkDiv<acc::AccGpuCudaRt<TDim, TSize>>(dev::getDev(queue), task))
                     {
                         throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuCudaRt<TDim, TSize>>() + "!");
                     }
@@ -372,7 +372,7 @@ namespace alpaka
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaSetDevice(
-                            stream.m_spStreamImpl->m_dev.m_iDevice));
+                            queue.m_spQueueImpl->m_dev.m_iDevice));
                     // Enqueue the kernel execution.
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
@@ -384,7 +384,7 @@ namespace alpaka
                                 gridDim,
                                 blockDim,
                                 static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-                                stream.m_spStreamImpl->m_CudaStream>>>(
+                                queue.m_spQueueImpl->m_CudaQueue>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
                                     args...);
@@ -395,7 +395,7 @@ namespace alpaka
                     // Wait for the kernel execution to finish but do not check error return of this call.
                     // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
                     cudaStreamSynchronize(
-                        stream.m_spStreamImpl->m_CudaStream);
+                        queue.m_spQueueImpl->m_CudaQueue);
                     std::string const kernelName("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
                     ::alpaka::cuda::detail::cudaRtCheckLastError(kernelName.c_str(), __FILE__, __LINE__);
 #endif
@@ -409,12 +409,12 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                stream::StreamCudaRtSync,
+                queue::QueueCudaRtSync,
                 exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    queue::QueueCudaRtSync & queue,
                     exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {
@@ -459,7 +459,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!workdiv::isValidWorkDiv<acc::AccGpuCudaRt<TDim, TSize>>(dev::getDev(stream), task))
+                    if(!workdiv::isValidWorkDiv<acc::AccGpuCudaRt<TDim, TSize>>(dev::getDev(queue), task))
                     {
                         throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuCudaRt<TDim, TSize>>() + "!");
                     }
@@ -504,7 +504,7 @@ namespace alpaka
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaSetDevice(
-                            stream.m_spStreamImpl->m_dev.m_iDevice));
+                            queue.m_spQueueImpl->m_dev.m_iDevice));
                     // Enqueue the kernel execution.
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
@@ -516,7 +516,7 @@ namespace alpaka
                                 gridDim,
                                 blockDim,
                                 blockSharedMemDynSizeBytes,
-                                stream.m_spStreamImpl->m_CudaStream>>>(
+                                queue.m_spQueueImpl->m_CudaQueue>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
                                     args...);
@@ -526,7 +526,7 @@ namespace alpaka
                     // Wait for the kernel execution to finish but do not check error return of this call.
                     // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
                     cudaStreamSynchronize(
-                        stream.m_spStreamImpl->m_CudaStream);
+                        queue.m_spQueueImpl->m_CudaQueue);
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     std::string const kernelName("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
                     ::alpaka::cuda::detail::cudaRtCheckLastError(kernelName.c_str(), __FILE__, __LINE__);

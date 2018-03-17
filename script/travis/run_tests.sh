@@ -44,7 +44,7 @@ BOOST_TEST_OPTIONS="--log_level=test_suite --color_output=true"
 ./script/travis/compileExec.sh "test/unit/mem/view/" "./memView ${BOOST_TEST_OPTIONS}"
 ./script/travis/compileExec.sh "test/unit/meta/" "./meta ${BOOST_TEST_OPTIONS}"
 ./script/travis/compileExec.sh "test/unit/rand/" "./rand ${BOOST_TEST_OPTIONS}"
-./script/travis/compileExec.sh "test/unit/stream/" "./stream ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/unit/queue/" "./queue ${BOOST_TEST_OPTIONS}"
 ./script/travis/compileExec.sh "test/unit/time/" "./time ${BOOST_TEST_OPTIONS}"
 ./script/travis/compileExec.sh "test/unit/vec/" "./vec ${BOOST_TEST_OPTIONS}"
 

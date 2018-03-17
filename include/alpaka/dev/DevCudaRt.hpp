@@ -246,7 +246,7 @@ namespace alpaka
             //! The thread CUDA device wait specialization.
             //!
             //! Blocks until the device has completed all preceding requested tasks.
-            //! Tasks that are enqueued or streams that are created after this call is made are not waited for.
+            //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
             template<>
             struct CurrentThreadWaitFor<
                 dev::DevCudaRt>

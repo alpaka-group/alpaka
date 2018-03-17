@@ -25,27 +25,27 @@ namespace alpaka
 {
     namespace test
     {
-        namespace stream
+        namespace queue
         {
             //#############################################################################
             template<
-                typename TDevStream>
-            struct StreamTestFixture
+                typename TDevQueue>
+            struct QueueTestFixture
             {
-                using Dev = typename std::tuple_element<0, TDevStream>::type;
-                using Stream = typename std::tuple_element<1, TDevStream>::type;
+                using Dev = typename std::tuple_element<0, TDevQueue>::type;
+                using Queue = typename std::tuple_element<1, TDevQueue>::type;
 
                 using Pltf = alpaka::pltf::Pltf<Dev>;
 
                 //-----------------------------------------------------------------------------
-                StreamTestFixture() :
+                QueueTestFixture() :
                     m_dev(alpaka::pltf::getDevByIdx<Pltf>(0u)),
-                    m_stream(m_dev)
+                    m_queue(m_dev)
                 {
                 }
 
                 Dev m_dev;
-                Stream m_stream;
+                Queue m_queue;
             };
         }
     }

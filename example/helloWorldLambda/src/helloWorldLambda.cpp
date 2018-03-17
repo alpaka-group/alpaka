@@ -61,8 +61,8 @@ auto main()
     using Host = alpaka::acc::AccCpuSerial<Dim, Size>;
     using Acc = alpaka::acc::AccCpuSerial<Dim, Size>;
     //using Acc = alpaka::acc::AccGpuCudaRt<Dim, Size>;    
-    using Stream = alpaka::stream::StreamCpuSync;
-    //using Stream = alpaka::stream::StreamCudaRtSync;
+    using Queue = alpaka::queue::QueueCpuSync;
+    //using Queue = alpaka::queue::QueueCudaRtSync;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using DevHost = alpaka::dev::Dev<Host>;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
@@ -73,8 +73,8 @@ auto main()
     DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
     DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
-    // Create a stream to the accelerator device
-    Stream stream(devAcc);
+    // Create a queue to the accelerator device
+    Queue queue(devAcc);
 
     // Init workdiv
     alpaka::vec::Vec<Dim, Size> const elementsPerThread(
@@ -149,7 +149,7 @@ auto main()
         nExclamationMarks
     ));
 
-    alpaka::stream::enqueue(stream, helloWorld);
+    alpaka::queue::enqueue(queue, helloWorld);
 
 #endif
 #endif
@@ -173,7 +173,7 @@ auto main()
         std::function<void(Acc&, size_t)>( hiWorldFunction<Acc> ),
         nExclamationMarks));
 
-    alpaka::stream::enqueue(stream, hiWorld);
+    alpaka::queue::enqueue(queue, hiWorld);
 
     
     // Run "Hello World" kernel with std::bind
@@ -194,7 +194,7 @@ auto main()
         std::bind( hiWorldFunction<Acc>, std::placeholders::_1, nExclamationMarks*2 )
         ));
 
-    alpaka::stream::enqueue(stream, hiWorldBind);
+    alpaka::queue::enqueue(queue, hiWorldBind);
 
     return EXIT_SUCCESS;
 }

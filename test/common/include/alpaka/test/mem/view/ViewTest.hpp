@@ -203,9 +203,9 @@ namespace alpaka
                 template<
                     typename TAcc,
                     typename TView,
-                    typename TStream>
+                    typename TQueue>
                 static auto verifyBytesSet(
-                    TStream & stream,
+                    TQueue & queue,
                     TView const & view,
                     std::uint8_t const & byte)
                 -> void
@@ -231,8 +231,8 @@ namespace alpaka
                             alpaka::test::mem::view::begin(view),
                             alpaka::test::mem::view::end(view),
                             byte));
-                    alpaka::stream::enqueue(stream, compare);
-                    alpaka::wait::wait(stream);
+                    alpaka::queue::enqueue(queue, compare);
+                    alpaka::wait::wait(queue);
                 }
 
                 //#############################################################################
@@ -277,9 +277,9 @@ namespace alpaka
                     typename TAcc,
                     typename TViewB,
                     typename TViewA,
-                    typename TStream>
+                    typename TQueue>
                 static auto verifyViewsEqual(
-                    TStream & stream,
+                    TQueue & queue,
                     TViewA const & viewA,
                     TViewB const & viewB)
                 -> void
@@ -309,17 +309,17 @@ namespace alpaka
                             alpaka::test::mem::view::begin(viewA),
                             alpaka::test::mem::view::end(viewA),
                             alpaka::test::mem::view::begin(viewB)));
-                    alpaka::stream::enqueue(stream, compare);
-                    alpaka::wait::wait(stream);
+                    alpaka::queue::enqueue(queue, compare);
+                    alpaka::wait::wait(queue);
                 }
 
                 //-----------------------------------------------------------------------------
                 //! Fills the given view with increasing values starting at 0.
                 template<
                     typename TView,
-                    typename TStream>
+                    typename TQueue>
                 static auto iotaFillView(
-                    TStream & stream,
+                    TQueue & queue,
                     TView & view)
                 -> void
                 {
@@ -343,18 +343,18 @@ namespace alpaka
                     ViewPlainPtr plainBuf(v.data(), devHost, extent);
 
                     // Copy the generated content into the given view.
-                    alpaka::mem::view::copy(stream, view, plainBuf, extent);
+                    alpaka::mem::view::copy(queue, view, plainBuf, extent);
 
-                    alpaka::wait::wait(stream);
+                    alpaka::wait::wait(queue);
                 }
 
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc,
                     typename TView,
-                    typename TStream>
+                    typename TQueue>
                 static auto viewTestMutable(
-                    TStream & stream,
+                    TQueue & queue,
                     TView & view)
                 -> void
                 {
@@ -366,8 +366,8 @@ namespace alpaka
                     // alpaka::mem::view::set
                     {
                         std::uint8_t const byte(static_cast<uint8_t>(42u));
-                        alpaka::mem::view::set(stream, view, byte, extent);
-                        verifyBytesSet<TAcc>(stream, view, byte);
+                        alpaka::mem::view::set(queue, view, byte, extent);
+                        verifyBytesSet<TAcc>(queue, view, byte);
                     }
 
                     //-----------------------------------------------------------------------------
@@ -381,17 +381,17 @@ namespace alpaka
                         // alpaka::mem::view::copy into given view
                         {
                             auto srcBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extent));
-                            iotaFillView(stream, srcBufAcc);
-                            alpaka::mem::view::copy(stream, view, srcBufAcc, extent);
-                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(stream, view, srcBufAcc);
+                            iotaFillView(queue, srcBufAcc);
+                            alpaka::mem::view::copy(queue, view, srcBufAcc, extent);
+                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(queue, view, srcBufAcc);
                         }
 
                         //-----------------------------------------------------------------------------
                         // alpaka::mem::view::copy from given view
                         {
                             auto dstBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extent));
-                            alpaka::mem::view::copy(stream, dstBufAcc, view, extent);
-                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(stream, dstBufAcc, view);
+                            alpaka::mem::view::copy(queue, dstBufAcc, view, extent);
+                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(queue, dstBufAcc, view);
                         }
                     }
                 }

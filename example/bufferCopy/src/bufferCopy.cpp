@@ -181,17 +181,17 @@ auto main()
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
-    using DevStream = alpaka::stream::StreamCpuSync;
-//    using DevStream = alpaka::stream::StreamCudaRtSync;
-    using HostStream = alpaka::stream::StreamCpuSync;
+    using DevQueue = alpaka::queue::QueueCpuSync;
+//    using DevQueue = alpaka::queue::QueueCudaRtSync;
+    using HostQueue = alpaka::queue::QueueCpuSync;
 
     // Get the first device
     DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
     DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
-    // Create sync stream
-    DevStream devStream(devAcc);
-    HostStream hostStream(devHost);
+    // Create sync queue
+    DevQueue devQueue(devAcc);
+    HostQueue hostQueue(devHost);
 
 
     // Init workdiv
@@ -276,7 +276,7 @@ auto main()
             extents,                                     // 2nd kernel argument
             initValue));                                 // 3rd kernel argument
 
-    alpaka::stream::enqueue(hostStream, init);
+    alpaka::queue::enqueue(hostQueue, init);
 
 
     // Write some data to the host buffer
@@ -312,13 +312,13 @@ auto main()
             alpaka::mem::view::getPtrNative(hostBufferPlain), // 1st kernel argument
             extents));                                        // 2nd kernel argument
 
-    alpaka::stream::enqueue(hostStream, fill);
+    alpaka::queue::enqueue(hostQueue, fill);
 
 
     // Copy host to device Buffer
     //
     // A copy operation of one buffer into
-    // another buffer is enqueued into a stream
+    // another buffer is enqueued into a queue
     // like it is done for kernel execution, but
     // more automatically. Copy is only possible
     // from host to host, host to device and
@@ -332,8 +332,8 @@ auto main()
     // not currently supported.
     // In this example both host buffers are copied
     // into device buffers.
-    alpaka::mem::view::copy(devStream, deviceBuffer1, hostBufferPlain, extents);
-    alpaka::mem::view::copy(devStream, deviceBuffer2, hostBuffer, extents);
+    alpaka::mem::view::copy(devQueue, deviceBuffer1, hostBufferPlain, extents);
+    alpaka::mem::view::copy(devQueue, deviceBuffer2, hostBuffer, extents);
 
     auto devicePitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(deviceBuffer1) / sizeof(Data));
     auto hostPitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(hostBuffer) / sizeof(Data));
@@ -360,8 +360,8 @@ auto main()
             extents,                                        // 2nd kernel argument
             devicePitch));                                  // 3rd kernel argument
 
-    alpaka::stream::enqueue(devStream, test1);
-    alpaka::stream::enqueue(devStream, test2);
+    alpaka::queue::enqueue(devQueue, test1);
+    alpaka::queue::enqueue(devQueue, test2);
 
 
     // Print device Buffer
@@ -406,13 +406,13 @@ auto main()
             extents,                                          // 2nd kernel argument
             hostPitch));                                      // 3rd kernel argument
 
-    alpaka::stream::enqueue(devStream, printDeviceBuffer1);
+    alpaka::queue::enqueue(devQueue, printDeviceBuffer1);
     std::cout << std::endl;
-    alpaka::stream::enqueue(devStream, printDeviceBuffer2);
+    alpaka::queue::enqueue(devQueue, printDeviceBuffer2);
     std::cout << std::endl;
-    alpaka::stream::enqueue(hostStream, printHostBuffer);
+    alpaka::queue::enqueue(hostQueue, printHostBuffer);
     std::cout << std::endl;
-    alpaka::stream::enqueue(hostStream, printHostBufferPlain);
+    alpaka::queue::enqueue(hostQueue, printHostBufferPlain);
     std::cout << std::endl;
 
 

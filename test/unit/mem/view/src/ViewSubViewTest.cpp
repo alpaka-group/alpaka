@@ -29,7 +29,7 @@
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/mem/view/ViewTest.hpp>
 
 #include <boost/predef.h>
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 {
     using Dev = alpaka::dev::Dev<TAcc>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
-    using Stream = alpaka::test::stream::DefaultStream<Dev>;
+    using Queue = alpaka::test::queue::DefaultQueue<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using View = alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Size>;
 
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
-    Stream stream(dev);
+    Queue queue(dev);
 
     // We have to be careful with the extents used.
     // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     //-----------------------------------------------------------------------------
     alpaka::test::mem::view::viewTestMutable<
         TAcc>(
-            stream,
+            queue,
             view);
 
     //-----------------------------------------------------------------------------

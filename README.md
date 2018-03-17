@@ -15,7 +15,7 @@ It is platform independent and supports the concurrent and cooperative use of mu
 A multitude of accelerator back-end variants using CUDA, OpenMP (2.0/4.0), Boost.Fiber, std::thread and also serial execution is provided and can be selected depending on the device.
 Only one implementation of the user kernel is required by representing them as function objects with a special interface.
 There is no need to write special CUDA, OpenMP or custom threading code.
-Accelerator back-ends can be mixed within a device stream.
+Accelerator back-ends can be mixed within a device queue.
 The decision which accelerator back-end executes which kernel can be made at runtime.
 
 The **alpaka** API is currently unstable (beta state).

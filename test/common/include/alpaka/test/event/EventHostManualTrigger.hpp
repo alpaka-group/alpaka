@@ -60,7 +60,7 @@ namespace alpaka
                 namespace detail
                 {
                     //#############################################################################
-                    //! Event that can be enqueued into a stream and can be triggered by the Host.
+                    //! Event that can be enqueued into a queue and can be triggered by the Host.
                     //#############################################################################
                     class EventHostManualTriggerCpuImpl
                     {
@@ -112,13 +112,13 @@ namespace alpaka
                         mutable std::condition_variable m_conditionVariable;    //!< The condition signaling the event completion.
                         std::size_t m_enqueueCount;                             //!< The number of times this event has been enqueued.
 
-                        bool m_bIsReady;                                        //!< If the event is not waiting within a stream (not enqueued or already completed).
+                        bool m_bIsReady;                                        //!< If the event is not waiting within a queue (not enqueued or already completed).
                     };
                 }
             }
 
             //#############################################################################
-            //! Event that can be enqueued into a stream and can be triggered by the Host.
+            //! Event that can be enqueued into a queue and can be triggered by the Host.
             //#############################################################################
             class EventHostManualTriggerCpu
             {
@@ -224,7 +224,7 @@ namespace alpaka
                 test::event::EventHostManualTriggerCpu>
             {
                 //-----------------------------------------------------------------------------
-                //! \return If the event is not waiting within a stream (not enqueued or already handled).
+                //! \return If the event is not waiting within a queue (not enqueued or already handled).
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto test(
                     test::event::EventHostManualTriggerCpu const & event)
@@ -237,7 +237,7 @@ namespace alpaka
             };
         }
     }
-    namespace stream
+    namespace queue
     {
         namespace traits
         {
@@ -246,7 +246,7 @@ namespace alpaka
             //#############################################################################
             template<>
             struct Enqueue<
-                stream::StreamCpuAsync,
+                queue::QueueCpuAsync,
                 test::event::EventHostManualTriggerCpu>
             {
                 //-----------------------------------------------------------------------------
@@ -254,9 +254,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
-                    stream::StreamCpuAsync & stream,
+                    queue::QueueCpuAsync & queue,
 #else
-                    stream::StreamCpuAsync &,
+                    queue::QueueCpuAsync &,
 #endif
                     test::event::EventHostManualTriggerCpu & event)
                 -> void
@@ -283,7 +283,7 @@ namespace alpaka
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                     // Enqueue a task that only resets the events flag if it is completed.
-                    stream.m_spStreamImpl->m_workerThread.enqueueTask(
+                    queue.m_spQueueImpl->m_workerThread.enqueueTask(
                         [spEventImpl, enqueueCount]()
                         {
                             std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
@@ -302,14 +302,14 @@ namespace alpaka
             //#############################################################################
             template<>
             struct Enqueue<
-                stream::StreamCpuSync,
+                queue::QueueCpuSync,
                 test::event::EventHostManualTriggerCpu>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCpuSync &,
+                    queue::QueueCpuSync &,
                     test::event::EventHostManualTriggerCpu & event)
                 -> void
                 {
@@ -442,7 +442,7 @@ namespace alpaka
                         mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
                         void * m_devMem;
 
-                        bool m_bIsReady;                //!< If the event is not waiting within a stream (not enqueued or already completed).
+                        bool m_bIsReady;                //!< If the event is not waiting within a queue (not enqueued or already completed).
                     };
                 }
             }
@@ -534,7 +534,7 @@ namespace alpaka
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
-                //! \return If the event is not waiting within a stream (not enqueued or already handled).
+                //! \return If the event is not waiting within a queue (not enqueued or already handled).
                 ALPAKA_FN_HOST static auto test(
                     test::event::EventHostManualTriggerCuda const & event)
                 -> bool
@@ -546,19 +546,19 @@ namespace alpaka
             };
         }
     }
-    namespace stream
+    namespace queue
     {
         namespace traits
         {
             //#############################################################################
             template<>
             struct Enqueue<
-                stream::StreamCudaRtAsync,
+                queue::QueueCudaRtAsync,
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtAsync & stream,
+                    queue::QueueCudaRtAsync & queue,
                     test::event::EventHostManualTriggerCuda & event)
                 -> void
                 {
@@ -580,11 +580,11 @@ namespace alpaka
                     // The following are known issues related to Events and Metrics:
                     // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
                     //   on host updates may hang. This includes synchronization between the host and
-                    //   the device build upon value-based CUDA stream synchronization APIs such as
+                    //   the device build upon value-based CUDA queue synchronization APIs such as
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            (CUstream)stream.m_spStreamImpl->m_CudaStream,
+                            (CUstream)queue.m_spQueueImpl->m_CudaQueue,
                             (CUdeviceptr)event.m_spEventImpl->m_devMem,
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
@@ -593,12 +593,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct Enqueue<
-                stream::StreamCudaRtSync,
+                queue::QueueCudaRtSync,
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync & stream,
+                    queue::QueueCudaRtSync & queue,
                     test::event::EventHostManualTriggerCuda & event)
                 -> void
                 {
@@ -620,11 +620,11 @@ namespace alpaka
                     // The following are known issues related to Events and Metrics:
                     // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
                     //   on host updates may hang. This includes synchronization between the host and
-                    //   the device build upon value-based CUDA stream synchronization APIs such as
+                    //   the device build upon value-based CUDA queue synchronization APIs such as
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            (CUstream)stream.m_spStreamImpl->m_CudaStream,
+                            (CUstream)queue.m_spQueueImpl->m_CudaQueue,
                             (CUdeviceptr)event.m_spEventImpl->m_devMem,
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));

@@ -183,12 +183,12 @@
 // size
 #include <alpaka/size/Traits.hpp>
 //-----------------------------------------------------------------------------
-// stream
-#include <alpaka/stream/StreamCudaRtAsync.hpp>
-#include <alpaka/stream/StreamCudaRtSync.hpp>
-#include <alpaka/stream/StreamCpuAsync.hpp>
-#include <alpaka/stream/StreamCpuSync.hpp>
-#include <alpaka/stream/Traits.hpp>
+// queue
+#include <alpaka/queue/QueueCudaRtAsync.hpp>
+#include <alpaka/queue/QueueCudaRtSync.hpp>
+#include <alpaka/queue/QueueCpuAsync.hpp>
+#include <alpaka/queue/QueueCpuSync.hpp>
+#include <alpaka/queue/Traits.hpp>
 //-----------------------------------------------------------------------------
 // time
 #include <alpaka/time/Traits.hpp>
