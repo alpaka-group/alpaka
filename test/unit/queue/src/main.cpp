@@ -19,7 +19,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define BOOST_TEST_MODULE stream
+#define BOOST_TEST_MODULE queue
 
 #include <boost/predef.h>
 #if BOOST_COMP_CLANG

@@ -28,7 +28,7 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Project.
 
-SET(_TARGET_NAME "stream")
+SET(_TARGET_NAME "queue")
 
 PROJECT(${_TARGET_NAME})
 

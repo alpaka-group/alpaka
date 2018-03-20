@@ -22,7 +22,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/Acc.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 #include <iostream>
 #include <typeinfo>
@@ -162,7 +162,7 @@ struct SharedMemTester
 
         using DevAcc = alpaka::dev::Dev<TAcc>;
         using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-        using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
 
         // Create the kernel function object.
         SharedMemKernel<TnumUselessWork, TVal> kernel;
@@ -171,8 +171,8 @@ struct SharedMemTester
         auto const devAcc(
             alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-        // Get a stream on this device.
-        StreamAcc stream(
+        // Get a queue on this device.
+        QueueAcc queue(
             devAcc);
 
         // Set the grid blocks extent.
@@ -202,7 +202,7 @@ struct SharedMemTester
         // Allocate accelerator buffers and copy.
         TSize const resultElemCount(gridBlocksCount);
         auto blockRetValsAcc(alpaka::mem::buf::alloc<TVal, TSize>(devAcc, resultElemCount));
-        alpaka::mem::view::copy(stream, blockRetValsAcc, blockRetVals, resultElemCount);
+        alpaka::mem::view::copy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
@@ -213,16 +213,16 @@ struct SharedMemTester
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::test::integ::measureKernelRunTimeMs(
-                stream,
+                queue,
                 exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(stream, blockRetVals, blockRetValsAcc, resultElemCount);
+        alpaka::mem::view::copy(queue, blockRetVals, blockRetValsAcc, resultElemCount);
 
-        // Wait for the stream to finish the memory operation.
-        alpaka::wait::wait(stream);
+        // Wait for the queue to finish the memory operation.
+        alpaka::wait::wait(queue);
 
         // Assert that the results are correct.
         TVal const correctResult(

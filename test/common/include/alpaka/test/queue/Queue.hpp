@@ -30,28 +30,28 @@ namespace alpaka
     namespace test
     {
         //-----------------------------------------------------------------------------
-        //! The test stream specifics.
-        namespace stream
+        //! The test queue specifics.
+        namespace queue
         {
             namespace traits
             {
                 //#############################################################################
-                //! The default stream type trait for devices.
+                //! The default queue type trait for devices.
                 template<
                     typename TDev,
                     typename TSfinae = void>
-                struct DefaultStreamType;
+                struct DefaultQueueType;
 
                 //#############################################################################
-                //! The default stream type trait specialization for the CPU device.
+                //! The default queue type trait specialization for the CPU device.
                 template<>
-                struct DefaultStreamType<
+                struct DefaultQueueType<
                     alpaka::dev::DevCpu>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    using type = alpaka::stream::StreamCpuSync;
+                    using type = alpaka::queue::QueueCpuSync;
 #else
-                    using type = alpaka::stream::StreamCpuAsync;
+                    using type = alpaka::queue::QueueCpuAsync;
 #endif
                 };
 
@@ -61,48 +61,48 @@ namespace alpaka
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
                 //#############################################################################
-                //! The default stream type trait specialization for the CUDA device.
+                //! The default queue type trait specialization for the CUDA device.
                 template<>
-                struct DefaultStreamType<
+                struct DefaultQueueType<
                     alpaka::dev::DevCudaRt>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    using type = alpaka::stream::StreamCudaRtSync;
+                    using type = alpaka::queue::QueueCudaRtSync;
 #else
-                    using type = alpaka::stream::StreamCudaRtAsync;
+                    using type = alpaka::queue::QueueCudaRtAsync;
 #endif
                 };
 #endif
             }
             //#############################################################################
-            //! The stream type that should be used for the given accelerator.
+            //! The queue type that should be used for the given accelerator.
             template<
                 typename TAcc>
-            using DefaultStream = typename traits::DefaultStreamType<TAcc>::type;
+            using DefaultQueue = typename traits::DefaultQueueType<TAcc>::type;
 
             namespace traits
             {
                 //#############################################################################
-                //! The sync stream trait.
+                //! The sync queue trait.
                 template<
-                    typename TStream,
+                    typename TQueue,
                     typename TSfinae = void>
-                struct IsSyncStream;
+                struct IsSyncQueue;
 
                 //#############################################################################
-                //! The sync stream trait specialization for a sync CPU stream.
+                //! The sync queue trait specialization for a sync CPU queue.
                 template<>
-                struct IsSyncStream<
-                    alpaka::stream::StreamCpuSync>
+                struct IsSyncQueue<
+                    alpaka::queue::QueueCpuSync>
                 {
                     static constexpr bool value = true;
                 };
 
                 //#############################################################################
-                //! The sync stream trait specialization for a async CPU stream.
+                //! The sync queue trait specialization for a async CPU queue.
                 template<>
-                struct IsSyncStream<
-                    alpaka::stream::StreamCpuAsync>
+                struct IsSyncQueue<
+                    alpaka::queue::QueueCpuAsync>
                 {
                     static constexpr bool value = false;
                 };
@@ -113,49 +113,49 @@ namespace alpaka
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
                 //#############################################################################
-                //! The sync stream trait specialization for a sync CUDA RT stream.
+                //! The sync queue trait specialization for a sync CUDA RT queue.
                 template<>
-                struct IsSyncStream<
-                    alpaka::stream::StreamCudaRtSync>
+                struct IsSyncQueue<
+                    alpaka::queue::QueueCudaRtSync>
                 {
                     static constexpr bool value = true;
                 };
 
                 //#############################################################################
-                //! The sync stream trait specialization for a async CUDA RT stream.
+                //! The sync queue trait specialization for a async CUDA RT queue.
                 template<>
-                struct IsSyncStream<
-                    alpaka::stream::StreamCudaRtAsync>
+                struct IsSyncQueue<
+                    alpaka::queue::QueueCudaRtAsync>
                 {
                     static constexpr bool value = false;
                 };
 #endif
             }
             //#############################################################################
-            //! The stream type that should be used for the given accelerator.
+            //! The queue type that should be used for the given accelerator.
             template<
-                typename TStream>
-            using IsSyncStream = traits::IsSyncStream<TStream>;
+                typename TQueue>
+            using IsSyncQueue = traits::IsSyncQueue<TQueue>;
 
             //#############################################################################
-            //! A std::tuple holding tuples of devices and corresponding stream types.
-            using TestStreams =
+            //! A std::tuple holding tuples of devices and corresponding queue types.
+            using TestQueues =
                 std::tuple<
-                    std::tuple<alpaka::dev::DevCpu, alpaka::stream::StreamCpuSync>,
-                    std::tuple<alpaka::dev::DevCpu, alpaka::stream::StreamCpuAsync>
+                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuSync>,
+                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuAsync>
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     ,
-                    std::tuple<alpaka::dev::DevCudaRt, alpaka::stream::StreamCudaRtSync>,
-                    std::tuple<alpaka::dev::DevCudaRt, alpaka::stream::StreamCudaRtAsync>
+                    std::tuple<alpaka::dev::DevCudaRt, alpaka::queue::QueueCudaRtSync>,
+                    std::tuple<alpaka::dev::DevCudaRt, alpaka::queue::QueueCudaRtAsync>
 #endif
                 >;
 
             //#############################################################################
-            //! A std::tuple holding tuples of devices and corresponding stream types.
-            using TestStreamsCpu =
+            //! A std::tuple holding tuples of devices and corresponding queue types.
+            using TestQueuesCpu =
                 std::tuple<
-                    std::tuple<alpaka::dev::DevCpu, alpaka::stream::StreamCpuSync>,
-                    std::tuple<alpaka::dev::DevCpu, alpaka::stream::StreamCpuAsync>
+                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuSync>,
+                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuAsync>
                 >;
         }
     }

@@ -29,16 +29,16 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/stream/StreamCudaRtSync.hpp>
-#include <alpaka/stream/StreamCudaRtAsync.hpp>
+#include <alpaka/queue/QueueCudaRtSync.hpp>
+#include <alpaka/queue/QueueCudaRtAsync.hpp>
 
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/dev/DevCudaRt.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
-#include <alpaka/stream/StreamCudaRtAsync.hpp>
-#include <alpaka/stream/StreamCudaRtSync.hpp>
+#include <alpaka/queue/QueueCudaRtAsync.hpp>
+#include <alpaka/queue/QueueCudaRtSync.hpp>
 
 #include <alpaka/core/Cuda.hpp>
 
@@ -697,23 +697,23 @@ namespace alpaka
             }
         }
     }
-    namespace stream
+    namespace queue
     {
         namespace traits
         {
             //#############################################################################
-            //! The CUDA async device stream 1D copy enqueue trait specialization.
+            //! The CUDA async device queue 1D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
             struct Enqueue<
-                stream::StreamCudaRtAsync,
+                queue::QueueCudaRtAsync,
                 mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtAsync & stream,
+                    queue::QueueCudaRtAsync & queue,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
@@ -745,7 +745,7 @@ namespace alpaka
                                 srcNativePtr,
                                 static_cast<std::size_t>(extentWidthBytes),
                                 cudaMemCpyKind,
-                                stream.m_spStreamImpl->m_CudaStream));
+                                queue.m_spQueueImpl->m_CudaQueue));
                     }
                     else
                     {
@@ -757,23 +757,23 @@ namespace alpaka
                                 srcNativePtr,
                                 iSrcDev,
                                 static_cast<std::size_t>(extentWidthBytes),
-                                stream.m_spStreamImpl->m_CudaStream));
+                                queue.m_spQueueImpl->m_CudaQueue));
                     }
                 }
             };
             //#############################################################################
-            //! The CUDA sync device stream 1D copy enqueue trait specialization.
+            //! The CUDA sync device queue 1D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
             struct Enqueue<
-                stream::StreamCudaRtSync,
+                queue::QueueCudaRtSync,
                 mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync &,
+                    queue::QueueCudaRtSync &,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
@@ -820,18 +820,18 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA async device stream 2D copy enqueue trait specialization.
+            //! The CUDA async device queue 2D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
             struct Enqueue<
-                stream::StreamCudaRtAsync,
+                queue::QueueCudaRtAsync,
                 mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtAsync & stream,
+                    queue::QueueCudaRtAsync & queue,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
@@ -870,7 +870,7 @@ namespace alpaka
                                 static_cast<std::size_t>(extentWidthBytes),
                                 static_cast<std::size_t>(extentHeight),
                                 cudaMemCpyKind,
-                                stream.m_spStreamImpl->m_CudaStream));
+                                queue.m_spQueueImpl->m_CudaQueue));
                     }
                     else
                     {
@@ -883,23 +883,23 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &cudaMemCpy3DPeerParms,
-                                stream.m_spStreamImpl->m_CudaStream));
+                                queue.m_spQueueImpl->m_CudaQueue));
                     }
                 }
             };
             //#############################################################################
-            //! The CUDA sync device stream 2D copy enqueue trait specialization.
+            //! The CUDA sync device queue 2D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
             struct Enqueue<
-                stream::StreamCudaRtSync,
+                queue::QueueCudaRtSync,
                 mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync &,
+                    queue::QueueCudaRtSync &,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
@@ -954,18 +954,18 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA async device stream 3D copy enqueue trait specialization.
+            //! The CUDA async device queue 3D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
             struct Enqueue<
-                stream::StreamCudaRtAsync,
+                queue::QueueCudaRtAsync,
                 mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtAsync & stream,
+                    queue::QueueCudaRtAsync & queue,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
@@ -991,7 +991,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DAsync(
                                 &cudaMemCpy3DParms,
-                                stream.m_spStreamImpl->m_CudaStream));
+                                queue.m_spQueueImpl->m_CudaQueue));
                     }
                     else
                     {
@@ -1003,23 +1003,23 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &cudaMemCpy3DPeerParms,
-                                stream.m_spStreamImpl->m_CudaStream));
+                                queue.m_spQueueImpl->m_CudaQueue));
                     }
                 }
             };
             //#############################################################################
-            //! The CUDA sync device stream 3D copy enqueue trait specialization.
+            //! The CUDA sync device queue 3D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
             struct Enqueue<
-                stream::StreamCudaRtSync,
+                queue::QueueCudaRtSync,
                 mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCudaRtSync &,
+                    queue::QueueCudaRtSync &,
                     mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {

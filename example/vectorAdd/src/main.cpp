@@ -84,7 +84,7 @@ auto main()
     using Acc = alpaka::acc::AccCpuSerial<alpaka::dim::DimInt<1u>, Size>;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using StreamAcc = alpaka::stream::StreamCpuSync;
+    using QueueAcc = alpaka::queue::QueueCpuSync;
 
     using PltfHost = alpaka::pltf::PltfCpu;
 
@@ -101,8 +101,8 @@ auto main()
     auto const devAcc(
         alpaka::pltf::getDevByIdx<PltfAcc>(0));
 
-    // Get a stream on this device.
-    StreamAcc stream(devAcc);
+    // Get a queue on this device.
+    QueueAcc queue(devAcc);
 
     // The data extent.
     alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Size> const extent(
@@ -143,8 +143,8 @@ auto main()
     auto memBufAccC(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
 
     // Copy Host -> Acc.
-    alpaka::mem::view::copy(stream, memBufAccA, memBufHostA, extent);
-    alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, extent);
+    alpaka::mem::view::copy(queue, memBufAccA, memBufHostA, extent);
+    alpaka::mem::view::copy(queue, memBufAccB, memBufHostB, extent);
 
     // Create the executor task.
     auto const exec(alpaka::exec::create<Acc>(
@@ -156,10 +156,10 @@ auto main()
         numElements));
 
     // Profile the kernel execution.
-    alpaka::stream::enqueue(stream, exec);
+    alpaka::queue::enqueue(queue, exec);
 
     // Copy back the result.
-    alpaka::mem::view::copy(stream, memBufHostC, memBufAccC, extent);
+    alpaka::mem::view::copy(queue, memBufHostC, memBufAccC, extent);
 
     bool resultCorrect(true);
     auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));

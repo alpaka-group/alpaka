@@ -90,7 +90,7 @@ auto main()
     using Size = std::size_t;
     using Host = alpaka::acc::AccCpuSerial<Dim, Size>;
     using Acc = alpaka::acc::AccCpuSerial<Dim, Size>;
-    using Stream = alpaka::stream::StreamCpuSync;
+    using Queue = alpaka::queue::QueueCpuSync;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using DevHost = alpaka::dev::Dev<Host>;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
@@ -109,17 +109,17 @@ auto main()
     DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
     DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
-    // Create a stream to the accelerator device
+    // Create a queue to the accelerator device
     //
-    // A stream can be interpreted as the work queue
-    // of a particular device. Streams are filled with
+    // A queue can be interpreted as the work queue
+    // of a particular device. Queues are filled with
     // executors and alpaka takes care that these
-    // executors will be executed. Streams are provided in
+    // executors will be executed. Queues are provided in
     // async and sync variants.
-    // The example stream is a sync stream to a cpu device,
-    // but it also exists an async stream for this
-    // device (StreamCpuAsync).
-    Stream stream(devAcc);
+    // The example queue is a sync queue to a cpu device,
+    // but it also exists an async queue for this
+    // device (QueueCpuAsync).
+    Queue queue(devAcc);
 
     // Init workdiv
     //
@@ -177,9 +177,9 @@ auto main()
     // the actual method that should be accelerated. An
     // object of the kernel is used to create an execution
     // unit and this unit is finally enqueued into an
-    // accelerator stream. The enqueuing can be done
+    // accelerator queue. The enqueuing can be done
     // synchronously or asynchronously depending on the choosen
-    // stream (see type definitions above).
+    // queue (see type definitions above).
     HelloWorldKernel helloWorldKernel;
 
     auto const helloWorld(alpaka::exec::create<Acc>(
@@ -187,7 +187,7 @@ auto main()
         helloWorldKernel
         /* put kernel arguments here */));
 
-    alpaka::stream::enqueue(stream, helloWorld);
+    alpaka::queue::enqueue(queue, helloWorld);
 
     return EXIT_SUCCESS;
 }

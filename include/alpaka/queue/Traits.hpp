@@ -31,64 +31,64 @@
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! The stream specifics.
-    namespace stream
+    //! The queue specifics.
+    namespace queue
     {
         //-----------------------------------------------------------------------------
-        //! The stream traits.
+        //! The queue traits.
         namespace traits
         {
             //#############################################################################
-            //! The stream enqueue trait.
+            //! The queue enqueue trait.
             template<
-                typename TStream,
+                typename TQueue,
                 typename TTask,
                 typename TSfinae = void>
             struct Enqueue;
 
             //#############################################################################
-            //! The stream empty trait.
+            //! The queue empty trait.
             template<
-                typename TStream,
+                typename TQueue,
                 typename TSfinae = void>
             struct Empty;
         }
 
         //-----------------------------------------------------------------------------
-        //! Queues the given task in the given stream.
+        //! Queues the given task in the given queue.
         //!
         //! Special Handling for events:
         //!   If the event has previously been queued, then this call will overwrite any existing state of the event.
         //!   Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         template<
-            typename TStream,
+            typename TQueue,
             typename TTask>
         ALPAKA_FN_HOST auto enqueue(
-            TStream & stream,
+            TQueue & queue,
             TTask && task)
         -> void
         {
             traits::Enqueue<
-                TStream,
+                TQueue,
                 typename std::decay<TTask>::type>
             ::enqueue(
-                stream,
+                queue,
                 std::forward<TTask>(task));
         }
 
         //-----------------------------------------------------------------------------
-        //! Tests if the stream is empty (all ops in the given stream have been completed).
+        //! Tests if the queue is empty (all ops in the given queue have been completed).
         template<
-            typename TStream>
+            typename TQueue>
         ALPAKA_FN_HOST auto empty(
-            TStream const & stream)
+            TQueue const & queue)
         -> bool
         {
             return
                 traits::Empty<
-                    TStream>
+                    TQueue>
                 ::empty(
-                    stream);
+                    queue);
         }
     }
 }

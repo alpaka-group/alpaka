@@ -28,8 +28,8 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/test/stream/Stream.hpp>
-#include <alpaka/test/stream/StreamTestFixture.hpp>
+#include <alpaka/test/queue/Queue.hpp>
+#include <alpaka/test/queue/QueueTestFixture.hpp>
 
 #include <boost/predef.h>
 #if BOOST_COMP_CLANG
@@ -44,19 +44,19 @@
 #include <future>
 #include <thread>
 
-BOOST_AUTO_TEST_SUITE(stream)
+BOOST_AUTO_TEST_SUITE(queue)
 
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamIsInitiallyEmpty,
-    TDevStream,
-    alpaka::test::stream::TestStreams)
+    queueIsInitiallyEmpty,
+    TDevQueue,
+    alpaka::test::queue::TestQueues)
 {
-    using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
+    using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
 
-    BOOST_REQUIRE_EQUAL(true, alpaka::stream::empty(f.m_stream));
+    BOOST_REQUIRE_EQUAL(true, alpaka::queue::empty(f.m_queue));
 }
 
 // gcc 5.4 in combination with nvcc 8.0 fails to compile those tests when --expt-relaxed-constexpr is enabled
@@ -64,19 +64,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 #if !((BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0)) && (BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(8, 0, 0)) && (BOOST_COMP_NVCC < BOOST_VERSION_NUMBER(9, 0, 0)))
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamCallbackIsWorking,
-    TDevStream,
-    alpaka::test::stream::TestStreams)
+    queueCallbackIsWorking,
+    TDevQueue,
+    alpaka::test::queue::TestQueues)
 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
-    using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
+    using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
 
     std::promise<bool> promise;
 
-    alpaka::stream::enqueue(
-        f.m_stream,
+    alpaka::queue::enqueue(
+        f.m_queue,
         [&](){
             promise.set_value(true);
         }
@@ -88,45 +88,45 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamShouldBeEmptyAfterProcessingFinished,
-    TDevStream,
-    alpaka::test::stream::TestStreams)
+    queueShouldBeEmptyAfterProcessingFinished,
+    TDevQueue,
+    alpaka::test::queue::TestQueues)
 {
-    using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
+    using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
 
     bool CallbackFinished = false;
 
-    alpaka::stream::enqueue(f.m_stream, [&CallbackFinished]() noexcept {CallbackFinished = true;});
+    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {CallbackFinished = true;});
 
-    // A synchronous stream will always stay empty because the task has been executed immediately.
-    if(!alpaka::test::stream::IsSyncStream<typename Fixture::Stream>::value)
+    // A synchronous queue will always stay empty because the task has been executed immediately.
+    if(!alpaka::test::queue::IsSyncQueue<typename Fixture::Queue>::value)
     {
-        // Wait that the stream finally gets empty again.
-        while(!alpaka::stream::empty(f.m_stream))
+        // Wait that the queue finally gets empty again.
+        while(!alpaka::queue::empty(f.m_queue))
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 
-    BOOST_REQUIRE_EQUAL(true, alpaka::stream::empty(f.m_stream));
+    BOOST_REQUIRE_EQUAL(true, alpaka::queue::empty(f.m_queue));
     BOOST_REQUIRE_EQUAL(true, CallbackFinished);
 }
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    streamWaitShouldWork,
-    TDevStream,
-    alpaka::test::stream::TestStreams)
+    queueWaitShouldWork,
+    TDevQueue,
+    alpaka::test::queue::TestQueues)
 {
-    using Fixture = alpaka::test::stream::StreamTestFixture<TDevStream>;
+    using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
 
     // TODO: better add some long running (~0.5s) task here
 
     bool CallbackFinished = false;
-    alpaka::stream::enqueue(f.m_stream, [&CallbackFinished]() noexcept {CallbackFinished = true;});
+    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {CallbackFinished = true;});
 
-    alpaka::wait::wait(f.m_stream);
+    alpaka::wait::wait(f.m_queue);
     BOOST_REQUIRE_EQUAL(true, CallbackFinished);
 }
 #endif

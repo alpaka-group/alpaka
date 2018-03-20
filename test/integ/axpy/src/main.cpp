@@ -22,7 +22,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/Acc.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 #include <iostream>
 #include <typeinfo>
@@ -99,7 +99,7 @@ struct AxpyKernelTester
         using Val = float;
         using DevAcc = alpaka::dev::Dev<TAcc>;
         using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-        using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
         using PltfHost = alpaka::pltf::PltfCpu;
 
         // Create the kernel function object.
@@ -113,8 +113,8 @@ struct AxpyKernelTester
         auto const devAcc(
             alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-        // Get a stream on this device.
-        StreamAcc stream(devAcc);
+        // Get a queue on this device.
+        QueueAcc queue(devAcc);
 
         alpaka::vec::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
             numElements);
@@ -165,11 +165,11 @@ struct AxpyKernelTester
         auto memBufAccY(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(stream, memBufAccX, memBufHostX, extent);
-        alpaka::mem::view::copy(stream, memBufAccY, memBufHostOrigY, extent);
+        alpaka::mem::view::copy(queue, memBufAccX, memBufHostX, extent);
+        alpaka::mem::view::copy(queue, memBufAccY, memBufHostOrigY, extent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-        alpaka::wait::wait(stream);
+        alpaka::wait::wait(queue);
 
         std::cout << BOOST_CURRENT_FUNCTION << " X_Dev: ";
         alpaka::mem::view::print(memBufHostX, std::cout);
@@ -191,16 +191,16 @@ struct AxpyKernelTester
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::test::integ::measureKernelRunTimeMs(
-                stream,
+                queue,
                 exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(stream, memBufHostY, memBufAccY, extent);
+        alpaka::mem::view::copy(queue, memBufHostY, memBufAccY, extent);
 
-        // Wait for the stream to finish the memory operation.
-        alpaka::wait::wait(stream);
+        // Wait for the queue to finish the memory operation.
+        alpaka::wait::wait(queue);
 
         bool resultCorrect(true);
         auto const pHostResultData(alpaka::mem::view::getPtrNative(memBufHostY));

@@ -35,10 +35,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The run time of the given kernel.
             template<
-                typename TStream,
+                typename TQueue,
                 typename TExec>
             auto measureKernelRunTimeMs(
-                TStream & stream,
+                TQueue & queue,
                 TExec && exec)
             -> std::chrono::milliseconds::rep
             {
@@ -46,20 +46,20 @@ namespace alpaka
                 std::cout
                     << "measureKernelRunTime("
                     << " exec: " << typeid(typename std::decay<TExec>::type).name()
-                    << " stream: " << typeid(TStream).name()
+                    << " queue: " << typeid(TQueue).name()
                     << ")" << std::endl;
 #endif
-                // Wait for the stream to finish all tasks enqueued prior to the kernel.
-                alpaka::wait::wait(stream);
+                // Wait for the queue to finish all tasks enqueued prior to the kernel.
+                alpaka::wait::wait(queue);
 
                 // Take the time prior to the execution.
                 auto const tpStart(std::chrono::high_resolution_clock::now());
 
                 // Execute the kernel functor.
-                alpaka::stream::enqueue(stream, std::forward<TExec>(exec));
+                alpaka::queue::enqueue(queue, std::forward<TExec>(exec));
 
-                // Wait for the stream to finish the kernel execution to measure its run time.
-                alpaka::wait::wait(stream);
+                // Wait for the queue to finish the kernel execution to measure its run time.
+                alpaka::wait::wait(queue);
 
                 // Take the time after the execution.
                 auto const tpEnd(std::chrono::high_resolution_clock::now());

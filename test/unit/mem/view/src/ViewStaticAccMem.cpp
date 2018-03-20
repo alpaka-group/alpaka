@@ -30,7 +30,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 #include <boost/predef.h>
 #if BOOST_COMP_CLANG
@@ -128,8 +128,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         using PltfHost = alpaka::pltf::PltfCpu;
         auto devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
-        using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
-        StreamAcc streamAcc(devAcc);
+        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+        QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
         alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Size> bufHost(data.data(), devHost, extent);
@@ -140,8 +140,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 devAcc,
                 extent));
 
-        alpaka::mem::view::copy(streamAcc, viewConstantMemUninitialized, bufHost, extent);
-        alpaka::wait::wait(streamAcc);
+        alpaka::mem::view::copy(queueAcc, viewConstantMemUninitialized, bufHost, extent);
+        alpaka::wait::wait(queueAcc);
 
         BOOST_REQUIRE_EQUAL(
             true,
@@ -205,8 +205,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         using PltfHost = alpaka::pltf::PltfCpu;
         auto devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
-        using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
-        StreamAcc streamAcc(devAcc);
+        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+        QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
         alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Size> bufHost(data.data(), devHost, extent);
@@ -217,8 +217,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 devAcc,
                 extent));
 
-        alpaka::mem::view::copy(streamAcc, viewGlobalMemUninitialized, bufHost, extent);
-        alpaka::wait::wait(streamAcc);
+        alpaka::mem::view::copy(queueAcc, viewGlobalMemUninitialized, bufHost, extent);
+        alpaka::wait::wait(queueAcc);
 
         BOOST_REQUIRE_EQUAL(
             true,

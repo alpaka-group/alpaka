@@ -29,7 +29,7 @@
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/mem/view/ViewTest.hpp>
 
 #include <boost/predef.h>
@@ -76,14 +76,14 @@ static auto basicBufferOperationsTest(
 {
     using Dev = alpaka::dev::Dev<TAcc>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
-    using Stream = alpaka::test::stream::DefaultStream<Dev>;
+    using Queue = alpaka::test::queue::DefaultQueue<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Size = alpaka::size::Size<TAcc>;
 
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
-    Stream stream(dev);
+    Queue queue(dev);
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::buf::alloc
@@ -101,7 +101,7 @@ static auto basicBufferOperationsTest(
     //-----------------------------------------------------------------------------
     alpaka::test::mem::view::viewTestMutable<
         TAcc>(
-            stream,
+            queue,
             buf);
 }
 

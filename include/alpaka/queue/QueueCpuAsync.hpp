@@ -25,10 +25,15 @@
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
-#include <alpaka/stream/Traits.hpp>
+#include <alpaka/queue/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/ConcurrentExecPool.hpp>
+
+#include <type_traits>
+#include <thread>
+#include <mutex>
+#include <future>
 
 namespace alpaka
 {
@@ -40,74 +45,92 @@ namespace alpaka
 
 namespace alpaka
 {
-    namespace stream
+    namespace queue
     {
         namespace cpu
         {
             namespace detail
             {
                 //#############################################################################
-                //! The CPU device stream implementation.
-                class StreamCpuSyncImpl final
+                //! The CPU device queue implementation.
+                class QueueCpuAsyncImpl final
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCpuSyncImpl(
-                        dev::DevCpu const & dev) :
-                            m_dev(dev)
-                    {}
-                    //-----------------------------------------------------------------------------
-                    StreamCpuSyncImpl(StreamCpuSyncImpl const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    StreamCpuSyncImpl(StreamCpuSyncImpl &&) = default;
-                    //-----------------------------------------------------------------------------
-                    auto operator=(StreamCpuSyncImpl const &) -> StreamCpuSyncImpl & = delete;
-                    //-----------------------------------------------------------------------------
-                    auto operator=(StreamCpuSyncImpl &&) -> StreamCpuSyncImpl & = default;
-                    //-----------------------------------------------------------------------------
-                    ~StreamCpuSyncImpl() = default;
+                private:
+                    //#############################################################################
+                    using ThreadPool = alpaka::core::detail::ConcurrentExecPool<
+                        std::size_t,
+                        std::thread,                // The concurrent execution type.
+                        std::promise,               // The promise type.
+                        void,                       // The type yielding the current concurrent execution.
+                        std::mutex,                 // The mutex type to use. Only required if TisYielding is true.
+                        std::condition_variable,    // The condition variable type to use. Only required if TisYielding is true.
+                        false>;                     // If the threads should yield.
 
                 public:
-                    dev::DevCpu const m_dev;            //!< The device this stream is bound to.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST QueueCpuAsyncImpl(
+                        dev::DevCpu const & dev) :
+                            m_dev(dev),
+                            m_workerThread(1u)
+                    {}
+                    //-----------------------------------------------------------------------------
+                    QueueCpuAsyncImpl(QueueCpuAsyncImpl const &) = delete;
+                    //-----------------------------------------------------------------------------
+                    QueueCpuAsyncImpl(QueueCpuAsyncImpl &&) = default;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(QueueCpuAsyncImpl const &) -> QueueCpuAsyncImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(QueueCpuAsyncImpl &&) -> QueueCpuAsyncImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST ~QueueCpuAsyncImpl() noexcept(false)
+                    {
+                        m_dev.m_spDevCpuImpl->UnregisterAsyncQueue(this);
+                    }
+                public:
+                    dev::DevCpu const m_dev;            //!< The device this queue is bound to.
+
+                    ThreadPool m_workerThread;
                 };
             }
         }
 
         //#############################################################################
-        //! The CPU device stream.
-        class StreamCpuSync final
+        //! The CPU device queue.
+        class QueueCpuAsync final
         {
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCpuSync(
+            ALPAKA_FN_HOST QueueCpuAsync(
                 dev::DevCpu const & dev) :
-                    m_spStreamImpl(std::make_shared<cpu::detail::StreamCpuSyncImpl>(dev))
-            {}
-            //-----------------------------------------------------------------------------
-            StreamCpuSync(StreamCpuSync const &) = default;
-            //-----------------------------------------------------------------------------
-            StreamCpuSync(StreamCpuSync &&) = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(StreamCpuSync const &) -> StreamCpuSync & = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(StreamCpuSync &&) -> StreamCpuSync & = default;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator==(StreamCpuSync const & rhs) const
-            -> bool
+                    m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuAsyncImpl>(dev))
             {
-                return (m_spStreamImpl == rhs.m_spStreamImpl);
+                dev.m_spDevCpuImpl->RegisterAsyncQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator!=(StreamCpuSync const & rhs) const
+            QueueCpuAsync(QueueCpuAsync const &) = default;
+            //-----------------------------------------------------------------------------
+            QueueCpuAsync(QueueCpuAsync &&) = default;
+            //-----------------------------------------------------------------------------
+            auto operator=(QueueCpuAsync const &) -> QueueCpuAsync & = default;
+            //-----------------------------------------------------------------------------
+            auto operator=(QueueCpuAsync &&) -> QueueCpuAsync & = default;
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator==(QueueCpuAsync const & rhs) const
+            -> bool
+            {
+                return (m_spQueueImpl == rhs.m_spQueueImpl);
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator!=(QueueCpuAsync const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ~StreamCpuSync() = default;
+            ~QueueCpuAsync() = default;
 
         public:
-            std::shared_ptr<cpu::detail::StreamCpuSyncImpl> m_spStreamImpl;
+            std::shared_ptr<cpu::detail::QueueCpuAsyncImpl> m_spQueueImpl;
         };
     }
 
@@ -116,25 +139,25 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device stream device type trait specialization.
+            //! The CPU async device queue device type trait specialization.
             template<>
             struct DevType<
-                stream::StreamCpuSync>
+                queue::QueueCpuAsync>
             {
                 using type = dev::DevCpu;
             };
             //#############################################################################
-            //! The CPU sync device stream device get trait specialization.
+            //! The CPU async device queue device get trait specialization.
             template<>
             struct GetDev<
-                stream::StreamCpuSync>
+                queue::QueueCpuAsync>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    stream::StreamCpuSync const & stream)
+                    queue::QueueCpuAsync const & queue)
                 -> dev::DevCpu
                 {
-                    return stream.m_spStreamImpl->m_dev;
+                    return queue.m_spQueueImpl->m_dev;
                 }
             };
         }
@@ -144,74 +167,58 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device stream event type trait specialization.
+            //! The CPU async device queue event type trait specialization.
             template<>
             struct EventType<
-                stream::StreamCpuSync>
+                queue::QueueCpuAsync>
             {
                 using type = event::EventCpu;
             };
         }
     }
-    namespace stream
+    namespace queue
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device stream enqueue trait specialization.
+            //! The CPU async device queue enqueue trait specialization.
             //! This default implementation for all tasks directly invokes the function call operator of the task.
             template<
                 typename TTask>
             struct Enqueue<
-                stream::StreamCpuSync,
+                queue::QueueCpuAsync,
                 TTask>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCpuSync & stream,
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+                    queue::QueueCpuAsync & queue,
                     TTask const & task)
+#else
+                    queue::QueueCpuAsync &,
+                    TTask const &)
+#endif
                 -> void
                 {
-                    boost::ignore_unused(stream);
-                    task();
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+                    queue.m_spQueueImpl->m_workerThread.enqueueTask(
+                        task);
+#endif
                 }
             };
             //#############################################################################
-            //! The CPU sync device stream test trait specialization.
+            //! The CPU async device queue test trait specialization.
             template<>
             struct Empty<
-                stream::StreamCpuSync>
+                queue::QueueCpuAsync>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
-                    stream::StreamCpuSync const & stream)
+                    queue::QueueCpuAsync const & queue)
                 -> bool
                 {
-                    boost::ignore_unused(stream);
-                    return true;
-                }
-            };
-        }
-    }
-
-    namespace wait
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU sync device stream thread wait trait specialization.
-            //!
-            //! Blocks execution of the calling thread until the stream has finished processing all previously requested tasks (kernels, data copies, ...)
-            template<>
-            struct CurrentThreadWaitFor<
-                stream::StreamCpuSync>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    stream::StreamCpuSync const & stream)
-                -> void
-                {
-                    boost::ignore_unused(stream);
+                    return queue.m_spQueueImpl->m_workerThread.isQueueEmpty();
                 }
             };
         }

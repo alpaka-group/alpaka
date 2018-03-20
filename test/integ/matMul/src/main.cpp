@@ -22,7 +22,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/Acc.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 #include <boost/core/ignore_unused.hpp>
 
@@ -230,10 +230,10 @@ struct MatMulTester
         using Vec2 = alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>;
         using DevAcc = alpaka::dev::Dev<TAcc>;
         using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-        using StreamAcc = alpaka::test::stream::DefaultStream<alpaka::dev::Dev<TAcc>>;
+        using QueueAcc = alpaka::test::queue::DefaultQueue<alpaka::dev::Dev<TAcc>>;
         using PltfHost = alpaka::pltf::PltfCpu;
         using DevHost = alpaka::dev::Dev<PltfHost>;
-        using StreamHost = alpaka::stream::StreamCpuAsync;
+        using QueueHost = alpaka::queue::QueueCpuAsync;
 
         // Create the kernel function object.
         MatMulKernel kernel;
@@ -242,16 +242,16 @@ struct MatMulTester
         DevHost const devHost(
             alpaka::pltf::getDevByIdx<PltfHost>(0u));
 
-        // Get a stream on the host device.
-        StreamHost streamHost(
+        // Get a queue on the host device.
+        QueueHost queueHost(
             devHost);
 
         // Select a device to execute on.
         DevAcc const devAcc(
             alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-        // Get a stream on the accelerator device.
-        StreamAcc streamAcc(
+        // Get a queue on the accelerator device.
+        QueueAcc queueAcc(
             devAcc);
 
         // Specify the input matrix extents.
@@ -305,7 +305,7 @@ struct MatMulTester
 
         // Allocate C and set it to zero.
         auto bufCHost(alpaka::mem::buf::alloc<Val, TSize>(devHost, extentC));
-        alpaka::mem::view::set(streamHost, bufCHost, 0u, extentC);
+        alpaka::mem::view::set(queueHost, bufCHost, 0u, extentC);
 
         // Allocate the buffers on the accelerator.
         auto bufAAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extentA));
@@ -313,10 +313,10 @@ struct MatMulTester
         auto bufCAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extentC));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(streamAcc, bufAAcc, bufAHost, extentA);
-        alpaka::mem::view::copy(streamAcc, bufBAcc, bufBHost, extentB);
-        alpaka::wait::wait(streamHost);
-        alpaka::mem::view::copy(streamAcc, bufCAcc, bufCHost, extentC);
+        alpaka::mem::view::copy(queueAcc, bufAAcc, bufAHost, extentA);
+        alpaka::mem::view::copy(queueAcc, bufBAcc, bufBHost, extentB);
+        alpaka::wait::wait(queueHost);
+        alpaka::mem::view::copy(queueAcc, bufCAcc, bufCHost, extentC);
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
@@ -337,16 +337,16 @@ struct MatMulTester
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::test::integ::measureKernelRunTimeMs(
-                streamAcc,
+                queueAcc,
                 exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(streamAcc, bufCHost, bufCAcc, extentC);
+        alpaka::mem::view::copy(queueAcc, bufCHost, bufCAcc, extentC);
 
-        // Wait for the stream to finish the memory operation.
-        alpaka::wait::wait(streamAcc);
+        // Wait for the queue to finish the memory operation.
+        alpaka::wait::wait(queueAcc);
 
         // Assert that the results are correct.
         // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.

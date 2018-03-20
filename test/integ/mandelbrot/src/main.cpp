@@ -22,7 +22,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/Acc.hpp>
-#include <alpaka/test/stream/Stream.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 #include <iostream>
 #include <typeinfo>
@@ -334,7 +334,7 @@ struct MandelbrotKernelTester
         using Val = std::uint32_t;
         using DevAcc = alpaka::dev::Dev<TAcc>;
         using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-        using StreamAcc = alpaka::test::stream::DefaultStream<DevAcc>;
+        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
         using PltfHost = alpaka::pltf::PltfCpu;
 
         // Create the kernel function object.
@@ -348,8 +348,8 @@ struct MandelbrotKernelTester
         auto const devAcc(
             alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-        // Get a stream on this device.
-        StreamAcc stream(
+        // Get a queue on this device.
+        QueueAcc queue(
             devAcc);
 
         alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize> const extent(
@@ -384,7 +384,7 @@ struct MandelbrotKernelTester
             alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(stream, bufColorAcc, bufColorHost, extent);
+        alpaka::mem::view::copy(queue, bufColorAcc, bufColorHost, extent);
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
@@ -403,16 +403,16 @@ struct MandelbrotKernelTester
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::test::integ::measureKernelRunTimeMs(
-                stream,
+                queue,
                 exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(stream, bufColorHost, bufColorAcc, extent);
+        alpaka::mem::view::copy(queue, bufColorHost, bufColorAcc, extent);
 
-        // Wait for the stream to finish the memory operation.
-        alpaka::wait::wait(stream);
+        // Wait for the queue to finish the memory operation.
+        alpaka::wait::wait(queue);
 
         // Write the image to a file.
         std::string fileName("mandelbrot"+std::to_string(numCols)+"x"+std::to_string(numRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
