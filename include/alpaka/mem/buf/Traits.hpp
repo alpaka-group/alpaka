@@ -47,7 +47,7 @@ namespace alpaka
                     typename TDev,
                     typename TElem,
                     typename TDim,
-                    typename TSize,
+                    typename TIdx,
                     typename TSfinae = void>
                 struct BufType;
 
@@ -56,7 +56,7 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize,
+                    typename TIdx,
                     typename TDev,
                     typename TSfinae = void>
                 struct Alloc;
@@ -105,8 +105,8 @@ namespace alpaka
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
-            using Buf = typename traits::BufType<TDev, TElem, TDim, TSize>::type;
+                typename TIdx>
+            using Buf = typename traits::BufType<TDev, TElem, TDim, TIdx>::type;
 
             //-----------------------------------------------------------------------------
             //! Allocates memory on the given device.
@@ -119,7 +119,7 @@ namespace alpaka
             //! \return The newly allocated buffer.
             template<
                 typename TElem,
-                typename TSize,
+                typename TIdx,
                 typename TExtent,
                 typename TDev>
             ALPAKA_FN_HOST auto alloc(
@@ -130,7 +130,7 @@ namespace alpaka
                 traits::Alloc<
                     TElem,
                     dim::Dim<TExtent>,
-                    TSize,
+                    TIdx,
                     TDev>
                 ::alloc(
                     dev,
@@ -141,7 +141,7 @@ namespace alpaka
                     traits::Alloc<
                         TElem,
                         dim::Dim<TExtent>,
-                        TSize,
+                        TIdx,
                         TDev>
                     ::alloc(
                         dev,

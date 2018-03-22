@@ -26,7 +26,7 @@
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/offset/Traits.hpp>
-#include <alpaka/size/Traits.hpp>
+#include <alpaka/idx/Traits.hpp>
 
 #include <alpaka/mem/view/ViewPlainPtr.hpp>
 #include <alpaka/vec/Vec.hpp>
@@ -47,7 +47,7 @@ namespace alpaka
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class ViewSubView
             {
             public:
@@ -68,7 +68,7 @@ namespace alpaka
                             extent::getExtentVecEnd<TDim>(view),
                             mem::view::getPitchBytesVecEnd<TDim>(view)),
                         m_extentElements(extent::getExtentVecEnd<TDim>(view)),
-                        m_offsetsElements(vec::Vec<TDim, TSize>::all(0))
+                        m_offsetsElements(vec::Vec<TDim, TIdx>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 }
@@ -84,13 +84,13 @@ namespace alpaka
                             extent::getExtentVecEnd<TDim>(view),
                             mem::view::getPitchBytesVecEnd<TDim>(view)),
                         m_extentElements(extent::getExtentVecEnd<TDim>(view)),
-                        m_offsetsElements(vec::Vec<TDim, TSize>::all(0))
+                        m_offsetsElements(vec::Vec<TDim, TIdx>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<TSize, size::Size<TView>>::value,
-                        "The size type of TView and the TSize template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        "The idx type of TView and the TIdx template parameter have to be identical!");
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -119,11 +119,11 @@ namespace alpaka
                         std::is_same<TDim, dim::Dim<TExtent>>::value,
                         "The buffer and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TExtent>>::value,
-                        "The size type of TExtent and the TSize template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TExtent>>::value,
+                        "The idx type of TExtent and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TView>>::value,
-                        "The size type of TView and the TSize template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        "The idx type of TView and the TIdx template parameter have to be identical!");
 
                     assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
                     assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
@@ -156,11 +156,11 @@ namespace alpaka
                         std::is_same<TDim, dim::Dim<TExtent>>::value,
                         "The buffer and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TExtent>>::value,
-                        "The size type of TExtent and the TSize template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TExtent>>::value,
+                        "The idx type of TExtent and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TView>>::value,
-                        "The size type of TView and the TSize template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        "The idx type of TView and the TIdx template parameter have to be identical!");
 
                     assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
                     assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
@@ -168,9 +168,9 @@ namespace alpaka
                 }
 
             public:
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> m_viewParentView; // This wraps the parent view.
-                vec::Vec<TDim, TSize> m_extentElements;     // The extent of this view.
-                vec::Vec<TDim, TSize> m_offsetsElements;    // The offset relative to the parent view.
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> m_viewParentView; // This wraps the parent view.
+                vec::Vec<TDim, TIdx> m_extentElements;     // The extent of this view.
+                vec::Vec<TDim, TIdx> m_offsetsElements;    // The offset relative to the parent view.
             };
         }
     }
@@ -187,9 +187,9 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TDev,
-                typename TSize>
+                typename TIdx>
             struct DevType<
-                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
             {
                 using type = TDev;
             };
@@ -200,13 +200,13 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TDev,
-                typename TSize>
+                typename TIdx>
             struct GetDev<
-                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & view)
+                    mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & view)
                 -> TDev
                 {
                     return
@@ -226,9 +226,9 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TDev,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -244,9 +244,9 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TDev,
-                typename TSize>
+                typename TIdx>
             struct ElemType<
-                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
+                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
             {
                 using type = TElem;
             };
@@ -259,22 +259,22 @@ namespace alpaka
             //#############################################################################
             //! The ViewSubView width get trait specialization.
             template<
-                typename TIdx,
+                typename TIdxIntegralConst,
                 typename TElem,
                 typename TDim,
                 typename TDev,
-                typename TSize>
+                typename TIdx>
             struct GetExtent<
-                TIdx,
-                mem::view::ViewSubView<TDev, TElem, TDim, TSize>,
-                typename std::enable_if<(TDim::value > TIdx::value)>::type>
+                TIdxIntegralConst,
+                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>,
+                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
-                    mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & extent)
-                -> TSize
+                    mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & extent)
+                -> TIdx
                 {
-                    return extent.m_extentElements[TIdx::value];
+                    return extent.m_extentElements[TIdxIntegralConst::value];
                 }
             };
         }
@@ -291,16 +291,16 @@ namespace alpaka
                     typename TElem,
                     typename TDim,
                     typename TDev,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPtrNative<
-                    mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
+                    mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
                 {
                 private:
                     using IdxSequence = meta::MakeIntegerSequence<std::size_t, TDim::value>;
                 public:
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & view)
+                        mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & view)
                     -> TElem const *
                     {
                         // \TODO: pre-calculate this pointer for faster execution.
@@ -311,7 +311,7 @@ namespace alpaka
                     }
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> & view)
+                        mem::view::ViewSubView<TDev, TElem, TDim, TIdx> & view)
                     -> TElem *
                     {
                         // \TODO: pre-calculate this pointer for faster execution.
@@ -335,11 +335,11 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto pitchedOffsetBytes(
                         TView const & view,
                         meta::IntegerSequence<std::size_t, TIndices...> const &)
-                    -> TSize
+                    -> TIdx
                     {
                         return
                             meta::foldr(
-                                std::plus<TSize>(),
+                                std::plus<TIdx>(),
                                 pitchedOffsetBytesDim<TIndices>(view)...);
                     }
                     //-----------------------------------------------------------------------------
@@ -348,7 +348,7 @@ namespace alpaka
                         typename TView>
                     ALPAKA_FN_HOST static auto pitchedOffsetBytesDim(
                         TView const & view)
-                    -> TSize
+                    -> TIdx
                     {
                         return
                             offset::getOffset<Tidx>(view)
@@ -359,22 +359,22 @@ namespace alpaka
                 //#############################################################################
                 //! The ViewSubView pitch get trait specialization.
                 template<
-                    typename TIdx,
+                    typename TIdxIntegralConst,
                     typename TDev,
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPitchBytes<
-                    TIdx,
-                    mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
+                    TIdxIntegralConst,
+                    mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
-                        mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & view)
-                    -> TSize
+                        mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & view)
+                    -> TIdx
                     {
                         return
-                            mem::view::getPitchBytes<TIdx::value>(
+                            mem::view::getPitchBytes<TIdxIntegralConst::value>(
                                 view.m_viewParentView);
                     }
                 };
@@ -388,41 +388,41 @@ namespace alpaka
             //#############################################################################
             //! The ViewSubView x offset get trait specialization.
             template<
-                typename TIdx,
+                typename TIdxIntegralConst,
                 typename TElem,
                 typename TDim,
                 typename TDev,
-                typename TSize>
+                typename TIdx>
             struct GetOffset<
-                TIdx,
-                mem::view::ViewSubView<TDev, TElem, TDim, TSize>,
-                typename std::enable_if<(TDim::value > TIdx::value)>::type>
+                TIdxIntegralConst,
+                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>,
+                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
-                    mem::view::ViewSubView<TDev, TElem, TDim, TSize> const & offset)
-                -> TSize
+                    mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & offset)
+                -> TIdx
                 {
-                    return offset.m_offsetsElements[TIdx::value];
+                    return offset.m_offsetsElements[TIdxIntegralConst::value];
                 }
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The ViewSubView size type trait specialization.
+            //! The ViewSubView idx type trait specialization.
             template<
                 typename TElem,
                 typename TDim,
                 typename TDev,
-                typename TSize>
-            struct SizeType<
-                mem::view::ViewSubView<TDev, TElem, TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

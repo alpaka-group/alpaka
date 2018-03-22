@@ -54,7 +54,7 @@ public:
         TAcc const & acc) const
     -> void
     {
-        using Size = alpaka::size::Size<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
 
         // Get the index of the current thread within the block and the block extent and map them to 1D.
         auto const blockThreadIdx(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc));
@@ -64,17 +64,17 @@ public:
 
         // syncBlockThreadsPredicate<alpaka::block::sync::op::Count>
         {
-            Size const modulus(2u);
+            Idx const modulus(2u);
             int const predicate(static_cast<int>(blockThreadIdx1D % modulus));
             auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::Count>(acc, predicate));
             auto const expectedResult(static_cast<int>(blockThreadExtent1D / modulus));
             BOOST_VERIFY(expectedResult == result);
         }
         {
-            Size const modulus(3u);
+            Idx const modulus(3u);
             int const predicate(static_cast<int>(blockThreadIdx1D % modulus));
             auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::Count>(acc, predicate));
-            auto const expectedResult(static_cast<int>(blockThreadExtent1D - ((blockThreadExtent1D + modulus - static_cast<Size>(1u)) / modulus)));
+            auto const expectedResult(static_cast<int>(blockThreadExtent1D - ((blockThreadExtent1D + modulus - static_cast<Idx>(1u)) / modulus)));
             BOOST_VERIFY(expectedResult == result);
         }
 
@@ -123,14 +123,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::acc::TestAccs)
 {
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Size = alpaka::size::Size<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
 
     BlockSyncPredicateTestKernel kernel;
 
     // 4^Dim
     {
         alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Size>::all(static_cast<Size>(4u)));
+            alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(4u)));
 
         BOOST_REQUIRE_EQUAL(
             true,
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     // 1^Dim
     {
         alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Size>::ones());
+            alpaka::vec::Vec<Dim, Idx>::ones());
 
         BOOST_REQUIRE_EQUAL(
             true,

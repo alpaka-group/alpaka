@@ -51,12 +51,12 @@ BOOST_AUTO_TEST_SUITE(kernel)
 //! Currently, the only possible way to solve this is to make the function call operator a template nonetheless by providing an unused template parameter.
 
 using Dim = alpaka::dim::DimInt<2u>;
-using Size = std::uint32_t;
+using Idx = std::uint32_t;
 #if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
-using AccCpu = alpaka::acc::AccCpuSerial<Dim, Size>;
+using AccCpu = alpaka::acc::AccCpuSerial<Dim, Idx>;
 #endif
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
-using AccGpu = alpaka::acc::AccGpuCudaRt<Dim, Size>;
+using AccGpu = alpaka::acc::AccGpuCudaRt<Dim, Idx>;
 #endif
 
 #if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
@@ -78,7 +78,7 @@ struct KernelNoTemplateCpu
 BOOST_AUTO_TEST_CASE(kernelNoTemplateCpu)
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
-        alpaka::vec::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelNoTemplateCpu kernel;
 
@@ -109,7 +109,7 @@ struct KernelNoTemplateGpu
 BOOST_AUTO_TEST_CASE(kernelNoTemplateGpu)
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
-        alpaka::vec::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelNoTemplateGpu kernel;
 
@@ -141,7 +141,7 @@ struct KernelWithoutTemplateParamCpu
 BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamCpu)
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
-        alpaka::vec::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelWithoutTemplateParamCpu kernel;
 
@@ -173,7 +173,7 @@ struct KernelWithoutTemplateParamGpu
 BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamGpu)
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
-        alpaka::vec::Vec<Dim, Size>::ones());
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelWithoutTemplateParamGpu kernel;
 

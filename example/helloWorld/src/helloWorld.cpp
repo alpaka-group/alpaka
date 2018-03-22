@@ -87,15 +87,15 @@ auto main()
     // particular workdiv, but workdiv can also be generated
     // automatically.
     using Dim = alpaka::dim::DimInt<3>;
-    using Size = std::size_t;
-    using Host = alpaka::acc::AccCpuSerial<Dim, Size>;
-    using Acc = alpaka::acc::AccCpuSerial<Dim, Size>;
+    using Idx = std::size_t;
+    using Host = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
     using Queue = alpaka::queue::QueueCpuSync;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using DevHost = alpaka::dev::Dev<Host>;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
+    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
 
 
     // Get the first devices
@@ -149,20 +149,20 @@ auto main()
     // memory. Elements are supposed to be used for vectorization.
     // Thus, a thread can process data element size wise with its
     // vector processing unit.
-    alpaka::vec::Vec<Dim, Size> const elementsPerThread(
-        static_cast<Size>(1),
-        static_cast<Size>(1),
-        static_cast<Size>(1));
+    alpaka::vec::Vec<Dim, Idx> const elementsPerThread(
+        static_cast<Idx>(1),
+        static_cast<Idx>(1),
+        static_cast<Idx>(1));
 
-    alpaka::vec::Vec<Dim, Size> const threadsPerBlock(
-        static_cast<Size>(1),
-        static_cast<Size>(1),
-        static_cast<Size>(1));
+    alpaka::vec::Vec<Dim, Idx> const threadsPerBlock(
+        static_cast<Idx>(1),
+        static_cast<Idx>(1),
+        static_cast<Idx>(1));
 
-    alpaka::vec::Vec<Dim, Size> const blocksPerGrid(
-        static_cast<Size>(4),
-        static_cast<Size>(8),
-        static_cast<Size>(16));
+    alpaka::vec::Vec<Dim, Idx> const blocksPerGrid(
+        static_cast<Idx>(4),
+        static_cast<Idx>(8),
+        static_cast<Idx>(16));
 
     WorkDiv const workdiv(
         blocksPerGrid,

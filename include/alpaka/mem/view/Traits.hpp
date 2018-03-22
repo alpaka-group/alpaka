@@ -88,7 +88,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
                         TView const & view)
-                    -> size::Size<TView>
+                    -> idx::Idx<TView>
                     {
                         return detail::GetPitchBytesDefault<TIdx, TView>::getPitchBytesDefault(view);
                     }
@@ -108,7 +108,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto getPitchBytesDefault(
                             TView const & view)
-                        -> size::Size<TView>
+                        -> idx::Idx<TView>
                         {
                             return
                                 extent::getExtent<TIdx::value>(view)
@@ -125,7 +125,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto getPitchBytesDefault(
                             TView const & view)
-                        -> size::Size<TView>
+                        -> idx::Idx<TView>
                         {
                             return
                                 extent::getExtent<dim::Dim<TView>::value - 1u>(view)
@@ -142,7 +142,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto getPitchBytesDefault(
                             TView const &)
-                        -> size::Size<TView>
+                        -> idx::Idx<TView>
                         {
                             return
                                 sizeof(elem::Elem<TView>);
@@ -266,7 +266,7 @@ namespace alpaka
                 typename TView>
             ALPAKA_FN_HOST auto getPitchBytes(
                 TView const & view)
-            -> size::Size<TView>
+            -> idx::Idx<TView>
             {
                 return
                     traits::GetPitchBytes<
@@ -425,7 +425,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        vec::Vec<dim::Dim<TView>, size::Size<TView>> const & extent,
+                        vec::Vec<dim::Dim<TView>, idx::Idx<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -472,7 +472,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        vec::Vec<dim::Dim<TView>, size::Size<TView>> const & extent,
+                        vec::Vec<dim::Dim<TView>, idx::Idx<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -544,7 +544,7 @@ namespace alpaka
                         typename TPitch>
                     ALPAKA_FN_HOST static auto create(
                         TPitch const & pitch)
-                    -> size::Size<TPitch>
+                    -> idx::Idx<TPitch>
                     {
                         return mem::view::getPitchBytes<Tidx>(pitch);
                     }
@@ -556,12 +556,12 @@ namespace alpaka
                 typename TPitch>
             ALPAKA_FN_HOST auto getPitchBytesVec(
                 TPitch const & pitch = TPitch())
-            -> vec::Vec<dim::Dim<TPitch>, size::Size<TPitch>>
+            -> vec::Vec<dim::Dim<TPitch>, idx::Idx<TPitch>>
             {
                 return
                     vec::createVecFromIndexedFnWorkaround<
                         dim::Dim<TPitch>,
-                        size::Size<TPitch>,
+                        idx::Idx<TPitch>,
                         detail::CreatePitchBytes>(
                             pitch);
             }
@@ -572,13 +572,13 @@ namespace alpaka
                 typename TPitch>
             ALPAKA_FN_HOST auto getPitchBytesVecEnd(
                 TPitch const & pitch = TPitch())
-            -> vec::Vec<TDim, size::Size<TPitch>>
+            -> vec::Vec<TDim, idx::Idx<TPitch>>
             {
                 using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TPitch>::value) - static_cast<std::intmax_t>(TDim::value)>;
                 return
                     vec::createVecFromIndexedFnOffsetWorkaround<
                         TDim,
-                        size::Size<TPitch>,
+                        idx::Idx<TPitch>,
                         detail::CreatePitchBytes,
                         IdxOffset>(
                             pitch);

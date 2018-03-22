@@ -56,8 +56,8 @@ namespace alpaka
                         typename TExtent>
                     struct TaskSetBase
                     {
-                        using ExtentSize = size::Size<TExtent>;
-                        using DstSize = size::Size<TView>;
+                        using ExtentSize = idx::Idx<TExtent>;
+                        using DstSize = idx::Idx<TView>;
                         using Elem = elem::Elem<TView>;
 
                         static_assert(
@@ -69,7 +69,7 @@ namespace alpaka
 
                         static_assert(
                             meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
-                            "The view and the extent are required to have compatible size type!");
+                            "The view and the extent are required to have compatible idx type!");
 
                         //-----------------------------------------------------------------------------
                         TaskSetBase(
@@ -139,7 +139,7 @@ namespace alpaka
                             // [z, y, x] -> [z, y] because all elements with the innermost x dimension are handled within one iteration.
                             using ExtentSize = typename TaskSetBase<TDim, TView, TExtent>::ExtentSize;
                             vec::Vec<DimMin1, ExtentSize> const extentWithoutInnermost(vec::subVecBegin<DimMin1>(this->m_extent));
-                            // [z, y, x] -> [y, x] because the z pitch (the full size of the buffer) is not required.
+                            // [z, y, x] -> [y, x] because the z pitch (the full idx of the buffer) is not required.
                             using DstSize = typename TaskSetBase<TDim, TView, TExtent>::DstSize;
                             vec::Vec<DimMin1, DstSize> const dstPitchBytesWithoutOutmost(vec::subVecEnd<DimMin1>(this->m_dstPitchBytes));
 

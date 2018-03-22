@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_SUITE(viewStaticAccMem)
 
 using Elem = std::uint32_t;
 using Dim = alpaka::dim::DimInt<2u>;
-using Size = std::uint32_t;
+using Idx = std::uint32_t;
 
 // These forward declarations are only necessary when you want to access those variables
 // from a different compilation unit and should be moved to a common header.
@@ -88,7 +88,7 @@ struct StaticDeviceMemoryTestKernel
     }
 };
 
-using TestAccs = alpaka::test::acc::EnabledAccs<Dim, Size>;
+using TestAccs = alpaka::test::acc::EnabledAccs<Dim, Idx>;
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::vec::Vec<Dim, Size> const extent(3u, 2u);
+    alpaka::vec::Vec<Dim, Idx> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(extent);
 
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
-        alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Size> bufHost(data.data(), devHost, extent);
+        alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Idx> bufHost(data.data(), devHost, extent);
 
         auto viewConstantMemUninitialized(
             alpaka::mem::view::createStaticDevMemView(
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::vec::Vec<Dim, Size> const extent(3u, 2u);
+    alpaka::vec::Vec<Dim, Idx> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(extent);
 
@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
-        alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Size> bufHost(data.data(), devHost, extent);
+        alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Idx> bufHost(data.data(), devHost, extent);
 
         auto viewGlobalMemUninitialized(
             alpaka::mem::view::createStaticDevMemView(

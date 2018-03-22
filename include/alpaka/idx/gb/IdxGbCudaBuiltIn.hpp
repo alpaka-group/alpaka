@@ -46,7 +46,7 @@ namespace alpaka
             //! The CUDA accelerator ND index provider.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class IdxGbCudaBuiltIn
             {
             public:
@@ -76,9 +76,9 @@ namespace alpaka
             //! The GPU CUDA accelerator index dimension get trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>>
+                idx::gb::IdxGbCudaBuiltIn<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -92,9 +92,9 @@ namespace alpaka
             //! The GPU CUDA accelerator grid block index get trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetIdx<
-                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>,
+                idx::gb::IdxGbCudaBuiltIn<TDim, TIdx>,
                 origin::Grid,
                 unit::Blocks>
             {
@@ -103,29 +103,29 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getIdx(
-                    idx::gb::IdxGbCudaBuiltIn<TDim, TSize> const & /*idx*/,
+                    idx::gb::IdxGbCudaBuiltIn<TDim, TIdx> const & /*idx*/,
                     TWorkDiv const &)
-                -> vec::Vec<TDim, TSize>
+                -> vec::Vec<TDim, TIdx>
                 {
                     //boost::ignore_unused(idx);
-                    return vec::cast<TSize>(offset::getOffsetVecEnd<TDim>(blockIdx));
+                    return vec::cast<TIdx>(offset::getOffsetVecEnd<TDim>(blockIdx));
                 }
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The GPU CUDA accelerator grid block index size type trait specialization.
+            //! The GPU CUDA accelerator grid block index idx type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
-            struct SizeType<
-                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                idx::gb::IdxGbCudaBuiltIn<TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

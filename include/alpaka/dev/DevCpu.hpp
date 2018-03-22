@@ -278,7 +278,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class BufCpu;
 
             namespace traits
@@ -288,14 +288,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct BufType<
                     dev::DevCpu,
                     TElem,
                     TDim,
-                    TSize>
+                    TIdx>
                 {
-                    using type = mem::buf::BufCpu<TElem, TDim, TSize>;
+                    using type = mem::buf::BufCpu<TElem, TDim, TIdx>;
                 };
             }
         }

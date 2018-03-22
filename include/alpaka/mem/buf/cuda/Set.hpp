@@ -154,7 +154,7 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
-                    using Size = size::Size<TExtent>;
+                    using Idx = idx::Idx<TExtent>;
 
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
@@ -162,7 +162,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
+                    auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
 #if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
 #endif
@@ -206,7 +206,7 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
-                    using Size = size::Size<TExtent>;
+                    using Idx = idx::Idx<TExtent>;
 
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
@@ -214,7 +214,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
+                    auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
 #if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
 #endif
@@ -257,7 +257,7 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
-                    using Size = size::Size<TExtent>;
+                    using Idx = idx::Idx<TExtent>;
 
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
@@ -265,7 +265,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
+                    auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
                     auto const extentHeight(extent::getHeight(extent));
 #if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
@@ -315,7 +315,7 @@ namespace alpaka
                         dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
-                    using Size = size::Size<TExtent>;
+                    using Idx = idx::Idx<TExtent>;
 
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
@@ -323,7 +323,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extent));
-                    auto const extentWidthBytes(extentWidth * static_cast<Size>(sizeof(elem::Elem<TView>)));
+                    auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
                     auto const extentHeight(extent::getHeight(extent));
 #if !defined(NDEBUG)
                     auto const dstWidth(extent::getWidth(buf));
@@ -373,7 +373,7 @@ namespace alpaka
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
                     using Elem = alpaka::elem::Elem<TView>;
-                    using Size = size::Size<TExtent>;
+                    using Idx = idx::Idx<TExtent>;
 
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
@@ -400,12 +400,12 @@ namespace alpaka
                         make_cudaPitchedPtr(
                             dstNativePtr,
                             static_cast<size_t>(dstPitchBytesX),
-                            static_cast<size_t>(dstWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(dstWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(dstPitchBytesY/dstPitchBytesX)));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            static_cast<size_t>(extentWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(extentWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(extentHeight),
                             static_cast<size_t>(extentDepth)));
 
@@ -447,7 +447,7 @@ namespace alpaka
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
                     using Elem = alpaka::elem::Elem<TView>;
-                    using Size = size::Size<TExtent>;
+                    using Idx = idx::Idx<TExtent>;
 
                     auto & buf(task.m_buf);
                     auto const & byte(task.m_byte);
@@ -474,12 +474,12 @@ namespace alpaka
                         make_cudaPitchedPtr(
                             dstNativePtr,
                             static_cast<size_t>(dstPitchBytesX),
-                            static_cast<size_t>(dstWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(dstWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(dstPitchBytesY/dstPitchBytesX)));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            static_cast<size_t>(extentWidth * static_cast<Size>(sizeof(Elem))),
+                            static_cast<size_t>(extentWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(extentHeight),
                             static_cast<size_t>(extentDepth)));
 

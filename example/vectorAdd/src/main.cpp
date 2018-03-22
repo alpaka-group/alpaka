@@ -43,13 +43,13 @@ public:
     template<
         typename TAcc,
         typename TElem,
-        typename TSize>
+        typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         TElem const * const A,
         TElem const * const B,
         TElem * const C,
-        TSize const & numElements) const
+        TIdx const & numElements) const
     -> void
     {
         static_assert(
@@ -67,7 +67,7 @@ public:
             auto const threadLastElemIdx(threadFirstElemIdx+threadElemExtent);
             auto const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
 
-            for(TSize i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
+            for(TIdx i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
             {
                 C[i] = A[i] + B[i];
             }
@@ -79,16 +79,16 @@ auto main()
 -> int
 {
     using Val = float;
-    using Size = std::size_t;
+    using Idx = std::size_t;
 
-    using Acc = alpaka::acc::AccCpuSerial<alpaka::dim::DimInt<1u>, Size>;
+    using Acc = alpaka::acc::AccCpuSerial<alpaka::dim::DimInt<1u>, Idx>;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
     using QueueAcc = alpaka::queue::QueueCpuSync;
 
     using PltfHost = alpaka::pltf::PltfCpu;
 
-    Size const numElements(123456);
+    Idx const numElements(123456);
 
     // Create the kernel function object.
     VectorAddKernel kernel;
@@ -105,15 +105,15 @@ auto main()
     QueueAcc queue(devAcc);
 
     // The data extent.
-    alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Size> const extent(
+    alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Idx> const extent(
         numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, Size> const workDiv(
+    alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, Idx> const workDiv(
         alpaka::workdiv::getValidWorkDiv<Acc>(
             devAcc,
             extent,
-            static_cast<Size>(3u),
+            static_cast<Idx>(3u),
             false,
             alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
@@ -126,21 +126,21 @@ auto main()
         << ")" << std::endl;
 
     // Allocate host memory buffers.
-    auto memBufHostA(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
-    auto memBufHostB(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
-    auto memBufHostC(alpaka::mem::buf::alloc<Val, Size>(devHost, extent));
+    auto memBufHostA(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostB(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostC(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
 
     // Initialize the host input vectors
-    for (Size i(0); i < numElements; ++i)
+    for (Idx i(0); i < numElements; ++i)
     {
         alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
         alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
     }
 
     // Allocate the buffers on the accelerator.
-    auto memBufAccA(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
-    auto memBufAccB(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
-    auto memBufAccC(alpaka::mem::buf::alloc<Val, Size>(devAcc, extent));
+    auto memBufAccA(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
+    auto memBufAccB(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
+    auto memBufAccC(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
     alpaka::mem::view::copy(queue, memBufAccA, memBufHostA, extent);
@@ -163,7 +163,7 @@ auto main()
 
     bool resultCorrect(true);
     auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));
-    for(Size i(0u);
+    for(Idx i(0u);
         i < numElements;
         ++i)
     {

@@ -39,7 +39,7 @@ namespace alpaka
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class ViewPlainPtr final
             {
             public:
@@ -73,7 +73,7 @@ namespace alpaka
                         m_pitchBytes(
                             vec::subVecEnd<TDim>(
                                static_cast<
-                                    vec::Vec<TDim, TSize> >(pitchBytes)
+                                    vec::Vec<TDim, TIdx> >(pitchBytes)
                             )
                         )
                 {}
@@ -97,11 +97,11 @@ namespace alpaka
                     typename TExtent>
                 ALPAKA_FN_HOST_ACC static auto calculatePitchesFromExtents(
                     TExtent const & extent)
-                -> vec::Vec<TDim, TSize>
+                -> vec::Vec<TDim, TIdx>
                 {
-                    vec::Vec<TDim, TSize> pitchBytes(vec::Vec<TDim, TSize>::all(0));
-                    pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TSize>(sizeof(TElem));
-                    for(TSize i = TDim::value - 1u; i > static_cast<TSize>(0u); --i)
+                    vec::Vec<TDim, TIdx> pitchBytes(vec::Vec<TDim, TIdx>::all(0));
+                    pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
+                    for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
                     {
                         pitchBytes[i-1] = extent[i-1] * pitchBytes[i];
                     }
@@ -111,8 +111,8 @@ namespace alpaka
             public:
                 TElem * const m_pMem;
                 TDev const m_dev;
-                vec::Vec<TDim, TSize> const m_extentElements;
-                vec::Vec<TDim, TSize> const m_pitchBytes;
+                vec::Vec<TDim, TIdx> const m_extentElements;
+                vec::Vec<TDim, TIdx> const m_pitchBytes;
             };
         }
     }
@@ -129,9 +129,9 @@ namespace alpaka
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DevType<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
                 using type = TDev;
             };
@@ -142,13 +142,13 @@ namespace alpaka
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetDev<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getDev(
-                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & view)
                     -> TDev
                 {
                     return view.m_dev;
@@ -166,9 +166,9 @@ namespace alpaka
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -184,9 +184,9 @@ namespace alpaka
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct ElemType<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
                 using type = TElem;
             };
@@ -199,22 +199,22 @@ namespace alpaka
             //#############################################################################
             //! The ViewPlainPtr width get trait specialization.
             template<
-                typename TIdx,
+                typename TIdxIntegralConst,
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetExtent<
-                TIdx,
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>,
-                typename std::enable_if<(TDim::value > TIdx::value)>::type>
+                TIdxIntegralConst,
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>,
+                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & extent)
-                -> TSize
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & extent)
+                -> TIdx
                 {
-                    return extent.m_extentElements[TIdx::value];
+                    return extent.m_extentElements[TIdxIntegralConst::value];
                 }
             };
         }
@@ -231,20 +231,20 @@ namespace alpaka
                     typename TDev,
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPtrNative<
-                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
                 {
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
-                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
+                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & view)
                     -> TElem const *
                     {
                         return view.m_pMem;
                     }
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
-                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> & view)
+                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> & view)
                     -> TElem *
                     {
                         return view.m_pMem;
@@ -254,21 +254,21 @@ namespace alpaka
                 //#############################################################################
                 //! The ViewPlainPtr memory pitch get trait specialization.
                 template<
-                    typename TIdx,
+                    typename TIdxIntegralConst,
                     typename TDev,
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPitchBytes<
-                    TIdx,
-                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>,
-                    typename std::enable_if<TIdx::value < TDim::value>::type>
+                    TIdxIntegralConst,
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>,
+                    typename std::enable_if<TIdxIntegralConst::value < TDim::value>::type>
                 {
                     ALPAKA_FN_HOST static auto getPitchBytes(
-                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const & view)
-                    -> TSize
+                        mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & view)
+                    -> TIdx
                     {
-                        return view.m_pitchBytes[TIdx::value];
+                        return view.m_pitchBytes[TIdxIntegralConst::value];
                     }
                 };
 
@@ -287,7 +287,7 @@ namespace alpaka
                         dev::DevCpu const & dev,
                         TExtent const & extent)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                    -> alpaka::mem::view::ViewPlainPtr<dev::DevCpu, TElem, alpaka::dim::Dim<TExtent>, alpaka::size::Size<TExtent>>
+                    -> alpaka::mem::view::ViewPlainPtr<dev::DevCpu, TElem, alpaka::dim::Dim<TExtent>, alpaka::idx::Idx<TExtent>>
 #endif
                     {
                         return
@@ -295,7 +295,7 @@ namespace alpaka
                                 dev::DevCpu,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
-                                alpaka::size::Size<TExtent>>(
+                                alpaka::idx::Idx<TExtent>>(
                                     pMem,
                                     dev,
                                     extent);
@@ -318,7 +318,7 @@ namespace alpaka
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                    -> alpaka::mem::view::ViewPlainPtr<dev::DevCudaRt, TElem, alpaka::dim::Dim<TExtent>, alpaka::size::Size<TExtent>>
+                    -> alpaka::mem::view::ViewPlainPtr<dev::DevCudaRt, TElem, alpaka::dim::Dim<TExtent>, alpaka::idx::Idx<TExtent>>
 #endif
                     {
                         TElem* pMemAcc(nullptr);
@@ -331,7 +331,7 @@ namespace alpaka
                                 dev::DevCudaRt,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
-                                alpaka::size::Size<TExtent>>(
+                                alpaka::idx::Idx<TExtent>>(
                                     pMemAcc,
                                     dev,
                                     extent);
@@ -348,41 +348,41 @@ namespace alpaka
             //#############################################################################
             //! The ViewPlainPtr offset get trait specialization.
             template<
-                typename TIdx,
+                typename TIdxIntegralConst,
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetOffset<
-                TIdx,
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                TIdxIntegralConst,
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
-                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize> const &)
-                -> TSize
+                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const &)
+                -> TIdx
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The ViewPlainPtr size type trait specialization.
+            //! The ViewPlainPtr idx type trait specialization.
             template<
                 typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TSize>
-            struct SizeType<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

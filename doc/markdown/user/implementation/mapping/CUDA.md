@@ -55,7 +55,7 @@ NOTE: You have to be careful when mixing alpaka and non alpaka CUDA code. The CU
 
 |CUDA|alpaka|
 |---|---|
-|dim3|[alpaka::vec::Vec< TDim, TSize >](../../../../../test/unit/vec/src/VecTest.cpp#L43-L45)|
+|dim3|[alpaka::vec::Vec< TDim, TVal >](../../../../../test/unit/vec/src/VecTest.cpp#L43-L45)|
 
 
 ### CUDA Runtime API

@@ -76,16 +76,16 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
 #if !BOOST_ARCH_CUDA_DEVICE
                     TKernelFnObj const & kernelFnObj,
-                    vec::Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
-                    vec::Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
+                    vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
+                    vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
 #else
                     TKernelFnObj const &,
-                    vec::Vec<TDim, size::Size<TAcc>> const &,
-                    vec::Vec<TDim, size::Size<TAcc>> const &,
+                    vec::Vec<TDim, idx::Idx<TAcc>> const &,
+                    vec::Vec<TDim, idx::Idx<TAcc>> const &,
                     TArgs const & ...)
 #endif
-                -> size::Size<TAcc>
+                -> idx::Idx<TAcc>
                 {
 #if !BOOST_ARCH_CUDA_DEVICE
                     boost::ignore_unused(kernelFnObj);
@@ -122,10 +122,10 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
             TKernelFnObj const & kernelFnObj,
-            vec::Vec<TDim, size::Size<TAcc>> const & blockThreadExtent,
-            vec::Vec<TDim, size::Size<TAcc>> const & threadElemExtent,
+            vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
+            vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
             TArgs const & ... args)
-        -> size::Size<TAcc>
+        -> idx::Idx<TAcc>
         {
             return
                 traits::BlockSharedMemDynSizeBytes<

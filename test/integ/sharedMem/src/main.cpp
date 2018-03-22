@@ -46,20 +46,20 @@ public:
         TVal * const puiBlockRetVals) const
     -> void
     {
-        using Size = alpaka::size::Size<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
 
         static_assert(
             alpaka::dim::Dim<TAcc>::value == 1,
             "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
-        Size const blockThreadCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        Idx const blockThreadCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the dynamically allocated shared memory.
         TVal * const pBlockShared(alpaka::block::shared::dyn::getMem<TVal>(acc));
 
         // Calculate linearized index of the thread in the block.
-        Size const blockThreadIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        Idx const blockThreadIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
@@ -100,7 +100,7 @@ public:
         if(blockThreadIdx1d==0)
         {
             // Calculate linearized block id.
-            Size const gridBlockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
+            Idx const gridBlockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
             puiBlockRetVals[gridBlockIdx] = pBlockShared[0];
         }
@@ -133,10 +133,10 @@ namespace alpaka
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
                     TArgs && ...)
-                -> size::Size<TAcc>
+                -> idx::Idx<TAcc>
                 {
                     boost::ignore_unused(sharedMemKernel);
-                    return blockThreadExtent.prod() * threadElemExtent.prod() * static_cast<size::Size<TAcc>>(sizeof(TVal));
+                    return blockThreadExtent.prod() * threadElemExtent.prod() * static_cast<idx::Idx<TAcc>>(sizeof(TVal));
                 }
             };
         }
@@ -152,9 +152,9 @@ struct SharedMemTester
 {
     template<
         typename TAcc,
-        typename TSize>
+        typename TIdx>
     auto operator()(
-        TSize const numElements)
+        TIdx const numElements)
     -> void
     {
         std::cout << std::endl;
@@ -176,11 +176,11 @@ struct SharedMemTester
             devAcc);
 
         // Set the grid blocks extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TIdx> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 numElements,
-                static_cast<TSize>(1u),
+                static_cast<TIdx>(1u),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
@@ -191,17 +191,17 @@ struct SharedMemTester
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
-        TSize const gridBlocksCount(
+        TIdx const gridBlocksCount(
             alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
-        TSize const blockThreadCount(
+        TIdx const blockThreadCount(
             alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
 
         // An array for the return values calculated by the blocks.
         std::vector<TVal> blockRetVals(static_cast<std::size_t>(gridBlocksCount), static_cast<TVal>(0));
 
         // Allocate accelerator buffers and copy.
-        TSize const resultElemCount(gridBlocksCount);
-        auto blockRetValsAcc(alpaka::mem::buf::alloc<TVal, TSize>(devAcc, resultElemCount));
+        TIdx const resultElemCount(gridBlocksCount);
+        auto blockRetValsAcc(alpaka::mem::buf::alloc<TVal, TIdx>(devAcc, resultElemCount));
         alpaka::mem::view::copy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
         // Create the executor task.
@@ -229,7 +229,7 @@ struct SharedMemTester
             static_cast<TVal>(blockThreadCount*blockThreadCount));
 
         bool resultCorrect(true);
-        for(TSize i(0); i<gridBlocksCount; ++i)
+        for(TIdx i(0); i<gridBlocksCount; ++i)
         {
             auto const val(blockRetVals[static_cast<std::size_t>(i)]);
             if(val != correctResult)
@@ -264,23 +264,23 @@ auto main()
         std::cout << "################################################################################" << std::endl;
         std::cout << std::endl;
 
-        using Size = std::uint32_t;
+        using Idx = std::uint32_t;
         using Val = std::int32_t;
 
         // Logs the enabled accelerators.
-        alpaka::test::acc::writeEnabledAccs<alpaka::dim::DimInt<1u>, Size>(std::cout);
+        alpaka::test::acc::writeEnabledAccs<alpaka::dim::DimInt<1u>, Idx>(std::cout);
 
         std::cout << std::endl;
 
-        using TnumUselessWork = std::integral_constant<Size, 100>;
+        using TnumUselessWork = std::integral_constant<Idx, 100>;
 
         SharedMemTester<TnumUselessWork, Val> sharedMemTester;
 
         // Execute the kernel on all enabled accelerators.
         alpaka::meta::forEachType<
-            alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, Size>>(
+            alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, Idx>>(
                 sharedMemTester,
-                static_cast<Size>(512));
+                static_cast<Idx>(512));
 
         return sharedMemTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
     }

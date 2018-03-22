@@ -33,7 +33,7 @@
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/exec/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
-#include <alpaka/size/Traits.hpp>
+#include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
@@ -62,11 +62,11 @@ namespace alpaka
         //! The CPU OpenMP 2.0 thread accelerator executor.
         template<
             typename TDim,
-            typename TSize,
+            typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
         class ExecCpuOmp2Threads final :
-            public workdiv::WorkDivMembers<TDim, TSize>
+            public workdiv::WorkDivMembers<TDim, TIdx>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace alpaka
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) :
-                    workdiv::WorkDivMembers<TDim, TSize>(std::forward<TWorkDiv>(workDiv)),
+                    workdiv::WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
                     m_kernelFnObj(kernelFnObj),
                     m_args(args...)
             {
@@ -109,14 +109,14 @@ namespace alpaka
                 auto const threadElemExtent(
                     workdiv::getWorkDiv<Thread, Elems>(*this));
 
-                // Get the size of the block shared dynamic memory.
+                // Get the idx of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
                     meta::apply(
                         [&](TArgs const & ... args)
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuOmp2Threads<TDim, TSize>>(
+                                    acc::AccCpuOmp2Threads<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -142,12 +142,12 @@ namespace alpaka
                         },
                         m_args));
 
-                acc::AccCpuOmp2Threads<TDim, TSize> acc(
-                    *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this),
+                acc::AccCpuOmp2Threads<TDim, TIdx> acc(
+                    *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
                 // The number of threads in this block.
-                TSize const blockThreadCount(blockThreadExtent.prod());
+                TIdx const blockThreadCount(blockThreadExtent.prod());
                 int const iBlockThreadCount(static_cast<int>(blockThreadCount));
                 boost::ignore_unused(iBlockThreadCount);
                 // Force the environment to use the given number of threads.
@@ -157,7 +157,7 @@ namespace alpaka
                 // Execute the blocks serially.
                 meta::ndLoopIncIdx(
                     gridBlockExtent,
-                    [&](vec::Vec<TDim, TSize> const & gridBlockIdx)
+                    [&](vec::Vec<TDim, TIdx> const & gridBlockIdx)
                     {
                         acc.m_gridBlockIdx = gridBlockIdx;
 
@@ -219,13 +219,13 @@ namespace alpaka
             //! The CPU OpenMP 2.0 block thread executor accelerator type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct AccType<
-                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
+                exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = acc::AccCpuOmp2Threads<TDim, TSize>;
+                using type = acc::AccCpuOmp2Threads<TDim, TIdx>;
             };
         }
     }
@@ -237,11 +237,11 @@ namespace alpaka
             //! The CPU OpenMP 2.0 block thread executor device type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DevType<
-                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
+                exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevCpu;
             };
@@ -255,11 +255,11 @@ namespace alpaka
             //! The CPU OpenMP 2.0 block thread executor dimension getter trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DimType<
-                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
+                exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
             };
@@ -273,15 +273,15 @@ namespace alpaka
             //! The CPU OpenMP 2.0 block thread executor executor type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct ExecType<
-                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>,
+                exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>,
                 TKernelFnObj,
                 TArgs...>
             {
-                using type = exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>;
+                using type = exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>;
             };
         }
     }
@@ -293,31 +293,31 @@ namespace alpaka
             //! The CPU OpenMP 2.0 block thread executor platform type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct PltfType<
-                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
+                exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = pltf::PltfCpu;
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor size type trait specialization.
+            //! The CPU OpenMP 2.0 block thread executor idx type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
-            struct SizeType<
-                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
+            struct IdxType<
+                exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

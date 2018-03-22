@@ -125,6 +125,7 @@
 #include <alpaka/idx/bt/IdxBtZero.hpp>
 #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>
 #include <alpaka/idx/gb/IdxGbRef.hpp>
+#include <alpaka/idx/Accessors.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/idx/MapIdx.hpp>
 //-----------------------------------------------------------------------------
@@ -180,8 +181,8 @@
 #include <alpaka/rand/RandStl.hpp>
 #include <alpaka/rand/Traits.hpp>
 //-----------------------------------------------------------------------------
-// size
-#include <alpaka/size/Traits.hpp>
+// idx
+#include <alpaka/idx/Traits.hpp>
 //-----------------------------------------------------------------------------
 // queue
 #include <alpaka/queue/QueueCudaRtAsync.hpp>

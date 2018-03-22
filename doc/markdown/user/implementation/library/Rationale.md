@@ -120,19 +120,19 @@ This can be seen in the source listing showing a simple AXPY computation with Op
 
 ```C++
 template<
-	typename TSize,
-	typename TElem>
+    typename TIdx,
+    typename TElem>
 void axpyOpenMP(
-	TSize const n,
-	TElem const alpha,
-	TElem const * const X,
-	TElem * const Y)
+    TIdx const n,
+    TElem const alpha,
+    TElem const * const X,
+    TElem * const Y)
 {
-	#pragma omp parallel for
-	for (i=0; i<n; i++)
-	{
-		Y[i] = alpha * X[i] + Y[i];
-	}
+    #pragma omp parallel for
+    for (i=0; i<n; i++)
+    {
+        Y[i] = alpha * X[i] + Y[i];
+    }
 }
 ```
 
@@ -145,19 +145,19 @@ The AXPY *CUDA* kernel source code shown in figure consists only of the code of 
 
 ```C++
 template<
-	typename TSize,
-	typename TElem>
+    typename TIdx,
+    typename TElem>
 __global__ void axpyCUDA(
-	TSize const n,
-	TElem const alpha,
-	TElem const * const X,
-	TElem * const Y)
+    TIdx const n,
+    TElem const alpha,
+    TElem const * const X,
+    TElem * const Y)
 {
-	TSize const i(blockIdx.x*blockDim.x + threadIdx.x)
-	if(i < n)
-	{
-		Y[i] = alpha * X[i] + Y[i];
-	}
+    TIdx const i(blockIdx.x*blockDim.x + threadIdx.x)
+    if(i < n)
+    {
+        Y[i] = alpha * X[i] + Y[i];
+    }
 }
 ```
 

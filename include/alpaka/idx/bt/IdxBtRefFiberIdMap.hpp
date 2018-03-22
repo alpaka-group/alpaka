@@ -27,6 +27,10 @@
 
 #include <alpaka/core/Fibers.hpp>
 
+#include <alpaka/core/Positioning.hpp>
+
+#include <alpaka/vec/Vec.hpp>
+
 #include <boost/core/ignore_unused.hpp>
 
 #include <map>
@@ -42,13 +46,13 @@ namespace alpaka
             //! The fibers accelerator index provider.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class IdxBtRefFiberIdMap
             {
             public:
                 using IdxBtBase = IdxBtRefFiberIdMap;
 
-                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, vec::Vec<TDim, TSize>>;
+                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, vec::Vec<TDim, TIdx>>;
 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(
@@ -80,9 +84,9 @@ namespace alpaka
             //! The CPU fibers accelerator index dimension get trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                idx::bt::IdxBtRefFiberIdMap<TDim, TSize>>
+                idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -96,9 +100,9 @@ namespace alpaka
             //! The CPU fibers accelerator block thread index get trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetIdx<
-                idx::bt::IdxBtRefFiberIdMap<TDim, TSize>,
+                idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>,
                 origin::Block,
                 unit::Threads>
             {
@@ -107,9 +111,9 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
-                    idx::bt::IdxBtRefFiberIdMap<TDim, TSize> const & idx,
+                    idx::bt::IdxBtRefFiberIdMap<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<TDim, TSize>
+                -> vec::Vec<TDim, TIdx>
                 {
                     boost::ignore_unused(workDiv);
                     auto const fiberId(boost::this_fiber::get_id());
@@ -120,19 +124,19 @@ namespace alpaka
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers accelerator block thread index size type trait specialization.
+            //! The CPU fibers accelerator block thread index idx type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
-            struct SizeType<
-                idx::bt::IdxBtRefFiberIdMap<TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

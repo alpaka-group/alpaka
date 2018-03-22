@@ -51,14 +51,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize,
+                    typename TIdx,
                     typename TDev,
                     typename TView>
                 static auto viewTestImmutable(
                     TView const & view,
                     TDev const & dev,
-                    alpaka::vec::Vec<TDim, TSize> const & extent,
-                    alpaka::vec::Vec<TDim, TSize> const & offset)
+                    alpaka::vec::Vec<TDim, TIdx> const & extent,
+                    alpaka::vec::Vec<TDim, TIdx> const & offset)
                 -> void
                 {
                     //-----------------------------------------------------------------------------
@@ -104,18 +104,18 @@ namespace alpaka
                     // alpaka::mem::view::traits::GetPitchBytes
                     {
                         // The pitches have to be at least as large as the values we calculate here.
-                        auto pitchMinimum(alpaka::vec::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TSize>::ones());
+                        auto pitchMinimum(alpaka::vec::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TIdx>::ones());
                         // Initialize the pitch between two elements of the X dimension ...
                         pitchMinimum[TDim::value] = sizeof(TElem);
                         // ... and fill all the other dimensions.
-                        for(TSize i = TDim::value; i > static_cast<TSize>(0u); --i)
+                        for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
                         {
                             pitchMinimum[i-1] = extent[i-1] * pitchMinimum[i];
                         }
 
                         auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
 
-                        for(TSize i = TDim::value; i > static_cast<TSize>(0u); --i)
+                        for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
                         {
                             BOOST_REQUIRE_GE(
                                 pitchView[i-1],
@@ -126,7 +126,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::mem::view::traits::GetPtrNative
                     {
-                        if(alpaka::extent::getProductOfExtent(view) != static_cast<TSize>(0u))
+                        if(alpaka::extent::getProductOfExtent(view) != static_cast<TIdx>(0u))
                         {
                             // The pointer is only required to be non-null when the extent is > 0.
                             TElem const * const invalidPtr(nullptr);
@@ -150,11 +150,11 @@ namespace alpaka
                     }
 
                     //-----------------------------------------------------------------------------
-                    // alpaka::size::traits::SizeType
+                    // alpaka::idx::traits::IdxType
                     {
                         static_assert(
-                            std::is_same<alpaka::size::Size<TView>, TSize>::value,
-                            "The size type of the view has to be equal to the specified one.");
+                            std::is_same<alpaka::idx::Idx<TView>, TIdx>::value,
+                            "The idx type of the view has to be equal to the specified one.");
                     }
                 }
 
@@ -211,15 +211,15 @@ namespace alpaka
                 -> void
                 {
                     using Dim = alpaka::dim::Dim<TView>;
-                    using Size = alpaka::size::Size<TView>;
+                    using Idx = alpaka::idx::Idx<TView>;
 
-                    using Vec = alpaka::vec::Vec<Dim, Size>;
+                    using Vec = alpaka::vec::Vec<Dim, Idx>;
                     auto const elementsPerThread(Vec::ones());
                     auto const threadsPerBlock(Vec::ones());
                     auto const blocksPerGrid(Vec::ones());
 
                     auto const workdiv(
-                        alpaka::workdiv::WorkDivMembers<Dim, Size>(
+                        alpaka::workdiv::WorkDivMembers<Dim, Idx>(
                             blocksPerGrid,
                             threadsPerBlock,
                             elementsPerThread));
@@ -287,9 +287,9 @@ namespace alpaka
                     using DimA = alpaka::dim::Dim<TViewA>;
                     using DimB = alpaka::dim::Dim<TViewB>;
                     static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
-                    using SizeA = alpaka::size::Size<TViewA>;
-                    using SizeB = alpaka::size::Size<TViewB>;
-                    static_assert(std::is_same<SizeA, SizeB>::value, "viewA and viewB are required to have identical Size");
+                    using SizeA = alpaka::idx::Idx<TViewA>;
+                    using SizeB = alpaka::idx::Idx<TViewB>;
+                    static_assert(std::is_same<SizeA, SizeB>::value, "viewA and viewB are required to have identical Idx");
 
                     using Vec = alpaka::vec::Vec<DimA, SizeA>;
                     auto const elementsPerThread(Vec::ones());
@@ -324,14 +324,14 @@ namespace alpaka
                 -> void
                 {
                     using Dim = alpaka::dim::Dim<TView>;
-                    using Size = alpaka::size::Size<TView>;
+                    using Idx = alpaka::idx::Idx<TView>;
 
                     using DevHost = alpaka::dev::DevCpu;
                     using PltfHost = alpaka::pltf::Pltf<DevHost>;
 
                     using Elem = alpaka::elem::Elem<TView>;
 
-                    using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Size>;
+                    using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Idx>;
 
                     DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0));
 
@@ -358,7 +358,7 @@ namespace alpaka
                     TView & view)
                 -> void
                 {
-                    using Size = alpaka::size::Size<TView>;
+                    using Idx = alpaka::idx::Idx<TView>;
 
                     auto const extent(alpaka::extent::getExtentVec(view));
 
@@ -380,7 +380,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         // alpaka::mem::view::copy into given view
                         {
-                            auto srcBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extent));
+                            auto srcBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
                             iotaFillView(queue, srcBufAcc);
                             alpaka::mem::view::copy(queue, view, srcBufAcc, extent);
                             alpaka::test::mem::view::verifyViewsEqual<TAcc>(queue, view, srcBufAcc);
@@ -389,7 +389,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         // alpaka::mem::view::copy from given view
                         {
-                            auto dstBufAcc(alpaka::mem::buf::alloc<Elem, Size>(devAcc, extent));
+                            auto dstBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
                             alpaka::mem::view::copy(queue, dstBufAcc, view, extent);
                             alpaka::test::mem::view::verifyViewsEqual<TAcc>(queue, dstBufAcc, view);
                         }
