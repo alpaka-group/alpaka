@@ -46,10 +46,10 @@ public:
     template<
         typename TAcc,
         typename TElem,
-        typename TSize>
+        typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
-        TSize const & numElements,
+        TIdx const & numElements,
         TElem const & alpha,
         TElem const * const X,
         TElem * const Y) const
@@ -70,7 +70,7 @@ public:
             auto const threadLastElemIdx(threadFirstElemIdx+threadElemExtent);
             auto const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
 
-            for(TSize i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
+            for(TIdx i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
             {
                 Y[i] = alpha * X[i] + Y[i];
             }
@@ -88,9 +88,9 @@ struct AxpyKernelTester
 #endif
     template<
         typename TAcc,
-        typename TSize>
+        typename TIdx>
     auto operator()(
-        TSize const & numElements)
+        TIdx const & numElements)
     -> void
     {
         std::cout << std::endl;
@@ -116,15 +116,15 @@ struct AxpyKernelTester
         // Get a queue on this device.
         QueueAcc queue(devAcc);
 
-        alpaka::vec::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
+        alpaka::vec::Vec<alpaka::dim::DimInt<1u>, TIdx> const extent(
             numElements);
 
         // Let alpaka calculate good block and grid sizes given our full problem extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TIdx> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 extent,
-                static_cast<TSize>(3u),
+                static_cast<TIdx>(3u),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
@@ -137,12 +137,12 @@ struct AxpyKernelTester
             << ")" << std::endl;
 
         // Allocate host memory buffers.
-        auto memBufHostX(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
-        auto memBufHostOrigY(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
-        auto memBufHostY(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
+        auto memBufHostX(alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
+        auto memBufHostOrigY(alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
+        auto memBufHostY(alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
 
         // Initialize the host input vectors
-        for (TSize i(0); i < numElements; ++i)
+        for (TIdx i(0); i < numElements; ++i)
         {
             alpaka::mem::view::getPtrNative(memBufHostX)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
             alpaka::mem::view::getPtrNative(memBufHostOrigY)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
@@ -161,8 +161,8 @@ struct AxpyKernelTester
 #endif
 
         // Allocate the buffer on the accelerator.
-        auto memBufAccX(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
-        auto memBufAccY(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
+        auto memBufAccX(alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extent));
+        auto memBufAccY(alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extent));
 
         // Copy Host -> Acc.
         alpaka::mem::view::copy(queue, memBufAccX, memBufHostX, extent);
@@ -204,7 +204,7 @@ struct AxpyKernelTester
 
         bool resultCorrect(true);
         auto const pHostResultData(alpaka::mem::view::getPtrNative(memBufHostY));
-        for(TSize i(0u);
+        for(TIdx i(0u);
             i < numElements;
             ++i)
         {

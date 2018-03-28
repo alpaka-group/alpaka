@@ -42,7 +42,7 @@
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/exec/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
-#include <alpaka/size/Traits.hpp>
+#include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>
@@ -61,7 +61,7 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize,
+            typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
         class ExecCpuFibers;
@@ -77,11 +77,11 @@ namespace alpaka
         //! Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading.
         template<
             typename TDim,
-            typename TSize>
+            typename TIdx>
         class AccCpuFibers final :
-            public workdiv::WorkDivMembers<TDim, TSize>,
-            public idx::gb::IdxGbRef<TDim, TSize>,
-            public idx::bt::IdxBtRefFiberIdMap<TDim, TSize>,
+            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public idx::gb::IdxGbRef<TDim, TIdx>,
+            public idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicStlLock<16>, // grid atomics
                 atomic::AtomicStlLock<16>, // block atomics
@@ -90,12 +90,12 @@ namespace alpaka
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
-            public block::sync::BlockSyncBarrierFiber<TSize>,
+            public block::sync::BlockSyncBarrierFiber<TIdx>,
             public rand::RandStl,
             public time::TimeStl
         {
         public:
-            // Partial specialization with the correct TDim and TSize is not allowed.
+            // Partial specialization with the correct TDim and TIdx is not allowed.
             template<
                 typename TDim2,
                 typename TSize2,
@@ -109,10 +109,10 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(
                 TWorkDiv const & workDiv,
-                TSize const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
-                    idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
-                    idx::bt::IdxBtRefFiberIdMap<TDim, TSize>(m_fibersToIndices),
+                TIdx const & blockSharedMemDynSizeBytes) :
+                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                    idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices),
                     atomic::AtomicHierarchy<
                         atomic::AtomicStlLock<16>, // atomics between grids
                         atomic::AtomicStlLock<16>, // atomics between blocks
@@ -123,11 +123,11 @@ namespace alpaka
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
-                    block::sync::BlockSyncBarrierFiber<TSize>(
+                    block::sync::BlockSyncBarrierFiber<TIdx>(
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStl(),
                     time::TimeStl(),
-                    m_gridBlockIdx(vec::Vec<TDim, TSize>::zeros())
+                    m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
             {}
 
         public:
@@ -144,8 +144,8 @@ namespace alpaka
 
         private:
             // getIdx
-            typename idx::bt::IdxBtRefFiberIdMap<TDim, TSize>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
-            vec::Vec<TDim, TSize> mutable m_gridBlockIdx;                    //!< The index of the currently executed block.
+            typename idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
+            vec::Vec<TDim, TIdx> mutable m_gridBlockIdx;                    //!< The index of the currently executed block.
 
             // allocBlockSharedArr
             boost::fibers::fiber::id mutable m_masterFiberId;           //!< The id of the master fiber.
@@ -160,62 +160,62 @@ namespace alpaka
             //! The CPU fibers accelerator accelerator type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct AccType<
-                acc::AccCpuFibers<TDim, TSize>>
+                acc::AccCpuFibers<TDim, TIdx>>
             {
-                using type = acc::AccCpuFibers<TDim, TSize>;
+                using type = acc::AccCpuFibers<TDim, TIdx>;
             };
             //#############################################################################
             //! The CPU fibers accelerator device properties get trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetAccDevProps<
-                acc::AccCpuFibers<TDim, TSize>>
+                acc::AccCpuFibers<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps<TDim, TSize>
+                -> alpaka::acc::AccDevProps<TDim, TIdx>
                 {
                     boost::ignore_unused(dev);
 
 #ifdef ALPAKA_CI
-                    auto const blockThreadCountMax(static_cast<TSize>(3));
+                    auto const blockThreadCountMax(static_cast<TIdx>(3));
 #else
-                    auto const blockThreadCountMax(static_cast<TSize>(4));  // \TODO: What is the maximum? Just set a reasonable value?
+                    auto const blockThreadCountMax(static_cast<TIdx>(4));  // \TODO: What is the maximum? Just set a reasonable value?
 #endif
                     return {
                         // m_multiProcessorCount
-                        std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency())),   // \TODO: This may be inaccurate.
+                        std::max(static_cast<TIdx>(1), static_cast<TIdx>(std::thread::hardware_concurrency())),   // \TODO: This may be inaccurate.
                         // m_gridBlockExtentMax
-                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax
-                        std::numeric_limits<TSize>::max(),
+                        std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
-                        vec::Vec<TDim, TSize>::all(blockThreadCountMax),
+                        vec::Vec<TDim, TIdx>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
-                        std::numeric_limits<TSize>::max()};
+                        std::numeric_limits<TIdx>::max()};
                 }
             };
             //#############################################################################
             //! The CPU fibers accelerator name trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetAccName<
-                acc::AccCpuFibers<TDim, TSize>>
+                acc::AccCpuFibers<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
-                    return "AccCpuFibers<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
+                    return "AccCpuFibers<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
                 }
             };
         }
@@ -228,9 +228,9 @@ namespace alpaka
             //! The CPU fibers accelerator device type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DevType<
-                acc::AccCpuFibers<TDim, TSize>>
+                acc::AccCpuFibers<TDim, TIdx>>
             {
                 using type = dev::DevCpu;
             };
@@ -244,9 +244,9 @@ namespace alpaka
             //! The CPU fibers accelerator dimension getter trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                acc::AccCpuFibers<TDim, TSize>>
+                acc::AccCpuFibers<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -260,15 +260,15 @@ namespace alpaka
             //! The CPU fibers accelerator executor type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct ExecType<
-                acc::AccCpuFibers<TDim, TSize>,
+                acc::AccCpuFibers<TDim, TIdx>,
                 TKernelFnObj,
                 TArgs...>
             {
-                using type = exec::ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>;
+                using type = exec::ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>;
             };
         }
     }
@@ -280,27 +280,27 @@ namespace alpaka
             //! The CPU fibers executor platform type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct PltfType<
-                acc::AccCpuFibers<TDim, TSize>>
+                acc::AccCpuFibers<TDim, TIdx>>
             {
                 using type = pltf::PltfCpu;
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers accelerator size type trait specialization.
+            //! The CPU fibers accelerator idx type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
-            struct SizeType<
-                acc::AccCpuFibers<TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                acc::AccCpuFibers<TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

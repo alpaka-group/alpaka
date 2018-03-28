@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dim/Traits.hpp>
-#include <alpaka/size/Traits.hpp>
+#include <alpaka/idx/Traits.hpp>
 
 #include <alpaka/core/Debug.hpp>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -81,8 +81,8 @@ namespace alpaka
                 dim::Dim<typename std::decay<TWorkDiv>::type>::value == dim::Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");
             static_assert(
-                std::is_same<size::Size<typename std::decay<TWorkDiv>::type>, size::Size<TAcc>>::value,
-                "The size type of TAcc and the size type of TWorkDiv have to be identical!");
+                std::is_same<idx::Idx<typename std::decay<TWorkDiv>::type>, idx::Idx<TAcc>>::value,
+                "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << BOOST_CURRENT_FUNCTION

@@ -59,9 +59,9 @@ namespace alpaka
                         typename TExtent>
                     struct TaskCopyBase
                     {
-                        using ExtentSize = size::Size<TExtent>;
-                        using DstSize = size::Size<TViewDst>;
-                        using SrcSize = size::Size<TViewSrc>;
+                        using ExtentSize = idx::Idx<TExtent>;
+                        using DstSize = idx::Idx<TViewDst>;
+                        using SrcSize = idx::Idx<TViewSrc>;
                         using Elem = elem::Elem<TViewSrc>;
 
                         static_assert(
@@ -76,10 +76,10 @@ namespace alpaka
 
                         static_assert(
                             meta::IsIntegralSuperset<DstSize, ExtentSize>::value,
-                            "The destination view and the extent are required to have compatible size type!");
+                            "The destination view and the extent are required to have compatible idx type!");
                         static_assert(
                             meta::IsIntegralSuperset<SrcSize, ExtentSize>::value,
-                            "The source view and the extent are required to have compatible size type!");
+                            "The source view and the extent are required to have compatible idx type!");
 
                         static_assert(
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,

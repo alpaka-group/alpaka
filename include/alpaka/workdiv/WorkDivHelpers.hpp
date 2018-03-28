@@ -114,14 +114,14 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \tparam TDim The dimensionality of the accelerator device properties.
-        //! \tparam TSize The size type of the accelerator device properties.
+        //! \tparam TIdx The idx type of the accelerator device properties.
         //! \param accDevProps The maxima for the work division.
         //! \return If the accelerator device properties are valid.
         template<
             typename TDim,
-            typename TSize>
+            typename TIdx>
         ALPAKA_FN_HOST auto isValidAccDevProps(
-            acc::AccDevProps<TDim, TSize> const & accDevProps)
+            acc::AccDevProps<TDim, TIdx> const & accDevProps)
         -> bool
         {
             // Check that the maximum counts are greater or equal 1.
@@ -171,14 +171,14 @@ namespace alpaka
         //!     The grid block extent subdivision restrictions.
         template<
             typename TDim,
-            typename TSize>
+            typename TIdx>
         ALPAKA_FN_HOST auto subDivideGridElems(
-            vec::Vec<TDim, TSize> const & gridElemExtent,
-            vec::Vec<TDim, TSize> threadElemExtent,
-            acc::AccDevProps<TDim, TSize> const & accDevProps,
+            vec::Vec<TDim, TIdx> const & gridElemExtent,
+            vec::Vec<TDim, TIdx> threadElemExtent,
+            acc::AccDevProps<TDim, TIdx> const & accDevProps,
             bool requireBlockThreadExtentToDivideGridThreadExtent = true,
             GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
-        -> workdiv::WorkDivMembers<TDim, TSize>
+        -> workdiv::WorkDivMembers<TDim, TIdx>
         {
             ///////////////////////////////////////////////////////////////////
             // Check that the input data is valid.
@@ -201,11 +201,11 @@ namespace alpaka
             }
 
             // Calculate the grid thread extent.
-            auto gridThreadExtent(vec::Vec<TDim, TSize>::zeros());
+            auto gridThreadExtent(vec::Vec<TDim, TIdx>::zeros());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridThreadExtent[i] =
-                    static_cast<TSize>(
+                    static_cast<TIdx>(
                         std::ceil(
                             static_cast<double>(gridElemExtent[i])
                             / static_cast<double>(threadElemExtent[i])));
@@ -248,7 +248,7 @@ namespace alpaka
                 if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
                 {
                     double const fNthRoot(std::pow(blockThreadCountMax, 1.0/static_cast<double>(TDim::value)));
-                    TSize const nthRoot(static_cast<TSize>(fNthRoot));
+                    TIdx const nthRoot(static_cast<TIdx>(fNthRoot));
                     for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         blockThreadExtent[i] = nthRoot;
@@ -260,7 +260,7 @@ namespace alpaka
                     while(blockThreadExtent.prod() > blockThreadCountMax)
                     {
                         auto const maxElemIdx(blockThreadExtent.maxElem());
-                        blockThreadExtent[maxElemIdx] = blockThreadExtent[maxElemIdx] / static_cast<TSize>(2u);
+                        blockThreadExtent[maxElemIdx] = blockThreadExtent[maxElemIdx] / static_cast<TIdx>(2u);
                     }
                 }
                 else
@@ -271,24 +271,24 @@ namespace alpaka
                         // Compute the minimum element index but ignore ones.
                         // Ones compare always larger to everything else.
                         auto const minElemIdx(
-                            static_cast<TSize>(
+                            static_cast<TIdx>(
                                 std::distance(
                                     &blockThreadExtent[0u],
                                     std::min_element(
                                         &blockThreadExtent[0u],
                                         &blockThreadExtent[TDim::value-1u],
-                                        [](TSize const & a, TSize const & b)
+                                        [](TIdx const & a, TIdx const & b)
                                         {
                                             // This first case is redundant.
                                             /*if((a == 1u) && (b == 1u))
                                             {
                                                 return false;
                                             }
-                                            else */if(a == static_cast<TSize>(1u))
+                                            else */if(a == static_cast<TIdx>(1u))
                                             {
                                                 return false;
                                             }
-                                            else if(b == static_cast<TSize>(1u))
+                                            else if(b == static_cast<TIdx>(1u))
                                             {
                                                 return true;
                                             }
@@ -297,7 +297,7 @@ namespace alpaka
                                                 return a < b;
                                             }
                                         }))));
-                        blockThreadExtent[minElemIdx] = blockThreadExtent[minElemIdx] / static_cast<TSize>(2u);
+                        blockThreadExtent[minElemIdx] = blockThreadExtent[minElemIdx] / static_cast<TIdx>(2u);
                     }
                 }
             }
@@ -309,7 +309,7 @@ namespace alpaka
                 {
                     // For equal size block extent we have to compute the gcd of all grid thread extent that is less then the current maximal block thread extent.
                     // For this we compute the divisors of all grid thread extent less then the current maximal block thread extent.
-                    std::array<std::set<TSize>, TDim::value> gridThreadExtentDivisors;
+                    std::array<std::set<TIdx>, TDim::value> gridThreadExtentDivisors;
                     for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         gridThreadExtentDivisors[i] =
@@ -318,7 +318,7 @@ namespace alpaka
                                 blockThreadExtent[i]);
                     }
                     // The maximal common divisor of all block thread extent is the optimal solution.
-                    std::set<TSize> intersects[2u];
+                    std::set<TIdx> intersects[2u];
                     for(typename TDim::value_type i(1u); i<TDim::value; ++i)
                     {
                         intersects[(i-1u)%2u] = gridThreadExtentDivisors[0];
@@ -330,7 +330,7 @@ namespace alpaka
                             gridThreadExtentDivisors[i].end(),
                             std::inserter(intersects[i%2], intersects[i%2u].begin()));
                     }
-                    TSize const maxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
+                    TIdx const maxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
                     for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         blockThreadExtent[i] = maxCommonDivisor;
@@ -362,11 +362,11 @@ namespace alpaka
             // Compute the gridBlockExtent.
 
             // Set the grid block extent (rounded to the next integer not less then the quotient.
-            auto gridBlockExtent(vec::Vec<TDim, TSize>::ones());
+            auto gridBlockExtent(vec::Vec<TDim, TIdx>::ones());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridBlockExtent[i] =
-                    static_cast<TSize>(
+                    static_cast<TIdx>(
                         std::ceil(
                             static_cast<double>(gridThreadExtent[i])
                             / static_cast<double>(blockThreadExtent[i])));
@@ -375,7 +375,7 @@ namespace alpaka
             ///////////////////////////////////////////////////////////////////
             // Return the final work division.
             return
-                workdiv::WorkDivMembers<TDim, TSize>(
+                workdiv::WorkDivMembers<TDim, TIdx>(
                     gridBlockExtent,
                     blockThreadExtent,
                     threadElemExtent);
@@ -409,7 +409,7 @@ namespace alpaka
             TThreadElemExtent const & threadElemExtents = TThreadElemExtent(),
             bool requireBlockThreadExtentToDivideGridThreadExtent = true,
             GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
-        -> workdiv::WorkDivMembers<dim::Dim<TGridElemExtent>, size::Size<TGridElemExtent>>
+        -> workdiv::WorkDivMembers<dim::Dim<TGridElemExtent>, idx::Idx<TGridElemExtent>>
         {
             static_assert(
                 dim::Dim<TGridElemExtent>::value == dim::Dim<TAcc>::value,
@@ -418,11 +418,11 @@ namespace alpaka
                 dim::Dim<TThreadElemExtent>::value == dim::Dim<TAcc>::value,
                 "The dimension of TAcc and the dimension of TThreadElemExtent have to be identical!");
             static_assert(
-                std::is_same<size::Size<TGridElemExtent>, size::Size<TAcc>>::value,
-                "The size type of TAcc and the size type of TGridElemExtent have to be identical!");
+                std::is_same<idx::Idx<TGridElemExtent>, idx::Idx<TAcc>>::value,
+                "The idx type of TAcc and the idx type of TGridElemExtent have to be identical!");
             static_assert(
-                std::is_same<size::Size<TThreadElemExtent>, size::Size<TAcc>>::value,
-                "The size type of TAcc and the size type of TThreadElemExtent have to be identical!");
+                std::is_same<idx::Idx<TThreadElemExtent>, idx::Idx<TAcc>>::value,
+                "The idx type of TAcc and the idx type of TThreadElemExtent have to be identical!");
 
             return subDivideGridElems(
                 extent::getExtentVec(gridElemExtent),
@@ -434,17 +434,17 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \tparam TDim The dimensionality of the accelerator device properties.
-        //! \tparam TSize The size type of the accelerator device properties.
+        //! \tparam TIdx The idx type of the accelerator device properties.
         //! \tparam TWorkDiv The type of the work division.
         //! \param accDevProps The maxima for the work division.
         //! \param workDiv The work division to test for validity.
         //! \return If the work division is valid for the given accelerator device properties.
         template<
             typename TDim,
-            typename TSize,
+            typename TIdx,
             typename TWorkDiv>
         ALPAKA_FN_HOST auto isValidWorkDiv(
-            acc::AccDevProps<TDim, TSize> const & accDevProps,
+            acc::AccDevProps<TDim, TIdx> const & accDevProps,
             TWorkDiv const & workDiv)
         -> bool
         {

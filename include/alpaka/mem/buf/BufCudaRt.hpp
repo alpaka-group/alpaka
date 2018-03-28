@@ -53,7 +53,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class BufCpu;
         }
     }
@@ -66,7 +66,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class BufCudaRt
             {
             private:
@@ -81,7 +81,7 @@ namespace alpaka
                 ALPAKA_FN_HOST BufCudaRt(
                     dev::DevCudaRt const & dev,
                     TElem * const pMem,
-                    TSize const & pitchBytes,
+                    TIdx const & pitchBytes,
                     TExtent const & extent) :
                         m_dev(dev),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
@@ -98,8 +98,8 @@ namespace alpaka
                         TDim::value == dim::Dim<TExtent>::value,
                         "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TExtent>>::value,
-                        "The size type of TExtent and the TSize template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TExtent>>::value,
+                        "The idx type of TExtent and the TIdx template parameter have to be identical!");
                 }
 
             private:
@@ -122,9 +122,9 @@ namespace alpaka
 
             public:
                 dev::DevCudaRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
-                vec::Vec<TDim, TSize> m_extentElements;
+                vec::Vec<TDim, TIdx> m_extentElements;
                 std::shared_ptr<TElem> m_spMem;
-                TSize m_pitchBytes;
+                TIdx m_pitchBytes;
             };
         }
     }
@@ -138,9 +138,9 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DevType<
-                mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                mem::buf::BufCudaRt<TElem, TDim, TIdx>>
             {
                 using type = dev::DevCudaRt;
             };
@@ -149,12 +149,12 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetDev<
-                mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                mem::buf::BufCudaRt<TElem, TDim, TIdx>>
             {
                 ALPAKA_FN_HOST static auto getDev(
-                    mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx> const & buf)
                 -> dev::DevCudaRt
                 {
                     return buf.m_dev;
@@ -171,9 +171,9 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                mem::buf::BufCudaRt<TElem, TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -188,9 +188,9 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct ElemType<
-                mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                mem::buf::BufCudaRt<TElem, TDim, TIdx>>
             {
                 using type = TElem;
             };
@@ -203,21 +203,21 @@ namespace alpaka
             //#############################################################################
             //! The BufCudaRt extent get trait specialization.
             template<
-                typename TIdx,
+                typename TIdxIntegralConst,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetExtent<
-                TIdx,
-                mem::buf::BufCudaRt<TElem, TDim, TSize>,
-                typename std::enable_if<(TDim::value > TIdx::value)>::type>
+                TIdxIntegralConst,
+                mem::buf::BufCudaRt<TElem, TDim, TIdx>,
+                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
-                    mem::buf::BufCudaRt<TElem, TDim, TSize> const & extent)
-                -> TSize
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx> const & extent)
+                -> TIdx
                 {
-                    return extent.m_extentElements[TIdx::value];
+                    return extent.m_extentElements[TIdxIntegralConst::value];
                 }
             };
         }
@@ -233,20 +233,20 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPtrNative<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> const & buf)
                     -> TElem const *
                     {
                         return buf.m_spMem.get();
                     }
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> & buf)
                     -> TElem *
                     {
                         return buf.m_spMem.get();
@@ -257,14 +257,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPtrDev<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>,
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf,
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> const & buf,
                         dev::DevCudaRt const & dev)
                     -> TElem const *
                     {
@@ -279,7 +279,7 @@ namespace alpaka
                     }
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> & buf,
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> & buf,
                         dev::DevCudaRt const & dev)
                     -> TElem *
                     {
@@ -298,15 +298,15 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPitchBytes<
                     dim::DimInt<TDim::value - 1u>,
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
-                    -> TSize
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> const & buf)
+                    -> TIdx
                     {
                         return buf.m_pitchBytes;
                     }
@@ -321,11 +321,11 @@ namespace alpaka
                 //! The CUDA 1D memory allocation trait specialization.
                 template<
                     typename T,
-                    typename TSize>
+                    typename TIdx>
                 struct Alloc<
                     T,
                     dim::DimInt<1u>,
-                    TSize,
+                    TIdx,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
@@ -334,12 +334,12 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufCudaRt<T, dim::DimInt<1u>, TSize>
+                    -> mem::buf::BufCudaRt<T, dim::DimInt<1u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        auto const widthBytes(width * static_cast<TSize>(sizeof(T)));
+                        auto const widthBytes(width * static_cast<TIdx>(sizeof(T)));
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -360,10 +360,10 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::DimInt<1u>, TSize>(
+                            mem::buf::BufCudaRt<T, dim::DimInt<1u>, TIdx>(
                                 dev,
                                 reinterpret_cast<T *>(memPtr),
-                                static_cast<TSize>(widthBytes),
+                                static_cast<TIdx>(widthBytes),
                                 extent);
                     }
                 };
@@ -371,11 +371,11 @@ namespace alpaka
                 //! The CUDA 2D memory allocation trait specialization.
                 template<
                     typename T,
-                    typename TSize>
+                    typename TIdx>
                 struct Alloc<
                     T,
                     dim::DimInt<2u>,
-                    TSize,
+                    TIdx,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
@@ -384,12 +384,12 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufCudaRt<T, dim::DimInt<2u>, TSize>
+                    -> mem::buf::BufCudaRt<T, dim::DimInt<2u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        auto const widthBytes(width * static_cast<TSize>(sizeof(T)));
+                        auto const widthBytes(width * static_cast<TIdx>(sizeof(T)));
                         auto const height(extent::getHeight(extent));
 
                         // Set the current device.
@@ -417,10 +417,10 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::DimInt<2u>, TSize>(
+                            mem::buf::BufCudaRt<T, dim::DimInt<2u>, TIdx>(
                                 dev,
                                 reinterpret_cast<T *>(memPtr),
-                                static_cast<TSize>(pitchBytes),
+                                static_cast<TIdx>(pitchBytes),
                                 extent);
                     }
                 };
@@ -428,11 +428,11 @@ namespace alpaka
                 //! The CUDA 3D memory allocation trait specialization.
                 template<
                     typename T,
-                    typename TSize>
+                    typename TIdx>
                 struct Alloc<
                     T,
                     dim::DimInt<3u>,
-                    TSize,
+                    TIdx,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
@@ -441,13 +441,13 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufCudaRt<T, dim::DimInt<3u>, TSize>
+                    -> mem::buf::BufCudaRt<T, dim::DimInt<3u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         cudaExtent const cudaExtentVal(
                             make_cudaExtent(
-                                static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TSize>(sizeof(T))),
+                                static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(T))),
                                 static_cast<std::size_t>(extent::getHeight(extent)),
                                 static_cast<std::size_t>(extent::getDepth(extent))));
 
@@ -476,10 +476,10 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::DimInt<3u>, TSize>(
+                            mem::buf::BufCudaRt<T, dim::DimInt<3u>, TIdx>(
                                 dev,
                                 reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
-                                static_cast<TSize>(cudaPitchedPtrVal.pitch),
+                                static_cast<TIdx>(cudaPitchedPtrVal.pitch),
                                 extent);
                     }
                 };
@@ -488,14 +488,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct Map<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>,
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto map(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf,
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> const & buf,
                         dev::DevCudaRt const & dev)
                     -> void
                     {
@@ -513,14 +513,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct Unmap<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>,
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto unmap(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf,
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> const & buf,
                         dev::DevCudaRt const & dev)
                     -> void
                     {
@@ -538,13 +538,13 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct Pin<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto pin(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> &)
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> &)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -557,13 +557,13 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct Unpin<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto unpin(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> &)
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> &)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -576,13 +576,13 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct IsPinned<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                    mem::buf::BufCudaRt<TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isPinned(
-                        mem::buf::BufCudaRt<TElem, TDim, TSize> const &)
+                        mem::buf::BufCudaRt<TElem, TDim, TIdx> const &)
                     -> bool
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -601,38 +601,38 @@ namespace alpaka
             //#############################################################################
             //! The BufCudaRt offset get trait specialization.
             template<
-                typename TIdx,
+                typename TIdxIntegralConst,
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetOffset<
-                TIdx,
-                mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                TIdxIntegralConst,
+                mem::buf::BufCudaRt<TElem, TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
-                   mem::buf::BufCudaRt<TElem, TDim, TSize> const &)
-                -> TSize
+                   mem::buf::BufCudaRt<TElem, TDim, TIdx> const &)
+                -> TIdx
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The BufCudaRt size type trait specialization.
+            //! The BufCudaRt idx type trait specialization.
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
-            struct SizeType<
-                mem::buf::BufCudaRt<TElem, TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                mem::buf::BufCudaRt<TElem, TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }
@@ -650,14 +650,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct Map<
-                    mem::buf::BufCpu<TElem, TDim, TSize>,
+                    mem::buf::BufCpu<TElem, TDim, TIdx>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto map(
-                        mem::buf::BufCpu<TElem, TDim, TSize> & buf,
+                        mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
                         dev::DevCudaRt const & dev)
                     -> void
                     {
@@ -671,7 +671,7 @@ namespace alpaka
                             ALPAKA_CUDA_RT_CHECK(
                                 cudaHostRegister(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtent(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TSize>>),
+                                    extent::getProductOfExtent(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TIdx>>),
                                     cudaHostRegisterMapped));
                         }
                         // If it is already the same device, nothing has to be mapped.
@@ -682,14 +682,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct Unmap<
-                    mem::buf::BufCpu<TElem, TDim, TSize>,
+                    mem::buf::BufCpu<TElem, TDim, TIdx>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto unmap(
-                        mem::buf::BufCpu<TElem, TDim, TSize> & buf,
+                        mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
                         dev::DevCudaRt const & dev)
                     -> void
                     {
@@ -717,14 +717,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct GetPtrDev<
-                    mem::buf::BufCpu<TElem, TDim, TSize>,
+                    mem::buf::BufCpu<TElem, TDim, TIdx>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
-                        mem::buf::BufCpu<TElem, TDim, TSize> const & buf,
+                        mem::buf::BufCpu<TElem, TDim, TIdx> const & buf,
                         dev::DevCudaRt const &)
                     -> TElem const *
                     {
@@ -739,7 +739,7 @@ namespace alpaka
                     }
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
-                        mem::buf::BufCpu<TElem, TDim, TSize> & buf,
+                        mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
                         dev::DevCudaRt const &)
                     -> TElem *
                     {

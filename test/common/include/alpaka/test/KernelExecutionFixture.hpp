@@ -35,7 +35,7 @@ namespace alpaka
         public:
             using Acc = TAcc;
             using Dim = alpaka::dim::Dim<Acc>;
-            using Size = alpaka::size::Size<Acc>;
+            using Idx = alpaka::idx::Idx<Acc>;
             using DevAcc = alpaka::dev::Dev<Acc>;
             using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
             using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
@@ -53,7 +53,7 @@ namespace alpaka
                         alpaka::workdiv::getValidWorkDiv<Acc>(
                             m_devAcc,
                             extent,
-                            alpaka::vec::Vec<Dim, Size>::ones(),
+                            alpaka::vec::Vec<Dim, Idx>::ones(),
                             false,
                             alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted))
             {}
@@ -86,7 +86,7 @@ namespace alpaka
             alpaka::dev::DevCpu m_devHost;
             DevAcc m_devAcc;
             QueueAcc m_queue;
-            alpaka::workdiv::WorkDivMembers<Dim, Size> m_workDiv;
+            alpaka::workdiv::WorkDivMembers<Dim, Idx> m_workDiv;
         };
     }
 }

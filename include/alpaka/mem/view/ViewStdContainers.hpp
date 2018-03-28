@@ -36,7 +36,7 @@
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    // Trait specializations for fixed size arrays.
+    // Trait specializations for fixed idx arrays.
     //
     // This allows the usage of multidimensional compile time arrays e.g. int[4][3] as argument to memory ops.
     /*namespace dev
@@ -44,7 +44,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The fixed size array device type trait specialization.
+            //! The fixed idx array device type trait specialization.
             template<
                 typename TFixedSizeArray>
             struct DevType<
@@ -55,7 +55,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The fixed size array device get trait specialization.
+            //! The fixed idx array device get trait specialization.
             template<
                 typename TFixedSizeArray>
             struct GetDev<
@@ -78,7 +78,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The fixed size array dimension getter trait specialization.
+            //! The fixed idx array dimension getter trait specialization.
             template<
                 typename TFixedSizeArray>
             struct DimType<
@@ -94,7 +94,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The fixed size array memory element type get trait specialization.
+            //! The fixed idx array memory element type get trait specialization.
             template<
                 typename TFixedSizeArray>
             struct ElemType<
@@ -111,27 +111,27 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The fixed size array width get trait specialization.
+            //! The fixed idx array width get trait specialization.
             template<
-                typename TIdx,
+                typename TIdxIntegralConst,
                 typename TFixedSizeArray>
             struct GetExtent<
-                TIdx,
+                TIdxIntegralConst,
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value
-                    && (std::rank<TFixedSizeArray>::value > TIdx::value)
-                    && (std::extent<TFixedSizeArray, TIdx::value>::value > 0u)>::type>
+                    && (std::rank<TFixedSizeArray>::value > TIdxIntegralConst::value)
+                    && (std::extent<TFixedSizeArray, TIdxIntegralConst::value>::value > 0u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static constexpr auto getExtent(
                     TFixedSizeArray const & //extent
                 )
-                -> size::Size<TFixedSizeArray>
+                -> idx::Idx<TFixedSizeArray>
                 {
                     //boost::ignore_unused(extent);
-                    return std::extent<TFixedSizeArray, TIdx::value>::value;
+                    return std::extent<TFixedSizeArray, TIdxIntegralConst::value>::value;
                 }
             };
         }
@@ -143,7 +143,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The fixed size array native pointer get trait specialization.
+                //! The fixed idx array native pointer get trait specialization.
                 template<
                     typename TFixedSizeArray>
                 struct GetPtrNative<
@@ -172,7 +172,7 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The fixed size array pitch get trait specialization.
+                //! The fixed idx array pitch get trait specialization.
                 template<
                     typename TFixedSizeArray>
                 struct GetPitchBytes<
@@ -188,7 +188,7 @@ namespace alpaka
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static constexpr auto getPitchBytes(
                         TFixedSizeArray const &)
-                    -> size::Size<TFixedSizeArray>
+                    -> idx::Idx<TFixedSizeArray>
                     {
                         return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
                     }
@@ -201,7 +201,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The fixed size array offset get trait specialization.
+            //! The fixed idx array offset get trait specialization.
             template<
                 typename TIdx,
                 typename TFixedSizeArray>
@@ -214,22 +214,22 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TFixedSizeArray const &)
-                -> size::Size<TFixedSizeArray>
+                -> idx::Idx<TFixedSizeArray>
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The std::vector size type trait specialization.
+            //! The std::vector idx type trait specialization.
             template<
                 typename TFixedSizeArray>
-            struct SizeType<
+            struct IdxType<
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
@@ -322,7 +322,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static constexpr auto getExtent(
                     std::array<TElem, Tsize> const & /*extent*/)
-                -> size::Size<std::array<TElem, Tsize>>
+                -> idx::Idx<std::array<TElem, Tsize>>
                 {
                     // C++14
                     /*boost::ignore_unused(extent);*/
@@ -373,7 +373,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
                         std::array<TElem, Tsize> const & pitch)
-                    -> size::Size<std::array<TElem, Tsize>>
+                    -> idx::Idx<std::array<TElem, Tsize>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -398,23 +398,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
                     std::array<TElem, Tsize> const &)
-                -> size::Size<std::array<TElem, Tsize>>
+                -> idx::Idx<std::array<TElem, Tsize>>
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The std::vector size type trait specialization.
+            //! The std::vector idx type trait specialization.
             template<
                 typename TElem,
                 std::size_t Tsize>
-            struct SizeType<
+            struct IdxType<
                 std::array<TElem, Tsize>>
             {
                 using type = std::size_t;
@@ -506,7 +506,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
                     std::vector<TElem, TAllocator> const & extent)
-                -> size::Size<std::vector<TElem, TAllocator>>
+                -> idx::Idx<std::vector<TElem, TAllocator>>
                 {
                     return extent.size();
                 }
@@ -555,7 +555,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
                         std::vector<TElem, TAllocator> const & pitch)
-                    -> size::Size<std::vector<TElem, TAllocator>>
+                    -> idx::Idx<std::vector<TElem, TAllocator>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -580,23 +580,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
                     std::vector<TElem, TAllocator> const &)
-                -> size::Size<std::vector<TElem, TAllocator>>
+                -> idx::Idx<std::vector<TElem, TAllocator>>
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The std::vector size type trait specialization.
+            //! The std::vector idx type trait specialization.
             template<
                 typename TElem,
                 typename TAllocator>
-            struct SizeType<
+            struct IdxType<
                 std::vector<TElem, TAllocator>>
             {
                 using type = std::size_t;

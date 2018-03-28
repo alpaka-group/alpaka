@@ -317,15 +317,15 @@ struct MandelbrotKernelTester
 {
     template<
         typename TAcc,
-        typename TSize>
+        typename TIdx>
     auto operator()(
-        TSize const & numRows,
-        TSize const & numCols,
+        TIdx const & numRows,
+        TIdx const & numCols,
         float const & fMinR,
         float const & fMaxR,
         float const & fMinI,
         float const & fMaxI,
-        TSize const & maxIterations)
+        TIdx const & maxIterations)
     -> void
     {
         std::cout << std::endl;
@@ -352,16 +352,16 @@ struct MandelbrotKernelTester
         QueueAcc queue(
             devAcc);
 
-        alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize> const extent(
-            static_cast<TSize>(numRows),
-            static_cast<TSize>(numCols));
+        alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TIdx> const extent(
+            static_cast<TIdx>(numRows),
+            static_cast<TIdx>(numCols));
 
         // Let alpaka calculate good block and grid sizes given our full problem extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TSize> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TIdx> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 extent,
-                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
+                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TIdx>::ones(),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
@@ -377,11 +377,11 @@ struct MandelbrotKernelTester
 
         // allocate host memory
         auto bufColorHost(
-            alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
+            alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
 
         // Allocate the buffer on the accelerator.
         auto bufColorAcc(
-            alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
+            alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extent));
 
         // Copy Host -> Acc.
         alpaka::mem::view::copy(queue, bufColorAcc, bufColorHost, extent);

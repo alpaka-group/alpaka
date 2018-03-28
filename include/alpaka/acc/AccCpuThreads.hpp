@@ -41,7 +41,7 @@
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/exec/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
-#include <alpaka/size/Traits.hpp>
+#include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>
@@ -59,7 +59,7 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize,
+            typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
         class ExecCpuThreads;
@@ -73,11 +73,11 @@ namespace alpaka
         //! It uses C++11 std::thread to implement the parallelism.
         template<
             typename TDim,
-            typename TSize>
+            typename TIdx>
         class AccCpuThreads final :
-            public workdiv::WorkDivMembers<TDim, TSize>,
-            public idx::gb::IdxGbRef<TDim, TSize>,
-            public idx::bt::IdxBtRefThreadIdMap<TDim, TSize>,
+            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public idx::gb::IdxGbRef<TDim, TIdx>,
+            public idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicStlLock<16>, // grid atomics
                 atomic::AtomicStlLock<16>, // block atomics
@@ -86,12 +86,12 @@ namespace alpaka
             public math::MathStl,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
-            public block::sync::BlockSyncBarrierThread<TSize>,
+            public block::sync::BlockSyncBarrierThread<TIdx>,
             public rand::RandStl,
             public time::TimeStl
         {
         public:
-            // Partial specialization with the correct TDim and TSize is not allowed.
+            // Partial specialization with the correct TDim and TIdx is not allowed.
             template<
                 typename TDim2,
                 typename TSize2,
@@ -105,10 +105,10 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuThreads(
                 TWorkDiv const & workDiv,
-                TSize const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
-                    idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
-                    idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_threadToIndexMap),
+                TIdx const & blockSharedMemDynSizeBytes) :
+                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                    idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap),
                     atomic::AtomicHierarchy<
                         atomic::AtomicStlLock<16>, // atomics between grids
                         atomic::AtomicStlLock<16>, // atomics between blocks
@@ -119,11 +119,11 @@ namespace alpaka
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
-                    block::sync::BlockSyncBarrierThread<TSize>(
+                    block::sync::BlockSyncBarrierThread<TIdx>(
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStl(),
                     time::TimeStl(),
-                    m_gridBlockIdx(vec::Vec<TDim, TSize>::zeros())
+                    m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
             {}
 
         public:
@@ -141,8 +141,8 @@ namespace alpaka
         private:
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
-            typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
-            vec::Vec<TDim, TSize> mutable m_gridBlockIdx;                   //!< The index of the currently executed block.
+            typename idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
+            vec::Vec<TDim, TIdx> mutable m_gridBlockIdx;                   //!< The index of the currently executed block.
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
@@ -157,64 +157,64 @@ namespace alpaka
             //! The CPU threads accelerator accelerator type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct AccType<
-                acc::AccCpuThreads<TDim, TSize>>
+                acc::AccCpuThreads<TDim, TIdx>>
             {
-                using type = acc::AccCpuThreads<TDim, TSize>;
+                using type = acc::AccCpuThreads<TDim, TIdx>;
             };
             //#############################################################################
             //! The CPU threads accelerator device properties get trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetAccDevProps<
-                acc::AccCpuThreads<TDim, TSize>>
+                acc::AccCpuThreads<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
-                -> acc::AccDevProps<TDim, TSize>
+                -> acc::AccDevProps<TDim, TIdx>
                 {
                     boost::ignore_unused(dev);
 
 #ifdef ALPAKA_CI
-                    auto const blockThreadCountMax(static_cast<TSize>(8));
+                    auto const blockThreadCountMax(static_cast<TIdx>(8));
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency can return 0, so 1 is the default case?
-                    auto const blockThreadCountMax(std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency() * 8)));
+                    auto const blockThreadCountMax(std::max(static_cast<TIdx>(1), static_cast<TIdx>(std::thread::hardware_concurrency() * 8)));
 #endif
                     return {
                         // m_multiProcessorCount
-                        static_cast<TSize>(1),
+                        static_cast<TIdx>(1),
                         // m_gridBlockExtentMax
-                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax
-                        std::numeric_limits<TSize>::max(),
+                        std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
-                        vec::Vec<TDim, TSize>::all(blockThreadCountMax),
+                        vec::Vec<TDim, TIdx>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
-                        std::numeric_limits<TSize>::max()};
+                        std::numeric_limits<TIdx>::max()};
                 }
             };
             //#############################################################################
             //! The CPU threads accelerator name trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetAccName<
-                acc::AccCpuThreads<TDim, TSize>>
+                acc::AccCpuThreads<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
-                    return "AccCpuThreads<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
+                    return "AccCpuThreads<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
                 }
             };
         }
@@ -227,9 +227,9 @@ namespace alpaka
             //! The CPU threads accelerator device type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DevType<
-                acc::AccCpuThreads<TDim, TSize>>
+                acc::AccCpuThreads<TDim, TIdx>>
             {
                 using type = dev::DevCpu;
             };
@@ -243,9 +243,9 @@ namespace alpaka
             //! The CPU threads accelerator dimension getter trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                acc::AccCpuThreads<TDim, TSize>>
+                acc::AccCpuThreads<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -259,15 +259,15 @@ namespace alpaka
             //! The CPU threads accelerator executor type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct ExecType<
-                acc::AccCpuThreads<TDim, TSize>,
+                acc::AccCpuThreads<TDim, TIdx>,
                 TKernelFnObj,
                 TArgs...>
             {
-                using type = exec::ExecCpuThreads<TDim, TSize, TKernelFnObj, TArgs...>;
+                using type = exec::ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>;
             };
         }
     }
@@ -279,27 +279,27 @@ namespace alpaka
             //! The CPU threads executor platform type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct PltfType<
-                acc::AccCpuThreads<TDim, TSize>>
+                acc::AccCpuThreads<TDim, TIdx>>
             {
                 using type = pltf::PltfCpu;
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads accelerator size type trait specialization.
+            //! The CPU threads accelerator idx type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
-            struct SizeType<
-                acc::AccCpuThreads<TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                acc::AccCpuThreads<TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

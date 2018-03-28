@@ -77,10 +77,10 @@ The following source code listing shows the execution of a kernel by enqueuing t
 ```C++
 // Define the dimensionality of the task.
 using Dim = alpaka::dim::DimInt<1u>;
-// Define the type of the sizes.
-using Size = std::size_t;
+// Define the type of the indexes.
+using Idx = std::size_t;
 // Define the accelerator to use.
-using Acc = alpaka::acc::AccCpuSerial<Dim, Size>;
+using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
 // Select the queue type.
 using Queue = a::queue::QueueCpuAsync;
 
@@ -90,7 +90,7 @@ auto devAcc(a::dev::DevManT<Acc>::getDevByIdx(0));
 Queue queue(devAcc);
 
 // Create a 1-dimensional work division with 256 blocks a 16 threads.
-auto const workDiv(alpaka::workdiv::WorkDivMembers<Dim, Size>(256u, 16u);
+auto const workDiv(alpaka::workdiv::WorkDivMembers<Dim, Idx>(256u, 16u);
 // Create an instance of the kernel function object.
 MyKernel kernel;
 // Create the execution task.
@@ -99,7 +99,7 @@ auto const exec(alpaka::exec::create<Acc>(workDiv, kernel/*, arguments ...*/);
 alpaka::queue::enqueue(queue, exec);
 ```
 
-The dimensionality of the task as well as the type for index and extent sizes have to be defined explicitly.
+The dimensionality of the task as well as the type for index and extent have to be defined explicitly.
 Following this, the type of accelerator to execute on, as well as the type of the queue have to be defined.
 For both of these types instances have to be created.
 For the accelerator this has to be done indirectly by enumerating the required device via the device manager, whereas the queue can be created directly.

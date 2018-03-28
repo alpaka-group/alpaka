@@ -81,12 +81,12 @@ namespace alpaka
                         static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TViewDst and TViewSrc to have greater or equal range than TExtent.
+                        // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Size = size::Size<TExtent>;
+                        using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopy(
@@ -101,10 +101,10 @@ namespace alpaka
                                 m_iSrcDevice(iSrcDevice),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_extentWidth(extent::getWidth(extent)),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
-                                m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
+                                m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst))),
+                                m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc))),
 #endif
-                                m_extentWidthBytes(extent::getWidth(extent) * static_cast<Size>(sizeof(elem::Elem<TViewDst>))),
+                                m_extentWidthBytes(extent::getWidth(extent) * static_cast<Idx>(sizeof(elem::Elem<TViewDst>))),
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
@@ -135,11 +135,11 @@ namespace alpaka
                         int m_iDstDevice;
                         int m_iSrcDevice;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        Size m_extentWidth;
-                        Size m_dstWidth;
-                        Size m_srcWidth;
+                        Idx m_extentWidth;
+                        Idx m_dstWidth;
+                        Idx m_srcWidth;
 #endif
-                        Size m_extentWidthBytes;
+                        Idx m_extentWidthBytes;
                         void * m_dstMemNative;
                         void const * m_srcMemNative;
                     };
@@ -161,12 +161,12 @@ namespace alpaka
                         static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TViewDst and TViewSrc to have greater or equal range than TExtent.
+                        // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Size = size::Size<TExtent>;
+                        using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopy(
@@ -182,18 +182,18 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_extentWidth(extent::getWidth(extent)),
 #endif
-                                m_extentWidthBytes(extent::getWidth(extent) * static_cast<Size>(sizeof(elem::Elem<TViewDst>))),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),      // required for 3D peer copy
-                                m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),      // required for 3D peer copy
+                                m_extentWidthBytes(extent::getWidth(extent) * static_cast<Idx>(sizeof(elem::Elem<TViewDst>))),
+                                m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst))),      // required for 3D peer copy
+                                m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc))),      // required for 3D peer copy
 
                                 m_extentHeight(extent::getHeight(extent)),
-                                m_dstHeight(static_cast<Size>(extent::getHeight(viewDst))),    // required for 3D peer copy
-                                m_srcHeight(static_cast<Size>(extent::getHeight(viewSrc))),    // required for 3D peer copy
+                                m_dstHeight(static_cast<Idx>(extent::getHeight(viewDst))),    // required for 3D peer copy
+                                m_srcHeight(static_cast<Idx>(extent::getHeight(viewSrc))),    // required for 3D peer copy
 
-                                m_dstpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
-                                m_srcpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
-                                m_dstPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
-                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
+                                m_dstpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
 
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
@@ -235,20 +235,20 @@ namespace alpaka
                         int m_iSrcDevice;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        Size m_extentWidth;
+                        Idx m_extentWidth;
 #endif
-                        Size m_extentWidthBytes;
-                        Size m_dstWidth;          // required for 3D peer copy
-                        Size m_srcWidth;          // required for 3D peer copy
+                        Idx m_extentWidthBytes;
+                        Idx m_dstWidth;          // required for 3D peer copy
+                        Idx m_srcWidth;          // required for 3D peer copy
 
-                        Size m_extentHeight;
-                        Size m_dstHeight;         // required for 3D peer copy
-                        Size m_srcHeight;         // required for 3D peer copy
+                        Idx m_extentHeight;
+                        Idx m_dstHeight;         // required for 3D peer copy
+                        Idx m_srcHeight;         // required for 3D peer copy
 
-                        Size m_dstpitchBytesX;
-                        Size m_srcpitchBytesX;
-                        Size m_dstPitchBytesY;
-                        Size m_srcPitchBytesY;
+                        Idx m_dstpitchBytesX;
+                        Idx m_srcpitchBytesX;
+                        Idx m_dstPitchBytesY;
+                        Idx m_srcPitchBytesY;
 
 
                         void * m_dstMemNative;
@@ -272,12 +272,12 @@ namespace alpaka
                         static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TViewDst and TViewSrc to have greater or equal range than TExtent.
+                        // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Size = size::Size<TExtent>;
+                        using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopy(
@@ -293,23 +293,23 @@ namespace alpaka
                                 m_iSrcDevice(iSrcDevice),
 
                                 m_extentWidth(extent::getWidth(extent)),
-                                m_extentWidthBytes(m_extentWidth * static_cast<Size>(sizeof(elem::Elem<TViewDst>))),
-                                m_dstWidth(static_cast<Size>(extent::getWidth(viewDst))),
-                                m_srcWidth(static_cast<Size>(extent::getWidth(viewSrc))),
+                                m_extentWidthBytes(m_extentWidth * static_cast<Idx>(sizeof(elem::Elem<TViewDst>))),
+                                m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst))),
+                                m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc))),
 
                                 m_extentHeight(extent::getHeight(extent)),
-                                m_dstHeight(static_cast<Size>(extent::getHeight(viewDst))),
-                                m_srcHeight(static_cast<Size>(extent::getHeight(viewSrc))),
+                                m_dstHeight(static_cast<Idx>(extent::getHeight(viewDst))),
+                                m_srcHeight(static_cast<Idx>(extent::getHeight(viewSrc))),
 
                                 m_extentDepth(extent::getDepth(extent)),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                                m_dstDepth(static_cast<Size>(extent::getDepth(viewDst))),
-                                m_srcDepth(static_cast<Size>(extent::getDepth(viewSrc))),
+                                m_dstDepth(static_cast<Idx>(extent::getDepth(viewDst))),
+                                m_srcDepth(static_cast<Idx>(extent::getDepth(viewSrc))),
 #endif
-                                m_dstpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
-                                m_srcpitchBytesX(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
-                                m_dstPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
-                                m_srcPitchBytesY(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
+                                m_dstpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
 
 
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
@@ -357,24 +357,24 @@ namespace alpaka
                         int m_iDstDevice;
                         int m_iSrcDevice;
 
-                        Size m_extentWidth;
-                        Size m_extentWidthBytes;
-                        Size m_dstWidth;
-                        Size m_srcWidth;
+                        Idx m_extentWidth;
+                        Idx m_extentWidthBytes;
+                        Idx m_dstWidth;
+                        Idx m_srcWidth;
 
-                        Size m_extentHeight;
-                        Size m_dstHeight;
-                        Size m_srcHeight;
+                        Idx m_extentHeight;
+                        Idx m_dstHeight;
+                        Idx m_srcHeight;
 
-                        Size m_extentDepth;
+                        Idx m_extentDepth;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        Size m_dstDepth;
-                        Size m_srcDepth;
+                        Idx m_dstDepth;
+                        Idx m_srcDepth;
 #endif
-                        Size m_dstpitchBytesX;
-                        Size m_srcpitchBytesX;
-                        Size m_dstPitchBytesY;
-                        Size m_srcPitchBytesY;
+                        Idx m_dstpitchBytesX;
+                        Idx m_srcpitchBytesX;
+                        Idx m_dstPitchBytesY;
+                        Idx m_srcPitchBytesY;
 
                         void * m_dstMemNative;
                         void const * m_srcMemNative;

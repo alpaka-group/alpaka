@@ -170,17 +170,17 @@ auto main()
 {
     // Configure types
     using Dim = alpaka::dim::DimInt<DIMENSION>;
-    using Size = std::size_t;
-    using Extents = Size;
-    using Host = alpaka::acc::AccCpuSerial<Dim, Size>;
-    using Acc = alpaka::acc::AccCpuSerial<Dim, Size>;
-//    using Acc = alpaka::acc::AccCpuOmp2Blocks<Dim, Size>;
-//    using Acc = alpaka::acc::AccGpuCudaRt<Dim, Size>;
+    using Idx = std::size_t;
+    using Extents = Idx;
+    using Host = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+//    using Acc = alpaka::acc::AccCpuOmp2Blocks<Dim, Idx>;
+//    using Acc = alpaka::acc::AccGpuCudaRt<Dim, Idx>;
     using DevHost = alpaka::dev::Dev<Host>;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
+    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
     using DevQueue = alpaka::queue::QueueCpuSync;
 //    using DevQueue = alpaka::queue::QueueCudaRtSync;
     using HostQueue = alpaka::queue::QueueCpuSync;
@@ -195,32 +195,32 @@ auto main()
 
 
     // Init workdiv
-    alpaka::vec::Vec<Dim, Size> const elementsPerThread(
+    alpaka::vec::Vec<Dim, Idx> const elementsPerThread(
 #if DIMENSION > 2
-        static_cast<Size>(1),
+        static_cast<Idx>(1),
 #endif
 #if DIMENSION > 1
-        static_cast<Size>(1),
+        static_cast<Idx>(1),
 #endif
-        static_cast<Size>(1));
+        static_cast<Idx>(1));
 
-    alpaka::vec::Vec<Dim, Size> const threadsPerBlock(
+    alpaka::vec::Vec<Dim, Idx> const threadsPerBlock(
 #if DIMENSION > 2
-        static_cast<Size>(1),
+        static_cast<Idx>(1),
 #endif
 #if DIMENSION > 1
-        static_cast<Size>(1),
+        static_cast<Idx>(1),
 #endif
-        static_cast<Size>(1));
+        static_cast<Idx>(1));
 
-    alpaka::vec::Vec<Dim, Size> const blocksPerGrid(
+    alpaka::vec::Vec<Dim, Idx> const blocksPerGrid(
 #if DIMENSION > 2
-        static_cast<Size>(4),
+        static_cast<Idx>(4),
 #endif
 #if DIMENSION > 1
-        static_cast<Size>(8),
+        static_cast<Idx>(8),
 #endif
-        static_cast<Size>(16));
+        static_cast<Idx>(16));
 
     WorkDiv const workdiv(
         blocksPerGrid,
@@ -239,20 +239,20 @@ auto main()
     using Data = std::uint32_t;
     constexpr Extents nElementsPerDim = 2;
 
-    const alpaka::vec::Vec<Dim, Size> extents(
+    const alpaka::vec::Vec<Dim, Idx> extents(
 #if DIMENSION > 2
-        static_cast<Size>(nElementsPerDim),
+        static_cast<Idx>(nElementsPerDim),
 #endif
 #if DIMENSION > 1
-        static_cast<Size>(nElementsPerDim),
+        static_cast<Idx>(nElementsPerDim),
 #endif
-        static_cast<Size>(nElementsPerDim));
+        static_cast<Idx>(nElementsPerDim));
 
     std::array<Data, nElementsPerDim * nElementsPerDim * nElementsPerDim> plainBuffer;
-    alpaka::mem::view::ViewPlainPtr<DevHost, Data, Dim, Size> hostBufferPlain(plainBuffer.data(), devHost, extents);
-    alpaka::mem::buf::Buf<DevHost, Data, Dim, Size> hostBuffer(alpaka::mem::buf::alloc<Data, Size>(devHost, extents));
-    alpaka::mem::buf::Buf<DevAcc, Data, Dim, Size> deviceBuffer1(alpaka::mem::buf::alloc<Data, Size>(devAcc, extents));
-    alpaka::mem::buf::Buf<DevAcc, Data, Dim, Size> deviceBuffer2(alpaka::mem::buf::alloc<Data, Size>(devAcc, extents));
+    alpaka::mem::view::ViewPlainPtr<DevHost, Data, Dim, Idx> hostBufferPlain(plainBuffer.data(), devHost, extents);
+    alpaka::mem::buf::Buf<DevHost, Data, Dim, Idx> hostBuffer(alpaka::mem::buf::alloc<Data, Idx>(devHost, extents));
+    alpaka::mem::buf::Buf<DevAcc, Data, Dim, Idx> deviceBuffer1(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extents));
+    alpaka::mem::buf::Buf<DevAcc, Data, Dim, Idx> deviceBuffer2(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extents));
 
 
     // Init plain host buffer

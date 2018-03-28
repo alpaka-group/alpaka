@@ -48,10 +48,10 @@
 BOOST_AUTO_TEST_SUITE(memView)
 
 //#############################################################################
-//! 1D: sizeof(TSize) * (5)
-//! 2D: sizeof(TSize) * (5, 4)
-//! 3D: sizeof(TSize) * (5, 4, 3)
-//! 4D: sizeof(TSize) * (5, 4, 3, 2)
+//! 1D: sizeof(TIdx) * (5)
+//! 2D: sizeof(TIdx) * (5, 4)
+//! 3D: sizeof(TIdx) * (5, 4, 3)
+//! 4D: sizeof(TIdx) * (5, 4, 3, 2)
 //#############################################################################
 template<
     std::size_t Tidx>
@@ -61,32 +61,32 @@ struct CreateExtentBufVal
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename TSize>
+        typename TIdx>
     static auto create(
-        TSize)
-    -> TSize
+        TIdx)
+    -> TIdx
     {
-        return sizeof(TSize) * (5u - Tidx);
+        return sizeof(TIdx) * (5u - Tidx);
     }
 };
 
 //#############################################################################
-//! 1D: sizeof(TSize) * (4)
-//! 2D: sizeof(TSize) * (4, 3)
-//! 3D: sizeof(TSize) * (4, 3, 2)
-//! 4D: sizeof(TSize) * (4, 3, 2, 1)
+//! 1D: sizeof(TIdx) * (4)
+//! 2D: sizeof(TIdx) * (4, 3)
+//! 3D: sizeof(TIdx) * (4, 3, 2)
+//! 4D: sizeof(TIdx) * (4, 3, 2, 1)
 template<
     std::size_t Tidx>
 struct CreateExtentViewVal
 {
     //-----------------------------------------------------------------------------
     template<
-        typename TSize>
+        typename TIdx>
     static auto create(
-        TSize)
-    -> TSize
+        TIdx)
+    -> TIdx
     {
-        return sizeof(TSize) * (4u - Tidx);
+        return sizeof(TIdx) * (4u - Tidx);
     }
 };
 
@@ -102,20 +102,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Size = alpaka::size::Size<TAcc>;
-    using View = alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Size>;
+    using Idx = alpaka::idx::Idx<TAcc>;
+    using View = alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Idx>;
 
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
     Queue queue(dev);
 
     // We have to be careful with the extents used.
-    // When Size is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
-    auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentBufVal>(Size()));
-    auto buf(alpaka::mem::buf::alloc<Elem, Size>(dev, extentBuf));
+    // When Idx is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
+    auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+    auto buf(alpaka::mem::buf::alloc<Elem, Idx>(dev, extentBuf));
 
     // TODO: Test failing cases of view extents larger then the underlying buffer extents.
-    auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentViewVal>(Size()));
-    auto const offsetView(alpaka::vec::Vec<Dim, Size>::all(sizeof(Size)));
+    auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
+    auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
     View view(buf, extentView, offsetView);
 
     //-----------------------------------------------------------------------------
@@ -139,11 +139,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
         auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
 
-        for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
+        for(Idx i = Dim::value; i > static_cast<Idx>(0u); --i)
         {
             BOOST_REQUIRE_EQUAL(
-                pitchBuf[i-static_cast<Size>(1u)],
-                pitchView[i-static_cast<Size>(1u)]);
+                pitchBuf[i-static_cast<Idx>(1u)],
+                pitchView[i-static_cast<Idx>(1u)]);
         }
     }
 
@@ -155,10 +155,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             reinterpret_cast<std::uint8_t *>(
                 alpaka::mem::view::getPtrNative(buf)));
         auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
-        for(Size i = Dim::value; i > static_cast<Size>(0u); --i)
+        for(Idx i = Dim::value; i > static_cast<Idx>(0u); --i)
         {
-            auto const pitch = (i < static_cast<Size>(Dim::value)) ? pitchBuf[i] : static_cast<Size>(sizeof(Elem));
-            viewPtrNative += offsetView[i - static_cast<Size>(1u)] * pitch;
+            auto const pitch = (i < static_cast<Idx>(Dim::value)) ? pitchBuf[i] : static_cast<Idx>(sizeof(Elem));
+            viewPtrNative += offsetView[i - static_cast<Idx>(1u)] * pitch;
         }
         BOOST_REQUIRE_EQUAL(
             reinterpret_cast<Elem *>(viewPtrNative),

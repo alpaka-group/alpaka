@@ -202,7 +202,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             class BufCudaRt;
 
             namespace traits
@@ -212,14 +212,14 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TSize>
+                    typename TIdx>
                 struct BufType<
                     dev::DevCudaRt,
                     TElem,
                     TDim,
-                    TSize>
+                    TIdx>
                 {
-                    using type = mem::buf::BufCudaRt<TElem, TDim, TSize>;
+                    using type = mem::buf::BufCudaRt<TElem, TDim, TIdx>;
                 };
             }
         }

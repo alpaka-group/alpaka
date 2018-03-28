@@ -42,18 +42,18 @@ namespace alpaka
             //#############################################################################
             //! The thread id map barrier block synchronization.
             template<
-                typename TSize>
+                typename TIdx>
             class BlockSyncBarrierThread
             {
             public:
                 using BlockSyncBase = BlockSyncBarrierThread;
 
-                using Barrier = core::threads::BarrierThread<TSize>;
-                using BarrierWithPredicate = core::threads::BarrierThreadWithPredicate<TSize>;
+                using Barrier = core::threads::BarrierThread<TIdx>;
+                using BarrierWithPredicate = core::threads::BarrierThreadWithPredicate<TIdx>;
 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(
-                    TSize const & blockThreadCount) :
+                    TIdx const & blockThreadCount) :
                         m_barrier(blockThreadCount),
                         m_barrierWithPredicate(blockThreadCount)
                 {}
@@ -76,13 +76,13 @@ namespace alpaka
             {
                 //#############################################################################
                 template<
-                    typename TSize>
+                    typename TIdx>
                 struct SyncBlockThreads<
-                    BlockSyncBarrierThread<TSize>>
+                    BlockSyncBarrierThread<TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
-                        block::sync::BlockSyncBarrierThread<TSize> const & blockSync)
+                        block::sync::BlockSyncBarrierThread<TIdx> const & blockSync)
                     -> void
                     {
                         blockSync.m_barrier.wait();
@@ -92,15 +92,15 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TOp,
-                    typename TSize>
+                    typename TIdx>
                 struct SyncBlockThreadsPredicate<
                     TOp,
-                    BlockSyncBarrierThread<TSize>>
+                    BlockSyncBarrierThread<TIdx>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
-                        block::sync::BlockSyncBarrierThread<TSize> const & blockSync,
+                        block::sync::BlockSyncBarrierThread<TIdx> const & blockSync,
                         int predicate)
                     -> int
                     {

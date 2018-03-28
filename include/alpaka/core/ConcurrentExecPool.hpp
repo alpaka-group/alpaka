@@ -258,7 +258,7 @@ namespace alpaka
             //! \tparam TCondVar Unused. The condition variable type used to make the threads wait if there is no work.
             //! \tparam TisYielding Boolean value if the threads should yield instead of wait for a condition variable.
             template<
-                typename TSize,
+                typename TIdx,
                 typename TConcurrentExec,
                 template<typename TFnObjReturn> class TPromise,
                 typename TYield,
@@ -275,7 +275,7 @@ namespace alpaka
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount) :
+                    TIdx concurrentExecutionCount) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
                     m_bShutdownFlag(false)
@@ -288,7 +288,7 @@ namespace alpaka
                     m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
                     // Create all concurrent executors.
-                    for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
+                    for(TIdx concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
                         m_vConcurrentExecs.emplace_back([this](){concurrentExecFn();});
                     }
@@ -369,7 +369,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of concurrent executors available.
                 auto getConcurrentExecutionCount() const
-                -> TSize
+                -> TIdx
                 {
                     return m_vConcurrentExecs.size();
                 }
@@ -440,14 +440,14 @@ namespace alpaka
             //! \tparam TMutex The mutex type used for locking threads.
             //! \tparam TCondVar The condition variable type used to make the threads wait if there is no work.
             template<
-                typename TSize,
+                typename TIdx,
                 typename TConcurrentExec,
                 template<typename TFnObjReturn> class TPromise,
                 typename TYield,
                 typename TMutex,
                 typename TCondVar>
             class ConcurrentExecPool<
-                TSize,
+                TIdx,
                 TConcurrentExec,
                 TPromise,
                 TYield,
@@ -463,7 +463,7 @@ namespace alpaka
                 //!    The guaranteed number of concurrent executors used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
                 ConcurrentExecPool(
-                    TSize concurrentExecutionCount) :
+                    TIdx concurrentExecutionCount) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
                     m_mtxWakeup(),
@@ -478,7 +478,7 @@ namespace alpaka
                     m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
                     // Create all concurrent executors.
-                    for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
+                    for(TIdx concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
                         m_vConcurrentExecs.emplace_back([this](){concurrentExecFn();});
                     }
@@ -570,7 +570,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of concurrent executors available.
                 auto getConcurrentExecutionCount() const
-                -> TSize
+                -> TIdx
                 {
                     return m_vConcurrentExecs.size();
                 }

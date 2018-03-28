@@ -82,7 +82,7 @@ namespace alpaka
             typename TDev>
         ALPAKA_FN_HOST auto getAccDevProps(
             TDev const & dev)
-        -> AccDevProps<dim::Dim<TAcc>, size::Size<TAcc>>
+        -> AccDevProps<dim::Dim<TAcc>, idx::Idx<TAcc>>
         {
             return
                 traits::GetAccDevProps<

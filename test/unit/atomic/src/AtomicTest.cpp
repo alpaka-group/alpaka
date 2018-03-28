@@ -270,10 +270,10 @@ struct TestAtomicOperations
     -> void
     {
         using Dim = alpaka::dim::Dim<TAcc>;
-        using Size = alpaka::size::Size<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
 
         alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Size>::ones());
+            alpaka::vec::Vec<Dim, Idx>::ones());
 
         AtomicTestKernel kernel;
 
@@ -291,10 +291,10 @@ struct TestAtomicOperations
 // NOTE: std::uint32_t is the only type supported by all atomic CUDA operations.
 template<
     typename TDim,
-    typename TSize,
+    typename TIdx,
     typename T>
 struct TestAtomicOperations<
-    alpaka::acc::AccGpuCudaRt<TDim, TSize>,
+    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
     T,
     typename std::enable_if<!std::is_same<std::uint32_t, T>::value>::type>
 {

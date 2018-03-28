@@ -216,18 +216,18 @@ struct MatMulTester
 {
     template<
         typename TAcc,
-        typename TSize>
+        typename TIdx>
     auto operator()(
-        TSize const & m,
-        TSize const & n,
-        TSize const & k)
+        TIdx const & m,
+        TIdx const & n,
+        TIdx const & k)
     -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
         using Val = std::uint32_t;
-        using Vec2 = alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>;
+        using Vec2 = alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TIdx>;
         using DevAcc = alpaka::dev::Dev<TAcc>;
         using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
         using QueueAcc = alpaka::test::queue::DefaultQueue<alpaka::dev::Dev<TAcc>>;
@@ -256,24 +256,24 @@ struct MatMulTester
 
         // Specify the input matrix extents.
         Vec2 const extentA(
-            static_cast<TSize>(m),
-            static_cast<TSize>(k));
+            static_cast<TIdx>(m),
+            static_cast<TIdx>(k));
 
         Vec2 const extentB(
-            static_cast<TSize>(k),
-            static_cast<TSize>(n));
+            static_cast<TIdx>(k),
+            static_cast<TIdx>(n));
 
         // Result matrix is MxN. We create one worker per result matrix cell.
         Vec2 const extentC(
-            static_cast<TSize>(m),
-            static_cast<TSize>(n));
+            static_cast<TIdx>(m),
+            static_cast<TIdx>(n));
 
         // Let alpaka calculate good block and grid sizes given our full problem extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TSize> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TIdx> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 extentC,
-                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
+                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TIdx>::ones(),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::EqualExtent));
 
@@ -299,18 +299,18 @@ struct MatMulTester
             DevHost,
             Val,
             alpaka::dim::DimInt<2u>,
-            TSize>;
+            TIdx>;
         BufWrapper bufAHost(bufAHost1d.data(), devHost, extentA);
         BufWrapper bufBHost(bufBHost1d.data(), devHost, extentB);
 
         // Allocate C and set it to zero.
-        auto bufCHost(alpaka::mem::buf::alloc<Val, TSize>(devHost, extentC));
+        auto bufCHost(alpaka::mem::buf::alloc<Val, TIdx>(devHost, extentC));
         alpaka::mem::view::set(queueHost, bufCHost, 0u, extentC);
 
         // Allocate the buffers on the accelerator.
-        auto bufAAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extentA));
-        auto bufBAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extentB));
-        auto bufCAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extentC));
+        auto bufAAcc(alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extentA));
+        auto bufBAcc(alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extentB));
+        auto bufCAcc(alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extentC));
 
         // Copy Host -> Acc.
         alpaka::mem::view::copy(queueAcc, bufAAcc, bufAHost, extentA);
@@ -327,12 +327,12 @@ struct MatMulTester
             k,
             static_cast<Val>(1),
             alpaka::mem::view::getPtrNative(bufAAcc),
-            static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
+            static_cast<TIdx>(alpaka::mem::view::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
             alpaka::mem::view::getPtrNative(bufBAcc),
-            static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
+            static_cast<TIdx>(alpaka::mem::view::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
             static_cast<Val>(1),
             alpaka::mem::view::getPtrNative(bufCAcc),
-            static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufCAcc) / sizeof(Val))));
+            static_cast<TIdx>(alpaka::mem::view::getPitchBytes<1u>(bufCAcc) / sizeof(Val))));
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
@@ -354,7 +354,7 @@ struct MatMulTester
 
         bool resultCorrect(true);
         auto const pHostData(alpaka::mem::view::getPtrNative(bufCHost));
-        for(TSize i(0u);
+        for(TIdx i(0u);
             i < m * n;
             ++i)
         {

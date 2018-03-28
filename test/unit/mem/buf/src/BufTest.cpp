@@ -48,22 +48,22 @@
 BOOST_AUTO_TEST_SUITE(memBuf)
 
 //#############################################################################
-//! 1D: sizeof(TSize) * (5)
-//! 2D: sizeof(TSize) * (5, 4)
-//! 3D: sizeof(TSize) * (5, 4, 3)
-//! 4D: sizeof(TSize) * (5, 4, 3, 2)
+//! 1D: sizeof(TIdx) * (5)
+//! 2D: sizeof(TIdx) * (5, 4)
+//! 3D: sizeof(TIdx) * (5, 4, 3)
+//! 4D: sizeof(TIdx) * (5, 4, 3, 2)
 template<
     std::size_t Tidx>
 struct CreateExtentBufVal
 {
     //-----------------------------------------------------------------------------
     template<
-        typename TSize>
+        typename TIdx>
     static auto create(
-        TSize)
-    -> TSize
+        TIdx)
+    -> TIdx
     {
-        return sizeof(TSize) * (5u - Tidx);
+        return sizeof(TIdx) * (5u - Tidx);
     }
 };
 
@@ -71,7 +71,7 @@ struct CreateExtentBufVal
 template<
     typename TAcc>
 static auto basicBufferOperationsTest(
-    alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::size::Size<TAcc>> const & extent)
+    alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
 -> void
 {
     using Dev = alpaka::dev::Dev<TAcc>;
@@ -80,17 +80,17 @@ static auto basicBufferOperationsTest(
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Size = alpaka::size::Size<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
 
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
     Queue queue(dev);
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::buf::alloc
-    auto buf(alpaka::mem::buf::alloc<Elem, Size>(dev, extent));
+    auto buf(alpaka::mem::buf::alloc<Elem, Idx>(dev, extent));
 
     //-----------------------------------------------------------------------------
-    auto const offset(alpaka::vec::Vec<Dim, Size>::zeros());
+    auto const offset(alpaka::vec::Vec<Dim, Idx>::zeros());
     alpaka::test::mem::view::viewTestImmutable<
         Elem>(
             buf,
@@ -112,9 +112,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::acc::TestAccs)
 {
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Size = alpaka::size::Size<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
 
-    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Size, CreateExtentBufVal>(Size()));
+    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
 
     basicBufferOperationsTest<
         TAcc>(
@@ -128,9 +128,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::acc::TestAccs)
 {
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Size = alpaka::size::Size<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
 
-    auto const extent(alpaka::vec::Vec<Dim, Size>::zeros());
+    auto const extent(alpaka::vec::Vec<Dim, Idx>::zeros());
 
     basicBufferOperationsTest<
         TAcc>(

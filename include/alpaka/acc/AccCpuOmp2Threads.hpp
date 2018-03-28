@@ -46,7 +46,7 @@
 #include <alpaka/exec/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
-#include <alpaka/size/Traits.hpp>
+#include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>
@@ -64,7 +64,7 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize,
+            typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
         class ExecCpuOmp2Threads;
@@ -78,11 +78,11 @@ namespace alpaka
         //! It uses OpenMP 2.0 to implement the block thread parallelism.
         template<
             typename TDim,
-            typename TSize>
+            typename TIdx>
         class AccCpuOmp2Threads final :
-            public workdiv::WorkDivMembers<TDim, TSize>,
-            public idx::gb::IdxGbRef<TDim, TSize>,
-            public idx::bt::IdxBtOmp<TDim, TSize>,
+            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public idx::gb::IdxGbRef<TDim, TIdx>,
+            public idx::bt::IdxBtOmp<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicStlLock<16>,   // grid atomics
                 atomic::AtomicOmpCritSec,    // block atomics
@@ -96,7 +96,7 @@ namespace alpaka
             public time::TimeOmp
         {
         public:
-            // Partial specialization with the correct TDim and TSize is not allowed.
+            // Partial specialization with the correct TDim and TIdx is not allowed.
             template<
                 typename TDim2,
                 typename TSize2,
@@ -110,10 +110,10 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(
                 TWorkDiv const & workDiv,
-                TSize const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
-                    idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
-                    idx::bt::IdxBtOmp<TDim, TSize>(),
+                TIdx const & blockSharedMemDynSizeBytes) :
+                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                    idx::bt::IdxBtOmp<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicStlLock<16>,// atomics between grids
                         atomic::AtomicOmpCritSec, // atomics between blocks
@@ -127,7 +127,7 @@ namespace alpaka
                     block::sync::BlockSyncBarrierOmp(),
                     rand::RandStl(),
                     time::TimeOmp(),
-                    m_gridBlockIdx(vec::Vec<TDim, TSize>::zeros())
+                    m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
             {}
 
         public:
@@ -144,7 +144,7 @@ namespace alpaka
 
         private:
             // getIdx
-            vec::Vec<TDim, TSize> mutable m_gridBlockIdx;  //!< The index of the currently executed block.
+            vec::Vec<TDim, TIdx> mutable m_gridBlockIdx;  //!< The index of the currently executed block.
         };
     }
 
@@ -156,63 +156,63 @@ namespace alpaka
             //! The CPU OpenMP 2.0 thread accelerator accelerator type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct AccType<
-                acc::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TIdx>>
             {
-                using type = acc::AccCpuOmp2Threads<TDim, TSize>;
+                using type = acc::AccCpuOmp2Threads<TDim, TIdx>;
             };
             //#############################################################################
             //! The CPU OpenMP 2.0 thread accelerator device properties get trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetAccDevProps<
-                acc::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps<TDim, TSize>
+                -> alpaka::acc::AccDevProps<TDim, TIdx>
                 {
                     boost::ignore_unused(dev);
 
                     // m_blockThreadCountMax
 #ifdef ALPAKA_CI
-                    auto const blockThreadCountMax(static_cast<TSize>(4));
+                    auto const blockThreadCountMax(static_cast<TIdx>(4));
 #else
-                    auto const blockThreadCountMax(static_cast<TSize>(omp::getMaxOmpThreads()));
+                    auto const blockThreadCountMax(static_cast<TIdx>(omp::getMaxOmpThreads()));
 #endif
                     return {
                         // m_multiProcessorCount
-                        static_cast<TSize>(1),
+                        static_cast<TIdx>(1),
                         // m_gridBlockExtentMax
-                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax
-                        std::numeric_limits<TSize>::max(),
+                        std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
-                        vec::Vec<TDim, TSize>::all(blockThreadCountMax),
+                        vec::Vec<TDim, TIdx>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        vec::Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
-                        std::numeric_limits<TSize>::max()};
+                        std::numeric_limits<TIdx>::max()};
                 }
             };
             //#############################################################################
             //! The CPU OpenMP 2.0 thread accelerator name trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct GetAccName<
-                acc::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
-                    return "AccCpuOmp2Threads<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
+                    return "AccCpuOmp2Threads<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
                 }
             };
         }
@@ -225,9 +225,9 @@ namespace alpaka
             //! The CPU OpenMP 2.0 thread accelerator device type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DevType<
-                acc::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TIdx>>
             {
                 using type = dev::DevCpu;
             };
@@ -241,9 +241,9 @@ namespace alpaka
             //! The CPU OpenMP 2.0 thread accelerator dimension getter trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct DimType<
-                acc::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -257,15 +257,15 @@ namespace alpaka
             //! The CPU OpenMP 2.0 thread accelerator executor type trait specialization.
             template<
                 typename TDim,
-                typename TSize,
+                typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct ExecType<
-                acc::AccCpuOmp2Threads<TDim, TSize>,
+                acc::AccCpuOmp2Threads<TDim, TIdx>,
                 TKernelFnObj,
                 TArgs...>
             {
-                using type = exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>;
+                using type = exec::ExecCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>;
             };
         }
     }
@@ -277,27 +277,27 @@ namespace alpaka
             //! The CPU OpenMP 2.0 thread executor platform type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
+                typename TIdx>
             struct PltfType<
-                acc::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TIdx>>
             {
                 using type = pltf::PltfCpu;
             };
         }
     }
-    namespace size
+    namespace idx
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 thread accelerator size type trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator idx type trait specialization.
             template<
                 typename TDim,
-                typename TSize>
-            struct SizeType<
-                acc::AccCpuOmp2Threads<TDim, TSize>>
+                typename TIdx>
+            struct IdxType<
+                acc::AccCpuOmp2Threads<TDim, TIdx>>
             {
-                using type = TSize;
+                using type = TIdx;
             };
         }
     }

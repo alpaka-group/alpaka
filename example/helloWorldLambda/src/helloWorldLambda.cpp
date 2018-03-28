@@ -57,17 +57,17 @@ auto main()
 {
     // Define accelerator types
     using Dim = alpaka::dim::DimInt<3>;
-    using Size = std::size_t;
-    using Host = alpaka::acc::AccCpuSerial<Dim, Size>;
-    using Acc = alpaka::acc::AccCpuSerial<Dim, Size>;
-    //using Acc = alpaka::acc::AccGpuCudaRt<Dim, Size>;    
+    using Idx = std::size_t;
+    using Host = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    //using Acc = alpaka::acc::AccGpuCudaRt<Dim, Idx>;    
     using Queue = alpaka::queue::QueueCpuSync;
     //using Queue = alpaka::queue::QueueCudaRtSync;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using DevHost = alpaka::dev::Dev<Host>;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Size>;
+    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
 
     // Get the first devices
     DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
@@ -77,20 +77,20 @@ auto main()
     Queue queue(devAcc);
 
     // Init workdiv
-    alpaka::vec::Vec<Dim, Size> const elementsPerThread(
-        static_cast<Size>(1),
-        static_cast<Size>(1),
-        static_cast<Size>(1));
+    alpaka::vec::Vec<Dim, Idx> const elementsPerThread(
+        static_cast<Idx>(1),
+        static_cast<Idx>(1),
+        static_cast<Idx>(1));
 
-    alpaka::vec::Vec<Dim, Size> const threadsPerBlock(
-        static_cast<Size>(1),
-        static_cast<Size>(1),
-        static_cast<Size>(1));
+    alpaka::vec::Vec<Dim, Idx> const threadsPerBlock(
+        static_cast<Idx>(1),
+        static_cast<Idx>(1),
+        static_cast<Idx>(1));
 
-    alpaka::vec::Vec<Dim, Size> const blocksPerGrid(
-        static_cast<Size>(1),
-        static_cast<Size>(2),
-        static_cast<Size>(4));
+    alpaka::vec::Vec<Dim, Idx> const blocksPerGrid(
+        static_cast<Idx>(1),
+        static_cast<Idx>(2),
+        static_cast<Idx>(4));
 
     WorkDiv const workdiv(
         blocksPerGrid,
