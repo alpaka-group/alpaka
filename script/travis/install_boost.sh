@@ -55,10 +55,6 @@ ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 variant=debug,release link=
 if [ "${CXX}" == "clang++" ]
 then
     ALPAKA_BOOST_B2_CXXFLAGS+=" -Wunused-private-field -Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros"
-    if ( (( ALPAKA_CI_CLANG_VER_MAJOR >= 4 )) || ( (( ALPAKA_CI_CLANG_VER_MAJOR == 3 )) && (( ALPAKA_CI_CLANG_VER_MINOR >= 6 )) ) )
-    then
-        ALPAKA_BOOST_B2_CXXFLAGS+=" -Wno-unused-local-typedef"
-    fi
 fi
 # Select the libraries required.
 ALPAKA_BOOST_B2+=" --with-test"

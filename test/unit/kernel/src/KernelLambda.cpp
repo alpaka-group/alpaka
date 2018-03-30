@@ -49,10 +49,6 @@ BOOST_AUTO_TEST_SUITE(kernel)
 // So with nvcc 7.5 this only works in CUDA only mode or by using ALPAKA_FN_ACC_CUDA_ONLY instead of ALPAKA_FN_ACC
 #if !BOOST_COMP_NVCC || BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(8, 0, 0) || defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
 
-// clang prior to 4.0.0 did not support the __host__ __device__ attributes at the nonstandard position between [] and () but only after ().
-// See: https://llvm.org/bugs/show_bug.cgi?id=26341
-#if !BOOST_COMP_CLANG_CUDA || BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(4, 0, 0)
-
 #if !ALPAKA_CI
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
@@ -202,8 +198,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             arg1,
             arg2));
 }
-#endif
-
 #endif
 
 #endif
