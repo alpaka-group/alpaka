@@ -41,11 +41,12 @@
 #include <alpaka/kernel/Traits.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 
-#include <alpaka/core/OpenMp.hpp>
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
 
 #include <boost/core/ignore_unused.hpp>
+
+#include <omp.h>
 
 #include <stdexcept>
 #include <tuple>

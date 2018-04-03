@@ -120,6 +120,13 @@ IF(${ALPAKA_DEBUG} GREATER 1)
 ENDIF()
 
 #-------------------------------------------------------------------------------
+# Check supported compilers.
+IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0)
+    MESSAGE(WARNING "Clang versions < 4.0 are not supported!")
+    SET(_ALPAKA_FOUND FALSE)
+ENDIF()
+
+#-------------------------------------------------------------------------------
 # Find Boost.
 SET(_ALPAKA_BOOST_MIN_VER "1.62.0")
 IF(${ALPAKA_DEBUG} GREATER 1)
