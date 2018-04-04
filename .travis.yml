@@ -33,7 +33,7 @@ services:
 #   [clang++] ALPAKA_CI_CLANG_LIBSTDCPP_VERSION : {5}
 #   [clang++] ALPAKA_CI_CLANG_VER               : {3.5.2, 3.6.2, 3.7.1, 3.8.1, 3.9.1, 4.0.0, 5.0.0}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
-# ALPAKA_CI                                     : {ON}
+# ALPAKA_CI                                     : {TRAVIS}
 # ALPAKA_CI_BOOST_BRANCH                        : {boost-1.62.0, boost-1.63.0, boost-1.64.0, boost-1.65.1}
 # ALPAKA_CI_CMAKE_VER                           : {3.7.2, 3.8.2, 3.9.6, 3.10.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan, ESan}
@@ -56,7 +56,7 @@ services:
 # ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE             : {ON, OFF}
 env:
     global:
-        - ALPAKA_CI=ON
+        - ALPAKA_CI=TRAVIS
         - ALPAKA_CI_DOCKER_IMAGE_NAME=alpaka_ubuntu
         - ALPAKA_CI_DOCKER_CACHE_DIR=${HOME}/cache/docker
         - ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH=${ALPAKA_CI_DOCKER_CACHE_DIR}/${ALPAKA_CI_DOCKER_IMAGE_NAME}.tar.gz
