@@ -55,12 +55,12 @@
 #include <stdexcept>
 #include <cstddef>
 
-#if (!defined(CUDART_VERSION) || (CUDART_VERSION < 7000))
-    #error "CUDA version 7.0 or greater required!"
+#if (!defined(CUDART_VERSION) || (CUDART_VERSION < 8000))
+    #error "CUDA version 8.0 or greater required!"
 #endif
 
-#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 7000))
-    #error "CUDA version 7.0 or greater required!"
+#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 8000))
+    #error "CUDA version 8.0 or greater required!"
 #endif
 
 namespace alpaka

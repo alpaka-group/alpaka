@@ -47,7 +47,7 @@
 #include <algorithm>
 
 // Some compilers do not support the out of class versions:
-// - the nvcc CUDA compiler (at least 7.0, 7.5 and 8.0)
+// - the nvcc CUDA compiler (at least 8.0)
 // - the intel compiler
 #if BOOST_COMP_NVCC || BOOST_COMP_INTEL || (BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(4, 0, 0)) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 0, 0))
     #define ALPAKA_CREATE_VEC_IN_CLASS
