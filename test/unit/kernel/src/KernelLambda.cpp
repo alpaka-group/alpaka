@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_SUITE(kernel)
 // So with nvcc 7.5 this only works in CUDA only mode or by using ALPAKA_FN_ACC_CUDA_ONLY instead of ALPAKA_FN_ACC
 #if !BOOST_COMP_NVCC || BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(8, 0, 0) || defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
 
-#if !ALPAKA_CI
+#if !defined(ALPAKA_CI)
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     lambdaKernelIsWorking,
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
 // Generic lambdas are a C++14 feature.
 #if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
-#if !ALPAKA_CI
+#if !defined(ALPAKA_CI)
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     genericLambdaKernelIsWorking,
