@@ -542,7 +542,8 @@ SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_OTHER} PROPERTIES HEADER_FILE_ONLY T
 #-------------------------------------------------------------------------------
 # Target.
 IF(NOT TARGET "alpaka")
-    ADD_LIBRARY("alpaka" INTERFACE)
+    ADD_LIBRARY(alpaka INTERFACE)
+    ADD_LIBRARY(${PROJECT_NAME}::alpaka ALIAS alpaka)
 
     # HACK: Workaround for the limitation that files added to INTERFACE targets (target_sources) can not be marked as PUBLIC or PRIVATE but only as INTERFACE.
     # Therefore those files will be added to projects "linking" to the INTERFACE library, but are not added to the project itself within an IDE.
