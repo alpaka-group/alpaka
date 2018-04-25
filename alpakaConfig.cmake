@@ -127,7 +127,7 @@ IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DETAILED_FAILURE_MSG ON)
 ENDIF()
 IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
-    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread chrono date_time)
+    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread atomic chrono date_time)
     IF(NOT Boost_FIBER_FOUND)
         MESSAGE(STATUS "Optional alpaka dependency Boost fiber could not be found! Fibers back-end disabled!")
         SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers CPU back-end" FORCE)
@@ -212,7 +212,7 @@ ELSE()
             LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC
                  Boost::boost
                  Boost::fiber Boost::context Boost::system Boost::thread
-                 Boost::chrono Boost::date_time
+                 Boost::chrono Boost::date_time Boost::atomic
             )
         ELSE()
             # fallback: Boost version is too new for CMake
