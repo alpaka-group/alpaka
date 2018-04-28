@@ -134,7 +134,7 @@ IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DETAILED_FAILURE_MSG ON)
 ENDIF()
 IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
-    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread chrono date_time)
+    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread atomic chrono date_time)
     IF(NOT Boost_FIBER_FOUND)
         MESSAGE(STATUS "Optional alpaka dependency Boost fiber could not be found! Fibers back-end disabled!")
         SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers CPU back-end" FORCE)
@@ -213,8 +213,29 @@ IF(NOT Boost_FOUND)
     SET(_ALPAKA_FOUND FALSE)
 
 ELSE()
-    LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC ${Boost_INCLUDE_DIRS})
-    LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC ${Boost_LIBRARIES})
+    IF(Boost_FIBER_FOUND)
+        # Boost fiber and default header-only libraries
+        IF(TARGET Boost::fiber)
+            LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC
+                 Boost::boost
+                 Boost::fiber Boost::context Boost::system Boost::thread
+                 Boost::chrono Boost::date_time Boost::atomic
+            )
+        ELSE()
+            # fallback: Boost version is too new for CMake
+            LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC ${Boost_INCLUDE_DIRS})
+            LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC ${Boost_LIBRARIES})
+        ENDIF()
+    ELSE()
+        # header-only libraries
+        IF(TARGET Boost::boost)
+            LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC Boost::boost)
+        ELSE()
+            # fallback: Boost version is too new for CMake
+            LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC ${Boost_INCLUDE_DIRS})
+            LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC ${Boost_LIBRARIES})
+        ENDIF()
+    ENDIF()
 ENDIF()
 
 #-------------------------------------------------------------------------------
@@ -497,7 +518,6 @@ IF(ALPAKA_CI)
 ENDIF()
 
 SET(_ALPAKA_INCLUDE_DIRECTORY "${_ALPAKA_ROOT_DIR}/include")
-LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${_ALPAKA_INCLUDE_DIRECTORY}")
 SET(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
 
 SET(_ALPAKA_LINK_LIBRARY)
@@ -569,8 +589,14 @@ IF(NOT TARGET "alpaka")
     IF(${_ALPAKA_INCLUDE_DIRECTORIES_PUBLIC_LENGTH} GREATER 0)
         TARGET_INCLUDE_DIRECTORIES(
             "alpaka"
+            SYSTEM
             INTERFACE ${_ALPAKA_INCLUDE_DIRECTORIES_PUBLIC})
     ENDIF()
+    # the alpaka library itself
+    TARGET_INCLUDE_DIRECTORIES(
+        "alpaka"
+        INTERFACE ${_ALPAKA_INCLUDE_DIRECTORY}
+    )
 
     # Link libraries.
     # There are no PUBLIC_LINK_FLAGS in CMAKE:
@@ -613,6 +639,7 @@ list_add_prefix("-D" alpaka_DEFINITIONS)
 LIST(APPEND alpaka_DEFINITIONS ${_ALPAKA_COMPILE_OPTIONS_PUBLIC})
 SET(alpaka_INCLUDE_DIR ${_ALPAKA_INCLUDE_DIRECTORY})
 SET(alpaka_INCLUDE_DIRS ${_ALPAKA_INCLUDE_DIRECTORIES_PUBLIC})
+LIST(APPEND alpaka_INCLUDE_DIRS ${_ALPAKA_INCLUDE_DIRECTORY})
 SET(alpaka_LIBRARY ${_ALPAKA_LINK_LIBRARY})
 SET(alpaka_LIBRARIES ${_ALPAKA_LINK_FLAGS_PUBLIC})
 LIST(APPEND alpaka_LIBRARIES ${_ALPAKA_LINK_LIBRARIES_PUBLIC})
