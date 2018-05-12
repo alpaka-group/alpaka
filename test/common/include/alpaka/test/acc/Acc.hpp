@@ -250,7 +250,9 @@ namespace alpaka
             //! A std::tuple holding idx types.
             using TestIdxs =
                 std::tuple<
-                    std::size_t,
+                    // size_t is most probably identical to either std::uint64_t or std::uint32_t.
+                    // This would lead to duplicate tests (especially test names) which is not allowed.
+                    //std::size_t,
                     std::int64_t,
                     std::uint64_t,
                     std::int32_t,

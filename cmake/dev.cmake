@@ -111,6 +111,16 @@ ELSE()
             LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wduplicated-cond")
             LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wsubobject-linkage")
         ENDIF()
+        IF(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7.0)
+            # This warning might be useful but it is triggered by comile-time code where it does not make any sense:
+            # E.g. "vec::Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem>" when both values are equal
+            #LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wduplicated-branches")
+            LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Walloc-zero")
+            LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Walloca")
+        ENDIF()
+        IF(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+            LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wcast-align=strict")
+        ENDIF()
         # By marking the boost headers as system headers, warnings produced within them are ignored.
         FIND_PACKAGE(Boost QUIET)
         IF(NOT Boost_FOUND)
