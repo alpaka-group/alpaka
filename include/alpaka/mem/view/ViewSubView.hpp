@@ -146,9 +146,7 @@ namespace alpaka
                         std::is_same<TDim, dim::Dim<TOffsets>>::value,
                         "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-                    assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
-                    assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
-                    assert((offset::getOffsetZ(relativeOffsetsElements)+extent::getDepth(extentElements)) <= extent::getDepth(view));
+                    assert(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -197,9 +195,7 @@ namespace alpaka
                         std::is_same<TDim, dim::Dim<TOffsets>>::value,
                         "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-                    assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
-                    assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
-                    assert((offset::getOffsetZ(relativeOffsetsElements)+extent::getDepth(extentElements)) <= extent::getDepth(view));
+                    assert(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
                 }
 
             public:
