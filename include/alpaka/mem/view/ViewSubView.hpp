@@ -51,11 +51,6 @@ namespace alpaka
             class ViewSubView
             {
             public:
-                using Dev = TDev;
-                using Elem = TElem;
-                using Dim = TDim;
-
-            public:
                 //-----------------------------------------------------------------------------
                 //! \param view The view this view is a sub-view of.
                 template<
@@ -65,12 +60,20 @@ namespace alpaka
                         m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
-                            extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytesVecEnd<TDim>(view)),
-                        m_extentElements(extent::getExtentVecEnd<TDim>(view)),
+                            extent::getExtentVec(view),
+                            mem::view::getPitchBytesVec(view)),
+                        m_extentElements(extent::getExtentVec(view)),
                         m_offsetsElements(vec::Vec<TDim, TIdx>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                    static_assert(
+                        std::is_same<TDev, dev::Dev<TView>>::value,
+                        "The idx type of TView and the TDev template parameter have to be identical!");
+
+                    static_assert(
+                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        "The idx type of TView and the TIdx template parameter have to be identical!");
                 }
                 //-----------------------------------------------------------------------------
                 //! \param view The view this view is a sub-view of.
@@ -81,12 +84,16 @@ namespace alpaka
                         m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
-                            extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytesVecEnd<TDim>(view)),
-                        m_extentElements(extent::getExtentVecEnd<TDim>(view)),
+                            extent::getExtentVec(view),
+                            mem::view::getPitchBytesVec(view)),
+                        m_extentElements(extent::getExtentVec(view)),
                         m_offsetsElements(vec::Vec<TDim, TIdx>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                    static_assert(
+                        std::is_same<TDev, dev::Dev<TView>>::value,
+                        "The idx type of TView and the TDev template parameter have to be identical!");
 
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TView>>::value,
@@ -108,22 +115,36 @@ namespace alpaka
                         m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
-                            extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytesVecEnd<TDim>(view)),
-                        m_extentElements(extent::getExtentVecEnd<TDim>(extentElements)),
-                        m_offsetsElements(offset::getOffsetVecEnd<TDim>(relativeOffsetsElements))
+                            extent::getExtentVec(view),
+                            mem::view::getPitchBytesVec(view)),
+                        m_extentElements(extent::getExtentVec(extentElements)),
+                        m_offsetsElements(offset::getOffsetVec(relativeOffsetsElements))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TExtent>>::value,
-                        "The buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<TDev, dev::Dev<TView>>::value,
+                        "The idx type of TView and the TDev template parameter have to be identical!");
+
+                    static_assert(
+                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        "The idx type of TView and the TIdx template parameter have to be identical!");
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TExtent>>::value,
                         "The idx type of TExtent and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TView>>::value,
-                        "The idx type of TView and the TIdx template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TOffsets>>::value,
+                        "The idx type of TOffsets and the TIdx template parameter have to be identical!");
+
+                    static_assert(
+                        std::is_same<TDim, dim::Dim<TView>>::value,
+                        "The dim type of TView and the TDim template parameter have to be identical!");
+                    static_assert(
+                        std::is_same<TDim, dim::Dim<TExtent>>::value,
+                        "The dim type of TExtent and the TDim template parameter have to be identical!");
+                    static_assert(
+                        std::is_same<TDim, dim::Dim<TOffsets>>::value,
+                        "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
                     assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
                     assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
@@ -145,22 +166,36 @@ namespace alpaka
                         m_viewParentView(
                             mem::view::getPtrNative(view),
                             dev::getDev(view),
-                            extent::getExtentVecEnd<TDim>(view),
-                            mem::view::getPitchBytesVecEnd<TDim>(view)),
-                        m_extentElements(extent::getExtentVecEnd<TDim>(extentElements)),
-                        m_offsetsElements(offset::getOffsetVecEnd<TDim>(relativeOffsetsElements))
+                            extent::getExtentVec(view),
+                            mem::view::getPitchBytesVec(view)),
+                        m_extentElements(extent::getExtentVec(extentElements)),
+                        m_offsetsElements(offset::getOffsetVec(relativeOffsetsElements))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TExtent>>::value,
-                        "The buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<TDev, dev::Dev<TView>>::value,
+                        "The idx type of TView and the TDev template parameter have to be identical!");
+
+                    static_assert(
+                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        "The idx type of TView and the TIdx template parameter have to be identical!");
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TExtent>>::value,
                         "The idx type of TExtent and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TView>>::value,
-                        "The idx type of TView and the TIdx template parameter have to be identical!");
+                        std::is_same<TIdx, idx::Idx<TOffsets>>::value,
+                        "The idx type of TOffsets and the TIdx template parameter have to be identical!");
+
+                    static_assert(
+                        std::is_same<TDim, dim::Dim<TView>>::value,
+                        "The dim type of TView and the TDim template parameter have to be identical!");
+                    static_assert(
+                        std::is_same<TDim, dim::Dim<TExtent>>::value,
+                        "The dim type of TExtent and the TDim template parameter have to be identical!");
+                    static_assert(
+                        std::is_same<TDim, dim::Dim<TOffsets>>::value,
+                        "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
                     assert((offset::getOffsetX(relativeOffsetsElements)+extent::getWidth(extentElements)) <= extent::getWidth(view));
                     assert((offset::getOffsetY(relativeOffsetsElements)+extent::getHeight(extentElements)) <= extent::getHeight(view));
