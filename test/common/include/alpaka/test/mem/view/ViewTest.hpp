@@ -126,7 +126,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::mem::view::traits::GetPtrNative
                     {
-                        if(alpaka::extent::getProductOfExtent(view) != static_cast<TIdx>(0u))
+                        if(alpaka::extent::getExtentProduct(view) != static_cast<TIdx>(0u))
                         {
                             // The pointer is only required to be non-null when the extent is > 0.
                             TElem const * const invalidPtr(nullptr);

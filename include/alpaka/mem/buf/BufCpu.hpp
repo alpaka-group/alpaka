@@ -126,7 +126,7 @@ namespace alpaka
                             TExtent const & extent)
                         -> TIdx
                         {
-                            auto const extentElementCount(extent::getProductOfExtent(extent));
+                            auto const extentElementCount(extent::getExtentProduct(extent));
 
                             return extentElementCount;
                         }
@@ -472,7 +472,7 @@ namespace alpaka
                                 ALPAKA_CUDA_RT_CHECK_IGNORE(
                                     cudaHostRegister(
                                         const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                        extent::getProductOfExtent(buf) * sizeof(elem::Elem<buf::BufCpu<TElem, TDim, TIdx>>),
+                                        extent::getExtentProduct(buf) * sizeof(elem::Elem<buf::BufCpu<TElem, TDim, TIdx>>),
                                         cudaHostRegisterDefault),
                                     cudaErrorHostMemoryAlreadyRegistered);
 
