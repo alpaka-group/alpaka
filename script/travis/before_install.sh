@@ -153,15 +153,6 @@ then
             fi
         fi
 
-        if (( ALPAKA_CUDA_VER_MAJOR >= 9 ))
-        then
-            if (( ALPAKA_CI_BOOST_BRANCH_MINOR < 65 ))
-            then
-                echo nvcc "${ALPAKA_CUDA_VER}" does not support boost version prior to 1.65.1!
-                exit 1
-            fi
-        fi
-
         # FIXME: BOOST_AUTO_TEST_CASE_TEMPLATE is not compilable with nvcc in Release mode.
         if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
         then
