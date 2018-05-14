@@ -131,7 +131,7 @@ namespace alpaka
             template<
                 typename TExtent,
                 size_t... TIndices>
-            ALPAKA_FN_HOST_ACC auto getProductOfExtentInternal(
+            ALPAKA_FN_HOST_ACC auto getExtentProductInternal(
                 TExtent const & extent,
 #if BOOST_ARCH_CUDA_DEVICE
                 alpaka::meta::IndexSequence<TIndices...> const &)
@@ -155,13 +155,13 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtent>
-        ALPAKA_FN_HOST_ACC auto getProductOfExtent(
+        ALPAKA_FN_HOST_ACC auto getExtentProduct(
             TExtent const & extent = TExtent())
         -> idx::Idx<TExtent>
         {
             using IdxSequence = alpaka::meta::MakeIndexSequence<dim::Dim<TExtent>::value>;
             return
-                detail::getProductOfExtentInternal(
+                detail::getExtentProductInternal(
                     extent,
                     IdxSequence());
         }

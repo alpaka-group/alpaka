@@ -287,7 +287,7 @@ struct MatMulTester
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
-        // Allocate the A and B matrices as st::vectors because this allows them to be filled with uint32_t(1).
+        // Allocate the A and B matrices as std::vectors because this allows them to be filled with uint32_t(1).
         // alpaka::mem::view::set only supports setting all bytes leading to a value of 16843009 in all elements.
         std::vector<Val> bufAHost1d(m * k, static_cast<Val>(1));
         std::vector<Val> bufBHost1d(k * n, static_cast<Val>(1));
