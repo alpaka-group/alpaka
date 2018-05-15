@@ -364,6 +364,12 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDIF()
 
             ELSE()
+                # CUDA 9.0 removed the __CUDACC_VER__ macro. Boost versions lower than 1.65.1 still use this macro.
+                IF(CUDA_VERSION VERSION_GREATER_EQUAL 9.0 AND Boost_VERSION VERSION_LESS 1.65.1)
+                    MESSAGE(WARNING "CUDA 9.0 or newer requires boost-1.65.1 or newer!")
+                    SET(_ALPAKA_FOUND FALSE)
+                ENDIF()
+
                 # Clean up the flags. Else, multiple find calls would result in duplicate flags. Furthermore, other modules may have set different settings.
                 SET(CUDA_NVCC_FLAGS)
 
