@@ -69,7 +69,7 @@ namespace alpaka
 
                     static_assert(
                         std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The idx type of TView and the TDev template parameter have to be identical!");
+                        "The dev type of TView and the TDev template parameter have to be identical!");
 
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TView>>::value,
@@ -93,7 +93,7 @@ namespace alpaka
 
                     static_assert(
                         std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The idx type of TView and the TDev template parameter have to be identical!");
+                        "The dev type of TView and the TDev template parameter have to be identical!");
 
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TView>>::value,
@@ -124,7 +124,7 @@ namespace alpaka
 
                     static_assert(
                         std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The idx type of TView and the TDev template parameter have to be identical!");
+                        "The dev type of TView and the TDev template parameter have to be identical!");
 
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TView>>::value,
@@ -173,7 +173,7 @@ namespace alpaka
 
                     static_assert(
                         std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The idx type of TView and the TDev template parameter have to be identical!");
+                        "The dev type of TView and the TDev template parameter have to be identical!");
 
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TView>>::value,
