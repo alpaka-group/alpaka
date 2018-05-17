@@ -52,6 +52,8 @@ BOOST_AUTO_TEST_SUITE(memView)
 //! 2D: sizeof(TIdx) * (5, 4)
 //! 3D: sizeof(TIdx) * (5, 4, 3)
 //! 4D: sizeof(TIdx) * (5, 4, 3, 2)
+// We have to be careful with the extents used.
+// When Idx is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
 //#############################################################################
 template<
     std::size_t Tidx>
@@ -112,8 +114,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
     Queue queue(dev);
 
-    // We have to be careful with the extents used.
-    // When Idx is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
     auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
     auto buf(alpaka::mem::buf::alloc<Elem, Idx>(dev, extentBuf));
 
