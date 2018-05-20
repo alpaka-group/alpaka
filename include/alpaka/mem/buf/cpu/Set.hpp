@@ -54,7 +54,7 @@ namespace alpaka
                         typename TDim,
                         typename TView,
                         typename TExtent>
-                    struct TaskSetBase
+                    struct TaskSetCpuBase
                     {
                         using ExtentSize = idx::Idx<TExtent>;
                         using DstSize = idx::Idx<TView>;
@@ -72,7 +72,7 @@ namespace alpaka
                             "The view and the extent are required to have compatible idx type!");
 
                         //-----------------------------------------------------------------------------
-                        TaskSetBase(
+                        TaskSetCpuBase(
                             TView & view,
                             std::uint8_t const & byte,
                             TExtent const & extent) :
@@ -120,14 +120,14 @@ namespace alpaka
                         typename TDim,
                         typename TView,
                         typename TExtent>
-                    struct TaskSet : public TaskSetBase<TDim, TView, TExtent>
+                    struct TaskSetCpu : public TaskSetCpuBase<TDim, TView, TExtent>
                     {
                         using DimMin1 = dim::DimInt<TDim::value - 1u>;
-                        using typename TaskSetBase<TDim, TView, TExtent>::ExtentSize;
-                        using typename TaskSetBase<TDim, TView, TExtent>::DstSize;
+                        using typename TaskSetCpuBase<TDim, TView, TExtent>::ExtentSize;
+                        using typename TaskSetCpuBase<TDim, TView, TExtent>::DstSize;
 
                         //-----------------------------------------------------------------------------
-                        using TaskSetBase<TDim, TView, TExtent>::TaskSetBase;
+                        using TaskSetCpuBase<TDim, TView, TExtent>::TaskSetCpuBase;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const
@@ -163,13 +163,13 @@ namespace alpaka
                     template<
                         typename TView,
                         typename TExtent>
-                    struct TaskSet<
+                    struct TaskSetCpu<
                         dim::DimInt<1u>,
                         TView,
-                        TExtent> : public TaskSetBase<dim::DimInt<1u>, TView, TExtent>
+                        TExtent> : public TaskSetCpuBase<dim::DimInt<1u>, TView, TExtent>
                     {
                         //-----------------------------------------------------------------------------
-                        using TaskSetBase<dim::DimInt<1u>, TView, TExtent>::TaskSetBase;
+                        using TaskSetCpuBase<dim::DimInt<1u>, TView, TExtent>::TaskSetCpuBase;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const
@@ -198,7 +198,7 @@ namespace alpaka
                 //! The CPU device memory set trait specialization.
                 template<
                     typename TDim>
-                struct TaskSet<
+                struct CreateTaskSet<
                     TDim,
                     dev::DevCpu>
                 {
@@ -206,17 +206,17 @@ namespace alpaka
                     template<
                         typename TExtent,
                         typename TView>
-                    ALPAKA_FN_HOST static auto taskSet(
+                    ALPAKA_FN_HOST static auto createTaskSet(
                         TView & view,
                         std::uint8_t const & byte,
                         TExtent const & extent)
-                    -> cpu::detail::TaskSet<
+                    -> cpu::detail::TaskSetCpu<
                         TDim,
                         TView,
                         TExtent>
                     {
                         return
-                            cpu::detail::TaskSet<
+                            cpu::detail::TaskSetCpu<
                                 TDim,
                                 TView,
                                 TExtent>(

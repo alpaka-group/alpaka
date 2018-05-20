@@ -57,7 +57,7 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopyBase
+                    struct TaskCopyCpuBase
                     {
                         using ExtentSize = idx::Idx<TExtent>;
                         using DstSize = idx::Idx<TViewDst>;
@@ -86,7 +86,7 @@ namespace alpaka
                             "The source and the destination view are required to have the same element type!");
 
                         //-----------------------------------------------------------------------------
-                        TaskCopyBase(
+                        TaskCopyCpuBase(
                             TViewDst & viewDst,
                             TViewSrc const & viewSrc,
                             TExtent const & extent) :
@@ -148,15 +148,15 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopy : public TaskCopyBase<TDim, TViewDst, TViewSrc, TExtent>
+                    struct TaskCopyCpu : public TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>
                     {
                         using DimMin1 = dim::DimInt<TDim::value - 1u>;
-                        using typename TaskCopyBase<TDim, TViewDst, TViewSrc, TExtent>::ExtentSize;
-                        using typename TaskCopyBase<TDim, TViewDst, TViewSrc, TExtent>::DstSize;
-                        using typename TaskCopyBase<TDim, TViewDst, TViewSrc, TExtent>::SrcSize;
+                        using typename TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>::ExtentSize;
+                        using typename TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>::DstSize;
+                        using typename TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>::SrcSize;
 
                         //-----------------------------------------------------------------------------
-                        using TaskCopyBase<TDim, TViewDst, TViewSrc, TExtent>::TaskCopyBase;
+                        using TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>::TaskCopyCpuBase;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const
@@ -194,14 +194,14 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopy<
+                    struct TaskCopyCpu<
                         dim::DimInt<1u>,
                         TViewDst,
                         TViewSrc,
-                        TExtent> : public TaskCopyBase<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>
+                        TExtent> : public TaskCopyCpuBase<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>
                     {
                         //-----------------------------------------------------------------------------
-                        using TaskCopyBase<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopyBase;
+                        using TaskCopyCpuBase<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopyCpuBase;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const
@@ -232,7 +232,7 @@ namespace alpaka
                 //! Copies from CPU memory into CPU memory.
                 template<
                     typename TDim>
-                struct TaskCopy<
+                struct CreateTaskCopy<
                     TDim,
                     dev::DevCpu,
                     dev::DevCpu>
@@ -242,18 +242,18 @@ namespace alpaka
                         typename TExtent,
                         typename TViewSrc,
                         typename TViewDst>
-                    ALPAKA_FN_HOST static auto taskCopy(
+                    ALPAKA_FN_HOST static auto createTaskCopy(
                         TViewDst & viewDst,
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
-                    -> cpu::detail::TaskCopy<
+                    -> cpu::detail::TaskCopyCpu<
                         TDim,
                         TViewDst,
                         TViewSrc,
                         TExtent>
                     {
                         return
-                            cpu::detail::TaskCopy<
+                            cpu::detail::TaskCopyCpu<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,

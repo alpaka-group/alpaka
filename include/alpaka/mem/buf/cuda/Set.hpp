@@ -66,10 +66,10 @@ namespace alpaka
                         typename TDim,
                         typename TView,
                         typename TExtent>
-                    struct TaskSet
+                    struct TaskSetCuda
                     {
                         //-----------------------------------------------------------------------------
-                        TaskSet(
+                        TaskSetCuda(
                             TView & buf,
                             std::uint8_t const & byte,
                             TExtent const & extent) :
@@ -96,7 +96,7 @@ namespace alpaka
                 //! The CUDA device memory set trait specialization.
                 template<
                     typename TDim>
-                struct TaskSet<
+                struct CreateTaskSet<
                     TDim,
                     dev::DevCudaRt>
                 {
@@ -104,17 +104,17 @@ namespace alpaka
                     template<
                         typename TExtent,
                         typename TView>
-                    ALPAKA_FN_HOST static auto taskSet(
+                    ALPAKA_FN_HOST static auto createTaskSet(
                         TView & buf,
                         std::uint8_t const & byte,
                         TExtent const & extent)
-                    -> mem::view::cuda::detail::TaskSet<
+                    -> mem::view::cuda::detail::TaskSetCuda<
                         TDim,
                         TView,
                         TExtent>
                     {
                         return
-                            mem::view::cuda::detail::TaskSet<
+                            mem::view::cuda::detail::TaskSetCuda<
                                 TDim,
                                 TView,
                                 TExtent>(
@@ -137,12 +137,12 @@ namespace alpaka
                 typename TExtent>
             struct Enqueue<
                 queue::QueueCudaRtAsync,
-                mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TView, TExtent>>
+                mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtAsync & queue,
-                    mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TView, TExtent> const & task)
+                    mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -189,12 +189,12 @@ namespace alpaka
                 typename TExtent>
             struct Enqueue<
                 queue::QueueCudaRtSync,
-                mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TView, TExtent>>
+                mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtSync &,
-                    mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TView, TExtent> const & task)
+                    mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -240,12 +240,12 @@ namespace alpaka
                 typename TExtent>
             struct Enqueue<
                 queue::QueueCudaRtAsync,
-                mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TView, TExtent>>
+                mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtAsync & queue,
-                    mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TView, TExtent> const & task)
+                    mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -298,12 +298,12 @@ namespace alpaka
                 typename TExtent>
             struct Enqueue<
                 queue::QueueCudaRtSync,
-                mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TView, TExtent>>
+                mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtSync &,
-                    mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TView, TExtent> const & task)
+                    mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -355,12 +355,12 @@ namespace alpaka
                 typename TExtent>
             struct Enqueue<
                 queue::QueueCudaRtAsync,
-                mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TView, TExtent>>
+                mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtAsync & queue,
-                    mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TView, TExtent> const & task)
+                    mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -429,12 +429,12 @@ namespace alpaka
                 typename TExtent>
             struct Enqueue<
                 queue::QueueCudaRtSync,
-                mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TView, TExtent>>
+                mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtSync &,
-                    mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TView, TExtent> const & task)
+                    mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
