@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2016 Erik Zenker
+ * Copyright 2014-2018 Erik Zenker, Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -32,14 +32,23 @@
 //! and might be useful when it is necessary
 //! to lift an existing function into a kernel
 //! function.
-template<typename Acc>
-void ALPAKA_FN_ACC hiWorldFunction(Acc& acc, size_t const nExclamationMarks){
-    auto globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-    auto globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
-    auto linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(globalThreadIdx,
+template<
+    typename TAcc>
+void ALPAKA_FN_ACC hiWorldFunction(
+    TAcc& acc,
+    size_t const nExclamationMarks)
+{
+    using Dim = alpaka::dim::Dim<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
+    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    using Vec1 = alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Idx>;
+
+    Vec const globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+    Vec const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+    Vec1 const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(globalThreadIdx,
                                                               globalThreadExtent);
                                                           
-    printf("[z:%u, y:%u, x:%u][linear:%u] Hi world from a std::function",
+    printf("[z:%u, y:%u, x:%u][linear:%u] Hi world from a function",
            static_cast<unsigned>(globalThreadIdx[0]),
            static_cast<unsigned>(globalThreadIdx[1]),
            static_cast<unsigned>(globalThreadIdx[2]),
@@ -55,44 +64,33 @@ void ALPAKA_FN_ACC hiWorldFunction(Acc& acc, size_t const nExclamationMarks){
 auto main()
 -> int
 {
-    // Define accelerator types
+    // Define the index domain
     using Dim = alpaka::dim::DimInt<3>;
     using Idx = std::size_t;
-    using Host = alpaka::acc::AccCpuSerial<Dim, Idx>;
+
+    // Define the accelerator
     using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
-    //using Acc = alpaka::acc::AccGpuCudaRt<Dim, Idx>;    
     using Queue = alpaka::queue::QueueCpuSync;
-    //using Queue = alpaka::queue::QueueCudaRtSync;
-    using DevAcc = alpaka::dev::Dev<Acc>;
-    using DevHost = alpaka::dev::Dev<Host>;
-    using PltfHost = alpaka::pltf::Pltf<DevHost>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
+    using Dev = alpaka::dev::Dev<Acc>;
+    using Pltf = alpaka::pltf::Pltf<Dev>;
 
-    // Get the first devices
-    DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
-    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+    // Select a device
+    Dev const devAcc(alpaka::pltf::getDevByIdx<Pltf>(0u));
 
-    // Create a queue to the accelerator device
+    // Create a queue on the device
     Queue queue(devAcc);
 
-    // Init workdiv
-    alpaka::vec::Vec<Dim, Idx> const elementsPerThread(
-        static_cast<Idx>(1),
-        static_cast<Idx>(1),
-        static_cast<Idx>(1));
-
-    alpaka::vec::Vec<Dim, Idx> const threadsPerBlock(
-        static_cast<Idx>(1),
-        static_cast<Idx>(1),
-        static_cast<Idx>(1));
-
-    alpaka::vec::Vec<Dim, Idx> const blocksPerGrid(
+    // Define the work division
+    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
+    Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
+    Vec const blocksPerGrid(
         static_cast<Idx>(1),
         static_cast<Idx>(2),
         static_cast<Idx>(4));
 
-    WorkDiv const workdiv(
+    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
+    WorkDiv const workDiv(
         blocksPerGrid,
         threadsPerBlock,
         elementsPerThread);
@@ -105,7 +103,7 @@ auto main()
 // So with nvcc 7.5 this only works in CUDA only mode or by using ALPAKA_FN_ACC_CUDA_ONLY instead of ALPAKA_FN_ACC
 #if !BOOST_COMP_NVCC || BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(8, 0, 0) || defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
 
-    // Run "Hello World" kernel with lambda function
+    // Run "Hello World" kernel with a lambda function
     //
     // Alpaka is able to execute lambda functions (anonymous functions) which
     // are available since the C++11 standard.
@@ -117,13 +115,8 @@ auto main()
     // This example passes the number exclamation marks, that should
     // be written after we greet the world, to the 
     // lambda function.
-    // 
-    // This kind of kernel function
-    // declaration might be useful when small kernels
-    // are written for testing or lambda functions
-    // already exist.
-    auto const helloWorld(alpaka::exec::create<Acc>(
-        workdiv,
+    auto const helloWorldKernel(alpaka::exec::create<Acc>(
+        workDiv,
         [] ALPAKA_FN_ACC (Acc & acc, size_t const nExclamationMarksAsArg) -> void {
             auto globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
             auto globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
@@ -145,12 +138,12 @@ auto main()
         nExclamationMarks
     ));
 
-    alpaka::queue::enqueue(queue, helloWorld);
+    alpaka::queue::enqueue(queue, helloWorldKernel);
 
 #endif
 #endif
     
-    // Run "Hello World" kernel with std::function
+    // Run "Hello World" kernel with a std::function
     //
     // This kernel says hi to world by using 
     // std::functions, which are available since
@@ -164,14 +157,14 @@ auto main()
     // std::function and provide it to the alpaka 
     // library.
     auto const hiWorld (alpaka::exec::create<Acc> (
-        workdiv,
+        workDiv,
         std::function<void(Acc&, size_t)>( hiWorldFunction<Acc> ),
-        nExclamationMarks));
+        nExclamationMarks*2));
 
     alpaka::queue::enqueue(queue, hiWorld);
 
     
-    // Run "Hello World" kernel with std::bind
+    // Run "Hello World" kernel with a std::bind function object
     //
     // This kernel binds arguments of the existing function hiWorldFunction
     // to a std::function objects and provides it as alpaka kernel.
@@ -185,8 +178,8 @@ auto main()
     // not need to provide the signature of your function
     // as it is the case for the std::function example above.
     auto const hiWorldBind (alpaka::exec::create<Acc> (
-        workdiv,
-        std::bind( hiWorldFunction<Acc>, std::placeholders::_1, nExclamationMarks*2 )
+        workDiv,
+        std::bind( hiWorldFunction<Acc>, std::placeholders::_1, nExclamationMarks*3 )
         ));
 
     alpaka::queue::enqueue(queue, hiWorldBind);
