@@ -303,11 +303,11 @@ ENDIF()
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
     IF(NOT DEFINED ALPAKA_CUDA_VERSION)
-        SET(ALPAKA_CUDA_VERSION 7.0)
+        SET(ALPAKA_CUDA_VERSION 8.0)
     ENDIF()
 
-    IF(ALPAKA_CUDA_VERSION VERSION_LESS 7.0)
-        MESSAGE(WARNING "CUDA Toolkit < 7.0 is not supported!")
+    IF(ALPAKA_CUDA_VERSION VERSION_LESS 8.0)
+        MESSAGE(WARNING "CUDA Toolkit < 8.0 is not supported!")
         SET(_ALPAKA_FOUND FALSE)
 
     ELSE()
@@ -383,13 +383,8 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
                 ENDIF()
 
-                IF(NOT CUDA_VERSION VERSION_LESS 7.5)
-                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
-                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
-                ELSE()
-                    # CUDA 7.0
-                    LIST(APPEND CUDA_NVCC_FLAGS "--relaxed-constexpr")
-                ENDIF()
+                LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
+                LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
 
                 FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture

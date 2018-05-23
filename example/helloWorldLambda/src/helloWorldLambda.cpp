@@ -97,12 +97,6 @@ auto main()
 
     const size_t nExclamationMarks = 10;
 
-// nvcc < 7.5 does not support lambdas as kernels.
-#if !BOOST_COMP_NVCC || BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(7, 5, 0)
-// nvcc 7.5 does not support heterogeneous lambdas (__host__ __device__) as kernels but only __device__ lambdas.
-// So with nvcc 7.5 this only works in CUDA only mode or by using ALPAKA_FN_ACC_CUDA_ONLY instead of ALPAKA_FN_ACC
-#if !BOOST_COMP_NVCC || BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(8, 0, 0) || defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
-
     // Run "Hello World" kernel with a lambda function
     //
     // Alpaka is able to execute lambda functions (anonymous functions) which
@@ -140,8 +134,6 @@ auto main()
 
     alpaka::queue::enqueue(queue, helloWorldKernel);
 
-#endif
-#endif
     
     // Run "Hello World" kernel with a std::function
     //

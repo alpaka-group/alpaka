@@ -61,12 +61,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         alpaka::event::test(event));
 }
 
-// All of the following tests use the EventHostManualTrigger which is only available on CUDA 8.0+
-#if !BOOST_LANG_CUDA || BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(8, 0, 0)
 using TestQueues = alpaka::test::queue::TestQueues;
-#else
-using TestQueues = alpaka::test::queue::TestQueuesCpu;
-#endif
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(

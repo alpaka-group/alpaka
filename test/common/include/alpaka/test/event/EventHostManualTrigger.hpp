@@ -78,19 +78,19 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Copy constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl const & other) = delete;
+                        EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl const & other) = delete;
                         //-----------------------------------------------------------------------------
                         //! Move constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl &&) = default;
+                        EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl &&) = default;
                         //-----------------------------------------------------------------------------
                         //! Copy assignment operator.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCpuImpl const &) -> EventHostManualTriggerCpuImpl & = delete;
+                        auto operator=(EventHostManualTriggerCpuImpl const &) -> EventHostManualTriggerCpuImpl & = delete;
                         //-----------------------------------------------------------------------------
                         //! Move assignment operator.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCpuImpl &&) -> EventHostManualTriggerCpuImpl & = default;
+                        auto operator=(EventHostManualTriggerCpuImpl &&) -> EventHostManualTriggerCpuImpl & = default;
 
                         //-----------------------------------------------------------------------------
                         //!
@@ -133,19 +133,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST EventHostManualTriggerCpu(EventHostManualTriggerCpu const &) = default;
+                EventHostManualTriggerCpu(EventHostManualTriggerCpu const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST EventHostManualTriggerCpu(EventHostManualTriggerCpu &&) = default;
+                EventHostManualTriggerCpu(EventHostManualTriggerCpu &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCpu const &) -> EventHostManualTriggerCpu & = default;
+                auto operator=(EventHostManualTriggerCpu const &) -> EventHostManualTriggerCpu & = default;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCpu &&) -> EventHostManualTriggerCpu & = default;
+                auto operator=(EventHostManualTriggerCpu &&) -> EventHostManualTriggerCpu & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
@@ -354,8 +354,6 @@ namespace alpaka
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(8, 0, 0)
-
 #include <alpaka/core/Cuda.hpp>
 
 namespace alpaka
@@ -398,13 +396,13 @@ namespace alpaka
                                     static_cast<size_t>(sizeof(int32_t))));
                         }
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl const &) = delete;
+                        EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl const &) = delete;
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl &&) = default;
+                        EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl &&) = default;
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCudaImpl const &) -> EventHostManualTriggerCudaImpl & = delete;
+                        auto operator=(EventHostManualTriggerCudaImpl const &) -> EventHostManualTriggerCudaImpl & = delete;
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCudaImpl &&) -> EventHostManualTriggerCudaImpl & = default;
+                        auto operator=(EventHostManualTriggerCudaImpl &&) -> EventHostManualTriggerCudaImpl & = default;
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST ~EventHostManualTriggerCudaImpl()
                         {
@@ -459,13 +457,13 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST EventHostManualTriggerCuda(EventHostManualTriggerCuda const &) = default;
+                EventHostManualTriggerCuda(EventHostManualTriggerCuda const &) = default;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST EventHostManualTriggerCuda(EventHostManualTriggerCuda &&) = default;
+                EventHostManualTriggerCuda(EventHostManualTriggerCuda &&) = default;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCuda const &) -> EventHostManualTriggerCuda & = default;
+                auto operator=(EventHostManualTriggerCuda const &) -> EventHostManualTriggerCuda & = default;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(EventHostManualTriggerCuda &&) -> EventHostManualTriggerCuda & = default;
+                auto operator=(EventHostManualTriggerCuda &&) -> EventHostManualTriggerCuda & = default;
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST auto operator==(EventHostManualTriggerCuda const & rhs) const
                 -> bool
@@ -479,7 +477,7 @@ namespace alpaka
                     return !((*this) == rhs);
                 }
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST ~EventHostManualTriggerCuda() = default;
+                ~EventHostManualTriggerCuda() = default;
 
                 //-----------------------------------------------------------------------------
                 void trigger()
@@ -584,8 +582,8 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            (CUstream)queue.m_spQueueImpl->m_CudaQueue,
-                            (CUdeviceptr)event.m_spEventImpl->m_devMem,
+                            static_cast<CUstream>(queue.m_spQueueImpl->m_CudaQueue),
+                            reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
                 }
@@ -624,8 +622,8 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            (CUstream)queue.m_spQueueImpl->m_CudaQueue,
-                            (CUdeviceptr)event.m_spEventImpl->m_devMem,
+                            static_cast<CUstream>(queue.m_spQueueImpl->m_CudaQueue),
+                            reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
                 }
@@ -633,5 +631,4 @@ namespace alpaka
         }
     }
 }
-#endif
 #endif

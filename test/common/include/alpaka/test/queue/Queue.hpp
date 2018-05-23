@@ -149,14 +149,6 @@ namespace alpaka
                     std::tuple<alpaka::dev::DevCudaRt, alpaka::queue::QueueCudaRtAsync>
 #endif
                 >;
-
-            //#############################################################################
-            //! A std::tuple holding tuples of devices and corresponding queue types.
-            using TestQueuesCpu =
-                std::tuple<
-                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuSync>,
-                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuAsync>
-                >;
         }
     }
 }

@@ -31,17 +31,7 @@ set -euo pipefail
 : ${ALPAKA_CUDA_COMPILER?"ALPAKA_CUDA_COMPILER must be specified"}
 
 # Set the correct CUDA downloads
-if [ "${ALPAKA_CUDA_VER}" == "7.0" ]
-then
-    ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1404-7-0-local
-    ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_7.0-28_amd64.deb
-    ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/7_0/Prod/local_installers/rpmdeb/${ALPAKA_CUDA_PKG_FILE_NAME}
-elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
-then
-    ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1404-7-5-local
-    ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_7.5-18_amd64.deb
-    ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-elif [ "${ALPAKA_CUDA_VER}" == "8.0" ]
+if [ "${ALPAKA_CUDA_VER}" == "8.0" ]
 then
     ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1404-8-0-local
     ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_8.0.44-1_amd64-deb
@@ -57,7 +47,7 @@ then
     ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.1.85-1_amd64
     ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
 else
-    echo CUDA versions other than 7.0, 7.5, 8.0, 9.0 and 9.1 are not currently supported!
+    echo CUDA versions other than 8.0, 9.0 and 9.1 are not currently supported!
 fi
 if [ -z "$(ls -A "${ALPAKA_CI_CUDA_DIR}")" ]
 then
@@ -66,26 +56,6 @@ then
 fi
 sudo dpkg --install "${ALPAKA_CI_CUDA_DIR}"/"${ALPAKA_CUDA_PKG_FILE_NAME}"
 
-# NOTE: CUDA < 8.0 did not provide SHA256 in their Release files.
-# Installing them in modern Ubuntu versions is therefore not possible.
-# We simply add those to the Release files and ignore that they can not be verified during installation.
-if [ "${ALPAKA_CUDA_VER}" == "7.0" ]
-then
-    cat /var/cuda-repo-7-0-local/Release
-    #cat /var/cuda-repo-7-0-local/Packages.gz | sha256sum
-    gunzip -c /var/cuda-repo-7-0-local/Packages.gz | sha256sum
-    STR="SHA256:"
-    echo "$STR" | sudo tee -a /var/cuda-repo-7-0-local/Release
-    cat /var/cuda-repo-7-0-local/Release
-elif [ "${ALPAKA_CUDA_VER}" == "7.5" ]
-then
-    cat /var/cuda-repo-7-5-local/Release
-    #cat /var/cuda-repo-7-5-local/Packages.gz | sha256sum
-    gunzip -c /var/cuda-repo-7-5-local/Packages.gz | sha256sum
-    STR="SHA256:"
-    echo "$STR" | sudo tee -a /var/cuda-repo-7-5-local/Release
-    cat /var/cuda-repo-7-5-local/Release
-fi
 travis_retry sudo apt-get -y --quiet update
 
 # Install CUDA

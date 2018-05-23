@@ -43,12 +43,6 @@
 
 BOOST_AUTO_TEST_SUITE(kernel)
 
-// nvcc < 7.5 does not support lambdas as kernels.
-#if !BOOST_COMP_NVCC || BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(7, 5, 0)
-// nvcc 7.5 does not support heterogeneous lambdas (__host__ __device__) as kernels but only __device__ lambdas.
-// So with nvcc 7.5 this only works in CUDA only mode or by using ALPAKA_FN_ACC_CUDA_ONLY instead of ALPAKA_FN_ACC
-#if !BOOST_COMP_NVCC || BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(8, 0, 0) || defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
-
 #if !defined(ALPAKA_CI)
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
@@ -198,10 +192,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             arg1,
             arg2));
 }
-#endif
-
-#endif
-
 #endif
 
 BOOST_AUTO_TEST_SUITE_END()
