@@ -151,17 +151,17 @@ namespace alpaka
                 }
 
                 //#############################################################################
-                //! The memory set trait.
+                //! The memory set task trait.
                 //!
                 //! Fills the view with data.
                 template<
                     typename TDim,
                     typename TDev,
                     typename TSfinae = void>
-                struct TaskSet;
+                struct CreateTaskSet;
 
                 //#############################################################################
-                //! The memory copy trait.
+                //! The memory copy task trait.
                 //!
                 //! Copies memory from one view into another view possibly on a different device.
                 template<
@@ -169,7 +169,7 @@ namespace alpaka
                     typename TDevDst,
                     typename TDevSrc,
                     typename TSfinae = void>
-                struct TaskCopy;
+                struct CreateTaskCopy;
 
                 //#############################################################################
                 //! The static device memory view creation trait.
@@ -285,16 +285,16 @@ namespace alpaka
             template<
                 typename TExtent,
                 typename TView>
-            ALPAKA_FN_HOST auto taskSet(
+            ALPAKA_FN_HOST auto createTaskSet(
                 TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
-                traits::TaskSet<
+                traits::CreateTaskSet<
                     dim::Dim<TView>,
                     dev::Dev<TView>>
-                ::taskSet(
+                ::createTaskSet(
                     view,
                     byte,
                     extent))
@@ -305,10 +305,10 @@ namespace alpaka
                     "The view and the extent are required to have the same dimensionality!");
 
                 return
-                    traits::TaskSet<
+                    traits::CreateTaskSet<
                         dim::Dim<TView>,
                         dev::Dev<TView>>
-                    ::taskSet(
+                    ::createTaskSet(
                         view,
                         byte,
                         extent);
@@ -317,10 +317,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets the memory to the given value asynchronously.
             //!
+            //! \param queue The queue to enqueue the view fill task into.
             //! \param view The memory view to fill.
             //! \param byte Value to set for each element of the specified view.
             //! \param extent The extent of the view to fill.
-            //! \param queue The queue to enqueue the view fill task into.
             template<
                 typename TExtent,
                 typename TView,
@@ -334,7 +334,7 @@ namespace alpaka
             {
                 queue::enqueue(
                     queue,
-                    mem::view::taskSet(
+                    mem::view::createTaskSet(
                         view,
                         byte,
                         extent));
@@ -350,17 +350,17 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST auto taskCopy(
+            ALPAKA_FN_HOST auto createTaskCopy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
-                traits::TaskCopy<
+                traits::CreateTaskCopy<
                     dim::Dim<TViewDst>,
                     dev::Dev<TViewDst>,
                     dev::Dev<TViewSrc>>
-                ::taskCopy(
+                ::createTaskCopy(
                     viewDst,
                     viewSrc,
                     extent))
@@ -377,23 +377,23 @@ namespace alpaka
                     "The source and the destination view are required to have the same element type!");
 
                 return
-                    traits::TaskCopy<
+                    traits::CreateTaskCopy<
                         dim::Dim<TViewDst>,
                         dev::Dev<TViewDst>,
                         dev::Dev<TViewSrc>>
-                    ::taskCopy(
+                    ::createTaskCopy(
                         viewDst,
                         viewSrc,
                         extent);
             }
 
             //-----------------------------------------------------------------------------
-            //! Copies memory possibly between different memory spaces asynchronously.
+            //! Copies memory possibly between different memory spaces.
             //!
+            //! \param queue The queue to enqueue the view copy task into.
             //! \param viewDst The destination memory view.
             //! \param viewSrc The source memory view.
             //! \param extent The extent of the view to copy.
-            //! \param queue The queue to enqueue the view copy task into.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -408,7 +408,7 @@ namespace alpaka
             {
                 queue::enqueue(
                     queue,
-                    mem::view::taskCopy(
+                    mem::view::createTaskCopy(
                         viewDst,
                         viewSrc,
                         extent));

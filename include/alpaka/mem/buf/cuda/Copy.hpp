@@ -61,7 +61,7 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopy;
+                    struct TaskCopyCuda;
 
                     //#############################################################################
                     //! The 1D CUDA memory copy trait.
@@ -69,7 +69,7 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopy<
+                    struct TaskCopyCuda<
                         dim::DimInt<1>,
                         TViewDst,
                         TViewSrc,
@@ -89,7 +89,7 @@ namespace alpaka
                         using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST TaskCopy(
+                        ALPAKA_FN_HOST TaskCopyCuda(
                             TViewDst & viewDst,
                             TViewSrc const & viewSrc,
                             TExtent const & extent,
@@ -149,7 +149,7 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopy<
+                    struct TaskCopyCuda<
                         dim::DimInt<2>,
                         TViewDst,
                         TViewSrc,
@@ -169,7 +169,7 @@ namespace alpaka
                         using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST TaskCopy(
+                        ALPAKA_FN_HOST TaskCopyCuda(
                             TViewDst & viewDst,
                             TViewSrc const & viewSrc,
                             TExtent const & extent,
@@ -260,7 +260,7 @@ namespace alpaka
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopy<
+                    struct TaskCopyCuda<
                         dim::DimInt<3>,
                         TViewDst,
                         TViewSrc,
@@ -280,7 +280,7 @@ namespace alpaka
                         using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST TaskCopy(
+                        ALPAKA_FN_HOST TaskCopyCuda(
                             TViewDst & viewDst,
                             TViewSrc const & viewSrc,
                             TExtent const & extent,
@@ -383,14 +383,14 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            // Trait specializations for TaskCopy.
+            // Trait specializations for CreateTaskCopy.
             namespace traits
             {
                 //#############################################################################
                 //! The CUDA to CPU memory copy trait specialization.
                 template<
                     typename TDim>
-                struct TaskCopy<
+                struct CreateTaskCopy<
                     TDim,
                     dev::DevCpu,
                     dev::DevCudaRt>
@@ -400,11 +400,11 @@ namespace alpaka
                         typename TExtent,
                         typename TViewSrc,
                         typename TViewDst>
-                    ALPAKA_FN_HOST static auto taskCopy(
+                    ALPAKA_FN_HOST static auto createTaskCopy(
                         TViewDst & viewDst,
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
-                    -> mem::view::cuda::detail::TaskCopy<
+                    -> mem::view::cuda::detail::TaskCopyCuda<
                         TDim,
                         TViewDst,
                         TViewSrc,
@@ -416,7 +416,7 @@ namespace alpaka
                             dev::getDev(viewSrc).m_iDevice);
 
                         return
-                            mem::view::cuda::detail::TaskCopy<
+                            mem::view::cuda::detail::TaskCopyCuda<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,
@@ -433,7 +433,7 @@ namespace alpaka
                 //! The CPU to CUDA memory copy trait specialization.
                 template<
                     typename TDim>
-                struct TaskCopy<
+                struct CreateTaskCopy<
                     TDim,
                     dev::DevCudaRt,
                     dev::DevCpu>
@@ -443,11 +443,11 @@ namespace alpaka
                         typename TExtent,
                         typename TViewSrc,
                         typename TViewDst>
-                    ALPAKA_FN_HOST static auto taskCopy(
+                    ALPAKA_FN_HOST static auto createTaskCopy(
                         TViewDst & viewDst,
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
-                    -> mem::view::cuda::detail::TaskCopy<
+                    -> mem::view::cuda::detail::TaskCopyCuda<
                         TDim,
                         TViewDst,
                         TViewSrc,
@@ -459,7 +459,7 @@ namespace alpaka
                             dev::getDev(viewDst).m_iDevice);
 
                         return
-                            mem::view::cuda::detail::TaskCopy<
+                            mem::view::cuda::detail::TaskCopyCuda<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,
@@ -476,7 +476,7 @@ namespace alpaka
                 //! The CUDA to CUDA memory copy trait specialization.
                 template<
                     typename TDim>
-                struct TaskCopy<
+                struct CreateTaskCopy<
                     TDim,
                     dev::DevCudaRt,
                     dev::DevCudaRt>
@@ -486,11 +486,11 @@ namespace alpaka
                         typename TExtent,
                         typename TViewSrc,
                         typename TViewDst>
-                    ALPAKA_FN_HOST static auto taskCopy(
+                    ALPAKA_FN_HOST static auto createTaskCopy(
                         TViewDst & viewDst,
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
-                    -> mem::view::cuda::detail::TaskCopy<
+                    -> mem::view::cuda::detail::TaskCopyCuda<
                         TDim,
                         TViewDst,
                         TViewSrc,
@@ -499,7 +499,7 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         return
-                            mem::view::cuda::detail::TaskCopy<
+                            mem::view::cuda::detail::TaskCopyCuda<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,
@@ -523,7 +523,7 @@ namespace alpaka
                         typename TViewSrc,
                         typename TViewDst>
                     ALPAKA_FN_HOST auto buildCudaMemcpy3DParms(
-                        mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
+                        mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DParms
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -579,7 +579,7 @@ namespace alpaka
                         typename TViewSrc,
                         typename TExtent>
                     ALPAKA_FN_HOST auto buildCudaMemcpy3DPeerParms(
-                        mem::view::cuda::detail::TaskCopy<dim::DimInt<2>, TViewDst, TViewSrc, TExtent> const & task)
+                        mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<2>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DPeerParms
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -639,7 +639,7 @@ namespace alpaka
                         typename TViewSrc,
                         typename TExtent>
                     ALPAKA_FN_HOST auto buildCudaMemcpy3DPeerParms(
-                        mem::view::cuda::detail::TaskCopy<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
+                        mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
                     -> cudaMemcpy3DPeerParms
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -709,12 +709,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueCudaRtAsync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtAsync & queue,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -769,12 +769,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueCudaRtSync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtSync &,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -827,12 +827,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueCudaRtAsync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtAsync & queue,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -895,12 +895,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueCudaRtSync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtSync &,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -961,12 +961,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueCudaRtAsync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtAsync & queue,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -1015,12 +1015,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueCudaRtSync,
-                mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+                mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCudaRtSync &,
-                    mem::view::cuda::detail::TaskCopy<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::cuda::detail::TaskCopyCuda<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
