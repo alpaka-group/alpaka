@@ -111,7 +111,6 @@
 #include <alpaka/exec/ExecCpuOmp2Threads.hpp>
 #include <alpaka/exec/ExecCpuOmp4.hpp>
 #include <alpaka/exec/ExecGpuCudaRt.hpp>
-#include <alpaka/exec/Traits.hpp>
 //-----------------------------------------------------------------------------
 // extent
 #include <alpaka/extent/Traits.hpp>

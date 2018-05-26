@@ -205,14 +205,14 @@ struct SharedMemTester
         alpaka::mem::view::copy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
         // Create the executor task.
-        auto const exec(alpaka::exec::create<TAcc>(
+        auto const exec(alpaka::kernel::createTaskExec<TAcc>(
             workDiv,
             kernel,
             alpaka::mem::view::getPtrNative(blockRetValsAcc)));
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
-            << alpaka::test::integ::measureKernelRunTimeMs(
+            << alpaka::test::integ::measureTaskRunTimeMs(
                 queue,
                 exec)
             << " ms"

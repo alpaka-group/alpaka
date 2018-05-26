@@ -66,13 +66,11 @@ namespace alpaka
                 TArgs const & ... args)
             -> bool
             {
-                auto const exec(
-                    alpaka::exec::create<Acc>(
-                        m_workDiv,
-                        kernelFnObj,
-                        args...));
-
-                alpaka::queue::enqueue(m_queue, exec);
+                alpaka::kernel::exec<Acc>(
+                    m_queue,
+                    m_workDiv,
+                    kernelFnObj,
+                    args...);
 
                 alpaka::wait::wait(m_queue);
 

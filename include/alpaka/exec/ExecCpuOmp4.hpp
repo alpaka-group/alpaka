@@ -31,7 +31,6 @@
 #include <alpaka/acc/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dim/Traits.hpp>
-#include <alpaka/exec/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 
@@ -278,26 +277,6 @@ namespace alpaka
                 exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
-            };
-        }
-    }
-    namespace exec
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU OpenMP 4.0 executor executor type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct ExecType<
-                exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>,
-                TKernelFnObj,
-                TArgs...>
-            {
-                using type = exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>;
             };
         }
     }

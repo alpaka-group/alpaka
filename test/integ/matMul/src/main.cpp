@@ -319,7 +319,7 @@ struct MatMulTester
         alpaka::mem::view::copy(queueAcc, bufCAcc, bufCHost, extentC);
 
         // Create the executor task.
-        auto const exec(alpaka::exec::create<TAcc>(
+        auto const exec(alpaka::kernel::createTaskExec<TAcc>(
             workDiv,
             kernel,
             m,
@@ -336,7 +336,7 @@ struct MatMulTester
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
-            << alpaka::test::integ::measureKernelRunTimeMs(
+            << alpaka::test::integ::measureTaskRunTimeMs(
                 queueAcc,
                 exec)
             << " ms"

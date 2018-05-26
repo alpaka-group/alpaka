@@ -146,8 +146,8 @@ auto main()
     // Instantiate the kernel function object
     VectorAddKernel kernel;
 
-    // Create the kernel executor
-    auto const exec(alpaka::exec::create<Acc>(
+    // Create the executor task.
+    auto const exec(alpaka::kernel::createTaskExec<Acc>(
         workDiv,
         kernel,
         pBufHostA,

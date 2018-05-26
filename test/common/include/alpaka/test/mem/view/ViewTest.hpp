@@ -224,14 +224,13 @@ namespace alpaka
                             threadsPerBlock,
                             elementsPerThread));
                     VerifyBytesSetKernel verifyBytesSet;
-                    auto const compare(
-                        alpaka::exec::create<TAcc>(
-                            workdiv,
-                            verifyBytesSet,
-                            alpaka::test::mem::view::begin(view),
-                            alpaka::test::mem::view::end(view),
-                            byte));
-                    alpaka::queue::enqueue(queue, compare);
+                    alpaka::kernel::exec<TAcc>(
+                        queue,
+                        workdiv,
+                        verifyBytesSet,
+                        alpaka::test::mem::view::begin(view),
+                        alpaka::test::mem::view::end(view),
+                        byte);
                     alpaka::wait::wait(queue);
                 }
 
@@ -302,14 +301,13 @@ namespace alpaka
                             threadsPerBlock,
                             elementsPerThread));
                     VerifyViewsEqualKernel verifyViewsEqualKernel;
-                    auto const compare(
-                        alpaka::exec::create<TAcc>(
-                            workdiv,
-                            verifyViewsEqualKernel,
-                            alpaka::test::mem::view::begin(viewA),
-                            alpaka::test::mem::view::end(viewA),
-                            alpaka::test::mem::view::begin(viewB)));
-                    alpaka::queue::enqueue(queue, compare);
+                    alpaka::kernel::exec<TAcc>(
+                        queue,
+                        workdiv,
+                        verifyViewsEqualKernel,
+                        alpaka::test::mem::view::begin(viewA),
+                        alpaka::test::mem::view::end(viewA),
+                        alpaka::test::mem::view::begin(viewB));
                     alpaka::wait::wait(queue);
                 }
 

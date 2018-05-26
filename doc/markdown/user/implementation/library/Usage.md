@@ -12,13 +12,13 @@ Therefore the accelerator has to be passed in as a constant template reference v
 
 ```C++
 template<
-	typename TAcc>
+    typename TAcc>
 ALPAKA_FN_ACC auto doSomethingOnAccelerator(
-	TAcc const & acc/*,
-	...*/)
+    TAcc const & acc/*,
+    ...*/)
 -> void
 {
-	//...
+    //...
 }
 ```
 
@@ -33,16 +33,16 @@ The following code snippet shows a basic example kernel function object.
 ```C++
 struct MyKernel
 {
-	template<
-		typename TAcc>    // Templated on the accelerator type.
-	ALPAKA_FN_ACC       // Macro marking the function to be executable on all accelerators.
+    template<
+        typename TAcc>    // Templated on the accelerator type.
+    ALPAKA_FN_ACC       // Macro marking the function to be executable on all accelerators.
   auto operator()(    // The function / kernel to execute.
-		TAcc & acc/*,     // The specific accelerator implementation.
-		...*/) const      // Must be 'const'.
-	-> void
-	{
-		//...
-	}
+        TAcc & acc/*,     // The specific accelerator implementation.
+        ...*/) const      // Must be 'const'.
+    -> void
+    {
+        //...
+    }
                       // Class can have members but has to be std::is_trivially_copyable.
                       // Classes must not have pointers or references to host memory!
 };
@@ -93,10 +93,8 @@ Queue queue(devAcc);
 auto const workDiv(alpaka::workdiv::WorkDivMembers<Dim, Idx>(256u, 16u);
 // Create an instance of the kernel function object.
 MyKernel kernel;
-// Create the execution task.
-auto const exec(alpaka::exec::create<Acc>(workDiv, kernel/*, arguments ...*/);
-// Enqueue the task into the queue.
-alpaka::queue::enqueue(queue, exec);
+// Enqueue the execution task into the queue.
+alpaka::kernel::exec<Acc>(queue, workDiv, kernel/*, arguments ...*/);
 ```
 
 The dimensionality of the task as well as the type for index and extent have to be defined explicitly.

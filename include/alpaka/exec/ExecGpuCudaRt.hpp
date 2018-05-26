@@ -33,7 +33,6 @@
 #include <alpaka/acc/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dim/Traits.hpp>
-#include <alpaka/exec/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
@@ -203,26 +202,6 @@ namespace alpaka
                 exec::ExecGpuCudaRt<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
-            };
-        }
-    }
-    namespace exec
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The GPU CUDA executor executor type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct ExecType<
-                exec::ExecGpuCudaRt<TDim, TIdx, TKernelFnObj, TArgs...>,
-                TKernelFnObj,
-                TArgs...>
-            {
-                using type = exec::ExecGpuCudaRt<TDim, TIdx, TKernelFnObj, TArgs...>;
             };
         }
     }

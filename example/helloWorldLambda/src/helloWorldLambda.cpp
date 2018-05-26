@@ -109,7 +109,8 @@ auto main()
     // This example passes the number exclamation marks, that should
     // be written after we greet the world, to the 
     // lambda function.
-    auto const helloWorldKernel(alpaka::exec::create<Acc>(
+    alpaka::kernel::exec<Acc>(
+        queue,
         workDiv,
         [] ALPAKA_FN_ACC (Acc & acc, size_t const nExclamationMarksAsArg) -> void {
             auto globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
@@ -130,9 +131,7 @@ auto main()
 
         },
         nExclamationMarks
-    ));
-
-    alpaka::queue::enqueue(queue, helloWorldKernel);
+    );
 
     
     // Run "Hello World" kernel with a std::function
@@ -148,12 +147,11 @@ auto main()
     // to wrap allready existing code into a
     // std::function and provide it to the alpaka 
     // library.
-    auto const hiWorld (alpaka::exec::create<Acc> (
+    alpaka::kernel::exec<Acc> (
+        queue,
         workDiv,
         std::function<void(Acc&, size_t)>( hiWorldFunction<Acc> ),
-        nExclamationMarks*2));
-
-    alpaka::queue::enqueue(queue, hiWorld);
+        nExclamationMarks);
 
     
     // Run "Hello World" kernel with a std::bind function object
@@ -169,12 +167,11 @@ auto main()
     // This approach has the advantage that you do
     // not need to provide the signature of your function
     // as it is the case for the std::function example above.
-    auto const hiWorldBind (alpaka::exec::create<Acc> (
+    alpaka::kernel::exec<Acc> (
+        queue,
         workDiv,
-        std::bind( hiWorldFunction<Acc>, std::placeholders::_1, nExclamationMarks*3 )
-        ));
-
-    alpaka::queue::enqueue(queue, hiWorldBind);
+        std::bind( hiWorldFunction<Acc>, std::placeholders::_1, nExclamationMarks*2 )
+        );
 
     return EXIT_SUCCESS;
 }
