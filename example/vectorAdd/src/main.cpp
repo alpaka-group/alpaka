@@ -150,8 +150,8 @@ auto main()
     auto const exec(alpaka::exec::create<Acc>(
         workDiv,
         kernel,
-        pBufHostA,
-        pBufHostB,
+        alpaka::mem::view::getPtrNative(bufAccA),
+        alpaka::mem::view::getPtrNative(bufAccB),
         alpaka::mem::view::getPtrNative(bufAccC),
         numElements));
 
