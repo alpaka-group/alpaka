@@ -40,7 +40,7 @@
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
-#include <alpaka/exec/Traits.hpp>
+#include <alpaka/kernel/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 
@@ -235,7 +235,7 @@ namespace alpaka
             };
         }
     }
-    namespace exec
+    namespace kernel
     {
         namespace traits
         {
@@ -244,14 +244,38 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TIdx,
+                typename TWorkDiv,
                 typename TKernelFnObj,
                 typename... TArgs>
-            struct ExecType<
+            struct CreateTaskExec<
                 acc::AccCpuSerial<TDim, TIdx>,
+                TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
             {
-                using type = exec::ExecCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>;
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto createTaskExec(
+                    TWorkDiv const & workDiv,
+                    TKernelFnObj const & kernelFnObj,
+                    TArgs const & ... args)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                -> exec::ExecCpuSerial<
+                    TDim,
+                    TIdx,
+                    TKernelFnObj,
+                    TArgs...>
+#endif
+                {
+                    return
+                        exec::ExecCpuSerial<
+                            TDim,
+                            TIdx,
+                            TKernelFnObj,
+                            TArgs...>(
+                                workDiv,
+                                kernelFnObj,
+                                args...);
+                }
             };
         }
     }

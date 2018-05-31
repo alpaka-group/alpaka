@@ -203,7 +203,7 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |cudaFuncGetAttributes|-|
 |cudaFuncSetCacheConfig|-|
 |cudaFuncSetSharedMemConfig|-|
-|cudaLaunchKernel|<ul><li>exec = alpaka::exec::create< TAcc >(workDiv, kernel, params...);alpaka::queue::enqueue(queue, exec)</li><li>alpaka::kernel::BlockSharedExternMemSizeBytes< TKernel< TAcc > >::getBlockSharedExternMemSizeBytes<...>(...)</li></ul>|
+|cudaLaunchKernel|<ul><li>alpaka::kernel::exec< TAcc >(queue, workDiv, kernel, params...)</li><li>alpaka::kernel::BlockSharedExternMemSizeBytes< TKernel< TAcc > >::getBlockSharedExternMemSizeBytes<...>(...)</li></ul>|
 |cudaSetDoubleForDevice|n/a (alpaka assumes double support)|
 |cudaSetDoubleForHost|n/a (alpaka assumes double support)|
 

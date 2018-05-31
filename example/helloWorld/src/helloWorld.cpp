@@ -185,27 +185,20 @@ auto main()
     // So a kernel can be a class or struct, a lambda, a std::function, etc.
     HelloWorldKernel helloWorldKernel;
 
-    // Create the kernel executor
+    // Run the kernel
     //
-    // To prepare the kernel for execution, you have to provide the
+    // To execute the kernel, you have to provide the
     // work division as well as the additional kernel function
-    // parameters to create an executor.
-    // The type of the created kernel executor is dependent on the
-    // accelerator as well as the argument types. It is an
-    // implementation detail and you should always use `auto`
-    // to store the executor.
-    auto const helloWorld(alpaka::exec::create<Acc>(
-        workDiv,
-        helloWorldKernel
-        /* put kernel arguments here */));
-
-    // Enqueue the kernel executor
-    //
-    // Finally, the kernel executor has to be enqueued into an accelerator queue.
-    // The enqueuing can be done synchronously or asynchronously
+    // parameters.
+    // The kernel execution task is enqueued into an accelerator queue.
+    // The queue can be synchronously or asynchronously
     // depending on the choosen queue type (see type definitions above).
     // Here it is synchronous which means that the kernel is directly executed.
-    alpaka::queue::enqueue(queue, helloWorld);
+    alpaka::kernel::exec<Acc>(
+        queue,
+        workDiv,
+        helloWorldKernel
+        /* put kernel arguments here */);
 
     return EXIT_SUCCESS;
 }

@@ -240,14 +240,12 @@ auto main()
 
     FillBufferKernel fillBufferKernel;
 
-    auto const fillViewPlainPtrKernelExecutor(
-        alpaka::exec::create<Host>(
-            workdiv,
-            fillBufferKernel,
-            pHostViewPlainPtr, // 1st kernel argument
-            extents));         // 2nd kernel argument
-
-    alpaka::queue::enqueue(hostQueue, fillViewPlainPtrKernelExecutor);
+    alpaka::kernel::exec<Host>(
+        hostQueue,
+        workdiv,
+        fillBufferKernel,
+        pHostViewPlainPtr, // 1st kernel argument
+        extents);          // 2nd kernel argument
 
 
     // Copy host to device Buffer
@@ -278,24 +276,21 @@ auto main()
     Data const * const pDeviceBuffer2 = alpaka::mem::view::getPtrNative(deviceBuffer2);
 
     TestBufferKernel testBufferKernel;
-    auto const test1(
-        alpaka::exec::create<Acc>(
-            workdiv,
-            testBufferKernel,
-            pDeviceBuffer1,                                 // 1st kernel argument
-            extents,                                        // 2nd kernel argument
-            deviceBuffer1Pitch));                           // 3rd kernel argument
+    alpaka::kernel::exec<Acc>(
+        devQueue,
+        workdiv,
+        testBufferKernel,
+        pDeviceBuffer1,                                 // 1st kernel argument
+        extents,                                        // 2nd kernel argument
+        deviceBuffer1Pitch);                            // 3rd kernel argument
 
-    auto const test2(
-        alpaka::exec::create<Acc>(
-            workdiv,
-            testBufferKernel,
-            pDeviceBuffer2,                                 // 1st kernel argument
-            extents,                                        // 2nd kernel argument
-            deviceBuffer2Pitch));                           // 3rd kernel argument
-
-    alpaka::queue::enqueue(devQueue, test1);
-    alpaka::queue::enqueue(devQueue, test2);
+    alpaka::kernel::exec<Acc>(
+        devQueue,
+        workdiv,
+        testBufferKernel,
+        pDeviceBuffer2,                                 // 1st kernel argument
+        extents,                                        // 2nd kernel argument
+        deviceBuffer2Pitch);                            // 3rd kernel argument
 
 
     // Print device Buffer
@@ -309,44 +304,40 @@ auto main()
     // completely distorted.
 
     PrintBufferKernel printBufferKernel;
-    auto const printDeviceBuffer1(
-        alpaka::exec::create<Acc>(
-            workdiv,
-            printBufferKernel,
-            pDeviceBuffer1,                                 // 1st kernel argument
-            extents,                                        // 2nd kernel argument
-            deviceBuffer1Pitch));                           // 3rd kernel argument
-    auto const printDeviceBuffer2(
-        alpaka::exec::create<Acc>(
-            workdiv,
-            printBufferKernel,
-            pDeviceBuffer2,                                 // 1st kernel argument
-            extents,                                        // 2nd kernel argument
-            deviceBuffer2Pitch));                           // 3rd kernel argument
-
-    auto const printHostBuffer(
-        alpaka::exec::create<Host>(
-            workdiv,
-            printBufferKernel,
-            pHostBuffer,                                    // 1st kernel argument
-            extents,                                        // 2nd kernel argument
-            hostBuffer1Pitch));                             // 3rd kernel argument
-
-    auto const printHostViewPlainPtr(
-        alpaka::exec::create<Host>(
-            workdiv,
-            printBufferKernel,
-            pHostViewPlainPtr,                              // 1st kernel argument
-            extents,                                        // 2nd kernel argument
-            hostViewPlainPtrPitch));                        // 3rd kernel argument
-
-    alpaka::queue::enqueue(devQueue, printDeviceBuffer1);
+    alpaka::kernel::exec<Acc>(
+        devQueue,
+        workdiv,
+        printBufferKernel,
+        pDeviceBuffer1,                                 // 1st kernel argument
+        extents,                                        // 2nd kernel argument
+        deviceBuffer1Pitch);                            // 3rd kernel argument
     std::cout << std::endl;
-    alpaka::queue::enqueue(devQueue, printDeviceBuffer2);
+
+    alpaka::kernel::exec<Acc>(
+        devQueue,
+        workdiv,
+        printBufferKernel,
+        pDeviceBuffer2,                                 // 1st kernel argument
+        extents,                                        // 2nd kernel argument
+        deviceBuffer2Pitch);                            // 3rd kernel argument
     std::cout << std::endl;
-    alpaka::queue::enqueue(hostQueue, printHostBuffer);
+
+    alpaka::kernel::exec<Host>(
+        hostQueue,
+        workdiv,
+        printBufferKernel,
+        pHostBuffer,                                    // 1st kernel argument
+        extents,                                        // 2nd kernel argument
+        hostBuffer1Pitch);                              // 3rd kernel argument
     std::cout << std::endl;
-    alpaka::queue::enqueue(hostQueue, printHostViewPlainPtr);
+
+    alpaka::kernel::exec<Host>(
+        hostQueue,
+        workdiv,
+        printBufferKernel,
+        pHostViewPlainPtr,                              // 1st kernel argument
+        extents,                                        // 2nd kernel argument
+        hostViewPlainPtrPitch);                         // 3rd kernel argument
     std::cout << std::endl;
 
     return EXIT_SUCCESS;
