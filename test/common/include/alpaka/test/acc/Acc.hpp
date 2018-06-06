@@ -52,105 +52,105 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuSerialIfAvailableElseVoid = alpaka::acc::AccCpuSerial<TDim, TIdx>;
+                using AccCpuSerialIfAvailableElseInt = alpaka::acc::AccCpuSerial<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuSerialIfAvailableElseVoid = int;
+                using AccCpuSerialIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED) && !defined(ALPAKA_CUDA_CI)
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuThreadsIfAvailableElseVoid = alpaka::acc::AccCpuThreads<TDim, TIdx>;
+                using AccCpuThreadsIfAvailableElseInt = alpaka::acc::AccCpuThreads<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuThreadsIfAvailableElseVoid = int;
+                using AccCpuThreadsIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuFibersIfAvailableElseVoid = alpaka::acc::AccCpuFibers<TDim, TIdx>;
+                using AccCpuFibersIfAvailableElseInt = alpaka::acc::AccCpuFibers<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuFibersIfAvailableElseVoid = int;
+                using AccCpuFibersIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuTbbIfAvailableElseVoid = alpaka::acc::AccCpuTbbBlocks<TDim, TIdx>;
+                using AccCpuTbbIfAvailableElseInt = alpaka::acc::AccCpuTbbBlocks<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuTbbIfAvailableElseVoid = int;
+                using AccCpuTbbIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuOmp2BlocksIfAvailableElseVoid = alpaka::acc::AccCpuOmp2Blocks<TDim, TIdx>;
+                using AccCpuOmp2BlocksIfAvailableElseInt = alpaka::acc::AccCpuOmp2Blocks<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuOmp2BlocksIfAvailableElseVoid = int;
+                using AccCpuOmp2BlocksIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED) && !defined(ALPAKA_CUDA_CI)
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuOmp2ThreadsIfAvailableElseVoid = alpaka::acc::AccCpuOmp2Threads<TDim, TIdx>;
+                using AccCpuOmp2ThreadsIfAvailableElseInt = alpaka::acc::AccCpuOmp2Threads<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuOmp2ThreadsIfAvailableElseVoid = int;
+                using AccCpuOmp2ThreadsIfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED) && !defined(ALPAKA_CUDA_CI)
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuOmp4IfAvailableElseVoid = alpaka::acc::AccCpuOmp4<TDim, TIdx>;
+                using AccCpuOmp4IfAvailableElseInt = alpaka::acc::AccCpuOmp4<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccCpuOmp4IfAvailableElseVoid = int;
+                using AccCpuOmp4IfAvailableElseInt = int;
 #endif
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccGpuCudaRtIfAvailableElseVoid = alpaka::acc::AccGpuCudaRt<TDim, TIdx>;
+                using AccGpuCudaRtIfAvailableElseInt = alpaka::acc::AccGpuCudaRt<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccGpuCudaRtIfAvailableElseVoid = int;
+                using AccGpuCudaRtIfAvailableElseInt = int;
 #endif
                 //#############################################################################
                 //! A vector containing all available accelerators and void's.
                 template<
                     typename TDim,
                     typename TIdx>
-                using EnabledAccsVoid =
+                using EnabledAccsElseInt =
                     std::tuple<
-                        AccCpuSerialIfAvailableElseVoid<TDim, TIdx>,
-                        AccCpuThreadsIfAvailableElseVoid<TDim, TIdx>,
-                        AccCpuFibersIfAvailableElseVoid<TDim, TIdx>,
-                        AccCpuTbbIfAvailableElseVoid<TDim, TIdx>,
-                        AccCpuOmp2BlocksIfAvailableElseVoid<TDim, TIdx>,
-                        AccCpuOmp2ThreadsIfAvailableElseVoid<TDim, TIdx>,
-                        AccCpuOmp4IfAvailableElseVoid<TDim, TIdx>,
-                        AccGpuCudaRtIfAvailableElseVoid<TDim, TIdx>
+                        AccCpuSerialIfAvailableElseInt<TDim, TIdx>,
+                        AccCpuThreadsIfAvailableElseInt<TDim, TIdx>,
+                        AccCpuFibersIfAvailableElseInt<TDim, TIdx>,
+                        AccCpuTbbIfAvailableElseInt<TDim, TIdx>,
+                        AccCpuOmp2BlocksIfAvailableElseInt<TDim, TIdx>,
+                        AccCpuOmp2ThreadsIfAvailableElseInt<TDim, TIdx>,
+                        AccCpuOmp4IfAvailableElseInt<TDim, TIdx>,
+                        AccGpuCudaRtIfAvailableElseInt<TDim, TIdx>
                     >;
             }
 
@@ -161,7 +161,7 @@ namespace alpaka
                 typename TIdx>
             using EnabledAccs =
                 typename alpaka::meta::Filter<
-                    detail::EnabledAccsVoid<TDim, TIdx>,
+                    detail::EnabledAccsElseInt<TDim, TIdx>,
                     std::is_class
                 >;
 
@@ -194,7 +194,7 @@ namespace alpaka
             {
                 os << "Accelerators enabled: ";
 
-                meta::forEachType<
+                alpaka::meta::forEachType<
                     EnabledAccs<TDim, TIdx>>(
                         detail::StreamOutAccName(),
                         std::ref(os));
@@ -270,15 +270,15 @@ namespace alpaka
                 //#############################################################################
                 //! A std::tuple holding multiple std::tuple consisting of a dimension and a idx type.
                 //!
-                //! TestAccParamSets =
+                //! TestDimIdxTuples =
                 //!     tuple<
-                //!         tuple<Dim1,Size1>,
-                //!         tuple<Dim2,Size1>,
-                //!         tuple<Dim3,Size1>,
+                //!         tuple<Dim1,Idx1>,
+                //!         tuple<Dim2,Idx1>,
+                //!         tuple<Dim3,Idx1>,
                 //!         ...,
-                //!         tuple<DimN,SizeN>>
-                using TestAccParamSets =
-                    meta::CartesianProduct<
+                //!         tuple<DimN,IdxN>>
+                using TestDimIdxTuples =
+                    alpaka::meta::CartesianProduct<
                         std::tuple,
                         TestDims,
                         TestIdxs
@@ -308,13 +308,13 @@ namespace alpaka
                 //!
                 //! TestEnabledAccs =
                 //!     tuple<
-                //!         tuple<Acc1<Dim1,Size1>, ..., AccN<Dim1,Size1>>,
-                //!         tuple<Acc1<Dim2,Size1>, ..., AccN<Dim2,Size1>>,
+                //!         tuple<Acc1<Dim1,Idx1>, ..., AccN<Dim1,Idx1>>,
+                //!         tuple<Acc1<Dim2,Idx1>, ..., AccN<Dim2,Idx1>>,
                 //!         ...,
-                //!         tuple<Acc1<DimN,SizeN>, ..., AccN<DimN,SizeN>>>
+                //!         tuple<Acc1<DimN,IdxN>, ..., AccN<DimN,IdxN>>>
                 using InstantiatedEnabledAccs =
-                    meta::Transform<
-                        TestAccParamSets,
+                    alpaka::meta::Transform<
+                        TestDimIdxTuples,
                         InstantiateEnabledAccsWithTestParamSet
                     >;
             }
@@ -324,14 +324,14 @@ namespace alpaka
             //!
             //! TestAccs =
             //!     tuple<
-            //!         Acc1<Dim1,Size1>, ..., AccN<Dim1,Size1>,
-            //!         Acc1<Dim2,Size1>, ..., AccN<Dim2,Size1>,
+            //!         Acc1<Dim1,Idx1>, ..., AccN<Dim1,Idx1>,
+            //!         Acc1<Dim2,Idx1>, ..., AccN<Dim2,Idx1>,
             //!         ...,
-            //!         Acc1<DimN,SizeN>, ..., AccN<DimN,SizeN>>
+            //!         Acc1<DimN,IdxN>, ..., AccN<DimN,IdxN>>
             using TestAccs =
                 alpaka::meta::Apply<
                     detail::InstantiatedEnabledAccs,
-                    meta::Concatenate
+                    alpaka::meta::Concatenate
                 >;
         }
     }
