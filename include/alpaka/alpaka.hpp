@@ -143,8 +143,10 @@
 #include <alpaka/mem/buf/BufCpu.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 
+#include <alpaka/mem/view/ViewCompileTimeArray.hpp>
 #include <alpaka/mem/view/ViewPlainPtr.hpp>
-#include <alpaka/mem/view/ViewStdContainers.hpp>
+#include <alpaka/mem/view/ViewStdArray.hpp>
+#include <alpaka/mem/view/ViewStdVector.hpp>
 #include <alpaka/mem/view/ViewSubView.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 //-----------------------------------------------------------------------------
