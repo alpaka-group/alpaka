@@ -63,6 +63,9 @@ namespace alpaka
                     class BufCpuImpl final :
                         public mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
                     {
+                        static_assert(
+                            !std::is_const<TIdx>::value,
+                            "The idx type of the buffer can not be const!");
                     public:
                         //-----------------------------------------------------------------------------
                         template<

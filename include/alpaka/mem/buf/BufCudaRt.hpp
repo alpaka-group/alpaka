@@ -69,6 +69,9 @@ namespace alpaka
                 typename TIdx>
             class BufCudaRt
             {
+                static_assert(
+                    !std::is_const<TIdx>::value,
+                    "The idx type of the buffer can not be const!");
             private:
                 using Elem = TElem;
                 using Dim = TDim;
