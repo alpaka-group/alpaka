@@ -70,6 +70,9 @@ namespace alpaka
             class BufCudaRt
             {
                 static_assert(
+                    !std::is_const<TElem>::value,
+                    "The elem type of the buffer can not be const because the C++ Standard forbids containers of const elements!");
+                static_assert(
                     !std::is_const<TIdx>::value,
                     "The idx type of the buffer can not be const!");
             private:
