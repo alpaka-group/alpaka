@@ -42,6 +42,9 @@ namespace alpaka
                 typename TIdx>
             class ViewPlainPtr final
             {
+                static_assert(
+                    !std::is_const<TIdx>::value,
+                    "The idx type of the view can not be const!");
             public:
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING

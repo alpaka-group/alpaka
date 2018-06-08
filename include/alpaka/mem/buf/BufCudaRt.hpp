@@ -69,6 +69,12 @@ namespace alpaka
                 typename TIdx>
             class BufCudaRt
             {
+                static_assert(
+                    !std::is_const<TElem>::value,
+                    "The elem type of the buffer can not be const because the C++ Standard forbids containers of const elements!");
+                static_assert(
+                    !std::is_const<TIdx>::value,
+                    "The idx type of the buffer can not be const!");
             private:
                 using Elem = TElem;
                 using Dim = TDim;
@@ -106,7 +112,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Frees the shared buffer.
                 ALPAKA_FN_HOST static auto freeBuffer(
-                    TElem * memPtr,
+                    TElem * const memPtr,
                     dev::DevCudaRt const & dev)
                 -> void
                 {
@@ -320,10 +326,10 @@ namespace alpaka
                 //#############################################################################
                 //! The CUDA 1D memory allocation trait specialization.
                 template<
-                    typename T,
+                    typename TElem,
                     typename TIdx>
                 struct Alloc<
-                    T,
+                    TElem,
                     dim::DimInt<1u>,
                     TIdx,
                     dev::DevCudaRt>
@@ -334,12 +340,12 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufCudaRt<T, dim::DimInt<1u>, TIdx>
+                    -> mem::buf::BufCudaRt<TElem, dim::DimInt<1u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        auto const widthBytes(width * static_cast<TIdx>(sizeof(T)));
+                        auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -360,9 +366,9 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::DimInt<1u>, TIdx>(
+                            mem::buf::BufCudaRt<TElem, dim::DimInt<1u>, TIdx>(
                                 dev,
-                                reinterpret_cast<T *>(memPtr),
+                                reinterpret_cast<TElem *>(memPtr),
                                 static_cast<TIdx>(widthBytes),
                                 extent);
                     }
@@ -370,10 +376,10 @@ namespace alpaka
                 //#############################################################################
                 //! The CUDA 2D memory allocation trait specialization.
                 template<
-                    typename T,
+                    typename TElem,
                     typename TIdx>
                 struct Alloc<
-                    T,
+                    TElem,
                     dim::DimInt<2u>,
                     TIdx,
                     dev::DevCudaRt>
@@ -384,12 +390,12 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufCudaRt<T, dim::DimInt<2u>, TIdx>
+                    -> mem::buf::BufCudaRt<TElem, dim::DimInt<2u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto const width(extent::getWidth(extent));
-                        auto const widthBytes(width * static_cast<TIdx>(sizeof(T)));
+                        auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
                         auto const height(extent::getHeight(extent));
 
                         // Set the current device.
@@ -417,9 +423,9 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::DimInt<2u>, TIdx>(
+                            mem::buf::BufCudaRt<TElem, dim::DimInt<2u>, TIdx>(
                                 dev,
-                                reinterpret_cast<T *>(memPtr),
+                                reinterpret_cast<TElem *>(memPtr),
                                 static_cast<TIdx>(pitchBytes),
                                 extent);
                     }
@@ -427,10 +433,10 @@ namespace alpaka
                 //#############################################################################
                 //! The CUDA 3D memory allocation trait specialization.
                 template<
-                    typename T,
+                    typename TElem,
                     typename TIdx>
                 struct Alloc<
-                    T,
+                    TElem,
                     dim::DimInt<3u>,
                     TIdx,
                     dev::DevCudaRt>
@@ -441,13 +447,13 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufCudaRt<T, dim::DimInt<3u>, TIdx>
+                    -> mem::buf::BufCudaRt<TElem, dim::DimInt<3u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         cudaExtent const cudaExtentVal(
                             make_cudaExtent(
-                                static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(T))),
+                                static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))),
                                 static_cast<std::size_t>(extent::getHeight(extent)),
                                 static_cast<std::size_t>(extent::getDepth(extent))));
 
@@ -476,9 +482,9 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::DimInt<3u>, TIdx>(
+                            mem::buf::BufCudaRt<TElem, dim::DimInt<3u>, TIdx>(
                                 dev,
-                                reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
+                                reinterpret_cast<TElem *>(cudaPitchedPtrVal.ptr),
                                 static_cast<TIdx>(cudaPitchedPtrVal.pitch),
                                 extent);
                     }

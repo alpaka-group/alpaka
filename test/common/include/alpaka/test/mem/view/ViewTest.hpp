@@ -126,6 +126,15 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::mem::view::traits::GetPtrNative
                     {
+                        // The view is a const& so the pointer has to point to a const value.
+                        using NativePtr = decltype(alpaka::mem::view::getPtrNative(view));
+                        static_assert(
+                            std::is_pointer<NativePtr>::value,
+                            "The value returned by getPtrNative has to be a pointer.");
+                        static_assert(
+                            std::is_const<typename std::remove_pointer<NativePtr>::type>::value,
+                            "The value returned by getPtrNative has to be const when the view is const.");
+
                         if(alpaka::extent::getExtentProduct(view) != static_cast<TIdx>(0u))
                         {
                             // The pointer is only required to be non-null when the extent is > 0.
@@ -357,6 +366,19 @@ namespace alpaka
                 -> void
                 {
                     using Idx = alpaka::idx::Idx<TView>;
+
+                    //-----------------------------------------------------------------------------
+                    // alpaka::mem::view::traits::GetPtrNative
+                    {
+                        // The view is a non-const so the pointer has to point to a non-const value.
+                        using NativePtr = decltype(alpaka::mem::view::getPtrNative(view));
+                        static_assert(
+                            std::is_pointer<NativePtr>::value,
+                            "The value returned by getPtrNative has to be a pointer.");
+                        static_assert(
+                            !std::is_const<typename std::remove_pointer<NativePtr>::type>::value,
+                            "The value returned by getPtrNative has to be non-const when the view is non-const.");
+                    }
 
                     auto const extent(alpaka::extent::getExtentVec(view));
 

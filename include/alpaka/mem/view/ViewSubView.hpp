@@ -50,6 +50,9 @@ namespace alpaka
                 typename TIdx>
             class ViewSubView
             {
+                static_assert(
+                    !std::is_const<TIdx>::value,
+                    "The idx type of the view can not be const!");
             public:
                 //-----------------------------------------------------------------------------
                 //! \param view The view this view is a sub-view of.

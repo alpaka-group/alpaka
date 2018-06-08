@@ -137,4 +137,53 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             extent);
 }
 
+
+//-----------------------------------------------------------------------------
+template<
+    typename TAcc>
+static auto basicBufferOperationsConstTest(
+    alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
+-> void
+{
+    using Dev = alpaka::dev::Dev<TAcc>;
+    using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Queue = alpaka::test::queue::DefaultQueue<Dev>;
+
+    using Elem = float;
+    using Dim = alpaka::dim::Dim<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
+
+    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Queue queue(dev);
+
+    //-----------------------------------------------------------------------------
+    // alpaka::mem::buf::alloc
+    auto const buf(alpaka::mem::buf::alloc<Elem, Idx>(dev, extent));
+
+    //-----------------------------------------------------------------------------
+    auto const offset(alpaka::vec::Vec<Dim, Idx>::zeros());
+    alpaka::test::mem::view::viewTestImmutable<
+        Elem>(
+            buf,
+            dev,
+            extent,
+            offset);
+}
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    memBufConstTest,
+    TAcc,
+    alpaka::test::acc::TestAccs)
+{
+    using Dim = alpaka::dim::Dim<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
+
+    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+
+    basicBufferOperationsConstTest<
+        TAcc>(
+            extent);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
