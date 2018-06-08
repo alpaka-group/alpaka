@@ -81,7 +81,7 @@ ENDFOREACH()
 SET(_SOURCE_DIR "src/")
 
 append_recursive_files_add_to_src_group("${_GENERATED_SOURCE_DIR}" "${_GENERATED_SOURCE_DIR}" "cpp" "_FILES_SOURCE")
-append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "cpp" "_FILES_SOURCE")
+LIST(APPEND _FILES_SOURCE "src/main.cpp")
 
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
