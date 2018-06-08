@@ -106,5 +106,4 @@ ENDIF()
 # Group the targets into subfolders for IDEs supporting this.
 SET_TARGET_PROPERTIES(headerCheck PROPERTIES FOLDER "test/analysis")
 
-ENABLE_TESTING()
 ADD_TEST(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME})
