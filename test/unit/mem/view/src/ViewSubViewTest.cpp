@@ -45,132 +45,208 @@
 #include <type_traits>
 #include <numeric>
 
-BOOST_AUTO_TEST_SUITE(memView)
-
-//#############################################################################
-//! 1D: sizeof(TIdx) * (5)
-//! 2D: sizeof(TIdx) * (5, 4)
-//! 3D: sizeof(TIdx) * (5, 4, 3)
-//! 4D: sizeof(TIdx) * (5, 4, 3, 2)
-// We have to be careful with the extents used.
-// When Idx is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
-//#############################################################################
-template<
-    std::size_t Tidx>
-struct CreateExtentBufVal
-{
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    template<
-        typename TIdx>
-    static auto create(
-        TIdx)
-    -> TIdx
-    {
-        return sizeof(TIdx) * (5u - Tidx);
-    }
-};
-
-//#############################################################################
-//! 1D: sizeof(TIdx) * (4)
-//! 2D: sizeof(TIdx) * (4, 3)
-//! 3D: sizeof(TIdx) * (4, 3, 2)
-//! 4D: sizeof(TIdx) * (4, 3, 2, 1)
-template<
-    std::size_t Tidx>
-struct CreateExtentViewVal
-{
-    //-----------------------------------------------------------------------------
-    template<
-        typename TIdx>
-    static auto create(
-        TIdx)
-    -> TIdx
-    {
-        return sizeof(TIdx) * (4u - Tidx);
-    }
-};
 
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wcast-align" // "cast from 'std::uint8_t*' to 'Elem*' increases required alignment of target type"
 #endif
-//-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    viewSubViewTest,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+
+namespace alpaka
 {
-    using Dev = alpaka::dev::Dev<TAcc>;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
-    using Queue = alpaka::test::queue::DefaultQueue<Dev>;
-
-    using Elem = float;
-    using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
-    using View = alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Idx>;
-
-    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
-    Queue queue(dev);
-
-    auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
-    auto buf(alpaka::mem::buf::alloc<Elem, Idx>(dev, extentBuf));
-
-    // TODO: Test failing cases of view extents larger then the underlying buffer extents.
-    auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
-    auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
-    View view(buf, extentView, offsetView);
-
-    //-----------------------------------------------------------------------------
-    alpaka::test::mem::view::viewTestImmutable<
-        Elem>(
-            view,
-            dev,
-            extentView,
-            offsetView);
-
-    //-----------------------------------------------------------------------------
-    alpaka::test::mem::view::viewTestMutable<
-        TAcc>(
-            queue,
-            view);
-
-    //-----------------------------------------------------------------------------
-    // alpaka::mem::view::traits::GetPitchBytes
-    // The pitch of the view has to be identical to the pitch of the underlying buffer in all dimensions.
+namespace test
+{
+namespace mem
+{
+namespace view
+{
+    //#############################################################################
+    //! 1D: sizeof(TIdx) * (5)
+    //! 2D: sizeof(TIdx) * (5, 4)
+    //! 3D: sizeof(TIdx) * (5, 4, 3)
+    //! 4D: sizeof(TIdx) * (5, 4, 3, 2)
+    // We have to be careful with the extents used.
+    // When Idx is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
+    //#############################################################################
+    template<
+        std::size_t Tidx>
+    struct CreateExtentBufVal
     {
-        auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
-        auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
-
-        for(Idx i = Dim::value; i > static_cast<Idx>(0u); --i)
+        //-----------------------------------------------------------------------------
+        //!
+        //-----------------------------------------------------------------------------
+        template<
+            typename TIdx>
+        static auto create(
+            TIdx)
+        -> TIdx
         {
+            return sizeof(TIdx) * (5u - Tidx);
+        }
+    };
+
+    //#############################################################################
+    //! 1D: sizeof(TIdx) * (4)
+    //! 2D: sizeof(TIdx) * (4, 3)
+    //! 3D: sizeof(TIdx) * (4, 3, 2)
+    //! 4D: sizeof(TIdx) * (4, 3, 2, 1)
+    template<
+        std::size_t Tidx>
+    struct CreateExtentViewVal
+    {
+        //-----------------------------------------------------------------------------
+        template<
+            typename TIdx>
+        static auto create(
+            TIdx)
+        -> TIdx
+        {
+            return sizeof(TIdx) * (4u - Tidx);
+        }
+    };
+
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAcc,
+        typename TDev,
+        typename TElem,
+        typename TDim,
+        typename TIdx,
+        typename TBuf>
+    auto viewSubViewTest(
+        alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> & view,
+        TBuf & buf,
+        TDev const & dev,
+        alpaka::vec::Vec<TDim, TIdx> const & extentView,
+        alpaka::vec::Vec<TDim, TIdx> const & offsetView)
+    -> void
+    {
+        //-----------------------------------------------------------------------------
+        alpaka::test::mem::view::viewTestImmutable<
+            TElem>(
+                view,
+                dev,
+                extentView,
+                offsetView);
+
+        using Queue = alpaka::test::queue::DefaultQueue<TDev>;
+        Queue queue(dev);
+        //-----------------------------------------------------------------------------
+        alpaka::test::mem::view::viewTestMutable<
+            TAcc>(
+                queue,
+                view);
+
+        //-----------------------------------------------------------------------------
+        // alpaka::mem::view::traits::GetPitchBytes
+        // The pitch of the view has to be identical to the pitch of the underlying buffer in all dimensions.
+        {
+            auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
+            auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
+
+            for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
+            {
+                BOOST_REQUIRE_EQUAL(
+                    pitchBuf[i-static_cast<TIdx>(1u)],
+                    pitchView[i-static_cast<TIdx>(1u)]);
+            }
+        }
+
+        //-----------------------------------------------------------------------------
+        // alpaka::mem::view::traits::GetPtrNative
+        // The native pointer has to be exactly the value we calculate here.
+        {
+            auto viewPtrNative(
+                reinterpret_cast<std::uint8_t *>(
+                    alpaka::mem::view::getPtrNative(buf)));
+            auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
+            for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
+            {
+                auto const pitch = (i < static_cast<TIdx>(TDim::value)) ? pitchBuf[i] : static_cast<TIdx>(sizeof(TElem));
+                viewPtrNative += offsetView[i - static_cast<TIdx>(1u)] * pitch;
+            }
             BOOST_REQUIRE_EQUAL(
-                pitchBuf[i-static_cast<Idx>(1u)],
-                pitchView[i-static_cast<Idx>(1u)]);
+                reinterpret_cast<TElem *>(viewPtrNative),
+                alpaka::mem::view::getPtrNative(view));
         }
     }
 
     //-----------------------------------------------------------------------------
-    // alpaka::mem::view::traits::GetPtrNative
-    // The native pointer has to be exactly the value we calculate here.
+    template<
+        typename TAcc,
+        typename TElem>
+    auto viewSubViewTestNoOffset()
+    -> void
     {
-        auto viewPtrNative(
-            reinterpret_cast<std::uint8_t *>(
-                alpaka::mem::view::getPtrNative(buf)));
-        auto const pitchBuf(alpaka::mem::view::getPitchBytesVec(buf));
-        for(Idx i = Dim::value; i > static_cast<Idx>(0u); --i)
-        {
-            auto const pitch = (i < static_cast<Idx>(Dim::value)) ? pitchBuf[i] : static_cast<Idx>(sizeof(Elem));
-            viewPtrNative += offsetView[i - static_cast<Idx>(1u)] * pitch;
-        }
-        BOOST_REQUIRE_EQUAL(
-            reinterpret_cast<Elem *>(viewPtrNative),
-            alpaka::mem::view::getPtrNative(view));
+        using Dev = alpaka::dev::Dev<TAcc>;
+        using Pltf = alpaka::pltf::Pltf<Dev>;
+
+        using Dim = alpaka::dim::Dim<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
+        using View = alpaka::mem::view::ViewSubView<Dev, TElem, Dim, Idx>;
+
+        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+
+        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+        auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
+
+        auto const extentView(extentBuf);
+        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
+        View view(buf);
+
+        alpaka::test::mem::view::viewSubViewTest<TAcc>(view, buf, dev, extentView, offsetView);
     }
+
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAcc,
+        typename TElem>
+    auto viewSubViewTestOffset()
+    -> void
+    {
+        using Dev = alpaka::dev::Dev<TAcc>;
+        using Pltf = alpaka::pltf::Pltf<Dev>;
+
+        using Dim = alpaka::dim::Dim<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
+        using View = alpaka::mem::view::ViewSubView<Dev, TElem, Dim, Idx>;
+
+        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+
+        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+        auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
+
+        auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
+        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
+        View view(buf, extentView, offsetView);
+
+        alpaka::test::mem::view::viewSubViewTest<TAcc>(view, buf, dev, extentView, offsetView);
+    }
+}
+}
+}
 }
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic pop
 #endif
+
+BOOST_AUTO_TEST_SUITE(memView)
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    viewSubViewNoOffsetTest,
+    TAcc,
+    alpaka::test::acc::TestAccs)
+{
+    alpaka::test::mem::view::viewSubViewTestNoOffset<TAcc, float>();
+}
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    viewSubViewOffsetTest,
+    TAcc,
+    alpaka::test::acc::TestAccs)
+{
+    alpaka::test::mem::view::viewSubViewTestOffset<TAcc, float>();
+}
 
 BOOST_AUTO_TEST_SUITE_END()

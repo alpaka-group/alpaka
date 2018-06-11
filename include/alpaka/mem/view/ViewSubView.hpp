@@ -55,54 +55,6 @@ namespace alpaka
                     "The idx type of the view can not be const!");
             public:
                 //-----------------------------------------------------------------------------
-                //! \param view The view this view is a sub-view of.
-                template<
-                    typename TView>
-                ViewSubView(
-                    TView const & view) :
-                        m_viewParentView(
-                            mem::view::getPtrNative(view),
-                            dev::getDev(view),
-                            extent::getExtentVec(view),
-                            mem::view::getPitchBytesVec(view)),
-                        m_extentElements(extent::getExtentVec(view)),
-                        m_offsetsElements(vec::Vec<TDim, TIdx>::all(0))
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    static_assert(
-                        std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The dev type of TView and the TDev template parameter have to be identical!");
-
-                    static_assert(
-                        std::is_same<TIdx, idx::Idx<TView>>::value,
-                        "The idx type of TView and the TIdx template parameter have to be identical!");
-                }
-                //-----------------------------------------------------------------------------
-                //! \param view The view this view is a sub-view of.
-                template<
-                    typename TView>
-                ViewSubView(
-                    TView & view) :
-                        m_viewParentView(
-                            mem::view::getPtrNative(view),
-                            dev::getDev(view),
-                            extent::getExtentVec(view),
-                            mem::view::getPitchBytesVec(view)),
-                        m_extentElements(extent::getExtentVec(view)),
-                        m_offsetsElements(vec::Vec<TDim, TIdx>::all(0))
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    static_assert(
-                        std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The dev type of TView and the TDev template parameter have to be identical!");
-
-                    static_assert(
-                        std::is_same<TIdx, idx::Idx<TView>>::value,
-                        "The idx type of TView and the TIdx template parameter have to be identical!");
-                }
-                //-----------------------------------------------------------------------------
                 //! Constructor.
                 //! \param view The view this view is a sub-view of.
                 //! \param extentElements The extent in elements.
@@ -199,6 +151,34 @@ namespace alpaka
                         "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
                     assert(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \param view The view this view is a sub-view of.
+                template<
+                    typename TView>
+                ViewSubView(
+                    TView const & view) :
+                        ViewSubView(
+                            view,
+                            view,
+                            vec::Vec<TDim, TIdx>::all(0))
+                {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \param view The view this view is a sub-view of.
+                template<
+                    typename TView>
+                ViewSubView(
+                    TView & view) :
+                        ViewSubView(
+                            view,
+                            view,
+                            vec::Vec<TDim, TIdx>::all(0))
+                {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 }
 
             public:
