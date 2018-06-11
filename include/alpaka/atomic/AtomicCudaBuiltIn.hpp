@@ -277,9 +277,10 @@ namespace alpaka
                     return atomicMin(addr, value);
                 }
             };
+#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
-            /*template<
+            template<
                typename THierarchy>
             struct AtomicOp<
                 op::Min,
@@ -296,7 +297,8 @@ namespace alpaka
                 {
                     return atomicMin(addr, value);
                 }
-            };*/
+            };
+#endif
 
             //-----------------------------------------------------------------------------
             // Max.
@@ -340,9 +342,10 @@ namespace alpaka
                     return atomicMax(addr, value);
                 }
             };
+#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
-            /*template<
+            template<
                typename THierarchy>
             struct AtomicOp<
                 op::Max,
@@ -359,7 +362,8 @@ namespace alpaka
                 {
                     return atomicMax(addr, value);
                 }
-            };*/
+            };
+#endif
 
             //-----------------------------------------------------------------------------
             // Exch.
@@ -536,9 +540,10 @@ namespace alpaka
                     return atomicAnd(addr, value);
                 }
             };
+#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
-            /*template<
+            template<
                 typename THierarchy>
             struct AtomicOp<
                 op::And,
@@ -555,7 +560,8 @@ namespace alpaka
                 {
                     return atomicAnd(addr, value);
                 }
-            };*/
+            };
+#endif
 
             //-----------------------------------------------------------------------------
             // Or.
@@ -600,9 +606,10 @@ namespace alpaka
                     return atomicOr(addr, value);
                 }
             };
+#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
-            /*template<
+            template<
                typename THierarchy>
             struct AtomicOp<
                 op::Or,
@@ -619,7 +626,8 @@ namespace alpaka
                 {
                     return atomicOr(addr, value);
                 }
-            };*/
+            };
+#endif
 
             //-----------------------------------------------------------------------------
             // Xor.
@@ -664,9 +672,10 @@ namespace alpaka
                     return atomicXor(addr, value);
                 }
             };
+#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
-            /*template<
+            template<
                typename THierarchy>
             struct AtomicOp<
                 op::Xor,
@@ -683,7 +692,8 @@ namespace alpaka
                 {
                     return atomicXor(addr, value);
                 }
-            };*/
+            };
+#endif
 
             //-----------------------------------------------------------------------------
             // Cas.
