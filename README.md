@@ -55,7 +55,7 @@ Accelerator Back-ends
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 | Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |TBB 2.2+ blocks|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
-|CUDA 8.0+|CUDA 8.0+|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+|CUDA 8.0 - 9.1|CUDA 8.0 - 9.1|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
 
 
 Supported Compilers
@@ -72,7 +72,7 @@ This library uses C++11 (or newer when available).
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |TBB 2.2+|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 8.0+|:white_check_mark: (nvcc 8.0+)|:white_check_mark: (nvcc 8.0+)|:x:|:white_check_mark: (native)|:x:|
+|CUDA 8.0 - 9.1|:white_check_mark: (nvcc 8.0 - 9.1)|:white_check_mark: (nvcc 8.0 - 9.1)|:x:|:white_check_mark: (native)|:x:|
 
 
 Dependencies
