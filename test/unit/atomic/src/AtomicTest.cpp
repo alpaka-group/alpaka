@@ -56,7 +56,7 @@ public:
         T operandOrig) const
     -> void
     {
-        auto operand = alpaka::block::shared::dyn::getMem<T>(acc);
+        auto operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Add
