@@ -56,204 +56,204 @@ public:
         T operandOrig) const
     -> void
     {
-        auto operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+        auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Add
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Add>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig + value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Sub
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Sub>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig - value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Min
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Min>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = (operandOrig < value) ? operandOrig : value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Max
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Max>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = (operandOrig > value) ? operandOrig : value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Exch
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Exch>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Inc
         {
             // \TODO: Check reset to 0 at 'value'.
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(42);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Inc>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig + 1;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Dec
         {
             // \TODO: Check reset to 'value' at 0.
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(42);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Dec>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig - 1;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::And
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::And>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig & value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Or
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Or>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig | value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Xor
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const value = operandOrig + static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Xor>(
                         acc,
-                        operand,
+                        &operand,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig ^ value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Cas with match
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const compare = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Cas>(
                         acc,
-                        operand,
+                        &operand,
                         compare,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = value;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
 
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Cas without match
         {
-            *operand = operandOrig;
+            operand = operandOrig;
             T const compare = operandOrig + static_cast<T>(1);
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
                     alpaka::atomic::op::Cas>(
                         acc,
-                        operand,
+                        &operand,
                         compare,
                         value);
             BOOST_VERIFY(operandOrig == ret);
             T const reference = operandOrig;
-            BOOST_VERIFY(*operand == reference);
+            BOOST_VERIFY(operand == reference);
         }
     }
 };
