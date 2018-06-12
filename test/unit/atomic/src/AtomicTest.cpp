@@ -56,10 +56,12 @@ public:
         T operandOrig) const
     -> void
     {
+        auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Add
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -75,7 +77,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Sub
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -91,7 +93,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Min
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -107,7 +109,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Max
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -123,7 +125,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Exch
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -140,7 +142,7 @@ public:
         // alpaka::atomic::op::Inc
         {
             // \TODO: Check reset to 0 at 'value'.
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(42);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -157,7 +159,7 @@ public:
         // alpaka::atomic::op::Dec
         {
             // \TODO: Check reset to 'value' at 0.
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(42);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -173,7 +175,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::And
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -189,7 +191,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Or
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -205,7 +207,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Xor
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const value = operandOrig + static_cast<T>(4);
             T const ret =
                 alpaka::atomic::atomicOp<
@@ -221,7 +223,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Cas with match
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const compare = operandOrig;
             T const value = static_cast<T>(4);
             T const ret =
@@ -239,7 +241,7 @@ public:
         //-----------------------------------------------------------------------------
         // alpaka::atomic::op::Cas without match
         {
-            T operand = operandOrig;
+            operand = operandOrig;
             T const compare = operandOrig + static_cast<T>(1);
             T const value = static_cast<T>(4);
             T const ret =
@@ -321,8 +323,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     TestAtomicOperations<TAcc, std::uint16_t>::testAtomicOperations();
 #endif
     TestAtomicOperations<TAcc, std::int32_t>::testAtomicOperations();
-#if !defined(ALPAKA_CI)
+    // The std::uint32_t test is the only one that is compiled for CUDA
+    // because this is the only type which is supported by all atomic operations.
     TestAtomicOperations<TAcc, std::uint32_t>::testAtomicOperations();
+#if !defined(ALPAKA_CI)
     TestAtomicOperations<TAcc, std::int64_t>::testAtomicOperations();
     TestAtomicOperations<TAcc, std::uint64_t>::testAtomicOperations();
 #endif
