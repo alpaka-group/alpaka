@@ -33,7 +33,7 @@
 //#############################################################################
 // This extends Boost.Predef by detecting:
 // - BOOST_LANG_CUDA
-// - BOOST_ARCH_CUDA_DEVICE
+// - BOOST_ARCH_PTX
 // - BOOST_COMP_NVCC
 // - BOOST_COMP_CLANG_CUDA
 
@@ -55,9 +55,9 @@
 //-----------------------------------------------------------------------------
 // CUDA device architecture detection
 #if defined(__CUDA_ARCH__)
-    #define BOOST_ARCH_CUDA_DEVICE BOOST_PREDEF_MAKE_10_VRP(__CUDA_ARCH__)
+    #define BOOST_ARCH_PTX BOOST_PREDEF_MAKE_10_VRP(__CUDA_ARCH__)
 #else
-    #define BOOST_ARCH_CUDA_DEVICE BOOST_VERSION_NUMBER_NOT_AVAILABLE
+    #define BOOST_ARCH_PTX BOOST_VERSION_NUMBER_NOT_AVAILABLE
 #endif
 
 //-----------------------------------------------------------------------------
@@ -136,7 +136,7 @@
 //! ALPAKA_FN_HOST_ACC function_declaration()
 //!
 //! WARNING: Only use this method if there is no other way.
-//! Most cases can be solved by #if BOOST_ARCH_CUDA_DEVICE or #if BOOST_LANG_CUDA.
+//! Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA.
 #if BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA
     #if BOOST_COMP_MSVC
         #define ALPAKA_NO_HOST_ACC_WARNING\
@@ -173,7 +173,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+#if BOOST_LANG_CUDA && BOOST_ARCH_PTX
     #define ALPAKA_STATIC_DEV_MEM_GLOBAL __device__
 #else
     #define ALPAKA_STATIC_DEV_MEM_GLOBAL
@@ -195,7 +195,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+#if BOOST_LANG_CUDA && BOOST_ARCH_PTX
     #define ALPAKA_STATIC_DEV_MEM_CONSTANT __constant__
 #else
     #define ALPAKA_STATIC_DEV_MEM_CONSTANT

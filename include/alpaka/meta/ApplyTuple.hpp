@@ -25,7 +25,7 @@
 
 #include <alpaka/meta/IntegerSequence.hpp>
 
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 #include <boost/config.hpp>
@@ -100,7 +100,7 @@ namespace alpaka
 #endif
             {
                 // If the the index sequence is empty, t will not be used at all.
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                 boost::ignore_unused(t);
 #endif
                 return

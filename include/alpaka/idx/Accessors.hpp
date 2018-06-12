@@ -34,7 +34,7 @@
 #include <alpaka/workdiv/Traits.hpp>
 
 #include <boost/config.hpp>
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 
@@ -198,7 +198,7 @@ namespace alpaka
             typename TGridThreadIdx,
             typename TThreadElemExtent>
         ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
-#if BOOST_ARCH_CUDA_DEVICE
+#if BOOST_ARCH_PTX
             TIdxWorkDiv const &,
 #else
             TIdxWorkDiv const & idxWorkDiv,
@@ -207,7 +207,7 @@ namespace alpaka
             TThreadElemExtent const & threadElemExtent)
         -> vec::Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
         {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
             boost::ignore_unused(idxWorkDiv);
 #endif
             return gridThreadIdx * threadElemExtent;

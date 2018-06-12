@@ -25,7 +25,7 @@
 
 #include <boost/config.hpp>
 
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 
@@ -43,7 +43,7 @@ namespace alpaka
             typename TFnObj,
             typename T>
         ALPAKA_FN_HOST_ACC auto foldr(
-#if BOOST_ARCH_CUDA_DEVICE
+#if BOOST_ARCH_PTX
             TFnObj const &,
 #else
             TFnObj const & f,
@@ -51,7 +51,7 @@ namespace alpaka
             T const & t)
         -> T
         {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
             boost::ignore_unused(f);
 #endif
             return t;

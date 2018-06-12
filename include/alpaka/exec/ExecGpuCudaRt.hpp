@@ -86,7 +86,7 @@ namespace alpaka
                     TKernelFnObj const kernelFnObj,
                     TArgs ... args)
                 {
-#if BOOST_ARCH_CUDA_DEVICE && (BOOST_ARCH_CUDA_DEVICE < BOOST_VERSION_NUMBER(2, 0, 0))
+#if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
     #error "Cuda device capability >= 2.0 is required!"
 #endif
                     acc::AccGpuCudaRt<TDim, TIdx> acc(threadElemExtent);

@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::queue::TestQueues)
 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
     using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
 
