@@ -38,7 +38,7 @@
 
 #include <alpaka/meta/DependentFalseType.hpp>
 
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 

@@ -33,45 +33,53 @@
 //#############################################################################
 // This extends Boost.Predef by detecting:
 // - BOOST_LANG_CUDA
-// - BOOST_ARCH_CUDA_DEVICE
+// - BOOST_ARCH_PTX
 // - BOOST_COMP_NVCC
 // - BOOST_COMP_CLANG_CUDA
 
 //-----------------------------------------------------------------------------
 // BOOST_PREDEF_MAKE_10_VVRRP(V)
-#define BOOST_PREDEF_MAKE_10_VVRRP(V) BOOST_VERSION_NUMBER(((V)/1000)%100,((V)/10)%100,(V)%10)
+#if !defined(BOOST_PREDEF_MAKE_10_VVRRP)
+    #define BOOST_PREDEF_MAKE_10_VVRRP(V) BOOST_VERSION_NUMBER(((V)/1000)%100,((V)/10)%100,(V)%10)
+#endif
 
 //-----------------------------------------------------------------------------
 // CUDA language detection
 // - clang defines __CUDA__ and __CUDACC__ when compiling CUDA code ('-x cuda')
 // - nvcc defines __CUDACC__ when compiling CUDA code
-#if defined(__CUDA__) || defined(__CUDACC__)
-    #include <cuda.h>
-    #define BOOST_LANG_CUDA BOOST_PREDEF_MAKE_10_VVRRP(CUDA_VERSION)
-#else
-    #define BOOST_LANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
+#if !defined(BOOST_LANG_CUDA)
+    #if defined(__CUDA__) || defined(__CUDACC__)
+        #include <cuda.h>
+        #define BOOST_LANG_CUDA BOOST_PREDEF_MAKE_10_VVRRP(CUDA_VERSION)
+    #else
+        #define BOOST_LANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
+    #endif
 #endif
 
 //-----------------------------------------------------------------------------
 // CUDA device architecture detection
-#if defined(__CUDA_ARCH__)
-    #define BOOST_ARCH_CUDA_DEVICE BOOST_PREDEF_MAKE_10_VRP(__CUDA_ARCH__)
-#else
-    #define BOOST_ARCH_CUDA_DEVICE BOOST_VERSION_NUMBER_NOT_AVAILABLE
+#if !defined(BOOST_ARCH_PTX)
+    #if defined(__CUDA_ARCH__)
+        #define BOOST_ARCH_PTX BOOST_PREDEF_MAKE_10_VRP(__CUDA_ARCH__)
+    #else
+        #define BOOST_ARCH_PTX BOOST_VERSION_NUMBER_NOT_AVAILABLE
+    #endif
 #endif
 
 //-----------------------------------------------------------------------------
 // nvcc CUDA compiler detection
-#if defined(__CUDACC__) && defined(__NVCC__)
-    // The __CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__ and __CUDACC_VER_BUILD__
-    // have been added with nvcc 7.5 and have not been available before.
-    #if !defined(__CUDACC_VER_MAJOR__) || !defined(__CUDACC_VER_MINOR__) || !defined(__CUDACC_VER_BUILD__)
-        #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER_AVAILABLE
+#if !defined(BOOST_COMP_NVCC)
+    #if defined(__CUDACC__) && defined(__NVCC__)
+        // The __CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__ and __CUDACC_VER_BUILD__
+        // have been added with nvcc 7.5 and have not been available before.
+        #if !defined(__CUDACC_VER_MAJOR__) || !defined(__CUDACC_VER_MINOR__) || !defined(__CUDACC_VER_BUILD__)
+            #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER_AVAILABLE
+        #else
+            #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER(__CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__, __CUDACC_VER_BUILD__)
+        #endif
     #else
-        #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER(__CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__, __CUDACC_VER_BUILD__)
+        #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER_NOT_AVAILABLE
     #endif
-#else
-    #define BOOST_COMP_NVCC BOOST_VERSION_NUMBER_NOT_AVAILABLE
 #endif
 
 //-----------------------------------------------------------------------------
@@ -136,7 +144,7 @@
 //! ALPAKA_FN_HOST_ACC function_declaration()
 //!
 //! WARNING: Only use this method if there is no other way.
-//! Most cases can be solved by #if BOOST_ARCH_CUDA_DEVICE or #if BOOST_LANG_CUDA.
+//! Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA.
 #if BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA
     #if BOOST_COMP_MSVC
         #define ALPAKA_NO_HOST_ACC_WARNING\
@@ -173,7 +181,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+#if BOOST_LANG_CUDA && BOOST_ARCH_PTX
     #define ALPAKA_STATIC_DEV_MEM_GLOBAL __device__
 #else
     #define ALPAKA_STATIC_DEV_MEM_GLOBAL
@@ -195,7 +203,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if BOOST_LANG_CUDA && BOOST_ARCH_CUDA_DEVICE
+#if BOOST_LANG_CUDA && BOOST_ARCH_PTX
     #define ALPAKA_STATIC_DEV_MEM_CONSTANT __constant__
 #else
     #define ALPAKA_STATIC_DEV_MEM_CONSTANT

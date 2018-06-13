@@ -125,7 +125,7 @@ namespace alpaka
                     catch(...)
                     {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                         setException(std::current_exception());
 #endif
                     }
@@ -138,7 +138,7 @@ namespace alpaka
 
             public:
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 virtual auto setException(
@@ -181,7 +181,7 @@ namespace alpaka
                 }
             public:
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 virtual auto setException(
@@ -231,7 +231,7 @@ namespace alpaka
                 }
             public:
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 //-----------------------------------------------------------------------------
                 //! Sets an exception.
                 virtual auto setException(
@@ -319,7 +319,7 @@ namespace alpaka
                     {
                         auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                         currentTaskPackage->setException(std::make_exception_ptr(except));
 #endif
                     }
@@ -515,7 +515,7 @@ namespace alpaka
                     {
                         auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                         currentTaskPackage->setException(std::make_exception_ptr(except));
 #endif
                     }

@@ -34,7 +34,7 @@
 #endif
 
 #include <boost/predef.h>
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 
@@ -95,7 +95,7 @@ namespace alpaka
                     typename TDim,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                     TKernelFnObj const & kernelFnObj,
                     vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
                     vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
@@ -108,7 +108,7 @@ namespace alpaka
 #endif
                 -> idx::Idx<TAcc>
                 {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                     boost::ignore_unused(kernelFnObj);
                     boost::ignore_unused(blockThreadExtent);
                     boost::ignore_unused(threadElemExtent);

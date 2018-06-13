@@ -238,7 +238,7 @@ namespace alpaka
             //! The function executed for each block thread.
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuFibers<TDim, TIdx> & acc,
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 std::vector<boost::fibers::future<void>> & futuresInBlock,
                 vec::Vec<TDim, TIdx> const & blockThreadIdx,
                 FiberPool & fiberPool,
@@ -264,7 +264,7 @@ namespace alpaka
                     });
                 // Add the bound function to the block thread pool.
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 futuresInBlock.emplace_back(
                     fiberPool.enqueueTask(
                         boundBlockThreadExecAcc));

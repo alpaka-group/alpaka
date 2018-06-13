@@ -190,7 +190,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl> & spQueueImpl,
 #else
                     std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl> &,
@@ -210,7 +210,7 @@ namespace alpaka
                     ++spEventImpl->m_enqueueCount;
 
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                     // Enqueue a task that only resets the events flag if it is completed.
@@ -355,7 +355,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl> & spQueueImpl,
 #else
                     std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl> &,
@@ -372,7 +372,7 @@ namespace alpaka
                     if(!spEventImpl->isReady())
                     {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                         auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                         // Enqueue a task that waits for the given event.

@@ -27,7 +27,7 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 
@@ -133,14 +133,14 @@ namespace alpaka
                 size_t... TIndices>
             ALPAKA_FN_HOST_ACC auto getExtentProductInternal(
                 TExtent const & extent,
-#if BOOST_ARCH_CUDA_DEVICE
+#if BOOST_ARCH_PTX
                 alpaka::meta::IndexSequence<TIndices...> const &)
 #else
                 alpaka::meta::IndexSequence<TIndices...> const & indices)
 #endif
             -> idx::Idx<TExtent>
             {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                 boost::ignore_unused(indices);
 #endif
                 return

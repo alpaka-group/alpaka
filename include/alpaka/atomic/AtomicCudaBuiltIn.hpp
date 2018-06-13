@@ -167,7 +167,7 @@ namespace alpaka
                     double const & value)
                 -> double
                 {
-#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(6, 0, 0)
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(6, 0, 0)
                     return atomicAdd(addr, value);
 #else
                     // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
@@ -277,7 +277,7 @@ namespace alpaka
                     return atomicMin(addr, value);
                 }
             };
-#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             template<
@@ -342,7 +342,7 @@ namespace alpaka
                     return atomicMax(addr, value);
                 }
             };
-#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             template<
@@ -540,7 +540,7 @@ namespace alpaka
                     return atomicAnd(addr, value);
                 }
             };
-#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             template<
@@ -606,7 +606,7 @@ namespace alpaka
                     return atomicOr(addr, value);
                 }
             };
-#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             template<
@@ -672,7 +672,7 @@ namespace alpaka
                     return atomicXor(addr, value);
                 }
             };
-#if BOOST_ARCH_CUDA_DEVICE >= BOOST_VERSION_NUMBER(3, 5, 0)
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
             //-----------------------------------------------------------------------------
             //! The GPU CUDA accelerator atomic operation.
             template<

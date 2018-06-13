@@ -36,7 +36,7 @@
 
 #include <boost/predef.h>
 #include <boost/config.hpp>
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 
@@ -73,7 +73,7 @@ namespace alpaka
             typename TIdxSize,
             TIdxSize... TIndices>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-#if BOOST_ARCH_CUDA_DEVICE
+#if BOOST_ARCH_PTX
             meta::IntegerSequence<TIdxSize, TIndices...> const &,
 #else
             meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
@@ -83,7 +83,7 @@ namespace alpaka
         -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
 #endif
         {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
             boost::ignore_unused(indices);
 #endif
             return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
@@ -205,7 +205,7 @@ namespace alpaka
                 typename TIdxSize,
                 TIdxSize... TIndices>
             ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
-#if BOOST_ARCH_CUDA_DEVICE
+#if BOOST_ARCH_PTX
                 meta::IntegerSequence<TIdxSize, TIndices...> const &,
 #else
                 meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
@@ -213,7 +213,7 @@ namespace alpaka
                 TArgs && ... args)
             -> Vec<TDim, TVal>
             {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                 boost::ignore_unused(indices);
 #endif
                 return Vec<TDim, TVal>(
@@ -387,7 +387,7 @@ namespace alpaka
                 std::size_t... TIndices>
             ALPAKA_FN_HOST_ACC auto foldrByIndices(
                 TFnObj const & f,
-#if BOOST_ARCH_CUDA_DEVICE
+#if BOOST_ARCH_PTX
                 meta::IntegerSequence<std::size_t, TIndices...> const &) const
 #else
                 meta::IntegerSequence<std::size_t, TIndices...> const & indices) const
@@ -399,7 +399,7 @@ namespace alpaka
                     ((*this)[TIndices])...))
 #endif
             {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                 boost::ignore_unused(indices);
 #endif
                 return
@@ -822,7 +822,7 @@ namespace alpaka
                     Vec<TDim, TVal> const & vec)
                 -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
                 {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                     // In the case of a zero dimensional vector, vec is unused.
                     boost::ignore_unused(vec);
 #endif

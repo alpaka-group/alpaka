@@ -72,7 +72,7 @@ public:
         {
             auto dist(alpaka::rand::distribution::createNormalReal<float>(acc));
             auto const r = dist(gen);
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
             BOOST_VERIFY(std::isfinite(r));
 #endif
         }
@@ -80,7 +80,7 @@ public:
         {
             auto dist(alpaka::rand::distribution::createNormalReal<double>(acc));
             auto const r = dist(gen);
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
             BOOST_VERIFY(std::isfinite(r));
 #endif
         }

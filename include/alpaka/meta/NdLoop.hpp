@@ -26,7 +26,7 @@
 #include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/core/Common.hpp>
 
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
     #include <boost/core/ignore_unused.hpp>
 #endif
 
@@ -54,7 +54,7 @@ namespace alpaka
                     typename TExtentVec,
                     typename TFnObj>
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                     TIndex & idx,
                     TExtentVec const & extent,
                     TFnObj const & f)
@@ -65,7 +65,7 @@ namespace alpaka
 #endif
                 -> void
                 {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
                     boost::ignore_unused(idx);
                     boost::ignore_unused(extent);
                     boost::ignore_unused(f);
@@ -153,7 +153,7 @@ namespace alpaka
         //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
         //! The loops are nested in the order given by the IndexSequence with the first element being the outermost and the last index the innermost loop.
         //!
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
         //! \param indexSequence A sequence of indices being a permutation of the values [0, dim-1], where every values occurs at most once.
 #endif
         //! \param extent N-dimensional loop extent.
@@ -164,7 +164,7 @@ namespace alpaka
             typename TFnObj,
             std::size_t... Tdims>
         ALPAKA_FN_HOST_ACC auto ndLoop(
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
             meta::IndexSequence<Tdims...> const & indexSequence,
 #else
             meta::IndexSequence<Tdims...> const &,
@@ -173,7 +173,7 @@ namespace alpaka
             TFnObj const & f)
         -> void
         {
-#if !BOOST_ARCH_CUDA_DEVICE
+#if !BOOST_ARCH_PTX
             boost::ignore_unused(indexSequence);
 #endif
 

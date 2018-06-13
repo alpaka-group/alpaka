@@ -211,7 +211,7 @@ namespace alpaka
                     blockThreadExtent,
                     boundBlockThreadExecHost);
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 // Wait for the completion of the block thread kernels.
                 std::for_each(
                     futuresInBlock.begin(),
@@ -234,7 +234,7 @@ namespace alpaka
             //! The function executed for each block thread on the host.
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuThreads<TDim, TIdx> & acc,
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 std::vector<std::future<void>> & futuresInBlock,
                 vec::Vec<TDim, TIdx> const & blockThreadIdx,
                 ThreadPool & threadPool,
@@ -260,7 +260,7 @@ namespace alpaka
                     });
                 // Add the bound function to the block thread pool.
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_CUDA_DEVICE)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 futuresInBlock.emplace_back(
                     threadPool.enqueueTask(
                         boundBlockThreadExecAcc));
