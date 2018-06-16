@@ -54,7 +54,7 @@ SET(_SOURCE_DIR "src/")
 append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "cpp" _FILES_SOURCE)
 
 IF(MSVC)
-    LIST(APPEND _COMPILE_DEFINITIONS_PRIVATE "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
+    LIST(APPEND _COMPILE_OPTIONS_PRIVATE "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
 ENDIF()
 
 # Always add all files to the target executable build call to add them to the build project.
@@ -63,7 +63,7 @@ ALPAKA_ADD_EXECUTABLE(
     ${_FILES_SOURCE})
 TARGET_COMPILE_OPTIONS(
     ${_TARGET_NAME}
-    PRIVATE ${_COMPILE_DEFINITIONS_PRIVATE}
+    PRIVATE ${_COMPILE_OPTIONS_PRIVATE}
     PRIVATE ${ALPAKA_DEV_COMPILE_OPTIONS})
 TARGET_LINK_LIBRARIES(
     ${_TARGET_NAME}
