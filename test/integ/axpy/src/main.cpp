@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2015 Benjamin Worpitz
+ * Copyright 2014-2018 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -18,6 +18,26 @@
  * along with alpaka.
  * If not, see <http://www.gnu.org/licenses/>.
  */
+
+// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
+// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
+// For each template parameter this leads to:
+// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
+// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
+// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
+#define BOOST_MPL_CFG_GPU_ENABLED
+
+#define BOOST_TEST_MODULE axpy
+
+#include <boost/predef.h>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
+#include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
@@ -78,212 +98,163 @@ public:
     }
 };
 
-//#############################################################################
-//! Profiles the vector addition kernel.
-struct AxpyKernelTester
-{
+BOOST_AUTO_TEST_SUITE(axpy)
+
+using TestAccs = alpaka::test::acc::EnabledAccs<
+    alpaka::dim::DimInt<1u>,
+    std::size_t>;
+
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
 #endif
-    template<
-        typename TAcc,
-        typename TIdx>
-    auto operator()(
-        TIdx const & numElements)
-    -> void
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    calculateAxpy,
+    TAcc,
+    TestAccs)
+{
+    using Dim = alpaka::dim::Dim<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
+
+#ifdef ALPAKA_CI
+    Idx const numElements = 1u<<9u;
+#else
+    Idx const numElements = 1u<<16u;
+#endif
+
+    using Val = float;
+    using DevAcc = alpaka::dev::Dev<TAcc>;
+    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+    using PltfHost = alpaka::pltf::PltfCpu;
+
+    // Create the kernel function object.
+    AxpyKernel kernel;
+
+    // Get the host device.
+    auto const devHost(
+        alpaka::pltf::getDevByIdx<PltfHost>(0u));
+
+    // Select a device to execute on.
+    auto const devAcc(
+        alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+
+    // Get a queue on this device.
+    QueueAcc queue(devAcc);
+
+    alpaka::vec::Vec<Dim, Idx> const extent(
+        numElements);
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent.
+    alpaka::workdiv::WorkDivMembers<Dim, Idx> const workDiv(
+        alpaka::workdiv::getValidWorkDiv<TAcc>(
+            devAcc,
+            extent,
+            static_cast<Idx>(3u),
+            false,
+            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+
+    std::cout
+        << "AxpyKernel("
+        << " numElements:" << numElements
+        << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
+        << ", kernel: " << typeid(kernel).name()
+        << ", workDiv: " << workDiv
+        << ")" << std::endl;
+
+    // Allocate host memory buffers.
+    auto memBufHostX(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostOrigY(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostY(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
+
+    // Initialize the host input vectors
+    for (Idx i(0); i < numElements; ++i)
     {
-        std::cout << std::endl;
-        std::cout << "################################################################################" << std::endl;
-
-        using Val = float;
-        using DevAcc = alpaka::dev::Dev<TAcc>;
-        using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
-        using PltfHost = alpaka::pltf::PltfCpu;
-
-        // Create the kernel function object.
-        AxpyKernel kernel;
-
-        // Get the host device.
-        auto const devHost(
-            alpaka::pltf::getDevByIdx<PltfHost>(0u));
-
-        // Select a device to execute on.
-        auto const devAcc(
-            alpaka::pltf::getDevByIdx<PltfAcc>(0u));
-
-        // Get a queue on this device.
-        QueueAcc queue(devAcc);
-
-        alpaka::vec::Vec<alpaka::dim::DimInt<1u>, TIdx> const extent(
-            numElements);
-
-        // Let alpaka calculate good block and grid sizes given our full problem extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TIdx> const workDiv(
-            alpaka::workdiv::getValidWorkDiv<TAcc>(
-                devAcc,
-                extent,
-                static_cast<TIdx>(3u),
-                false,
-                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
-
-        std::cout
-            << "AxpyKernelTester("
-            << " numElements:" << numElements
-            << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
-            << ", kernel: " << typeid(kernel).name()
-            << ", workDiv: " << workDiv
-            << ")" << std::endl;
-
-        // Allocate host memory buffers.
-        auto memBufHostX(alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
-        auto memBufHostOrigY(alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
-        auto memBufHostY(alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
-
-        // Initialize the host input vectors
-        for (TIdx i(0); i < numElements; ++i)
-        {
-            alpaka::mem::view::getPtrNative(memBufHostX)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
-            alpaka::mem::view::getPtrNative(memBufHostOrigY)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
-        }
-        auto const alpha(static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX));
+        alpaka::mem::view::getPtrNative(memBufHostX)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+        alpaka::mem::view::getPtrNative(memBufHostOrigY)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+    }
+    auto const alpha(static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-        std::cout << BOOST_CURRENT_FUNCTION
-            << " alpha: " << alpha << std::endl;
-        std::cout << BOOST_CURRENT_FUNCTION << " X_host: ";
-        alpaka::mem::view::print(memBufHostX, std::cout);
-        std::cout << std::endl;
-        std::cout << BOOST_CURRENT_FUNCTION << " Y_host: ";
-        alpaka::mem::view::print(memBufHostOrigY, std::cout);
-        std::cout << std::endl;
+    std::cout << BOOST_CURRENT_FUNCTION
+        << " alpha: " << alpha << std::endl;
+    std::cout << BOOST_CURRENT_FUNCTION << " X_host: ";
+    alpaka::mem::view::print(memBufHostX, std::cout);
+    std::cout << std::endl;
+    std::cout << BOOST_CURRENT_FUNCTION << " Y_host: ";
+    alpaka::mem::view::print(memBufHostOrigY, std::cout);
+    std::cout << std::endl;
 #endif
 
-        // Allocate the buffer on the accelerator.
-        auto memBufAccX(alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extent));
-        auto memBufAccY(alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extent));
+    // Allocate the buffer on the accelerator.
+    auto memBufAccX(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
+    auto memBufAccY(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
 
-        // Copy Host -> Acc.
-        alpaka::mem::view::copy(queue, memBufAccX, memBufHostX, extent);
-        alpaka::mem::view::copy(queue, memBufAccY, memBufHostOrigY, extent);
+    // Copy Host -> Acc.
+    alpaka::mem::view::copy(queue, memBufAccX, memBufHostX, extent);
+    alpaka::mem::view::copy(queue, memBufAccY, memBufHostOrigY, extent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-        alpaka::wait::wait(queue);
+    alpaka::wait::wait(queue);
 
-        std::cout << BOOST_CURRENT_FUNCTION << " X_Dev: ";
-        alpaka::mem::view::print(memBufHostX, std::cout);
-        std::cout << std::endl;
-        std::cout << BOOST_CURRENT_FUNCTION << " Y_Dev: ";
-        alpaka::mem::view::print(memBufHostX, std::cout);
-        std::cout << std::endl;
+    std::cout << BOOST_CURRENT_FUNCTION << " X_Dev: ";
+    alpaka::mem::view::print(memBufHostX, std::cout);
+    std::cout << std::endl;
+    std::cout << BOOST_CURRENT_FUNCTION << " Y_Dev: ";
+    alpaka::mem::view::print(memBufHostX, std::cout);
+    std::cout << std::endl;
 #endif
 
-        // Create the executor task.
-        auto const exec(alpaka::kernel::createTaskExec<TAcc>(
-            workDiv,
-            kernel,
-            numElements,
-            alpha,
-            alpaka::mem::view::getPtrNative(memBufAccX),
-            alpaka::mem::view::getPtrNative(memBufAccY)));
+    // Create the executor task.
+    auto const exec(alpaka::kernel::createTaskExec<TAcc>(
+        workDiv,
+        kernel,
+        numElements,
+        alpha,
+        alpaka::mem::view::getPtrNative(memBufAccX),
+        alpaka::mem::view::getPtrNative(memBufAccY)));
 
-        // Profile the kernel execution.
-        std::cout << "Execution time: "
-            << alpaka::test::integ::measureTaskRunTimeMs(
-                queue,
-                exec)
-            << " ms"
-            << std::endl;
+    // Profile the kernel execution.
+    std::cout << "Execution time: "
+        << alpaka::test::integ::measureTaskRunTimeMs(
+            queue,
+            exec)
+        << " ms"
+        << std::endl;
 
-        // Copy back the result.
-        alpaka::mem::view::copy(queue, memBufHostY, memBufAccY, extent);
+    // Copy back the result.
+    alpaka::mem::view::copy(queue, memBufHostY, memBufAccY, extent);
 
-        // Wait for the queue to finish the memory operation.
-        alpaka::wait::wait(queue);
+    // Wait for the queue to finish the memory operation.
+    alpaka::wait::wait(queue);
 
-        bool resultCorrect(true);
-        auto const pHostResultData(alpaka::mem::view::getPtrNative(memBufHostY));
-        for(TIdx i(0u);
-            i < numElements;
-            ++i)
-        {
-            auto const & val(pHostResultData[i]);
-            auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
+    bool resultCorrect(true);
+    auto const pHostResultData(alpaka::mem::view::getPtrNative(memBufHostY));
+    for(Idx i(0u);
+        i < numElements;
+        ++i)
+    {
+        auto const & val(pHostResultData[i]);
+        auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
 #endif
-            if(val != correctResult)
+        if(val != correctResult)
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
-            {
-                std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
-                resultCorrect = false;
-            }
-        }
-
-        if(resultCorrect)
         {
-            std::cout << "Execution results correct!" << std::endl;
+            std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+            resultCorrect = false;
         }
-
-        std::cout << "################################################################################" << std::endl;
-
-        allResultsCorrect = allResultsCorrect && resultCorrect;
     }
+
+    BOOST_REQUIRE_EQUAL(true, resultCorrect);
+}
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic pop
 #endif
 
-public:
-    bool allResultsCorrect = true;
-};
-
-auto main()
--> int
-{
-    try
-    {
-        std::cout << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << "                                alpaka axpy test                                " << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << std::endl;
-
-        // Logs the enabled accelerators.
-        alpaka::test::acc::writeEnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>(std::cout);
-
-        std::cout << std::endl;
-
-        AxpyKernelTester axpyKernelTester;
-
-        // For different sizes.
-#ifdef ALPAKA_CI
-        for(std::size_t vecSize(1u); vecSize <= 1u<<9u; vecSize *= 8u)
-#else
-        for(std::size_t vecSize(1u); vecSize <= 1u<<16u; vecSize *= 2u)
-#endif
-        {
-            std::cout << std::endl;
-
-            // Execute the kernel on all enabled accelerators.
-            alpaka::meta::forEachType<
-                alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>>(
-                    axpyKernelTester,
-                    vecSize);
-        }
-        return axpyKernelTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
-    }
-    catch(std::exception const & e)
-    {
-        std::cerr << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-    catch(...)
-    {
-        std::cerr << "Unknown Exception" << std::endl;
-        return EXIT_FAILURE;
-    }
-}
+BOOST_AUTO_TEST_SUITE_END()

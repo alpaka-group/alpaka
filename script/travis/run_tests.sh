@@ -51,11 +51,11 @@ BOOST_TEST_OPTIONS="--log_level=test_suite --color_output=true"
 
 #-------------------------------------------------------------------------------
 # Build and execute all integration tests.
-./script/travis/compileExec.sh "test/integ/axpy/" ./axpy
-if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "ON" ] ;then ./script/travis/compileExec.sh "test/integ/cudaOnly/" ./cudaOnly ;fi
-./script/travis/compileExec.sh "test/integ/mandelbrot/" ./mandelbrot
-./script/travis/compileExec.sh "test/integ/matMul/" ./matMul
-./script/travis/compileExec.sh "test/integ/sharedMem/" ./sharedMem
+./script/travis/compileExec.sh "test/integ/axpy/" "./axpy ${BOOST_TEST_OPTIONS}"
+if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "ON" ] ;then ./script/travis/compileExec.sh "test/integ/cudaOnly/" "./cudaOnly ${BOOST_TEST_OPTIONS}" ;fi
+./script/travis/compileExec.sh "test/integ/mandelbrot/" "./mandelbrot ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/integ/matMul/" "./matMul ${BOOST_TEST_OPTIONS}"
+./script/travis/compileExec.sh "test/integ/sharedMem/" "./sharedMem ${BOOST_TEST_OPTIONS}"
 
 #-------------------------------------------------------------------------------
 # Build and execute all examples.
