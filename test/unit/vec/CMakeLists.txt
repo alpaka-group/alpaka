@@ -48,7 +48,6 @@ IF(NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
 ELSE()
     LIST(APPEND _INCLUDE_DIRECTORIES_PRIVATE ${Boost_INCLUDE_DIRS})
     LIST(APPEND _LINK_LIBRARIES_PRIVATE ${Boost_LIBRARIES})
-
 ENDIF()
 
 #-------------------------------------------------------------------------------
