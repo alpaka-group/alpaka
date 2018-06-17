@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2015 Benjamin Worpitz
+ * Copyright 2014-2018 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -18,6 +18,26 @@
  * along with alpaka.
  * If not, see <http://www.gnu.org/licenses/>.
  */
+
+// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
+// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
+// For each template parameter this leads to:
+// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
+// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
+// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
+#define BOOST_MPL_CFG_GPU_ENABLED
+
+#define BOOST_TEST_MODULE mandelbrot
+
+#include <boost/predef.h>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
+#include <boost/test/unit_test.hpp>
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
@@ -311,172 +331,123 @@ auto writeTgaColorImage(
     }
 }
 
-//#############################################################################
-//! Profiles the Mandelbrot kernel.
-struct MandelbrotKernelTester
+BOOST_AUTO_TEST_SUITE(mandelbrot)
+
+using TestAccs = alpaka::test::acc::EnabledAccs<
+    alpaka::dim::DimInt<2u>,
+    std::uint32_t>;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    calculateAxpy,
+    TAcc,
+    TestAccs)
 {
-    template<
-        typename TAcc,
-        typename TIdx>
-    auto operator()(
-        TIdx const & numRows,
-        TIdx const & numCols,
-        float const & fMinR,
-        float const & fMaxR,
-        float const & fMinI,
-        float const & fMaxI,
-        TIdx const & maxIterations)
-    -> void
-    {
-        std::cout << std::endl;
-        std::cout << "################################################################################" << std::endl;
+    using Dim = alpaka::dim::Dim<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
 
-        using Val = std::uint32_t;
-        using DevAcc = alpaka::dev::Dev<TAcc>;
-        using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
-        using PltfHost = alpaka::pltf::PltfCpu;
-
-        // Create the kernel function object.
-        MandelbrotKernel kernel;
-
-        // Get the host device.
-        auto const devHost(
-            alpaka::pltf::getDevByIdx<PltfHost>(0u));
-
-        // Select a device to execute on.
-        auto const devAcc(
-            alpaka::pltf::getDevByIdx<PltfAcc>(0u));
-
-        // Get a queue on this device.
-        QueueAcc queue(
-            devAcc);
-
-        alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TIdx> const extent(
-            static_cast<TIdx>(numRows),
-            static_cast<TIdx>(numCols));
-
-        // Let alpaka calculate good block and grid sizes given our full problem extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TIdx> const workDiv(
-            alpaka::workdiv::getValidWorkDiv<TAcc>(
-                devAcc,
-                extent,
-                alpaka::vec::Vec<alpaka::dim::DimInt<2u>, TIdx>::ones(),
-                false,
-                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
-
-        std::cout
-            << "MandelbrotKernelTester("
-            << " numRows:" << numRows
-            << ", numCols:" << numCols
-            << ", maxIterations:" << maxIterations
-            << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
-            << ", kernel: " << typeid(kernel).name()
-            << ", workDiv: " << workDiv
-            << ")" << std::endl;
-
-        // allocate host memory
-        auto bufColorHost(
-            alpaka::mem::buf::alloc<Val, TIdx>(devHost, extent));
-
-        // Allocate the buffer on the accelerator.
-        auto bufColorAcc(
-            alpaka::mem::buf::alloc<Val, TIdx>(devAcc, extent));
-
-        // Copy Host -> Acc.
-        alpaka::mem::view::copy(queue, bufColorAcc, bufColorHost, extent);
-
-        // Create the executor task.
-        auto const exec(alpaka::kernel::createTaskExec<TAcc>(
-            workDiv,
-            kernel,
-            alpaka::mem::view::getPtrNative(bufColorAcc),
-            numRows,
-            numCols,
-            alpaka::mem::view::getPitchBytes<1u>(bufColorAcc),
-            fMinR,
-            fMaxR,
-            fMinI,
-            fMaxI,
-            maxIterations));
-
-        // Profile the kernel execution.
-        std::cout << "Execution time: "
-            << alpaka::test::integ::measureTaskRunTimeMs(
-                queue,
-                exec)
-            << " ms"
-            << std::endl;
-
-        // Copy back the result.
-        alpaka::mem::view::copy(queue, bufColorHost, bufColorAcc, extent);
-
-        // Wait for the queue to finish the memory operation.
-        alpaka::wait::wait(queue);
-
-        // Write the image to a file.
-        std::string fileName("mandelbrot"+std::to_string(numCols)+"x"+std::to_string(numRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
-        std::replace(fileName.begin(), fileName.end(), '<', '_');
-        std::replace(fileName.begin(), fileName.end(), '>', '_');
-        writeTgaColorImage(
-            fileName,
-            bufColorHost);
-
-        std::cout << "################################################################################" << std::endl;
-    }
-};
-
-auto main()
--> int
-{
-    try
-    {
-        std::cout << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << "                            alpaka mandelbrot test                              " << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << std::endl;
-
-        // Logs the enabled accelerators.
-        alpaka::test::acc::writeEnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>(std::cout);
-
-        std::cout << std::endl;
-
-        MandelbrotKernelTester mandelbrotTester;
-
-        // For different sizes.
-        for(std::uint32_t imageSize(1u<<3u);
 #ifdef ALPAKA_CI
-            imageSize <= 1u<<5u;
+    Idx const imageSize(1u<<5u);
 #else
-            imageSize <= 1u<<13u;
+    Idx const imageSize(1u<<10u);
 #endif
-            imageSize *= 2u)
-        {
-            std::cout << std::endl;
+    Idx const numRows(imageSize);
+    Idx const numCols(imageSize);
+    float const fMinR(-2.0f);
+    float const fMaxR(+1.0f);
+    float const fMinI(-1.2f);
+    float const fMaxI(+1.2f);
+    Idx const maxIterations(300u);
 
-            // Execute the kernel on all enabled accelerators.
-            alpaka::meta::forEachType<
-                alpaka::test::acc::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
-                    mandelbrotTester,
-                    imageSize,
-                    imageSize,
-                    -2.0f,
-                    +1.0f,
-                    -1.2f,
-                    +1.2f,
-                    300u);
-        }
-        return EXIT_SUCCESS;
-    }
-    catch(std::exception const & e)
-    {
-        std::cerr << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-    catch(...)
-    {
-        std::cerr << "Unknown Exception" << std::endl;
-        return EXIT_FAILURE;
-    }
+    using Val = std::uint32_t;
+    using DevAcc = alpaka::dev::Dev<TAcc>;
+    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+    using PltfHost = alpaka::pltf::PltfCpu;
+
+    // Create the kernel function object.
+    MandelbrotKernel kernel;
+
+    // Get the host device.
+    auto const devHost(
+        alpaka::pltf::getDevByIdx<PltfHost>(0u));
+
+    // Select a device to execute on.
+    auto const devAcc(
+        alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+
+    // Get a queue on this device.
+    QueueAcc queue(
+        devAcc);
+
+    alpaka::vec::Vec<Dim, Idx> const extent(
+        static_cast<Idx>(numRows),
+        static_cast<Idx>(numCols));
+
+    // Let alpaka calculate good block and grid sizes given our full problem extent.
+    alpaka::workdiv::WorkDivMembers<Dim, Idx> const workDiv(
+        alpaka::workdiv::getValidWorkDiv<TAcc>(
+            devAcc,
+            extent,
+            alpaka::vec::Vec<Dim, Idx>::ones(),
+            false,
+            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+
+    std::cout
+        << "MandelbrotKernel("
+        << " numRows:" << numRows
+        << ", numCols:" << numCols
+        << ", maxIterations:" << maxIterations
+        << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
+        << ", kernel: " << typeid(kernel).name()
+        << ", workDiv: " << workDiv
+        << ")" << std::endl;
+
+    // allocate host memory
+    auto bufColorHost(
+        alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
+
+    // Allocate the buffer on the accelerator.
+    auto bufColorAcc(
+        alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
+
+    // Copy Host -> Acc.
+    alpaka::mem::view::copy(queue, bufColorAcc, bufColorHost, extent);
+
+    // Create the executor task.
+    auto const exec(alpaka::kernel::createTaskExec<TAcc>(
+        workDiv,
+        kernel,
+        alpaka::mem::view::getPtrNative(bufColorAcc),
+        numRows,
+        numCols,
+        alpaka::mem::view::getPitchBytes<1u>(bufColorAcc),
+        fMinR,
+        fMaxR,
+        fMinI,
+        fMaxI,
+        maxIterations));
+
+    // Profile the kernel execution.
+    std::cout << "Execution time: "
+        << alpaka::test::integ::measureTaskRunTimeMs(
+            queue,
+            exec)
+        << " ms"
+        << std::endl;
+
+    // Copy back the result.
+    alpaka::mem::view::copy(queue, bufColorHost, bufColorAcc, extent);
+
+    // Wait for the queue to finish the memory operation.
+    alpaka::wait::wait(queue);
+
+    // Write the image to a file.
+    std::string fileName("mandelbrot"+std::to_string(numCols)+"x"+std::to_string(numRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
+    std::replace(fileName.begin(), fileName.end(), '<', '_');
+    std::replace(fileName.begin(), fileName.end(), '>', '_');
+    writeTgaColorImage(
+        fileName,
+        bufColorHost);
 }
+
+BOOST_AUTO_TEST_SUITE_END()

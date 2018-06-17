@@ -40,6 +40,17 @@ LIST(APPEND CMAKE_MODULE_PATH "${COMMON_ROOT}")
 FIND_PACKAGE(common REQUIRED)
 
 #-------------------------------------------------------------------------------
+# Boost.Test.
+FIND_PACKAGE(Boost QUIET COMPONENTS unit_test_framework)
+IF(NOT Boost_UNIT_TEST_FRAMEWORK_FOUND)
+    MESSAGE(FATAL_ERROR "Required alpaka dependency Boost.Test could not be found!")
+
+ELSE()
+    LIST(APPEND _INCLUDE_DIRECTORIES_PRIVATE ${Boost_INCLUDE_DIRS})
+    LIST(APPEND _LINK_LIBRARIES_PRIVATE ${Boost_LIBRARIES})
+ENDIF()
+
+#-------------------------------------------------------------------------------
 # Add executable.
 
 SET(_SOURCE_DIR "src/")
@@ -51,10 +62,19 @@ append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "cpp" 
 ALPAKA_ADD_EXECUTABLE(
     ${_TARGET_NAME}
     ${_FILES_SOURCE})
-# Set the link libraries for this library (adds libs, include directories, defines and compile options).
+TARGET_INCLUDE_DIRECTORIES(
+    ${_TARGET_NAME}
+    PRIVATE ${_INCLUDE_DIRECTORIES_PRIVATE})
 TARGET_LINK_LIBRARIES(
     ${_TARGET_NAME}
-    PUBLIC "common")
+    PRIVATE common ${_LINK_LIBRARIES_PRIVATE})
+IF(NOT Boost_USE_STATIC_LIBS)
+    TARGET_COMPILE_DEFINITIONS(
+        ${_TARGET_NAME}
+        PRIVATE "BOOST_TEST_DYN_LINK")
+ENDIF()
 
 # Group the targets into subfolders for IDEs supporting this.
 SET_TARGET_PROPERTIES(${_TARGET_NAME} PROPERTIES FOLDER "test/integ")
+
+ADD_TEST(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME})
