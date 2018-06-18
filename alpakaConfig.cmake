@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2017 Benjamin Worpitz, Erik Zenker, Axel Huebl
+# Copyright 2014-2018 Benjamin Worpitz, Erik Zenker, Axel Huebl
 #
 # This file is part of alpaka.
 #
@@ -50,10 +50,6 @@ UNSET(_ALPAKA_ADD_EXECUTABLE_FILE)
 UNSET(_ALPAKA_ADD_LIBRRAY_FILE)
 UNSET(_ALPAKA_FILES_HEADER)
 UNSET(_ALPAKA_FILES_OTHER)
-UNSET(_ALPAKA_VERSION_DEFINE)
-UNSET(_ALPAKA_VER_MAJOR)
-UNSET(_ALPAKA_VER_MINOR)
-UNSET(_ALPAKA_VER_PATCH)
 
 #-------------------------------------------------------------------------------
 # Common.
@@ -733,10 +729,6 @@ IF(NOT _ALPAKA_FOUND)
     UNSET(_ALPAKA_FILES_HEADER)
     UNSET(_ALPAKA_FILES_OTHER)
     UNSET(_ALPAKA_BOOST_MIN_VER)
-    UNSET(_ALPAKA_VERSION_DEFINE)
-    UNSET(_ALPAKA_VER_MAJOR)
-    UNSET(_ALPAKA_VER_MINOR)
-    UNSET(_ALPAKA_VER_PATCH)
 ELSE()
     # Make internal variables advanced options in the GUI.
     MARK_AS_ADVANCED(
@@ -754,11 +746,7 @@ ELSE()
         _ALPAKA_ADD_LIBRARY_FILE
         _ALPAKA_FILES_HEADER
         _ALPAKA_FILES_OTHER
-        _ALPAKA_BOOST_MIN_VER
-        _ALPAKA_VERSION_DEFINE
-        _ALPAKA_VER_MAJOR
-        _ALPAKA_VER_MINOR
-        _ALPAKA_VER_PATCH)
+        _ALPAKA_BOOST_MIN_VER)
 ENDIF()
 
 ###############################################################################

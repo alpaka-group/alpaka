@@ -79,8 +79,8 @@ then
             export CMAKE_BUILD_TYPE=Debug
         fi
 
-        # nvcc <= 9.1 does not support boost correctly so fibers have to be disabled.
-        if (( (( ALPAKA_CUDA_VER_MAJOR < 9 )) || ( (( ALPAKA_CUDA_VER_MAJOR == 9 )) && (( ALPAKA_CUDA_VER_MINOR <= 1 )) ) ))
+        # nvcc <= 9.2 does not support boost correctly so fibers have to be disabled.
+        if (( (( ALPAKA_CUDA_VER_MAJOR < 9 )) || ( (( ALPAKA_CUDA_VER_MAJOR == 9 )) && (( ALPAKA_CUDA_VER_MINOR <= 2 )) ) ))
         then
             if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]
             then
