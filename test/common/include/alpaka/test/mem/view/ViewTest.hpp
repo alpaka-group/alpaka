@@ -169,10 +169,6 @@ namespace alpaka
 
                 //#############################################################################
                 //! Compares element-wise that all bytes are set to the same value.
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
-#endif
                 struct VerifyBytesSetKernel
                 {
                     ALPAKA_NO_HOST_ACC_WARNING
@@ -189,25 +185,15 @@ namespace alpaka
                         (void)acc;
                         for(auto it = begin; it != end; ++it)
                         {
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
-#endif
                             auto const& elem = *it;
                             auto const pBytes = reinterpret_cast<std::uint8_t const *>(&elem);
                             for(std::size_t i = 0u; i < elemSizeInByte; ++i)
                             {
                                 BOOST_VERIFY(pBytes[i] == byte);
                             }
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
                         }
                     }
                 };
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic pop
-#endif
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc,
