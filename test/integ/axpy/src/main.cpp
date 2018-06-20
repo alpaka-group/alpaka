@@ -38,6 +38,7 @@
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
+#include <boost/math/special_functions/relative_difference.hpp>
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
@@ -46,6 +47,7 @@
 
 #include <iostream>
 #include <typeinfo>
+#include <limits>
 
 //#############################################################################
 //! A vector addition kernel.
@@ -104,10 +106,6 @@ using TestAccs = alpaka::test::acc::EnabledAccs<
     alpaka::dim::DimInt<1u>,
     std::size_t>;
 
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
-#endif
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     calculateAxpy,
@@ -237,14 +235,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     {
         auto const & val(pHostResultData[i]);
         auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
-#endif
-        if(val != correctResult)
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+        if( boost::math::relative_difference(val, correctResult) > std::numeric_limits<Val>::epsilon() )
         {
             std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
@@ -253,8 +244,5 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     BOOST_REQUIRE_EQUAL(true, resultCorrect);
 }
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic pop
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()
