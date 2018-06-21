@@ -21,7 +21,7 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <cstdlib>
+#include <random>
 #include <iostream>
 #include <typeinfo>
 
@@ -127,10 +127,16 @@ auto main()
     Data * const pBufHostA = alpaka::mem::view::getPtrNative(bufHostA);
     Data * const pBufHostB = alpaka::mem::view::getPtrNative(bufHostB);
     Data * const pBufHostC(alpaka::mem::view::getPtrNative(bufHostC));
+
+    // C++11 random generator for uniformly distributed numbers in {1,..,42}
+    std::random_device rd{};
+    std::default_random_engine eng{ rd() };
+    std::uniform_int_distribution<Data> dist(1, 42);
+
     for (Idx i(0); i < numElements; ++i)
     {
-        pBufHostA[i] = static_cast<Data>(std::rand());
-        pBufHostB[i] = static_cast<Data>(std::rand());
+        pBufHostA[i] = dist(eng);
+        pBufHostB[i] = dist(eng);
     }
 
     // Allocate 3 buffers on the accelerator

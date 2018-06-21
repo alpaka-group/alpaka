@@ -47,6 +47,7 @@
 
 #include <iostream>
 #include <typeinfo>
+#include <random>
 #include <limits>
 
 //#############################################################################
@@ -165,14 +166,22 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     auto memBufHostX(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
     auto memBufHostOrigY(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
     auto memBufHostY(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
+    Val * const pBufHostX = alpaka::mem::view::getPtrNative(memBufHostX);
+    Val * const pBufHostOrigY = alpaka::mem::view::getPtrNative(memBufHostOrigY);
+    Val * const pBufHostY = alpaka::mem::view::getPtrNative(memBufHostY);
+
+    // C++11 random generator for uniformly distributed numbers in [0,1)
+    std::random_device rd{};
+    std::default_random_engine eng{ rd() };
+    std::uniform_real_distribution<Val> dist(0.0, 1.0);
 
     // Initialize the host input vectors
     for (Idx i(0); i < numElements; ++i)
     {
-        alpaka::mem::view::getPtrNative(memBufHostX)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
-        alpaka::mem::view::getPtrNative(memBufHostOrigY)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+        pBufHostX[i] = dist(eng);
+        pBufHostOrigY[i] = dist(eng);
     }
-    auto const alpha(static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX));
+    Val const alpha( dist(eng) );
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     std::cout << BOOST_CURRENT_FUNCTION
@@ -228,13 +237,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::wait::wait(queue);
 
     bool resultCorrect(true);
-    auto const pHostResultData(alpaka::mem::view::getPtrNative(memBufHostY));
-    for(Idx i(0u);
-        i < numElements;
-        ++i)
+    for(Idx i(0u); i < numElements; ++i)
     {
-        auto const & val(pHostResultData[i]);
-        auto const correctResult(alpha * alpaka::mem::view::getPtrNative(memBufHostX)[i] + alpaka::mem::view::getPtrNative(memBufHostOrigY)[i]);
+        auto const & val(pBufHostY[i]);
+        auto const correctResult(alpha * pBufHostX[i] + pBufHostOrigY[i]);
         if( boost::math::relative_difference(val, correctResult) > std::numeric_limits<Val>::epsilon() )
         {
             std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
