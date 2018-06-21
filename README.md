@@ -72,13 +72,14 @@ This library uses C++11 (or newer when available).
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA|:white_check_mark: (nvcc 8.0-9.2)|:white_check_mark: (nvcc 9.0-9.2)|:white_check_mark: (nvcc 9.2)|:white_check_mark: (native CUDA 8.0/nvcc 9.1-9.2)|:white_check_mark: (native CUDA 8.0)|:white_check_mark: (native CUDA 8.0-9.0)|:x:|
+|CUDA (nvcc)|:white_check_mark: <br/> (CUDA 8.0-9.2)|:white_check_mark: <br/> (CUDA 9.0-9.2)|:white_check_mark: <br/> (CUDA 9.2) |:white_check_mark: <br/> (CUDA 9.1, 9.2)|:x: | :x: |:x:|
+|CUDA (clang) | - | - | - | :white_check_mark: <br/> (CUDA 8.0)| :white_check_mark: <br/> (CUDA 8.0)| :white_check_mark: <br/> (CUDA 8.0-9.0) | - |
 
 
 Dependencies
 ------------
 
-[Boost](http://boost.org/) 1.62+ is the only mandatory external dependency.
+[Boost](http://boost.org/) 1.62+ is the only mandatory external dependency (for CUDA 9+ Boost >=1.65.1 is required).
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
