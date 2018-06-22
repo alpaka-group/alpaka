@@ -88,6 +88,22 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
+    queueWaitShouldWork,
+    TDevQueue,
+    alpaka::test::queue::TestQueues)
+{
+    using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
+    Fixture f;
+
+    bool CallbackFinished = false;
+    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {std::this_thread::sleep_for(std::chrono::milliseconds(100u)); CallbackFinished = true;});
+
+    alpaka::wait::wait(f.m_queue);
+    BOOST_REQUIRE_EQUAL(true, CallbackFinished);
+}
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE_TEMPLATE(
     queueShouldBeEmptyAfterProcessingFinished,
     TDevQueue,
     alpaka::test::queue::TestQueues)
@@ -96,37 +112,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     Fixture f;
 
     bool CallbackFinished = false;
-
-    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {CallbackFinished = true;});
+    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {std::this_thread::sleep_for(std::chrono::milliseconds(100u)); CallbackFinished = true;});
 
     // A synchronous queue will always stay empty because the task has been executed immediately.
     if(!alpaka::test::queue::IsSyncQueue<typename Fixture::Queue>::value)
     {
-        // Wait that the queue finally gets empty again.
-        while(!alpaka::queue::empty(f.m_queue))
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        alpaka::wait::wait(f.m_queue);
     }
 
     BOOST_REQUIRE_EQUAL(true, alpaka::queue::empty(f.m_queue));
-    BOOST_REQUIRE_EQUAL(true, CallbackFinished);
-}
-//-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    queueWaitShouldWork,
-    TDevQueue,
-    alpaka::test::queue::TestQueues)
-{
-    using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
-    Fixture f;
-
-    // TODO: better add some long running (~0.5s) task here
-
-    bool CallbackFinished = false;
-    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {CallbackFinished = true;});
-
-    alpaka::wait::wait(f.m_queue);
     BOOST_REQUIRE_EQUAL(true, CallbackFinished);
 }
 #endif
