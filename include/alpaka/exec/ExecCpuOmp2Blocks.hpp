@@ -145,8 +145,10 @@ namespace alpaka
 
                 // The number of blocks in the grid.
                 TIdx const numBlocksInGrid(gridBlockExtent.prod());
-                // There is only ever one thread in a block in the OpenMP 2.0 block accelerator.
-                BOOST_VERIFY(blockThreadExtent.prod() == static_cast<TIdx>(1u));
+                if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
+                {
+                    throw std::runtime_error("Only one thread per block allowed in the OpenMP 2.0 block accelerator!");
+                }
 
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
