@@ -448,8 +448,6 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 IF(NOT MSVC)
                     LIST(APPEND CUDA_NVCC_FLAGS "-std=c++11")
-                ELSE()
-                    LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "_HAS_ITERATOR_DEBUGGING=0")
                 ENDIF()
 
                 SET(CUDA_HOST_COMPILER "${CMAKE_CXX_COMPILER}")
