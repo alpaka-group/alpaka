@@ -46,14 +46,34 @@ namespace alpaka
                 template<
                     typename TDev>
                 struct EventHostManualTriggerType;
+                //#############################################################################
+                //!
+                //#############################################################################
+                template<
+                    typename TDev>
+                struct IsEventHostManualTriggerSupported;
             }
 
             //#############################################################################
-            //! The event type trait alias template to remove the ::type.
+            //! The event host manual trigger type trait alias template to remove the ::type.
             //#############################################################################
             template<
                 typename TDev>
             using EventHostManualTrigger = typename traits::EventHostManualTriggerType<TDev>::type;
+
+            //-----------------------------------------------------------------------------
+            template<
+                typename TDev>
+            ALPAKA_FN_HOST auto isEventHostManualTriggerSupported(
+                TDev const & dev)
+            -> bool
+            {
+                return
+                    traits::IsEventHostManualTriggerSupported<
+                        TDev>
+                    ::isSupported(
+                        dev);
+            }
 
             namespace cpu
             {
@@ -185,6 +205,20 @@ namespace alpaka
                     alpaka::dev::DevCpu>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCpu;
+                };
+                //#############################################################################
+                //! The CPU event host manual trigger support get trait specialization.
+                template<>
+                struct IsEventHostManualTriggerSupported<
+                    alpaka::dev::DevCpu>
+                {
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto isSupported(
+                        alpaka::dev::DevCpu const &)
+                    -> bool
+                    {
+                        return true;
+                    }
                 };
             }
         }
@@ -497,6 +531,34 @@ namespace alpaka
                     alpaka::dev::DevCudaRt>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCuda;
+                };
+                //#############################################################################
+                //! The CPU event host manual trigger support get trait specialization.
+                template<>
+                struct IsEventHostManualTriggerSupported<
+                    alpaka::dev::DevCudaRt>
+                {
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto isSupported(
+#if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(9, 0, 0)
+                        alpaka::dev::DevCudaRt const & dev)
+#else
+                        alpaka::dev::DevCudaRt const &)
+#endif
+                    -> bool
+                    {
+#if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(9, 0, 0)
+                        int result = 0;
+                        cuDeviceGetAttribute(
+                            &result,
+                            CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS,
+                            dev.m_iDevice);
+                        return result != 0;
+#else
+                        // In CUDA 8.0 there is no way to find out if those operations are really supported.
+                        return false;
+#endif
+                    }
                 };
             }
         }

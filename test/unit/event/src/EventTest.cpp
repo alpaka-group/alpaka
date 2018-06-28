@@ -74,31 +74,38 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dev = typename Fixture::Dev;
 
     Fixture f1;
-    auto s1 = f1.m_queue;
-    alpaka::event::Event<Queue> e1(f1.m_dev);
-    alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
-
-    if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+    if(alpaka::test::event::isEventHostManualTriggerSupported(f1.m_dev))
     {
-        alpaka::queue::enqueue(s1, k1);
-    }
+        auto s1 = f1.m_queue;
+        alpaka::event::Event<Queue> e1(f1.m_dev);
+        alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
 
-    alpaka::queue::enqueue(s1, e1);
+        if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+        {
+            alpaka::queue::enqueue(s1, k1);
+        }
 
-    if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
-    {
+        alpaka::queue::enqueue(s1, e1);
+
+        if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+        {
+            BOOST_REQUIRE_EQUAL(
+                false,
+                alpaka::event::test(e1));
+
+            k1.trigger();
+
+            alpaka::wait::wait(s1);
+        }
+
         BOOST_REQUIRE_EQUAL(
-            false,
+            true,
             alpaka::event::test(e1));
-
-        k1.trigger();
-
-        alpaka::wait::wait(s1);
     }
-
-    BOOST_REQUIRE_EQUAL(
-        true,
-        alpaka::event::test(e1));
+    else
+    {
+        BOOST_TEST_MESSAGE("Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!");
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -114,44 +121,51 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
     {
         Fixture f1;
-        auto s1 = f1.m_queue;
-        alpaka::event::Event<Queue> e1(f1.m_dev);
-        alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
-        alpaka::test::event::EventHostManualTrigger<Dev> k2(f1.m_dev);
+        if(alpaka::test::event::isEventHostManualTriggerSupported(f1.m_dev))
+        {
+            auto s1 = f1.m_queue;
+            alpaka::event::Event<Queue> e1(f1.m_dev);
+            alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
+            alpaka::test::event::EventHostManualTrigger<Dev> k2(f1.m_dev);
 
-        // s1 = [k1]
-        alpaka::queue::enqueue(s1, k1);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            // s1 = [k1]
+            alpaka::queue::enqueue(s1, k1);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
 
-        // s1 = [k1, e1]
-        alpaka::queue::enqueue(s1, e1);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            // s1 = [k1, e1]
+            alpaka::queue::enqueue(s1, e1);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
 
-        // s1 = [k1, e1, k2]
-        alpaka::queue::enqueue(s1, k2);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
+            // s1 = [k1, e1, k2]
+            alpaka::queue::enqueue(s1, k2);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
 
-        // re-enqueue should be possible
-        // s1 = [k1, k2, e1]
-        alpaka::queue::enqueue(s1, e1);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            // re-enqueue should be possible
+            // s1 = [k1, k2, e1]
+            alpaka::queue::enqueue(s1, e1);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
 
-        // s1 = [k2, e1]
-        k1.trigger();
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            // s1 = [k2, e1]
+            k1.trigger();
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
 
-        // s1 = [e1]
-        k2.trigger();
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k2));
-        alpaka::wait::wait(e1);
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e1));
+            // s1 = [e1]
+            k2.trigger();
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k2));
+            alpaka::wait::wait(e1);
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e1));
+        }
+        else
+        {
+            BOOST_TEST_MESSAGE("Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!");
+        }
     }
 }
 
@@ -169,58 +183,66 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     {
         Fixture f1;
         Fixture f2;
-        auto s1 = f1.m_queue;
-        auto s2 = f2.m_queue;
-        alpaka::event::Event<Queue> e1(f1.m_dev);
-        alpaka::event::Event<Queue> e2(f2.m_dev);
-        alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
-        alpaka::test::event::EventHostManualTrigger<Dev> k2(f1.m_dev);
+        if(alpaka::test::event::isEventHostManualTriggerSupported(f1.m_dev)
+            && alpaka::test::event::isEventHostManualTriggerSupported(f2.m_dev))
+        {
+            auto s1 = f1.m_queue;
+            auto s2 = f2.m_queue;
+            alpaka::event::Event<Queue> e1(f1.m_dev);
+            alpaka::event::Event<Queue> e2(f2.m_dev);
+            alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
+            alpaka::test::event::EventHostManualTrigger<Dev> k2(f1.m_dev);
 
-        // s1 = [k1]
-        alpaka::queue::enqueue(s1, k1);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            // s1 = [k1]
+            alpaka::queue::enqueue(s1, k1);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
 
-        // s1 = [k1, e1]
-        alpaka::queue::enqueue(s1, e1);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            // s1 = [k1, e1]
+            alpaka::queue::enqueue(s1, e1);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
 
-        // s1 = [k1, e1, k2]
-        alpaka::queue::enqueue(s1, k2);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
+            // s1 = [k1, e1, k2]
+            alpaka::queue::enqueue(s1, k2);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
 
-        // wait for e1
-        // s2 = [->e1]
-        alpaka::wait::wait(s2, e1);
+            // wait for e1
+            // s2 = [->e1]
+            alpaka::wait::wait(s2, e1);
 
-        // s2 = [->e1, e2]
-        alpaka::queue::enqueue(s2, e2);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e2));
+            // s2 = [->e1, e2]
+            alpaka::queue::enqueue(s2, e2);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e2));
 
-        // re-enqueue should be possible
-        // s1 = [k1, k2, e1]
-        alpaka::queue::enqueue(s1, e1);
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e2));
+            // re-enqueue should be possible
+            // s1 = [k1, k2, e1]
+            alpaka::queue::enqueue(s1, e1);
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e2));
 
-        // s1 = [k2, e1]
-        k1.trigger();
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
-        BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e2));
+            // s1 = [k2, e1]
+            k1.trigger();
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e1));
+            BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e2));
 
-        // s1 = [e1]
-        k2.trigger();
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k2));
-        alpaka::wait::wait(e1);
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e1));
-        alpaka::wait::wait(e2);
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e2));
+            // s1 = [e1]
+            k2.trigger();
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(k2));
+            alpaka::wait::wait(e1);
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e1));
+            alpaka::wait::wait(e2);
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e2));
+        }
+        else
+        {
+            BOOST_TEST_MESSAGE("Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!");
+        }
     }
 }
 
@@ -239,51 +261,59 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     {
         Fixture f1;
         Fixture f2;
-        auto s1 = f1.m_queue;
-        auto s2 = f2.m_queue;
-        alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
-        alpaka::test::event::EventHostManualTrigger<Dev> k2(f2.m_dev);
-        alpaka::event::Event<Queue> e1(f1.m_dev);
+        if(alpaka::test::event::isEventHostManualTriggerSupported(f1.m_dev)
+            && alpaka::test::event::isEventHostManualTriggerSupported(f2.m_dev))
+        {
+            auto s1 = f1.m_queue;
+            auto s2 = f2.m_queue;
+            alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
+            alpaka::test::event::EventHostManualTrigger<Dev> k2(f2.m_dev);
+            alpaka::event::Event<Queue> e1(f1.m_dev);
 
-        // 1. kernel k1 is enqueued into queue s1
-        // s1 = [k1]
-        alpaka::queue::enqueue(s1, k1);
-        // 2. kernel k2 is enqueued into queue s2
-        // s2 = [k2]
-        alpaka::queue::enqueue(s2, k2);
+            // 1. kernel k1 is enqueued into queue s1
+            // s1 = [k1]
+            alpaka::queue::enqueue(s1, k1);
+            // 2. kernel k2 is enqueued into queue s2
+            // s2 = [k2]
+            alpaka::queue::enqueue(s2, k2);
 
-        // 3. event e1 is enqueued into queue s1
-        // s1 = [k1, e1]
-        alpaka::queue::enqueue(s1, e1);
+            // 3. event e1 is enqueued into queue s1
+            // s1 = [k1, e1]
+            alpaka::queue::enqueue(s1, e1);
 
-        // 4. s2 waits for e1
-        // s2 = [k2, ->e1]
-        alpaka::wait::wait(s2, e1);
+            // 4. s2 waits for e1
+            // s2 = [k2, ->e1]
+            alpaka::wait::wait(s2, e1);
 
-        // 5. kernel k1 finishes
-        // s1 = [e1]
-        k1.trigger();
+            // 5. kernel k1 finishes
+            // s1 = [e1]
+            k1.trigger();
 
-        // 6. e1 is finished
-        // s1 = []
-        alpaka::wait::wait(e1);
-        BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e1));
+            // 6. e1 is finished
+            // s1 = []
+            alpaka::wait::wait(e1);
+            BOOST_REQUIRE_EQUAL(true, alpaka::event::test(e1));
 
-        // 7. e1 is re-enqueued again but this time into s2
-        // s2 = [k2, ->e1, e1]
-        alpaka::queue::enqueue(s2, e1);
+            // 7. e1 is re-enqueued again but this time into s2
+            // s2 = [k2, ->e1, e1]
+            alpaka::queue::enqueue(s2, e1);
 
-        // 8. kernel k2 finishes
-        // s2 = [->e1, e1]
-        k2.trigger();
+            // 8. kernel k2 finishes
+            // s2 = [->e1, e1]
+            k2.trigger();
 
-        // 9. e1 had already been signaled so there should not be waited even though the event is now reused within s2 and its current state is 'unfinished' again.
-        // s2 = [e1]
+            // 9. e1 had already been signaled so there should not be waited even though the event is now reused within s2 and its current state is 'unfinished' again.
+            // s2 = [e1]
 
-        // Both queues should successfully finish
-        alpaka::wait::wait(s1);
-        // s2 = []
-        alpaka::wait::wait(s2);
+            // Both queues should successfully finish
+            alpaka::wait::wait(s1);
+            // s2 = []
+            alpaka::wait::wait(s2);
+        }
+        else
+        {
+            BOOST_TEST_MESSAGE("Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!");
+        }
     }
 }
 
