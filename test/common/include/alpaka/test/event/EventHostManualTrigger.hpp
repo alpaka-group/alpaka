@@ -408,12 +408,12 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            // Set the current device. \TODO: Is setting the current device before cudaFree required?
+                            // Set the current device.
                             ALPAKA_CUDA_RT_CHECK(
                                 cudaSetDevice(
                                     m_dev.m_iDevice));
                             // Free the buffer.
-                            cudaFree(m_devMem);
+                            ALPAKA_CUDA_RT_CHECK(cudaFree(m_devMem));
                         }
 
                         //-----------------------------------------------------------------------------
