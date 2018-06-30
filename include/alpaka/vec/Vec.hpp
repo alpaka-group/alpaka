@@ -703,6 +703,49 @@ namespace alpaka
             //! A function object that returns the element wise less than relation of two vectors.
             template<
                 std::size_t Tidx>
+            struct CreateLess
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TDim,
+                    typename TVal>
+                ALPAKA_FN_HOST_ACC static auto create(
+                    Vec<TDim, TVal> const & p,
+                    Vec<TDim, TVal> const & q)
+                -> bool
+                {
+                    return p[Tidx] < q[Tidx];
+                }
+            };
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The element wise less than relation of two vectors.
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TDim,
+            typename TVal>
+        ALPAKA_FN_HOST_ACC auto operator<(
+            Vec<TDim, TVal> const & p,
+            Vec<TDim, TVal> const & q)
+        -> Vec<TDim, bool>
+        {
+            return
+                createVecFromIndexedFnWorkaround<
+                    TDim,
+                    bool,
+                    detail::CreateLess>(
+                        p,
+                        q);
+        }
+
+        namespace detail
+        {
+            //#############################################################################
+            //! A function object that returns the element wise less equal than relation of two vectors.
+            template<
+                std::size_t Tidx>
             struct CreateLessEqual
             {
                 //-----------------------------------------------------------------------------
@@ -721,7 +764,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The element wise less than relation of two vectors.
+        //! \return The element wise less equal than relation of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
@@ -736,6 +779,92 @@ namespace alpaka
                     TDim,
                     bool,
                     detail::CreateLessEqual>(
+                        p,
+                        q);
+        }
+
+        namespace detail
+        {
+            //#############################################################################
+            //! A function object that returns the element wise greater equal than relation of two vectors.
+            template<
+                std::size_t Tidx>
+            struct CreateGreaterEqual
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TDim,
+                    typename TVal>
+                ALPAKA_FN_HOST_ACC static auto create(
+                    Vec<TDim, TVal> const & p,
+                    Vec<TDim, TVal> const & q)
+                -> bool
+                {
+                    return p[Tidx] >= q[Tidx];
+                }
+            };
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The element wise greater equal than relation of two vectors.
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TDim,
+            typename TVal>
+        ALPAKA_FN_HOST_ACC auto operator>=(
+            Vec<TDim, TVal> const & p,
+            Vec<TDim, TVal> const & q)
+        -> Vec<TDim, bool>
+        {
+            return
+                createVecFromIndexedFnWorkaround<
+                    TDim,
+                    bool,
+                    detail::CreateGreaterEqual>(
+                        p,
+                        q);
+        }
+
+        namespace detail
+        {
+            //#############################################################################
+            //! A function object that returns the element wise greater than relation of two vectors.
+            template<
+                std::size_t Tidx>
+            struct CreateGreater
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TDim,
+                    typename TVal>
+                ALPAKA_FN_HOST_ACC static auto create(
+                    Vec<TDim, TVal> const & p,
+                    Vec<TDim, TVal> const & q)
+                -> bool
+                {
+                    return p[Tidx] > q[Tidx];
+                }
+            };
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The element wise greater than relation of two vectors.
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TDim,
+            typename TVal>
+        ALPAKA_FN_HOST_ACC auto operator>(
+            Vec<TDim, TVal> const & p,
+            Vec<TDim, TVal> const & q)
+        -> Vec<TDim, bool>
+        {
+            return
+                createVecFromIndexedFnWorkaround<
+                    TDim,
+                    bool,
+                    detail::CreateGreater>(
                         p,
                         q);
         }
