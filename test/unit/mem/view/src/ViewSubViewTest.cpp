@@ -113,7 +113,7 @@ namespace view
         typename TIdx,
         typename TBuf>
     auto testViewSubViewImmutable(
-        alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> & view,
+        alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & view,
         TBuf & buf,
         TDev const & dev,
         alpaka::vec::Vec<TDim, TIdx> const & extentView,
@@ -247,6 +247,32 @@ namespace view
 
         alpaka::test::mem::view::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
     }
+
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAcc,
+        typename TElem>
+    auto testViewSubViewOffsetConst()
+    -> void
+    {
+        using Dev = alpaka::dev::Dev<TAcc>;
+        using Pltf = alpaka::pltf::Pltf<Dev>;
+
+        using Dim = alpaka::dim::Dim<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
+        using View = alpaka::mem::view::ViewSubView<Dev, TElem, Dim, Idx>;
+
+        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+
+        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+        auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
+
+        auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
+        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
+        View const view(buf, extentView, offsetView);
+
+        alpaka::test::mem::view::testViewSubViewImmutable<TAcc>(view, buf, dev, extentView, offsetView);
+    }
 }
 }
 }
@@ -273,6 +299,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::acc::TestAccs)
 {
     alpaka::test::mem::view::testViewSubViewOffset<TAcc, float>();
+}
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    viewSubViewOffsetConstTest,
+    TAcc,
+    alpaka::test::acc::TestAccs)
+{
+    alpaka::test::mem::view::testViewSubViewOffsetConst<TAcc, float>();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
