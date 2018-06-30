@@ -54,7 +54,7 @@ namespace alpaka
                     typename TIdx,
                     typename TDev,
                     typename TView>
-                static auto viewTestImmutable(
+                static auto testViewImmutable(
                     TView const & view,
                     TDev const & dev,
                     alpaka::vec::Vec<TDim, TIdx> const & extent,
@@ -346,13 +346,11 @@ namespace alpaka
                     typename TAcc,
                     typename TView,
                     typename TQueue>
-                static auto viewTestMutable(
+                static auto testViewMutable(
                     TQueue & queue,
                     TView & view)
                 -> void
                 {
-                    using Idx = alpaka::idx::Idx<TView>;
-
                     //-----------------------------------------------------------------------------
                     // alpaka::mem::view::traits::GetPtrNative
                     {
@@ -380,6 +378,7 @@ namespace alpaka
                     // alpaka::mem::view::copy
                     {
                         using Elem = alpaka::elem::Elem<TView>;
+                        using Idx = alpaka::idx::Idx<TView>;
 
                         auto const devAcc = alpaka::dev::getDev(view);
 
