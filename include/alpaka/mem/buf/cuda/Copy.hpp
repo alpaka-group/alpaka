@@ -76,6 +76,10 @@ namespace alpaka
                         TExtent>
                     {
                         static_assert(
+                            !std::is_const<TViewDst>::value,
+                            "The destination view can not be const!");
+
+                        static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
@@ -155,6 +159,10 @@ namespace alpaka
                         TViewSrc,
                         TExtent>
                     {
+                        static_assert(
+                            !std::is_const<TViewDst>::value,
+                            "The destination view can not be const!");
+
                         static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
@@ -266,6 +274,10 @@ namespace alpaka
                         TViewSrc,
                         TExtent>
                     {
+                        static_assert(
+                            !std::is_const<TViewDst>::value,
+                            "The destination view can not be const!");
+
                         static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");

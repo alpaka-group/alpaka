@@ -79,8 +79,12 @@ namespace alpaka
                                 m_iDevice(dev::getDev(buf).m_iDevice)
                         {
                             static_assert(
+                                !std::is_const<TView>::value,
+                                "The destination view can not be const!");
+
+                            static_assert(
                                 dim::Dim<TView>::value == dim::Dim<TExtent>::value,
-                                "The destination buffer and the extent are required to have the same dimensionality!");
+                                "The destination view and the extent are required to have the same dimensionality!");
                         }
 
                         TView & m_buf;

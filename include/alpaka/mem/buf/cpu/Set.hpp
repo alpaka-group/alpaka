@@ -61,6 +61,10 @@ namespace alpaka
                         using Elem = elem::Elem<TView>;
 
                         static_assert(
+                            !std::is_const<TView>::value,
+                            "The destination view can not be const!");
+
+                        static_assert(
                             dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                             "The destination view and the extent are required to have the same dimensionality!");
                         static_assert(
