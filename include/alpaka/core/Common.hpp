@@ -116,22 +116,45 @@
 //! auto add(std::int32_t a, std::int32_t b)
 //! -> std::int32_t;
 #if BOOST_LANG_CUDA
-    #define ALPAKA_FN_ACC_CUDA_ONLY __device__
-    #define ALPAKA_FN_ACC_NO_CUDA __host__
-    #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
-        #define ALPAKA_FN_ACC __device__
+    #if defined(ALPAKA_ACC_CPU_B_SEQ_T_OPENACC2_ENABLED)
+        #define ALPAKA_FN_ACC_CUDA_ONLY _Pragma("acc routine")\
+            __device__
+        #define ALPAKA_FN_ACC_NO_CUDA _Pragma("acc routine")\
+            __host__
+        #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+            #define ALPAKA_FN_ACC _Pragma("acc routine")\
+                __device__
+        #else
+            #define ALPAKA_FN_ACC _Pragma("acc routine")\
+                __device__ __host__
+        #endif
+        #define ALPAKA_FN_HOST_ACC _Pragma("acc routine")\
+            __device__ __host__
     #else
-        #define ALPAKA_FN_ACC __device__ __host__
+        #define ALPAKA_FN_ACC_CUDA_ONLY __device__
+        #define ALPAKA_FN_ACC_NO_CUDA __host__
+        #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+            #define ALPAKA_FN_ACC __device__
+        #else
+            #define ALPAKA_FN_ACC __device__ __host__
+        #endif
+        #define ALPAKA_FN_HOST_ACC __device__ __host__
     #endif
-    #define ALPAKA_FN_HOST_ACC __device__ __host__
     #define ALPAKA_FN_HOST __host__
 #else
     // NOTE: ALPAKA_FN_ACC_CUDA_ONLY should not be defined to cause build failures when CUDA only functions are used and CUDA is disabled.
     // However, this also destroys syntax highlighting.
-    #define ALPAKA_FN_ACC_CUDA_ONLY
-    #define ALPAKA_FN_ACC_NO_CUDA
-    #define ALPAKA_FN_ACC
-    #define ALPAKA_FN_HOST_ACC
+    #if defined(ALPAKA_ACC_CPU_B_SEQ_T_OPENACC2_ENABLED)
+        #define ALPAKA_FN_ACC_CUDA_ONLY _Pragma("acc routine")
+        #define ALPAKA_FN_ACC_NO_CUDA _Pragma("acc routine")
+        #define ALPAKA_FN_ACC _Pragma("acc routine")
+        #define ALPAKA_FN_HOST_ACC _Pragma("acc routine")
+    #else
+        #define ALPAKA_FN_ACC_CUDA_ONLY
+        #define ALPAKA_FN_ACC_NO_CUDA
+        #define ALPAKA_FN_ACC
+        #define ALPAKA_FN_HOST_ACC
+    #endif
     #define ALPAKA_FN_HOST
 #endif
 

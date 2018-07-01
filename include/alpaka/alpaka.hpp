@@ -37,6 +37,7 @@
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #include <alpaka/acc/AccCpuOmp4.hpp>
+#include <alpaka/acc/AccCpuOpenAcc2.hpp>
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/acc/Traits.hpp>
@@ -45,6 +46,7 @@
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>
+#include <alpaka/atomic/AtomicOpenAcc.hpp>
 #include <alpaka/atomic/AtomicStlLock.hpp>
 #include <alpaka/atomic/Op.hpp>
 #include <alpaka/atomic/Traits.hpp>
@@ -56,6 +58,7 @@
         // dynamic
         #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
         #include <alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp>
+        #include <alpaka/block/shared/dyn/BlockSharedMemDynRef.hpp>
         #include <alpaka/block/shared/dyn/Traits.hpp>
         //-----------------------------------------------------------------------------
         // static
@@ -110,6 +113,7 @@
 #include <alpaka/exec/ExecCpuOmp2Blocks.hpp>
 #include <alpaka/exec/ExecCpuOmp2Threads.hpp>
 #include <alpaka/exec/ExecCpuOmp4.hpp>
+#include <alpaka/exec/ExecCpuOpenAcc2.hpp>
 #include <alpaka/exec/ExecGpuCudaRt.hpp>
 //-----------------------------------------------------------------------------
 // extent
@@ -118,6 +122,7 @@
 // idx
 #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>
 #include <alpaka/idx/bt/IdxBtOmp.hpp>
+#include <alpaka/idx/bt/IdxBtRef.hpp>
 #include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
 #include <alpaka/idx/bt/IdxBtZero.hpp>

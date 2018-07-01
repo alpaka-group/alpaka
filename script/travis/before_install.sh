@@ -41,6 +41,16 @@ then
     echo ALPAKA_CI_GCC_VER_MAJOR: "${ALPAKA_CI_GCC_VER_MAJOR}"
     export ALPAKA_CI_GCC_VER_MINOR="${ALPAKA_CI_GCC_VER_SEMANTIC[1]}"
     echo ALPAKA_CI_GCC_VER_MINOR: "${ALPAKA_CI_GCC_VER_MINOR}"
+
+    # gcc-6.1 is the first version to support OpenACC 2.0
+    if [ ${ALPAKA_GCC_VER_MAJOR} < 6 ]
+    then
+        if [ "${ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE}" == "ON" ]
+        then
+            export ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE=OFF
+            echo ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE=${ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE} because the gcc version does not support it!
+        fi
+    fi
 fi
 
 #-------------------------------------------------------------------------------
@@ -52,6 +62,12 @@ then
     echo ALPAKA_CI_CLANG_VER_MAJOR: "${ALPAKA_CI_CLANG_VER_MAJOR}"
     export ALPAKA_CI_CLANG_VER_MINOR="${ALPAKA_CI_CLANG_VER_SEMANTIC[1]}"
     echo ALPAKA_CI_CLANG_VER_MINOR: "${ALPAKA_CI_CLANG_VER_MINOR}"
+
+    if [ "${ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE}" == "ON" ]
+    then
+        export ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE=OFF
+        echo ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE=${ALPAKA_ACC_CPU_BT_OPENACC2_ENABLE} because the clang version does not support it!
+    fi
 fi
 
 #-------------------------------------------------------------------------------
