@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2015-2017 Benjamin Worpitz
+ * Copyright 2015-2018 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -112,8 +112,8 @@ namespace view
         typename TDim,
         typename TIdx,
         typename TBuf>
-    auto viewSubViewTest(
-        alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> & view,
+    auto testViewSubViewImmutable(
+        alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & view,
         TBuf & buf,
         TDev const & dev,
         alpaka::vec::Vec<TDim, TIdx> const & extentView,
@@ -121,20 +121,12 @@ namespace view
     -> void
     {
         //-----------------------------------------------------------------------------
-        alpaka::test::mem::view::viewTestImmutable<
+        alpaka::test::mem::view::testViewImmutable<
             TElem>(
                 view,
                 dev,
                 extentView,
                 offsetView);
-
-        using Queue = alpaka::test::queue::DefaultQueue<TDev>;
-        Queue queue(dev);
-        //-----------------------------------------------------------------------------
-        alpaka::test::mem::view::viewTestMutable<
-            TAcc>(
-                queue,
-                view);
 
         //-----------------------------------------------------------------------------
         // alpaka::mem::view::traits::GetPitchBytes
@@ -173,8 +165,42 @@ namespace view
     //-----------------------------------------------------------------------------
     template<
         typename TAcc,
+        typename TDev,
+        typename TElem,
+        typename TDim,
+        typename TIdx,
+        typename TBuf>
+    auto testViewSubViewMutable(
+        alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> & view,
+        TBuf & buf,
+        TDev const & dev,
+        alpaka::vec::Vec<TDim, TIdx> const & extentView,
+        alpaka::vec::Vec<TDim, TIdx> const & offsetView)
+    -> void
+    {
+        //-----------------------------------------------------------------------------
+        testViewSubViewImmutable<
+            TAcc>(
+                view,
+                buf,
+                dev,
+                extentView,
+                offsetView);
+
+        using Queue = alpaka::test::queue::DefaultQueue<TDev>;
+        Queue queue(dev);
+        //-----------------------------------------------------------------------------
+        alpaka::test::mem::view::testViewMutable<
+            TAcc>(
+                queue,
+                view);
+    }
+
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAcc,
         typename TElem>
-    auto viewSubViewTestNoOffset()
+    auto testViewSubViewNoOffset()
     -> void
     {
         using Dev = alpaka::dev::Dev<TAcc>;
@@ -193,14 +219,14 @@ namespace view
         auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
         View view(buf);
 
-        alpaka::test::mem::view::viewSubViewTest<TAcc>(view, buf, dev, extentView, offsetView);
+        alpaka::test::mem::view::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
     }
 
     //-----------------------------------------------------------------------------
     template<
         typename TAcc,
         typename TElem>
-    auto viewSubViewTestOffset()
+    auto testViewSubViewOffset()
     -> void
     {
         using Dev = alpaka::dev::Dev<TAcc>;
@@ -219,7 +245,33 @@ namespace view
         auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
         View view(buf, extentView, offsetView);
 
-        alpaka::test::mem::view::viewSubViewTest<TAcc>(view, buf, dev, extentView, offsetView);
+        alpaka::test::mem::view::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
+    }
+
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAcc,
+        typename TElem>
+    auto testViewSubViewOffsetConst()
+    -> void
+    {
+        using Dev = alpaka::dev::Dev<TAcc>;
+        using Pltf = alpaka::pltf::Pltf<Dev>;
+
+        using Dim = alpaka::dim::Dim<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
+        using View = alpaka::mem::view::ViewSubView<Dev, TElem, Dim, Idx>;
+
+        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+
+        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+        auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
+
+        auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
+        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
+        View const view(buf, extentView, offsetView);
+
+        alpaka::test::mem::view::testViewSubViewImmutable<TAcc>(view, buf, dev, extentView, offsetView);
     }
 }
 }
@@ -237,7 +289,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     TAcc,
     alpaka::test::acc::TestAccs)
 {
-    alpaka::test::mem::view::viewSubViewTestNoOffset<TAcc, float>();
+    alpaka::test::mem::view::testViewSubViewNoOffset<TAcc, float>();
 }
 
 //-----------------------------------------------------------------------------
@@ -246,7 +298,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     TAcc,
     alpaka::test::acc::TestAccs)
 {
-    alpaka::test::mem::view::viewSubViewTestOffset<TAcc, float>();
+    alpaka::test::mem::view::testViewSubViewOffset<TAcc, float>();
+}
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    viewSubViewOffsetConstTest,
+    TAcc,
+    alpaka::test::acc::TestAccs)
+{
+    alpaka::test::mem::view::testViewSubViewOffsetConst<TAcc, float>();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

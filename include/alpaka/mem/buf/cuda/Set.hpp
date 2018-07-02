@@ -70,20 +70,24 @@ namespace alpaka
                     {
                         //-----------------------------------------------------------------------------
                         TaskSetCuda(
-                            TView & buf,
+                            TView & view,
                             std::uint8_t const & byte,
                             TExtent const & extent) :
-                                m_buf(buf),
+                                m_view(view),
                                 m_byte(byte),
                                 m_extent(extent),
-                                m_iDevice(dev::getDev(buf).m_iDevice)
+                                m_iDevice(dev::getDev(view).m_iDevice)
                         {
                             static_assert(
+                                !std::is_const<TView>::value,
+                                "The destination view can not be const!");
+
+                            static_assert(
                                 dim::Dim<TView>::value == dim::Dim<TExtent>::value,
-                                "The destination buffer and the extent are required to have the same dimensionality!");
+                                "The destination view and the extent are required to have the same dimensionality!");
                         }
 
-                        TView & m_buf;
+                        TView & m_view;
                         std::uint8_t const m_byte;
                         TExtent const m_extent;
                         std::int32_t const m_iDevice;
@@ -105,7 +109,7 @@ namespace alpaka
                         typename TExtent,
                         typename TView>
                     ALPAKA_FN_HOST static auto createTaskSet(
-                        TView & buf,
+                        TView & view,
                         std::uint8_t const & byte,
                         TExtent const & extent)
                     -> mem::view::cuda::detail::TaskSetCuda<
@@ -118,7 +122,7 @@ namespace alpaka
                                 TDim,
                                 TView,
                                 TExtent>(
-                                    buf,
+                                    view,
                                     byte,
                                     extent);
                     }
@@ -156,7 +160,7 @@ namespace alpaka
 
                     using Idx = idx::Idx<TExtent>;
 
-                    auto & buf(task.m_buf);
+                    auto & view(task.m_view);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
@@ -170,9 +174,9 @@ namespace alpaka
 
                     auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
 #if !defined(NDEBUG)
-                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstWidth(extent::getWidth(view));
 #endif
-                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     assert(extentWidth <= dstWidth);
 
                     // Set the current device.
@@ -214,7 +218,7 @@ namespace alpaka
 
                     using Idx = idx::Idx<TExtent>;
 
-                    auto & buf(task.m_buf);
+                    auto & view(task.m_view);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
@@ -228,9 +232,9 @@ namespace alpaka
 
                     auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
 #if !defined(NDEBUG)
-                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstWidth(extent::getWidth(view));
 #endif
-                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     assert(extentWidth <= dstWidth);
 
                     // Set the current device.
@@ -271,7 +275,7 @@ namespace alpaka
 
                     using Idx = idx::Idx<TExtent>;
 
-                    auto & buf(task.m_buf);
+                    auto & view(task.m_view);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
@@ -287,11 +291,11 @@ namespace alpaka
                     auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
 
 #if !defined(NDEBUG)
-                    auto const dstWidth(extent::getWidth(buf));
-                    auto const dstHeight(extent::getHeight(buf));
+                    auto const dstWidth(extent::getWidth(view));
+                    auto const dstHeight(extent::getHeight(view));
 #endif
-                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
-                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
 
@@ -336,7 +340,7 @@ namespace alpaka
 
                     using Idx = idx::Idx<TExtent>;
 
-                    auto & buf(task.m_buf);
+                    auto & view(task.m_view);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
@@ -352,11 +356,11 @@ namespace alpaka
                     auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
 
 #if !defined(NDEBUG)
-                    auto const dstWidth(extent::getWidth(buf));
-                    auto const dstHeight(extent::getHeight(buf));
+                    auto const dstWidth(extent::getWidth(view));
+                    auto const dstHeight(extent::getHeight(view));
 #endif
-                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
-                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
 
@@ -402,7 +406,7 @@ namespace alpaka
                     using Elem = alpaka::elem::Elem<TView>;
                     using Idx = idx::Idx<TExtent>;
 
-                    auto & buf(task.m_buf);
+                    auto & view(task.m_view);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
@@ -417,14 +421,14 @@ namespace alpaka
                         return;
                     }
 
-                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstWidth(extent::getWidth(view));
 #if !defined(NDEBUG)
-                    auto const dstHeight(extent::getHeight(buf));
-                    auto const dstDepth(extent::getDepth(buf));
+                    auto const dstHeight(extent::getHeight(view));
+                    auto const dstDepth(extent::getDepth(view));
 #endif
-                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
-                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));
-                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
+                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
                     assert(extentDepth <= dstDepth);
@@ -483,7 +487,7 @@ namespace alpaka
                     using Elem = alpaka::elem::Elem<TView>;
                     using Idx = idx::Idx<TExtent>;
 
-                    auto & buf(task.m_buf);
+                    auto & view(task.m_view);
                     auto const & byte(task.m_byte);
                     auto const & extent(task.m_extent);
                     auto const & iDevice(task.m_iDevice);
@@ -498,14 +502,14 @@ namespace alpaka
                         return;
                     }
 
-                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstWidth(extent::getWidth(view));
 #if !defined(NDEBUG)
-                    auto const dstHeight(extent::getHeight(buf));
-                    auto const dstDepth(extent::getDepth(buf));
+                    auto const dstHeight(extent::getHeight(view));
+                    auto const dstDepth(extent::getDepth(view));
 #endif
-                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(buf));
-                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(buf));
-                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
+                    auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     assert(extentWidth <= dstWidth);
                     assert(extentHeight <= dstHeight);
                     assert(extentDepth <= dstDepth);
