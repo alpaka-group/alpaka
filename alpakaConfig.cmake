@@ -117,8 +117,8 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Check supported compilers.
-IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0)
-    MESSAGE(FATAL_ERROR "Clang versions < 4.0 are not supported!")
+IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.5)
+    MESSAGE(FATAL_ERROR "Clang versions < 3.5 are not supported!")
     SET(_ALPAKA_FOUND FALSE)
 ENDIF()
 
