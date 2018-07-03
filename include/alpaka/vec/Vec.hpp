@@ -592,7 +592,7 @@ namespace alpaka
             };
         }
         //-----------------------------------------------------------------------------
-        //! \return The element wise sum of two vectors.
+        //! \return The element-wise sum of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
@@ -635,7 +635,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The element wise difference of two vectors.
+        //! \return The element-wise difference of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
@@ -678,7 +678,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The element wise product of two vectors.
+        //! \return The element-wise product of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
@@ -700,7 +700,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! A function object that returns the element wise less than relation of two vectors.
+            //! A function object that returns the element-wise less than relation of two vectors.
             template<
                 std::size_t Tidx>
             struct CreateLess
@@ -721,7 +721,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The element wise less than relation of two vectors.
+        //! \return The element-wise less than relation of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
@@ -743,7 +743,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! A function object that returns the element wise less equal than relation of two vectors.
+            //! A function object that returns the element-wise less than or equal relation of two vectors.
             template<
                 std::size_t Tidx>
             struct CreateLessEqual
@@ -764,7 +764,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The element wise less equal than relation of two vectors.
+        //! \return The element-wise less than or equal relation of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
@@ -786,7 +786,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! A function object that returns the element wise greater equal than relation of two vectors.
+            //! A function object that returns the element-wise greater than or equal relation of two vectors.
             template<
                 std::size_t Tidx>
             struct CreateGreaterEqual
@@ -807,7 +807,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The element wise greater equal than relation of two vectors.
+        //! \return The element-wise greater than or equal relation of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
@@ -829,7 +829,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! A function object that returns the element wise greater than relation of two vectors.
+            //! A function object that returns the element-wise greater than relation of two vectors.
             template<
                 std::size_t Tidx>
             struct CreateGreater
@@ -850,7 +850,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The element wise greater than relation of two vectors.
+        //! \return The element-wise greater than relation of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
