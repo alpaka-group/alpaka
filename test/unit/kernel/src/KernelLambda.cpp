@@ -133,7 +133,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
 // Generic lambdas are a C++14 feature.
 #if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
-#if !defined(ALPAKA_CI)
+// CUDA C Programming guide says: "__host__ __device__ extended lambdas cannot be generic lambdas"
+// However, it seems to work on all compilers except MSVC even though it is documented differently.
+#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_COMP_MSVC)
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
     genericLambdaKernelIsWorking,
@@ -159,7 +161,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         fixture(
             kernel));
 }
-#endif
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
@@ -192,6 +193,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             arg1,
             arg2));
 }
+#endif
 #endif
 
 BOOST_AUTO_TEST_SUITE_END()
