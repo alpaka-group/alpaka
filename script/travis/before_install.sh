@@ -66,6 +66,11 @@ then
             export ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF
             echo ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE} because the clang version does not support it!
         fi
+        if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]
+        then
+            export ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
+            echo ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE} because the clang version does not support it!
+        fi
     fi
 
     # clang versions lower than 3.9 do not support OpenMP 4.0
