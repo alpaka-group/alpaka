@@ -178,7 +178,7 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #ifdef ALPAKA_CI
-                    auto const blockThreadCountMax(static_cast<TIdx>(std::min(4, ::omp_get_max_threads())));
+                    auto const blockThreadCountMax(static_cast<TSize>(std::min(4, ::omp_get_max_threads())));
 #else
                     auto const blockThreadCountMax(static_cast<TSize>(::omp_get_max_threads()));
 #endif
