@@ -26,8 +26,6 @@
 #include <cstdint>
 #include <cassert>
 
-#define DIMENSION 3
-
 //-----------------------------------------------------------------------------
 template <size_t width>
 ALPAKA_FN_ACC size_t linIdxToPitchedIdx(size_t const globalIdx, size_t const pitch)
@@ -138,8 +136,11 @@ struct FillBufferKernel
 auto main()
 -> int
 {
+// This example is hard-coded to use the sequential executor.
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
+
     // Define the index domain
-    using Dim = alpaka::dim::DimInt<DIMENSION>;
+    using Dim = alpaka::dim::DimInt<3u>;
     using Idx = std::size_t;
 
     // Define the accelerator
@@ -167,12 +168,8 @@ auto main()
     Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
 
     Vec const blocksPerGrid(
-#if DIMENSION > 2
         static_cast<Idx>(4),
-#endif
-#if DIMENSION > 1
         static_cast<Idx>(8),
-#endif
         static_cast<Idx>(16));
 
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
@@ -262,10 +259,10 @@ auto main()
     alpaka::mem::view::copy(devQueue, deviceBuffer1, hostViewPlainPtr, extents);
     alpaka::mem::view::copy(devQueue, deviceBuffer2, hostBuffer, extents);
 
-    Idx const deviceBuffer1Pitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(deviceBuffer1) / sizeof(Data));
-    Idx const deviceBuffer2Pitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(deviceBuffer2) / sizeof(Data));
-    Idx const hostBuffer1Pitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(hostBuffer) / sizeof(Data));
-    Idx const hostViewPlainPtrPitch(alpaka::mem::view::getPitchBytes<DIMENSION-1>(hostViewPlainPtr) / sizeof(Data));
+    Idx const deviceBuffer1Pitch(alpaka::mem::view::getPitchBytes<2u>(deviceBuffer1) / sizeof(Data));
+    Idx const deviceBuffer2Pitch(alpaka::mem::view::getPitchBytes<2u>(deviceBuffer2) / sizeof(Data));
+    Idx const hostBuffer1Pitch(alpaka::mem::view::getPitchBytes<2u>(hostBuffer) / sizeof(Data));
+    Idx const hostViewPlainPtrPitch(alpaka::mem::view::getPitchBytes<2u>(hostViewPlainPtr) / sizeof(Data));
 
     // Test device Buffer
     //
@@ -341,4 +338,8 @@ auto main()
     std::cout << std::endl;
 
     return EXIT_SUCCESS;
+
+#else
+    return EXIT_SUCCESS;
+#endif
 }

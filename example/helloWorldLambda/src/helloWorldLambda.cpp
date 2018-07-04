@@ -64,6 +64,9 @@ void ALPAKA_FN_ACC hiWorldFunction(
 auto main()
 -> int
 {
+// This example is hard-coded to use the sequential executor.
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
+
     // Define the index domain
     using Dim = alpaka::dim::DimInt<3>;
     using Idx = std::size_t;
@@ -174,4 +177,8 @@ auto main()
         );
 
     return EXIT_SUCCESS;
+
+#else
+    return EXIT_SUCCESS;
+#endif
 }

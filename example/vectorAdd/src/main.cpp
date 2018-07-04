@@ -79,6 +79,9 @@ public:
 auto main()
 -> int
 {
+// This example is hard-coded to use the sequential executor.
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
+
     // Define the index domain
     using Dim = alpaka::dim::DimInt<1u>;
     using Idx = std::size_t;
@@ -191,4 +194,8 @@ auto main()
         std::cout << "Execution results incorrect!" << std::endl;
         return EXIT_FAILURE;
     }
+
+#else
+    return EXIT_SUCCESS;
+#endif
 }
