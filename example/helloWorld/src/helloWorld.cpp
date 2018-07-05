@@ -74,6 +74,9 @@ struct HelloWorldKernel
 auto main()
 -> int
 {
+// This example is hard-coded to use the sequential executor.
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
+
     // Define the index domain
     //
     // Depending on your type of problem, you have to define
@@ -201,4 +204,8 @@ auto main()
         /* put kernel arguments here */);
 
     return EXIT_SUCCESS;
+
+#else
+    return EXIT_SUCCESS;
+#endif
 }
