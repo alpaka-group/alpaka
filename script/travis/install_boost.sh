@@ -72,7 +72,7 @@ ALPAKA_BOOST_B2+=" --with-test"
 if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]
 then
     ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"
-    ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-system --with-chrono --with-date_time"
+    ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
 fi
 if [ "${ALPAKA_BOOST_B2_CFLAGS}" != "" ]
 then
