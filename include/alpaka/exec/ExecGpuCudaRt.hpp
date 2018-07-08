@@ -496,7 +496,7 @@ namespace alpaka
                             exec::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                blockSharedMemDynSizeBytes,
+                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
                                 queue.m_spQueueImpl->m_CudaQueue>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
