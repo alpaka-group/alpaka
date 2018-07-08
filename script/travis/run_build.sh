@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2014-2017 Benjamin Worpitz
+# Copyright 2014-2018 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -20,8 +20,6 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Compiles the project within the directory given by ${1} and executes ${2} within the build folder.
-
 #-------------------------------------------------------------------------------
 # e: exit as soon as one command returns a non-zero exit code.
 set -eo pipefail
@@ -35,7 +33,7 @@ set -eo pipefail
 # @param $1 environment variable name
 # @param $2 cmake variable name (optional)
 #           if not defined than cmake variable name is equal to environment name
-# 
+#
 # @result if $2 exists cmake variable definition else nothing is returned
 #
 # @code{.bash}
@@ -63,8 +61,6 @@ echo KMP_ALL_THREADS=${KMP_ALL_THREADS}
 echo KMP_TEAMS_THREAD_LIMIT=${KMP_TEAMS_THREAD_LIMIT}
 echo OMP_THREAD_LIMIT=${OMP_THREAD_LIMIT}
 echo OMP_NUM_THREADS=${OMP_NUM_THREADS}
-oldPath=${PWD}
-cd "${1}"
 mkdir --parents build/make/
 cd build/make/
 cmake -G "Unix Makefiles" \
@@ -74,12 +70,8 @@ cmake -G "Unix Makefiles" \
     -DALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE="${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}"\
     -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE="${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE="${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" -DALPAKA_ACC_CPU_BT_OMP4_ENABLE="${ALPAKA_ACC_CPU_BT_OMP4_ENABLE}" \
     "$(env2cmake ALPAKA_ACC_GPU_CUDA_ENABLE)" "$(env2cmake ALPAKA_CUDA_VER ALPAKA_CUDA_VERSION)" "$(env2cmake ALPAKA_ACC_GPU_CUDA_ONLY_MODE)" "$(env2cmake ALPAKA_CUDA_ARCH)" "$(env2cmake ALPAKA_CUDA_COMPILER)" \
-    -DALPAKA_DEBUG="${ALPAKA_DEBUG}" -DALPAKA_CI="${ALPAKA_CI}" \
+    -DALPAKA_DEBUG="${ALPAKA_DEBUG}" -DALPAKA_CI="${ALPAKA_CI}" -DALPAKA_CI_ANALYSIS="${ALPAKA_CI_ANALYSIS}" \
     "../../"
 make VERBOSE=1
-if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ]
-then
-    eval "${2}"
-fi
 
-cd "${oldPath}"
+cd ../../
