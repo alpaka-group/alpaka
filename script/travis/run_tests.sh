@@ -24,7 +24,7 @@
 # v: all lines are printed before executing them.
 set -vuo pipefail
 
-: ${ALPAKA_ACC_GPU_CUDA_ONLY_MODE?"ALPAKA_ACC_GPU_CUDA_ONLY_MODE must be specified"}
+: ${ALPAKA_ACC_GPU_CUDA_ENABLE?"ALPAKA_ACC_GPU_CUDA_ENABLE must be specified"}
 
 # https://stackoverflow.com/questions/42218009/how-to-tell-if-any-command-in-bash-script-failed-non-zero-exit-status
 err=0
@@ -35,17 +35,6 @@ then
     cd build/make/
 
     ctest -V
-
-    #-------------------------------------------------------------------------------
-    # Execute all examples.
-    # NOTE: The examples are hard-coded to use a CPU accelerator which is not available in ALPAKA_ACC_GPU_CUDA_ONLY_MODE
-    if [ "${ALPAKA_ACC_GPU_CUDA_ONLY_MODE}" == "OFF" ]
-    then
-        cd "example/bufferCopy" && ./bufferCopy && cd ../..
-        cd "example/helloWorld" && ./helloWorld && cd ../..
-        cd "example/helloWorldLambda" && ./helloWorldLambda && cd ../..
-        cd "example/vectorAdd" && ./vectorAdd && cd ../..
-    fi
 
     cd ../..
 fi
