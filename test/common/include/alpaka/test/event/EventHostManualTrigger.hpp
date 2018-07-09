@@ -584,8 +584,8 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            (CUstream)stream.m_spStreamImpl->m_CudaStream,
-                            (CUdeviceptr)event.m_spEventImpl->m_devMem,
+                            static_cast<CUstream>(stream.m_spStreamImpl->m_CudaStream),
+                            reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
                 }
@@ -624,8 +624,8 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            (CUstream)stream.m_spStreamImpl->m_CudaStream,
-                            (CUdeviceptr)event.m_spEventImpl->m_devMem,
+                            static_cast<CUstream>(stream.m_spStreamImpl->m_CudaStream),
+                            reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
                 }
