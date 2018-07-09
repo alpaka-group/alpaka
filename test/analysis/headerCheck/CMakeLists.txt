@@ -25,6 +25,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
+IF(NOT ALPAKA_CI OR (ALPAKA_CI AND ALPAKA_CI_ANALYSIS))
+
 ################################################################################
 # Project.
 
@@ -103,3 +105,5 @@ ENDIF()
 SET_TARGET_PROPERTIES(headerCheck PROPERTIES FOLDER "test/analysis")
 
 ADD_TEST(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} --log_level=test_suite --color_output=true)
+
+ENDIF()

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017 Benjamin Worpitz
+# Copyright 2017-2018 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -74,5 +74,5 @@ ${CXX} -v
 
 source ./script/travis/prepare_sanitizers.sh
 if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/run_analysis.sh ;fi
-if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/run_headerCheck.sh ;fi
+./script/travis/run_build.sh
 if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/travis/run_tests.sh ;fi
