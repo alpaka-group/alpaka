@@ -30,27 +30,19 @@ set -eo pipefail
 #
 # This function can not handle environment variables with spaces in its content.
 #
-# @param $1 environment variable name
-# @param $2 cmake variable name (optional)
-#           if not defined than cmake variable name is equal to environment name
+# @param $1 cmake/environment variable name
 #
-# @result if $2 exists cmake variable definition else nothing is returned
+# @result if $1 exists cmake variable definition else nothing is returned
 #
 # @code{.bash}
 # FOO=ON
 # echo "$(env2cmake FOO)" # returns "-DFOO=ON"
-# echo "$(env2cmake FOO CMAKE_FOO_DEF)" # returns "-DCMAKE_FOO_DEF=ON"
 # echo "$(env2cmake BAR)" # returns nothing
 # @endcode
 function env2cmake()
 {
-    if [ $# -ne 2 ] ; then
-        cmakeName=$1
-    else
-        cmakeName=$2
-    fi
     if [ -v "$1" ] ; then
-        echo -n "-D$cmakeName=${!1}"
+        echo -n "-D$1=${!1}"
     fi
 }
 
@@ -70,7 +62,7 @@ cmake -G "Unix Makefiles" \
     "$(env2cmake ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE)" "$(env2cmake ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE)" "$(env2cmake ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)" \
     "$(env2cmake ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)" \
     "$(env2cmake ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE)" "$(env2cmake ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE)" "$(env2cmake ALPAKA_ACC_CPU_BT_OMP4_ENABLE)" \
-    "$(env2cmake ALPAKA_ACC_GPU_CUDA_ENABLE)" "$(env2cmake ALPAKA_CUDA_VERSION ALPAKA_CUDA_VERSION)" "$(env2cmake ALPAKA_ACC_GPU_CUDA_ONLY_MODE)" "$(env2cmake ALPAKA_CUDA_ARCH)" "$(env2cmake ALPAKA_CUDA_COMPILER)" \
+    "$(env2cmake ALPAKA_ACC_GPU_CUDA_ENABLE)" "$(env2cmake ALPAKA_CUDA_VERSION)" "$(env2cmake ALPAKA_ACC_GPU_CUDA_ONLY_MODE)" "$(env2cmake ALPAKA_CUDA_ARCH)" "$(env2cmake ALPAKA_CUDA_COMPILER)" \
     "$(env2cmake ALPAKA_DEBUG)" "$(env2cmake ALPAKA_CI)" "$(env2cmake ALPAKA_CI_ANALYSIS)" \
     "../../"
 make VERBOSE=1
