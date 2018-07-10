@@ -27,26 +27,26 @@ source ./script/travis/travis_retry.sh
 set -euo pipefail
 
 : ${ALPAKA_CI_CUDA_DIR?"ALPAKA_CI_CUDA_DIR must be specified"}
-: ${ALPAKA_CUDA_VER?"ALPAKA_CUDA_VER must be specified"}
+: ${ALPAKA_CUDA_VERSION?"ALPAKA_CUDA_VERSION must be specified"}
 : ${ALPAKA_CUDA_COMPILER?"ALPAKA_CUDA_COMPILER must be specified"}
 
 # Set the correct CUDA downloads
-if [ "${ALPAKA_CUDA_VER}" == "8.0" ]
+if [ "${ALPAKA_CUDA_VERSION}" == "8.0" ]
 then
     ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1404-8-0-local
     ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_8.0.44-1_amd64-deb
     ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/8.0/prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-elif [ "${ALPAKA_CUDA_VER}" == "9.0" ]
+elif [ "${ALPAKA_CUDA_VERSION}" == "9.0" ]
 then
     ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-0-local
     ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.0.176-1_amd64-deb
     ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-elif [ "${ALPAKA_CUDA_VER}" == "9.1" ]
+elif [ "${ALPAKA_CUDA_VERSION}" == "9.1" ]
 then
     ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-1-local
     ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.1.85-1_amd64
     ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
-elif [ "${ALPAKA_CUDA_VER}" == "9.2" ]
+elif [ "${ALPAKA_CUDA_VERSION}" == "9.2" ]
 then
     ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-2-local
     ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.2.88-1_amd64
@@ -66,8 +66,8 @@ travis_retry sudo apt-get -y --quiet update
 # Install CUDA
 # Currently we do not install CUDA fully: sudo apt-get --quiet -y install cuda
 # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
-sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-core-"${ALPAKA_CUDA_VER}" cuda-cudart-"${ALPAKA_CUDA_VER}" cuda-cudart-dev-"${ALPAKA_CUDA_VER}" cuda-curand-"${ALPAKA_CUDA_VER}" cuda-curand-dev-"${ALPAKA_CUDA_VER}"
-sudo ln -s /usr/local/cuda-"${ALPAKA_CUDA_VER}" /usr/local/cuda
+sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install cuda-core-"${ALPAKA_CUDA_VERSION}" cuda-cudart-"${ALPAKA_CUDA_VERSION}" cuda-cudart-dev-"${ALPAKA_CUDA_VERSION}" cuda-curand-"${ALPAKA_CUDA_VERSION}" cuda-curand-dev-"${ALPAKA_CUDA_VERSION}"
+sudo ln -s /usr/local/cuda-"${ALPAKA_CUDA_VERSION}" /usr/local/cuda
 
 if [ "${ALPAKA_CUDA_COMPILER}" == "clang" ]
 then
