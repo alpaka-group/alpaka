@@ -40,8 +40,8 @@ cmake --version
 if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
 then
     # CUDA
-    export PATH=/usr/local/cuda-${ALPAKA_CUDA_VER}/bin:$PATH
-    export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VER}/lib64:${LD_LIBRARY_PATH}
+    export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
+    export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/lib64:${LD_LIBRARY_PATH}
     # We have to explicitly add the stub libcuda.so to CUDA_LIB_PATH because the real one would be installed by the driver (which we can not install).
     export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs/
 

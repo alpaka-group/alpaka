@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017 Benjamin Worpitz
+# Copyright 2017-2018 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -65,11 +65,11 @@ echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 # CUDA
 if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
 then
-    ALPAKA_CI_CUDA_VER_SEMANTIC=( ${ALPAKA_CUDA_VER//./ } )
-    export ALPAKA_CUDA_VER_MAJOR="${ALPAKA_CI_CUDA_VER_SEMANTIC[0]}"
-    echo ALPAKA_CUDA_VER_MAJOR: "${ALPAKA_CUDA_VER_MAJOR}"
-    export ALPAKA_CUDA_VER_MINOR="${ALPAKA_CI_CUDA_VER_SEMANTIC[1]}"
-    echo ALPAKA_CUDA_VER_MINOR: "${ALPAKA_CUDA_VER_MINOR}"
+    ALPAKA_CUDA_VER_SEMANTIC=( ${ALPAKA_CUDA_VERSION//./ } )
+    export ALPAKA_CUDA_VERSION_MAJOR="${ALPAKA_CUDA_VER_SEMANTIC[0]}"
+    echo ALPAKA_CUDA_VERSION_MAJOR: "${ALPAKA_CUDA_VERSION_MAJOR}"
+    export ALPAKA_CUDA_VERSION_MINOR="${ALPAKA_CUDA_VER_SEMANTIC[1]}"
+    echo ALPAKA_CUDA_VERSION_MINOR: "${ALPAKA_CUDA_VERSION_MINOR}"
 
     if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
     then
@@ -80,7 +80,7 @@ then
         fi
 
         # nvcc <= 9.2 does not support boost correctly so fibers have to be disabled.
-        if (( (( ALPAKA_CUDA_VER_MAJOR < 9 )) || ( (( ALPAKA_CUDA_VER_MAJOR == 9 )) && (( ALPAKA_CUDA_VER_MINOR <= 2 )) ) ))
+        if (( (( ALPAKA_CUDA_VERSION_MAJOR < 9 )) || ( (( ALPAKA_CUDA_VERSION_MAJOR == 9 )) && (( ALPAKA_CUDA_VERSION_MINOR <= 2 )) ) ))
         then
             if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]
             then
