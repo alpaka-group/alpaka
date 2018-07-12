@@ -406,7 +406,7 @@ namespace alpaka
                                 &pitchBytes,
                                 static_cast<std::size_t>(widthBytes),
                                 static_cast<std::size_t>(height)));
-                        assert(pitchBytes>=widthBytes||(width*height)==0);
+                        assert(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
