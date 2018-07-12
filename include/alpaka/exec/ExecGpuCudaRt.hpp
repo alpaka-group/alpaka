@@ -517,7 +517,7 @@ namespace alpaka
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                blockSharedMemDynSizeBytes,
+                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
                                 stream.m_spStreamImpl->m_CudaStream>>>(
                                     threadElemExtent,
                                     task.m_kernelFnObj,
