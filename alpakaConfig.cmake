@@ -79,16 +79,51 @@ SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 
 #-------------------------------------------------------------------------------
 # Options.
-OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
+SET(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE_DEFAULT ON)
+SET(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE_DEFAULT ON)
+SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT ON)
+SET(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE_DEFAULT ON)
+SET(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT ON)
+SET(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT ON)
+SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT ON)
 
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU back-end" ON)
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block thread back-end" ON)
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread back-end" ON)
-OPTION(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" ON)
-OPTION(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" ON)
-OPTION(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" ON)
-OPTION(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread back-end" OFF)
+OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
+# If CUDA-only mode is enabled, we set the defaults for all CPU back-ends to OFF.
+# If they are explicitly set via the command line, the user will get an error later on.
+IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+    SET(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE_DEFAULT OFF)
+    SET(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE_DEFAULT OFF)
+    SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT OFF)
+    SET(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE_DEFAULT OFF)
+    SET(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT OFF)
+    SET(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT OFF)
+    SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT OFF)
+ENDIF()
+
 OPTION(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU back-end" ON)
+# If CUDA is enabled, we set the defaults for some unsupported back-ends to OFF.
+# If they are explicitly set via the command line, the user will get an error later on.
+IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
+    SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT OFF)
+    IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
+        SET(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT OFF)
+        SET(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT OFF)
+        SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT OFF)
+    ENDIF()
+ENDIF()
+
+IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE AND NOT ALPAKA_ACC_GPU_CUDA_ENABLE)
+    MESSAGE(WARNING "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, ALPAKA_ACC_GPU_CUDA_ENABLE has to be enabled as well.")
+    SET(_ALPAKA_FOUND FALSE)
+ENDIF()
+
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE_DEFAULT})
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block thread back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE_DEFAULT})
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT})
+OPTION(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" ${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE_DEFAULT})
+OPTION(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" ${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT})
+OPTION(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT})
+OPTION(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread back-end" ${ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT})
 
 IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE AND
     (ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE OR
@@ -99,6 +134,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE AND
     ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
     ALPAKA_ACC_CPU_BT_OMP4_ENABLE))
     MESSAGE(WARNING "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only back-ends using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA back-ends from being enabled.")
+    SET(_ALPAKA_FOUND FALSE)
 ENDIF()
 
 # Drop-down combo box in cmake-gui.
@@ -347,6 +383,16 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     ENDIF()
                 ENDIF()
 
+                IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
+                    MESSAGE(FATAL_ERROR "Clang as a CUDA compiler does not support boost.fiber!")
+                ENDIF()
+                IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
+                    MESSAGE(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
+                ENDIF()
+                IF(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
+                    MESSAGE(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 4!")
+                ENDIF()
+
                 FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "--cuda-gpu-arch=sm_${_CUDA_ARCH_ELEM}")
                 ENDFOREACH()
@@ -417,6 +463,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 IF(CUDA_VERSION VERSION_GREATER_EQUAL 9.0 AND Boost_VERSION VERSION_LESS 1.65.1)
                     MESSAGE(WARNING "CUDA 9.0 or newer requires boost-1.65.1 or newer!")
                     SET(_ALPAKA_FOUND FALSE)
+                ENDIF()
+
+                IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
+                    MESSAGE(FATAL_ERROR "NVCC does not support boost.fiber!")
                 ENDIF()
 
                 # Clean up the flags. Else, multiple find calls would result in duplicate flags. Furthermore, other modules may have set different settings.
