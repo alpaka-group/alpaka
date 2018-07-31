@@ -206,8 +206,8 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << __func__
-                << " gridBlockExtent: " << workdiv::getWorkDiv<Grid, Blocks>(workDiv)
-                << ", blockThreadExtent: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
+                << " workDiv: " << workDiv
+                << ", kernelFnObj: " << typeid(kernelFnObj).name()
                 << std::endl;
 #endif
             return

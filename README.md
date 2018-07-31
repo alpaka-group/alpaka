@@ -91,9 +91,10 @@ However some of the accelerator back-end implementations require different boost
 When an accelerator back-end using *Boost.Fiber* is enabled, `boost-fiber` and all of its dependencies are required to be build in C++11 mode `./b2 cxxflags="-std=c++11"`.
 When *Boost.Fiber* is enabled and alpaka is build in C++17 mode with clang and libstc++, Boost >= 1.67.0 is required.
 
-When an accelerator back-end using *CUDA* is enabled, version *8.0* of the *CUDA SDK* is the minimum requirement.
-*NOTE*: When using nvcc as *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.
-*NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with any *OpenMP accelerator back-end* because this combination is currently unsupported.
+When an accelerator back-end using *CUDA* is enabled, version *8.0* of the *CUDA SDK* is the minimum requirement.  
+*NOTE*: When using nvcc as *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with the *Boost.Fiber accelerator back-end* due to bugs in the nvcc compiler.  
+*NOTE*: When using clang as a native *CUDA* compiler, the *CUDA accelerator back-end* can not be enabled together with any *OpenMP accelerator back-end* because this combination is currently unsupported.  
+*NOTE*: Separable compilation is only supported when using nvcc, not with clang as native *CUDA* compiler. It is disabled by default and can be enabled via the CMake flag `ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION`.
 
 When an accelerator back-end using *OpenMP* is enabled, the compiler and the platform have to support the corresponding minimum *OpenMP* version.
 
