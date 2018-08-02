@@ -68,6 +68,35 @@ namespace alpaka
                 public:
                     std::mt19937 m_State;
                 };
+
+                //#############################################################################
+                //! The standard library's random device based on the local entropy pool.
+                //!
+                //! Warning: the entropy pool on many devices degrates quickly and performance
+                //!          will drop significantly when this point occures.
+                class RandomDevice
+                {
+                public:
+
+                    //-----------------------------------------------------------------------------
+                    RandomDevice() = default;
+                    RandomDevice(RandomDevice&&) :
+                        m_State{}
+                    {
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_NO_CUDA RandomDevice(
+                        std::uint32_t const &,
+                        std::uint32_t const & = 0,
+                        std::uint32_t const & = 0) :
+                        m_State{}
+                    {
+                    }
+
+                public:
+                    std::random_device m_State;
+                };
             }
         }
 
