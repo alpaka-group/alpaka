@@ -48,17 +48,17 @@ BOOST_AUTO_TEST_SUITE(rand_)
 //#############################################################################
 class RandTestKernel
 {
-public:
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
-    -> void
+        typename TAcc,
+        typename T_Generator
+    >
+    ALPAKA_FN_ACC void
+    genNumbers(
+        TAcc const & acc,
+        T_Generator & gen
+    ) const
     {
-        auto gen(alpaka::rand::generator::createDefault(acc, 12345u, 6789u));
-
 // gcc 5.4 in combination with nvcc 8.0 fails to compile the CPU STL distributions when --expt-relaxed-constexpr is enabled
 // /usr/include/c++/5/cmath(362): error: calling a __host__ function("__builtin_logl") from a __device__ function("std::log") is not allowed
 #if !((BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0)) && (BOOST_COMP_NVCC == BOOST_VERSION_NUMBER(8, 0, 0)))
@@ -98,6 +98,51 @@ public:
             auto const r = dist(gen);
             alpaka::ignore_unused(r);
         }
+#endif
+    }
+
+public:
+
+    //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<
+        typename TAcc>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const & acc) const
+    -> void
+    {
+        // default generator for accelerator
+        auto genDefault = alpaka::rand::generator::createDefault(
+            acc,
+            12345u,
+            6789u
+        );
+        genNumbers( acc, genDefault );
+
+#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+        // std::random_device
+        auto genRandomDevice = alpaka::rand::generator::createDefault(
+            alpaka::rand::RandomDevice{},
+            12345u,
+            6789u
+        );
+        genNumbers( acc, genRandomDevice );
+
+        // MersenneTwister
+        auto genMersenneTwister = alpaka::rand::generator::createDefault(
+            alpaka::rand::MersenneTwister{},
+            12345u,
+            6789u
+        );
+        genNumbers( acc, genMersenneTwister );
+
+        // TinyMersenneTwister
+        auto genTinyMersenneTwister = alpaka::rand::generator::createDefault(
+            alpaka::rand::TinyMersenneTwister{},
+            12345u,
+            6789u
+        );
+        genNumbers( acc, genTinyMersenneTwister );
 #endif
     }
 };

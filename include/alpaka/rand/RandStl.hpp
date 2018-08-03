@@ -22,10 +22,12 @@
 #pragma once
 
 #include <alpaka/rand/Traits.hpp>
+#include <alpaka/rand/TinyMT/Engine.hpp>
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
 
+#include <cstdint>
 #include <random>
 #include <type_traits>
 
@@ -34,11 +36,28 @@ namespace alpaka
     namespace rand
     {
         //#############################################################################
-        //! The standard library rand implementation.
-        class RandStl
+        //! "Tiny" state mersenne twister implementation
+        class TinyMersenneTwister
         {
         public:
-            using RandBase = RandStl;
+            using RandBase = TinyMersenneTwister;
+        };
+        using RandStl = TinyMersenneTwister;
+
+        //#############################################################################
+        //! The standard library mersenne twister implementation.
+        class MersenneTwister
+        {
+        public:
+            using RandBase = MersenneTwister;
+        };
+
+        //#############################################################################
+        //! The standard library rand device implementation.
+        class RandomDevice
+        {
+        public:
+            using RandBase = RandomDevice;
         };
 
         namespace generator
@@ -46,7 +65,9 @@ namespace alpaka
             namespace cpu
             {
                 //#############################################################################
-                //! The STL mersenne twister random number generator.
+                //! The standard library mersenne twister random number generator.
+                //!
+                //! size of state: 19937 bytes
                 class MersenneTwister
                 {
                 public:
@@ -69,14 +90,46 @@ namespace alpaka
                 };
 
                 //#############################################################################
+                //! "Tiny" state mersenne twister implementation
+                //!
+                //! repository: github.com/MersenneTwister-Lab/TinyMT
+                //!
+                //! license: 3-clause BSD
+                //!
+                //! @author Mutsuo Saito (Hiroshima University)Tokio University.
+                //! @author Makoto Matsumoto (The University of Tokyo)
+                //!
+                //! size of state: 28 bytes (127 bits?!)
+                class TinyMersenneTwister
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    TinyMersenneTwister() = default;
+
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_NO_CUDA TinyMersenneTwister(
+                        std::uint32_t const & seed,
+                        std::uint32_t const & subsequence = 0,
+                        std::uint32_t const & offset = 0) :
+                        // NOTE: XOR the seed and the subsequence to generate a unique seed.
+                        m_State((seed ^ subsequence) + offset)
+                    {
+                    }
+
+                public:
+                    TinyMTengine m_State;
+                };
+
+                //#############################################################################
                 //! The standard library's random device based on the local entropy pool.
                 //!
                 //! Warning: the entropy pool on many devices degrates quickly and performance
                 //!          will drop significantly when this point occures.
+                //!
+                //! size of state: 1 byte
                 class RandomDevice
                 {
                 public:
-
                     //-----------------------------------------------------------------------------
                     RandomDevice() = default;
                     RandomDevice(RandomDevice&&) :
@@ -246,17 +299,53 @@ namespace alpaka
                 //! The CPU device random number default generator get trait specialization.
                 template<>
                 struct CreateDefault<
-                    RandStl>
+                    TinyMersenneTwister>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createDefault(
-                        RandStl const & rand,
+                        TinyMersenneTwister const & rand,
+                        std::uint32_t const & seed,
+                        std::uint32_t const & subsequence)
+                    -> rand::generator::cpu::TinyMersenneTwister
+                    {
+                        alpaka::ignore_unused(rand);
+                        return rand::generator::cpu::TinyMersenneTwister(
+                            seed,
+                            subsequence);
+                    }
+                };
+
+                template<>
+                struct CreateDefault<
+                    MersenneTwister>
+                {
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_NO_CUDA static auto createDefault(
+                        MersenneTwister const & rand,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
                     -> rand::generator::cpu::MersenneTwister
                     {
                         alpaka::ignore_unused(rand);
                         return rand::generator::cpu::MersenneTwister(
+                            seed,
+                            subsequence);
+                    }
+                };
+
+                template<>
+                struct CreateDefault<
+                    RandomDevice>
+                {
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_ACC_NO_CUDA static auto createDefault(
+                        RandomDevice const & rand,
+                        std::uint32_t const & seed,
+                        std::uint32_t const & subsequence)
+                    -> rand::generator::cpu::RandomDevice
+                    {
+                        alpaka::ignore_unused(rand);
+                        return rand::generator::cpu::RandomDevice(
                             seed,
                             subsequence);
                     }
