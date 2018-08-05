@@ -31,7 +31,7 @@
 
 #include <alpaka/math/atan2/Traits.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -73,7 +73,7 @@ namespace alpaka
                     Tx const & x)
                 -> decltype(::atan2(y, x))
                 {
-                    //boost::ignore_unused(abs);
+                    //alpaka::ignore_unused(abs);
                     return ::atan2(y, x);
                 }
             };

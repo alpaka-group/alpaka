@@ -31,7 +31,7 @@
 
 #include <alpaka/math/pow/Traits.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -73,7 +73,7 @@ namespace alpaka
                     TExp const & exp)
                 -> decltype(::pow(base, exp))
                 {
-                    //boost::ignore_unused(pow);
+                    //alpaka::ignore_unused(pow);
                     return ::pow(base, exp);
                 }
             };

@@ -28,7 +28,7 @@
 #include <alpaka/dim/DimIntegralConst.hpp>
 
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 #include <type_traits>
@@ -141,7 +141,7 @@ namespace alpaka
             -> idx::Idx<TExtent>
             {
 #if !BOOST_ARCH_PTX
-                boost::ignore_unused(indices);
+                alpaka::ignore_unused(indices);
 #endif
                 return
                     meta::foldr(

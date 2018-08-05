@@ -25,7 +25,7 @@
 
 #include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 //#include <ctime>
 #include <chrono>
@@ -68,7 +68,7 @@ namespace alpaka
                     time::TimeStl const & time)
                 -> std::uint64_t
                 {
-                    boost::ignore_unused(time);
+                    alpaka::ignore_unused(time);
 
                     // NOTE: high_resolution_clock returns a non-steady wall-clock time!
                     // This means that it is not ensured that the values will always increase monotonically.

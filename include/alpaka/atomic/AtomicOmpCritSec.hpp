@@ -25,7 +25,7 @@
 
 #include <alpaka/atomic/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -79,7 +79,7 @@ namespace alpaka
                     T const & value)
                 -> T
                 {
-                    boost::ignore_unused(atomic);
+                    alpaka::ignore_unused(atomic);
                     T old;
                     // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                     #pragma omp critical (AlpakaOmpAtomicOp)
@@ -96,7 +96,7 @@ namespace alpaka
                     T const & value)
                 -> T
                 {
-                    boost::ignore_unused(atomic);
+                    alpaka::ignore_unused(atomic);
                     T old;
                     // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                     #pragma omp critical (AlpakaOmpAtomicOp2)

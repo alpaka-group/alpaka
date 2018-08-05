@@ -23,7 +23,7 @@
 
 #include <alpaka/math/max/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -62,7 +62,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(std::max(x, y))
                 {
-                    boost::ignore_unused(max);
+                    alpaka::ignore_unused(max);
                     return std::max(x, y);
                 }
             };
@@ -87,7 +87,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(std::fmax(x, y))
                 {
-                    boost::ignore_unused(max);
+                    alpaka::ignore_unused(max);
                     return std::fmax(x, y);
                 }
             };

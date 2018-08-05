@@ -23,7 +23,7 @@
 
 #include <alpaka/math/min/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -62,7 +62,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(std::min(x, y))
                 {
-                    boost::ignore_unused(min);
+                    alpaka::ignore_unused(min);
                     return std::min(x, y);
                 }
             };
@@ -87,7 +87,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(std::fmin(x, y))
                 {
-                    boost::ignore_unused(min);
+                    alpaka::ignore_unused(min);
                     return std::fmin(x, y);
                 }
             };

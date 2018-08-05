@@ -33,7 +33,7 @@
 #include <alpaka/core/Common.hpp>
 
 #include <boost/config.hpp>
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <iosfwd>
 
@@ -480,8 +480,8 @@ namespace alpaka
                         std::string const & rowSuffix)
                     -> void
                     {
-                        boost::ignore_unused(view);
-                        boost::ignore_unused(rowSeparator);
+                        alpaka::ignore_unused(view);
+                        alpaka::ignore_unused(rowSeparator);
 
                         os << rowPrefix;
 

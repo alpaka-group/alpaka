@@ -23,7 +23,7 @@
 
 #include <alpaka/math/acos/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::acos(arg))
                 {
-                    boost::ignore_unused(acos);
+                    alpaka::ignore_unused(acos);
                     return std::acos(arg);
                 }
             };

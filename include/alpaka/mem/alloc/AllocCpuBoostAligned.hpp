@@ -26,7 +26,7 @@
 #include <alpaka/core/Common.hpp>
 
 #include <boost/align.hpp>
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -65,7 +65,7 @@ namespace alpaka
                         std::size_t const & sizeElems)
                     -> T *
                     {
-                        boost::ignore_unused(alloc);
+                        alpaka::ignore_unused(alloc);
                         return
                             reinterpret_cast<T *>(
                                 boost::alignment::aligned_alloc(TAlignment::value, sizeElems * sizeof(T)));
@@ -87,7 +87,7 @@ namespace alpaka
                         T const * const ptr)
                     -> void
                     {
-                        boost::ignore_unused(alloc);
+                        alpaka::ignore_unused(alloc);
                             boost::alignment::aligned_free(
                                 const_cast<void *>(
                                     reinterpret_cast<void const *>(ptr)));

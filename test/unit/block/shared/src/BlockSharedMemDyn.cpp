@@ -93,7 +93,7 @@ namespace alpaka
                     TVec const & threadElemExtent)
                 -> idx::Idx<TAcc>
                 {
-                    boost::ignore_unused(blockSharedMemDyn);
+                    alpaka::ignore_unused(blockSharedMemDyn);
                     return
                         static_cast<idx::Idx<TAcc>>(sizeof(std::uint32_t)) * blockThreadExtent.prod() * threadElemExtent.prod();
                 }

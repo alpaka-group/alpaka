@@ -23,7 +23,7 @@
 
 #include <alpaka/math/fmod/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -61,7 +61,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(std::fmod(x, y))
                 {
-                    boost::ignore_unused(fmod);
+                    alpaka::ignore_unused(fmod);
                     return std::fmod(x, y);
                 }
             };

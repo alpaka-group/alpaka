@@ -35,7 +35,7 @@
 
 #include <boost/config.hpp>
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 #include <utility>
@@ -208,7 +208,7 @@ namespace alpaka
         -> vec::Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
         {
 #if !BOOST_ARCH_PTX
-            boost::ignore_unused(idxWorkDiv);
+            alpaka::ignore_unused(idxWorkDiv);
 #endif
             return gridThreadIdx * threadElemExtent;
         }

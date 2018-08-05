@@ -23,7 +23,7 @@
 
 #include <alpaka/math/ceil/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::ceil(arg))
                 {
-                    boost::ignore_unused(ceil);
+                    alpaka::ignore_unused(ceil);
                     return std::ceil(arg);
                 }
             };

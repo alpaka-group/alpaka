@@ -26,7 +26,7 @@
 #include <boost/config.hpp>
 
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
@@ -52,7 +52,7 @@ namespace alpaka
         -> T
         {
 #if !BOOST_ARCH_PTX
-            boost::ignore_unused(f);
+            alpaka::ignore_unused(f);
 #endif
             return t;
         }

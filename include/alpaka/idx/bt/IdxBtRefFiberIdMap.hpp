@@ -31,7 +31,7 @@
 
 #include <alpaka/vec/Vec.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <map>
 #include <cassert>
@@ -115,7 +115,7 @@ namespace alpaka
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    boost::ignore_unused(workDiv);
+                    alpaka::ignore_unused(workDiv);
                     auto const fiberId(boost::this_fiber::get_id());
                     auto const fiberEntry(idx.m_fibersToIndices.find(fiberId));
                     assert(fiberEntry != idx.m_fibersToIndices.end());

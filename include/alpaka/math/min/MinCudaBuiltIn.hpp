@@ -31,7 +31,7 @@
 
 #include <alpaka/math/min/Traits.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -74,7 +74,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(::min(x, y))
                 {
-                    //boost::ignore_unused(min);
+                    //alpaka::ignore_unused(min);
                     return ::min(x, y);
                 }
             };
@@ -99,7 +99,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(::fmin(x, y))
                 {
-                    //boost::ignore_unused(min);
+                    //alpaka::ignore_unused(min);
                     return ::fmin(x, y);
                 }
             };

@@ -23,7 +23,7 @@
 
 #include <alpaka/math/erf/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::erf(arg))
                 {
-                    boost::ignore_unused(erf);
+                    alpaka::ignore_unused(erf);
                     return std::erf(arg);
                 }
             };

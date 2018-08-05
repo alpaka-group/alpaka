@@ -43,7 +43,7 @@
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <omp.h>
 
@@ -149,7 +149,7 @@ namespace alpaka
                 // The number of threads in this block.
                 TIdx const blockThreadCount(blockThreadExtent.prod());
                 int const iBlockThreadCount(static_cast<int>(blockThreadCount));
-                boost::ignore_unused(iBlockThreadCount);
+                alpaka::ignore_unused(iBlockThreadCount);
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
                 ::omp_set_dynamic(0);
@@ -173,7 +173,7 @@ namespace alpaka
                             if((::omp_get_thread_num() == 0) && (acc.m_gridBlockIdx.sum() == static_cast<TIdx>(0)))
                             {
                                 int const numThreads(::omp_get_num_threads());
-                                boost::ignore_unused(numThreads);
+                                alpaka::ignore_unused(numThreads);
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                                 std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << numThreads << std::endl;
 #endif

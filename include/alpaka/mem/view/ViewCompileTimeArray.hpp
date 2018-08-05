@@ -26,7 +26,7 @@
 #include <alpaka/pltf/PltfCpu.hpp>
 #include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <boost/predef.h>
 
 #include <type_traits>
@@ -128,7 +128,7 @@ namespace alpaka
                 )
                 -> idx::Idx<TFixedSizeArray>
                 {
-                    //boost::ignore_unused(extent);
+                    //alpaka::ignore_unused(extent);
                     return std::extent<TFixedSizeArray, TIdxIntegralConst::value>::value;
                 }
             };

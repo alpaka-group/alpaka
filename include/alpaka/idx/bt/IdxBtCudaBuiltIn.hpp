@@ -35,7 +35,7 @@
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/core/Positioning.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -108,7 +108,7 @@ namespace alpaka
                     TWorkDiv const &)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    //boost::ignore_unused(idx);
+                    //alpaka::ignore_unused(idx);
                     return vec::cast<TIdx>(offset::getOffsetVecEnd<TDim>(threadIdx));
                 }
             };

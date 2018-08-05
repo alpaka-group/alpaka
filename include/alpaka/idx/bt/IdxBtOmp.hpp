@@ -30,7 +30,7 @@
 
 #include <alpaka/core/Positioning.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <omp.h>
 
@@ -107,7 +107,7 @@ namespace alpaka
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    boost::ignore_unused(idx);
+                    alpaka::ignore_unused(idx);
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?

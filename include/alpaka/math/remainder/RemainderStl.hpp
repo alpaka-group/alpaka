@@ -23,7 +23,7 @@
 
 #include <alpaka/math/remainder/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -61,7 +61,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(std::remainder(x, y))
                 {
-                    boost::ignore_unused(remainder);
+                    alpaka::ignore_unused(remainder);
                     return std::remainder(x, y);
                 }
             };

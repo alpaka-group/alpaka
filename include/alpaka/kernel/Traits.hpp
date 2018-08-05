@@ -35,7 +35,7 @@
 
 #include <boost/predef.h>
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 #include <type_traits>
@@ -109,10 +109,10 @@ namespace alpaka
                 -> idx::Idx<TAcc>
                 {
 #if !BOOST_ARCH_PTX
-                    boost::ignore_unused(kernelFnObj);
-                    boost::ignore_unused(blockThreadExtent);
-                    boost::ignore_unused(threadElemExtent);
-                    boost::ignore_unused(args...);
+                    alpaka::ignore_unused(kernelFnObj);
+                    alpaka::ignore_unused(blockThreadExtent);
+                    alpaka::ignore_unused(threadElemExtent);
+                    alpaka::ignore_unused(args...);
 #endif
 
                     return 0;

@@ -25,7 +25,7 @@
 
 #include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <random>
 #include <type_traits>
@@ -195,7 +195,7 @@ namespace alpaka
                         RandStl const & rand)
                     -> rand::distribution::cpu::NormalReal<T>
                     {
-                        boost::ignore_unused(rand);
+                        alpaka::ignore_unused(rand);
                         return rand::distribution::cpu::NormalReal<T>();
                     }
                 };
@@ -214,7 +214,7 @@ namespace alpaka
                         RandStl const & rand)
                     -> rand::distribution::cpu::UniformReal<T>
                     {
-                        boost::ignore_unused(rand);
+                        alpaka::ignore_unused(rand);
                         return rand::distribution::cpu::UniformReal<T>();
                     }
                 };
@@ -233,7 +233,7 @@ namespace alpaka
                         RandStl const & rand)
                     -> rand::distribution::cpu::UniformUint<T>
                     {
-                        boost::ignore_unused(rand);
+                        alpaka::ignore_unused(rand);
                         return rand::distribution::cpu::UniformUint<T>();
                     }
                 };
@@ -256,7 +256,7 @@ namespace alpaka
                         std::uint32_t const & subsequence)
                     -> rand::generator::cpu::MersenneTwister
                     {
-                        boost::ignore_unused(rand);
+                        alpaka::ignore_unused(rand);
                         return rand::generator::cpu::MersenneTwister(
                             seed,
                             subsequence);

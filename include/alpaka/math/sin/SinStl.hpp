@@ -23,7 +23,7 @@
 
 #include <alpaka/math/sin/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::sin(arg))
                 {
-                    boost::ignore_unused(sin);
+                    alpaka::ignore_unused(sin);
                     return std::sin(arg);
                 }
             };

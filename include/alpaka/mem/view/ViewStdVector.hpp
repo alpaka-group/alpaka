@@ -26,7 +26,7 @@
 #include <alpaka/pltf/PltfCpu.hpp>
 #include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <vector>
 
@@ -60,7 +60,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const & view)
                 -> dev::DevCpu
                 {
-                    boost::ignore_unused(view);
+                    alpaka::ignore_unused(view);
                     return pltf::getDevByIdx<pltf::PltfCpu>(0u);
                 }
             };

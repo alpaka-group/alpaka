@@ -28,7 +28,7 @@
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -172,7 +172,7 @@ namespace alpaka
                     TTask const & task)
                 -> void
                 {
-                    boost::ignore_unused(queue);
+                    alpaka::ignore_unused(queue);
                     task();
                 }
             };
@@ -187,7 +187,7 @@ namespace alpaka
                     queue::QueueCpuSync const & queue)
                 -> bool
                 {
-                    boost::ignore_unused(queue);
+                    alpaka::ignore_unused(queue);
                     return true;
                 }
             };
@@ -211,7 +211,7 @@ namespace alpaka
                     queue::QueueCpuSync const & queue)
                 -> void
                 {
-                    boost::ignore_unused(queue);
+                    alpaka::ignore_unused(queue);
                 }
             };
         }

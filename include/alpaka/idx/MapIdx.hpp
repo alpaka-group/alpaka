@@ -25,7 +25,7 @@
 #include <alpaka/core/Common.hpp>
 
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 namespace alpaka
@@ -67,7 +67,7 @@ namespace alpaka
                 -> vec::Vec<dim::DimInt<TidxDim>, TElem>
                 {
 #if !BOOST_ARCH_PTX
-                    boost::ignore_unused(extent);
+                    alpaka::ignore_unused(extent);
 #endif
                     return idx;
                 }

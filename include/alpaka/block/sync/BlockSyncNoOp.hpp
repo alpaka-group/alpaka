@@ -25,7 +25,7 @@
 
 #include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -67,7 +67,7 @@ namespace alpaka
                         block::sync::BlockSyncNoOp const & /*blockSync*/)
                     -> void
                     {
-                        //boost::ignore_unused(blockSync);
+                        //alpaka::ignore_unused(blockSync);
                         // Nothing to do.
                     }
                 };
@@ -86,7 +86,7 @@ namespace alpaka
                         int predicate)
                     -> int
                     {
-                        //boost::ignore_unused(blockSync);
+                        //alpaka::ignore_unused(blockSync);
                         return predicate;
                     }
                 };

@@ -31,7 +31,7 @@
 
 #include <alpaka/math/max/Traits.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -73,7 +73,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(::max(x, y))
                 {
-                    //boost::ignore_unused(max);
+                    //alpaka::ignore_unused(max);
                     return ::max(x, y);
                 }
             };
@@ -98,7 +98,7 @@ namespace alpaka
                     Ty const & y)
                 -> decltype(::fmax(x, y))
                 {
-                    //boost::ignore_unused(max);
+                    //alpaka::ignore_unused(max);
                     return ::fmax(x, y);
                 }
             };

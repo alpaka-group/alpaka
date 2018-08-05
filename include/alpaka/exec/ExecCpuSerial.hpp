@@ -39,7 +39,7 @@
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <boost/assert.hpp>
 
 #include <tuple>
