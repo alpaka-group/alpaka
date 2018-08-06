@@ -23,7 +23,7 @@
 
 #include <alpaka/math/tan/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::tan(arg))
                 {
-                    boost::ignore_unused(tan);
+                    alpaka::ignore_unused(tan);
                     return std::tan(arg);
                 }
             };

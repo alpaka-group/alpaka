@@ -35,7 +35,7 @@
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Cuda.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -126,7 +126,7 @@ namespace alpaka
                     WorkDivCudaBuiltIn<TDim, TIdx> const & /*workDiv*/)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    //boost::ignore_unused(workDiv);
+                    //alpaka::ignore_unused(workDiv);
                     return vec::cast<TIdx>(extent::getExtentVecEnd<TDim>(gridDim));
                 }
             };
@@ -147,7 +147,7 @@ namespace alpaka
                     WorkDivCudaBuiltIn<TDim, TIdx> const & /*workDiv*/)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    //boost::ignore_unused(workDiv);
+                    //alpaka::ignore_unused(workDiv);
                     return vec::cast<TIdx>(extent::getExtentVecEnd<TDim>(blockDim));
                 }
             };

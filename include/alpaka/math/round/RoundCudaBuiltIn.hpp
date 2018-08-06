@@ -31,7 +31,7 @@
 
 #include <alpaka/math/round/Traits.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -69,7 +69,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(::round(arg))
                 {
-                    //boost::ignore_unused(round);
+                    //alpaka::ignore_unused(round);
                     return ::round(arg);
                 }
             };
@@ -88,7 +88,7 @@ namespace alpaka
                     TArg const & arg)
                 -> long int
                 {
-                    //boost::ignore_unused(lround);
+                    //alpaka::ignore_unused(lround);
                     return ::lround(arg);
                 }
             };
@@ -107,7 +107,7 @@ namespace alpaka
                     TArg const & arg)
                 -> long int
                 {
-                    //boost::ignore_unused(llround);
+                    //alpaka::ignore_unused(llround);
                     return ::llround(arg);
                 }
             };

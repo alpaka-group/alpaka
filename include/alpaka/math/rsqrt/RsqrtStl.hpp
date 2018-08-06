@@ -23,7 +23,7 @@
 
 #include <alpaka/math/rsqrt/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::sqrt(arg))
                 {
-                    boost::ignore_unused(rsqrt);
+                    alpaka::ignore_unused(rsqrt);
                     return static_cast<TArg>(1)/std::sqrt(arg);
                 }
             };

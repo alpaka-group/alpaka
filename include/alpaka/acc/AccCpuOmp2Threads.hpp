@@ -51,7 +51,7 @@
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <omp.h>
 
@@ -175,7 +175,7 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim, TIdx>
                 {
-                    boost::ignore_unused(dev);
+                    alpaka::ignore_unused(dev);
 
 #ifdef ALPAKA_CI
                     auto const blockThreadCountMax(static_cast<TIdx>(std::min(4, ::omp_get_max_threads())));

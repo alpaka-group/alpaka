@@ -28,6 +28,7 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
@@ -48,10 +49,6 @@ BOOST_AUTO_TEST_SUITE(rand_)
 class RandTestKernel
 {
 public:
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wunused-variable"
-#endif
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -62,10 +59,6 @@ public:
     {
         auto gen(alpaka::rand::generator::createDefault(acc, 12345u, 6789u));
 
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-variable"
-#endif
 // gcc 5.4 in combination with nvcc 8.0 fails to compile the CPU STL distributions when --expt-relaxed-constexpr is enabled
 // /usr/include/c++/5/cmath(362): error: calling a __host__ function("__builtin_logl") from a __device__ function("std::log") is not allowed
 #if !((BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0)) && (BOOST_COMP_NVCC == BOOST_VERSION_NUMBER(8, 0, 0)))
@@ -75,6 +68,7 @@ public:
 #if !BOOST_ARCH_PTX
             BOOST_VERIFY(std::isfinite(r));
 #endif
+            alpaka::ignore_unused(r);
         }
 
         {
@@ -83,6 +77,7 @@ public:
 #if !BOOST_ARCH_PTX
             BOOST_VERIFY(std::isfinite(r));
 #endif
+            alpaka::ignore_unused(r);
         }
         {
             auto dist(alpaka::rand::distribution::createUniformReal<float>(acc));
@@ -101,15 +96,10 @@ public:
         {
             auto dist(alpaka::rand::distribution::createUniformUint<std::uint32_t>(acc));
             auto const r = dist(gen);
+            alpaka::ignore_unused(r);
         }
 #endif
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
     }
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic pop
-#endif
 };
 
 //-----------------------------------------------------------------------------

@@ -155,7 +155,7 @@ namespace alpaka
                     TArgs && ...)
                 -> idx::Idx<TAcc>
                 {
-                    boost::ignore_unused(sharedMemKernel);
+                    alpaka::ignore_unused(sharedMemKernel);
                     return blockThreadExtent.prod() * threadElemExtent.prod() * static_cast<idx::Idx<TAcc>>(sizeof(Val));
                 }
             };

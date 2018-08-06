@@ -31,7 +31,7 @@
 
 #include <alpaka/math/sqrt/Traits.hpp>
 
-//#include <boost/core/ignore_unused.hpp>
+//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -69,7 +69,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(::sqrt(arg))
                 {
-                    //boost::ignore_unused(sqrt);
+                    //alpaka::ignore_unused(sqrt);
                     return ::sqrt(arg);
                 }
             };

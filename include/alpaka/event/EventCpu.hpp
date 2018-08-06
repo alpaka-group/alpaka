@@ -30,7 +30,7 @@
 #include <alpaka/wait/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <cassert>
 #include <mutex>
@@ -263,7 +263,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    boost::ignore_unused(spQueueImpl);
+                    alpaka::ignore_unused(spQueueImpl);
 
                     auto spEventImpl(event.m_spEventImpl);
 
@@ -421,7 +421,7 @@ namespace alpaka
                     event::EventCpu const & event)
                 -> void
                 {
-                    boost::ignore_unused(spQueueImpl);
+                    alpaka::ignore_unused(spQueueImpl);
 
                     // Copy the shared pointer of the event implementation.
                     // This is forwarded to the lambda that is enqueued into the queue to ensure that the event implementation is alive as long as it is enqueued.

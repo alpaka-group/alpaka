@@ -27,7 +27,7 @@
 #include <alpaka/core/Common.hpp>
 
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 namespace alpaka
@@ -66,9 +66,9 @@ namespace alpaka
                 -> void
                 {
 #if !BOOST_ARCH_PTX
-                    boost::ignore_unused(idx);
-                    boost::ignore_unused(extent);
-                    boost::ignore_unused(f);
+                    alpaka::ignore_unused(idx);
+                    alpaka::ignore_unused(extent);
+                    alpaka::ignore_unused(f);
 #endif
                 }
             };
@@ -174,7 +174,7 @@ namespace alpaka
         -> void
         {
 #if !BOOST_ARCH_PTX
-            boost::ignore_unused(indexSequence);
+            alpaka::ignore_unused(indexSequence);
 #endif
 
             static_assert(

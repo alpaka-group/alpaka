@@ -23,7 +23,7 @@
 
 #include <alpaka/math/asin/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::asin(arg))
                 {
-                    boost::ignore_unused(asin);
+                    alpaka::ignore_unused(asin);
                     return std::asin(arg);
                 }
             };

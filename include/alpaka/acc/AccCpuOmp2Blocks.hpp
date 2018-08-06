@@ -52,7 +52,7 @@
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <limits>
 #include <typeinfo>
@@ -173,7 +173,7 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim, TIdx>
                 {
-                    boost::ignore_unused(dev);
+                    alpaka::ignore_unused(dev);
 
                     return {
                         // m_multiProcessorCount

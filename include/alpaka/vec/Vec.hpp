@@ -37,7 +37,7 @@
 #include <boost/predef.h>
 #include <boost/config.hpp>
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 #include <cstdint>
@@ -84,7 +84,7 @@ namespace alpaka
 #endif
         {
 #if !BOOST_ARCH_PTX
-            boost::ignore_unused(indices);
+            alpaka::ignore_unused(indices);
 #endif
             return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
                 (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
@@ -216,7 +216,7 @@ namespace alpaka
             -> Vec<TDim, TVal>
             {
 #if !BOOST_ARCH_PTX
-                boost::ignore_unused(indices);
+                alpaka::ignore_unused(indices);
 #endif
                 return Vec<TDim, TVal>(
                     (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
@@ -402,7 +402,7 @@ namespace alpaka
 #endif
             {
 #if !BOOST_ARCH_PTX
-                boost::ignore_unused(indices);
+                alpaka::ignore_unused(indices);
 #endif
                 return
                     meta::foldr(
@@ -955,7 +955,7 @@ namespace alpaka
                 {
 #if !BOOST_ARCH_PTX
                     // In the case of a zero dimensional vector, vec is unused.
-                    boost::ignore_unused(vec);
+                    alpaka::ignore_unused(vec);
 #endif
 
                     static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same idx) then the origin vector.");

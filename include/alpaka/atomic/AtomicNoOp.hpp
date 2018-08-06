@@ -23,7 +23,7 @@
 
 #include <alpaka/atomic/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -70,7 +70,7 @@ namespace alpaka
                     T const & value)
                 -> T
                 {
-                    boost::ignore_unused(atomic);
+                    alpaka::ignore_unused(atomic);
                     return TOp()(addr, value);
                 }
                 //-----------------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace alpaka
                     T const & value)
                 -> T
                 {
-                    boost::ignore_unused(atomic);
+                    alpaka::ignore_unused(atomic);
                     return TOp()(addr, compare, value);
                 }
             };

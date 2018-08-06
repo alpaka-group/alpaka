@@ -24,7 +24,7 @@
 #include <alpaka/core/Common.hpp>
 
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 #include <boost/predef.h>
 
@@ -64,7 +64,7 @@ namespace alpaka
                 {
 #ifdef NDEBUG
 #if !BOOST_ARCH_PTX
-                    boost::ignore_unused(arg);
+                    alpaka::ignore_unused(arg);
 #endif
 #else
                     assert(arg >= 0);
@@ -88,7 +88,7 @@ namespace alpaka
                 -> void
                 {
 #if !BOOST_ARCH_PTX
-                    boost::ignore_unused(arg);
+                    alpaka::ignore_unused(arg);
 #endif
                     // Nothing to do for unsigned types.
                 }

@@ -23,7 +23,7 @@
 
 #include <alpaka/math/trunc/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::trunc(arg))
                 {
-                    boost::ignore_unused(trunc);
+                    alpaka::ignore_unused(trunc);
                     return std::trunc(arg);
                 }
             };

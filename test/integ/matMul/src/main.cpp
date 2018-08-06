@@ -44,7 +44,7 @@
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <iostream>
 #include <typeinfo>
@@ -209,18 +209,18 @@ namespace alpaka
                     TIndex const & ldc)
                 -> TIndex
                 {
-                    boost::ignore_unused(matMulKernel);
-                    boost::ignore_unused(m);
-                    boost::ignore_unused(n);
-                    boost::ignore_unused(k);
-                    boost::ignore_unused(alpha);
-                    boost::ignore_unused(A);
-                    boost::ignore_unused(lda);
-                    boost::ignore_unused(B);
-                    boost::ignore_unused(ldb);
-                    boost::ignore_unused(beta);
-                    boost::ignore_unused(C);
-                    boost::ignore_unused(ldc);
+                    alpaka::ignore_unused(matMulKernel);
+                    alpaka::ignore_unused(m);
+                    alpaka::ignore_unused(n);
+                    alpaka::ignore_unused(k);
+                    alpaka::ignore_unused(alpha);
+                    alpaka::ignore_unused(A);
+                    alpaka::ignore_unused(lda);
+                    alpaka::ignore_unused(B);
+                    alpaka::ignore_unused(ldb);
+                    alpaka::ignore_unused(beta);
+                    alpaka::ignore_unused(C);
+                    alpaka::ignore_unused(ldc);
 
                     // Reserve the buffer for the two blocks of A and B.
                     return 2u * blockThreadExtent.prod() * threadElemExtent.prod() * sizeof(TElem);

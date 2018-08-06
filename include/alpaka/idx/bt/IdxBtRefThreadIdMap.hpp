@@ -29,7 +29,7 @@
 
 #include <alpaka/vec/Vec.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <thread>
 #include <map>
@@ -114,7 +114,7 @@ namespace alpaka
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    boost::ignore_unused(workDiv);
+                    alpaka::ignore_unused(workDiv);
                     auto const threadId(std::this_thread::get_id());
                     auto const threadEntry(idx.m_threadToIndexMap.find(threadId));
                     assert(threadEntry != idx.m_threadToIndexMap.end());

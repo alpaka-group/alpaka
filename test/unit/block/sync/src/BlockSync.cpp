@@ -107,8 +107,8 @@ namespace alpaka
                 {
                     using Idx = alpaka::idx::Idx<TAcc>;
 
-                    boost::ignore_unused(blockSharedMemDyn);
-                    boost::ignore_unused(threadElemExtent);
+                    alpaka::ignore_unused(blockSharedMemDyn);
+                    alpaka::ignore_unused(threadElemExtent);
                     return
                         static_cast<idx::Idx<TAcc>>(sizeof(Idx)) * blockThreadExtent.prod();
                 }

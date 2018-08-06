@@ -27,7 +27,7 @@
 
 #include <alpaka/vec/Vec.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -100,8 +100,8 @@ namespace alpaka
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    boost::ignore_unused(idx);
-                    boost::ignore_unused(workDiv);
+                    alpaka::ignore_unused(idx);
+                    alpaka::ignore_unused(workDiv);
                     return vec::Vec<TDim, TIdx>::zeros();
                 }
             };

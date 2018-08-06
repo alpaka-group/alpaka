@@ -23,7 +23,7 @@
 
 #include <alpaka/math/floor/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::floor(arg))
                 {
-                    boost::ignore_unused(floor);
+                    alpaka::ignore_unused(floor);
                     return std::floor(arg);
                 }
             };

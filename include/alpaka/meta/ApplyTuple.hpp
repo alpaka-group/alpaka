@@ -26,7 +26,7 @@
 #include <alpaka/meta/IntegerSequence.hpp>
 
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 #include <boost/config.hpp>
 
@@ -101,7 +101,7 @@ namespace alpaka
             {
                 // If the the index sequence is empty, t will not be used at all.
 #if !BOOST_ARCH_PTX
-                boost::ignore_unused(t);
+                alpaka::ignore_unused(t);
 #endif
                 return
                     meta::invoke(

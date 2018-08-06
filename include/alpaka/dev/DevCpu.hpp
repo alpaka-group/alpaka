@@ -27,7 +27,7 @@
 
 #include <alpaka/dev/cpu/SysInfo.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <map>
 #include <mutex>
@@ -211,7 +211,7 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> std::string
                 {
-                    boost::ignore_unused(dev);
+                    alpaka::ignore_unused(dev);
 
                     return dev::cpu::detail::getCpuName();
                 }
@@ -228,7 +228,7 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> std::size_t
                 {
-                    boost::ignore_unused(dev);
+                    alpaka::ignore_unused(dev);
 
                     return dev::cpu::detail::getTotalGlobalMemSizeBytes();
                 }
@@ -245,7 +245,7 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> std::size_t
                 {
-                    boost::ignore_unused(dev);
+                    alpaka::ignore_unused(dev);
 
                     return dev::cpu::detail::getFreeGlobalMemSizeBytes();
                 }
@@ -264,7 +264,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    boost::ignore_unused(dev);
+                    alpaka::ignore_unused(dev);
 
                     // The CPU does nothing on reset.
                 }

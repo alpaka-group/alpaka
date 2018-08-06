@@ -23,7 +23,7 @@
 
 #include <alpaka/math/pow/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -61,7 +61,7 @@ namespace alpaka
                     TExp const & exp)
                 -> decltype(std::pow(base, exp))
                 {
-                    boost::ignore_unused(pow);
+                    alpaka::ignore_unused(pow);
                     return std::pow(base, exp);
                 }
             };

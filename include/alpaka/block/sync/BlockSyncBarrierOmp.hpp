@@ -27,7 +27,7 @@
 
 #include <alpaka/core/Common.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -73,7 +73,7 @@ namespace alpaka
                         block::sync::BlockSyncBarrierOmp const & blockSync)
                     -> void
                     {
-                        boost::ignore_unused(blockSync);
+                        alpaka::ignore_unused(blockSync);
 
                         // NOTE: This waits for all threads in all blocks.
                         // If multiple blocks are executed in parallel this is not optimal.

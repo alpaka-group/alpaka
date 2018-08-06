@@ -23,7 +23,7 @@
 
 #include <alpaka/math/cos/Traits.hpp>
 
-#include <boost/core/ignore_unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
@@ -57,7 +57,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(std::cos(arg))
                 {
-                    boost::ignore_unused(cos);
+                    alpaka::ignore_unused(cos);
                     return std::cos(arg);
                 }
             };

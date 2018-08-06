@@ -25,7 +25,7 @@
 
 #include <boost/predef.h>
 #if !BOOST_ARCH_PTX
-    #include <boost/core/ignore_unused.hpp>
+    #include <alpaka/core/Unused.hpp>
 #endif
 
 #include <utility>
@@ -62,8 +62,8 @@ namespace alpaka
                 -> void
                 {
 #if !BOOST_ARCH_PTX
-                    boost::ignore_unused(f);
-                    boost::ignore_unused(args...);
+                    alpaka::ignore_unused(f);
+                    alpaka::ignore_unused(args...);
 #endif
                 }
             };
