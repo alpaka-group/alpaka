@@ -24,9 +24,7 @@
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Common.hpp>
 
-#if !BOOST_ARCH_PTX
-    #include <alpaka/core/Unused.hpp>
-#endif
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -59,16 +57,11 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
                     vec::Vec<dim::DimInt<TidxDim>, TElem> const & idx,
-#if !BOOST_ARCH_PTX
                     vec::Vec<dim::DimInt<TidxDim>, TElem> const & extent)
-#else
-                    vec::Vec<dim::DimInt<TidxDim>, TElem> const &)
-#endif
                 -> vec::Vec<dim::DimInt<TidxDim>, TElem>
                 {
-#if !BOOST_ARCH_PTX
                     alpaka::ignore_unused(extent);
-#endif
+
                     return idx;
                 }
             };

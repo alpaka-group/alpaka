@@ -25,8 +25,8 @@
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/PltfCpu.hpp>
 #include <alpaka/core/Common.hpp>
-
 #include <alpaka/core/Unused.hpp>
+
 #include <boost/predef.h>
 
 #include <type_traits>

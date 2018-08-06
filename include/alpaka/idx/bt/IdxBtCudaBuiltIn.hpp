@@ -34,8 +34,7 @@
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/core/Positioning.hpp>
-
-//#include <alpaka/core/Unused.hpp>
+#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -104,11 +103,11 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getIdx(
-                    idx::bt::IdxBtCudaBuiltIn<TDim, TIdx> const & /*idx*/,
+                    idx::bt::IdxBtCudaBuiltIn<TDim, TIdx> const & idx,
                     TWorkDiv const &)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    //alpaka::ignore_unused(idx);
+                    alpaka::ignore_unused(idx);
                     return vec::cast<TIdx>(offset::getOffsetVecEnd<TDim>(threadIdx));
                 }
             };

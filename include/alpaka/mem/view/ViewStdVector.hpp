@@ -25,7 +25,6 @@
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/pltf/PltfCpu.hpp>
 #include <alpaka/core/Common.hpp>
-
 #include <alpaka/core/Unused.hpp>
 
 #include <vector>

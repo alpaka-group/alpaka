@@ -83,6 +83,7 @@
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unroll.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/core/Utility.hpp>
 #include <alpaka/core/Vectorize.hpp>
 //-----------------------------------------------------------------------------

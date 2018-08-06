@@ -29,7 +29,6 @@
 #include <alpaka/idx/MapIdx.hpp>
 
 #include <alpaka/core/Positioning.hpp>
-
 #include <alpaka/core/Unused.hpp>
 
 #include <omp.h>

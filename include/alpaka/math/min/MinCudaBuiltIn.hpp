@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/min/Traits.hpp>
-
-//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -69,12 +68,12 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto min(
-                    MinCudaBuiltIn const & /*min*/,
+                    MinCudaBuiltIn const & min,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::min(x, y))
                 {
-                    //alpaka::ignore_unused(min);
+                    alpaka::ignore_unused(min);
                     return ::min(x, y);
                 }
             };
@@ -94,12 +93,12 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto max(
-                    MinCudaBuiltIn const & /*min*/,
+                    MinCudaBuiltIn const & min,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::fmin(x, y))
                 {
-                    //alpaka::ignore_unused(min);
+                    alpaka::ignore_unused(min);
                     return ::fmin(x, y);
                 }
             };

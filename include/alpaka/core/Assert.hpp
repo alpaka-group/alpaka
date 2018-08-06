@@ -22,10 +22,8 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
-#if !BOOST_ARCH_PTX
-    #include <alpaka/core/Unused.hpp>
-#endif
 #include <boost/predef.h>
 
 #include <cassert>
@@ -51,21 +49,11 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-#ifdef NDEBUG
-#if !BOOST_ARCH_PTX
                     TArg const & arg)
-#else
-                    TArg const &)
-#endif
-#else
-                    TArg const & arg)
-#endif
                 -> void
                 {
 #ifdef NDEBUG
-#if !BOOST_ARCH_PTX
                     alpaka::ignore_unused(arg);
-#endif
 #else
                     assert(arg >= 0);
 #endif
@@ -80,16 +68,10 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-#if !BOOST_ARCH_PTX
                     TArg const & arg)
-#else
-                    TArg const &)
-#endif
                 -> void
                 {
-#if !BOOST_ARCH_PTX
                     alpaka::ignore_unused(arg);
-#endif
                     // Nothing to do for unsigned types.
                 }
             };

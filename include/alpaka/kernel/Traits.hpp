@@ -23,6 +23,7 @@
 
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
@@ -34,9 +35,6 @@
 #endif
 
 #include <boost/predef.h>
-#if !BOOST_ARCH_PTX
-    #include <alpaka/core/Unused.hpp>
-#endif
 
 #include <type_traits>
 
@@ -95,25 +93,16 @@ namespace alpaka
                     typename TDim,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-#if !BOOST_ARCH_PTX
                     TKernelFnObj const & kernelFnObj,
                     vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
                     vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
-#else
-                    TKernelFnObj const &,
-                    vec::Vec<TDim, idx::Idx<TAcc>> const &,
-                    vec::Vec<TDim, idx::Idx<TAcc>> const &,
-                    TArgs const & ...)
-#endif
                 -> idx::Idx<TAcc>
                 {
-#if !BOOST_ARCH_PTX
                     alpaka::ignore_unused(kernelFnObj);
                     alpaka::ignore_unused(blockThreadExtent);
                     alpaka::ignore_unused(threadElemExtent);
                     alpaka::ignore_unused(args...);
-#endif
 
                     return 0;
                 }

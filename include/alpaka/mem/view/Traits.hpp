@@ -31,9 +31,9 @@
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <boost/config.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <iosfwd>
 

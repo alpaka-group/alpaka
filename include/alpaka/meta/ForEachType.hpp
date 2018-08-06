@@ -22,11 +22,9 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <boost/predef.h>
-#if !BOOST_ARCH_PTX
-    #include <alpaka/core/Unused.hpp>
-#endif
 
 #include <utility>
 
@@ -52,19 +50,12 @@ namespace alpaka
                     typename TFnObj,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto forEachTypeHelper(
-#if !BOOST_ARCH_PTX
                     TFnObj && f,
                     TArgs && ... args)
-#else
-                    TFnObj &&,
-                    TArgs && ...)
-#endif
                 -> void
                 {
-#if !BOOST_ARCH_PTX
                     alpaka::ignore_unused(f);
                     alpaka::ignore_unused(args...);
-#endif
                 }
             };
             //#############################################################################
