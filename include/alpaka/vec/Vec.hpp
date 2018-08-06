@@ -33,12 +33,10 @@
 #include <alpaka/core/Align.hpp>
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <boost/predef.h>
 #include <boost/config.hpp>
-#if !BOOST_ARCH_PTX
-    #include <alpaka/core/Unused.hpp>
-#endif
 
 #include <cstdint>
 #include <ostream>
@@ -73,19 +71,14 @@ namespace alpaka
             typename TIdxSize,
             TIdxSize... TIndices>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-#if BOOST_ARCH_PTX
-            meta::IntegerSequence<TIdxSize, TIndices...> const &,
-#else
             meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
-#endif
             TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
 #endif
         {
-#if !BOOST_ARCH_PTX
             alpaka::ignore_unused(indices);
-#endif
+
             return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
                 (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
         }
@@ -207,17 +200,12 @@ namespace alpaka
                 typename TIdxSize,
                 TIdxSize... TIndices>
             ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
-#if BOOST_ARCH_PTX
-                meta::IntegerSequence<TIdxSize, TIndices...> const &,
-#else
                 meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
-#endif
                 TArgs && ... args)
             -> Vec<TDim, TVal>
             {
-#if !BOOST_ARCH_PTX
                 alpaka::ignore_unused(indices);
-#endif
+
                 return Vec<TDim, TVal>(
                     (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
             }
@@ -389,11 +377,7 @@ namespace alpaka
                 std::size_t... TIndices>
             ALPAKA_FN_HOST_ACC auto foldrByIndices(
                 TFnObj const & f,
-#if BOOST_ARCH_PTX
-                meta::IntegerSequence<std::size_t, TIndices...> const &) const
-#else
                 meta::IntegerSequence<std::size_t, TIndices...> const & indices) const
-#endif
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
             -> decltype(
                 meta::foldr(
@@ -401,9 +385,8 @@ namespace alpaka
                     ((*this)[TIndices])...))
 #endif
             {
-#if !BOOST_ARCH_PTX
                 alpaka::ignore_unused(indices);
-#endif
+
                 return
                     meta::foldr(
                         f,
@@ -953,10 +936,8 @@ namespace alpaka
                     Vec<TDim, TVal> const & vec)
                 -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
                 {
-#if !BOOST_ARCH_PTX
                     // In the case of a zero dimensional vector, vec is unused.
                     alpaka::ignore_unused(vec);
-#endif
 
                     static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same idx) then the origin vector.");
 

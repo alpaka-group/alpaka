@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/abs/Traits.hpp>
-
-//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -65,11 +64,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto abs(
-                    AbsCudaBuiltIn const & /*abs*/,
+                    AbsCudaBuiltIn const & abs,
                     TArg const & arg)
                 -> decltype(::abs(arg))
                 {
-                    //alpaka::ignore_unused(abs);
+                    alpaka::ignore_unused(abs);
                     return ::abs(arg);
                 }
             };

@@ -43,7 +43,6 @@
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/queue/Queue.hpp>
-
 #include <alpaka/core/Unused.hpp>
 
 #include <iostream>

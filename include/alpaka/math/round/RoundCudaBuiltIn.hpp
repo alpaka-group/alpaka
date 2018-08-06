@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/round/Traits.hpp>
-
-//#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
@@ -65,11 +64,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto round(
-                    RoundCudaBuiltIn const & /*round*/,
+                    RoundCudaBuiltIn const & round,
                     TArg const & arg)
                 -> decltype(::round(arg))
                 {
-                    //alpaka::ignore_unused(round);
+                    alpaka::ignore_unused(round);
                     return ::round(arg);
                 }
             };
@@ -84,11 +83,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto lround(
-                    RoundCudaBuiltIn const & /*lround*/,
+                    RoundCudaBuiltIn const & lround,
                     TArg const & arg)
                 -> long int
                 {
-                    //alpaka::ignore_unused(lround);
+                    alpaka::ignore_unused(lround);
                     return ::lround(arg);
                 }
             };
@@ -103,11 +102,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto llround(
-                    RoundCudaBuiltIn const & /*llround*/,
+                    RoundCudaBuiltIn const & llround,
                     TArg const & arg)
                 -> long int
                 {
-                    //alpaka::ignore_unused(llround);
+                    alpaka::ignore_unused(llround);
                     return ::llround(arg);
                 }
             };

@@ -24,6 +24,8 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
+#include <alpaka/core/Cuda.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
@@ -33,9 +35,6 @@
 #include <alpaka/idx/Traits.hpp>
 
 #include <alpaka/vec/Vec.hpp>
-#include <alpaka/core/Cuda.hpp>
-
-//#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -123,10 +122,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
-                    WorkDivCudaBuiltIn<TDim, TIdx> const & /*workDiv*/)
+                    WorkDivCudaBuiltIn<TDim, TIdx> const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    //alpaka::ignore_unused(workDiv);
+                    alpaka::ignore_unused(workDiv);
                     return vec::cast<TIdx>(extent::getExtentVecEnd<TDim>(gridDim));
                 }
             };
@@ -144,10 +143,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
-                    WorkDivCudaBuiltIn<TDim, TIdx> const & /*workDiv*/)
+                    WorkDivCudaBuiltIn<TDim, TIdx> const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    //alpaka::ignore_unused(workDiv);
+                    alpaka::ignore_unused(workDiv);
                     return vec::cast<TIdx>(extent::getExtentVecEnd<TDim>(blockDim));
                 }
             };

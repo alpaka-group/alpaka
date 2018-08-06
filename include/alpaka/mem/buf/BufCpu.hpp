@@ -22,6 +22,7 @@
 #pragma once
 
 #include <alpaka/core/Vectorize.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
 #include <alpaka/dev/Traits.hpp>
@@ -37,10 +38,6 @@
 #include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
 
 #include <alpaka/meta/DependentFalseType.hpp>
-
-#if !BOOST_ARCH_PTX
-    #include <alpaka/core/Unused.hpp>
-#endif
 
 #include <memory>
 

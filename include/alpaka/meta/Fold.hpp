@@ -22,12 +22,9 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <boost/config.hpp>
-
-#if !BOOST_ARCH_PTX
-    #include <alpaka/core/Unused.hpp>
-#endif
 
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
     #include <type_traits>
@@ -43,17 +40,12 @@ namespace alpaka
             typename TFnObj,
             typename T>
         ALPAKA_FN_HOST_ACC auto foldr(
-#if BOOST_ARCH_PTX
-            TFnObj const &,
-#else
             TFnObj const & f,
-#endif
             T const & t)
         -> T
         {
-#if !BOOST_ARCH_PTX
             alpaka::ignore_unused(f);
-#endif
+
             return t;
         }
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
