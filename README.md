@@ -63,7 +63,7 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|Accelerator Back-end|gcc 4.9.2|gcc 5.4|gcc 6.3/7.2|gcc 8.1|clang 4|clang 5|clang 6|MSVC 2017.7|
+|Accelerator Back-end|gcc 4.9.4|gcc 5.5|gcc 6.4/7.3|gcc 8.1|clang 4|clang 5|clang 6|MSVC 2017.7|
 |---|---|---|---|---|---|---|---|---|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
