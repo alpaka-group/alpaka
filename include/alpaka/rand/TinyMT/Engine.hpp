@@ -64,20 +64,24 @@ namespace cpu
 
         void seed( result_type value = default_seed() )
         {
-            tinymt32_init( &prng, value );
-        }
-
-        TinyMTengine( std::uint32_t const & seedValue )
-        {
             // parameters from TinyMT/jump/sample.c
             prng.mat1 = 0x8f7011ee;
             prng.mat2 = 0xfc78ff1f;
             prng.tmat = 0x3793fdff;
 
+            tinymt32_init( &prng, value );
+        }
+
+        TinyMTengine( std::uint32_t const & seedValue )
+        {
             seed( seedValue );
         }
 
-        TinyMTengine() = delete;
+        TinyMTengine()
+        {
+            std::uint32_t const magicSeed = 42u;
+            seed( magicSeed );
+        }
 
         result_type operator()()
         {
