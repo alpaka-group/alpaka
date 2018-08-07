@@ -39,8 +39,8 @@ NOTE: You have to be careful when mixing alpaka and non alpaka CUDA code. The CU
 |CUDA|alpaka|
 |---|---|
 |\_\_shared\_\_|[alpaka::block::shared::st::allocVar<std::uint32_t, \_\_COUNTER\_\_>(acc)](../../../../../test/unit/block/shared/src/BlockSharedMemSt.cpp#L69)|
-|\_\_constant\_\_|[ALPAKA_STATIC_DEV_MEM_CONSTANT](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L58-L63)|
-|\_\_device\_\_|[ALPAKA_STATIC_DEV_MEM_GLOBAL](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L164-L169)|
+|\_\_constant\_\_|[ALPAKA_STATIC_ACC_MEM_CONSTANT](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L58-L63)|
+|\_\_device\_\_|[ALPAKA_STATIC_ACC_MEM_GLOBAL](../../../../../test/unit/mem/view/src/ViewStaticAccMem.cpp#L164-L169)|
 
 *Index / Work Division*
 
