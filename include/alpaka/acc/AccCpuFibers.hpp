@@ -45,10 +45,9 @@
 #include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/dev/DevCpu.hpp>
-
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/dev/DevCpu.hpp>
 
 #include <boost/predef.h>
 

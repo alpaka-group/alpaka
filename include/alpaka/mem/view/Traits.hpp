@@ -28,10 +28,10 @@
 #include <alpaka/offset/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 
-#include <alpaka/vec/Vec.hpp>
-#include <alpaka/meta/Fold.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/meta/Fold.hpp>
+#include <alpaka/vec/Vec.hpp>
 
 #include <boost/config.hpp>
 

@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/vec/Vec.hpp>
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/meta/IntegerSequence.hpp>
+#include <alpaka/vec/Vec.hpp>
 
 namespace alpaka
 {

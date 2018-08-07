@@ -25,9 +25,8 @@
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 
-#include <alpaka/dev/cpu/SysInfo.hpp>
-
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/dev/cpu/SysInfo.hpp>
 
 #include <map>
 #include <mutex>

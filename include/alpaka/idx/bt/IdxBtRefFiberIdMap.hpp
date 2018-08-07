@@ -28,9 +28,7 @@
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
-
 #include <alpaka/vec/Vec.hpp>
-
 
 #include <map>
 #include <cassert>

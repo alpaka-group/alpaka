@@ -25,7 +25,6 @@
 
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
-
 #include <alpaka/vec/Vec.hpp>
 
 namespace alpaka

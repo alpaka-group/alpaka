@@ -65,11 +65,11 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_ACC_CUDA_ONLY static auto acos(
-                    AcosCudaBuiltIn const & /*acos*/,
+                    AcosCudaBuiltIn const & acos,
                     TArg const & arg)
                 -> decltype(::acos(arg))
                 {
-                    //alpaka::ignore_unused(acos);
+                    alpaka::ignore_unused(acos);
                     return ::acos(arg);
                 }
             };

@@ -44,9 +44,9 @@
 #include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
-#include <alpaka/core/Unused.hpp>
 #include <boost/predef.h>
 
 #include <memory>

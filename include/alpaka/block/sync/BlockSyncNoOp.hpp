@@ -63,10 +63,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreads(
-                        block::sync::BlockSyncNoOp const & /*blockSync*/)
+                        block::sync::BlockSyncNoOp const & blockSync)
                     -> void
                     {
-                        //alpaka::ignore_unused(blockSync);
+                        alpaka::ignore_unused(blockSync);
                         // Nothing to do.
                     }
                 };
@@ -81,11 +81,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
-                        block::sync::BlockSyncNoOp const & /*blockSync*/,
+                        block::sync::BlockSyncNoOp const & blockSync,
                         int predicate)
                     -> int
                     {
-                        //alpaka::ignore_unused(blockSync);
+                        alpaka::ignore_unused(blockSync);
                         return predicate;
                     }
                 };

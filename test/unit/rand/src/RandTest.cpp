@@ -28,7 +28,6 @@
 #define BOOST_MPL_CFG_GPU_ENABLED
 
 #include <alpaka/alpaka.hpp>
-#include <alpaka/core/Unused.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
@@ -67,8 +66,9 @@ public:
             auto const r = dist(gen);
 #if !BOOST_ARCH_PTX
             BOOST_VERIFY(std::isfinite(r));
-#endif
+#else
             alpaka::ignore_unused(r);
+#endif
         }
 
         {
@@ -76,8 +76,9 @@ public:
             auto const r = dist(gen);
 #if !BOOST_ARCH_PTX
             BOOST_VERIFY(std::isfinite(r));
-#endif
+#else
             alpaka::ignore_unused(r);
+#endif
         }
         {
             auto dist(alpaka::rand::distribution::createUniformReal<float>(acc));

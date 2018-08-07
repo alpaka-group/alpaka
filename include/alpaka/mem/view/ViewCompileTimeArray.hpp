@@ -21,11 +21,11 @@
 
 #pragma once
 
+#include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/PltfCpu.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <boost/predef.h>
 
@@ -128,6 +128,7 @@ namespace alpaka
                 )
                 -> idx::Idx<TFixedSizeArray>
                 {
+                    // C++14 constexpr with void return
                     //alpaka::ignore_unused(extent);
                     return std::extent<TFixedSizeArray, TIdxIntegralConst::value>::value;
                 }

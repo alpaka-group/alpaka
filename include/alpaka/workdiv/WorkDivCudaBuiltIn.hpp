@@ -24,8 +24,6 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
-#include <alpaka/core/Cuda.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
@@ -34,6 +32,8 @@
 #include <alpaka/workdiv/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 
+#include <alpaka/core/Cuda.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 namespace alpaka

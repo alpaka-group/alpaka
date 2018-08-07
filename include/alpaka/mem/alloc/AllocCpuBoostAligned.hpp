@@ -24,9 +24,9 @@
 #include <alpaka/mem/alloc/Traits.hpp>
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <boost/align.hpp>
-#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {

@@ -36,14 +36,12 @@
 
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/kernel/Traits.hpp>
-#include <alpaka/workdiv/WorkDivMembers.hpp>
-
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
-
-#include <alpaka/core/Unused.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #include <omp.h>
 

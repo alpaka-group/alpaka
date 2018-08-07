@@ -21,11 +21,11 @@
 
 #pragma once
 
+#include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/pltf/PltfCpu.hpp>
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
 
 #include <array>
 
@@ -115,7 +115,7 @@ namespace alpaka
                     std::array<TElem, Tsize> const & /*extent*/)
                 -> idx::Idx<std::array<TElem, Tsize>>
                 {
-                    // C++14
+                    // C++14 constexpr with void return
                     /*alpaka::ignore_unused(extent);*/
                     return Tsize;
                 }

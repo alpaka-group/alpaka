@@ -21,13 +21,12 @@
 
 #pragma once
 
-#include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
+#include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/idx/Traits.hpp>
-#include <alpaka/dim/DimIntegralConst.hpp>
-
-#include <alpaka/core/Unused.hpp>
+#include <alpaka/meta/IntegerSequence.hpp>
 
 #include <type_traits>
 #include <functional>
