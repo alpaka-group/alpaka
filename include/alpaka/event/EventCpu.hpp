@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/queue/QueueCpuAsync.hpp>
 #include <alpaka/queue/QueueCpuSync.hpp>
@@ -29,8 +30,6 @@
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
-
-#include <alpaka/core/Unused.hpp>
 
 #include <cassert>
 #include <mutex>

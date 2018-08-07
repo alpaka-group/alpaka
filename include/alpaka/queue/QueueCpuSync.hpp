@@ -21,14 +21,13 @@
 
 #pragma once
 
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
-
-#include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
