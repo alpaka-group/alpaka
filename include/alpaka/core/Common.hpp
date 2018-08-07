@@ -169,12 +169,12 @@
 //! This macro defines a variable lying in global accelerator device memory.
 //!
 //! Example:
-//!   ALPAKA_STATIC_DEV_MEM_GLOBAL int i;
+//!   ALPAKA_STATIC_ACC_MEM_GLOBAL int i;
 //!
 //! Those variables behave like ordinary variables when used in file-scope.
 //! They have external linkage (are accessible from other compilation units).
 //! If you want to access it from a different compilation unit, you have to declare it as extern:
-//!   extern ALPAKA_STATIC_DEV_MEM_GLOBAL int i;
+//!   extern ALPAKA_STATIC_ACC_MEM_GLOBAL int i;
 //! Like ordinary variables, only one definition is allowed (ODR)
 //! Failure to do so might lead to linker errors.
 //!
@@ -182,21 +182,21 @@
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
 #if BOOST_LANG_CUDA && BOOST_ARCH_PTX
-    #define ALPAKA_STATIC_DEV_MEM_GLOBAL __device__
+    #define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
 #else
-    #define ALPAKA_STATIC_DEV_MEM_GLOBAL
+    #define ALPAKA_STATIC_ACC_MEM_GLOBAL
 #endif
 
 //-----------------------------------------------------------------------------
 //! This macro defines a variable lying in constant accelerator device memory.
 //!
 //! Example:
-//!   ALPAKA_STATIC_DEV_MEM_CONSTANT int i;
+//!   ALPAKA_STATIC_ACC_MEM_CONSTANT int i;
 //!
 //! Those variables behave like ordinary variables when used in file-scope.
 //! They have external linkage (are accessible from other compilation units).
 //! If you want to access it from a different compilation unit, you have to declare it as extern:
-//!   extern ALPAKA_STATIC_DEV_MEM_CONSTANT int i;
+//!   extern ALPAKA_STATIC_ACC_MEM_CONSTANT int i;
 //! Like ordinary variables, only one definition is allowed (ODR)
 //! Failure to do so might lead to linker errors.
 //!
@@ -204,7 +204,7 @@
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
 #if BOOST_LANG_CUDA && BOOST_ARCH_PTX
-    #define ALPAKA_STATIC_DEV_MEM_CONSTANT __constant__
+    #define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
 #else
-    #define ALPAKA_STATIC_DEV_MEM_CONSTANT
+    #define ALPAKA_STATIC_ACC_MEM_CONSTANT
 #endif

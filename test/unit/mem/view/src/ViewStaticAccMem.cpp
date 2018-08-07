@@ -52,17 +52,17 @@ using Idx = std::uint32_t;
 // from a different compilation unit and should be moved to a common header.
 // Here they are used to silence clang`s -Wmissing-variable-declarations warning
 // that forces every non-static variable to be declared with extern before the are defined.
-extern ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DInitialized[3][2];
-extern ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
+extern ALPAKA_STATIC_ACC_MEM_CONSTANT Elem g_constantMemory2DInitialized[3][2];
+extern ALPAKA_STATIC_ACC_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
 
-ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DInitialized[3][2] =
+ALPAKA_STATIC_ACC_MEM_CONSTANT Elem g_constantMemory2DInitialized[3][2] =
     {
         {0u, 1u},
         {2u, 3u},
         {4u, 5u}
     };
 
-ALPAKA_STATIC_DEV_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
+ALPAKA_STATIC_ACC_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
 
 //#############################################################################
 //! Uses static device memory on the defined globally for the whole compilation unit.
@@ -155,17 +155,17 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 // from a different compilation unit and should be moved to a common header.
 // Here they are used to silence clang`s -Wmissing-variable-declarations warning
 // that forces every non-static variable to be declared with extern before the are defined.
-extern ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2];
-extern ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
+extern ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2];
+extern ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 
-ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2] =
+ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2] =
     {
         {0u, 1u},
         {2u, 3u},
         {4u, 5u}
     };
 
-ALPAKA_STATIC_DEV_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
+ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
