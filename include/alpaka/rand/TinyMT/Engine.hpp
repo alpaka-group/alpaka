@@ -35,6 +35,10 @@
 #   pragma GCC diagnostic push
 #   pragma GCC diagnostic ignored "-Wsign-conversion"
 #endif
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4100)  // tinymt32.h(60): warning C4100: 'random': unreferenced formal parameter
+#endif
 #include <alpaka/rand/TinyMT/tinymt32.h>
 #if BOOST_COMP_CLANG
 #   pragma clang diagnostic pop
@@ -42,6 +46,9 @@
 #endif
 #if BOOST_COMP_GNUC
 #   pragma GCC diagnostic pop
+#endif
+#if BOOST_COMP_MSVC
+#   pragma warning(pop)
 #endif
 
 namespace alpaka
