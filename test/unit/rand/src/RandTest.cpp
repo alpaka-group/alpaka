@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2017 Benjamin Worpitz
+ * Copyright 2017-2018 Benjamin Worpitz, Axel Huebl
  *
  * This file is part of alpaka.
  *
