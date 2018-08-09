@@ -16,8 +16,24 @@
  * LICENSE.txt
  */
 
-#include <stdint.h>
-#include <inttypes.h>
+#include <boost/predef.h>
+
+#include <cstdint>
+#include <cinttypes>
+
+#if BOOST_COMP_CLANG
+#   pragma clang diagnostic push
+#   pragma clang diagnostic ignored "-Wold-style-cast"
+#   pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+#if BOOST_COMP_GNUC
+#   pragma GCC diagnostic push
+#   pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4100)  // tinymt32.h(60): warning C4100: 'random': unreferenced formal parameter
+#endif
 
 #define TINYMT32_MEXP 127
 #define TINYMT32_SH0 1
@@ -377,5 +393,15 @@ inline void tinymt32_init_by_array(tinymt32_t * random, uint32_t init_key[],
 
 #undef MIN_LOOP
 #undef PRE_LOOP
+
+#if BOOST_COMP_CLANG
+#   pragma clang diagnostic pop
+#endif
+#if BOOST_COMP_GNUC
+#   pragma GCC diagnostic pop
+#endif
+#if BOOST_COMP_MSVC
+#   pragma warning(pop)
+#endif
 
 #endif
