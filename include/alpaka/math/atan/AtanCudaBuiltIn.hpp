@@ -63,7 +63,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atan(
+                __device__ static auto atan(
                     AtanCudaBuiltIn const & atan,
                     TArg const & arg)
                 -> decltype(::atan(arg))

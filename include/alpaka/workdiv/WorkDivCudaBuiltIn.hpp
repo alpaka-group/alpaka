@@ -51,18 +51,18 @@ namespace alpaka
             using WorkDivBase = WorkDivCudaBuiltIn;
 
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(
+            __device__ WorkDivCudaBuiltIn(
                 vec::Vec<TDim, TIdx> const & threadElemExtent) :
                     m_threadElemExtent(threadElemExtent)
             {}
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn const &) = delete;
+            __device__ WorkDivCudaBuiltIn(WorkDivCudaBuiltIn const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn &&) = delete;
+            __device__ WorkDivCudaBuiltIn(WorkDivCudaBuiltIn &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn const &) -> WorkDivCudaBuiltIn & = delete;
+            __device__ auto operator=(WorkDivCudaBuiltIn const &) -> WorkDivCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn &&) -> WorkDivCudaBuiltIn & = delete;
+            __device__ auto operator=(WorkDivCudaBuiltIn &&) -> WorkDivCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~WorkDivCudaBuiltIn() = default;
 
@@ -121,7 +121,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
-                ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
+                __device__ static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TIdx> const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
@@ -142,7 +142,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
-                ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
+                __device__ static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TIdx> const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
@@ -163,7 +163,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
-                ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
+                __device__ static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TIdx> const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {

@@ -63,7 +63,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_CUDA_ONLY static auto log(
+                __device__ static auto log(
                     LogCudaBuiltIn const & log,
                     TArg const & arg)
                 -> decltype(::log(arg))

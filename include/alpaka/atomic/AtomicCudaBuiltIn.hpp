@@ -48,13 +48,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             AtomicCudaBuiltIn() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY AtomicCudaBuiltIn(AtomicCudaBuiltIn const &) = delete;
+            __device__ AtomicCudaBuiltIn(AtomicCudaBuiltIn const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY AtomicCudaBuiltIn(AtomicCudaBuiltIn &&) = delete;
+            __device__ AtomicCudaBuiltIn(AtomicCudaBuiltIn &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AtomicCudaBuiltIn const &) -> AtomicCudaBuiltIn & = delete;
+            __device__ auto operator=(AtomicCudaBuiltIn const &) -> AtomicCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AtomicCudaBuiltIn &&) -> AtomicCudaBuiltIn & = delete;
+            __device__ auto operator=(AtomicCudaBuiltIn &&) -> AtomicCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AtomicCudaBuiltIn() = default;
         };
@@ -79,7 +79,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -99,7 +99,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -120,7 +120,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -141,7 +141,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     float * const addr,
                     float const & value)
@@ -161,7 +161,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     double * const addr,
                     double const & value)
@@ -204,7 +204,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -224,7 +224,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -248,7 +248,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -268,7 +268,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -289,7 +289,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -314,7 +314,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -333,7 +333,7 @@ namespace alpaka
                 unsigned int,
                 THierarchy>
             {
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -354,7 +354,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -379,7 +379,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -399,7 +399,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -419,7 +419,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -439,7 +439,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     float * const addr,
                     float const & value)
@@ -463,7 +463,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -487,7 +487,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -511,7 +511,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -531,7 +531,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -552,7 +552,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -577,7 +577,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -597,7 +597,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -618,7 +618,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -643,7 +643,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -663,7 +663,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -684,7 +684,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -709,7 +709,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & compare,
@@ -730,7 +730,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & compare,
@@ -751,7 +751,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
+                __device__ static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & compare,

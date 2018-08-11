@@ -95,7 +95,7 @@ namespace alpaka
         {
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt(
+            __device__ AccGpuCudaRt(
                 vec::Vec<TDim, TIdx> const & threadElemExtent) :
                     workdiv::WorkDivCudaBuiltIn<TDim, TIdx>(threadElemExtent),
                     idx::gb::IdxGbCudaBuiltIn<TDim, TIdx>(),
@@ -115,13 +115,13 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt(AccGpuCudaRt const &) = delete;
+            __device__ AccGpuCudaRt(AccGpuCudaRt const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt(AccGpuCudaRt &&) = delete;
+            __device__ AccGpuCudaRt(AccGpuCudaRt &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCudaRt const &) -> AccGpuCudaRt & = delete;
+            __device__ auto operator=(AccGpuCudaRt const &) -> AccGpuCudaRt & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCudaRt &&) -> AccGpuCudaRt & = delete;
+            __device__ auto operator=(AccGpuCudaRt &&) -> AccGpuCudaRt & = delete;
             //-----------------------------------------------------------------------------
             ~AccGpuCudaRt() = default;
         };

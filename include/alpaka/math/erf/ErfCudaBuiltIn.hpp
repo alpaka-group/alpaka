@@ -63,7 +63,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_CUDA_ONLY static auto erf(
+                __device__ static auto erf(
                     ErfCudaBuiltIn const & erf,
                     TArg const & arg)
                 -> decltype(::erf(arg))
