@@ -54,7 +54,7 @@ namespace alpaka
                     typename TIdx,
                     typename TDev,
                     typename TView>
-                static auto testViewImmutable(
+                auto testViewImmutable(
                     TView const & view,
                     TDev const & dev,
                     alpaka::vec::Vec<TDim, TIdx> const & extent,
@@ -199,7 +199,7 @@ namespace alpaka
                     typename TAcc,
                     typename TView,
                     typename TQueue>
-                static auto verifyBytesSet(
+                auto verifyBytesSet(
                     TQueue & queue,
                     TView const & view,
                     std::uint8_t const & byte)
@@ -272,7 +272,7 @@ namespace alpaka
                     typename TViewB,
                     typename TViewA,
                     typename TQueue>
-                static auto verifyViewsEqual(
+                auto verifyViewsEqual(
                     TQueue & queue,
                     TViewA const & viewA,
                     TViewB const & viewB)
@@ -311,7 +311,7 @@ namespace alpaka
                 template<
                     typename TView,
                     typename TQueue>
-                static auto iotaFillView(
+                auto iotaFillView(
                     TQueue & queue,
                     TView & view)
                 -> void
@@ -346,7 +346,7 @@ namespace alpaka
                     typename TAcc,
                     typename TView,
                     typename TQueue>
-                static auto testViewMutable(
+                auto testViewMutable(
                     TQueue & queue,
                     TView & view)
                 -> void
