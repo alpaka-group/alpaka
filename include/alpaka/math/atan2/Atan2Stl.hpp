@@ -55,7 +55,7 @@ namespace alpaka
                     std::is_arithmetic<Ty>::value
                     && std::is_arithmetic<Tx>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto atan2(
+                ALPAKA_FN_HOST static auto atan2(
                     Atan2Stl const & abs,
                     Ty const & y,
                     Tx const & x)

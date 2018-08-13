@@ -44,13 +44,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             TimeOmp() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA TimeOmp(TimeOmp const &) = delete;
+            ALPAKA_FN_HOST TimeOmp(TimeOmp const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA TimeOmp(TimeOmp &&) = delete;
+            ALPAKA_FN_HOST TimeOmp(TimeOmp &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(TimeOmp const &) -> TimeOmp & = delete;
+            ALPAKA_FN_HOST auto operator=(TimeOmp const &) -> TimeOmp & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(TimeOmp &&) -> TimeOmp & = delete;
+            ALPAKA_FN_HOST auto operator=(TimeOmp &&) -> TimeOmp & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~TimeOmp() = default;
         };
@@ -64,7 +64,7 @@ namespace alpaka
                 time::TimeOmp>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto clock(
+                ALPAKA_FN_HOST static auto clock(
                     time::TimeOmp const & time)
                 -> std::uint64_t
                 {

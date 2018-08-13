@@ -52,19 +52,19 @@ namespace alpaka
                 using BarrierWithPredicate = core::threads::BarrierThreadWithPredicate<TIdx>;
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(
+                ALPAKA_FN_HOST BlockSyncBarrierThread(
                     TIdx const & blockThreadCount) :
                         m_barrier(blockThreadCount),
                         m_barrierWithPredicate(blockThreadCount)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(BlockSyncBarrierThread const &) = delete;
+                ALPAKA_FN_HOST BlockSyncBarrierThread(BlockSyncBarrierThread const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierThread(BlockSyncBarrierThread &&) = delete;
+                ALPAKA_FN_HOST BlockSyncBarrierThread(BlockSyncBarrierThread &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierThread const &) -> BlockSyncBarrierThread & = delete;
+                ALPAKA_FN_HOST auto operator=(BlockSyncBarrierThread const &) -> BlockSyncBarrierThread & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierThread &&) -> BlockSyncBarrierThread & = delete;
+                ALPAKA_FN_HOST auto operator=(BlockSyncBarrierThread &&) -> BlockSyncBarrierThread & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~BlockSyncBarrierThread() = default;
 
@@ -81,7 +81,7 @@ namespace alpaka
                     BlockSyncBarrierThread<TIdx>>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
+                    ALPAKA_FN_HOST static auto syncBlockThreads(
                         block::sync::BlockSyncBarrierThread<TIdx> const & blockSync)
                     -> void
                     {

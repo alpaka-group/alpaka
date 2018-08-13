@@ -48,7 +48,7 @@ namespace alpaka
                 using BlockSyncBase = BlockSyncBarrierFiber;
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(
+                ALPAKA_FN_HOST BlockSyncBarrierFiber(
                     TIdx const & blockThreadCount) :
                         m_barrier(static_cast<std::size_t>(blockThreadCount)),
                         m_threadCount(blockThreadCount),
@@ -56,13 +56,13 @@ namespace alpaka
                         m_generation(static_cast<TIdx>(0u))
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(BlockSyncBarrierFiber const &) = delete;
+                ALPAKA_FN_HOST BlockSyncBarrierFiber(BlockSyncBarrierFiber const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierFiber(BlockSyncBarrierFiber &&) = delete;
+                ALPAKA_FN_HOST BlockSyncBarrierFiber(BlockSyncBarrierFiber &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierFiber const &) -> BlockSyncBarrierFiber & = delete;
+                ALPAKA_FN_HOST auto operator=(BlockSyncBarrierFiber const &) -> BlockSyncBarrierFiber & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierFiber &&) -> BlockSyncBarrierFiber & = delete;
+                ALPAKA_FN_HOST auto operator=(BlockSyncBarrierFiber &&) -> BlockSyncBarrierFiber & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~BlockSyncBarrierFiber() = default;
 
@@ -83,7 +83,7 @@ namespace alpaka
                     BlockSyncBarrierFiber<TIdx>>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
+                    ALPAKA_FN_HOST static auto syncBlockThreads(
                         block::sync::BlockSyncBarrierFiber<TIdx> const & blockSync)
                     -> void
                     {

@@ -74,13 +74,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             AtomicStlLock() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicStlLock(AtomicStlLock const &) = delete;
+            ALPAKA_FN_HOST AtomicStlLock(AtomicStlLock const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicStlLock(AtomicStlLock &&) = delete;
+            ALPAKA_FN_HOST AtomicStlLock(AtomicStlLock &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicStlLock const &) -> AtomicStlLock & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicStlLock const &) -> AtomicStlLock & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicStlLock &&) -> AtomicStlLock & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicStlLock &&) -> AtomicStlLock & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AtomicStlLock() = default;
 
@@ -117,7 +117,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_HOST static auto atomicOp(
                     atomic::AtomicStlLock<THashTableSize> const & atomic,
                     T * const addr,
                     T const & value)
@@ -127,7 +127,7 @@ namespace alpaka
                     return TOp()(addr, value);
                 }
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_HOST static auto atomicOp(
                     atomic::AtomicStlLock<THashTableSize> const & atomic,
                     T * const addr,
                     T const & compare,

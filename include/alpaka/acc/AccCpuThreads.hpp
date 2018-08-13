@@ -103,7 +103,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_ACC_NO_CUDA AccCpuThreads(
+            ALPAKA_FN_HOST AccCpuThreads(
                 TWorkDiv const & workDiv,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
@@ -128,13 +128,13 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuThreads(AccCpuThreads const &) = delete;
+            ALPAKA_FN_HOST AccCpuThreads(AccCpuThreads const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuThreads(AccCpuThreads &&) = delete;
+            ALPAKA_FN_HOST AccCpuThreads(AccCpuThreads &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuThreads const &) -> AccCpuThreads & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuThreads const &) -> AccCpuThreads & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuThreads &&) -> AccCpuThreads & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuThreads &&) -> AccCpuThreads & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AccCpuThreads() = default;
 

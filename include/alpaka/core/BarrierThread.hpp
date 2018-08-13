@@ -48,26 +48,26 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA explicit BarrierThread(
+                ALPAKA_FN_HOST explicit BarrierThread(
                     TIdx const & threadCount) :
                     m_threadCount(threadCount),
                     m_curThreadCount(threadCount),
                     m_generation(0)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BarrierThread(BarrierThread const &) = delete;
+                ALPAKA_FN_HOST BarrierThread(BarrierThread const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BarrierThread(BarrierThread &&) = delete;
+                ALPAKA_FN_HOST BarrierThread(BarrierThread &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThread const &) -> BarrierThread & = delete;
+                ALPAKA_FN_HOST auto operator=(BarrierThread const &) -> BarrierThread & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThread &&) -> BarrierThread & = delete;
+                ALPAKA_FN_HOST auto operator=(BarrierThread &&) -> BarrierThread & = delete;
                 //-----------------------------------------------------------------------------
                 ~BarrierThread() = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other threads to reach the barrier.
-                ALPAKA_FN_ACC_NO_CUDA auto wait()
+                ALPAKA_FN_HOST auto wait()
                 -> void
                 {
                     TIdx const generationWhenEnteredTheWait = m_generation;
@@ -156,20 +156,20 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA explicit BarrierThreadWithPredicate(
+                ALPAKA_FN_HOST explicit BarrierThreadWithPredicate(
                     TIdx const & threadCount) :
                     m_threadCount(threadCount),
                     m_curThreadCount(threadCount),
                     m_generation(0)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BarrierThreadWithPredicate(BarrierThreadWithPredicate const & other) = delete;
+                ALPAKA_FN_HOST BarrierThreadWithPredicate(BarrierThreadWithPredicate const & other) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BarrierThreadWithPredicate(BarrierThreadWithPredicate &&) = delete;
+                ALPAKA_FN_HOST BarrierThreadWithPredicate(BarrierThreadWithPredicate &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThreadWithPredicate const &) -> BarrierThreadWithPredicate & = delete;
+                ALPAKA_FN_HOST auto operator=(BarrierThreadWithPredicate const &) -> BarrierThreadWithPredicate & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThreadWithPredicate &&) -> BarrierThreadWithPredicate & = delete;
+                ALPAKA_FN_HOST auto operator=(BarrierThreadWithPredicate &&) -> BarrierThreadWithPredicate & = delete;
                 //-----------------------------------------------------------------------------
                 ~BarrierThreadWithPredicate() = default;
 
@@ -177,7 +177,7 @@ namespace alpaka
                 //! Waits for all the other threads to reach the barrier.
                 template<
                     typename TOp>
-                ALPAKA_FN_ACC_NO_CUDA auto wait(int predicate)
+                ALPAKA_FN_HOST auto wait(int predicate)
                 -> int
                 {
                     TIdx const generationWhenEnteredTheWait = m_generation;
