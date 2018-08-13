@@ -29,10 +29,11 @@ NOTE: You have to be careful when mixing alpaka and non alpaka CUDA code. The CU
 |CUDA|alpaka|
 |---|---|
 |\_\_host\_\_|ALPAKA_FN_HOST|
-|\_\_global\_\_|ALPAKA_FN_HOST_ACC|
-|\_\_device\_\_ \_\_host\_\_|ALPAKA_FN_HOST_ACC|
-|\_\_device\_\_|ALPAKA_FN_ACC_CUDA_ONLY|
+|\_\_device\_\_|ALPAKA_FN_ACC*|
+|\_\_global\_\_|ALPAKA_FN_ACC*|
+|\_\_host\_\_ \_\_device\_\_|ALPAKA_FN_HOST_ACC|
 
+\* You can not call CUDA only methods except when ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled.
 
 *Memory*
 

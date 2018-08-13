@@ -66,7 +66,7 @@ namespace alpaka
                     std::is_floating_point<TBase>::value
                     && std::is_floating_point<TExp>::value>::type>
             {
-                ALPAKA_FN_ACC_CUDA_ONLY static auto pow(
+                __device__ static auto pow(
                     PowCudaBuiltIn const & pow,
                     TBase const & base,
                     TExp const & exp)

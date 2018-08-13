@@ -55,13 +55,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 IdxBtCudaBuiltIn() = default;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY IdxBtCudaBuiltIn(IdxBtCudaBuiltIn const &) = delete;
+                __device__ IdxBtCudaBuiltIn(IdxBtCudaBuiltIn const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY IdxBtCudaBuiltIn(IdxBtCudaBuiltIn &&) = delete;
+                __device__ IdxBtCudaBuiltIn(IdxBtCudaBuiltIn &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY auto operator=(IdxBtCudaBuiltIn const & ) -> IdxBtCudaBuiltIn & = delete;
+                __device__ auto operator=(IdxBtCudaBuiltIn const & ) -> IdxBtCudaBuiltIn & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_CUDA_ONLY auto operator=(IdxBtCudaBuiltIn &&) -> IdxBtCudaBuiltIn & = delete;
+                __device__ auto operator=(IdxBtCudaBuiltIn &&) -> IdxBtCudaBuiltIn & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxBtCudaBuiltIn() = default;
             };
@@ -102,7 +102,7 @@ namespace alpaka
                 //! \return The index of the current thread in the block.
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC_CUDA_ONLY static auto getIdx(
+                __device__ static auto getIdx(
                     idx::bt::IdxBtCudaBuiltIn<TDim, TIdx> const & idx,
                     TWorkDiv const &)
                 -> vec::Vec<TDim, TIdx>

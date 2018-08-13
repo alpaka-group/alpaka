@@ -66,7 +66,7 @@ namespace alpaka
                     std::is_floating_point<Tx>::value
                     && std::is_floating_point<Ty>::value>::type>
             {
-                ALPAKA_FN_ACC_CUDA_ONLY static auto fmod(
+                __device__ static auto fmod(
                     FmodCudaBuiltIn const & fmod,
                     Tx const & x,
                     Ty const & y)

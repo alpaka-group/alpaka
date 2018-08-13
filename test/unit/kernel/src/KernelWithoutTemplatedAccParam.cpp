@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_SUITE(kernel)
 //! /alpaka/include/alpaka/workdiv/Traits.hpp(...): error: calling a __device__ function("getWorkDiv") from a __host__ __device__ function("getWorkDiv") is not allowed
 //! The kernel function objects function call operator is attributed with ALPAKA_FN_ACC which is identical to __host__ __device__.
 //! The 'alpaka::workdiv::getWorkDiv<...>(acc)' function that is called has the ALPAKA_FN_HOST_ACC attribute (also equal to __host__ __device__).
-//! The underlying trait calls the CUDA specialized method which has the ALPAKA_FN_ACC_CUDA_ONLY attribute (equal to __device__).
+//! The underlying trait calls the CUDA specialized method which has the __device__ attribute.
 //! Because this call chain does not contain any templates and therefore no calls depending on input types,
 //! everything can be resolved at the first time the template is parsed which results in the given error.
 //!

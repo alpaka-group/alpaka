@@ -63,7 +63,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_CUDA_ONLY static auto rsqrt(
+                __device__ static auto rsqrt(
                     RsqrtCudaBuiltIn const & rsqrt,
                     TArg const & arg)
                 -> decltype(::rsqrt(arg))
