@@ -34,7 +34,7 @@
 #include <boost/core/ignore_unused.hpp>
 
 #include <type_traits>
-#if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 1, 0)
+#if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(9, 0, 0)
     #include <crt/math_functions.hpp>
 #else
     #include <math_functions.hpp>
