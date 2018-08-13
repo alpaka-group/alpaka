@@ -76,6 +76,7 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Align.hpp>
 #include <alpaka/core/BarrierThread.hpp>
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/ConcurrentExecPool.hpp>
 #include <alpaka/core/Cuda.hpp>
