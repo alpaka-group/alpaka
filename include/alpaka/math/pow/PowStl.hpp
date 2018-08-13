@@ -55,7 +55,7 @@ namespace alpaka
                     std::is_arithmetic<TBase>::value
                     && std::is_arithmetic<TExp>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto pow(
+                ALPAKA_FN_HOST static auto pow(
                     PowStl const & pow,
                     TBase const & base,
                     TExp const & exp)

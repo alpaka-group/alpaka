@@ -106,7 +106,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(
+            ALPAKA_FN_HOST AccCpuFibers(
                 TWorkDiv const & workDiv,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
@@ -131,13 +131,13 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(AccCpuFibers const &) = delete;
+            ALPAKA_FN_HOST AccCpuFibers(AccCpuFibers const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(AccCpuFibers &&) = delete;
+            ALPAKA_FN_HOST AccCpuFibers(AccCpuFibers &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuFibers const &) -> AccCpuFibers & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuFibers const &) -> AccCpuFibers & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuFibers &&) -> AccCpuFibers & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuFibers &&) -> AccCpuFibers & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AccCpuFibers() = default;
 

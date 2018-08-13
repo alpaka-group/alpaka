@@ -101,7 +101,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(
+            ALPAKA_FN_HOST AccCpuSerial(
                 TWorkDiv const & workDiv,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
@@ -123,13 +123,13 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(AccCpuSerial const &) = delete;
+            ALPAKA_FN_HOST AccCpuSerial(AccCpuSerial const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(AccCpuSerial &&) = delete;
+            ALPAKA_FN_HOST AccCpuSerial(AccCpuSerial &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuSerial const &) -> AccCpuSerial & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuSerial const &) -> AccCpuSerial & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuSerial &&) -> AccCpuSerial & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuSerial &&) -> AccCpuSerial & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AccCpuSerial() = default;
 

@@ -42,17 +42,17 @@ namespace alpaka
                 using BlockSyncBase = BlockSyncBarrierOmp;
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp() :
+                ALPAKA_FN_HOST BlockSyncBarrierOmp() :
                     m_generation(0u)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp(BlockSyncBarrierOmp const &) = delete;
+                ALPAKA_FN_HOST BlockSyncBarrierOmp(BlockSyncBarrierOmp const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA BlockSyncBarrierOmp(BlockSyncBarrierOmp &&) = delete;
+                ALPAKA_FN_HOST BlockSyncBarrierOmp(BlockSyncBarrierOmp &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierOmp const &) -> BlockSyncBarrierOmp & = delete;
+                ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOmp const &) -> BlockSyncBarrierOmp & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSyncBarrierOmp &&) -> BlockSyncBarrierOmp & = delete;
+                ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOmp &&) -> BlockSyncBarrierOmp & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~BlockSyncBarrierOmp() = default;
 
@@ -68,7 +68,7 @@ namespace alpaka
                     BlockSyncBarrierOmp>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
+                    ALPAKA_FN_HOST static auto syncBlockThreads(
                         block::sync::BlockSyncBarrierOmp const & blockSync)
                     -> void
                     {

@@ -52,7 +52,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto acos(
+                ALPAKA_FN_HOST static auto acos(
                     AcosStl const & acos,
                     TArg const & arg)
                 -> decltype(std::acos(arg))

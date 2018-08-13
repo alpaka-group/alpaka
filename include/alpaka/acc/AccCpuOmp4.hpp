@@ -107,7 +107,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(
+            ALPAKA_FN_HOST AccCpuOmp4(
                 TWorkDiv const & workDiv,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
@@ -131,13 +131,13 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 const &) = delete;
+            ALPAKA_FN_HOST AccCpuOmp4(AccCpuOmp4 const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 &&) = delete;
+            ALPAKA_FN_HOST AccCpuOmp4(AccCpuOmp4 &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AccCpuOmp4() = default;
 

@@ -43,13 +43,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             TimeStl() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA TimeStl(TimeStl const &) = delete;
+            ALPAKA_FN_HOST TimeStl(TimeStl const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA TimeStl(TimeStl &&) = delete;
+            ALPAKA_FN_HOST TimeStl(TimeStl &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(TimeStl const &) -> TimeStl & = delete;
+            ALPAKA_FN_HOST auto operator=(TimeStl const &) -> TimeStl & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(TimeStl &&) -> TimeStl & = delete;
+            ALPAKA_FN_HOST auto operator=(TimeStl &&) -> TimeStl & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~TimeStl() = default;
         };
@@ -63,7 +63,7 @@ namespace alpaka
                 TimeStl>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto clock(
+                ALPAKA_FN_HOST static auto clock(
                     time::TimeStl const & time)
                 -> std::uint64_t
                 {

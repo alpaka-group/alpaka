@@ -45,18 +45,18 @@ namespace alpaka
                 using IdxGbBase = IdxGbRef;
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxGbRef(
+                ALPAKA_FN_HOST IdxGbRef(
                     vec::Vec<TDim, TIdx> const & gridBlockIdx) :
                         m_gridBlockIdx(gridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxGbRef(IdxGbRef const &) = delete;
+                ALPAKA_FN_HOST IdxGbRef(IdxGbRef const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxGbRef(IdxGbRef &&) = delete;
+                ALPAKA_FN_HOST IdxGbRef(IdxGbRef &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxGbRef() = default;
 
@@ -100,7 +100,7 @@ namespace alpaka
                 //! \return The index of the current block in the grid.
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_HOST static auto getIdx(
                     idx::gb::IdxGbRef<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>

@@ -52,18 +52,18 @@ namespace alpaka
                 using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, vec::Vec<TDim, TIdx>>;
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(
+                ALPAKA_FN_HOST IdxBtRefFiberIdMap(
                     FiberIdToIdxMap const & mFibersToIndices) :
                     m_fibersToIndices(mFibersToIndices)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(IdxBtRefFiberIdMap const &) = delete;
+                ALPAKA_FN_HOST IdxBtRefFiberIdMap(IdxBtRefFiberIdMap const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(IdxBtRefFiberIdMap &&) = delete;
+                ALPAKA_FN_HOST IdxBtRefFiberIdMap(IdxBtRefFiberIdMap &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefFiberIdMap const &) -> IdxBtRefFiberIdMap & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxBtRefFiberIdMap const &) -> IdxBtRefFiberIdMap & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefFiberIdMap &&) -> IdxBtRefFiberIdMap & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxBtRefFiberIdMap &&) -> IdxBtRefFiberIdMap & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxBtRefFiberIdMap() = default;
 
@@ -107,7 +107,7 @@ namespace alpaka
                 //! \return The index of the current thread in the block.
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_HOST static auto getIdx(
                     idx::bt::IdxBtRefFiberIdMap<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>

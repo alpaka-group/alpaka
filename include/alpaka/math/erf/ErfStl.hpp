@@ -52,7 +52,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto erf(
+                ALPAKA_FN_HOST static auto erf(
                     ErfStl const & erf,
                     TArg const & arg)
                 -> decltype(std::erf(arg))

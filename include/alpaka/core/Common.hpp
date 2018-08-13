@@ -116,7 +116,6 @@
 //! auto add(std::int32_t a, std::int32_t b)
 //! -> std::int32_t;
 #if BOOST_LANG_CUDA
-    #define ALPAKA_FN_ACC_NO_CUDA __host__
     #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
         #define ALPAKA_FN_ACC __device__
     #else
@@ -125,7 +124,6 @@
     #define ALPAKA_FN_HOST_ACC __device__ __host__
     #define ALPAKA_FN_HOST __host__
 #else
-    #define ALPAKA_FN_ACC_NO_CUDA
     #define ALPAKA_FN_ACC
     #define ALPAKA_FN_HOST_ACC
     #define ALPAKA_FN_HOST

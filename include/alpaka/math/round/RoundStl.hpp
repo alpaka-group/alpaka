@@ -52,7 +52,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto round(
+                ALPAKA_FN_HOST static auto round(
                     RoundStl const & round,
                     TArg const & arg)
                 -> decltype(std::round(arg))
@@ -71,7 +71,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto lround(
+                ALPAKA_FN_HOST static auto lround(
                     RoundStl const & lround,
                     TArg const & arg)
                 -> long int
@@ -90,7 +90,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto llround(
+                ALPAKA_FN_HOST static auto llround(
                     RoundStl const & llround,
                     TArg const & arg)
                 -> long int

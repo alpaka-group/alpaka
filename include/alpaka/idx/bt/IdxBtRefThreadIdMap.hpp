@@ -52,18 +52,18 @@ namespace alpaka
                 using ThreadIdToIdxMap = std::map<std::thread::id, vec::Vec<TDim, TIdx>>;
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(
+                ALPAKA_FN_HOST IdxBtRefThreadIdMap(
                     ThreadIdToIdxMap const & mThreadToIndices) :
                     m_threadToIndexMap(mThreadToIndices)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const &) = delete;
+                ALPAKA_FN_HOST IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap &&) = delete;
+                ALPAKA_FN_HOST IdxBtRefThreadIdMap(IdxBtRefThreadIdMap &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap const &) -> IdxBtRefThreadIdMap & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxBtRefThreadIdMap const &) -> IdxBtRefThreadIdMap & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap &&) -> IdxBtRefThreadIdMap & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxBtRefThreadIdMap &&) -> IdxBtRefThreadIdMap & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxBtRefThreadIdMap() = default;
 
@@ -107,7 +107,7 @@ namespace alpaka
                 //! \return The index of the current thread in the block.
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_HOST static auto getIdx(
                     idx::bt::IdxBtRefThreadIdMap<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>

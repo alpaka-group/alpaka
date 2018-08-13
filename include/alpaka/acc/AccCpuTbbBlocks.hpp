@@ -99,7 +99,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_ACC_NO_CUDA AccCpuTbbBlocks(
+            ALPAKA_FN_HOST AccCpuTbbBlocks(
                 TWorkDiv const & workDiv,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
@@ -121,13 +121,13 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuTbbBlocks(AccCpuTbbBlocks const &) = delete;
+            ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AccCpuTbbBlocks(AccCpuTbbBlocks &&) = delete;
+            ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuTbbBlocks const &) -> AccCpuTbbBlocks & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks const &) -> AccCpuTbbBlocks & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuTbbBlocks &&) -> AccCpuTbbBlocks & = delete;
+            ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks &&) -> AccCpuTbbBlocks & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AccCpuTbbBlocks() = default;
 

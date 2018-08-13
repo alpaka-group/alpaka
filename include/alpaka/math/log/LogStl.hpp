@@ -52,7 +52,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_ACC_NO_CUDA static auto log(
+                ALPAKA_FN_HOST static auto log(
                     LogStl const & log,
                     TArg const & arg)
                 -> decltype(std::log(arg))

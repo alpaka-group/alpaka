@@ -53,13 +53,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 IdxBtOmp() = default;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtOmp(IdxBtOmp const &) = delete;
+                ALPAKA_FN_HOST IdxBtOmp(IdxBtOmp const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA IdxBtOmp(IdxBtOmp &&) = delete;
+                ALPAKA_FN_HOST IdxBtOmp(IdxBtOmp &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
+                ALPAKA_FN_HOST auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxBtOmp() = default;
             };
@@ -100,7 +100,7 @@ namespace alpaka
                 //! \return The index of the current thread in the block.
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_HOST static auto getIdx(
                     idx::bt::IdxBtOmp<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>

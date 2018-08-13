@@ -44,13 +44,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             AtomicOmpCritSec() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec const &) = delete;
+            ALPAKA_FN_HOST AtomicOmpCritSec(AtomicOmpCritSec const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec &&) = delete;
+            ALPAKA_FN_HOST AtomicOmpCritSec(AtomicOmpCritSec &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicOmpCritSec const &) -> AtomicOmpCritSec & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicOmpCritSec const &) -> AtomicOmpCritSec & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicOmpCritSec &&) -> AtomicOmpCritSec & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicOmpCritSec &&) -> AtomicOmpCritSec & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AtomicOmpCritSec() = default;
         };
@@ -73,7 +73,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_HOST static auto atomicOp(
                     atomic::AtomicOmpCritSec const & atomic,
                     T * const addr,
                     T const & value)
@@ -89,7 +89,7 @@ namespace alpaka
                     return old;
                 }
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_HOST static auto atomicOp(
                     atomic::AtomicOmpCritSec const & atomic,
                     T * const addr,
                     T const & compare,

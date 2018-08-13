@@ -38,13 +38,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             AtomicNoOp() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicNoOp(AtomicNoOp const &) = delete;
+            ALPAKA_FN_HOST AtomicNoOp(AtomicNoOp const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA AtomicNoOp(AtomicNoOp &&) = delete;
+            ALPAKA_FN_HOST AtomicNoOp(AtomicNoOp &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AtomicNoOp() = default;
         };
@@ -64,7 +64,7 @@ namespace alpaka
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_HOST static auto atomicOp(
                     atomic::AtomicNoOp const & atomic,
                     T * const addr,
                     T const & value)
@@ -74,7 +74,7 @@ namespace alpaka
                     return TOp()(addr, value);
                 }
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_HOST static auto atomicOp(
                     atomic::AtomicNoOp const & atomic,
                     T * const addr,
                     T const & compare,

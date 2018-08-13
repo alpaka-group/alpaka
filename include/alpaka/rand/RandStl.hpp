@@ -76,7 +76,7 @@ namespace alpaka
                     MersenneTwister() = default;
 
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA MersenneTwister(
+                    ALPAKA_FN_HOST MersenneTwister(
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence = 0,
                         std::uint32_t const & offset = 0) :
@@ -107,7 +107,7 @@ namespace alpaka
                     TinyMersenneTwister() = default;
 
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA TinyMersenneTwister(
+                    ALPAKA_FN_HOST TinyMersenneTwister(
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence = 0,
                         std::uint32_t const & offset = 0) :
@@ -138,7 +138,7 @@ namespace alpaka
                     }
 
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA RandomDevice(
+                    ALPAKA_FN_HOST RandomDevice(
                         std::uint32_t const &,
                         std::uint32_t const & = 0,
                         std::uint32_t const & = 0) :
@@ -169,7 +169,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FN_ACC_NO_CUDA auto operator()(
+                    ALPAKA_FN_HOST auto operator()(
                         TGenerator & generator)
                     -> T
                     {
@@ -191,7 +191,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FN_ACC_NO_CUDA auto operator()(
+                    ALPAKA_FN_HOST auto operator()(
                         TGenerator & generator)
                     -> T
                     {
@@ -217,7 +217,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FN_ACC_NO_CUDA auto operator()(
+                    ALPAKA_FN_HOST auto operator()(
                         TGenerator & generator)
                     -> T
                     {
@@ -243,7 +243,7 @@ namespace alpaka
                         std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto createNormalReal(
+                    ALPAKA_FN_HOST static auto createNormalReal(
                         RandStl const & rand)
                     -> rand::distribution::cpu::NormalReal<T>
                     {
@@ -262,7 +262,7 @@ namespace alpaka
                         std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto createUniformReal(
+                    ALPAKA_FN_HOST static auto createUniformReal(
                         RandStl const & rand)
                     -> rand::distribution::cpu::UniformReal<T>
                     {
@@ -281,7 +281,7 @@ namespace alpaka
                         std::is_integral<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto createUniformUint(
+                    ALPAKA_FN_HOST static auto createUniformUint(
                         RandStl const & rand)
                     -> rand::distribution::cpu::UniformUint<T>
                     {
@@ -302,7 +302,7 @@ namespace alpaka
                     TinyMersenneTwister>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto createDefault(
+                    ALPAKA_FN_HOST static auto createDefault(
                         TinyMersenneTwister const & rand,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
@@ -320,7 +320,7 @@ namespace alpaka
                     MersenneTwister>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto createDefault(
+                    ALPAKA_FN_HOST static auto createDefault(
                         MersenneTwister const & rand,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
@@ -338,7 +338,7 @@ namespace alpaka
                     RandomDevice>
                 {
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_NO_CUDA static auto createDefault(
+                    ALPAKA_FN_HOST static auto createDefault(
                         RandomDevice const & rand,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
