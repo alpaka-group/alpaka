@@ -83,7 +83,9 @@
 #endif
 
 //-----------------------------------------------------------------------------
-#if BOOST_COMP_INTEL == 0 // Work around for broken intel detection
+// In boost since 1.64.0
+// Work around for broken intel detection
+#if BOOST_COMP_INTEL == 0
     #if defined(__INTEL_COMPILER)
         #ifdef BOOST_COMP_INTEL_DETECTION
             #undef BOOST_COMP_INTEL_DETECTION
