@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2017 Benjamin Worpitz
+ * Copyright 2018 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -19,7 +19,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define BOOST_TEST_MODULE stream
+#include <alpaka/alpaka.hpp>
 
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
@@ -30,3 +30,36 @@
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
+
+#include <iostream>
+
+BOOST_AUTO_TEST_SUITE(core)
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE(
+    printDefines)
+{
+#if BOOST_LANG_CUDA
+    std::cout << "BOOST_LANG_CUDA" << std::endl;
+#endif
+#if BOOST_ARCH_PTX
+    std::cout << "BOOST_ARCH_PTX" << std::endl;
+#endif
+#if BOOST_COMP_NVCC
+    std::cout << "BOOST_COMP_NVCC" << std::endl;
+#endif
+#if BOOST_COMP_CLANG
+    std::cout << "BOOST_COMP_CLANG" << std::endl;
+#endif
+#if BOOST_COMP_GNUC
+    std::cout << "BOOST_COMP_GNUC" << std::endl;
+#endif
+#if BOOST_COMP_MSVC
+    std::cout << "BOOST_COMP_MSVC" << std::endl;
+#endif
+#if BOOST_COMP_CLANG_CUDA
+    std::cout << "BOOST_COMP_CLANG_CUDA" << std::endl;
+#endif
+}
+
+BOOST_AUTO_TEST_SUITE_END()

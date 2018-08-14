@@ -32,9 +32,9 @@
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/core/Align.hpp>
 #include <alpaka/core/Assert.hpp>
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
 
-#include <boost/predef.h>
 #include <boost/config.hpp>
 #if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp>

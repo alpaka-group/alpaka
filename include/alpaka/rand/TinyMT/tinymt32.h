@@ -16,7 +16,7 @@
  * LICENSE.txt
  */
 
-#include <boost/predef.h>
+#include <alpaka/core/BoostPredef.hpp>
 
 #include <cstdint>
 #include <cinttypes>

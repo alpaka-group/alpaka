@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2017 Benjamin Worpitz
+ * Copyright 2018 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -19,7 +19,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define BOOST_TEST_MODULE stream
+#define BOOST_TEST_MODULE core
 
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
