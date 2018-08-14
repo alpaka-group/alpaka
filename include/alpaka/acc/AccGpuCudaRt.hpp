@@ -50,10 +50,9 @@
 #include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/dev/DevCudaRt.hpp>
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Cuda.hpp>
-
-#include <boost/predef.h>
+#include <alpaka/dev/DevCudaRt.hpp>
 
 #include <typeinfo>
 
