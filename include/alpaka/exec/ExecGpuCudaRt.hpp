@@ -56,8 +56,6 @@
 #include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 
-#include <boost/assert.hpp>
-
 #include <stdexcept>
 #include <tuple>
 #include <type_traits>
@@ -94,6 +92,42 @@ namespace alpaka
                     kernelFnObj(
                         const_cast<acc::AccGpuCudaRt<TDim, TIdx> const &>(acc),
                         args...);
+                }
+
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TDim,
+                    typename TIdx
+                >
+                ALPAKA_FN_HOST auto checkVecOnly3Dim(
+                    vec::Vec<TDim, TIdx> const & vec)
+                -> void
+                {
+                    for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
+                    {
+                        if(vec[TDim::value-1u-i] != 1)
+                        {
+                            throw std::runtime_error("The CUDA accelerator supports a maximum of 3 dimensions. All work division extents of the dimensions higher 3 have to be 1!");
+                        }
+                    }
+                }
+
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TDim,
+                    typename TIdx
+                >
+                ALPAKA_FN_HOST auto convertVecToCudaDim(
+                    vec::Vec<TDim, TIdx> const & vec)
+                -> dim3
+                {
+                    dim3 dim(1, 1, 1);
+                    for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
+                    {
+                        reinterpret_cast<unsigned int *>(&dim)[i] = static_cast<unsigned int>(vec[TDim::value-1u-i]);
+                    }
+                    checkVecOnly3Dim(vec);
+                    return dim;
                 }
             }
         }
@@ -282,22 +316,9 @@ namespace alpaka
                     auto const threadElemExtent(
                         workdiv::getWorkDiv<Thread, Elems>(task));
 
-                    dim3 gridDim(1u, 1u, 1u);
-                    dim3 blockDim(1u, 1u, 1u);
-                    // \FIXME: CUDA currently supports a maximum of 3 dimensions!
-                    for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
-                    {
-                        reinterpret_cast<unsigned int *>(&gridDim)[i] = static_cast<unsigned int>(gridBlockExtent[TDim::value-1u-i]);
-                        reinterpret_cast<unsigned int *>(&blockDim)[i] = static_cast<unsigned int>(blockThreadExtent[TDim::value-1u-i]);
-
-                    }
-                    // Assert that all extent of the higher dimensions are 1!
-                    for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
-                    {
-                        BOOST_VERIFY(gridBlockExtent[TDim::value-1u-i] == 1);
-                        BOOST_VERIFY(blockThreadExtent[TDim::value-1u-i] == 1);
-                        BOOST_VERIFY(threadElemExtent[TDim::value-1u-i] == 1);
-                    }
+                    dim3 const gridDim(exec::cuda::detail::convertVecToCudaDim(gridBlockExtent));
+                    dim3 const blockDim(exec::cuda::detail::convertVecToCudaDim(blockThreadExtent));
+                    exec::cuda::detail::checkVecOnly3Dim(threadElemExtent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
@@ -417,21 +438,9 @@ namespace alpaka
                     auto const threadElemExtent(
                         workdiv::getWorkDiv<Thread, Elems>(task));
 
-                    dim3 gridDim(1u, 1u, 1u);
-                    dim3 blockDim(1u, 1u, 1u);
-                    // \FIXME: CUDA currently supports a maximum of 3 dimensions!
-                    for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
-                    {
-                        reinterpret_cast<unsigned int *>(&gridDim)[i] = static_cast<unsigned int>(gridBlockExtent[TDim::value-1u-i]);
-                        reinterpret_cast<unsigned int *>(&blockDim)[i] = static_cast<unsigned int>(blockThreadExtent[TDim::value-1u-i]);
-                    }
-                    // Assert that all extent of the higher dimensions are 1!
-                    for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
-                    {
-                        BOOST_VERIFY(gridBlockExtent[TDim::value-1u-i] == 1);
-                        BOOST_VERIFY(blockThreadExtent[TDim::value-1u-i] == 1);
-                        BOOST_VERIFY(threadElemExtent[TDim::value-1u-i] == 1);
-                    }
+                    dim3 const gridDim(exec::cuda::detail::convertVecToCudaDim(gridBlockExtent));
+                    dim3 const blockDim(exec::cuda::detail::convertVecToCudaDim(blockThreadExtent));
+                    exec::cuda::detail::checkVecOnly3Dim(threadElemExtent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
