@@ -396,7 +396,9 @@ namespace alpaka
                     };
 
                     //-----------------------------------------------------------------------------
-                    inline auto enablePeerAccessIfNotAlreadyEnabled(
+                    //! Not being able to enable peer access does not prevent such device to device memory copies.
+                    //! However, those copies may be slower because the memory is copied via the CPU.
+                    inline auto enablePeerAccessIfPossible(
                         const int & devSrc,
                         const int & devDst)
                     -> void
@@ -407,19 +409,27 @@ namespace alpaka
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wexit-time-destructors"
 #endif
-                        static std::set<std::pair<int, int>> enabledPeerAccessDevices;
+                        static std::set<std::pair<int, int>> alreadyCheckedPeerAccessDevices;
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
                         auto const devicePair = std::make_pair(devSrc, devDst);
 
-                        if(enabledPeerAccessDevices.find(devicePair) == enabledPeerAccessDevices.end())
+                        if(alreadyCheckedPeerAccessDevices.find(devicePair) == alreadyCheckedPeerAccessDevices.end())
                         {
-                            int canAccessPeer=0;
+                            alreadyCheckedPeerAccessDevices.insert(devicePair);
+
+                            int canAccessPeer = 0;
                             ALPAKA_CUDA_RT_CHECK(cudaDeviceCanAccessPeer(&canAccessPeer, devSrc, devDst));
                             if(!canAccessPeer) {
-                                std::string const sError("Peer access is not possible! src=" + std::to_string(devSrc) + " dst=" + std::to_string(devDst));
-                                throw std::runtime_error(sError);
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                            std::cout << BOOST_CURRENT_FUNCTION
+                                << " Direct peer access between given GPUs is not possible!"
+                                << " src=" << devSrc
+                                << " dst=" << devDst
+                                << std::endl;
+#endif
+                                return;
                             }
 
                             ALPAKA_CUDA_RT_CHECK(cudaSetDevice(devSrc));
@@ -427,7 +437,6 @@ namespace alpaka
                             // We do not remove a device from the enabled device pairs on cudaDeviceReset.
                             // Note that access granted by this call is unidirectional and that in order to access memory on the current device from peerDevice, a separate symmetric call to cudaDeviceEnablePeerAccess() is required.
                             ALPAKA_CUDA_RT_CHECK(cudaDeviceEnablePeerAccess(devDst, 0));
-                            enabledPeerAccessDevices.insert(devicePair);
                         }
                     }
                 }
@@ -805,7 +814,7 @@ namespace alpaka
                     }
                     else
                     {
-                        alpaka::mem::view::cuda::detail::enablePeerAccessIfNotAlreadyEnabled(iSrcDev, iDstDev);
+                        alpaka::mem::view::cuda::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
@@ -871,7 +880,7 @@ namespace alpaka
                     }
                     else
                     {
-                        alpaka::mem::view::cuda::detail::enablePeerAccessIfNotAlreadyEnabled(iSrcDev, iDstDev);
+                        alpaka::mem::view::cuda::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
@@ -945,7 +954,7 @@ namespace alpaka
                     }
                     else
                     {
-                        alpaka::mem::view::cuda::detail::enablePeerAccessIfNotAlreadyEnabled(iSrcDev, iDstDev);
+                        alpaka::mem::view::cuda::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // There is no cudaMemcpy2DPeerAsync, therefore we use cudaMemcpy3DPeerAsync.
                         // Create the struct describing the copy.
@@ -1020,7 +1029,7 @@ namespace alpaka
                     }
                     else
                     {
-                        alpaka::mem::view::cuda::detail::enablePeerAccessIfNotAlreadyEnabled(iSrcDev, iDstDev);
+                        alpaka::mem::view::cuda::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // There is no cudaMemcpy2DPeerAsync, therefore we use cudaMemcpy3DPeerAsync.
                         // Create the struct describing the copy.
@@ -1082,7 +1091,7 @@ namespace alpaka
                     }
                     else
                     {
-                        alpaka::mem::view::cuda::detail::enablePeerAccessIfNotAlreadyEnabled(iSrcDev, iDstDev);
+                        alpaka::mem::view::cuda::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // Create the struct describing the copy.
                         cudaMemcpy3DPeerParms const cudaMemCpy3DPeerParms(
@@ -1143,7 +1152,7 @@ namespace alpaka
                     }
                     else
                     {
-                        alpaka::mem::view::cuda::detail::enablePeerAccessIfNotAlreadyEnabled(iSrcDev, iDstDev);
+                        alpaka::mem::view::cuda::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // Create the struct describing the copy.
                         cudaMemcpy3DPeerParms const cudaMemCpy3DPeerParms(
