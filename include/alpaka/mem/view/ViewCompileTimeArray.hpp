@@ -27,8 +27,6 @@
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/PltfCpu.hpp>
 
-#include <boost/predef.h>
-
 #include <type_traits>
 
 namespace alpaka

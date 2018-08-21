@@ -29,7 +29,6 @@
 //-----------------------------------------------------------------------------
 #include <alpaka/core/Common.hpp>
 
-#include <boost/predef.h>
 #include <boost/config.hpp>
 
 #include <queue>

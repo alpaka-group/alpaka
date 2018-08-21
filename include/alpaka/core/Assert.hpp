@@ -24,8 +24,6 @@
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
 
-#include <boost/predef.h>
-
 #include <cassert>
 #include <type_traits>
 

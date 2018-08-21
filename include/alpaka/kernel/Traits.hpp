@@ -29,12 +29,11 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Debug.hpp>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     #include <alpaka/workdiv/Traits.hpp>
 #endif
-
-#include <boost/predef.h>
 
 #include <type_traits>
 
