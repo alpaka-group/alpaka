@@ -228,7 +228,7 @@ The following tables list the functions available in the [CUDA Runtime API](http
 |---|---|
 |cudaDeviceCanAccessPeer|-|
 |cudaDeviceDisablePeerAccess|-|
-|cudaDeviceEnablePeerAccess|-|
+|cudaDeviceEnablePeerAccess|automatically done when required|
 
 **OpenGL, Direct3D, VDPAU, EGL, Graphics Interoperability**
 

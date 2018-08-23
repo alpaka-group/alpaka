@@ -106,6 +106,9 @@ static auto testP2P(
     alpaka::mem::view::copy(queue0, buf1, buf0, extent);
     alpaka::wait::wait(queue0);
     alpaka::test::mem::view::verifyBytesSet<TAcc>(queue1, buf1, byte);
+
+    // This should be removed when verifyBytesSet uses boost test macros internally.
+    BOOST_CHECK(true);
 }
 
 //-----------------------------------------------------------------------------
