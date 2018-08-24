@@ -40,8 +40,6 @@
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
 
-#include <boost/assert.hpp>
-
 #include <stdexcept>
 #include <tuple>
 #include <type_traits>
@@ -144,8 +142,10 @@ namespace alpaka
                 // The number of blocks in the grid.
                 TIdx const numBlocksInGrid(gridBlockExtent.prod());
 
-                // There is only ever one thread in a block in the TBB accelerator.
-                BOOST_VERIFY(blockThreadExtent.prod() == static_cast<TIdx>(1u));
+                if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
+                {
+                    throw std::runtime_error("A block for the TBB accelerator can only ever have one single thread!");
+                }
 
                 tbb::parallel_for(
                     static_cast<TIdx>(0),

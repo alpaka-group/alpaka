@@ -39,8 +39,6 @@
 #include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 
-#include <boost/assert.hpp>
-
 #include <tuple>
 #include <type_traits>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -139,8 +137,10 @@ namespace alpaka
                     *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
-                // There is only ever one thread in a block in the serial accelerator.
-                BOOST_VERIFY(blockThreadExtent.prod() == static_cast<TIdx>(1u));
+                if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
+                {
+                    throw std::runtime_error("A block for the serial accelerator can only ever have one single thread!");
+                }
 
                 // Execute the blocks serially.
                 meta::ndLoopIncIdx(

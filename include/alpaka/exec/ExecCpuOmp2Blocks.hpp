@@ -43,8 +43,6 @@
 
 #include <alpaka/meta/ApplyTuple.hpp>
 
-#include <boost/assert.hpp>
-
 #include <omp.h>
 
 #include <stdexcept>
