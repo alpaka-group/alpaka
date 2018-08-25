@@ -31,7 +31,6 @@
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
@@ -51,20 +50,21 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool * success) const
     -> void
     {
         std::uint64_t const start(
             alpaka::time::clock(acc));
-        BOOST_VERIFY(0u != start);
+        ALPAKA_CHECK(*success, 0u != start);
 
         std::uint64_t const end(
             alpaka::time::clock(acc));
-        BOOST_VERIFY(0u != end);
+        ALPAKA_CHECK(*success, 0u != end);
 
         // 'end' has to be greater equal 'start'.
         // CUDA clock will never be equal for two calls, but the clock implementations for CPUs can be.
-        BOOST_VERIFY(end >= start);
+        ALPAKA_CHECK(*success, end >= start);
     }
 };
 

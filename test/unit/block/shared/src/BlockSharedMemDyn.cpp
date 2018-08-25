@@ -32,7 +32,6 @@
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
@@ -52,20 +51,21 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool * success) const
     -> void
     {
         // Assure that the pointer is non null.
         auto && a = alpaka::block::shared::dyn::getMem<std::uint32_t>(acc);
-        BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != a);
+        ALPAKA_CHECK(*success, static_cast<std::uint32_t *>(nullptr) != a);
 
         // Each call should return the same pointer ...
         auto && b = alpaka::block::shared::dyn::getMem<std::uint32_t>(acc);
-        BOOST_VERIFY(a == b);
+        ALPAKA_CHECK(*success, a == b);
 
         // ... even for different types.
         auto && c = alpaka::block::shared::dyn::getMem<float>(acc);
-        BOOST_VERIFY(a == reinterpret_cast<std::uint32_t *>(c));
+        ALPAKA_CHECK(*success, a == reinterpret_cast<std::uint32_t *>(c));
     }
 };
 
@@ -90,10 +90,12 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
                     BlockSharedMemDynTestKernel const & blockSharedMemDyn,
                     TVec const & blockThreadExtent,
-                    TVec const & threadElemExtent)
+                    TVec const & threadElemExtent,
+                    bool * success)
                 -> idx::Idx<TAcc>
                 {
                     alpaka::ignore_unused(blockSharedMemDyn);
+                    alpaka::ignore_unused(success);
                     return
                         static_cast<idx::Idx<TAcc>>(sizeof(std::uint32_t)) * blockThreadExtent.prod() * threadElemExtent.prod();
                 }

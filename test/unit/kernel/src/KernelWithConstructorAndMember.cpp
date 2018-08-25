@@ -59,13 +59,13 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool * success) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        alpaka::ignore_unused(acc);
 
-        BOOST_VERIFY(42 == m_val);
+        ALPAKA_CHECK(*success, 42 == m_val);
     }
 
 private:

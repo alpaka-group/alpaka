@@ -33,7 +33,6 @@
 #include <alpaka/test/Array.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
@@ -55,7 +54,8 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool * success) const
     -> void
     {
 #if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0)
@@ -66,29 +66,29 @@ public:
         for(std::size_t i=0u; i<10; ++i)
         {
             auto && a = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &a);
+            ALPAKA_CHECK(*success, static_cast<std::uint32_t *>(nullptr) != &a);
 
             auto && b = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &b);
+            ALPAKA_CHECK(*success, static_cast<std::uint32_t *>(nullptr) != &b);
 
             auto && c = alpaka::block::shared::st::allocVar<float, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<float *>(nullptr) != &c);
+            ALPAKA_CHECK(*success, static_cast<float *>(nullptr) != &c);
 
             auto && d = alpaka::block::shared::st::allocVar<double, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<double *>(nullptr) != &d);
+            ALPAKA_CHECK(*success, static_cast<double *>(nullptr) != &d);
 
             auto && e = alpaka::block::shared::st::allocVar<std::uint64_t, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<std::uint64_t *>(nullptr) != &e);
+            ALPAKA_CHECK(*success, static_cast<std::uint64_t *>(nullptr) != &e);
 
 
             auto && f = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &f[0]);
+            ALPAKA_CHECK(*success, static_cast<std::uint32_t *>(nullptr) != &f[0]);
 
             auto && g = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<std::uint32_t *>(nullptr) != &g[0]);
+            ALPAKA_CHECK(*success, static_cast<std::uint32_t *>(nullptr) != &g[0]);
 
             auto && h = alpaka::block::shared::st::allocVar<alpaka::test::Array<double, 16>, __COUNTER__>(acc);
-            BOOST_VERIFY(static_cast<double *>(nullptr) != &h[0]);
+            ALPAKA_CHECK(*success, static_cast<double *>(nullptr) != &h[0]);
         }
 #if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0)
     #pragma GCC diagnostic pop
@@ -126,7 +126,8 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool * success) const
     -> void
     {
         // Multiple runs to make sure it really works.
@@ -134,21 +135,21 @@ public:
         {
             auto && a = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
             auto && b = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-            BOOST_VERIFY(&a != &b);
+            ALPAKA_CHECK(*success, &a != &b);
             auto && c = alpaka::block::shared::st::allocVar<std::uint32_t, __COUNTER__>(acc);
-            BOOST_VERIFY(&b != &c);
-            BOOST_VERIFY(&a != &c);
-            BOOST_VERIFY(&b != &c);
+            ALPAKA_CHECK(*success, &b != &c);
+            ALPAKA_CHECK(*success, &a != &c);
+            ALPAKA_CHECK(*success, &b != &c);
 
             auto && d = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
-            BOOST_VERIFY(&a != &d[0]);
-            BOOST_VERIFY(&b != &d[0]);
-            BOOST_VERIFY(&c != &d[0]);
+            ALPAKA_CHECK(*success, &a != &d[0]);
+            ALPAKA_CHECK(*success, &b != &d[0]);
+            ALPAKA_CHECK(*success, &c != &d[0]);
             auto && e = alpaka::block::shared::st::allocVar<alpaka::test::Array<std::uint32_t, 32>, __COUNTER__>(acc);
-            BOOST_VERIFY(&a != &e[0]);
-            BOOST_VERIFY(&b != &e[0]);
-            BOOST_VERIFY(&c != &e[0]);
-            BOOST_VERIFY(&d[0] != &e[0]);
+            ALPAKA_CHECK(*success, &a != &e[0]);
+            ALPAKA_CHECK(*success, &b != &e[0]);
+            ALPAKA_CHECK(*success, &c != &e[0]);
+            ALPAKA_CHECK(*success, &d[0] != &e[0]);
         }
     }
 };

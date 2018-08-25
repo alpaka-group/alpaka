@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2015 Benjamin Worpitz
+ * Copyright 2015-2018 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -43,9 +43,14 @@
 
 BOOST_AUTO_TEST_SUITE(kernel)
 
+// Generic lambdas are a C++14 feature.
+#if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
+// CUDA C Programming guide says: "__host__ __device__ extended lambdas cannot be generic lambdas"
+// However, it seems to work on all compilers except MSVC even though it is documented differently.
+#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_COMP_MSVC)
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    lambdaKernelIsWorking,
+    genericLambdaKernelIsWorking,
     TAcc,
     alpaka::test::acc::TestAccs)
 {
@@ -57,7 +62,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     auto kernel =
         [] ALPAKA_FN_ACC (
-            TAcc const & acc,
+            auto const & acc,
             bool * success)
         -> void
         {
@@ -74,7 +79,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    lambdaKernelWithArgumentIsWorking,
+    variadicGenericLambdaKernelIsWorking,
     TAcc,
     alpaka::test::acc::TestAccs)
 {
@@ -84,62 +89,30 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
         alpaka::vec::Vec<Dim, Idx>::ones());
 
-    std::uint32_t const arg = 42u;
+    std::uint32_t const arg1 = 42u;
+    std::uint32_t const arg2 = 43u;
     auto kernel =
         [] ALPAKA_FN_ACC (
             TAcc const & acc,
             bool * success,
-            std::uint32_t const & arg1)
+            auto ... args)
         -> void
         {
             alpaka::ignore_unused(acc);
 
-            ALPAKA_CHECK(*success, 42u == arg1);
+            ALPAKA_CHECK(
+                *success,
+                alpaka::meta::foldr([](auto a, auto b){return a + b;}, args...) == (42u + 43u));
         };
 
     BOOST_REQUIRE_EQUAL(
         true,
         fixture(
             kernel,
-            arg));
+            arg1,
+            arg2));
 }
-
-//-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    lambdaKernelWithCapturingIsWorking,
-    TAcc,
-    alpaka::test::acc::TestAccs)
-{
-    using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
-
-    alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
-
-    std::uint32_t const arg = 42u;
-
-#if BOOST_COMP_CLANG >= BOOST_VERSION_NUMBER(5,0,0)
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-lambda-capture"
 #endif
-    auto kernel =
-        [arg] ALPAKA_FN_ACC (
-            TAcc const & acc,
-            bool * success)
-        -> void
-        {
-            alpaka::ignore_unused(acc);
-
-            ALPAKA_CHECK(*success, 42u == arg);
-        };
-#if BOOST_COMP_CLANG >= BOOST_VERSION_NUMBER(5,0,0)
-    #pragma clang diagnostic pop
 #endif
-
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
-}
 
 BOOST_AUTO_TEST_SUITE_END()

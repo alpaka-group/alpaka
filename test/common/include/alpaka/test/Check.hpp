@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2017 Benjamin Worpitz
+ * Copyright 2018 Benjamin Worpitz
  *
  * This file is part of alpaka.
  *
@@ -21,32 +21,11 @@
 
 #pragma once
 
-namespace alpaka
-{
-    namespace test
-    {
-        //#############################################################################
-        template<
-            typename TType,
-            size_t TSize>
-        struct Array {
-            TType m_data[TSize];
+#include <cstdio>
 
-            template<
-                typename T_Idx>
-            ALPAKA_FN_HOST_ACC const TType &operator[](
-                const T_Idx idx) const
-            {
-                return m_data[idx];
-            }
-
-            template<
-                typename TIdx>
-            ALPAKA_FN_HOST_ACC TType & operator[](
-                const TIdx idx)
-            {
-                return m_data[idx];
-            }
-        };
+#define ALPAKA_CHECK(success, expression) \
+    if(!(expression)) \
+    { \
+        printf("ALPAKA_CHECK failed because '!(%s)'\n", #expression); \
+        success = false; \
     }
-}

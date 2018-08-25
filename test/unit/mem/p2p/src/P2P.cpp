@@ -92,7 +92,6 @@ static auto testP2P(
     Dev const dev0(alpaka::pltf::getDevByIdx<Pltf>(0u));
     Dev const dev1(alpaka::pltf::getDevByIdx<Pltf>(1u));
     Queue queue0(dev0);
-    Queue queue1(dev1);
 
     //-----------------------------------------------------------------------------
     auto buf0(alpaka::mem::buf::alloc<Elem, Idx>(dev0, extent));
@@ -105,10 +104,7 @@ static auto testP2P(
     //-----------------------------------------------------------------------------
     alpaka::mem::view::copy(queue0, buf1, buf0, extent);
     alpaka::wait::wait(queue0);
-    alpaka::test::mem::view::verifyBytesSet<TAcc>(queue1, buf1, byte);
-
-    // This should be removed when verifyBytesSet uses boost test macros internally.
-    BOOST_CHECK(true);
+    alpaka::test::mem::view::verifyBytesSet<TAcc>(buf1, byte);
 }
 
 //-----------------------------------------------------------------------------
