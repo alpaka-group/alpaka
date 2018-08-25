@@ -35,10 +35,10 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library max.
-        class MaxStl
+        class MaxStdLib
         {
         public:
-            using MaxBase = MaxStl;
+            using MaxBase = MaxStdLib;
         };
 
         namespace traits
@@ -49,7 +49,7 @@ namespace alpaka
                 typename Tx,
                 typename Ty>
             struct Max<
-                MaxStl,
+                MaxStdLib,
                 Tx,
                 Ty,
                 typename std::enable_if<
@@ -57,7 +57,7 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 ALPAKA_FN_HOST static auto max(
-                    MaxStl const & max,
+                    MaxStdLib const & max,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::max(x, y))
@@ -72,7 +72,7 @@ namespace alpaka
                 typename Tx,
                 typename Ty>
             struct Max<
-                MaxStl,
+                MaxStdLib,
                 Tx,
                 Ty,
                 typename std::enable_if<
@@ -82,7 +82,7 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 ALPAKA_FN_HOST static auto max(
-                    MaxStl const & max,
+                    MaxStdLib const & max,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::fmax(x, y))

@@ -42,7 +42,7 @@ namespace alpaka
         public:
             using RandBase = TinyMersenneTwister;
         };
-        using RandStl = TinyMersenneTwister;
+        using RandStdLib = TinyMersenneTwister;
 
         //#############################################################################
         //! The standard library mersenne twister implementation.
@@ -237,14 +237,14 @@ namespace alpaka
                 template<
                     typename T>
                 struct CreateNormalReal<
-                    RandStl,
+                    RandStdLib,
                     T,
                     typename std::enable_if<
                         std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto createNormalReal(
-                        RandStl const & rand)
+                        RandStdLib const & rand)
                     -> rand::distribution::cpu::NormalReal<T>
                     {
                         alpaka::ignore_unused(rand);
@@ -256,14 +256,14 @@ namespace alpaka
                 template<
                     typename T>
                 struct CreateUniformReal<
-                    RandStl,
+                    RandStdLib,
                     T,
                     typename std::enable_if<
                         std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto createUniformReal(
-                        RandStl const & rand)
+                        RandStdLib const & rand)
                     -> rand::distribution::cpu::UniformReal<T>
                     {
                         alpaka::ignore_unused(rand);
@@ -275,14 +275,14 @@ namespace alpaka
                 template<
                     typename T>
                 struct CreateUniformUint<
-                    RandStl,
+                    RandStdLib,
                     T,
                     typename std::enable_if<
                         std::is_integral<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto createUniformUint(
-                        RandStl const & rand)
+                        RandStdLib const & rand)
                     -> rand::distribution::cpu::UniformUint<T>
                     {
                         alpaka::ignore_unused(rand);

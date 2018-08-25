@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/acos/Traits.hpp>
+#include <alpaka/math/pow/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,36 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library acos.
-        class AcosStl
+        //! The standard library pow.
+        class PowStdLib
         {
         public:
-            using AcosBase = AcosStl;
+            using PowBase = PowStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library acos trait specialization.
+            //! The standard library pow trait specialization.
             template<
-                typename TArg>
-            struct Acos<
-                AcosStl,
-                TArg,
+                typename TBase,
+                typename TExp>
+            struct Pow<
+                PowStdLib,
+                TBase,
+                TExp,
                 typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                    std::is_arithmetic<TBase>::value
+                    && std::is_arithmetic<TExp>::value>::type>
             {
-                ALPAKA_FN_HOST static auto acos(
-                    AcosStl const & acos,
-                    TArg const & arg)
-                -> decltype(std::acos(arg))
+                ALPAKA_FN_HOST static auto pow(
+                    PowStdLib const & pow,
+                    TBase const & base,
+                    TExp const & exp)
+                -> decltype(std::pow(base, exp))
                 {
-                    alpaka::ignore_unused(acos);
-                    return std::acos(arg);
+                    alpaka::ignore_unused(pow);
+                    return std::pow(base, exp);
                 }
             };
         }

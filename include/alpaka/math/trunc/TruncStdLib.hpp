@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/pow/Traits.hpp>
+#include <alpaka/math/trunc/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,36 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library pow.
-        class PowStl
+        //! The standard library trunc.
+        class TruncStdLib
         {
         public:
-            using PowBase = PowStl;
+            using TruncBase = TruncStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library pow trait specialization.
+            //! The standard library trunc trait specialization.
             template<
-                typename TBase,
-                typename TExp>
-            struct Pow<
-                PowStl,
-                TBase,
-                TExp,
+                typename TArg>
+            struct Trunc<
+                TruncStdLib,
+                TArg,
                 typename std::enable_if<
-                    std::is_arithmetic<TBase>::value
-                    && std::is_arithmetic<TExp>::value>::type>
+                    std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto pow(
-                    PowStl const & pow,
-                    TBase const & base,
-                    TExp const & exp)
-                -> decltype(std::pow(base, exp))
+                ALPAKA_FN_HOST static auto trunc(
+                    TruncStdLib const & trunc,
+                    TArg const & arg)
+                -> decltype(std::trunc(arg))
                 {
-                    alpaka::ignore_unused(pow);
-                    return std::pow(base, exp);
+                    alpaka::ignore_unused(trunc);
+                    return std::trunc(arg);
                 }
             };
         }

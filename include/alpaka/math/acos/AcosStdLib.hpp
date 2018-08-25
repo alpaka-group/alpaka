@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/trunc/Traits.hpp>
+#include <alpaka/math/acos/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library trunc.
-        class TruncStl
+        //! The standard library acos.
+        class AcosStdLib
         {
         public:
-            using TruncBase = TruncStl;
+            using AcosBase = AcosStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library trunc trait specialization.
+            //! The standard library acos trait specialization.
             template<
                 typename TArg>
-            struct Trunc<
-                TruncStl,
+            struct Acos<
+                AcosStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto trunc(
-                    TruncStl const & trunc,
+                ALPAKA_FN_HOST static auto acos(
+                    AcosStdLib const & acos,
                     TArg const & arg)
-                -> decltype(std::trunc(arg))
+                -> decltype(std::acos(arg))
                 {
-                    alpaka::ignore_unused(trunc);
-                    return std::trunc(arg);
+                    alpaka::ignore_unused(acos);
+                    return std::acos(arg);
                 }
             };
         }

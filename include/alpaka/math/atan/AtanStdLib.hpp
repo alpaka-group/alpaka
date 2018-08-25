@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/tan/Traits.hpp>
+#include <alpaka/math/atan/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library tan.
-        class TanStl
+        //! The standard library atan.
+        class AtanStdLib
         {
         public:
-            using TanBase = TanStl;
+            using AtanBase = AtanStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library tan trait specialization.
+            //! The standard library atan trait specialization.
             template<
                 typename TArg>
-            struct Tan<
-                TanStl,
+            struct Atan<
+                AtanStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto tan(
-                    TanStl const & tan,
+                ALPAKA_FN_HOST static auto atan(
+                    AtanStdLib const & atan,
                     TArg const & arg)
-                -> decltype(std::tan(arg))
+                -> decltype(std::atan(arg))
                 {
-                    alpaka::ignore_unused(tan);
-                    return std::tan(arg);
+                    alpaka::ignore_unused(atan);
+                    return std::atan(arg);
                 }
             };
         }

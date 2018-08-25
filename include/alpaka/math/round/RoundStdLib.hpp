@@ -34,10 +34,10 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library round.
-        class RoundStl
+        class RoundStdLib
         {
         public:
-            using RoundBase = RoundStl;
+            using RoundBase = RoundStdLib;
         };
 
         namespace traits
@@ -47,13 +47,13 @@ namespace alpaka
             template<
                 typename TArg>
             struct Round<
-                RoundStl,
+                RoundStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto round(
-                    RoundStl const & round,
+                    RoundStdLib const & round,
                     TArg const & arg)
                 -> decltype(std::round(arg))
                 {
@@ -66,13 +66,13 @@ namespace alpaka
             template<
                 typename TArg>
             struct Lround<
-                RoundStl,
+                RoundStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto lround(
-                    RoundStl const & lround,
+                    RoundStdLib const & lround,
                     TArg const & arg)
                 -> long int
                 {
@@ -85,13 +85,13 @@ namespace alpaka
             template<
                 typename TArg>
             struct Llround<
-                RoundStl,
+                RoundStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto llround(
-                    RoundStl const & llround,
+                    RoundStdLib const & llround,
                     TArg const & arg)
                 -> long int
                 {

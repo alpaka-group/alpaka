@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/cos/Traits.hpp>
+#include <alpaka/math/remainder/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,36 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library cos.
-        class CosStl
+        //! The standard library remainder.
+        class RemainderStdLib
         {
         public:
-            using CosBase = CosStl;
+            using RemainderBase = RemainderStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library cos trait specialization.
+            //! The standard library remainder trait specialization.
             template<
-                typename TArg>
-            struct Cos<
-                CosStl,
-                TArg,
+                typename Tx,
+                typename Ty>
+            struct Remainder<
+                RemainderStdLib,
+                Tx,
+                Ty,
                 typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                    std::is_integral<Tx>::value
+                    && std::is_integral<Ty>::value>::type>
             {
-                ALPAKA_FN_HOST static auto cos(
-                    CosStl const & cos,
-                    TArg const & arg)
-                -> decltype(std::cos(arg))
+                ALPAKA_FN_HOST static auto remainder(
+                    RemainderStdLib const & remainder,
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(std::remainder(x, y))
                 {
-                    alpaka::ignore_unused(cos);
-                    return std::cos(arg);
+                    alpaka::ignore_unused(remainder);
+                    return std::remainder(x, y);
                 }
             };
         }

@@ -31,14 +31,14 @@
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/bt/IdxBtOmp.hpp>
-#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicStdLibLock.hpp>
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
-#include <alpaka/math/MathStl.hpp>
+#include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
-#include <alpaka/rand/RandStl.hpp>
+#include <alpaka/rand/RandStdLib.hpp>
 #include <alpaka/time/TimeOmp.hpp>
 
 // Specialized traits.
@@ -83,15 +83,15 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtOmp<TDim, TIdx>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock<16>,   // grid atomics
+                atomic::AtomicStdLibLock<16>,   // grid atomics
                 atomic::AtomicOmpCritSec,    // block atomics
                 atomic::AtomicOmpCritSec     // thread atomics
             >,
-            public math::MathStl,
+            public math::MathStdLib,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncBarrierOmp,
-            public rand::RandStl,
+            public rand::RandStdLib,
             public time::TimeOmp
         {
         public:
@@ -114,17 +114,17 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock<16>,// atomics between grids
+                        atomic::AtomicStdLibLock<16>,// atomics between grids
                         atomic::AtomicOmpCritSec, // atomics between blocks
                         atomic::AtomicOmpCritSec  // atomics between threads
                     >(),
-                    math::MathStl(),
+                    math::MathStdLib(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),
                     block::sync::BlockSyncBarrierOmp(),
-                    rand::RandStl(),
+                    rand::RandStdLib(),
                     time::TimeOmp(),
                     m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
             {}

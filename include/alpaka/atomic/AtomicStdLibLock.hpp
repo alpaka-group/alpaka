@@ -39,7 +39,7 @@ namespace alpaka
         // \tparam THashTableSize size of the hash table to allow concurrency between
         //                        atomics to different addresses
         template<size_t THashTableSize>
-        class AtomicStlLock
+        class AtomicStdLibLock
         {
         public:
             template<
@@ -72,17 +72,17 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            AtomicStlLock() = default;
+            AtomicStdLibLock() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AtomicStlLock(AtomicStlLock const &) = delete;
+            ALPAKA_FN_HOST AtomicStdLibLock(AtomicStdLibLock const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AtomicStlLock(AtomicStlLock &&) = delete;
+            ALPAKA_FN_HOST AtomicStdLibLock(AtomicStdLibLock &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AtomicStlLock const &) -> AtomicStlLock & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicStdLibLock const &) -> AtomicStdLibLock & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AtomicStlLock &&) -> AtomicStlLock & = delete;
+            ALPAKA_FN_HOST auto operator=(AtomicStdLibLock &&) -> AtomicStdLibLock & = delete;
             //-----------------------------------------------------------------------------
-            /*virtual*/ ~AtomicStlLock() = default;
+            /*virtual*/ ~AtomicStdLibLock() = default;
 
             template<typename TPtr>
             std::mutex & getMutex(TPtr const * const ptr) const
@@ -112,13 +112,13 @@ namespace alpaka
                 size_t THashTableSize>
             struct AtomicOp<
                 TOp,
-                atomic::AtomicStlLock<THashTableSize>,
+                atomic::AtomicStdLibLock<THashTableSize>,
                 T,
                 THierarchy>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto atomicOp(
-                    atomic::AtomicStlLock<THashTableSize> const & atomic,
+                    atomic::AtomicStdLibLock<THashTableSize> const & atomic,
                     T * const addr,
                     T const & value)
                 -> T
@@ -128,7 +128,7 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto atomicOp(
-                    atomic::AtomicStlLock<THashTableSize> const & atomic,
+                    atomic::AtomicStdLibLock<THashTableSize> const & atomic,
                     T * const addr,
                     T const & compare,
                     T const & value)

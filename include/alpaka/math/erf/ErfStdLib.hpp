@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/sin/Traits.hpp>
+#include <alpaka/math/erf/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library sin.
-        class SinStl
+        //! The standard library erf.
+        class ErfStdLib
         {
         public:
-            using SinBase = SinStl;
+            using ErfBase = ErfStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library sin trait specialization.
+            //! The standard library erf trait specialization.
             template<
                 typename TArg>
-            struct Sin<
-                SinStl,
+            struct Erf<
+                ErfStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto sin(
-                    SinStl const & sin,
+                ALPAKA_FN_HOST static auto erf(
+                    ErfStdLib const & erf,
                     TArg const & arg)
-                -> decltype(std::sin(arg))
+                -> decltype(std::erf(arg))
                 {
-                    alpaka::ignore_unused(sin);
-                    return std::sin(arg);
+                    alpaka::ignore_unused(erf);
+                    return std::erf(arg);
                 }
             };
         }

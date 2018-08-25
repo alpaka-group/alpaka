@@ -35,23 +35,23 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU fibers accelerator time implementation.
-        class TimeStl
+        class TimeStdLib
         {
         public:
-            using TimeBase = TimeStl;
+            using TimeBase = TimeStdLib;
 
             //-----------------------------------------------------------------------------
-            TimeStl() = default;
+            TimeStdLib() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST TimeStl(TimeStl const &) = delete;
+            ALPAKA_FN_HOST TimeStdLib(TimeStdLib const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST TimeStl(TimeStl &&) = delete;
+            ALPAKA_FN_HOST TimeStdLib(TimeStdLib &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(TimeStl const &) -> TimeStl & = delete;
+            ALPAKA_FN_HOST auto operator=(TimeStdLib const &) -> TimeStdLib & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(TimeStl &&) -> TimeStl & = delete;
+            ALPAKA_FN_HOST auto operator=(TimeStdLib &&) -> TimeStdLib & = delete;
             //-----------------------------------------------------------------------------
-            /*virtual*/ ~TimeStl() = default;
+            /*virtual*/ ~TimeStdLib() = default;
         };
 
         namespace traits
@@ -60,11 +60,11 @@ namespace alpaka
             //! The CPU fibers accelerator clock operation.
             template<>
             struct Clock<
-                TimeStl>
+                TimeStdLib>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto clock(
-                    time::TimeStl const & time)
+                    time::TimeStdLib const & time)
                 -> std::uint64_t
                 {
                     alpaka::ignore_unused(time);

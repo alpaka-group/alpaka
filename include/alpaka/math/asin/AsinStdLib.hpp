@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/ceil/Traits.hpp>
+#include <alpaka/math/asin/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library ceil.
-        class CeilStl
+        //! The standard library asin.
+        class AsinStdLib
         {
         public:
-            using CeilBase = CeilStl;
+            using AsinBase = AsinStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library ceil trait specialization.
+            //! The standard library asin trait specialization.
             template<
                 typename TArg>
-            struct Ceil<
-                CeilStl,
+            struct Asin<
+                AsinStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto ceil(
-                    CeilStl const & ceil,
+                ALPAKA_FN_HOST static auto asin(
+                    AsinStdLib const & asin,
                     TArg const & arg)
-                -> decltype(std::ceil(arg))
+                -> decltype(std::asin(arg))
                 {
-                    alpaka::ignore_unused(ceil);
-                    return std::ceil(arg);
+                    alpaka::ignore_unused(asin);
+                    return std::asin(arg);
                 }
             };
         }

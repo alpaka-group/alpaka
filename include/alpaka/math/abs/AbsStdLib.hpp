@@ -21,11 +21,12 @@
 
 #pragma once
 
-#include <alpaka/math/sqrt/Traits.hpp>
+#include <alpaka/math/abs/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
+#include <cstdlib>
 #include <cmath>
 
 namespace alpaka
@@ -33,32 +34,33 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library sqrt.
-        class SqrtStl
+        //! The standard library abs.
+        class AbsStdLib
         {
         public:
-            using SqrtBase = SqrtStl;
+            using AbsBase = AbsStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library sqrt trait specialization.
+            //! The standard library abs trait specialization.
             template<
                 typename TArg>
-            struct Sqrt<
-                SqrtStl,
+            struct Abs<
+                AbsStdLib,
                 TArg,
                 typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                    std::is_arithmetic<TArg>::value
+                    && std::is_signed<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto sqrt(
-                    SqrtStl const & sqrt,
+                ALPAKA_FN_HOST static auto abs(
+                    AbsStdLib const & abs,
                     TArg const & arg)
-                -> decltype(std::sqrt(arg))
+                -> decltype(std::abs(arg))
                 {
-                    alpaka::ignore_unused(sqrt);
-                    return std::sqrt(arg);
+                    alpaka::ignore_unused(abs);
+                    return std::abs(arg);
                 }
             };
         }

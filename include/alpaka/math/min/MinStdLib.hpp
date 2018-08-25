@@ -21,48 +21,74 @@
 
 #pragma once
 
-#include <alpaka/math/remainder/Traits.hpp>
+#include <alpaka/math/min/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 #include <cmath>
+#include <algorithm>
 
 namespace alpaka
 {
     namespace math
     {
         //#############################################################################
-        //! The standard library remainder.
-        class RemainderStl
+        //! The standard library min.
+        class MinStdLib
         {
         public:
-            using RemainderBase = RemainderStl;
+            using MinBase = MinStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library remainder trait specialization.
+            //! The standard library integral min trait specialization.
             template<
                 typename Tx,
                 typename Ty>
-            struct Remainder<
-                RemainderStl,
+            struct Min<
+                MinStdLib,
                 Tx,
                 Ty,
                 typename std::enable_if<
                     std::is_integral<Tx>::value
                     && std::is_integral<Ty>::value>::type>
             {
-                ALPAKA_FN_HOST static auto remainder(
-                    RemainderStl const & remainder,
+                ALPAKA_FN_HOST static auto min(
+                    MinStdLib const & min,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(std::remainder(x, y))
+                -> decltype(std::min(x, y))
                 {
-                    alpaka::ignore_unused(remainder);
-                    return std::remainder(x, y);
+                    alpaka::ignore_unused(min);
+                    return std::min(x, y);
+                }
+            };
+            //#############################################################################
+            //! The standard library mixed integral floating point min trait specialization.
+            template<
+                typename Tx,
+                typename Ty>
+            struct Min<
+                MinStdLib,
+                Tx,
+                Ty,
+                typename std::enable_if<
+                    std::is_arithmetic<Tx>::value
+                    && std::is_arithmetic<Ty>::value
+                    && !(std::is_integral<Tx>::value
+                        && std::is_integral<Ty>::value)>::type>
+            {
+                ALPAKA_FN_HOST static auto max(
+                    MinStdLib const & min,
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(std::fmin(x, y))
+                {
+                    alpaka::ignore_unused(min);
+                    return std::fmin(x, y);
                 }
             };
         }
