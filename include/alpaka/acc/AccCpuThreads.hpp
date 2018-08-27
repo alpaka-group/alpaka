@@ -27,14 +27,14 @@
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
-#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicStdLibLock.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
-#include <alpaka/math/MathStl.hpp>
+#include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
-#include <alpaka/rand/RandStl.hpp>
-#include <alpaka/time/TimeStl.hpp>
+#include <alpaka/rand/RandStdLib.hpp>
+#include <alpaka/time/TimeStdLib.hpp>
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
@@ -78,16 +78,16 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock<16>, // grid atomics
-                atomic::AtomicStlLock<16>, // block atomics
-                atomic::AtomicStlLock<16>  // thread atomics
+                atomic::AtomicStdLibLock<16>, // grid atomics
+                atomic::AtomicStdLibLock<16>, // block atomics
+                atomic::AtomicStdLibLock<16>  // thread atomics
             >,
-            public math::MathStl,
+            public math::MathStdLib,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncBarrierThread<TIdx>,
-            public rand::RandStl,
-            public time::TimeStl
+            public rand::RandStdLib,
+            public time::TimeStdLib
         {
         public:
             // Partial specialization with the correct TDim and TIdx is not allowed.
@@ -109,19 +109,19 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock<16>, // atomics between grids
-                        atomic::AtomicStlLock<16>, // atomics between blocks
-                        atomic::AtomicStlLock<16>  // atomics between threads
+                        atomic::AtomicStdLibLock<16>, // atomics between grids
+                        atomic::AtomicStdLibLock<16>, // atomics between blocks
+                        atomic::AtomicStdLibLock<16>  // atomics between threads
                     >(),
-                    math::MathStl(),
+                    math::MathStdLib(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
                     block::sync::BlockSyncBarrierThread<TIdx>(
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
-                    rand::RandStl(),
-                    time::TimeStl(),
+                    rand::RandStdLib(),
+                    time::TimeStdLib(),
                     m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
             {}
 

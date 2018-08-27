@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/exp/Traits.hpp>
+#include <alpaka/math/ceil/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library exp.
-        class ExpStl
+        //! The standard library ceil.
+        class CeilStdLib
         {
         public:
-            using ExpBase = ExpStl;
+            using CeilBase = CeilStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library exp trait specialization.
+            //! The standard library ceil trait specialization.
             template<
                 typename TArg>
-            struct Exp<
-                ExpStl,
+            struct Ceil<
+                CeilStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto exp(
-                    ExpStl const & exp,
+                ALPAKA_FN_HOST static auto ceil(
+                    CeilStdLib const & ceil,
                     TArg const & arg)
-                -> decltype(std::exp(arg))
+                -> decltype(std::ceil(arg))
                 {
-                    alpaka::ignore_unused(exp);
-                    return std::exp(arg);
+                    alpaka::ignore_unused(ceil);
+                    return std::ceil(arg);
                 }
             };
         }

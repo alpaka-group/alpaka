@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/log/Traits.hpp>
+#include <alpaka/math/sin/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library log.
-        class LogStl
+        //! The standard library sin.
+        class SinStdLib
         {
         public:
-            using LogBase = LogStl;
+            using SinBase = SinStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library log trait specialization.
+            //! The standard library sin trait specialization.
             template<
                 typename TArg>
-            struct Log<
-                LogStl,
+            struct Sin<
+                SinStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto log(
-                    LogStl const & log,
+                ALPAKA_FN_HOST static auto sin(
+                    SinStdLib const & sin,
                     TArg const & arg)
-                -> decltype(std::log(arg))
+                -> decltype(std::sin(arg))
                 {
-                    alpaka::ignore_unused(log);
-                    return std::log(arg);
+                    alpaka::ignore_unused(sin);
+                    return std::sin(arg);
                 }
             };
         }

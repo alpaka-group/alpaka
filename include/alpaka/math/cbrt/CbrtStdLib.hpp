@@ -34,10 +34,10 @@ namespace alpaka
     {
         //#############################################################################
         //! The standard library cbrt.
-        class CbrtStl
+        class CbrtStdLib
         {
         public:
-            using CbrtBase = CbrtStl;
+            using CbrtBase = CbrtStdLib;
         };
 
         namespace traits
@@ -47,13 +47,13 @@ namespace alpaka
             template<
                 typename TArg>
             struct Cbrt<
-                CbrtStl,
+                CbrtStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto cbrt(
-                    CbrtStl const & cbrt,
+                    CbrtStdLib const & cbrt,
                     TArg const & arg)
                 -> decltype(std::cbrt(arg))
                 {

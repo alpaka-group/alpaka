@@ -32,14 +32,14 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/bt/IdxBtZero.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
-#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicStdLibLock.hpp>
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
-#include <alpaka/math/MathStl.hpp>
+#include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
 #include <alpaka/block/sync/BlockSyncNoOp.hpp>
-#include <alpaka/rand/RandStl.hpp>
+#include <alpaka/rand/RandStdLib.hpp>
 #include <alpaka/time/TimeOmp.hpp>
 
 // Specialized traits.
@@ -83,15 +83,15 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtZero<TDim, TIdx>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock<16>,   // grid atomics
+                atomic::AtomicStdLibLock<16>,   // grid atomics
                 atomic::AtomicOmpCritSec,    // block atomics
                 atomic::AtomicNoOp           // thread atomics
             >,
-            public math::MathStl,
+            public math::MathStdLib,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStNoSync,
             public block::sync::BlockSyncNoOp,
-            public rand::RandStl,
+            public rand::RandStdLib,
             public time::TimeOmp
         {
         public:
@@ -114,15 +114,15 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock<16>,// atomics between grids
+                        atomic::AtomicStdLibLock<16>,// atomics between grids
                         atomic::AtomicOmpCritSec, // atomics between blocks
                         atomic::AtomicNoOp        // atomics between threads
                     >(),
-                    math::MathStl(),
+                    math::MathStdLib(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStNoSync(),
                     block::sync::BlockSyncNoOp(),
-                    rand::RandStl(),
+                    rand::RandStdLib(),
                     time::TimeOmp(),
                     m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
             {}

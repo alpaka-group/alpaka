@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/floor/Traits.hpp>
+#include <alpaka/math/rsqrt/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library floor.
-        class FloorStl
+        //! The standard library rsqrt.
+        class RsqrtStdLib
         {
         public:
-            using FloorBase = FloorStl;
+            using RsqrtBase = RsqrtStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library floor trait specialization.
+            //! The standard library rsqrt trait specialization.
             template<
                 typename TArg>
-            struct Floor<
-                FloorStl,
+            struct Rsqrt<
+                RsqrtStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto floor(
-                    FloorStl const & floor,
+                ALPAKA_FN_HOST static auto rsqrt(
+                    RsqrtStdLib const & rsqrt,
                     TArg const & arg)
-                -> decltype(std::floor(arg))
+                -> decltype(std::sqrt(arg))
                 {
-                    alpaka::ignore_unused(floor);
-                    return std::floor(arg);
+                    alpaka::ignore_unused(rsqrt);
+                    return static_cast<TArg>(1)/std::sqrt(arg);
                 }
             };
         }

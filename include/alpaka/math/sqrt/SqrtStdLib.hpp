@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/fmod/Traits.hpp>
+#include <alpaka/math/sqrt/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,36 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library fmod.
-        class FmodStl
+        //! The standard library sqrt.
+        class SqrtStdLib
         {
         public:
-            using FmodBase = FmodStl;
+            using SqrtBase = SqrtStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library fmod trait specialization.
+            //! The standard library sqrt trait specialization.
             template<
-                typename Tx,
-                typename Ty>
-            struct Fmod<
-                FmodStl,
-                Tx,
-                Ty,
+                typename TArg>
+            struct Sqrt<
+                SqrtStdLib,
+                TArg,
                 typename std::enable_if<
-                    std::is_arithmetic<Tx>::value
-                    && std::is_arithmetic<Ty>::value>::type>
+                    std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto fmod(
-                    FmodStl const & fmod,
-                    Tx const & x,
-                    Ty const & y)
-                -> decltype(std::fmod(x, y))
+                ALPAKA_FN_HOST static auto sqrt(
+                    SqrtStdLib const & sqrt,
+                    TArg const & arg)
+                -> decltype(std::sqrt(arg))
                 {
-                    alpaka::ignore_unused(fmod);
-                    return std::fmod(x, y);
+                    alpaka::ignore_unused(sqrt);
+                    return std::sqrt(arg);
                 }
             };
         }

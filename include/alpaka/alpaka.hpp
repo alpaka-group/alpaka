@@ -45,7 +45,7 @@
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>
-#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicStdLibLock.hpp>
 #include <alpaka/atomic/Op.hpp>
 #include <alpaka/atomic/Traits.hpp>
 //-----------------------------------------------------------------------------
@@ -134,7 +134,7 @@
 //-----------------------------------------------------------------------------
 // math
 #include <alpaka/math/MathCudaBuiltIn.hpp>
-#include <alpaka/math/MathStl.hpp>
+#include <alpaka/math/MathStdLib.hpp>
 //-----------------------------------------------------------------------------
 // mem
 #include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
@@ -180,7 +180,7 @@
 //-----------------------------------------------------------------------------
 // rand
 #include <alpaka/rand/RandCuRand.hpp>
-#include <alpaka/rand/RandStl.hpp>
+#include <alpaka/rand/RandStdLib.hpp>
 #include <alpaka/rand/Traits.hpp>
 //-----------------------------------------------------------------------------
 // idx

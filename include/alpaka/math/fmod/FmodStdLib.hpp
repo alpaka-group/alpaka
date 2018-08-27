@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/erf/Traits.hpp>
+#include <alpaka/math/fmod/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,36 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library erf.
-        class ErfStl
+        //! The standard library fmod.
+        class FmodStdLib
         {
         public:
-            using ErfBase = ErfStl;
+            using FmodBase = FmodStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library erf trait specialization.
+            //! The standard library fmod trait specialization.
             template<
-                typename TArg>
-            struct Erf<
-                ErfStl,
-                TArg,
+                typename Tx,
+                typename Ty>
+            struct Fmod<
+                FmodStdLib,
+                Tx,
+                Ty,
                 typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                    std::is_arithmetic<Tx>::value
+                    && std::is_arithmetic<Ty>::value>::type>
             {
-                ALPAKA_FN_HOST static auto erf(
-                    ErfStl const & erf,
-                    TArg const & arg)
-                -> decltype(std::erf(arg))
+                ALPAKA_FN_HOST static auto fmod(
+                    FmodStdLib const & fmod,
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(std::fmod(x, y))
                 {
-                    alpaka::ignore_unused(erf);
-                    return std::erf(arg);
+                    alpaka::ignore_unused(fmod);
+                    return std::fmod(x, y);
                 }
             };
         }

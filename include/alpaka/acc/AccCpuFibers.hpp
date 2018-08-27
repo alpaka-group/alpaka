@@ -28,14 +28,14 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
-#include <alpaka/atomic/AtomicStlLock.hpp>
+#include <alpaka/atomic/AtomicStdLibLock.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
-#include <alpaka/math/MathStl.hpp>
+#include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
-#include <alpaka/rand/RandStl.hpp>
-#include <alpaka/time/TimeStl.hpp>
+#include <alpaka/rand/RandStdLib.hpp>
+#include <alpaka/time/TimeStdLib.hpp>
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
@@ -81,16 +81,16 @@ namespace alpaka
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStlLock<16>, // grid atomics
-                atomic::AtomicStlLock<16>, // block atomics
+                atomic::AtomicStdLibLock<16>, // grid atomics
+                atomic::AtomicStdLibLock<16>, // block atomics
                 atomic::AtomicNoOp         // thread atomics
             >,
-            public math::MathStl,
+            public math::MathStdLib,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncBarrierFiber<TIdx>,
-            public rand::RandStl,
-            public time::TimeStl
+            public rand::RandStdLib,
+            public time::TimeStdLib
         {
         public:
             // Partial specialization with the correct TDim and TIdx is not allowed.
@@ -112,19 +112,19 @@ namespace alpaka
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStlLock<16>, // atomics between grids
-                        atomic::AtomicStlLock<16>, // atomics between blocks
+                        atomic::AtomicStdLibLock<16>, // atomics between grids
+                        atomic::AtomicStdLibLock<16>, // atomics between blocks
                         atomic::AtomicNoOp         // atomics between threads
                     >(),
-                    math::MathStl(),
+                    math::MathStdLib(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
                     block::sync::BlockSyncBarrierFiber<TIdx>(
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
-                    rand::RandStl(),
-                    time::TimeStl(),
+                    rand::RandStdLib(),
+                    time::TimeStdLib(),
                     m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
             {}
 

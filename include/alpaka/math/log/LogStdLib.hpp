@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/atan2/Traits.hpp>
+#include <alpaka/math/log/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,36 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library atan2.
-        class Atan2Stl
+        //! The standard library log.
+        class LogStdLib
         {
         public:
-            using Atan2Base = Atan2Stl;
+            using LogBase = LogStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library atan2 trait specialization.
+            //! The standard library log trait specialization.
             template<
-                typename Ty,
-                typename Tx>
-            struct Atan2<
-                Atan2Stl,
-                Ty,
-                Tx,
+                typename TArg>
+            struct Log<
+                LogStdLib,
+                TArg,
                 typename std::enable_if<
-                    std::is_arithmetic<Ty>::value
-                    && std::is_arithmetic<Tx>::value>::type>
+                    std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto atan2(
-                    Atan2Stl const & abs,
-                    Ty const & y,
-                    Tx const & x)
-                -> decltype(std::atan2(y, x))
+                ALPAKA_FN_HOST static auto log(
+                    LogStdLib const & log,
+                    TArg const & arg)
+                -> decltype(std::log(arg))
                 {
-                    alpaka::ignore_unused(abs);
-                    return std::atan2(y, x);
+                    alpaka::ignore_unused(log);
+                    return std::log(arg);
                 }
             };
         }

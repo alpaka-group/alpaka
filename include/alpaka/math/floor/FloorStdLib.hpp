@@ -21,12 +21,11 @@
 
 #pragma once
 
-#include <alpaka/math/abs/Traits.hpp>
+#include <alpaka/math/floor/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
-#include <cstdlib>
 #include <cmath>
 
 namespace alpaka
@@ -34,33 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library abs.
-        class AbsStl
+        //! The standard library floor.
+        class FloorStdLib
         {
         public:
-            using AbsBase = AbsStl;
+            using FloorBase = FloorStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library abs trait specialization.
+            //! The standard library floor trait specialization.
             template<
                 typename TArg>
-            struct Abs<
-                AbsStl,
+            struct Floor<
+                FloorStdLib,
                 TArg,
                 typename std::enable_if<
-                    std::is_arithmetic<TArg>::value
-                    && std::is_signed<TArg>::value>::type>
+                    std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto abs(
-                    AbsStl const & abs,
+                ALPAKA_FN_HOST static auto floor(
+                    FloorStdLib const & floor,
                     TArg const & arg)
-                -> decltype(std::abs(arg))
+                -> decltype(std::floor(arg))
                 {
-                    alpaka::ignore_unused(abs);
-                    return std::abs(arg);
+                    alpaka::ignore_unused(floor);
+                    return std::floor(arg);
                 }
             };
         }

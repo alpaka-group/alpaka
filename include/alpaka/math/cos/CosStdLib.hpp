@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/asin/Traits.hpp>
+#include <alpaka/math/cos/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library asin.
-        class AsinStl
+        //! The standard library cos.
+        class CosStdLib
         {
         public:
-            using AsinBase = AsinStl;
+            using CosBase = CosStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library asin trait specialization.
+            //! The standard library cos trait specialization.
             template<
                 typename TArg>
-            struct Asin<
-                AsinStl,
+            struct Cos<
+                CosStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto asin(
-                    AsinStl const & asin,
+                ALPAKA_FN_HOST static auto cos(
+                    CosStdLib const & cos,
                     TArg const & arg)
-                -> decltype(std::asin(arg))
+                -> decltype(std::cos(arg))
                 {
-                    alpaka::ignore_unused(asin);
-                    return std::asin(arg);
+                    alpaka::ignore_unused(cos);
+                    return std::cos(arg);
                 }
             };
         }

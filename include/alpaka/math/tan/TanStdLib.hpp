@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/rsqrt/Traits.hpp>
+#include <alpaka/math/tan/Traits.hpp>
 
 #include <alpaka/core/Unused.hpp>
 
@@ -33,32 +33,32 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library rsqrt.
-        class RsqrtStl
+        //! The standard library tan.
+        class TanStdLib
         {
         public:
-            using RsqrtBase = RsqrtStl;
+            using TanBase = TanStdLib;
         };
 
         namespace traits
         {
             //#############################################################################
-            //! The standard library rsqrt trait specialization.
+            //! The standard library tan trait specialization.
             template<
                 typename TArg>
-            struct Rsqrt<
-                RsqrtStl,
+            struct Tan<
+                TanStdLib,
                 TArg,
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FN_HOST static auto rsqrt(
-                    RsqrtStl const & rsqrt,
+                ALPAKA_FN_HOST static auto tan(
+                    TanStdLib const & tan,
                     TArg const & arg)
-                -> decltype(std::sqrt(arg))
+                -> decltype(std::tan(arg))
                 {
-                    alpaka::ignore_unused(rsqrt);
-                    return static_cast<TArg>(1)/std::sqrt(arg);
+                    alpaka::ignore_unused(tan);
+                    return std::tan(arg);
                 }
             };
         }
