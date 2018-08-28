@@ -136,7 +136,7 @@ struct ReduceKernel
         // Level 2: block + warp reduce, reading from shared memory
         // --------
 
-#pragma unroll
+        ALPAKA_UNROLL()
         for (uint32_t currentBlockSize = TBlockSize,
                       currentBlockSizeUp =
                           (TBlockSize + 1) / 2; // ceil(TBlockSize/2.0)
