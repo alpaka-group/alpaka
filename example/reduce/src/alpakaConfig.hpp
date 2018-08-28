@@ -27,8 +27,8 @@
 
 // Defines for dimensions and types.
 using Dim = alpaka::dim::DimInt<1u>;
-using Idx = std::size_t;
-using Extent = std::size_t;
+using Idx = uint64_t;
+using Extent = uint64_t;
 using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Extent>;
 
 //-----------------------------------------------------------------------------
@@ -37,8 +37,8 @@ using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Extent>;
 //!
 //! \tparam TAcc The accelerator object.
 //! \tparam TSize The desired size.
-template <typename TAcc, std::size_t TSize>
-static constexpr std::size_t getMaxBlockSize()
+template <typename TAcc, uint64_t TSize>
+static constexpr uint64_t getMaxBlockSize()
 {
     return (TAcc::MaxBlockSize::value > TSize) ? TSize
                                                : TAcc::MaxBlockSize::value;

@@ -23,6 +23,7 @@
 #include "alpakaConfig.hpp"
 #include "kernel.hpp"
 #include <alpaka/alpaka.hpp>
+#include <cstdlib>
 #include <iostream>
 
 // use defines of a specific accelerator
@@ -39,32 +40,33 @@ using MaxBlockSize = Accelerator::MaxBlockSize;
 //-----------------------------------------------------------------------------
 //! Reduces the numbers 1 to n.
 //!
+//! \tparam T The data type. 
+//! \tparam T The data type of the reduction functor.
+//!
+//! \param devhost The host device.
 //! \param devAcc The accelerator object.
+//! \param queue The device queue.
 //! \param n The problem size.
+//! \param hostMemory The buffer containing the input data.
+//! \param func The reduction function. 
 //!
 //! Returns true if the reduction was correct and false otherwise.
-bool reduce(DevAcc devAcc, uint64_t n)
+template<typename T, typename TFunc>
+T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem::buf::Buf<DevHost, T, Dim, Idx> hostMemory, TFunc func)
 {
-    using T = uint32_t;
-    static constexpr uint32_t blockSize = getMaxBlockSize<Accelerator, 256>();
-
-    DevHost devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
-    QueueAcc queue(devAcc);
+    static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
 
     // calculate optimal block size (8 times the MP count proved to be
     // relatively near to peak performance in benchmarks)
-    uint32_t blockCount =
+    uint32_t blockCount = static_cast<uint32_t>(
         alpaka::acc::getAccDevProps<Acc, DevAcc>(devAcc).m_multiProcessorCount *
-        8;
-    uint32_t maxBlockCount =
-        (((n + 1) / 2) - 1) / blockSize + 1; // ceil(ceil(n/2.0)/blockSize)
+        8);
+    uint32_t maxBlockCount = static_cast<uint32_t>(
+        (((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
 
     if (blockCount > maxBlockCount)
         blockCount = maxBlockCount;
 
-    // allocate memory
-    auto hostMemory = alpaka::mem::view::ViewPlainPtr<DevHost, T, Dim, Idx>(
-        new T[n], devHost, n);
     alpaka::mem::buf::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory =
         alpaka::mem::buf::alloc<T, Idx>(devAcc, n);
 
@@ -72,20 +74,11 @@ bool reduce(DevAcc devAcc, uint64_t n)
         alpaka::mem::buf::alloc<T, Idx>(
             devAcc, static_cast<Extent>(blockCount));
 
-    T *nativeHostMemory = alpaka::mem::view::getPtrNative(hostMemory);
-
-    // fill array with data
-    for (uint32_t i = 0; i < n; i++)
-        nativeHostMemory[i] = static_cast<T>(i + 1);
-
     // copy the data to the GPU
     alpaka::mem::view::copy(queue, sourceDeviceMemory, hostMemory, n);
 
-    // define the reduction function
-    auto addFn = [] ALPAKA_FN_ACC(T a, T b) -> T { return a + b; };
-
     // create kernels with their workdivs
-    ReduceKernel<blockSize, T, decltype(addFn)> kernel1, kernel2;
+    ReduceKernel<blockSize, T, TFunc> kernel1, kernel2;
     WorkDiv workDiv1{ static_cast<Extent>(blockCount),
                       static_cast<Extent>(blockSize),
                       static_cast<Extent>(1) };
@@ -100,7 +93,7 @@ bool reduce(DevAcc devAcc, uint64_t n)
         alpaka::mem::view::getPtrNative(sourceDeviceMemory),
         alpaka::mem::view::getPtrNative(destinationDeviceMemory),
         n,
-        addFn));
+        func));
 
     // reduce the last block
     auto const exec2(alpaka::kernel::createTaskExec<Acc>(
@@ -109,7 +102,7 @@ bool reduce(DevAcc devAcc, uint64_t n)
         alpaka::mem::view::getPtrNative(destinationDeviceMemory),
         alpaka::mem::view::getPtrNative(destinationDeviceMemory),
         blockCount,
-        addFn));
+        func));
 
     // enqueue both kernels
     alpaka::queue::enqueue(queue, exec1);
@@ -119,22 +112,11 @@ bool reduce(DevAcc devAcc, uint64_t n)
     T resultGpuHost;
     auto resultGpuDevice =
         alpaka::mem::view::ViewPlainPtr<DevHost, T, Dim, Idx>(
-            &resultGpuHost, devHost, (Extent)blockSize);
+            &resultGpuHost, devHost, static_cast<Extent>(blockSize));
 
     alpaka::mem::view::copy(queue, resultGpuDevice, destinationDeviceMemory, 1);
 
-    // check result
-    if (resultGpuHost != static_cast<T>(n / 2 * (n + 1)))
-    {
-        std::cout << "Results don't match: " << resultGpuHost << " != " << n
-                  << "\n";
-        return false;
-    }
-    else
-    {
-        std::cout << "Results match.\n";
-        return true;
-    }
+    return resultGpuHost;
 }
 
 int main()
@@ -143,13 +125,52 @@ int main()
     const int dev = 0;
     uint64_t n = 1 << 28;
 
+    using T = uint32_t;
+    static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
+    
     DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(dev));
+    DevHost devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+    QueueAcc queue(devAcc);
+
+    // calculate optimal block size (8 times the MP count proved to be
+    // relatively near to peak performance in benchmarks)
+    uint32_t blockCount = static_cast<uint32_t>(
+        alpaka::acc::getAccDevProps<Acc, DevAcc>(devAcc).m_multiProcessorCount *
+        8);
+    uint32_t maxBlockCount = static_cast<uint32_t>(
+        (((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
+
+    if (blockCount > maxBlockCount)
+        blockCount = maxBlockCount;
+
+    // allocate memory
+    auto hostMemory = alpaka::mem::buf::alloc<T, Idx>(devHost, n);
+
+    T *nativeHostMemory = alpaka::mem::view::getPtrNative(hostMemory);
+
+    // fill array with data
+    for (uint64_t i = 0; i < n; i++)
+        nativeHostMemory[i] = static_cast<T>(i + 1);
+
+    // define the reduction function
+    auto addFn = [] ALPAKA_FN_ACC(T a, T b) -> T { return a + b; };
 
     // reduce
-    bool result = reduce(devAcc, n);
+    T result = reduce<T, decltype(addFn)>(devHost, devAcc, queue, n, hostMemory, addFn);
 
     // clean up
     alpaka::dev::reset(devAcc);
 
-    return (result ? 0 : -1);
+    // check result
+    T expectedResult = static_cast<T>(n / 2 * (n + 1));
+    if (result != expectedResult)
+    {
+        std::cout << "Results don't match: " << result << " != " << expectedResult
+                  << "\n";
+        return EXIT_FAILURE;
+    }
+    
+    std::cout << "Results match.\n";
+    
+    return EXIT_SUCCESS;
 }
