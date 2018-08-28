@@ -26,7 +26,7 @@
 #include <iostream>
 
 // use defines of a specific accelerator
-using Accelerator = GpuCudaRt;//CpuOmp2Blocks; // GpuCudaRt;
+using Accelerator = CpuSerial;
 
 using DevAcc = Accelerator::DevAcc;
 using DevHost = Accelerator::DevHost;

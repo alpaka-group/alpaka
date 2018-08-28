@@ -58,16 +58,7 @@ struct GetIterator
     using Iterator = IteratorCpu<TAcc, T, TBuf>;
 };
 
-//! @todo: implement for boost fibers
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
-//#############################################################################
-//! Boost Fiber defines
-//!
-//! Defines Host, Device, etc. for the Boost Fiber accelerator.
-struct CpuFibers
-{
-};
-#endif
+// Note: Boost Fibers, OpenMP 2 Threads and TBB Blocks accelerators aren't implented
 
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 //#############################################################################
@@ -93,17 +84,6 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuOmp2Blocks<TArgs...>>
 {
     using Iterator =
         IteratorCpu<alpaka::acc::AccCpuOmp2Blocks<TArgs...>, T, TBuf>;
-};
-#endif
-
-//! @todo: implement for OpenMP sequential
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
-//#############################################################################
-//! OpenMP 2 Threads defines
-//!
-//! Defines Host, Device, etc. for the OpenMP 2 Threads accelerator.
-struct CpuOmp2Threads
-{
 };
 #endif
 
@@ -154,17 +134,6 @@ template <typename T, typename TBuf, typename... TArgs>
 struct GetIterator<T, TBuf, alpaka::acc::AccCpuSerial<TArgs...>>
 {
     using Iterator = IteratorCpu<alpaka::acc::AccCpuSerial<TArgs...>, T, TBuf>;
-};
-#endif
-
-//! @todo: implement for thread building blocks sequential
-#ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
-//#############################################################################
-//! Thread Building Blocks defines
-//!
-//! Defines Host, Device, etc. for the Thread Building Blocks accelerator.
-struct CpuTbbBlocks
-{
 };
 #endif
 

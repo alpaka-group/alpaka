@@ -43,7 +43,6 @@ public:
     //!
     //! \param data A pointer to the data.
     //! \param linearizedIndex The linearized index.
-    //! \param gridSize The grid size.
     //! \param n The problem size.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE Iterator(const TBuf *data,
                                                  uint32_t index,
@@ -56,10 +55,7 @@ public:
     //! Constructor.
     //!
     //! \param other The other iterator object.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE Iterator(const Iterator &other)
-        : data(other.data), index(other.index), maximum(other.maximum)
-    {
-    }
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE Iterator(const Iterator &other) = default;
 
     //-----------------------------------------------------------------------------
     //! Compare operator.
@@ -71,8 +67,7 @@ public:
     operator==(const Iterator &other) const -> bool
     {
         return (this->data == other.data) && (this->index == other.index) &&
-               (this->maximum == other.maximum) &&
-               (this->gridSize == other.gridSize);
+               (this->maximum == other.maximum);
     }
 
     //-----------------------------------------------------------------------------
