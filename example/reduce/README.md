@@ -6,7 +6,7 @@ A benchmark of this reduction can be found at [alpaka_reduction_benchmark](https
 
 ## File Descriptions
 
-* [alpakaConfig.hpp](./reduce/src/alpakaConfig.hpp): configurations and settings specific to the individual accelerators.
-* [iterator.hpp](./reduce/src/iterator.hpp): contains a CPU and a GPU iterator.
-* [kernel.hpp](./reduce/src/kernel.hpp): contains the optimized alpaka reduction kernel.
-* [reduce.cpp](./reduce/src/reduce.cpp): the main file.
+* [alpakaConfig.hpp](./src/alpakaConfig.hpp): configurations and settings specific to the individual accelerators.
+* [iterator.hpp](./src/iterator.hpp): contains a CPU and a GPU iterator.
+* [kernel.hpp](./src/kernel.hpp): contains the optimized alpaka reduction kernel.
+* [reduce.cpp](./src/reduce.cpp): the main file.
