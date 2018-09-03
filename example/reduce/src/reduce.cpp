@@ -26,6 +26,9 @@
 #include <cstdlib>
 #include <iostream>
 
+// hardcode the serial CPU accelerator
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+
 // use defines of a specific accelerator
 using Accelerator = CpuSerial;
 
@@ -174,3 +177,11 @@ int main()
     
     return EXIT_SUCCESS;
 }
+
+#else
+
+int main() {
+    return EXIT_SUCCESS;
+}
+
+#endif
