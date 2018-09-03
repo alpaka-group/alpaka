@@ -93,7 +93,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     Fixture f;
 
     bool CallbackFinished = false;
-    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {std::this_thread::sleep_for(std::chrono::milliseconds(100u)); CallbackFinished = true;});
+    alpaka::queue::enqueue(
+        f.m_queue,
+        [&CallbackFinished]() noexcept
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100u));
+            CallbackFinished = true;
+        });
 
     alpaka::wait::wait(f.m_queue);
     BOOST_REQUIRE_EQUAL(true, CallbackFinished);
@@ -101,7 +107,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
 //-----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    queueShouldBeEmptyAfterProcessingFinished,
+    queueShouldNotBeEmptyWhenLastTaskIsStillExecutingAndIsEmptyAfterProcessingFinished,
     TDevQueue,
     alpaka::test::queue::TestQueues)
 {
@@ -109,7 +115,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     Fixture f;
 
     bool CallbackFinished = false;
-    alpaka::queue::enqueue(f.m_queue, [&CallbackFinished]() noexcept {std::this_thread::sleep_for(std::chrono::milliseconds(100u)); CallbackFinished = true;});
+    alpaka::queue::enqueue(
+        f.m_queue,
+        [&f, &CallbackFinished]() noexcept
+        {
+            BOOST_REQUIRE_EQUAL(false, alpaka::queue::empty(f.m_queue));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100u));
+            CallbackFinished = true;
+        });
 
     // A synchronous queue will always stay empty because the task has been executed immediately.
     if(!alpaka::test::queue::IsSyncQueue<typename Fixture::Queue>::value)
