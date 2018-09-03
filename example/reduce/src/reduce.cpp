@@ -41,9 +41,9 @@ using MaxBlockSize = Accelerator::MaxBlockSize;
 //! Reduces the numbers 1 to n.
 //!
 //! \tparam T The data type. 
-//! \tparam T The data type of the reduction functor.
+//! \tparam TFunc The data type of the reduction functor.
 //!
-//! \param devhost The host device.
+//! \param devHost The host device.
 //! \param devAcc The accelerator object.
 //! \param queue The device queue.
 //! \param n The problem size.

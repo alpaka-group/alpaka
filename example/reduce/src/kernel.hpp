@@ -37,9 +37,9 @@ struct cheapArray
     //! \param index The index of the element to be accessed.
     //!
     //! Returns the requested element per reference.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE T &operator[](uint64_t i)
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE T &operator[](uint64_t index)
     {
-        return data[i];
+        return data[index];
     }
 
     //-----------------------------------------------------------------------------
@@ -48,9 +48,9 @@ struct cheapArray
     //! \param index The index of the element to be accessed.
     //!
     //! Returns the requested element per constant reference.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE const T &operator[](uint64_t i) const
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE const T &operator[](uint64_t index) const
     {
-        return data[i];
+        return data[index];
     }
 };
 
@@ -102,7 +102,7 @@ struct ReduceKernel
         typename GetIterator<T, TElem, TAcc>::Iterator it(
             acc, source, linearizedIndex, gridDimension * TBlockSize, n);
 
-        T result;
+        T result = 0; // suppresses compiler warnings
 
         if (threadIndex < n)
             result = *(it++); // avoids using the

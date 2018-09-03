@@ -42,8 +42,8 @@ public:
     //! Constructor.
     //!
     //! \param data A pointer to the data.
-    //! \param linearizedIndex The linearized index.
-    //! \param n The problem size.
+    //! \param index The index.
+    //! \param maximum The first index outside of the iterator memory.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE Iterator(const TBuf *data,
                                                  uint32_t index,
                                                  uint64_t maximum)
@@ -167,10 +167,10 @@ public:
                                                     uint64_t n)
         : Iterator<T, TBuf>(
               data,
-              (n * linearizedIndex) /
-                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n),
-              (n * (linearizedIndex + 1)) /
-                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n))
+              (n * linearizedIndex) / static_cast<uint32_t>(
+                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n)),
+              (n * (linearizedIndex + 1)) / static_cast<uint32_t>(
+                                                                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n)))
     {
     }
 
@@ -256,7 +256,7 @@ public:
     //-----------------------------------------------------------------------------
     //! Addition assignment.
     //!
-    //! \param other The other object.
+    //! \param offset The offset.
     //!
     //! Returns the current object offset by the offset.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator+=(uint64_t offset)
@@ -269,7 +269,7 @@ public:
     //-----------------------------------------------------------------------------
     //! Substraction assignment.
     //!
-    //! \param other The other object.
+    //! \param offset The offset.
     //!
     //! Returns the current object offset by the offset.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator-=(uint64_t offset)
@@ -290,7 +290,7 @@ template <typename TAcc, typename T, typename TBuf = T>
 class IteratorGpu : public Iterator<T, TBuf>
 {
 private:
-    const uint32_t gridSize;
+    const uint32_t mGridSize;
 
 public:
     //-----------------------------------------------------------------------------
@@ -301,12 +301,12 @@ public:
     //! \param linearizedIndex The linearized index.
     //! \param gridSize The grid size.
     //! \param n The problem size.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE IteratorGpu(const TAcc &acc,
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE IteratorGpu(const TAcc &,
                                                     const TBuf *data,
                                                     uint32_t linearizedIndex,
                                                     uint32_t gridSize,
                                                     uint64_t n)
-        : Iterator<T, TBuf>(data, linearizedIndex, n), gridSize(gridSize)
+        : Iterator<T, TBuf>(data, linearizedIndex, n), mGridSize(gridSize)
     {
     }
 
@@ -326,7 +326,7 @@ public:
     //! Returns a reference to the next index.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator++() -> IteratorGpu &
     {
-        this->mIndex += this->gridSize;
+        this->mIndex += this->mGridSize;
         return *this;
     }
 
@@ -338,7 +338,7 @@ public:
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator++(int) -> IteratorGpu
     {
         auto ret(*this);
-        this->mIndex += this->gridSize;
+        this->mIndex += this->mGridSize;
         return ret;
     }
 
@@ -349,7 +349,7 @@ public:
     //! Returns a reference to the previous index.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator--() -> IteratorGpu &
     {
-        this->mIndex -= this->gridSize;
+        this->mIndex -= this->mGridSize;
         return *this;
     }
 
@@ -361,7 +361,7 @@ public:
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator--(int) -> IteratorGpu
     {
         auto ret(*this);
-        this->mIndex -= this->gridSize;
+        this->mIndex -= this->mGridSize;
         return ret;
     }
 
@@ -373,7 +373,7 @@ public:
         -> IteratorGpu
     {
         auto ret(*this);
-        ret.mIndex += n * gridSize;
+        ret.mIndex += n * mGridSize;
         return ret;
     }
 
@@ -385,33 +385,33 @@ public:
         -> IteratorGpu
     {
         auto ret(*this);
-        ret.mIndex -= n * gridSize;
+        ret.mIndex -= n * mGridSize;
         return ret;
     }
 
     //-----------------------------------------------------------------------------
     //! Addition assignment.
     //!
-    //! \param other The other object.
+    //! \param offset The offset.
     //!
     //! Returns the current object offset by the offset.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator+=(uint64_t offset)
         -> IteratorGpu &
     {
-        this->mIndex += offset * this->gridSize;
+        this->mIndex += offset * this->mGridSize;
         return *this;
     }
 
     //-----------------------------------------------------------------------------
     //! Substraction assignment.
     //!
-    //! \param other The other object.
+    //! \param offset The offset.
     //!
     //! Returns the current object offset by the offset.
     ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator-=(uint64_t offset)
         -> IteratorGpu &
     {
-        this->mIndex -= offset * this->gridSize;
+        this->mIndex -= offset * this->mGridSize;
         return *this;
     }
 };
