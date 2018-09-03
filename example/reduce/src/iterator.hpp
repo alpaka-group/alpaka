@@ -167,10 +167,10 @@ public:
                                                     uint64_t n)
         : Iterator<T, TBuf>(
               data,
-              (n * linearizedIndex) / static_cast<uint32_t>(
-                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n)),
-              (n * (linearizedIndex + 1)) / static_cast<uint32_t>(
-                                                                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n)))
+              static_cast<uint32_t>((n * linearizedIndex) / 
+                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n),
+              static_cast<uint32_t>((n * (linearizedIndex + 1)) / 
+                  alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n)))
     {
     }
 
@@ -296,7 +296,6 @@ public:
     //-----------------------------------------------------------------------------
     //! Constructor.
     //!
-    //! \param acc The accelerator object.
     //! \param data A pointer to the data.
     //! \param linearizedIndex The linearized index.
     //! \param gridSize The grid size.
