@@ -218,7 +218,7 @@ namespace alpaka
                     queue::QueueCpuAsync const & queue)
                 -> bool
                 {
-                    return queue.m_spQueueImpl->m_workerThread.isQueueEmpty();
+                    return queue.m_spQueueImpl->m_workerThread.isIdle();
                 }
             };
         }

@@ -277,6 +277,7 @@ namespace alpaka
                     TIdx concurrentExecutionCount) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
+                    m_numActiveTasks(0u),
                     m_bShutdownFlag(false)
                 {
                     if(concurrentExecutionCount < 1)
@@ -327,7 +328,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Runs the given function on one of the pool in First In First Out (FIFO) order.
                 //!
-                //! \tparam TFnObj   The function type.
+                //! \tparam TFnObj  The function type.
                 //! \param task     Function object to be called on the pool.
                 //!                 Takes an arbitrary number of arguments and arbitrary return type.
                 //! \tparam TArgs   The argument types pack.
@@ -361,6 +362,7 @@ namespace alpaka
 
                     auto future(pTaskPackage->m_Promise.get_future());
 
+                    ++m_numActiveTasks;
                     m_qTasks.push(std::move(upTaskPackage));
 
                     return future;
@@ -373,11 +375,11 @@ namespace alpaka
                     return m_vConcurrentExecs.size();
                 }
                 //-----------------------------------------------------------------------------
-                //! \return If the work queue is empty.
-                auto isQueueEmpty() const
+                //! \return If the thread pool is idle.
+                auto isIdle() const
                 -> bool
                 {
-                    return m_qTasks.empty();
+                    return m_numActiveTasks == 0u;
                 }
 
             private:
@@ -394,6 +396,8 @@ namespace alpaka
                         if(popTask(currentTaskPackage))
                         {
                             currentTaskPackage->runTask();
+
+                            --m_numActiveTasks;
                         }
                         else
                         {
@@ -427,6 +431,7 @@ namespace alpaka
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
                 ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
+                std::atomic<std::uint32_t> m_numActiveTasks;
                 std::atomic<bool> m_bShutdownFlag;
             };
 
@@ -465,6 +470,7 @@ namespace alpaka
                     TIdx concurrentExecutionCount) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
+                    m_numActiveTasks(0u),
                     m_mtxWakeup(),
                     m_cvWakeup(),
                     m_bShutdownFlag(false)
@@ -523,7 +529,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Runs the given function on one of the pool in First In First Out (FIFO) order.
                 //!
-                //! \tparam TFnObj   The function type.
+                //! \tparam TFnObj  The function type.
                 //! \param task     Function object to be called on the pool.
                 //!                 Takes an arbitrary number of arguments and arbitrary return type.
                 //! \tparam TArgs   The argument types pack.
@@ -557,6 +563,7 @@ namespace alpaka
 
                     auto future(pTaskPackage->m_Promise.get_future());
 
+                    ++m_numActiveTasks;
                     {
                         std::lock_guard<TMutex> lock(m_mtxWakeup);
                         m_qTasks.push(std::move(upTaskPackage));
@@ -574,11 +581,11 @@ namespace alpaka
                     return m_vConcurrentExecs.size();
                 }
                 //-----------------------------------------------------------------------------
-                //! \return If the work queue is empty.
-                auto isQueueEmpty() const
+                //! \return If the thread pool is idle.
+                auto isIdle() const
                 -> bool
                 {
-                    return m_qTasks.empty();
+                    return m_numActiveTasks == 0u;
                 }
 
             private:
@@ -595,6 +602,8 @@ namespace alpaka
                         if(popTask(currentTaskPackage))
                         {
                             currentTaskPackage->runTask();
+
+                            --m_numActiveTasks;
                         }
                         {
                             std::unique_lock<TMutex> lock(m_mtxWakeup);
@@ -637,6 +646,7 @@ namespace alpaka
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
                 ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
+                std::atomic<std::uint32_t> m_numActiveTasks;
 
                 TMutex m_mtxWakeup;
                 TCondVar m_cvWakeup;

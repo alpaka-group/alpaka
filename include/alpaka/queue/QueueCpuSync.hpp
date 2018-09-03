@@ -53,7 +53,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST QueueCpuSyncImpl(
                         dev::DevCpu const & dev) :
-                            m_dev(dev)
+                            m_dev(dev),
+                            m_bCurrentlyExecutingTask(false)
                     {}
                     //-----------------------------------------------------------------------------
                     QueueCpuSyncImpl(QueueCpuSyncImpl const &) = delete;
@@ -68,6 +69,7 @@ namespace alpaka
 
                 public:
                     dev::DevCpu const m_dev;            //!< The device this queue is bound to.
+                    bool m_bCurrentlyExecutingTask;
                 };
             }
         }
@@ -171,8 +173,9 @@ namespace alpaka
                     TTask const & task)
                 -> void
                 {
-                    alpaka::ignore_unused(queue);
+                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = true;
                     task();
+                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = false;
                 }
             };
             //#############################################################################
@@ -186,8 +189,7 @@ namespace alpaka
                     queue::QueueCpuSync const & queue)
                 -> bool
                 {
-                    alpaka::ignore_unused(queue);
-                    return true;
+                    return !queue.m_spQueueImpl->m_bCurrentlyExecutingTask;
                 }
             };
         }
