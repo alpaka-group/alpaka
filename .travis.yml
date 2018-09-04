@@ -89,9 +89,9 @@ matrix:
     # gcc 6 ASan is triggered within libtbb.so
     # gcc 7 ASan introduced 'stack-use-after-scope' which is triggered by GOMP_parallel
     - name: gcc-4.9 Debug
-      env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=g++     CC=gcc   ALPAKA_CI_GCC_VER=4.9     CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.66.0 ALPAKA_CI_CMAKE_VER=3.7.2  ALPAKA_CI_SANITIZERS=      OMP_NUM_THREADS=4
+      env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=g++     CC=gcc   ALPAKA_CI_GCC_VER=4.9     CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.62.0 ALPAKA_CI_CMAKE_VER=3.7.2  ALPAKA_CI_SANITIZERS=      OMP_NUM_THREADS=4
     - name: gcc-5 Release
-      env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=g++     CC=gcc   ALPAKA_CI_GCC_VER=5       CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.62.0 ALPAKA_CI_CMAKE_VER=3.10.3 ALPAKA_CI_SANITIZERS=      OMP_NUM_THREADS=3
+      env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=g++     CC=gcc   ALPAKA_CI_GCC_VER=5       CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.66.0 ALPAKA_CI_CMAKE_VER=3.10.3 ALPAKA_CI_SANITIZERS=      OMP_NUM_THREADS=3
     - name: gcc-6 Debug
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:17.10 CXX=g++     CC=gcc   ALPAKA_CI_GCC_VER=6       CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.67.0 ALPAKA_CI_CMAKE_VER=3.9.6  ALPAKA_CI_SANITIZERS=      OMP_NUM_THREADS=2
     - name: gcc-7 Release
@@ -100,11 +100,11 @@ matrix:
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=g++     CC=gcc   ALPAKA_CI_GCC_VER=8       CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.68.0 ALPAKA_CI_CMAKE_VER=3.12.0 ALPAKA_CI_SANITIZERS=      OMP_NUM_THREADS=4
 
     # clang++
-    - name: clang-4 Debug
+    - name: clang-4 Debug UBSan
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:14.04 CXX=clang++ CC=clang ALPAKA_CI_CLANG_VER=4.0.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.64.0 ALPAKA_CI_CMAKE_VER=3.7.2  ALPAKA_CI_SANITIZERS=UBSan OMP_NUM_THREADS=4
     - name: clang-5 Debug
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=clang++ CC=clang ALPAKA_CI_CLANG_VER=5.0.2 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_BOOST_BRANCH=boost-1.67.0 ALPAKA_CI_CMAKE_VER=3.11.4 ALPAKA_CI_SANITIZERS=      OMP_NUM_THREADS=3
-    - name: clang-6 Release
+    - name: clang-6 Release ASan
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=clang++ CC=clang ALPAKA_CI_CLANG_VER=6.0.1 CMAKE_BUILD_TYPE=Release ALPAKA_CI_BOOST_BRANCH=boost-1.63.0 ALPAKA_CI_CMAKE_VER=3.8.2  ALPAKA_CI_SANITIZERS=ASan  OMP_NUM_THREADS=2
 
     ## CUDA 8.0
@@ -162,6 +162,10 @@ cache:
         - $ALPAKA_CI_DOCKER_CACHE_DIR
 
 script:
+    - sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install smem
+    - sudo smem
+    - sudo free -m -t
+
     - ./script/travis/print_travisEnv.sh
 
     - sudo apt-get -y --quiet install moreutils
@@ -169,6 +173,12 @@ script:
     - source ./script/travis/before_install.sh
     - ./script/travis/docker_install.sh | ts
     - ./script/travis/docker_run.sh | ts
+
+after_failure:
+    - sudo smem
+    - sudo free -m -t
+    # show actions of the OOM killer
+    - sudo dmesg
 
 notifications:
     email: false

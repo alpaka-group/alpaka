@@ -20,6 +20,8 @@
  */
 
 #include <alpaka/alpaka.hpp>
+
+#include <alpaka/test/Check.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
 namespace alpaka
@@ -66,15 +68,29 @@ namespace alpaka
                 TArgs const & ... args)
             -> bool
             {
+                // Allocate the result value
+                auto bufAccResult(alpaka::mem::buf::alloc<bool, Idx>(m_devAcc, static_cast<Idx>(1u)));
+                alpaka::mem::view::set(
+                    m_queue,
+                    bufAccResult,
+                    static_cast<std::uint8_t>(true),
+                    bufAccResult);
+
                 alpaka::kernel::exec<Acc>(
                     m_queue,
                     m_workDiv,
                     kernelFnObj,
+                    alpaka::mem::view::getPtrNative(bufAccResult),
                     args...);
 
+                // Copy the result value to the host
+                auto bufHostResult(alpaka::mem::buf::alloc<bool, Idx>(m_devHost, static_cast<Idx>(1u)));
+                alpaka::mem::view::copy(m_queue, bufHostResult, bufAccResult, bufAccResult);
                 alpaka::wait::wait(m_queue);
 
-                return true;
+                auto const result(*alpaka::mem::view::getPtrNative(bufHostResult));
+
+                return result;
             }
             //-----------------------------------------------------------------------------
             virtual ~KernelExecutionFixture()

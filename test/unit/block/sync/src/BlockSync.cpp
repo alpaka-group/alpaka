@@ -31,7 +31,6 @@
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
@@ -53,7 +52,8 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool * success) const
     -> void
     {
         using Idx = alpaka::idx::Idx<TAcc>;
@@ -76,7 +76,7 @@ public:
         // All other threads within the block should now have written their index into the shared memory.
         for(auto i(static_cast<Idx>(0u)); i < blockThreadExtent1D; ++i)
         {
-            BOOST_VERIFY(pBlockSharedArray[i] == i);
+            ALPAKA_CHECK(*success, pBlockSharedArray[i] == i);
         }
     }
 };
@@ -102,13 +102,15 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
                     BlockSyncTestKernel const & blockSharedMemDyn,
                     TVec const & blockThreadExtent,
-                    TVec const & threadElemExtent)
+                    TVec const & threadElemExtent,
+                    bool * success)
                 -> idx::Idx<TAcc>
                 {
                     using Idx = alpaka::idx::Idx<TAcc>;
 
                     alpaka::ignore_unused(blockSharedMemDyn);
                     alpaka::ignore_unused(threadElemExtent);
+                    alpaka::ignore_unused(success);
                     return
                         static_cast<idx::Idx<TAcc>>(sizeof(Idx)) * blockThreadExtent.prod();
                 }

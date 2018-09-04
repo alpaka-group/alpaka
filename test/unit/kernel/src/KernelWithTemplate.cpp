@@ -56,13 +56,17 @@ public:
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool * success) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        ALPAKA_CHECK(
+            *success,
+            static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
-        BOOST_VERIFY((std::is_same<std::int32_t, T>::value));
+        static_assert(
+            std::is_same<std::int32_t, T>::value,
+            "Incorrect additional kernel template parameter type!");
     }
 };
 
@@ -97,13 +101,17 @@ public:
         typename T>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
+        bool * success,
         T const &) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        ALPAKA_CHECK(
+            *success,
+            static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
-        BOOST_VERIFY((std::is_same<std::int32_t, T>::value));
+        static_assert(
+            std::is_same<std::int32_t, T>::value,
+            "Incorrect additional kernel template parameter type!");
     }
 };
 

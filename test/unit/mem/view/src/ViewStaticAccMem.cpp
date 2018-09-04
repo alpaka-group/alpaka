@@ -65,7 +65,7 @@ ALPAKA_STATIC_ACC_MEM_CONSTANT Elem g_constantMemory2DInitialized[3][2] =
 ALPAKA_STATIC_ACC_MEM_CONSTANT Elem g_constantMemory2DUninitialized[3][2];
 
 //#############################################################################
-//! Uses static device memory on the defined globally for the whole compilation unit.
+//! Uses static device memory on the accelerator defined globally for the whole compilation unit.
 struct StaticDeviceMemoryTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
@@ -74,6 +74,7 @@ struct StaticDeviceMemoryTestKernel
         typename TElem>
     ALPAKA_FN_ACC void operator()(
         TAcc const & acc,
+        bool * success,
         TElem const * const pConstantMem) const
     {
         auto const gridThreadExtent =
@@ -84,7 +85,7 @@ struct StaticDeviceMemoryTestKernel
         auto const offset = gridThreadExtent[1u] * gridThreadIdx[0u] + gridThreadIdx[1u];
         auto const val = offset;
 
-        BOOST_VERIFY(val == *(pConstantMem + offset));
+        ALPAKA_CHECK(*success, val == *(pConstantMem + offset));
     }
 };
 

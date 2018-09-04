@@ -229,7 +229,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TView>
-                ALPAKA_FN_HOST static auto begin(
+                ALPAKA_FN_HOST auto begin(
                     TView & view)
                 -> Iterator<TView>
                 {
@@ -239,7 +239,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TView>
-                ALPAKA_FN_HOST static auto end(
+                ALPAKA_FN_HOST auto end(
                     TView & view)
                 -> Iterator<TView>
                 {

@@ -202,45 +202,16 @@ namespace alpaka
                 os << std::endl;
             }
 
-#if defined(ALPAKA_CUDA_CI)
             //#############################################################################
             //! A std::tuple holding dimensions.
             using TestDims =
                 std::tuple<
                     alpaka::dim::DimInt<1u>,
-                    //alpaka::dim::DimInt<2u>,
-                    alpaka::dim::DimInt<3u>
-            // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
-#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
-                    /*,alpaka::dim::DimInt<4u>*/
-#endif
-                >;
-
-            //#############################################################################
-            //! A std::tuple holding idx types.
-            using TestIdxs =
-                std::tuple<
-                    std::size_t,
-                    //std::int64_t,
-                    std::uint64_t,
-                    std::int32_t,
-                    //std::uint32_t,
-                    //std::int16_t,
-                    std::uint16_t/*,
-                    // When Idx is a 8 bit integer, extents within the tests would be extremely limited
-                    // (especially when Dim is 4). Therefore, we do not test it.
-                    std::int8_t,
-                    std::uint8_t*/>;
-#else
-
-            //#############################################################################
-            //! A std::tuple holding dimensions.
-            using TestDims =
-                std::tuple<
-                    alpaka::dim::DimInt<1u>,
+#if !defined(ALPAKA_CUDA_CI)
                     alpaka::dim::DimInt<2u>,
+#endif
                     alpaka::dim::DimInt<3u>
-            // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
+                    // The CUDA acceleator does not currently support 4D buffers and 4D acceleration.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
                     ,alpaka::dim::DimInt<4u>
 #endif
@@ -253,17 +224,20 @@ namespace alpaka
                     // size_t is most probably identical to either std::uint64_t or std::uint32_t.
                     // This would lead to duplicate tests (especially test names) which is not allowed.
                     //std::size_t,
+#if !defined(ALPAKA_CI)
                     std::int64_t,
+#endif
                     std::uint64_t,
                     std::int32_t,
+#if !defined(ALPAKA_CI)
                     std::uint32_t,
-                    //std::int16_t,
+                    std::int16_t,
+#endif
                     std::uint16_t/*,
                     // When Idx is a 8 bit integer, extents within the tests would be extremely limited
                     // (especially when Dim is 4). Therefore, we do not test it.
                     std::int8_t,
                     std::uint8_t*/>;
-#endif
 
             namespace detail
             {

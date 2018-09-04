@@ -47,7 +47,7 @@ void ALPAKA_FN_ACC hiWorldFunction(
     Vec const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
     Vec1 const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(globalThreadIdx,
                                                               globalThreadExtent);
-                                                          
+
     printf("[z:%u, y:%u, x:%u][linear:%u] Hi world from a function",
            static_cast<unsigned>(globalThreadIdx[0]),
            static_cast<unsigned>(globalThreadIdx[1]),

@@ -66,11 +66,13 @@ struct KernelNoTemplateCpu
     //-----------------------------------------------------------------------------
     ALPAKA_FN_ACC
     auto operator()(
-        AccCpu const & acc) const
+        AccCpu const & acc,
+        bool* success) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        ALPAKA_CHECK(
+            *success,
+            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -97,11 +99,13 @@ struct KernelNoTemplateGpu
     //-----------------------------------------------------------------------------
     ALPAKA_FN_ACC
     auto operator()(
-        AccGpu const & acc) const
+        AccGpu const & acc,
+        bool* success) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        ALPAKA_CHECK(
+            *success,
+            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -129,11 +133,13 @@ struct KernelWithoutTemplateParamCpu
         typename TNotUsed = void>
     ALPAKA_FN_ACC
     auto operator()(
-        AccCpu const & acc) const
+        AccCpu const & acc,
+        bool* success) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        ALPAKA_CHECK(
+            *success,
+            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -161,11 +167,13 @@ struct KernelWithoutTemplateParamGpu
         typename TNotUsed = void>
     ALPAKA_FN_ACC
     auto operator()(
-        AccGpu const & acc) const
+        AccGpu const & acc,
+        bool* success) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
+        ALPAKA_CHECK(
+            *success,
+            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 

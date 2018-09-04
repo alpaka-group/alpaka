@@ -57,21 +57,22 @@ public:
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
+        TAcc const & acc,
+        bool* success) const
     -> void
     {
-        // Do something useless on the accelerator.
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc);
-        
-        constexpr double epsilon = std::numeric_limits< double >::epsilon();
-        this->ignoreUnused(epsilon);
+        alpaka::ignore_unused(acc);
+
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4127)  // warning C4127: conditional expression is constant
+#endif
+        constexpr auto max = std::numeric_limits< std::uint32_t >::max();
+        ALPAKA_CHECK(*success, 0 != max);
+#if BOOST_COMP_MSVC
+    #pragma warning(pop)
+#endif
     }
-private:
-    //! ignore unused variables
-    template<typename T>
-    ALPAKA_FN_ACC auto ignoreUnused(T const &) const
-    -> void
-    {}
 };
 
 //-----------------------------------------------------------------------------

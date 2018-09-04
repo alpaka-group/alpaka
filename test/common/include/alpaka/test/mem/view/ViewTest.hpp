@@ -23,6 +23,7 @@
 
 #include <alpaka/alpaka.hpp>
 
+#include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/mem/view/Iterator.hpp>
 
 #if BOOST_COMP_CLANG
@@ -33,6 +34,8 @@
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
+
+#include <numeric>
 
 namespace alpaka
 {
@@ -54,7 +57,7 @@ namespace alpaka
                     typename TIdx,
                     typename TDev,
                     typename TView>
-                auto testViewImmutable(
+                ALPAKA_FN_HOST auto testViewImmutable(
                     TView const & view,
                     TDev const & dev,
                     alpaka::vec::Vec<TDim, TIdx> const & extent,
@@ -177,19 +180,21 @@ namespace alpaka
                         typename TIter>
                     ALPAKA_FN_ACC void operator()(
                         TAcc const & acc,
+                        bool * success,
                         TIter const & begin,
                         TIter const & end,
                         std::uint8_t const & byte) const
                     {
+                        alpaka::ignore_unused(acc);
+
                         constexpr auto elemSizeInByte = sizeof(decltype(*begin));
-                        (void)acc;
                         for(auto it = begin; it != end; ++it)
                         {
                             auto const& elem = *it;
                             auto const pBytes = reinterpret_cast<std::uint8_t const *>(&elem);
                             for(std::size_t i = 0u; i < elemSizeInByte; ++i)
                             {
-                                BOOST_VERIFY(pBytes[i] == byte);
+                                ALPAKA_CHECK(*success, pBytes[i] == byte);
                             }
                         }
                     }
@@ -197,10 +202,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc,
-                    typename TView,
-                    typename TQueue>
-                auto verifyBytesSet(
-                    TQueue & queue,
+                    typename TView>
+                ALPAKA_FN_HOST auto verifyBytesSet(
                     TView const & view,
                     std::uint8_t const & byte)
                 -> void
@@ -208,25 +211,18 @@ namespace alpaka
                     using Dim = alpaka::dim::Dim<TView>;
                     using Idx = alpaka::idx::Idx<TView>;
 
-                    using Vec = alpaka::vec::Vec<Dim, Idx>;
-                    auto const elementsPerThread(Vec::ones());
-                    auto const threadsPerBlock(Vec::ones());
-                    auto const blocksPerGrid(Vec::ones());
+                    alpaka::test::KernelExecutionFixture<TAcc> fixture(
+                        alpaka::vec::Vec<Dim, Idx>::ones());
 
-                    auto const workdiv(
-                        alpaka::workdiv::WorkDivMembers<Dim, Idx>(
-                            blocksPerGrid,
-                            threadsPerBlock,
-                            elementsPerThread));
                     VerifyBytesSetKernel verifyBytesSet;
-                    alpaka::kernel::exec<TAcc>(
-                        queue,
-                        workdiv,
-                        verifyBytesSet,
-                        alpaka::test::mem::view::begin(view),
-                        alpaka::test::mem::view::end(view),
-                        byte);
-                    alpaka::wait::wait(queue);
+
+                    BOOST_REQUIRE_EQUAL(
+                        true,
+                        fixture(
+                            verifyBytesSet,
+                            alpaka::test::mem::view::begin(view),
+                            alpaka::test::mem::view::end(view),
+                            byte));
                 }
 
                 //#############################################################################
@@ -244,18 +240,20 @@ namespace alpaka
                         typename TIterB>
                     ALPAKA_FN_ACC void operator()(
                         TAcc const & acc,
+                        bool * success,
                         TIterA beginA,
                         TIterA const & endA,
                         TIterB beginB) const
                     {
-                        (void)acc;
+                        alpaka::ignore_unused(acc);
+
                         for(; beginA != endA; ++beginA, ++beginB)
                         {
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
 #endif
-                            BOOST_VERIFY(*beginA == *beginB);
+                            ALPAKA_CHECK(*success, *beginA == *beginB);
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
@@ -270,10 +268,8 @@ namespace alpaka
                 template<
                     typename TAcc,
                     typename TViewB,
-                    typename TViewA,
-                    typename TQueue>
-                auto verifyViewsEqual(
-                    TQueue & queue,
+                    typename TViewA>
+                ALPAKA_FN_HOST auto verifyViewsEqual(
                     TViewA const & viewA,
                     TViewB const & viewB)
                 -> void
@@ -281,29 +277,22 @@ namespace alpaka
                     using DimA = alpaka::dim::Dim<TViewA>;
                     using DimB = alpaka::dim::Dim<TViewB>;
                     static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
-                    using SizeA = alpaka::idx::Idx<TViewA>;
-                    using SizeB = alpaka::idx::Idx<TViewB>;
-                    static_assert(std::is_same<SizeA, SizeB>::value, "viewA and viewB are required to have identical Idx");
+                    using IdxA = alpaka::idx::Idx<TViewA>;
+                    using IdxB = alpaka::idx::Idx<TViewB>;
+                    static_assert(std::is_same<IdxA, IdxB>::value, "viewA and viewB are required to have identical Idx");
 
-                    using Vec = alpaka::vec::Vec<DimA, SizeA>;
-                    auto const elementsPerThread(Vec::ones());
-                    auto const threadsPerBlock(Vec::ones());
-                    auto const blocksPerGrid(Vec::ones());
+                    alpaka::test::KernelExecutionFixture<TAcc> fixture(
+                        alpaka::vec::Vec<DimA, IdxA>::ones());
 
-                    auto const workdiv(
-                        alpaka::workdiv::WorkDivMembers<DimA, SizeA>(
-                            blocksPerGrid,
-                            threadsPerBlock,
-                            elementsPerThread));
                     VerifyViewsEqualKernel verifyViewsEqualKernel;
-                    alpaka::kernel::exec<TAcc>(
-                        queue,
-                        workdiv,
-                        verifyViewsEqualKernel,
-                        alpaka::test::mem::view::begin(viewA),
-                        alpaka::test::mem::view::end(viewA),
-                        alpaka::test::mem::view::begin(viewB));
-                    alpaka::wait::wait(queue);
+
+                    BOOST_REQUIRE_EQUAL(
+                        true,
+                        fixture(
+                            verifyViewsEqualKernel,
+                            alpaka::test::mem::view::begin(viewA),
+                            alpaka::test::mem::view::end(viewA),
+                            alpaka::test::mem::view::begin(viewB)));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -311,7 +300,7 @@ namespace alpaka
                 template<
                     typename TView,
                     typename TQueue>
-                auto iotaFillView(
+                ALPAKA_FN_HOST auto iotaFillView(
                     TQueue & queue,
                     TView & view)
                 -> void
@@ -346,7 +335,7 @@ namespace alpaka
                     typename TAcc,
                     typename TView,
                     typename TQueue>
-                auto testViewMutable(
+                ALPAKA_FN_HOST auto testViewMutable(
                     TQueue & queue,
                     TView & view)
                 -> void
@@ -371,7 +360,8 @@ namespace alpaka
                     {
                         std::uint8_t const byte(static_cast<uint8_t>(42u));
                         alpaka::mem::view::set(queue, view, byte, extent);
-                        verifyBytesSet<TAcc>(queue, view, byte);
+                        alpaka::wait::wait(queue);
+                        verifyBytesSet<TAcc>(view, byte);
                     }
 
                     //-----------------------------------------------------------------------------
@@ -388,7 +378,8 @@ namespace alpaka
                             auto srcBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
                             iotaFillView(queue, srcBufAcc);
                             alpaka::mem::view::copy(queue, view, srcBufAcc, extent);
-                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(queue, view, srcBufAcc);
+                            alpaka::wait::wait(queue);
+                            verifyViewsEqual<TAcc>(view, srcBufAcc);
                         }
 
                         //-----------------------------------------------------------------------------
@@ -396,7 +387,8 @@ namespace alpaka
                         {
                             auto dstBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
                             alpaka::mem::view::copy(queue, dstBufAcc, view, extent);
-                            alpaka::test::mem::view::verifyViewsEqual<TAcc>(queue, dstBufAcc, view);
+                            alpaka::wait::wait(queue);
+                            verifyViewsEqual<TAcc>(dstBufAcc, view);
                         }
                     }
                 }

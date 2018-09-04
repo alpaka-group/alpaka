@@ -31,7 +31,6 @@
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <boost/assert.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
@@ -53,6 +52,7 @@ public:
         typename T>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
+        bool * success,
         T operandOrig) const
     -> void
     {
@@ -69,9 +69,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig + value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -85,9 +85,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig - value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -101,9 +101,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = (operandOrig < value) ? operandOrig : value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -117,9 +117,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = (operandOrig > value) ? operandOrig : value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -133,9 +133,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -150,9 +150,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig + 1;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -167,9 +167,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig - 1;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -183,9 +183,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig & value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -199,9 +199,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig | value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -215,9 +215,9 @@ public:
                         acc,
                         &operand,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig ^ value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -233,9 +233,9 @@ public:
                         &operand,
                         compare,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = value;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
 
         //-----------------------------------------------------------------------------
@@ -251,9 +251,9 @@ public:
                         &operand,
                         compare,
                         value);
-            BOOST_VERIFY(operandOrig == ret);
+            ALPAKA_CHECK(*success, operandOrig == ret);
             T const reference = operandOrig;
-            BOOST_VERIFY(operand == reference);
+            ALPAKA_CHECK(*success, operand == reference);
         }
     }
 };
