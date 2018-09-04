@@ -88,6 +88,7 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuOmp2Blocks<TArgs...>>
 #endif
 
 #ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
 //#############################################################################
 //! OpenMP 4 defines
 //!
@@ -110,6 +111,7 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuOmp4<TArgs...>>
 {
     using Iterator = IteratorCpu<alpaka::acc::AccCpuOmp4<TArgs...>, T, TBuf>;
 };
+#endif
 #endif
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
@@ -163,6 +165,7 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuThreads<TArgs...>>
 #endif
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
 //#############################################################################
 //! CUDA defines
 //!
@@ -185,4 +188,5 @@ struct GetIterator<T, TBuf, alpaka::acc::AccGpuCudaRt<TArgs...>>
 {
     using Iterator = IteratorGpu<alpaka::acc::AccGpuCudaRt<TArgs...>, T, TBuf>;
 };
+#endif
 #endif
