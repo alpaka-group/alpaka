@@ -159,11 +159,8 @@ int main()
     auto addFn = [] ALPAKA_FN_ACC(T a, T b) -> T { return a + b; };
 
     // reduce
-    T result = reduce<T, decltype(addFn)>(devHost, devAcc, queue, n, hostMemory, addFn);
-
-    // clean up
-    alpaka::dev::reset(devAcc);
-
+    T result = reduce<T>(devHost, devAcc, queue, n, hostMemory, addFn);
+    
     // check result
     T expectedResult = static_cast<T>(n / 2 * (n + 1));
     if (result != expectedResult)
