@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2018 Benjamin Worpitz, Alexander Matthes
 *
 * This file is part of alpaka.
 *
@@ -577,6 +577,28 @@ namespace alpaka
 #else
                         alpaka::ignore_unused(bufImpl);
                         return false;
+#endif
+                    }
+                };
+                //#############################################################################
+                //! The BufCpu memory prepareForAsyncCopy trait specialization.
+                template<
+                    typename TElem,
+                    typename TDim,
+                    typename TIdx>
+                struct PrepareForAsyncCopy<
+                    mem::buf::BufCpu<TElem, TDim, TIdx>>
+                {
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto prepareForAsyncCopy(
+                        mem::buf::BufCpu<TElem, TDim, TIdx> & buf)
+                    -> void
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                        // for use with cuda the cpu buffer has to be pinned,
+                        // for exclusive cpu use, no preparing is needed
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
+                        pin( buf );
 #endif
                     }
                 };
