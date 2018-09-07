@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2018 Benjamin Worpitz, Alexander Matthes
 *
 * This file is part of alpaka.
 *

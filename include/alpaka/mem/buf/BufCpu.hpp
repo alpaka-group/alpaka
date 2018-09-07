@@ -599,6 +599,8 @@ namespace alpaka
                         // for exclusive cpu use, no preparing is needed
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
                         pin( buf );
+#else
+                        alpaka::ignore_unused( buf );
 #endif
                     }
                 };
