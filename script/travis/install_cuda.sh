@@ -26,9 +26,17 @@ source ./script/travis/travis_retry.sh
 # e: exit as soon as one command returns a non-zero exit code.
 set -euo pipefail
 
+: ${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME?"ALPAKA_CI_DOCKER_BASE_IMAGE_NAME must be specified"}
 : ${ALPAKA_CI_CUDA_DIR?"ALPAKA_CI_CUDA_DIR must be specified"}
 : ${ALPAKA_CUDA_VERSION?"ALPAKA_CUDA_VERSION must be specified"}
 : ${ALPAKA_CUDA_COMPILER?"ALPAKA_CUDA_COMPILER must be specified"}
+
+# Ubuntu 18.04 requires some extra keys for verification
+if [[ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == *"18.04"* ]]
+then
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install dirmngr gpg-agent
+    travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
+fi
 
 # Set the correct CUDA downloads
 if [ "${ALPAKA_CUDA_VERSION}" == "8.0" ]
