@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             BOOST_REQUIRE_EQUAL(false, alpaka::event::test(e2));
 
             // re-enqueue should be possible
-            // q1 = [k1, k2, e1]
+            // q1 = [k1, e1-old, k2, e1]
             alpaka::queue::enqueue(q1, e1);
             BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k1));
             BOOST_REQUIRE_EQUAL(false, alpaka::event::test(k2));

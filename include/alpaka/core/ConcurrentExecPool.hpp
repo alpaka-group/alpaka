@@ -350,7 +350,7 @@ namespace alpaka
 #if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
                     auto boundTask(std::bind(task, args...));
 #else
-                    auto boundTask([=](){task(args...);});
+                    auto boundTask([=](){return task(args...);});
 #endif
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
@@ -551,7 +551,7 @@ namespace alpaka
 #if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
                     auto boundTask(std::bind(task, args...));
 #else
-                    auto boundTask([=](){task(args...);});
+                    auto boundTask([=](){return task(args...);});
 #endif
 
                     // Return type of the function object, can be void via specialization of TaskPkg.
