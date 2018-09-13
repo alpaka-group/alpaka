@@ -174,7 +174,7 @@ namespace alpaka
                 TaskPkg(
                     TFnObj && func) :
                         m_Promise(),
-                        m_FnObj(std::forward<TFnObj>(func))
+                        m_FnObj(std::move(func))
                 {}
 
             private:
@@ -223,7 +223,7 @@ namespace alpaka
                 TaskPkg(
                     TFnObj && func) :
                         m_Promise(),
-                        m_FnObj(std::forward<TFnObj>(func))
+                        m_FnObj(std::move(func))
                 {}
 
             private:
@@ -253,6 +253,37 @@ namespace alpaka
                 // `std::remove_reference` enforces the function object to be copied.
                 typename std::remove_reference<TFnObj>::type m_FnObj;
             };
+
+            //-----------------------------------------------------------------------------
+            template<
+                typename TFnObj0,
+                typename TFnObj1,
+                typename = typename std::enable_if<!std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>::type>
+            auto invokeBothReturnFirst(
+                    TFnObj0 && fn0,
+                    TFnObj1 && fn1)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+             -> decltype(std::declval<TFnObj0>()())
+#endif
+            {
+                auto ret = fn0();
+                fn1();
+                return std::move(ret);
+            }
+
+            //-----------------------------------------------------------------------------
+            template<
+                typename TFnObj0,
+                typename TFnObj1,
+                typename = typename std::enable_if<std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>::type>
+            auto invokeBothReturnFirst(
+                    TFnObj0 && fn0,
+                    TFnObj1 && fn1)
+            -> void
+            {
+                fn0();
+                fn1();
+            }
 
             //#############################################################################
             //! ConcurrentExecPool using yield.
@@ -351,16 +382,29 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
+                // FIXME: gcc 4.9 does not support the syntax below. Restricting the return type to void works because we never use something else within alpaka.
+                -> decltype(std::declval<TPromise<void>>().get_future())
+#else
                 -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
-                {
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                    auto boundTask(std::bind(task, args...));
-#else
-                    auto boundTask([=](){return task(args...);});
 #endif
-                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask)>;
-                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                {
+                    auto boundTask([=](){return task(args...);});
+                    auto decrementNumActiveTasks = [this](){--m_numActiveTasks;};
+
+                    auto extendedTask(
+                        [boundTask, decrementNumActiveTasks]()
+                        {
+                            return
+                                invokeBothReturnFirst(
+                                    std::move(boundTask),
+                                    std::move(decrementNumActiveTasks)
+                                );
+                        });
+
+                    using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
+                    auto pTaskPackage(new TaskPackage(std::move(extendedTask)));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
                     auto future(pTaskPackage->m_Promise.get_future());
@@ -399,8 +443,6 @@ namespace alpaka
                         if(popTask(currentTaskPackage))
                         {
                             currentTaskPackage->runTask();
-
-                            --m_numActiveTasks;
                         }
                         else
                         {
@@ -548,16 +590,29 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
+                // FIXME: gcc 4.9 does not support the syntax below. Restricting the return type to void works because we never use something else within alpaka.
+                -> decltype(std::declval<TPromise<void>>().get_future())
+#else
                 -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
-                {
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                    auto boundTask(std::bind(task, args...));
-#else
-                    auto boundTask([=](){return task(args...);});
 #endif
-                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask)>;
-                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                {
+                    auto boundTask([=](){return task(args...);});
+                    auto decrementNumActiveTasks = [this](){--m_numActiveTasks;};
+
+                    auto extendedTask(
+                        [boundTask, decrementNumActiveTasks]()
+                        {
+                            return
+                                invokeBothReturnFirst(
+                                    std::move(boundTask),
+                                    std::move(decrementNumActiveTasks)
+                                );
+                        });
+
+                    using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
+                    auto pTaskPackage(new TaskPackage(std::move(extendedTask)));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
                     auto future(pTaskPackage->m_Promise.get_future());
@@ -601,8 +656,6 @@ namespace alpaka
                         if(popTask(currentTaskPackage))
                         {
                             currentTaskPackage->runTask();
-
-                            --m_numActiveTasks;
                         }
                         {
                             std::unique_lock<TMutex> lock(m_mtxWakeup);
