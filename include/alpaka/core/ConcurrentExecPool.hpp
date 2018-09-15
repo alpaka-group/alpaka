@@ -150,6 +150,13 @@ namespace alpaka
 #endif
 
             //#############################################################################
+            template<
+                template<typename TFnObjReturn> class TPromise,
+                typename TFnObj,
+                typename TFnObjReturn = decltype(std::declval<TFnObj>()())>
+            class TaskPkg;
+
+            //#############################################################################
             //! TaskPkg with return type.
             //!
             //! \tparam TPromise The promise type returned by the task.
@@ -352,11 +359,7 @@ namespace alpaka
 #else
                     auto boundTask([=](){return task(args...);});
 #endif
-
-                    // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = decltype(task(args...));
-                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
-
+                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask)>;
                     auto pTaskPackage(new TaskPackage(std::move(boundTask)));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
@@ -553,11 +556,7 @@ namespace alpaka
 #else
                     auto boundTask([=](){return task(args...);});
 #endif
-
-                    // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = decltype(task(args...));
-                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
-
+                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask)>;
                     auto pTaskPackage(new TaskPackage(std::move(boundTask)));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
