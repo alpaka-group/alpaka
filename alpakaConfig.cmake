@@ -373,6 +373,8 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             OPTION(ALPAKA_CUDA_FTZ "Set flush to zero for GPU" OFF)
             OPTION(ALPAKA_CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
             OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
+            OPTION(ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA "Enable experimental, extended host-device lambdas in NVCC" ON)
+            OPTION(ALPAKA_CUDA_NVCC_EXPT_RELAXED_CONSTEXPR "Enable experimental, relaxed constexpr in NVCC" ON)
 
             IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
                 IF(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -488,8 +490,13 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
                 ENDIF()
 
-                LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
-                LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
+
+                IF(ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA)
+                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
+                ENDIF()
+                IF(ALPAKA_CUDA_NVCC_EXPT_RELAXED_CONSTEXPR)
+                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
+                ENDIF()
 
                 FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
