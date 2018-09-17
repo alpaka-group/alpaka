@@ -77,9 +77,8 @@ namespace alpaka
                     }
 
                     //-----------------------------------------------------------------------------
-                    auto wait(std::size_t const & enqueueCount) noexcept -> void
+                    auto wait(std::size_t const & enqueueCount, std::unique_lock<std::mutex>& lk) noexcept -> void
                     {
-                        std::unique_lock<std::mutex> lk(m_mutex);
                         assert(enqueueCount <= m_enqueueCount);
 
                         while(enqueueCount > m_LastReadyEnqueueCount)
@@ -273,6 +272,7 @@ namespace alpaka
 
                     auto spEventImpl(event.m_spEventImpl);
 
+                    std::promise<void> promise;
                     {
                         // Setting the event state and enqueuing it has to be atomic.
                         std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
@@ -280,9 +280,9 @@ namespace alpaka
                         ++spEventImpl->m_enqueueCount;
                         // NOTE: Difference to async version: directly set the event state instead of enqueuing.
                         spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+
+                        spEventImpl->m_future = promise.get_future();
                     }
-                    std::promise<void> promise;
-                    spEventImpl->m_future = promise.get_future();
                     promise.set_value();
                 }
             };
@@ -343,7 +343,10 @@ namespace alpaka
                     std::shared_ptr<event::cpu::detail::EventCpuImpl> const & spEventImpl)
                 -> void
                 {
-                    spEventImpl->wait(spEventImpl->m_enqueueCount);
+                    std::unique_lock<std::mutex> lk(spEventImpl->m_mutex);
+
+                    auto const enqueueCount = spEventImpl->m_enqueueCount;
+                    spEventImpl->wait(enqueueCount, lk);
                 }
             };
             //#############################################################################
@@ -379,7 +382,8 @@ namespace alpaka
                         spQueueImpl->m_workerThread.enqueueTask(
                             [spEventImpl, enqueueCount]()
                             {
-                                spEventImpl->wait(enqueueCount);
+                                std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
+                                spEventImpl->wait(enqueueCount, lk2);
                             });
 #endif
                     }
