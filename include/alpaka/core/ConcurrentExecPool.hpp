@@ -391,7 +391,7 @@ namespace alpaka
 #endif
                 {
                     auto boundTask([=](){return task(args...);});
-                    auto decrementNumActiveTasks = [this](){--m_numActiveTasks;};
+                    auto decrementNumActiveTasks([this](){--m_numActiveTasks;});
 
                     auto extendedTask(
                         [boundTask, decrementNumActiveTasks]()
@@ -599,7 +599,7 @@ namespace alpaka
 #endif
                 {
                     auto boundTask([=](){return task(args...);});
-                    auto decrementNumActiveTasks = [this](){--m_numActiveTasks;};
+                    auto decrementNumActiveTasks([this](){--m_numActiveTasks;});
 
                     auto extendedTask(
                         [boundTask, decrementNumActiveTasks]()
