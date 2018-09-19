@@ -150,6 +150,13 @@ namespace alpaka
 #endif
 
             //#############################################################################
+            template<
+                template<typename TFnObjReturn> class TPromise,
+                typename TFnObj,
+                typename TFnObjReturn = decltype(std::declval<TFnObj>()())>
+            class TaskPkg;
+
+            //#############################################################################
             //! TaskPkg with return type.
             //!
             //! \tparam TPromise The promise type returned by the task.
@@ -167,7 +174,7 @@ namespace alpaka
                 TaskPkg(
                     TFnObj && func) :
                         m_Promise(),
-                        m_FnObj(std::forward<TFnObj>(func))
+                        m_FnObj(std::move(func))
                 {}
 
             private:
@@ -216,7 +223,7 @@ namespace alpaka
                 TaskPkg(
                     TFnObj && func) :
                         m_Promise(),
-                        m_FnObj(std::forward<TFnObj>(func))
+                        m_FnObj(std::move(func))
                 {}
 
             private:
@@ -246,6 +253,37 @@ namespace alpaka
                 // `std::remove_reference` enforces the function object to be copied.
                 typename std::remove_reference<TFnObj>::type m_FnObj;
             };
+
+            //-----------------------------------------------------------------------------
+            template<
+                typename TFnObj0,
+                typename TFnObj1,
+                typename = typename std::enable_if<!std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>::type>
+            auto invokeBothReturnFirst(
+                    TFnObj0 && fn0,
+                    TFnObj1 && fn1)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+             -> decltype(std::declval<TFnObj0>()())
+#endif
+            {
+                auto ret = fn0();
+                fn1();
+                return std::move(ret);
+            }
+
+            //-----------------------------------------------------------------------------
+            template<
+                typename TFnObj0,
+                typename TFnObj1,
+                typename = typename std::enable_if<std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>::type>
+            auto invokeBothReturnFirst(
+                    TFnObj0 && fn0,
+                    TFnObj1 && fn1)
+            -> void
+            {
+                fn0();
+                fn1();
+            }
 
             //#############################################################################
             //! ConcurrentExecPool using yield.
@@ -277,6 +315,7 @@ namespace alpaka
                     TIdx concurrentExecutionCount) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
+                    m_numActiveTasks(0u),
                     m_bShutdownFlag(false)
                 {
                     if(concurrentExecutionCount < 1)
@@ -327,7 +366,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Runs the given function on one of the pool in First In First Out (FIFO) order.
                 //!
-                //! \tparam TFnObj   The function type.
+                //! \tparam TFnObj  The function type.
                 //! \param task     Function object to be called on the pool.
                 //!                 Takes an arbitrary number of arguments and arbitrary return type.
                 //! \tparam TArgs   The argument types pack.
@@ -343,24 +382,34 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
+                // FIXME: gcc 4.9 does not support the syntax below. Restricting the return type to void works because we never use something else within alpaka.
+                -> decltype(std::declval<TPromise<void>>().get_future())
+#else
                 -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
-                {
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                    auto boundTask(std::bind(task, args...));
-#else
-                    auto boundTask([=](){task(args...);});
 #endif
+                {
+                    auto boundTask([=](){return task(args...);});
+                    auto decrementNumActiveTasks([this](){--m_numActiveTasks;});
 
-                    // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = decltype(task(args...));
-                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
+                    auto extendedTask(
+                        [boundTask, decrementNumActiveTasks]()
+                        {
+                            return
+                                invokeBothReturnFirst(
+                                    std::move(boundTask),
+                                    std::move(decrementNumActiveTasks)
+                                );
+                        });
 
-                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                    using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
+                    auto pTaskPackage(new TaskPackage(std::move(extendedTask)));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
                     auto future(pTaskPackage->m_Promise.get_future());
 
+                    ++m_numActiveTasks;
                     m_qTasks.push(std::move(upTaskPackage));
 
                     return future;
@@ -373,11 +422,11 @@ namespace alpaka
                     return m_vConcurrentExecs.size();
                 }
                 //-----------------------------------------------------------------------------
-                //! \return If the work queue is empty.
-                auto isQueueEmpty() const
+                //! \return If the thread pool is idle.
+                auto isIdle() const
                 -> bool
                 {
-                    return m_qTasks.empty();
+                    return m_numActiveTasks == 0u;
                 }
 
             private:
@@ -427,6 +476,7 @@ namespace alpaka
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
                 ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
+                std::atomic<std::uint32_t> m_numActiveTasks;
                 std::atomic<bool> m_bShutdownFlag;
             };
 
@@ -465,6 +515,7 @@ namespace alpaka
                     TIdx concurrentExecutionCount) :
                     m_vConcurrentExecs(),
                     m_qTasks(),
+                    m_numActiveTasks(0u),
                     m_mtxWakeup(),
                     m_cvWakeup(),
                     m_bShutdownFlag(false)
@@ -523,7 +574,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Runs the given function on one of the pool in First In First Out (FIFO) order.
                 //!
-                //! \tparam TFnObj   The function type.
+                //! \tparam TFnObj  The function type.
                 //! \param task     Function object to be called on the pool.
                 //!                 Takes an arbitrary number of arguments and arbitrary return type.
                 //! \tparam TArgs   The argument types pack.
@@ -539,24 +590,34 @@ namespace alpaka
                     TFnObj && task,
                     TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
+                // FIXME: gcc 4.9 does not support the syntax below. Restricting the return type to void works because we never use something else within alpaka.
+                -> decltype(std::declval<TPromise<void>>().get_future())
+#else
                 -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
 #endif
-                {
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                    auto boundTask(std::bind(task, args...));
-#else
-                    auto boundTask([=](){task(args...);});
 #endif
+                {
+                    auto boundTask([=](){return task(args...);});
+                    auto decrementNumActiveTasks([this](){--m_numActiveTasks;});
 
-                    // Return type of the function object, can be void via specialization of TaskPkg.
-                    using FnObjReturn = decltype(task(args...));
-                    using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
+                    auto extendedTask(
+                        [boundTask, decrementNumActiveTasks]()
+                        {
+                            return
+                                invokeBothReturnFirst(
+                                    std::move(boundTask),
+                                    std::move(decrementNumActiveTasks)
+                                );
+                        });
 
-                    auto pTaskPackage(new TaskPackage(std::move(boundTask)));
+                    using TaskPackage = TaskPkg<TPromise, decltype(extendedTask)>;
+                    auto pTaskPackage(new TaskPackage(std::move(extendedTask)));
                     std::shared_ptr<ITaskPkg> upTaskPackage(pTaskPackage);
 
                     auto future(pTaskPackage->m_Promise.get_future());
 
+                    ++m_numActiveTasks;
                     {
                         std::lock_guard<TMutex> lock(m_mtxWakeup);
                         m_qTasks.push(std::move(upTaskPackage));
@@ -574,11 +635,11 @@ namespace alpaka
                     return m_vConcurrentExecs.size();
                 }
                 //-----------------------------------------------------------------------------
-                //! \return If the work queue is empty.
-                auto isQueueEmpty() const
+                //! \return If the thread pool is idle.
+                auto isIdle() const
                 -> bool
                 {
-                    return m_qTasks.empty();
+                    return m_numActiveTasks == 0u;
                 }
 
             private:
@@ -637,6 +698,7 @@ namespace alpaka
             private:
                 std::vector<TConcurrentExec> m_vConcurrentExecs;
                 ThreadSafeQueue<std::shared_ptr<ITaskPkg>> m_qTasks;
+                std::atomic<std::uint32_t> m_numActiveTasks;
 
                 TMutex m_mtxWakeup;
                 TCondVar m_cvWakeup;
