@@ -51,6 +51,7 @@
 
 // Implementation details.
 #include <alpaka/core/BoostPredef.hpp>
+#include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/dev/DevCudaRt.hpp>
 
@@ -160,23 +161,23 @@ namespace alpaka
 
                     return {
                         // m_multiProcessorCount
-                        static_cast<TIdx>(cudaDevProp.multiProcessorCount),
+                        alpaka::core::clipCast<TIdx>(cudaDevProp.multiProcessorCount),
                         // m_gridBlockExtentMax
                         extent::getExtentVecEnd<TDim>(
                             vec::Vec<dim::DimInt<3u>, TIdx>(
-                                static_cast<TIdx>(cudaDevProp.maxGridSize[2]),
-                                static_cast<TIdx>(cudaDevProp.maxGridSize[1]),
-                                static_cast<TIdx>(cudaDevProp.maxGridSize[0]))),
+                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxGridSize[2u]),
+                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxGridSize[1u]),
+                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxGridSize[0u]))),
                         // m_gridBlockCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
                         extent::getExtentVecEnd<TDim>(
                             vec::Vec<dim::DimInt<3u>, TIdx>(
-                                static_cast<TIdx>(cudaDevProp.maxThreadsDim[2]),
-                                static_cast<TIdx>(cudaDevProp.maxThreadsDim[1]),
-                                static_cast<TIdx>(cudaDevProp.maxThreadsDim[0]))),
+                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsDim[2u]),
+                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsDim[1u]),
+                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsDim[0u]))),
                         // m_blockThreadCountMax
-                        static_cast<TIdx>(cudaDevProp.maxThreadsPerBlock),
+                        alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsPerBlock),
                         // m_threadElemExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax

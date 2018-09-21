@@ -46,6 +46,7 @@
 
 // Implementation details.
 #include <alpaka/core/BoostPredef.hpp>
+#include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
@@ -186,7 +187,7 @@ namespace alpaka
 #endif
                     return {
                         // m_multiProcessorCount
-                        std::max(static_cast<TIdx>(1), static_cast<TIdx>(std::thread::hardware_concurrency())),   // \TODO: This may be inaccurate.
+                        std::max(static_cast<TIdx>(1), alpaka::core::clipCast<TIdx>(std::thread::hardware_concurrency())),   // \TODO: This may be inaccurate.
                         // m_gridBlockExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax

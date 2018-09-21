@@ -45,6 +45,7 @@
 
 // Implementation details.
 #include <alpaka/core/BoostPredef.hpp>
+#include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
@@ -182,7 +183,7 @@ namespace alpaka
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency can return 0, so 1 is the default case?
-                    auto const blockThreadCountMax(std::max(static_cast<TIdx>(1), static_cast<TIdx>(std::thread::hardware_concurrency() * 8)));
+                    auto const blockThreadCountMax(std::max(static_cast<TIdx>(1), alpaka::core::clipCast<TIdx>(std::thread::hardware_concurrency() * 8)));
 #endif
                     return {
                         // m_multiProcessorCount

@@ -49,6 +49,7 @@
 #include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
+#include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
@@ -177,9 +178,9 @@ namespace alpaka
                     alpaka::ignore_unused(dev);
 
 #ifdef ALPAKA_CI
-                    auto const blockThreadCountMax(static_cast<TIdx>(std::min(4, ::omp_get_max_threads())));
+                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(std::min(4, ::omp_get_max_threads())));
 #else
-                    auto const blockThreadCountMax(static_cast<TIdx>(::omp_get_max_threads()));
+                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(::omp_get_max_threads()));
 #endif
                     return {
                         // m_multiProcessorCount
