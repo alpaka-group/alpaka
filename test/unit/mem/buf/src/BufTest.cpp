@@ -63,7 +63,7 @@ struct CreateExtentBufVal
         TIdx)
     -> TIdx
     {
-        return sizeof(TIdx) * (5u - Tidx);
+        return static_cast<TIdx>(5u - Tidx);
     }
 };
 
