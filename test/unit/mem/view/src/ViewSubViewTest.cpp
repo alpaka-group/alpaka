@@ -80,7 +80,7 @@ namespace view
             TIdx)
         -> TIdx
         {
-            return sizeof(TIdx) * (5u - Tidx);
+            return static_cast<TIdx>(5u - Tidx);
         }
     };
 
@@ -100,7 +100,7 @@ namespace view
             TIdx)
         -> TIdx
         {
-            return sizeof(TIdx) * (4u - Tidx);
+            return static_cast<TIdx>(4u - Tidx);
         }
     };
 
@@ -242,7 +242,7 @@ namespace view
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
         auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
-        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
+        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(1)));
         View view(buf, extentView, offsetView);
 
         alpaka::test::mem::view::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
@@ -268,7 +268,7 @@ namespace view
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
         auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
-        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(sizeof(Idx)));
+        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(1)));
         View const view(buf, extentView, offsetView);
 
         alpaka::test::mem::view::testViewSubViewImmutable<TAcc>(view, buf, dev, extentView, offsetView);
