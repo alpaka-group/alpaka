@@ -32,12 +32,9 @@
 
 #include <alpaka/math/sin/Traits.hpp>
 
+#include <cuda_runtime.h>
 #include <type_traits>
-#if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(9, 0, 0)
-    #include <crt/math_functions.hpp>
-#else
-    #include <math_functions.hpp>
-#endif
+
 
 namespace alpaka
 {
