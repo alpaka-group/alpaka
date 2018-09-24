@@ -19,6 +19,10 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
+// NVCC needs --expt-relaxed-constexpr
+#if !defined(__NVCC__) || \
+    ( defined(__NVCC__) && defined(__CUDACC_RELAXED_CONSTEXPR__) )
+
 // \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
 // BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
 // For each template parameter this leads to:
@@ -98,3 +102,5 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif
