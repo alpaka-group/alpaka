@@ -59,8 +59,13 @@ then
     ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1604-9-2-local
     ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"_9.2.88-1_amd64
     ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/9.2/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+elif [ "${ALPAKA_CUDA_VERSION}" == "10.0" ]
+then
+    ALPAKA_CUDA_PKG_DEB_NAME=cuda-repo-ubuntu1804-10-0-local
+    ALPAKA_CUDA_PKG_FILE_NAME="${ALPAKA_CUDA_PKG_DEB_NAME}"-10.0.130-410.48_1.0-1_amd64
+    ALPAKA_CUDA_PKG_FILE_PATH=https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
 else
-    echo CUDA versions other than 8.0, 9.0, 9.1 and 9.2 are not currently supported!
+    echo CUDA versions other than 8.0, 9.0, 9.1, 9.2 and 10.0 are not currently supported!
 fi
 if [ -z "$(ls -A "${ALPAKA_CI_CUDA_DIR}")" ]
 then
