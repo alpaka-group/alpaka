@@ -52,14 +52,16 @@ BOOST_AUTO_TEST_SUITE(kernel)
 
 using Dim = alpaka::dim::DimInt<2u>;
 using Idx = std::uint32_t;
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && !defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
 using AccCpu = alpaka::acc::AccCpuSerial<Dim, Idx>;
 #endif
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
+using AccGpu = alpaka::acc::AccGpuHipRt<Dim, Idx>;
+#elif defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 using AccGpu = alpaka::acc::AccGpuCudaRt<Dim, Idx>;
 #endif
 
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && !defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
 //#############################################################################
 struct KernelNoTemplateCpu
 {
@@ -124,7 +126,7 @@ BOOST_AUTO_TEST_CASE(kernelNoTemplateGpu)
 }
 #endif*/
 
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)  && !defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
 //#############################################################################
 struct KernelWithoutTemplateParamCpu
 {
@@ -158,7 +160,8 @@ BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamCpu)
 }
 #endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
+#if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) \
+  || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
 //#############################################################################
 struct KernelWithoutTemplateParamGpu
 {

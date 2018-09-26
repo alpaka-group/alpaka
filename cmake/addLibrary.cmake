@@ -130,6 +130,23 @@ MACRO(ALPAKA_ADD_LIBRARY libraryName)
                 ${optionArguments}
             )
         ENDIF()
+    ELSEIF( ALPAKA_ACC_GPU_HIP_ENABLE )
+            FOREACH( _file ${ARGN} )
+                IF( ( ${_file} MATCHES "\\.cpp$" ) OR
+                    ( ${_file} MATCHES "\\.cxx$" )
+                )
+                    SET_SOURCE_FILES_PROPERTIES( ${_file} PROPERTIES HIP_SOURCE_PROPERTY_FORMAT OBJ )
+                ENDIF()
+            ENDFOREACH()
+            CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_LIBRARY calls TARGET_LINK_LIBRARIES without keywords.
+            HIP_ADD_LIBRARY(
+                ${libraryName}
+                ${sourceFileNames}
+                ${libraryType}
+                ${excludeFromAll}
+                ${optionArguments}
+            )
+
     ELSE()
         #message( "add_library( ${libraryName} ${libraryType} ${excludeFromAll} ${sourceFileNames} )" )
         ADD_LIBRARY(

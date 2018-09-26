@@ -117,7 +117,8 @@ public:
         );
         genNumbers( acc, success, genDefault );
 
-#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && \
+  !defined(ALPAKA_ACC_GPU_HIP_ENABLED)
         // std::random_device
         auto genRandomDevice = alpaka::rand::generator::createDefault(
             alpaka::rand::RandomDevice{},

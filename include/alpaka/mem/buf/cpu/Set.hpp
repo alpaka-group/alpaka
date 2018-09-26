@@ -151,9 +151,17 @@ namespace alpaka
                             {
                                 meta::ndLoopIncIdx(
                                     extentWithoutInnermost,
+
+                                    // workaround for HIP(HCC) to
+                                    // avoid forbidden host-call
+                                    // within host-device functions
+                                    #if defined(BOOST_COMP_HCC) && BOOST_COMP_HCC
+                                    ALPAKA_FN_HOST_ACC
+                                    #endif
                                     [&](vec::Vec<DimMin1, ExtentSize> const & idx)
                                     {
-                                        std::memset(
+
+                                        memset(
                                             reinterpret_cast<void *>(this->m_dstMemNative + (vec::cast<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
                                             this->m_byte,
                                             static_cast<std::size_t>(this->m_extentWidthBytes));

@@ -34,6 +34,7 @@
     "OpenMP",
     "C++",
     "GPU",
+    "HIP",
     "heterogeneous computing",
     "performance portability"
   ],

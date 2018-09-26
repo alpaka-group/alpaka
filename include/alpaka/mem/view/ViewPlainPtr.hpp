@@ -26,6 +26,7 @@
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/dev/DevCudaRt.hpp>
+#include <alpaka/dev/DevHipRt.hpp>
 
 namespace alpaka
 {
@@ -349,6 +350,52 @@ namespace alpaka
                     }
                 };
 #endif
+
+#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+                //#############################################################################
+                //! The HIP RT device CreateStaticDevMemView trait specialization.
+                template<>
+                struct CreateStaticDevMemView<
+                    dev::DevHipRt>
+                {
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TElem,
+                        typename TExtent>
+                    ALPAKA_FN_HOST_ACC static auto createStaticDevMemView(
+                        TElem * pMem,
+                        dev::DevHipRt const & dev,
+                        TExtent const & extent)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                    -> alpaka::mem::view::ViewPlainPtr<dev::DevHipRt, TElem, alpaka::dim::Dim<TExtent>, alpaka::idx::Idx<TExtent>>
+#endif
+                    {
+                        TElem* pMemAcc(nullptr);
+#ifdef __HIP_PLATFORM_NVCC__
+                        ALPAKA_HIP_RT_CHECK(hipCUDAErrorTohipError(
+                            cudaGetSymbolAddress(
+                                reinterpret_cast<void **>(&pMemAcc),
+                                *pMem)));
+#else
+                        // FIXME: it does not work, although with unified memory it
+                        // should work (hipGetSymbolAddress is not
+                        // implemented in HIP)
+                        pMemAcc = pMem;
+#endif
+
+                        return
+                            alpaka::mem::view::ViewPlainPtr<
+                                dev::DevHipRt,
+                                TElem,
+                                alpaka::dim::Dim<TExtent>,
+                                alpaka::idx::Idx<TExtent>>(
+                                    pMemAcc,
+                                    dev,
+                                    extent);
+                    }
+                };
+#endif
+
             }
         }
     }

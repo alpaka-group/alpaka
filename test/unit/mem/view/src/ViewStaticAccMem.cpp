@@ -108,6 +108,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     StaticDeviceMemoryTestKernel kernel;
 
     //-----------------------------------------------------------------------------
+    // FIXME: constant memory in HIP(HCC) is still not working
+#if !defined(BOOST_COMP_HCC) || !BOOST_COMP_HCC
     // initialized static constant device memory
     {
         auto const viewConstantMemInitialized(
@@ -122,7 +124,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 kernel,
                 alpaka::mem::view::getPtrNative(viewConstantMemInitialized)));
     }
-
     //-----------------------------------------------------------------------------
     // uninitialized static constant device memory
     {
@@ -150,6 +151,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 kernel,
                 alpaka::mem::view::getPtrNative(viewConstantMemUninitialized)));
     }
+#endif
 }
 
 // These forward declarations are only necessary when you want to access those variables
@@ -185,6 +187,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     StaticDeviceMemoryTestKernel kernel;
 
     //-----------------------------------------------------------------------------
+    // FIXME: static device memory in HIP(HCC) is still not working
+#if !defined(BOOST_COMP_HCC) || !BOOST_COMP_HCC
     // initialized static global device memory
     {
         auto const viewGlobalMemInitialized(
@@ -227,6 +231,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 kernel,
                 alpaka::mem::view::getPtrNative(viewGlobalMemUninitialized)));
     }
+#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()
