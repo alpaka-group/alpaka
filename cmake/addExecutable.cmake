@@ -22,7 +22,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
 
 #------------------------------------------------------------------------------
 # Calls CUDA_ADD_EXECUTABLE or ADD_EXECUTABLE depending on the enabled alpaka accelerators.
-FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name)
+# Using a macro to stay in the scope (fixes lost assignment of linker command in FindHIP.cmake)
+# https://github.com/ROCm-Developer-Tools/HIP/issues/631
+MACRO(ALPAKA_ADD_EXECUTABLE In_Name)
     IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
         IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
             FOREACH(_file ${ARGN})
@@ -53,4 +55,4 @@ FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name)
             ${In_Name}
             ${ARGN})
     ENDIF()
-ENDFUNCTION()
+ENDMACRO()
