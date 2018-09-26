@@ -24,7 +24,6 @@
 
 #include <iostream>
 #include <cstdint>
-#include <cassert>
 
 //-----------------------------------------------------------------------------
 template <size_t width>
@@ -100,7 +99,7 @@ struct TestBufferKernel
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
-            assert(data[linIdxToPitchedIdx<2>(i,pitch)] == i);
+            ALPAKA_ASSERT(data[linIdxToPitchedIdx<2>(i,pitch)] == i);
         }
     }
 };

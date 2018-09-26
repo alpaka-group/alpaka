@@ -46,7 +46,6 @@
 
 #include <iostream>
 #include <typeinfo>
-#include <cassert>
 #include <fstream>
 #include <algorithm>
 
@@ -273,14 +272,14 @@ auto writeTgaColorImage(
     auto const bufWidthElems(alpaka::extent::getWidth(bufRgba));
     auto const bufWidthBytes(bufWidthElems * sizeof(alpaka::elem::Elem<TBuf>));
     // The row width in bytes has to be dividable by 4 Bytes (RGBA).
-    assert(bufWidthBytes % sizeof(std::uint32_t) == 0);
+    ALPAKA_ASSERT(bufWidthBytes % sizeof(std::uint32_t) == 0);
     // The number of colors in a row.
     auto const bufWidthColors(bufWidthBytes / sizeof(std::uint32_t));
-    assert(bufWidthColors >= 1);
+    ALPAKA_ASSERT(bufWidthColors >= 1);
     auto const bufHeightColors(alpaka::extent::getHeight(bufRgba));
-    assert(bufHeightColors >= 1);
+    ALPAKA_ASSERT(bufHeightColors >= 1);
     auto const bufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::Dim<TBuf>::value - 1u>(bufRgba));
-    assert(bufPitchBytes >= bufWidthBytes);
+    ALPAKA_ASSERT(bufPitchBytes >= bufWidthBytes);
 
     std::ofstream ofs(
         fileName,

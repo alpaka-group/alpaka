@@ -25,13 +25,13 @@
 
 #include <alpaka/idx/Traits.hpp>
 
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 #include <map>
-#include <cassert>
 
 namespace alpaka
 {
@@ -115,7 +115,7 @@ namespace alpaka
                     alpaka::ignore_unused(workDiv);
                     auto const fiberId(boost::this_fiber::get_id());
                     auto const fiberEntry(idx.m_fibersToIndices.find(fiberId));
-                    assert(fiberEntry != idx.m_fibersToIndices.end());
+                    ALPAKA_ASSERT(fiberEntry != idx.m_fibersToIndices.end());
                     return fiberEntry->second;
                 }
             };

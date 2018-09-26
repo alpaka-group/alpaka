@@ -38,9 +38,9 @@
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Cuda.hpp>
 
-#include <cassert>
 
 namespace alpaka
 {
@@ -177,7 +177,7 @@ namespace alpaka
                     auto const dstWidth(extent::getWidth(view));
 #endif
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
-                    assert(extentWidth <= dstWidth);
+                    ALPAKA_ASSERT(extentWidth <= dstWidth);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -235,7 +235,7 @@ namespace alpaka
                     auto const dstWidth(extent::getWidth(view));
 #endif
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
-                    assert(extentWidth <= dstWidth);
+                    ALPAKA_ASSERT(extentWidth <= dstWidth);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -296,8 +296,8 @@ namespace alpaka
 #endif
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
-                    assert(extentWidth <= dstWidth);
-                    assert(extentHeight <= dstHeight);
+                    ALPAKA_ASSERT(extentWidth <= dstWidth);
+                    ALPAKA_ASSERT(extentHeight <= dstHeight);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -361,8 +361,8 @@ namespace alpaka
 #endif
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
-                    assert(extentWidth <= dstWidth);
-                    assert(extentHeight <= dstHeight);
+                    ALPAKA_ASSERT(extentWidth <= dstWidth);
+                    ALPAKA_ASSERT(extentHeight <= dstHeight);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -429,9 +429,9 @@ namespace alpaka
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
                     auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
-                    assert(extentWidth <= dstWidth);
-                    assert(extentHeight <= dstHeight);
-                    assert(extentDepth <= dstDepth);
+                    ALPAKA_ASSERT(extentWidth <= dstWidth);
+                    ALPAKA_ASSERT(extentHeight <= dstHeight);
+                    ALPAKA_ASSERT(extentDepth <= dstDepth);
 
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(
@@ -510,9 +510,9 @@ namespace alpaka
                     auto const dstPitchBytesX(mem::view::getPitchBytes<dim::Dim<TView>::value - 1u>(view));
                     auto const dstPitchBytesY(mem::view::getPitchBytes<dim::Dim<TView>::value - (2u % dim::Dim<TView>::value)>(view));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
-                    assert(extentWidth <= dstWidth);
-                    assert(extentHeight <= dstHeight);
-                    assert(extentDepth <= dstDepth);
+                    ALPAKA_ASSERT(extentWidth <= dstWidth);
+                    ALPAKA_ASSERT(extentHeight <= dstHeight);
+                    ALPAKA_ASSERT(extentDepth <= dstDepth);
 
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(

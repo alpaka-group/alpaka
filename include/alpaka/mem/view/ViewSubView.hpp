@@ -30,10 +30,11 @@
 
 #include <alpaka/mem/view/ViewPlainPtr.hpp>
 #include <alpaka/vec/Vec.hpp>
+
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Common.hpp>
 
 #include <type_traits>
-#include <cassert>
 
 namespace alpaka
 {
@@ -101,7 +102,7 @@ namespace alpaka
                         std::is_same<TDim, dim::Dim<TOffsets>>::value,
                         "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-                    assert(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
+                    ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -150,7 +151,7 @@ namespace alpaka
                         std::is_same<TDim, dim::Dim<TOffsets>>::value,
                         "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
-                    assert(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
+                    ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
                 }
 
                 //-----------------------------------------------------------------------------

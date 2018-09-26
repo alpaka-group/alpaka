@@ -40,12 +40,12 @@
 #include <alpaka/queue/QueueCudaRtAsync.hpp>
 #include <alpaka/queue/QueueCudaRtSync.hpp>
 
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Cuda.hpp>
 
 #include <set>
 #include <tuple>
 
-#include <cassert>
 
 namespace alpaka
 {
@@ -116,8 +116,8 @@ namespace alpaka
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            assert(m_extentWidth <= m_dstWidth);
-                            assert(m_extentWidth <= m_srcWidth);
+                            ALPAKA_ASSERT(m_extentWidth <= m_dstWidth);
+                            ALPAKA_ASSERT(m_extentWidth <= m_srcWidth);
 #endif
                         }
 
@@ -210,12 +210,12 @@ namespace alpaka
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            assert(m_extentWidth <= m_dstWidth);
-                            assert(m_extentHeight <= m_dstHeight);
-                            assert(m_extentWidth <= m_srcWidth);
-                            assert(m_extentHeight <= m_srcHeight);
-                            assert(m_extentWidthBytes <= m_dstpitchBytesX);
-                            assert(m_extentWidthBytes <= m_srcpitchBytesX);
+                            ALPAKA_ASSERT(m_extentWidth <= m_dstWidth);
+                            ALPAKA_ASSERT(m_extentHeight <= m_dstHeight);
+                            ALPAKA_ASSERT(m_extentWidth <= m_srcWidth);
+                            ALPAKA_ASSERT(m_extentHeight <= m_srcHeight);
+                            ALPAKA_ASSERT(m_extentWidthBytes <= m_dstpitchBytesX);
+                            ALPAKA_ASSERT(m_extentWidthBytes <= m_srcpitchBytesX);
 #endif
                         }
 
@@ -331,14 +331,14 @@ namespace alpaka
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            assert(m_extentWidth <= m_dstWidth);
-                            assert(m_extentHeight <= m_dstHeight);
-                            assert(m_extentDepth <= m_dstDepth);
-                            assert(m_extentWidth <= m_srcWidth);
-                            assert(m_extentHeight <= m_srcHeight);
-                            assert(m_extentDepth <= m_srcDepth);
-                            assert(m_extentWidthBytes <= m_dstpitchBytesX);
-                            assert(m_extentWidthBytes <= m_srcpitchBytesX);
+                            ALPAKA_ASSERT(m_extentWidth <= m_dstWidth);
+                            ALPAKA_ASSERT(m_extentHeight <= m_dstHeight);
+                            ALPAKA_ASSERT(m_extentDepth <= m_dstDepth);
+                            ALPAKA_ASSERT(m_extentWidth <= m_srcWidth);
+                            ALPAKA_ASSERT(m_extentHeight <= m_srcHeight);
+                            ALPAKA_ASSERT(m_extentDepth <= m_srcDepth);
+                            ALPAKA_ASSERT(m_extentWidthBytes <= m_dstpitchBytesX);
+                            ALPAKA_ASSERT(m_extentWidthBytes <= m_srcpitchBytesX);
 #endif
                         }
 
@@ -403,7 +403,7 @@ namespace alpaka
                         const int & devDst)
                     -> void
                     {
-                        assert(devSrc != devDst);
+                        ALPAKA_ASSERT(devSrc != devDst);
 
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push

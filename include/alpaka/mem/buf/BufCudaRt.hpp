@@ -29,16 +29,16 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
+#include <alpaka/core/Assert.hpp>
+#include <alpaka/core/Cuda.hpp>
 #include <alpaka/dev/DevCudaRt.hpp>
 #include <alpaka/vec/Vec.hpp>
-#include <alpaka/core/Cuda.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 
 #include <memory>
-#include <cassert>
 
 namespace alpaka
 {
@@ -412,7 +412,7 @@ namespace alpaka
                                 &pitchBytes,
                                 static_cast<std::size_t>(widthBytes),
                                 static_cast<std::size_t>(height)));
-                        assert(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
+                        ALPAKA_ASSERT(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
