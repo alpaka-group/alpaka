@@ -56,6 +56,12 @@
 #endif
 
 //-----------------------------------------------------------------------------
+// keep BOOST_ARCH_CUDA_DEVICE for backward compatibility to alpaka 0.3.X
+#if !defined(BOOST_ARCH_CUDA_DEVICE)
+    #define BOOST_ARCH_CUDA_DEVICE BOOST_ARCH_PTX
+#endif
+
+//-----------------------------------------------------------------------------
 // In boost since 1.68.0
 // nvcc CUDA compiler detection
 
