@@ -243,7 +243,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         auto const correctResult(alpha * pBufHostX[i] + pBufHostOrigY[i]);
         if( boost::math::relative_difference(val, correctResult) > std::numeric_limits<Val>::epsilon() )
         {
-            std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+            std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
         }
     }

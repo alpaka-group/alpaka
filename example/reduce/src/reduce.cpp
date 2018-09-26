@@ -165,7 +165,7 @@ int main()
     T expectedResult = static_cast<T>(n / 2 * (n + 1));
     if (result != expectedResult)
     {
-        std::cout << "Results don't match: " << result << " != " << expectedResult
+        std::cerr << "Results don't match: " << result << " != " << expectedResult
                   << "\n";
         return EXIT_FAILURE;
     }

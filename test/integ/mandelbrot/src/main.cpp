@@ -338,7 +338,7 @@ using TestAccs = alpaka::test::acc::EnabledAccs<
     std::uint32_t>;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(
-    calculateAxpy,
+    calculateMandelbrot,
     TAcc,
     TestAccs)
 {

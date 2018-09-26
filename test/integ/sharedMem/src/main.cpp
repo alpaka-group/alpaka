@@ -257,7 +257,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         auto const val(blockRetVals[static_cast<std::size_t>(i)]);
         if(val != correctResult)
         {
-            std::cout << "blockRetVals[" << i << "] == " << val << " != " << correctResult << std::endl;
+            std::cerr << "blockRetVals[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
         }
     }
