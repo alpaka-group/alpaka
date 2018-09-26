@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         f.m_stream,
         [&f, &CallbackFinished]() noexcept
         {
-            BOOST_CHECK_EQUAL(false, alpaka::queue::empty(f.m_stream));
+            BOOST_CHECK_EQUAL(false, alpaka::stream::empty(f.m_stream));
             std::this_thread::sleep_for(std::chrono::milliseconds(100u));
             CallbackFinished = true;
         });
