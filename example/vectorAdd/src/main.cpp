@@ -127,8 +127,8 @@ auto main()
     BufHost bufHostC(alpaka::mem::buf::alloc<Data, Idx>(devHost, extent));
 
     // Initialize the host input vectors A and B
-    Data * const pBufHostA = alpaka::mem::view::getPtrNative(bufHostA);
-    Data * const pBufHostB = alpaka::mem::view::getPtrNative(bufHostB);
+    Data * const pBufHostA(alpaka::mem::view::getPtrNative(bufHostA));
+    Data * const pBufHostB(alpaka::mem::view::getPtrNative(bufHostB));
     Data * const pBufHostC(alpaka::mem::view::getPtrNative(bufHostC));
 
     // C++11 random generator for uniformly distributed numbers in {1,..,42}
@@ -140,6 +140,7 @@ auto main()
     {
         pBufHostA[i] = dist(eng);
         pBufHostB[i] = dist(eng);
+        pBufHostC[i] = 0;
     }
 
     // Allocate 3 buffers on the accelerator
@@ -151,6 +152,7 @@ auto main()
     // Copy Host -> Acc
     alpaka::mem::view::copy(queue, bufAccA, bufHostA, extent);
     alpaka::mem::view::copy(queue, bufAccB, bufHostB, extent);
+    alpaka::mem::view::copy(queue, bufAccC, bufHostC, extent);
 
     // Instantiate the kernel function object
     VectorAddKernel kernel;
@@ -179,7 +181,7 @@ auto main()
         Data const correctResult(pBufHostA[i] + pBufHostB[i]);
         if(val != correctResult)
         {
-            std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+            std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
         }
     }
