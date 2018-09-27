@@ -168,12 +168,16 @@ namespace alpaka
             {}
         public:
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             DevCpu(DevCpu const &) = default;
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             DevCpu(DevCpu &&) = default;
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             auto operator=(DevCpu const &) -> DevCpu & = default;
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             auto operator=(DevCpu &&) -> DevCpu & = default;
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST auto operator==(DevCpu const &) const
