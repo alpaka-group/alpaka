@@ -45,13 +45,12 @@
 #include <alpaka/size/Traits.hpp>
 
 // Implementation details.
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
 #include <alpaka/core/Fibers.hpp>
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/predef.h>
-
 #include <memory>
 #include <typeinfo>
 

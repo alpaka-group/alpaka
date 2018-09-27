@@ -218,7 +218,7 @@ namespace alpaka
                     stream::StreamCpuAsync const & stream)
                 -> bool
                 {
-                    return stream.m_spStreamImpl->m_workerThread.isQueueEmpty();
+                    return stream.m_spStreamImpl->m_workerThread.isIdle();
                 }
             };
         }

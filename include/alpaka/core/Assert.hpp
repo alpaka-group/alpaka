@@ -26,8 +26,6 @@
 #if !BOOST_ARCH_CUDA_DEVICE
     #include <boost/core/ignore_unused.hpp>
 #endif
-#include <boost/predef.h>
-
 #include <cassert>
 #include <type_traits>
 

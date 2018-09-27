@@ -52,11 +52,11 @@
     #include <alpaka/workdiv/WorkDivHelpers.hpp>
 #endif
 
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 
-#include <boost/predef.h>
 #include <boost/assert.hpp>
 
 #include <stdexcept>
