@@ -26,13 +26,13 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/workdiv/Traits.hpp>
 
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/idx/MapIdx.hpp>
 
 #include <omp.h>
 
-#include <cassert>
 
 namespace alpaka
 {
@@ -107,7 +107,7 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(idx);
                     // We assume that the thread id is positive.
-                    assert(::omp_get_thread_num()>=0);
+                    ALPAKA_ASSERT(::omp_get_thread_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return idx::mapIdx<TDim::value>(
                         vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),

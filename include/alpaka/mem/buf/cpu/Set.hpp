@@ -21,13 +21,13 @@
 
 #pragma once
 
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/Integral.hpp>
 
-#include <cassert>
 #include <cstring>
 
 namespace alpaka
@@ -89,8 +89,8 @@ namespace alpaka
                                 m_dstPitchBytes(mem::view::getPitchBytesVec(view)),
                                 m_dstMemNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(view)))
                         {
-                            assert((vec::cast<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-                            assert(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
+                            ALPAKA_ASSERT((vec::cast<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
+                            ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
                         }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

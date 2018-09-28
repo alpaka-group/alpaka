@@ -304,7 +304,7 @@ namespace alpaka
                     std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
                     // The event should not yet be enqueued.
-                    assert(spEventImpl->m_bIsReady);
+                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
                     // Set its state to enqueued.
                     spEventImpl->m_bIsReady = false;
@@ -356,7 +356,7 @@ namespace alpaka
                     std::unique_lock<std::mutex> lk(spEventImpl->m_mutex);
 
                     // The event should not yet be enqueued.
-                    assert(spEventImpl->m_bIsReady);
+                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
                     // Set its state to enqueued.
                     spEventImpl->m_bIsReady = false;
@@ -631,7 +631,7 @@ namespace alpaka
                     std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
                     // The event should not yet be enqueued.
-                    assert(spEventImpl->m_bIsReady);
+                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
                     // Set its state to enqueued.
                     spEventImpl->m_bIsReady = false;
@@ -671,7 +671,7 @@ namespace alpaka
                     std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
                     // The event should not yet be enqueued.
-                    assert(spEventImpl->m_bIsReady);
+                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
                     // Set its state to enqueued.
                     spEventImpl->m_bIsReady = false;

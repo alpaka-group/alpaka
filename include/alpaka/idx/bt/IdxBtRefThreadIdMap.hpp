@@ -25,13 +25,13 @@
 
 #include <alpaka/idx/Traits.hpp>
 
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 #include <thread>
 #include <map>
-#include <cassert>
 
 namespace alpaka
 {
@@ -115,7 +115,7 @@ namespace alpaka
                     alpaka::ignore_unused(workDiv);
                     auto const threadId(std::this_thread::get_id());
                     auto const threadEntry(idx.m_threadToIndexMap.find(threadId));
-                    assert(threadEntry != idx.m_threadToIndexMap.end());
+                    ALPAKA_ASSERT(threadEntry != idx.m_threadToIndexMap.end());
                     return threadEntry->second;
                 }
             };

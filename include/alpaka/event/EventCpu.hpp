@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/queue/QueueCpuAsync.hpp>
@@ -31,7 +32,6 @@
 #include <alpaka/wait/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
 
-#include <cassert>
 #include <mutex>
 #include <condition_variable>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -79,7 +79,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     auto wait(std::size_t const & enqueueCount, std::unique_lock<std::mutex>& lk) noexcept -> void
                     {
-                        assert(enqueueCount <= m_enqueueCount);
+                        ALPAKA_ASSERT(enqueueCount <= m_enqueueCount);
 
                         while(enqueueCount > m_LastReadyEnqueueCount)
                         {

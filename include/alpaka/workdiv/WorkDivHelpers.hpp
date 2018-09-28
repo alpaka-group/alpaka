@@ -31,7 +31,6 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Common.hpp>
 
-#include <cassert>
 #include <cmath>
 #include <algorithm>
 #include <functional>
@@ -73,7 +72,7 @@ namespace alpaka
 
                 core::assertValueUnsigned(dividend);
                 core::assertValueUnsigned(maxDivisor);
-                assert(dividend <= maxDivisor);
+                ALPAKA_ASSERT(dividend <= maxDivisor);
 
                 while((dividend%divisor) != 0)
                 {
@@ -98,7 +97,7 @@ namespace alpaka
 
                 core::assertValueUnsigned(val);
                 core::assertValueUnsigned(maxDivisor);
-                assert(maxDivisor <= val);
+                ALPAKA_ASSERT(maxDivisor <= val);
 
                 for(T i(1); i <= std::min(val, maxDivisor); ++i)
                 {
@@ -184,12 +183,12 @@ namespace alpaka
             // Check that the input data is valid.
             for(typename TDim::value_type i(0); i<TDim::value; ++i)
             {
-                assert(gridElemExtent[i] >= 1);
-                assert(threadElemExtent[i] >= 1);
-                assert(threadElemExtent[i] <= accDevProps.m_threadElemExtentMax[i]);
+                ALPAKA_ASSERT(gridElemExtent[i] >= 1);
+                ALPAKA_ASSERT(threadElemExtent[i] >= 1);
+                ALPAKA_ASSERT(threadElemExtent[i] <= accDevProps.m_threadElemExtentMax[i]);
             }
-            assert(threadElemExtent.prod() <= accDevProps.m_threadElemCountMax);
-            assert(isValidAccDevProps(accDevProps));
+            ALPAKA_ASSERT(threadElemExtent.prod() <= accDevProps.m_threadElemCountMax);
+            ALPAKA_ASSERT(isValidAccDevProps(accDevProps));
 
             ///////////////////////////////////////////////////////////////////
             // Handle the given threadElemExtent. After this only the blockThreadExtent has to be optimized.

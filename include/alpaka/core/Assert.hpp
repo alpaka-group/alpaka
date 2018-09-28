@@ -27,6 +27,8 @@
 #include <cassert>
 #include <type_traits>
 
+#define ALPAKA_ASSERT(EXPRESSION) assert(EXPRESSION)
+
 namespace alpaka
 {
     namespace core
@@ -53,7 +55,7 @@ namespace alpaka
 #ifdef NDEBUG
                     alpaka::ignore_unused(arg);
 #else
-                    assert(arg >= 0);
+                    ALPAKA_ASSERT(arg >= 0);
 #endif
                 }
             };
@@ -115,7 +117,7 @@ namespace alpaka
 #ifdef NDEBUG
                     alpaka::ignore_unused(lhs);
 #else
-                    assert(TLhs::value > lhs);
+                    ALPAKA_ASSERT(TLhs::value > lhs);
 #endif
                 }
             };

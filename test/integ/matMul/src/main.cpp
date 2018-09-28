@@ -106,7 +106,7 @@ public:
         auto const blockThreadExtent(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
         auto const & blockThreadExtentX(blockThreadExtent[1u]);
         auto const & blockThreadExtentY(blockThreadExtent[0u]);
-        //assert(blockThreadExtentX == blockThreadExtentY);
+        //ALPAKA_ASSERT(blockThreadExtentX == blockThreadExtentY);
         auto const & blockThreadExtentVal(blockThreadExtentX);
 
         // Shared memory used to store the current blocks of A and B.
