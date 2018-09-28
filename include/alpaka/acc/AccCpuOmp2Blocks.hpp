@@ -33,7 +33,7 @@
 #include <alpaka/idx/bt/IdxBtZero.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
 #include <alpaka/atomic/AtomicStdLibLock.hpp>
-#include <alpaka/atomic/AtomicOmpCritSec.hpp>
+#include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
 #include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
@@ -84,7 +84,7 @@ namespace alpaka
             public idx::bt::IdxBtZero<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicStdLibLock<16>,   // grid atomics
-                atomic::AtomicOmpCritSec,    // block atomics
+                atomic::AtomicOmpBuiltIn,    // block atomics
                 atomic::AtomicNoOp           // thread atomics
             >,
             public math::MathStdLib,
@@ -115,7 +115,7 @@ namespace alpaka
                     idx::bt::IdxBtZero<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicStdLibLock<16>,// atomics between grids
-                        atomic::AtomicOmpCritSec, // atomics between blocks
+                        atomic::AtomicOmpBuiltIn, // atomics between blocks
                         atomic::AtomicNoOp        // atomics between threads
                     >(),
                     math::MathStdLib(),

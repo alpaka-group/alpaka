@@ -32,7 +32,7 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/bt/IdxBtOmp.hpp>
 #include <alpaka/atomic/AtomicStdLibLock.hpp>
-#include <alpaka/atomic/AtomicOmpCritSec.hpp>
+#include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
 #include <alpaka/math/MathStdLib.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
@@ -85,8 +85,8 @@ namespace alpaka
             public idx::bt::IdxBtOmp<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicStdLibLock<16>,   // grid atomics
-                atomic::AtomicOmpCritSec,    // block atomics
-                atomic::AtomicOmpCritSec     // thread atomics
+                atomic::AtomicOmpBuiltIn,    // block atomics
+                atomic::AtomicOmpBuiltIn     // thread atomics
             >,
             public math::MathStdLib,
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
@@ -116,8 +116,8 @@ namespace alpaka
                     idx::bt::IdxBtOmp<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicStdLibLock<16>,// atomics between grids
-                        atomic::AtomicOmpCritSec, // atomics between blocks
-                        atomic::AtomicOmpCritSec  // atomics between threads
+                        atomic::AtomicOmpBuiltIn, // atomics between blocks
+                        atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
                     block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
