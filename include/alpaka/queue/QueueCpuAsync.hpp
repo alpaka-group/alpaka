@@ -82,10 +82,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueCpuAsyncImpl &&) -> QueueCpuAsyncImpl & = default;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~QueueCpuAsyncImpl() noexcept(false)
-                    {
-                        m_dev.m_spDevCpuImpl->UnregisterAsyncQueue(this);
-                    }
+                    ~QueueCpuAsyncImpl() = default;
+
                 public:
                     dev::DevCpu const m_dev;            //!< The device this queue is bound to.
 

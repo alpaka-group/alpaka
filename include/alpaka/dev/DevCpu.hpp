@@ -72,7 +72,6 @@ namespace alpaka
                 class DevCpuImpl
                 {
                     friend queue::QueueCpuAsync;                   // queue::QueueCpuAsync::QueueCpuAsync calls RegisterAsyncQueue.
-                    friend queue::cpu::detail::QueueCpuAsyncImpl;  // QueueCpuAsyncImpl::~QueueCpuAsyncImpl calls UnregisterAsyncQueue.
                 public:
                     //-----------------------------------------------------------------------------
                     DevCpuImpl() = default;
@@ -88,23 +87,24 @@ namespace alpaka
                     ~DevCpuImpl() = default;
 
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto GetAllAsyncQueueImpls() const noexcept(false)
+                    ALPAKA_FN_HOST auto GetAllAsyncQueueImpls() const
                     -> std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl>>
                     {
                         std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl>> vspQueues;
 
                         std::lock_guard<std::mutex> lk(m_Mutex);
 
-                        for(auto const & pairQueue : m_mapQueues)
+                        for(auto it = m_queues.begin(); it != m_queues.end();)
                         {
-                            auto spQueue(pairQueue.second.lock());
+                            auto spQueue(it->lock());
                             if(spQueue)
                             {
                                 vspQueues.emplace_back(std::move(spQueue));
+                                ++it;
                             }
                             else
                             {
-                                throw std::logic_error("One of the queues registered on the device is invalid!");
+                                it = m_queues.erase(it);
                             }
                         }
                         return vspQueues;
@@ -122,36 +122,12 @@ namespace alpaka
                         // Register this queue on the device.
                         // NOTE: We have to store the plain pointer next to the weak pointer.
                         // This is necessary to find the entry on unregistering because the weak pointer will already be invalid at that point.
-                        m_mapQueues.emplace(spQueueImpl.get(), spQueueImpl);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Unregisters the given queue from this device.
-                    ALPAKA_FN_HOST auto UnregisterAsyncQueue(queue::cpu::detail::QueueCpuAsyncImpl const * const pQueue) noexcept(false)
-                    -> void
-                    {
-                        std::lock_guard<std::mutex> lk(m_Mutex);
-
-                        // Unregister this queue from the device.
-                        auto const itFind(std::find_if(
-                            m_mapQueues.begin(),
-                            m_mapQueues.end(),
-                            [pQueue](std::pair<queue::cpu::detail::QueueCpuAsyncImpl *, std::weak_ptr<queue::cpu::detail::QueueCpuAsyncImpl>> const & pair)
-                            {
-                                return (pQueue == pair.first);
-                            }));
-                        if(itFind != m_mapQueues.end())
-                        {
-                            m_mapQueues.erase(itFind);
-                        }
-                        else
-                        {
-                            throw std::logic_error("The queue to unregister from the device could not be found in the list of registered queues!");
-                        }
+                        m_queues.push_back(spQueueImpl);
                     }
 
                 private:
                     std::mutex mutable m_Mutex;
-                    std::map<queue::cpu::detail::QueueCpuAsyncImpl *, std::weak_ptr<queue::cpu::detail::QueueCpuAsyncImpl>> m_mapQueues;
+                    std::vector<std::weak_ptr<queue::cpu::detail::QueueCpuAsyncImpl>> mutable m_queues;
                 };
             }
         }
