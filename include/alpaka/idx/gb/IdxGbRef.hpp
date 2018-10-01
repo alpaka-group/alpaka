@@ -45,18 +45,18 @@ namespace alpaka
                 using IdxGbBase = IdxGbRef;
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxGbRef(
+                IdxGbRef(
                     vec::Vec<TDim, TIdx> const & gridBlockIdx) :
                         m_gridBlockIdx(gridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxGbRef(IdxGbRef const &) = delete;
+                IdxGbRef(IdxGbRef const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxGbRef(IdxGbRef &&) = delete;
+                IdxGbRef(IdxGbRef &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
+                auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
+                auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxGbRef() = default;
 

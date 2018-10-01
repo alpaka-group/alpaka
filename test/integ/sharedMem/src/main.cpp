@@ -148,7 +148,7 @@ namespace alpaka
                 template<
                     typename TVec,
                     typename... TArgs>
-                ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
+                ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                     SharedMemKernel<TnumUselessWork, Val> const & sharedMemKernel,
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,

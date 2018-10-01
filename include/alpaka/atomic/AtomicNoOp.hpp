@@ -38,13 +38,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             AtomicNoOp() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AtomicNoOp(AtomicNoOp const &) = delete;
+            AtomicNoOp(AtomicNoOp const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AtomicNoOp(AtomicNoOp &&) = delete;
+            AtomicNoOp(AtomicNoOp &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
+            auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
+            auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AtomicNoOp() = default;
         };

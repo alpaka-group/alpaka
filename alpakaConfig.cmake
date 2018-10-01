@@ -548,6 +548,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 IF(ALPAKA_CUDA_SHOW_REGISTER)
                     LIST(APPEND CUDA_NVCC_FLAGS "-Xptxas=-v")
                 ENDIF()
+                # avoids warnings on host-device signatured, default constructors/destructors
+                IF(CUDA_VERSION GREATER_EQUAL 9.0)
+                    LIST(APPEND CUDA_NVCC_FLAGS "-Xcudafe --diag_suppress=esa_on_defaulted_function_ignored")
+                ENDIF()
 
                 IF(ALPAKA_CUDA_KEEP_FILES)
                     MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")

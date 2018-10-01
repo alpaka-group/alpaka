@@ -48,20 +48,20 @@ namespace alpaka
                     using BlockSharedMemStBase = BlockSharedMemStMasterSync;
 
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemStMasterSync(
+                    BlockSharedMemStMasterSync(
                         std::function<void()> fnSync,
                         std::function<bool()> fnIsMasterThread) :
                             m_syncFn(fnSync),
                             m_isMasterThreadFn(fnIsMasterThread)
                     {}
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemStMasterSync(BlockSharedMemStMasterSync const &) = delete;
+                    BlockSharedMemStMasterSync(BlockSharedMemStMasterSync const &) = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemStMasterSync(BlockSharedMemStMasterSync &&) = delete;
+                    BlockSharedMemStMasterSync(BlockSharedMemStMasterSync &&) = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(BlockSharedMemStMasterSync const &) -> BlockSharedMemStMasterSync & = delete;
+                    auto operator=(BlockSharedMemStMasterSync const &) -> BlockSharedMemStMasterSync & = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(BlockSharedMemStMasterSync &&) -> BlockSharedMemStMasterSync & = delete;
+                    auto operator=(BlockSharedMemStMasterSync &&) -> BlockSharedMemStMasterSync & = delete;
                     //-----------------------------------------------------------------------------
                     /*virtual*/ ~BlockSharedMemStMasterSync() = default;
 

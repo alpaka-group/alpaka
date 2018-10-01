@@ -87,7 +87,7 @@ namespace alpaka
                 //! \return The size of the shared memory allocated for a block.
                 template<
                     typename TVec>
-                ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
+                ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                     BlockSharedMemDynTestKernel const & blockSharedMemDyn,
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,

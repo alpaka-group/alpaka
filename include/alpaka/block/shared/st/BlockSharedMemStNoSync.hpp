@@ -49,13 +49,13 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     BlockSharedMemStNoSync() = default;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemStNoSync(BlockSharedMemStNoSync const &) = delete;
+                    BlockSharedMemStNoSync(BlockSharedMemStNoSync const &) = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemStNoSync(BlockSharedMemStNoSync &&) = delete;
+                    BlockSharedMemStNoSync(BlockSharedMemStNoSync &&) = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(BlockSharedMemStNoSync const &) -> BlockSharedMemStNoSync & = delete;
+                    auto operator=(BlockSharedMemStNoSync const &) -> BlockSharedMemStNoSync & = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(BlockSharedMemStNoSync &&) -> BlockSharedMemStNoSync & = delete;
+                    auto operator=(BlockSharedMemStNoSync &&) -> BlockSharedMemStNoSync & = delete;
                     //-----------------------------------------------------------------------------
                     /*virtual*/ ~BlockSharedMemStNoSync() = default;
 

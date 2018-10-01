@@ -40,7 +40,7 @@ namespace alpaka
                 using BlockSyncBase = BlockSyncNoOp;
 
                 //-----------------------------------------------------------------------------
-                BlockSyncNoOp() = default;
+                ALPAKA_FN_ACC BlockSyncNoOp() = default;
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC auto operator=(BlockSyncNoOp &&) -> BlockSyncNoOp & = delete;
                 //-----------------------------------------------------------------------------
-                /*virtual*/ ~BlockSyncNoOp() = default;
+                /*virtual*/ ALPAKA_FN_ACC ~BlockSyncNoOp() = default;
             };
 
             namespace traits

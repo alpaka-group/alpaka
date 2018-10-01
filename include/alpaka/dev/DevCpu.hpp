@@ -139,7 +139,7 @@ namespace alpaka
             friend struct pltf::traits::GetDevByIdx<pltf::PltfCpu>;
         protected:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST DevCpu() :
+            DevCpu() :
                 m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
             {}
         public:
@@ -152,13 +152,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             auto operator=(DevCpu &&) -> DevCpu & = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator==(DevCpu const &) const
+            auto operator==(DevCpu const &) const
             -> bool
             {
                 return true;
             }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator!=(DevCpu const & rhs) const
+            auto operator!=(DevCpu const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);

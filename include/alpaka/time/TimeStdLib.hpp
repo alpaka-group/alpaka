@@ -43,13 +43,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             TimeStdLib() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST TimeStdLib(TimeStdLib const &) = delete;
+            TimeStdLib(TimeStdLib const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST TimeStdLib(TimeStdLib &&) = delete;
+            TimeStdLib(TimeStdLib &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(TimeStdLib const &) -> TimeStdLib & = delete;
+            auto operator=(TimeStdLib const &) -> TimeStdLib & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(TimeStdLib &&) -> TimeStdLib & = delete;
+            auto operator=(TimeStdLib &&) -> TimeStdLib & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~TimeStdLib() = default;
         };
