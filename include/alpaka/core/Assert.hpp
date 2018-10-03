@@ -22,10 +22,8 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
-#if !BOOST_ARCH_CUDA_DEVICE
-    #include <boost/core/ignore_unused.hpp>
-#endif
 #include <cassert>
 #include <type_traits>
 
@@ -49,21 +47,11 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-#ifdef NDEBUG
-#if !BOOST_ARCH_CUDA_DEVICE
                     TArg const & arg)
-#else
-                    TArg const &)
-#endif
-#else
-                    TArg const & arg)
-#endif
                 -> void
                 {
 #ifdef NDEBUG
-#if !BOOST_ARCH_CUDA_DEVICE
-                    boost::ignore_unused(arg);
-#endif
+                    alpaka::ignore_unused(arg);
 #else
                     assert(arg >= 0);
 #endif
@@ -78,16 +66,10 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-#if !BOOST_ARCH_CUDA_DEVICE
                     TArg const & arg)
-#else
-                    TArg const &)
-#endif
                 -> void
                 {
-#if !BOOST_ARCH_CUDA_DEVICE
-                    boost::ignore_unused(arg);
-#endif
+                    alpaka::ignore_unused(arg);
                     // Nothing to do for unsigned types.
                 }
             };
