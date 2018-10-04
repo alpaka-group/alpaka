@@ -77,6 +77,7 @@
 #include <alpaka/core/Align.hpp>
 #include <alpaka/core/BarrierThread.hpp>
 #include <alpaka/core/BoostPredef.hpp>
+#include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/ConcurrentExecPool.hpp>
 #include <alpaka/core/Cuda.hpp>
@@ -159,7 +160,7 @@
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/meta/ForEachType.hpp>
 #include <alpaka/meta/IntegerSequence.hpp>
-#include <alpaka/meta/IsIntegralSuperset.hpp>
+#include <alpaka/meta/Integral.hpp>
 #include <alpaka/meta/IsStrictBase.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 #include <alpaka/meta/NdLoop.hpp>

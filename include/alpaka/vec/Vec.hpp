@@ -42,7 +42,6 @@
 
 #include <cstdint>
 #include <ostream>
-#include <cassert>
 #include <type_traits>
 #include <algorithm>
 
@@ -337,7 +336,7 @@ namespace alpaka
             {
                 core::assertValueUnsigned(iIdx);
                 auto const idx(static_cast<typename TDim::value_type>(iIdx));
-                assert(idx < TDim::value);
+                core::assertGreaterThan<TDim>(idx);
                 return m_data[idx];
             }
 
@@ -355,7 +354,7 @@ namespace alpaka
             {
                 core::assertValueUnsigned(iIdx);
                 auto const idx(static_cast<typename TDim::value_type>(iIdx));
-                assert(idx < TDim::value);
+                core::assertGreaterThan<TDim>(idx);
                 return m_data[idx];
             }
 

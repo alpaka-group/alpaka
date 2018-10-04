@@ -112,7 +112,7 @@ namespace alpaka
         public:
 // gcc-4.9 libstdc++ does not support std::is_trivially_copyable.
 // MSVC std::is_trivially_copyable seems to be buggy (last tested at 15.7).
-#if (!__GLIBCXX__) && (!BOOST_COMP_MSVC)
+#if (!BOOST_COMP_MSVC) && !(defined(__GLIBCXX__) && (__GLIBCXX__))
             static_assert(
                 meta::Conjunction<
                     std::is_trivially_copyable<
