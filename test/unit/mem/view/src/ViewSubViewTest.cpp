@@ -31,6 +31,7 @@
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/mem/view/ViewTest.hpp>
+#include <alpaka/test/Extent.hpp>
 
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
@@ -59,51 +60,6 @@ namespace mem
 {
 namespace view
 {
-    //#############################################################################
-    //! 1D: sizeof(TIdx) * (5)
-    //! 2D: sizeof(TIdx) * (5, 4)
-    //! 3D: sizeof(TIdx) * (5, 4, 3)
-    //! 4D: sizeof(TIdx) * (5, 4, 3, 2)
-    // We have to be careful with the extents used.
-    // When Idx is a 8 bit signed integer and Dim is 4, the extent is extremely limited.
-    //#############################################################################
-    template<
-        std::size_t Tidx>
-    struct CreateExtentBufVal
-    {
-        //-----------------------------------------------------------------------------
-        //!
-        //-----------------------------------------------------------------------------
-        template<
-            typename TIdx>
-        static auto create(
-            TIdx)
-        -> TIdx
-        {
-            return static_cast<TIdx>(5u - Tidx);
-        }
-    };
-
-    //#############################################################################
-    //! 1D: sizeof(TIdx) * (4)
-    //! 2D: sizeof(TIdx) * (4, 3)
-    //! 3D: sizeof(TIdx) * (4, 3, 2)
-    //! 4D: sizeof(TIdx) * (4, 3, 2, 1)
-    template<
-        std::size_t Tidx>
-    struct CreateExtentViewVal
-    {
-        //-----------------------------------------------------------------------------
-        template<
-            typename TIdx>
-        static auto create(
-            TIdx)
-        -> TIdx
-        {
-            return static_cast<TIdx>(4u - Tidx);
-        }
-    };
-
     //-----------------------------------------------------------------------------
     template<
         typename TAcc,
@@ -212,7 +168,7 @@ namespace view
 
         Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
 
-        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, alpaka::test::CreateExtentBufVal>(Idx()));
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
         auto const extentView(extentBuf);
@@ -238,10 +194,10 @@ namespace view
 
         Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
 
-        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, alpaka::test::CreateExtentBufVal>(Idx()));
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
-        auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentViewVal>(Idx()));
+        auto const extentView(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, alpaka::test::CreateExtentViewVal>(Idx()));
         auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(1)));
         View view(buf, extentView, offsetView);
 

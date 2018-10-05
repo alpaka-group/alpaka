@@ -31,6 +31,7 @@
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/mem/view/ViewTest.hpp>
+#include <alpaka/test/Extent.hpp>
 
 #include <alpaka/core/BoostPredef.hpp>
 #if BOOST_COMP_CLANG
@@ -48,26 +49,6 @@
 
 
 BOOST_AUTO_TEST_SUITE(memP2P)
-
-//#############################################################################
-//! 1D: sizeof(TIdx) * (5)
-//! 2D: sizeof(TIdx) * (5, 4)
-//! 3D: sizeof(TIdx) * (5, 4, 3)
-//! 4D: sizeof(TIdx) * (5, 4, 3, 2)
-template<
-    std::size_t Tidx>
-struct CreateExtentBufVal
-{
-    //-----------------------------------------------------------------------------
-    template<
-        typename TIdx>
-    static auto create(
-        TIdx)
-    -> TIdx
-    {
-        return static_cast<TIdx>(5u - Tidx);
-    }
-};
 
 //-----------------------------------------------------------------------------
 template<
@@ -124,7 +105,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
 
-    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentBufVal>(Idx()));
+    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, alpaka::test::CreateExtentBufVal>(Idx()));
 
     testP2P<TAcc>( extent );
 #endif
