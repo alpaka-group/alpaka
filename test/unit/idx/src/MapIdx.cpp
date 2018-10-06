@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_SUITE(idx)
 //! 4D: (17, 14, 11, 8)
 template<
     std::size_t Tidx>
-struct CreateExtentBufVal
+struct CreateExtentVal
 {
     //-----------------------------------------------------------------------------
     template<
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     using Idx = std::size_t;
     using Vec = alpaka::vec::Vec<TDim, Idx>;
 
-    auto const extentNd(alpaka::vec::createVecFromIndexedFnWorkaround<TDim, Idx, CreateExtentBufVal>(Idx()));
+    auto const extentNd(alpaka::vec::createVecFromIndexedFnWorkaround<TDim, Idx, CreateExtentVal>(Idx()));
     auto const idxNd(extentNd - Vec::all(4u));
 
     auto const idx1d(alpaka::idx::mapIdx<1u>(idxNd, extentNd));
