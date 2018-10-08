@@ -793,6 +793,50 @@ namespace alpaka
                     return atomicCAS(addr, compare, value);
                 }
             };
+
+            //#############################################################################
+            //! The GPU CUDA accelerator atomic operation.
+            template<
+                typename TOp,
+                typename T,
+                typename THierarchy>
+            struct AtomicOp<
+                TOp,
+                atomic::AtomicCudaBuiltIn,
+                T,
+                THierarchy>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto atomicOp(
+                    atomic::AtomicCudaBuiltIn const & atomic,
+                    T * const addr,
+                    T const & value)
+                -> T
+                {
+                    alpaka::ignore_unused(atomic);
+                    alpaka::ignore_unused(addr);
+                    alpaka::ignore_unused(value);
+                    static_assert(
+                        meta::DependentFalseType<THierarchy>::value,
+                        "atomicOp<TOp, atomic::AtomicCudaBuiltIn, T>(atomic, addr, value) is not supported!");
+                }
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto atomicOp(
+                    atomic::AtomicCudaBuiltIn const & atomic,
+                    T * const addr,
+                    T const & compare,
+                    T const & value)
+                -> T
+                {
+                    alpaka::ignore_unused(atomic);
+                    alpaka::ignore_unused(addr);
+                    alpaka::ignore_unused(compare);
+                    alpaka::ignore_unused(value);
+                    static_assert(
+                        meta::DependentFalseType<THierarchy>::value,
+                        "atomicOp<TOp, atomic::AtomicCudaBuiltIn, T>(atomic, addr, compare, value) is not supported!");
+                }
+            };
         }
     }
 }
