@@ -82,13 +82,19 @@ namespace alpaka
                 {}
 
                 //-----------------------------------------------------------------------------
-                ViewPlainPtr(ViewPlainPtr const &) = delete;
+                ViewPlainPtr(ViewPlainPtr const &) = default;
                 //-----------------------------------------------------------------------------
-                ViewPlainPtr(ViewPlainPtr &&) = default;
+                ViewPlainPtr(ViewPlainPtr && other) :
+                        m_pMem(other.m_pMem),
+                        m_dev(other.m_dev),
+                        m_extentElements(other.m_extentElements),
+                        m_pitchBytes(other.m_pitchBytes)
+                {
+                }
                 //-----------------------------------------------------------------------------
                 auto operator=(ViewPlainPtr const &) -> ViewPlainPtr & = delete;
                 //-----------------------------------------------------------------------------
-                auto operator=(ViewPlainPtr &&) -> ViewPlainPtr & = default;
+                auto operator=(ViewPlainPtr &&) -> ViewPlainPtr & = delete;
                 //-----------------------------------------------------------------------------
                 ~ViewPlainPtr() = default;
 
