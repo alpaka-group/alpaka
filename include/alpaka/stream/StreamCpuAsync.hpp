@@ -82,10 +82,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     auto operator=(StreamCpuAsyncImpl &&) -> StreamCpuAsyncImpl & = default;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~StreamCpuAsyncImpl() noexcept(false)
-                    {
-                        m_dev.m_spDevCpuImpl->UnregisterAsyncStream(this);
-                    }
+                    ~StreamCpuAsyncImpl() = default;
+
                 public:
                     dev::DevCpu const m_dev;            //!< The device this stream is bound to.
 
