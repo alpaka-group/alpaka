@@ -7,6 +7,8 @@
 [![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey.svg)](https://github.com/ComputationalRadiationPhysics/alpaka)
 [![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.de.html)
 
+![Alpaka](doc/images/alpaka_401x135.png)
+
 The **alpaka** library is a header-only C++11 abstraction library for accelerator development.
 
 Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.
@@ -135,7 +137,7 @@ consider citing us accordingly in your derived work and publications:
 %   "2017 ISC High Performance Conference"
 %   in Frankfurt, Germany
 @inproceedings{MathesP3MA2017,
-  author    = {{Matthes}, A. and {Widera}, R. and {Zenker}, E. and {Worpitz}, B. and 
+  author    = {{Matthes}, A. and {Widera}, R. and {Zenker}, E. and {Worpitz}, B. and
                {Huebl}, A. and {Bussmann}, M.},
   title     = {Tuning and optimization for a variety of many-core architectures without changing a single line of implementation code
                using the Alpaka library},
