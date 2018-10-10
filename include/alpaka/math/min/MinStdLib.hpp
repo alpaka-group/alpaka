@@ -81,7 +81,7 @@ namespace alpaka
                     && !(std::is_integral<Tx>::value
                         && std::is_integral<Ty>::value)>::type>
             {
-                ALPAKA_FN_HOST static auto max(
+                ALPAKA_FN_HOST static auto min(
                     MinStdLib const & min,
                     Tx const & x,
                     Ty const & y)
