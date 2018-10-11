@@ -220,7 +220,7 @@ namespace alpaka
             //! A std::tuple holding size types.
             using TestSizes =
                 std::tuple<
-                    std::size_t,
+                    //std::size_t,
                     //std::int64_t,
                     std::uint64_t,
                     std::int32_t,
