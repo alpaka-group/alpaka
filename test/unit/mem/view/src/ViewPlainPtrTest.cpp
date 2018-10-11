@@ -173,6 +173,38 @@ namespace view
 
         alpaka::test::mem::view::testViewPlainPtrImmutable<TAcc>(view, dev, extentView, offsetView);
     }
+
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAcc,
+        typename TElem>
+    auto testViewPlainPtrOperators()
+    -> void
+    {
+        using Dev = alpaka::dev::Dev<TAcc>;
+        using Pltf = alpaka::pltf::Pltf<Dev>;
+
+        using Dim = alpaka::dim::Dim<TAcc>;
+        using Idx = alpaka::idx::Idx<TAcc>;
+        using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
+
+        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+
+        auto const extentBuf(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, alpaka::test::CreateExtentBufVal>(Idx()));
+        auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
+
+        View view(
+            alpaka::mem::view::getPtrNative(buf),
+            alpaka::dev::getDev(buf),
+            alpaka::extent::getExtentVec(buf),
+            alpaka::mem::view::getPitchBytesVec(buf));
+
+        // copy-constructor
+        View viewCopy(view);
+
+        // move-constructor
+        View viewMove(std::move(viewCopy));
+    }
 }
 }
 }
@@ -199,6 +231,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     alpaka::test::acc::TestAccs)
 {
     alpaka::test::mem::view::testViewPlainPtrConst<TAcc, float>();
+}
+
+//-----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE_TEMPLATE(
+    viewPlainPtrOperatorTest,
+    TAcc,
+    alpaka::test::acc::TestAccs)
+{
+    alpaka::test::mem::view::testViewPlainPtrOperators<TAcc, float>();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
