@@ -105,7 +105,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         auto operator=(BufCpuImpl &&) -> BufCpuImpl & = default;
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST ~BufCpuImpl() noexcept(false)
+                        ALPAKA_FN_HOST ~BufCpuImpl()
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
