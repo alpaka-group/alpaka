@@ -48,26 +48,26 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST explicit BarrierThread(
+                explicit BarrierThread(
                     TIdx const & threadCount) :
                     m_threadCount(threadCount),
                     m_curThreadCount(threadCount),
                     m_generation(0)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST BarrierThread(BarrierThread const &) = delete;
+                BarrierThread(BarrierThread const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST BarrierThread(BarrierThread &&) = delete;
+                BarrierThread(BarrierThread &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(BarrierThread const &) -> BarrierThread & = delete;
+                auto operator=(BarrierThread const &) -> BarrierThread & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(BarrierThread &&) -> BarrierThread & = delete;
+                auto operator=(BarrierThread &&) -> BarrierThread & = delete;
                 //-----------------------------------------------------------------------------
                 ~BarrierThread() = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other threads to reach the barrier.
-                ALPAKA_FN_HOST auto wait()
+                auto wait()
                 -> void
                 {
                     TIdx const generationWhenEnteredTheWait = m_generation;
@@ -156,20 +156,20 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST explicit BarrierThreadWithPredicate(
+                explicit BarrierThreadWithPredicate(
                     TIdx const & threadCount) :
                     m_threadCount(threadCount),
                     m_curThreadCount(threadCount),
                     m_generation(0)
                 {}
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST BarrierThreadWithPredicate(BarrierThreadWithPredicate const & other) = delete;
+                BarrierThreadWithPredicate(BarrierThreadWithPredicate const & other) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST BarrierThreadWithPredicate(BarrierThreadWithPredicate &&) = delete;
+                BarrierThreadWithPredicate(BarrierThreadWithPredicate &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(BarrierThreadWithPredicate const &) -> BarrierThreadWithPredicate & = delete;
+                auto operator=(BarrierThreadWithPredicate const &) -> BarrierThreadWithPredicate & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(BarrierThreadWithPredicate &&) -> BarrierThreadWithPredicate & = delete;
+                auto operator=(BarrierThreadWithPredicate &&) -> BarrierThreadWithPredicate & = delete;
                 //-----------------------------------------------------------------------------
                 ~BarrierThreadWithPredicate() = default;
 

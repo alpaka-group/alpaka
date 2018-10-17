@@ -52,7 +52,7 @@ namespace alpaka
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST EventCpuImpl(
+                    EventCpuImpl(
                         dev::DevCpu const & dev) :
                             m_dev(dev),
                             m_mutex(),
@@ -109,7 +109,7 @@ namespace alpaka
         {
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST EventCpu(
+            EventCpu(
                 dev::DevCpu const & dev) :
                     m_spEventImpl(std::make_shared<cpu::detail::EventCpuImpl>(dev))
             {}
@@ -122,13 +122,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             auto operator=(EventCpu &&) -> EventCpu & = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator==(EventCpu const & rhs) const
+            auto operator==(EventCpu const & rhs) const
             -> bool
             {
                 return (m_spEventImpl == rhs.m_spEventImpl);
             }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator!=(EventCpu const & rhs) const
+            auto operator!=(EventCpu const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);

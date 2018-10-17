@@ -51,7 +51,7 @@ namespace alpaka
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST QueueCpuSyncImpl(
+                    QueueCpuSyncImpl(
                         dev::DevCpu const & dev) :
                             m_dev(dev),
                             m_bCurrentlyExecutingTask(false)
@@ -80,7 +80,7 @@ namespace alpaka
         {
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST QueueCpuSync(
+            QueueCpuSync(
                 dev::DevCpu const & dev) :
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuSyncImpl>(dev))
             {}
@@ -93,13 +93,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             auto operator=(QueueCpuSync &&) -> QueueCpuSync & = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator==(QueueCpuSync const & rhs) const
+            auto operator==(QueueCpuSync const & rhs) const
             -> bool
             {
                 return (m_spQueueImpl == rhs.m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator!=(QueueCpuSync const & rhs) const
+            auto operator!=(QueueCpuSync const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);

@@ -46,13 +46,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 IdxBtZero() = default;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxBtZero(IdxBtZero const &) = delete;
+                IdxBtZero(IdxBtZero const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxBtZero(IdxBtZero &&) = delete;
+                IdxBtZero(IdxBtZero &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxBtZero const &) -> IdxBtZero & = delete;
+                auto operator=(IdxBtZero const &) -> IdxBtZero & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxBtZero &&) -> IdxBtZero & = delete;
+                auto operator=(IdxBtZero &&) -> IdxBtZero & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxBtZero() = default;
             };

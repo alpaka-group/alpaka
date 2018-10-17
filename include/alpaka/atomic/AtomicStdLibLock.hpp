@@ -76,13 +76,13 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             AtomicStdLibLock() = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AtomicStdLibLock(AtomicStdLibLock const &) = delete;
+            AtomicStdLibLock(AtomicStdLibLock const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AtomicStdLibLock(AtomicStdLibLock &&) = delete;
+            AtomicStdLibLock(AtomicStdLibLock &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AtomicStdLibLock const &) -> AtomicStdLibLock & = delete;
+            auto operator=(AtomicStdLibLock const &) -> AtomicStdLibLock & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AtomicStdLibLock &&) -> AtomicStdLibLock & = delete;
+            auto operator=(AtomicStdLibLock &&) -> AtomicStdLibLock & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AtomicStdLibLock() = default;
 

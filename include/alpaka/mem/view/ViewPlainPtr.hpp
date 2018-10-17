@@ -47,10 +47,9 @@ namespace alpaka
                     "The idx type of the view can not be const!");
             public:
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TExtent>
-                ALPAKA_FN_HOST_ACC ViewPlainPtr(
+                ALPAKA_FN_HOST ViewPlainPtr(
                     TElem * pMem,
                     TDev const & dev,
                     TExtent const & extent = TExtent()) :
@@ -61,11 +60,10 @@ namespace alpaka
                 {}
 
                 //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TExtent,
                     typename TPitch>
-                ALPAKA_FN_HOST_ACC ViewPlainPtr(
+                ALPAKA_FN_HOST ViewPlainPtr(
                     TElem * pMem,
                     TDev const dev,
                     TExtent const & extent,
@@ -82,8 +80,10 @@ namespace alpaka
                 {}
 
                 //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST
                 ViewPlainPtr(ViewPlainPtr const &) = default;
                 //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST
                 ViewPlainPtr(ViewPlainPtr && other) :
                         m_pMem(other.m_pMem),
                         m_dev(other.m_dev),
@@ -92,19 +92,20 @@ namespace alpaka
                 {
                 }
                 //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST
                 auto operator=(ViewPlainPtr const &) -> ViewPlainPtr & = delete;
                 //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST
                 auto operator=(ViewPlainPtr &&) -> ViewPlainPtr & = delete;
                 //-----------------------------------------------------------------------------
-                ~ViewPlainPtr() = default;
+                ALPAKA_FN_HOST ~ViewPlainPtr() = default;
 
             private:
                 //-----------------------------------------------------------------------------
                 //! Calculate the pitches purely from the extents.
-                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TExtent>
-                ALPAKA_FN_HOST_ACC static auto calculatePitchesFromExtents(
+                ALPAKA_FN_HOST static auto calculatePitchesFromExtents(
                     TExtent const & extent)
                 -> vec::Vec<TDim, TIdx>
                 {
@@ -291,7 +292,7 @@ namespace alpaka
                     template<
                         typename TElem,
                         typename TExtent>
-                    ALPAKA_FN_HOST static auto createStaticDevMemView(
+                    ALPAKA_FN_HOST_ACC static auto createStaticDevMemView(
                         TElem * pMem,
                         dev::DevCpu const & dev,
                         TExtent const & extent)
@@ -319,10 +320,11 @@ namespace alpaka
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     template<
                         typename TElem,
                         typename TExtent>
-                    ALPAKA_FN_HOST static auto createStaticDevMemView(
+                    ALPAKA_FN_HOST_ACC static auto createStaticDevMemView(
                         TElem * pMem,
                         dev::DevCudaRt const & dev,
                         TExtent const & extent)

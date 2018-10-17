@@ -47,7 +47,7 @@ namespace alpaka
                     using BlockSharedMemDynBase = BlockSharedMemDynBoostAlignedAlloc;
 
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemDynBoostAlignedAlloc(
+                    BlockSharedMemDynBoostAlignedAlloc(
                         std::size_t const & blockSharedMemDynSizeBytes)
                     {
                         if(blockSharedMemDynSizeBytes > 0u)
@@ -58,13 +58,13 @@ namespace alpaka
                         }
                     }
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc const &) = delete;
+                    BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc const &) = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc &&) = delete;
+                    BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc &&) = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(BlockSharedMemDynBoostAlignedAlloc const &) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
+                    auto operator=(BlockSharedMemDynBoostAlignedAlloc const &) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(BlockSharedMemDynBoostAlignedAlloc &&) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
+                    auto operator=(BlockSharedMemDynBoostAlignedAlloc &&) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
                     //-----------------------------------------------------------------------------
                     /*virtual*/ ~BlockSharedMemDynBoostAlignedAlloc() = default;
 

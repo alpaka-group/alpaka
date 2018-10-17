@@ -97,7 +97,7 @@ namespace alpaka
                 return *this;
             }
             //-----------------------------------------------------------------------------
-            /*virtual*/ ~WorkDivMembers() = default;
+            /*virtual*/ ALPAKA_FN_HOST_ACC ~WorkDivMembers() = default;
 
         public:
             vec::Vec<TDim, TIdx> m_gridBlockExtent;
