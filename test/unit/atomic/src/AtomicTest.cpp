@@ -41,6 +41,8 @@
     #pragma clang diagnostic pop
 #endif
 
+#include <climits>
+
 //-----------------------------------------------------------------------------
 ALPAKA_NO_HOST_ACC_WARNING
 template<
@@ -353,9 +355,6 @@ class AtomicTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc,
-        typename T>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         bool * success,
@@ -383,26 +382,57 @@ public:
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 //#############################################################################
-// NOTE: std::uint32_t is the only type supported by all atomic CUDA operations.
 template<
     typename TDim,
-    typename TIdx,
-    typename T>
+    typename TIdx>
 class AtomicTestKernel<
     alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
-    T,
-    typename std::enable_if<std::is_same<std::uint32_t, T>::value>::type>
+    int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc,
-        typename T>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
+        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
-        T operandOrig) const
+        int operandOrig) const
+    -> void
+    {
+        testAtomicAdd(acc, success, operandOrig);
+        testAtomicSub(acc, success, operandOrig);
+
+        testAtomicMin(acc, success, operandOrig);
+        testAtomicMax(acc, success, operandOrig);
+
+        testAtomicExch(acc, success, operandOrig);
+
+        //testAtomicInc(acc, success, operandOrig);
+        //testAtomicDec(acc, success, operandOrig);
+
+        testAtomicAnd(acc, success, operandOrig);
+        testAtomicOr(acc, success, operandOrig);
+        testAtomicXor(acc, success, operandOrig);
+
+        testAtomicCas(acc, success, operandOrig);
+    }
+};
+
+//#############################################################################
+// NOTE: unsigned int is the only type supported by all atomic CUDA operations.
+template<
+    typename TDim,
+    typename TIdx>
+class AtomicTestKernel<
+    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    unsigned int>
+{
+public:
+    //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        bool * success,
+        unsigned int operandOrig) const
     -> void
     {
         testAtomicAdd(acc, success, operandOrig);
@@ -427,26 +457,193 @@ public:
 //#############################################################################
 template<
     typename TDim,
+    typename TIdx>
+class AtomicTestKernel<
+    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    unsigned long int>
+{
+public:
+    //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        bool * success,
+        unsigned long int operandOrig) const
+    -> void
+    {
+        testAtomicAdd(acc, success, operandOrig);
+#if UINT_MAX == ULONG_MAX // LLP64
+        testAtomicSub(acc, success, operandOrig);
+#endif
+
+#if ULONG_MAX == ULLONG_MAX // LP64
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+        testAtomicMin(acc, success, operandOrig);
+        testAtomicMax(acc, success, operandOrig);
+#endif
+#endif
+
+        testAtomicExch(acc, success, operandOrig);
+
+#if UINT_MAX == ULONG_MAX // LLP64
+        testAtomicInc(acc, success, operandOrig);
+        testAtomicDec(acc, success, operandOrig);
+#endif
+
+#if ULONG_MAX == ULLONG_MAX // LP64
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+        testAtomicAnd(acc, success, operandOrig);
+        testAtomicOr(acc, success, operandOrig);
+        testAtomicXor(acc, success, operandOrig);
+#endif
+#endif
+
+        testAtomicCas(acc, success, operandOrig);
+    }
+};
+
+//#############################################################################
+template<
+    typename TDim,
+    typename TIdx>
+class AtomicTestKernel<
+    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    unsigned long long int>
+{
+public:
+    //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        bool * success,
+        unsigned long long int operandOrig) const
+    -> void
+    {
+        testAtomicAdd(acc, success, operandOrig);
+        //testAtomicSub(acc, success, operandOrig);
+
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+        testAtomicMin(acc, success, operandOrig);
+        testAtomicMax(acc, success, operandOrig);
+#endif
+
+        testAtomicExch(acc, success, operandOrig);
+
+        //testAtomicInc(acc, success, operandOrig);
+        //testAtomicDec(acc, success, operandOrig);
+
+#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+        testAtomicAnd(acc, success, operandOrig);
+        testAtomicOr(acc, success, operandOrig);
+        testAtomicXor(acc, success, operandOrig);
+#endif
+
+        testAtomicCas(acc, success, operandOrig);
+    }
+};
+
+//#############################################################################
+template<
+    typename TDim,
+    typename TIdx>
+class AtomicTestKernel<
+    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    float>
+{
+public:
+    //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        bool * success,
+        float operandOrig) const
+    -> void
+    {
+        testAtomicAdd(acc, success, operandOrig);
+        //testAtomicSub(acc, success, operandOrig);
+
+        //testAtomicMin(acc, success, operandOrig);
+        //testAtomicMax(acc, success, operandOrig);
+
+        testAtomicExch(acc, success, operandOrig);
+
+        //testAtomicInc(acc, success, operandOrig);
+        //testAtomicDec(acc, success, operandOrig);
+
+        //testAtomicAnd(acc, success, operandOrig);
+        //testAtomicOr(acc, success, operandOrig);
+        //testAtomicXor(acc, success, operandOrig);
+
+        //testAtomicCas(acc, success, operandOrig);
+    }
+};
+
+//#############################################################################
+template<
+    typename TDim,
+    typename TIdx>
+class AtomicTestKernel<
+    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    double>
+{
+public:
+    //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        bool * success,
+        double operandOrig) const
+    -> void
+    {
+        testAtomicAdd(acc, success, operandOrig);
+        //testAtomicSub(acc, success, operandOrig);
+
+        //testAtomicMin(acc, success, operandOrig);
+        //testAtomicMax(acc, success, operandOrig);
+
+        //testAtomicExch(acc, success, operandOrig);
+
+        //testAtomicInc(acc, success, operandOrig);
+        //testAtomicDec(acc, success, operandOrig);
+
+        //testAtomicAnd(acc, success, operandOrig);
+        //testAtomicOr(acc, success, operandOrig);
+        //testAtomicXor(acc, success, operandOrig);
+
+        //testAtomicCas(acc, success, operandOrig);
+    }
+};
+
+//#############################################################################
+template<
+    typename TDim,
     typename TIdx,
     typename T>
 class AtomicTestKernel<
     alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
     T,
-    typename std::enable_if<!std::is_same<std::uint32_t, T>::value>::type>
+    typename std::enable_if<
+        !std::is_same<int, T>::value
+        && !std::is_same<unsigned int, T>::value
+        && !std::is_same<unsigned long int, T>::value
+        && !std::is_same<unsigned long long int, T>::value
+        && !std::is_same<float, T>::value
+        && !std::is_same<double, T>::value
+    >::type>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc,
-        typename T>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
+        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         T operandOrig) const
     -> void
     {
-        // All other types are not supported by all CUDA atomic operations.
+        alpaka::ignore_unused(acc);
+        alpaka::ignore_unused(operandOrig);
+
+        // All other types are not supported by CUDA atomic operations.
         ALPAKA_CHECK(*success, true);
     }
 };
@@ -489,19 +686,17 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 {
     // This test exceeds the maximum compilation time.
 #if !defined(ALPAKA_CI)
-    TestAtomicOperations<TAcc, std::int8_t>::testAtomicOperations();
-    TestAtomicOperations<TAcc, std::uint8_t>::testAtomicOperations();
-    TestAtomicOperations<TAcc, std::int16_t>::testAtomicOperations();
-    TestAtomicOperations<TAcc, std::uint16_t>::testAtomicOperations();
+    TestAtomicOperations<TAcc, unsigned char>::testAtomicOperations();
+    TestAtomicOperations<TAcc, char>::testAtomicOperations();
+    TestAtomicOperations<TAcc, unsigned short>::testAtomicOperations();
+    TestAtomicOperations<TAcc, short>::testAtomicOperations();
 #endif
-    TestAtomicOperations<TAcc, std::int32_t>::testAtomicOperations();
-    // The std::uint32_t test is the only one that is compiled for CUDA
-    // because this is the only type which is supported by all atomic operations.
-    TestAtomicOperations<TAcc, std::uint32_t>::testAtomicOperations();
-#if !defined(ALPAKA_CI)
-    TestAtomicOperations<TAcc, std::int64_t>::testAtomicOperations();
-    TestAtomicOperations<TAcc, std::uint64_t>::testAtomicOperations();
-#endif
+    TestAtomicOperations<TAcc, unsigned int>::testAtomicOperations();
+    TestAtomicOperations<TAcc, int>::testAtomicOperations();
+    TestAtomicOperations<TAcc, unsigned long>::testAtomicOperations();
+    TestAtomicOperations<TAcc, long>::testAtomicOperations();
+    TestAtomicOperations<TAcc, unsigned long long>::testAtomicOperations();
+    TestAtomicOperations<TAcc, long long>::testAtomicOperations();
     // Not all atomic operations are possible with floating point values.
     //TestAtomicOperations<TAcc, float>::testAtomicOperations();
     //TestAtomicOperations<TAcc, double>::testAtomicOperations();
