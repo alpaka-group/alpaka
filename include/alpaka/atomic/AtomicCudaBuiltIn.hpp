@@ -132,12 +132,12 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicAdd(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
                     return atomicAdd(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(value));
 #endif
                 }
             };
@@ -286,8 +286,8 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicSub(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -361,13 +361,13 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicMin(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
 #if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                     return atomicMin(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(value));
 #else
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -469,13 +469,13 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicMax(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
 #if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                     return atomicMax(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(value));
 #else
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -578,12 +578,12 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicExch(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
                     return atomicExch(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(value));
 #endif
                 }
             };
@@ -671,8 +671,8 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicInc(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -726,8 +726,8 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicDec(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -801,13 +801,13 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicAnd(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
 #if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                     return atomicAnd(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(value));
 #else
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -910,13 +910,13 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicOr(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
 #if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                     return atomicOr(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(value));
 #else
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -1019,13 +1019,13 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicXor(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
 #if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                     return atomicXor(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(value));
 #else
                     alpaka::ignore_unused(addr);
                     alpaka::ignore_unused(value);
@@ -1131,14 +1131,14 @@ namespace alpaka
                 {
 #if UINT_MAX == ULONG_MAX // LLP64
                     return atomicCAS(
-                        reinterpret_cast<unsigned int * const>(addr),
-                        reinterpret_cast<unsigned int const &>(compare),
-                        reinterpret_cast<unsigned int const &>(value));
+                        reinterpret_cast<unsigned int *>(addr),
+                        static_cast<unsigned int>(compare),
+                        static_cast<unsigned int>(value));
 #else // ULONG_MAX == ULLONG_MAX LP64
                     return atomicCAS(
-                        reinterpret_cast<unsigned long long int * const>(addr),
-                        reinterpret_cast<unsigned long long int const &>(compare),
-                        reinterpret_cast<unsigned long long int const &>(value));
+                        reinterpret_cast<unsigned long long int *>(addr),
+                        static_cast<unsigned long long int>(compare),
+                        static_cast<unsigned long long int>(value));
 #endif
                 }
             };
