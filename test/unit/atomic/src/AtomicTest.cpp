@@ -684,7 +684,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     TAcc,
     alpaka::test::acc::TestAccs)
 {
-    // This test exceeds the maximum compilation time.
+    // This test exceeds the maximum compilation time on MSVC.
 #if !defined(ALPAKA_CI)
     TestAtomicOperations<TAcc, unsigned char>::testAtomicOperations();
     TestAtomicOperations<TAcc, char>::testAtomicOperations();
@@ -693,10 +693,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 #endif
     TestAtomicOperations<TAcc, unsigned int>::testAtomicOperations();
     TestAtomicOperations<TAcc, int>::testAtomicOperations();
+#if !(defined(ALPAKA_CI) && BOOST_COMP_MSVC)
     TestAtomicOperations<TAcc, unsigned long>::testAtomicOperations();
     TestAtomicOperations<TAcc, long>::testAtomicOperations();
     TestAtomicOperations<TAcc, unsigned long long>::testAtomicOperations();
     TestAtomicOperations<TAcc, long long>::testAtomicOperations();
+#endif
     // Not all atomic operations are possible with floating point values.
     //TestAtomicOperations<TAcc, float>::testAtomicOperations();
     //TestAtomicOperations<TAcc, double>::testAtomicOperations();
