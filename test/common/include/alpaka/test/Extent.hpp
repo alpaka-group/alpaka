@@ -39,8 +39,10 @@ namespace alpaka
         struct CreateExtentBufVal
         {
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TIdx>
+            ALPAKA_FN_HOST_ACC
             static auto create(
                 TIdx)
             -> TIdx
@@ -59,8 +61,10 @@ namespace alpaka
         struct CreateExtentViewVal
         {
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TIdx>
+            ALPAKA_FN_HOST_ACC
             static auto create(
                 TIdx)
             -> TIdx

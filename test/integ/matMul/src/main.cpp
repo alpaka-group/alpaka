@@ -190,7 +190,7 @@ namespace alpaka
                     typename TVec,
                     typename TIndex,
                     typename TElem>
-                ALPAKA_FN_HOST static auto getBlockSharedMemDynSizeBytes(
+                ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                     MatMulKernel const & matMulKernel,
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
