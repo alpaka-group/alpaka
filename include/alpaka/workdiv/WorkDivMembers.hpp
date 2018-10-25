@@ -78,10 +78,16 @@ namespace alpaka
                     m_threadElemExtent(vec::subVecEnd<TDim>(getWorkDiv<Thread, Elems>(other)))
             {}
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC
             WorkDivMembers(WorkDivMembers &&) = default;
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC
             auto operator=(WorkDivMembers const &) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC
             auto operator=(WorkDivMembers &&) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
@@ -97,6 +103,7 @@ namespace alpaka
                 return *this;
             }
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             /*virtual*/ ALPAKA_FN_HOST_ACC ~WorkDivMembers() = default;
 
         public:
