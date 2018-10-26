@@ -406,6 +406,7 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicInc(acc, success, operandOrig);
         //testAtomicDec(acc, success, operandOrig);
 
@@ -520,6 +521,7 @@ public:
     -> void
     {
         testAtomicAdd(acc, success, operandOrig);
+        // Not supported
         //testAtomicSub(acc, success, operandOrig);
 
 #if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
@@ -529,6 +531,7 @@ public:
 
         testAtomicExch(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicInc(acc, success, operandOrig);
         //testAtomicDec(acc, success, operandOrig);
 
@@ -560,20 +563,25 @@ public:
     -> void
     {
         testAtomicAdd(acc, success, operandOrig);
+        // Not supported
         //testAtomicSub(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicMin(acc, success, operandOrig);
         //testAtomicMax(acc, success, operandOrig);
 
         testAtomicExch(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicInc(acc, success, operandOrig);
         //testAtomicDec(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicAnd(acc, success, operandOrig);
         //testAtomicOr(acc, success, operandOrig);
         //testAtomicXor(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicCas(acc, success, operandOrig);
     }
 };
@@ -596,20 +604,26 @@ public:
     -> void
     {
         testAtomicAdd(acc, success, operandOrig);
+        // Not supported
         //testAtomicSub(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicMin(acc, success, operandOrig);
         //testAtomicMax(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicExch(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicInc(acc, success, operandOrig);
         //testAtomicDec(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicAnd(acc, success, operandOrig);
         //testAtomicOr(acc, success, operandOrig);
         //testAtomicXor(acc, success, operandOrig);
 
+        // Not supported
         //testAtomicCas(acc, success, operandOrig);
     }
 };
