@@ -20,7 +20,6 @@
 
 language: generic
 os: linux
-sudo: required
 dist: trusty
 services:
   - docker
