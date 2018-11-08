@@ -50,6 +50,22 @@ MACRO(ALPAKA_ADD_EXECUTABLE In_Name)
                 ${In_Name}
                 ${ARGN})
         ENDIF()
+    ELSEIF(ALPAKA_ACC_GPU_HIP_ENABLE)
+	      FOREACH(_file ${ARGN})
+		        IF((${_file} MATCHES "\\.cpp$") OR (${_file} MATCHES "\\.cxx$"))
+		            SET_SOURCE_FILES_PROPERTIES(${_file} PROPERTIES HIP_SOURCE_PROPERTY_FORMAT OBJ)
+		        ENDIF()
+	      ENDFOREACH()
+        IF (CMAKE_VERSION VERSION_LESS 3.9.0)
+            CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
+        ELSE()
+            SET(HIP_LINK_LIBRARIES_KEYWORD "PUBLIC")
+        ENDIF()
+
+	      HIP_ADD_EXECUTABLE(
+		        ${In_Name}
+		        ${ARGN})
+
     ELSE()
         ADD_EXECUTABLE(
             ${In_Name}

@@ -64,8 +64,8 @@
 //! ALPAKA_FN_ACC
 //! auto add(std::int32_t a, std::int32_t b)
 //! -> std::int32_t;
-#if BOOST_LANG_CUDA
-    #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+#if BOOST_LANG_CUDA || BOOST_LANG_HIP
+    #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) || defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
         #define ALPAKA_FN_ACC __device__
     #else
         #define ALPAKA_FN_ACC __device__ __host__
@@ -88,7 +88,8 @@
 //!
 //! WARNING: Only use this method if there is no other way.
 //! Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA.
-#if BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA
+#if (BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA) \
+  || BOOST_LANG_HIP
     #if BOOST_COMP_MSVC
         #define ALPAKA_NO_HOST_ACC_WARNING\
             __pragma(hd_warning_disable)
@@ -102,7 +103,7 @@
 
 //-----------------------------------------------------------------------------
 //! Macro defining the inline function attribute.
-#if BOOST_LANG_CUDA
+#if BOOST_LANG_CUDA || BOOST_LANG_HIP
     #define ALPAKA_FN_INLINE __forceinline__
 #else
     #define ALPAKA_FN_INLINE inline
@@ -124,7 +125,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if BOOST_LANG_CUDA && BOOST_ARCH_PTX
+#if (BOOST_LANG_CUDA && BOOST_ARCH_PTX) || (BOOST_LANG_HIP && (BOOST_ARCH_HSA || BOOST_ARCH_PTX))
     #define ALPAKA_STATIC_ACC_MEM_GLOBAL __device__
 #else
     #define ALPAKA_STATIC_ACC_MEM_GLOBAL
@@ -146,7 +147,7 @@
 //! In contrast to ordinary variables, you can not define such variables
 //! as static compilation unit local variables with internal linkage
 //! because this is forbidden by CUDA.
-#if BOOST_LANG_CUDA && BOOST_ARCH_PTX
+#if (BOOST_LANG_CUDA && BOOST_ARCH_PTX) || (BOOST_LANG_HIP && (BOOST_ARCH_HSA || BOOST_ARCH_PTX))
     #define ALPAKA_STATIC_ACC_MEM_CONSTANT __constant__
 #else
     #define ALPAKA_STATIC_ACC_MEM_CONSTANT

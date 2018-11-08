@@ -37,7 +37,7 @@ fi
 export PATH=${ALPAKA_CI_CMAKE_DIR}/bin:${PATH}
 cmake --version
 
-if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
+if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
 then
     # CUDA
     export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
@@ -50,6 +50,27 @@ then
         which nvcc
         nvcc -V
     fi
+fi
+
+if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ]
+then
+    # && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
+    # HIP
+    # HIP_PATH required by HIP tools
+    export HIP_PATH=${ALPAKA_CI_HIP_ROOT_DIR}
+    # CUDA_PATH required by HIP tools
+    export CUDA_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}
+    export PATH=${HIP_PATH}/bin:$PATH
+    export LD_LIBRARY_PATH=${HIP_PATH}/lib64:${HIP_PATH}/hiprand/lib:${LD_LIBRARY_PATH}
+    export CMAKE_PREFIX_PATH=${HIP_PATH}:${HIP_PATH}/hiprand:${CMAKE_PREFIX_PATH:-}
+
+    # calls nvcc or hcc
+    which hipcc
+    hipcc -V
+    which hipconfig
+    hipconfig -v
+    # print newline as previous command does not do this
+    echo
 fi
 
 if [ "${CXX}" == "clang++" ]

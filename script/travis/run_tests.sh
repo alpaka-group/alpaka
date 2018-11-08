@@ -25,12 +25,13 @@
 set -vuo pipefail
 
 : ${ALPAKA_ACC_GPU_CUDA_ENABLE?"ALPAKA_ACC_GPU_CUDA_ENABLE must be specified"}
+: ${ALPAKA_ACC_GPU_HIP_ENABLE?"ALPAKA_ACC_GPU_HIP_ENABLE must be specified"}
 
 # https://stackoverflow.com/questions/42218009/how-to-tell-if-any-command-in-bash-script-failed-non-zero-exit-status
 err=0
 trap 'err=1' ERR
 
-if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ]
+if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ] && [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "OFF" ];
 then
     cd build/make/
 

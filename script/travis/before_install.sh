@@ -63,7 +63,7 @@ echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 #-------------------------------------------------------------------------------
 # CUDA
-if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
+if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
 then
     if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
     then
@@ -72,5 +72,18 @@ then
         then
             export CMAKE_BUILD_TYPE=Debug
         fi
+    fi
+fi
+
+#-------------------------------------------------------------------------------
+# HIP
+if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ]
+then
+    # if platform is nvcc, CUDA part is already processed in this file.
+
+    if [ "${ALPAKA_HIP_PLATFORM}" == "hcc" ]
+    then
+        echo "HIP(hcc) not supported yet."
+        exit 1
     fi
 fi
