@@ -157,8 +157,8 @@ auto main()
     // Instantiate the kernel function object
     VectorAddKernel kernel;
 
-    // Create the executor task.
-    auto const exec(alpaka::kernel::createTaskExec<Acc>(
+    // Create the kernel execution task.
+    auto const taskKernel(alpaka::kernel::createTaskKernel<Acc>(
         workDiv,
         kernel,
         alpaka::mem::view::getPtrNative(bufAccA),
@@ -167,7 +167,7 @@ auto main()
         numElements));
 
     // Enqueue the kernel executor
-    alpaka::queue::enqueue(queue, exec);
+    alpaka::queue::enqueue(queue, taskKernel);
 
     // Copy back the result
     alpaka::mem::view::copy(queue, bufHostC, bufAccC, extent);

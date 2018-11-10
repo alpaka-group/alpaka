@@ -89,8 +89,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
                       static_cast<Extent>(blockSize),
                       static_cast<Extent>(1) };
 
-    // execute first kernel
-    auto const exec1(alpaka::kernel::createTaskExec<Acc>(
+    // create main reduction kernel execution task
+    auto const taskKernelReduceMain(alpaka::kernel::createTaskKernel<Acc>(
         workDiv1,
         kernel1,
         alpaka::mem::view::getPtrNative(sourceDeviceMemory),
@@ -98,8 +98,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
         n,
         func));
 
-    // reduce the last block
-    auto const exec2(alpaka::kernel::createTaskExec<Acc>(
+    // create last block reduction kernel execution task
+    auto const taskKernelReduceLastBlock(alpaka::kernel::createTaskKernel<Acc>(
         workDiv2,
         kernel2,
         alpaka::mem::view::getPtrNative(destinationDeviceMemory),
@@ -107,9 +107,9 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
         blockCount,
         func));
 
-    // enqueue both kernels
-    alpaka::queue::enqueue(queue, exec1);
-    alpaka::queue::enqueue(queue, exec2);
+    // enqueue both kernel execution tasks
+    alpaka::queue::enqueue(queue, taskKernelReduceMain);
+    alpaka::queue::enqueue(queue, taskKernelReduceLastBlock);
 
     //  download result from GPU
     T resultGpuHost;

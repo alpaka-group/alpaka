@@ -57,7 +57,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs/*,
                 typename TSfinae = void*/>
-            struct CreateTaskExec;
+            struct CreateTaskKernel;
 
             //#############################################################################
             //! The trait for getting the size of the block shared dynamic memory of a kernel.
@@ -188,18 +188,18 @@ namespace alpaka
             typename TWorkDiv,
             typename TKernelFnObj,
             typename... TArgs>
-        ALPAKA_FN_HOST auto createTaskExec(
+        ALPAKA_FN_HOST auto createTaskKernel(
             TWorkDiv const & workDiv,
             TKernelFnObj const & kernelFnObj,
             TArgs const & ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
-            traits::CreateTaskExec<
+            traits::CreateTaskKernel<
                 TAcc,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
-            ::createTaskExec(
+            ::createTaskKernel(
                 workDiv,
                 kernelFnObj,
                 args...))
@@ -222,11 +222,11 @@ namespace alpaka
                 << std::endl;
 #endif
             return
-                traits::CreateTaskExec<
+                traits::CreateTaskKernel<
                     TAcc,
                     TWorkDiv,
                     TKernelFnObj,
-                    TArgs...>::createTaskExec(
+                    TArgs...>::createTaskKernel(
                         workDiv,
                         kernelFnObj,
                         args...);
@@ -262,7 +262,7 @@ namespace alpaka
         {
             queue::enqueue(
                 queue,
-                kernel::createTaskExec<
+                kernel::createTaskKernel<
                     TAcc>(
                     workDiv,
                     kernelFnObj,
