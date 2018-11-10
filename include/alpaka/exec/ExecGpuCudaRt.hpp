@@ -335,7 +335,7 @@ namespace alpaka
                     }
 #endif
 
-                    // Get the idx of the block shared dynamic memory.
+                    // Get the size of the block shared dynamic memory.
                     auto const blockSharedMemDynSizeBytes(
                         meta::apply(
                             [&](TArgs const & ... args)
@@ -455,7 +455,7 @@ namespace alpaka
                     }
 #endif
 
-                    // Get the idx of the block shared dynamic memory.
+                    // Get the size of the block shared dynamic memory.
                     auto const blockSharedMemDynSizeBytes(
                         meta::apply(
                             [&](TArgs const & ... args)

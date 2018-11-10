@@ -107,7 +107,7 @@ namespace alpaka
                 auto const threadElemExtent(
                     workdiv::getWorkDiv<Thread, Elems>(*this));
 
-                // Get the idx of the block shared dynamic memory.
+                // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
                     meta::apply(
                         [&](TArgs const & ... args)
@@ -211,6 +211,7 @@ namespace alpaka
                 ::omp_set_dynamic(ompIsDynamic);
             }
 
+        private:
             TKernelFnObj m_kernelFnObj;
             std::tuple<TArgs...> m_args;
         };

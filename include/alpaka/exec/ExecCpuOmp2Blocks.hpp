@@ -108,7 +108,7 @@ namespace alpaka
                 auto const threadElemExtent(
                     workdiv::getWorkDiv<Thread, Elems>(*this));
 
-                // Get the idx of the block shared dynamic memory.
+                // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
                     meta::apply(
                         [&](TArgs const & ... args)
@@ -167,6 +167,7 @@ namespace alpaka
                 }
             }
 
+        private:
             template<
                 typename FnObj>
             ALPAKA_FN_HOST auto parallelFn(
