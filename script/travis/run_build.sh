@@ -48,6 +48,8 @@ function env2cmake()
 
 #-------------------------------------------------------------------------------
 # Build and execute all tests.
+echo "CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}"
+echo "CMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}"
 echo "KMP_DEVICE_THREAD_LIMIT=${KMP_DEVICE_THREAD_LIMIT}"
 echo "KMP_ALL_THREADS=${KMP_ALL_THREADS}"
 echo "KMP_TEAMS_THREAD_LIMIT=${KMP_TEAMS_THREAD_LIMIT}"

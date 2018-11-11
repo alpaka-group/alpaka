@@ -26,7 +26,13 @@ set -euo pipefail
 
 : ${ALPAKA_CI_CMAKE_DIR?"ALPAKA_CI_CMAKE_DIR must be specified"}
 : ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
+: ${ALPAKA_CI_STDLIB?"ALPAKA_CI_STDLIB must be specified"}
 : ${CXX?"CXX must be specified"}
+
+echo "ALPAKA_CI_CMAKE_DIR: ${ALPAKA_CI_CMAKE_DIR}"
+echo "ALPAKA_CI_ANALYSIS: ${ALPAKA_CI_ANALYSIS}"
+echo "ALPAKA_CI_STDLIB: ${ALPAKA_CI_STDLIB}"
+echo "CXX: ${CXX}"
 
 if [[ ! -v LD_LIBRARY_PATH ]]
 then
@@ -83,11 +89,21 @@ then
         CPPFLAGS=
     fi
     export CPPFLAGS="-I ${ALPAKA_CI_CLANG_DIR}/include/c++/v1 ${CPPFLAGS}"
-    if [[ ! -v CXXFLAGS ]]
+fi
+
+if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+then
+    if [[ ! -v CMAKE_CXX_FLAGS ]]
     then
-        CXXFLAGS=
+        export CMAKE_CXX_FLAGS=
     fi
-    export CXXFLAGS="-lc++ ${CXXFLAGS}"
+    CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libc++"
+
+    if [[ ! -v CMAKE_EXE_LINKER_FLAGS ]]
+    then
+        export CMAKE_EXE_LINKER_FLAGS=
+    fi
+    CMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS} -lc++ -lc++abi"
 fi
 
 which "${CXX}"
