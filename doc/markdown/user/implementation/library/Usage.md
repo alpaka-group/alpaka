@@ -37,7 +37,7 @@ struct MyKernel
         typename TAcc>    // Templated on the accelerator type.
     ALPAKA_FN_ACC       // Macro marking the function to be executable on all accelerators.
   auto operator()(    // The function / kernel to execute.
-        TAcc & acc/*,     // The specific accelerator implementation.
+        TAcc const & acc/*,     // The specific accelerator implementation.
         ...*/) const      // Must be 'const'.
     -> void
     {
