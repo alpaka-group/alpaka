@@ -371,8 +371,8 @@ namespace alpaka
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-/*                    // Log the function attributes.
-                    hipFuncAttributes funcAttrs;
+                    // Log the function attributes.
+                    /*hipFuncAttributes funcAttrs;
                     hipFuncGetAttributes(&funcAttrs, exec::hip::detail::hipKernel<TDim, TIdx, TKernelFnObj, TArgs...>);
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " binaryVersion: " << funcAttrs.binaryVersion
@@ -495,9 +495,9 @@ namespace alpaka
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-// hipFuncAttributes not ported from HIP to HIP.
+                    // hipFuncAttributes not ported from HIP to HIP.
                     // Log the function attributes.
-/*                    hipFuncAttributes funcAttrs;
+                    /*hipFuncAttributes funcAttrs;
                     hipFuncGetAttributes(&funcAttrs, exec::hip::detail::hipKernel<TDim, TIdx, TKernelFnObj, TArgs...>);
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " binaryVersion: " << funcAttrs.binaryVersion
