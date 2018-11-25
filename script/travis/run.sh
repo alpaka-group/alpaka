@@ -20,9 +20,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-#-------------------------------------------------------------------------------
-# e: exit as soon as one command returns a non-zero exit code.
-set -euo pipefail
+source ./script/travis/set.sh
 
 : ${ALPAKA_CI_CMAKE_DIR?"ALPAKA_CI_CMAKE_DIR must be specified"}
 : ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}

@@ -20,9 +20,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-#-------------------------------------------------------------------------------
-# v: all lines are printed before executing them.
-set -vuo pipefail
+source ./script/travis/set.sh
 
 : ${ALPAKA_ACC_GPU_CUDA_ENABLE?"ALPAKA_ACC_GPU_CUDA_ENABLE must be specified"}
 : ${ALPAKA_ACC_GPU_HIP_ENABLE?"ALPAKA_ACC_GPU_HIP_ENABLE must be specified"}

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017 Benjamin Worpitz
+# Copyright 2018 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -20,9 +20,9 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-source ./script/travis/travis_retry.sh
-
 source ./script/travis/set.sh
 
-# Install TBB
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
+sudo smem
+sudo free -m -t
+# show actions of the OOM killer
+sudo dmesg

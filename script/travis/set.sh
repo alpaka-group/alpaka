@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017 Benjamin Worpitz
+# Copyright 2018 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -20,9 +20,10 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-source ./script/travis/travis_retry.sh
-
-source ./script/travis/set.sh
-
-# Install TBB
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
+#-------------------------------------------------------------------------------
+# -e: exit as soon as one command returns a non-zero exit code
+# -o pipefail: pipeline returns exit code of the rightmost command with a non-zero exit code
+# -u: treat unset variables as an error
+# -v: Print shell input lines as they are read
+# -x: Print command traces before executing command
+set -eouvx pipefail

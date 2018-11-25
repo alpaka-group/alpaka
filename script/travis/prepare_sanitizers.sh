@@ -20,9 +20,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-#-------------------------------------------------------------------------------
-# e: exit as soon as one command returns a non-zero exit code.
-set -euo pipefail
+source ./script/travis/set.sh
 
 #-------------------------------------------------------------------------------
 # Exports the CMAKE_CXX_FLAGS and CMAKE_EXE_LINKER_FLAGS to enable the sanitizers listed in ALPAKA_CI_SANITIZERS.

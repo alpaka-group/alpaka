@@ -20,9 +20,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-#-------------------------------------------------------------------------------
-# e: exit as soon as one command returns a non-zero exit code.
-set -eo pipefail
+source ./script/travis/set.sh
 
 #-------------------------------------------------------------------------------
 # CMake
@@ -39,7 +37,12 @@ then
     ALPAKA_CI_GCC_VER_SEMANTIC=( ${ALPAKA_CI_GCC_VER//./ } )
     export ALPAKA_CI_GCC_VER_MAJOR="${ALPAKA_CI_GCC_VER_SEMANTIC[0]}"
     echo ALPAKA_CI_GCC_VER_MAJOR: "${ALPAKA_CI_GCC_VER_MAJOR}"
-    export ALPAKA_CI_GCC_VER_MINOR="${ALPAKA_CI_GCC_VER_SEMANTIC[1]}"
+    if [[ -v ALPAKA_CI_GCC_VER_SEMANTIC[1] ]]
+    then
+        export ALPAKA_CI_GCC_VER_MINOR="${ALPAKA_CI_GCC_VER_SEMANTIC[1]}"
+    else
+        export ALPAKA_CI_GCC_VER_MINOR=0
+    fi
     echo ALPAKA_CI_GCC_VER_MINOR: "${ALPAKA_CI_GCC_VER_MINOR}"
 fi
 

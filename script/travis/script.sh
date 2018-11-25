@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2017 Benjamin Worpitz
+# Copyright 2018 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #
@@ -24,5 +24,7 @@ source ./script/travis/travis_retry.sh
 
 source ./script/travis/set.sh
 
-# Install TBB
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
+./script/travis/print_travisEnv.sh
+source ./script/travis/before_install.sh
+./script/travis/docker_install.sh
+./script/travis/docker_run.sh

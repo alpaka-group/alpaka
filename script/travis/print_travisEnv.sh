@@ -20,9 +20,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-#-------------------------------------------------------------------------------
-# e: exit as soon as one command returns a non-zero exit code.
-set -euo pipefail
+source ./script/travis/set.sh
 
 #-------------------------------------------------------------------------------
 # Print the travis environment variables: http://docs.travis-ci.com/user/ci-environment/
