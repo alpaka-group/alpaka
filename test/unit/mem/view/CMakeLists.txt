@@ -22,11 +22,6 @@ SET(_TARGET_NAME "memView")
 
 append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
 
-# FIXME: The appveyor CI builds crash with out of memory when building this file.
-IF(ALPAKA_CI MATCHES "APPVEYOR")
-    SET_SOURCE_FILES_PROPERTIES("src/ViewSubVieTest.cpp" PROPERTIES HEADER_FILE_ONLY TRUE)
-ENDIF()
-
 ALPAKA_ADD_EXECUTABLE(
     ${_TARGET_NAME}
     ${_FILES_SOURCE})

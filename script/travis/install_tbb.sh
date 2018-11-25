@@ -25,4 +25,18 @@ source ./script/travis/travis_retry.sh
 source ./script/travis/set.sh
 
 # Install TBB
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
+elif [ "$TRAVIS_OS_NAME" = "windows" ]
+then
+    TBB_ARCHIVE_VER="tbb44_20160526oss"
+    TBB_DOWNLOAD_URL="https://www.threadingbuildingblocks.org/sites/default/files/software_releases/windows/${TBB_ARCHIVE_VER}_win_0.zip"
+    TBB_DST_PATH="${TBB_ROOT_DIR}/tbb.zip"
+    mkdir "${TBB_ROOT_DIR}"
+    powershell.exe Invoke-WebRequest "${TBB_DOWNLOAD_URL}" -OutFile "${TBB_DST_PATH}"
+    unzip -q "${TBB_DST_PATH}" -d "${TBB_ROOT_DIR}"
+    TBB_UNZIP_DIR="${TBB_ROOT_DIR}/${TBB_ARCHIVE_VER}"
+    mv ${TBB_UNZIP_DIR}/* "${TBB_ROOT_DIR}/"
+    rmdir "${TBB_UNZIP_DIR}"
+fi

@@ -22,7 +22,10 @@
 
 source ./script/travis/set.sh
 
-sudo smem
-sudo free -m -t
-# show actions of the OOM killer
-sudo dmesg
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+  sudo smem
+  sudo free -m -t
+  # show actions of the OOM killer
+  sudo dmesg
+fi
