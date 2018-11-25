@@ -77,7 +77,9 @@ This library uses C++11 (or newer when available).
 |TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |CUDA (nvcc)|:white_check_mark: <br/> (CUDA 8.0-10.0)|:white_check_mark: <br/> (CUDA 9.0-10.0)|:white_check_mark: <br/> (CUDA 9.2-10.0) |:x:|:white_check_mark: <br/> (CUDA 9.1-10.0)|:white_check_mark: <br/> (CUDA 10.0)|:white_check_mark: <br/> (CUDA 10.0)|:x:|:x:|
 |CUDA (clang) | - | - | - | - | :white_check_mark: <br/> (CUDA 8.0)| :white_check_mark: <br/> (CUDA 8.0)| :white_check_mark: <br/> (CUDA 8.0-9.0) | :white_check_mark: <br/> (CUDA 8.0-9.2) | - |
-|[HIP](doc/markdown/user/implementation/mapping/HIP.md) (nvcc)<br/>(HIP 1.5.8292+)|:white_check_mark: <br/> (nvcc 8.0-9.2)|:white_check_mark: <br/> (nvcc 9.0-9.2)|:white_check_mark: <br/> (nvcc 9.2)|:x:|:x:|:x:|:x:|:x:|:x:|
+|[HIP](doc/markdown/user/implementation/mapping/HIP.md) (nvcc)|:white_check_mark: <br/> (nvcc 8.0)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|
+
+Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.
 
 Dependencies
 ------------
