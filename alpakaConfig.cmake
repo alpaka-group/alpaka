@@ -541,6 +541,14 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 SET(CUDA_PROPAGATE_HOST_FLAGS ON)
 
+                # nvcc sets no linux/__linux macros on OpenPOWER linux
+                # nvidia bug id: 2448610
+                IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+                    IF(CMAKE_SYSTEM_PROCESSOR STREQUAL "ppc64le")
+                        LIST(APPEND CUDA_NVCC_FLAGS "-Dlinux")
+                    ENDIF()
+                ENDIF()
+
                 IF(CUDA_VERSION VERSION_EQUAL 8.0)
                     LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
                 ENDIF()
