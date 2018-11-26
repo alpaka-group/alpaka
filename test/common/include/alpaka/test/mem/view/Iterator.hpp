@@ -166,10 +166,10 @@ namespace alpaka
                         }
 
                     private:
-                        Elem * const m_nativePtr;
+                        Elem * m_nativePtr;
                         Idx m_currentIdx;
-                        vec::Vec<Dim, Idx> const m_extents;
-                        vec::Vec<Dim, Idx> const m_pitchBytes;
+                        vec::Vec<Dim, Idx> m_extents;
+                        vec::Vec<Dim, Idx> m_pitchBytes;
                     };
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic pop

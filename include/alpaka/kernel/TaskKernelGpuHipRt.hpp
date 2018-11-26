@@ -44,10 +44,10 @@
 #include <alpaka/core/Utility.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
+#include <alpaka/meta/IsTriviallyCopyable.hpp>
 
 #include <stdexcept>
 #include <tuple>
-#include <type_traits>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>
 #endif
@@ -145,6 +145,16 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         public:
+            static_assert(meta::IsTriviallyCopyable<TKernelFnObj>::value,
+                "The given kernel function object has to fulfill is_trivially_copyable!");
+            static_assert(
+                meta::Conjunction<
+                    std::true_type,
+                    meta::IsTriviallyCopyable<
+                        TArgs>...
+                    >::value,
+                "The given arguments have to fulfill is_trivially_copyable!");
+
             //-----------------------------------------------------------------------------
             //! Constructor.
             template<

@@ -165,6 +165,7 @@
 #include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/meta/Integral.hpp>
 #include <alpaka/meta/IsStrictBase.hpp>
+#include <alpaka/meta/IsTriviallyCopyable.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/Set.hpp>
