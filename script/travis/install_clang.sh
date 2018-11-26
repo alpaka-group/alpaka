@@ -29,6 +29,7 @@ set -euo pipefail
 : ${ALPAKA_CI_CLANG_DIR?"ALPAKA_CI_CLANG_DIR must be specified"}
 : ${ALPAKA_CI_CLANG_VER?"ALPAKA_CI_CLANG_VER must be specified"}
 : ${ALPAKA_CI_CLANG_LIBSTDCPP_VERSION?"ALPAKA_CI_CLANG_LIBSTDCPP_VERSION must be specified"}
+: ${ALPAKA_CI_STDLIB?"ALPAKA_CI_STDLIB must be specified"}
 : ${CXX?"CXX must be specified"}
 
 if [ -z "$(ls -A "${ALPAKA_CI_CLANG_DIR}")" ]
@@ -45,9 +46,12 @@ export LLVM_CONFIG="${ALPAKA_CI_CLANG_DIR}/bin/llvm-config"
 travis_retry sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 travis_retry sudo apt-get -y --quiet update
 
-#  travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install clang-${ALPAKA_CI_CLANG_VER}
-
 travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libstdc++-"${ALPAKA_CI_CLANG_LIBSTDCPP_VERSION}"-dev
+if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+then
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++-dev
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++abi-dev
+fi
 travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libiomp-dev
 sudo update-alternatives --install /usr/bin/clang clang "${ALPAKA_CI_CLANG_DIR}"/bin/clang 50
 sudo update-alternatives --install /usr/bin/clang++ clang++ "${ALPAKA_CI_CLANG_DIR}"/bin/clang++ 50
@@ -65,11 +69,6 @@ then
     CPPFLAGS=
 fi
 export CPPFLAGS="-I ${ALPAKA_CI_CLANG_DIR}/include/c++/v1 ${CPPFLAGS}"
-if [[ ! -v CXXFLAGS ]]
-then
-    CXXFLAGS=
-fi
-export CXXFLAGS="-lc++ ${CXXFLAGS}"
 
 which "${CXX}"
 ${CXX} -v

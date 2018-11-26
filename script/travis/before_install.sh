@@ -62,6 +62,28 @@ export ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
 echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 #-------------------------------------------------------------------------------
+if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+then
+    if [ "${CXX}" == "g++" ]
+    then
+        echo "using libc++ with g++ not yet supported."
+        exit 1
+    fi
+
+    if [ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == "ubuntu:14.04" ]
+    then
+        echo "using libc++ with ubuntu:14.04 not supported."
+        exit 1
+    fi
+
+    if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 65 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
+    then
+        echo "using libc++ with boost < 1.65 is not supported."
+        exit 1
+    fi
+fi
+
+#-------------------------------------------------------------------------------
 # CUDA
 if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
 then

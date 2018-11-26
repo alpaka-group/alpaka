@@ -26,6 +26,7 @@
 
 : ${ALPAKA_CI_BOOST_ROOT_DIR?"ALPAKA_CI_BOOST_ROOT_DIR must be specified"}
 : ${ALPAKA_CI_BOOST_LIB_DIR?"ALPAKA_CI_BOOST_LIB_DIR must be specified"}
+: ${ALPAKA_CI_STDLIB?"ALPAKA_CI_STDLIB must be specified"}
 : ${CMAKE_BUILD_TYPE?"CMAKE_BUILD_TYPE must be specified"}
 : ${CXX?"CXX must be specified"}
 : ${CC?"CC must be specified"}
@@ -81,7 +82,16 @@ if [ "${ALPAKA_BOOST_B2_CXXFLAGS}" != "" ]
 then
     ALPAKA_BOOST_B2+=' cxxflags="'
     ALPAKA_BOOST_B2+="${ALPAKA_BOOST_B2_CXXFLAGS}"
+    if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+    then
+        ALPAKA_BOOST_B2+=" -stdlib=libc++"
+    fi
     ALPAKA_BOOST_B2+='"'
+fi
+
+if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+then
+    ALPAKA_BOOST_B2+=' linkflags="-stdlib=libc++"'
 fi
 ALPAKA_BOOST_B2+=" --stagedir=${ALPAKA_CI_BOOST_LIB_DIR} stage"
 # Build boost.

@@ -26,10 +26,22 @@ set -euo pipefail
 
 #-------------------------------------------------------------------------------
 # Exports the CMAKE_CXX_FLAGS and CMAKE_EXE_LINKER_FLAGS to enable the sanitizers listed in ALPAKA_CI_SANITIZERS.
-export CMAKE_CXX_FLAGS=
-export CMAKE_EXE_LINKER_FLAGS=
-export ASAN_OPTIONS
-export LSAN_OPTIONS
+if [[ ! -v CMAKE_CXX_FLAGS ]]
+then
+    export CMAKE_CXX_FLAGS=
+fi
+if [[ ! -v CMAKE_EXE_LINKER_FLAGS ]]
+then
+    export CMAKE_EXE_LINKER_FLAGS=
+fi
+if [[ ! -v ASAN_OPTIONS ]]
+then
+    export ASAN_OPTIONS=
+fi
+if [[ ! -v LSAN_OPTIONS ]]
+then
+    export LSAN_OPTIONS=
+fi
 
 #-------------------------------------------------------------------------------
 # sanitizers
