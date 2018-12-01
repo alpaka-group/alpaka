@@ -137,7 +137,7 @@ before_build:
     - cmd: if "%CONFIGURATION%"=="Debug" set ALPAKA_BOOST_VARIANT=debug
     - cmd: if "%CONFIGURATION%"=="Release" set ALPAKA_BOOST_VARIANT=release
     # Select the libraries required.
-    - cmd: set ALPAKA_BOOST_B2=--with-test
+    - cmd: set ALPAKA_BOOST_B2=
     - cmd: if not "%ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE%"=="OFF" set ALPAKA_BOOST_B2=%ALPAKA_BOOST_B2% --with-fiber --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time
 
     - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_BOOST_TOOLSET=msvc-14.1

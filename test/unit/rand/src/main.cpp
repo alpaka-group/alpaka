@@ -26,7 +26,14 @@
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-parameter"
 #endif
-#include <boost/test/unit_test.hpp>
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4702)
+#endif
+#include <boost/test/included/unit_test.hpp>
+#if BOOST_COMP_MSVC
+    #pragma warning(pop)
+#endif
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif

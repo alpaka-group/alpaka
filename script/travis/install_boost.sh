@@ -65,7 +65,6 @@ then
     ALPAKA_BOOST_B2_CXXFLAGS+=" -Wunused-private-field -Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros"
 fi
 # Select the libraries required.
-ALPAKA_BOOST_B2+=" --with-test"
 # If the variable is not set, the backend will most probably be used by default so we install it.
 if [[ ! -v ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE || "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]]
 then
