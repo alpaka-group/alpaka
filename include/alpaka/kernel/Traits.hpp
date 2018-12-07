@@ -184,6 +184,12 @@ namespace alpaka
                 args...))
 #endif
         {
+                // FIXME: For unknown reasons std::result_of fails with __device__ lambdas.
+#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+            static_assert(
+                std::is_same<typename std::result_of<TKernelFnObj(TAcc const &, TArgs const & ...)>::type, void>::value,
+                "The TKernelFnObj is required to return void!");
+#endif
             static_assert(
                 dim::Dim<typename std::decay<TWorkDiv>::type>::value == dim::Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");

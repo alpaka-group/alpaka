@@ -35,7 +35,7 @@
 template<
     typename TAcc>
 void ALPAKA_FN_ACC hiWorldFunction(
-    TAcc& acc,
+    TAcc const & acc,
     size_t const nExclamationMarks)
 {
     using Dim = alpaka::dim::Dim<TAcc>;
@@ -115,7 +115,7 @@ auto main()
     alpaka::kernel::exec<Acc>(
         queue,
         workDiv,
-        [] ALPAKA_FN_ACC (Acc & acc, size_t const nExclamationMarksAsArg) -> void {
+        [] ALPAKA_FN_ACC (Acc const & acc, size_t const nExclamationMarksAsArg) -> void {
             auto globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
             auto globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
             auto linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
@@ -153,7 +153,7 @@ auto main()
     alpaka::kernel::exec<Acc> (
         queue,
         workDiv,
-        std::function<void(Acc&, size_t)>( hiWorldFunction<Acc> ),
+        std::function<void(Acc const &, size_t)>( hiWorldFunction<Acc> ),
         nExclamationMarks);
 
     
