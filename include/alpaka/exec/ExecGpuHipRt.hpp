@@ -88,6 +88,11 @@ namespace alpaka
 #if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
     #error "Cuda device capability >= 2.0 is required!"
 #endif
+                    static_assert(
+                        std::is_same<typename std::result_of<
+                            TKernelFnObj(acc::AccGpuCudaRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
+                        "The TKernelFnObj is required to return void!");
+                    
                     acc::AccGpuHipRt<TDim, TIdx> acc(threadElemExtent);
 
                     kernelFnObj(

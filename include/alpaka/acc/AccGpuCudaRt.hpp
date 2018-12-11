@@ -235,6 +235,34 @@ namespace alpaka
     }
     namespace kernel
     {
+        namespace detail
+        {
+            //#############################################################################
+            //! specialization of the TKernelFnObj return type evaluation
+            //
+            // It is not possible to determine the result type of a __device__ lambda for CUDA on the host side.
+            // https://github.com/ComputationalRadiationPhysics/alpaka/pull/695#issuecomment-446103194
+            // The executor ExecGpuCudaRt is therefore performing this check on device side.
+            template<
+                typename TDim,
+                typename TIdx>
+            struct CheckFnReturnType<
+                acc::AccGpuCudaRt<
+                    TDim,
+                    TIdx>>
+            {
+                template<
+                    typename TKernelFnObj,
+                    typename... TArgs>
+                void operator()(
+                    TKernelFnObj const &,
+                    TArgs const & ...)
+                {
+
+                }
+            };
+        }
+
         namespace traits
         {
             //#############################################################################
