@@ -23,35 +23,19 @@
 #if !defined(__NVCC__) || \
     ( defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__) )
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
-
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
-
 #include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
 
-BOOST_AUTO_TEST_SUITE(kernel)
+#include <catch2/catch.hpp>
+
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    lambdaKernelIsWorking,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateLambda
+{
+template< typename TAcc >
+void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -70,17 +54,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
         };
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    lambdaKernelWithArgumentIsWorking,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateArg
+{
+template< typename TAcc >
+void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -101,18 +83,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
             ALPAKA_CHECK(*success, 42u == arg1);
         };
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel,
-            arg));
+    REQUIRE(fixture(kernel, arg));
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    lambdaKernelWithCapturingIsWorking,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateCapture
+{
+template< typename TAcc >
+void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -140,12 +119,24 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     #pragma clang diagnostic pop
 #endif
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
+}
+};
+
+
+TEST_CASE( "lambdaKernelIsWorking", "[kernel]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateLambda() );
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "lambdaKernelWithArgumentIsWorking", "[kernel]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateArg() );
+}
+
+TEST_CASE( "lambdaKernelWithCapturingIsWorking", "[kernel]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateCapture() );
+}
 
 #endif

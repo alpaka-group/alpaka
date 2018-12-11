@@ -21,27 +21,18 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <tuple>
 #include <type_traits>
 
-BOOST_AUTO_TEST_SUITE(meta)
 
 class A {};
 class B : A {};
 class C {};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(isStrictBaseTrue)
+TEST_CASE("isStrictBaseTrue", "[meta]")
 {
     constexpr bool IsStrictBaseResult =
         alpaka::meta::IsStrictBase<
@@ -57,7 +48,7 @@ BOOST_AUTO_TEST_CASE(isStrictBaseTrue)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(isStrictBaseIdentity)
+TEST_CASE("isStrictBaseIdentity", "[meta]")
 {
     constexpr bool IsStrictBaseResult =
         alpaka::meta::IsStrictBase<
@@ -73,7 +64,7 @@ BOOST_AUTO_TEST_CASE(isStrictBaseIdentity)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(isStrictBaseNoInheritance)
+TEST_CASE("isStrictBaseNoInheritance", "[meta]")
 {
     constexpr bool IsStrictBaseResult =
         alpaka::meta::IsStrictBase<
@@ -89,7 +80,7 @@ BOOST_AUTO_TEST_CASE(isStrictBaseNoInheritance)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(isStrictBaseWrongOrder)
+TEST_CASE("isStrictBaseWrongOrder", "[meta]")
 {
     constexpr bool IsStrictBaseResult =
         alpaka::meta::IsStrictBase<
@@ -103,5 +94,3 @@ BOOST_AUTO_TEST_CASE(isStrictBaseWrongOrder)
         IsStrictBaseReference == IsStrictBaseResult,
         "alpaka::meta::IsStrictBase failed!");
 }
-
-BOOST_AUTO_TEST_SUITE_END()

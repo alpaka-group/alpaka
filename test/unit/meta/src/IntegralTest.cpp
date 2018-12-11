@@ -21,22 +21,12 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <type_traits>
 
-BOOST_AUTO_TEST_SUITE(meta)
-
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(isIntegralSupersetTrue)
+TEST_CASE("isIntegralSupersetTrue", "[meta]")
 {
     // unsigned - unsigned
     static_assert(
@@ -154,7 +144,7 @@ BOOST_AUTO_TEST_CASE(isIntegralSupersetTrue)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(isIntegralSupersetNoIntegral)
+TEST_CASE("isIntegralSupersetNoIntegral", "[meta]")
 {
     static_assert(
         !alpaka::meta::IsIntegralSuperset<float, std::uint8_t>::value,
@@ -165,7 +155,7 @@ BOOST_AUTO_TEST_CASE(isIntegralSupersetNoIntegral)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(isIntegralSupersetFalse)
+TEST_CASE("isIntegralSupersetFalse", "[meta]")
 {
     // unsigned - unsigned
     static_assert(
@@ -283,7 +273,7 @@ BOOST_AUTO_TEST_CASE(isIntegralSupersetFalse)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(higherMax)
+TEST_CASE("higherMax", "[meta]")
 {
     static_assert(
         std::is_same<alpaka::meta::HigherMax<std::int8_t, std::int8_t>, std::int8_t>::value,
@@ -487,7 +477,7 @@ BOOST_AUTO_TEST_CASE(higherMax)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(lowerMax)
+TEST_CASE("lowerMax", "[meta]")
 {
     static_assert(
         std::is_same<alpaka::meta::LowerMax<std::int8_t, std::int8_t>, std::int8_t>::value,
@@ -691,7 +681,7 @@ BOOST_AUTO_TEST_CASE(lowerMax)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(higherMin)
+TEST_CASE("higherMin", "[meta]")
 {
     static_assert(
         std::is_same<alpaka::meta::HigherMin<std::int8_t, std::int8_t>, std::int8_t>::value,
@@ -894,7 +884,7 @@ BOOST_AUTO_TEST_CASE(higherMin)
         "alpaka::meta::HigherMin failed!");
 }
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(lowerMin)
+TEST_CASE("lowerMin", "[meta]")
 {
     static_assert(
         std::is_same<alpaka::meta::LowerMin<std::int8_t, std::int8_t>, std::int8_t>::value,
@@ -1096,6 +1086,3 @@ BOOST_AUTO_TEST_CASE(lowerMin)
         std::is_same<alpaka::meta::LowerMin<std::uint64_t, std::uint64_t>, std::uint64_t>::value,
         "alpaka::meta::LowerMin failed!");
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

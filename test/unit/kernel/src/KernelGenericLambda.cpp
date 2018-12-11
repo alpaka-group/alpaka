@@ -19,29 +19,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
-
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
-
-BOOST_AUTO_TEST_SUITE(kernel)
+#include <catch2/catch.hpp>
 
 // Generic lambdas are a C++14 feature.
 #if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
@@ -49,10 +31,10 @@ BOOST_AUTO_TEST_SUITE(kernel)
 // However, it seems to work on all compilers except MSVC even though it is documented differently.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_COMP_MSVC)
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    genericLambdaKernelIsWorking,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateGeneric
+{
+template< typename TAcc >
+void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -71,17 +53,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
         };
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    variadicGenericLambdaKernelIsWorking,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateVariadic
+{
+template< typename TAcc >
+void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -105,14 +85,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 alpaka::meta::foldr([](auto a, auto b){return a + b;}, args...) == (42u + 43u));
         };
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel,
-            arg1,
-            arg2));
+    REQUIRE(fixture(kernel, arg1, arg2));
 }
-#endif
-#endif
+};
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateGeneric() );
+}
+
+TEST_CASE( "variadicGenericLambdaKernelIsWorking", "[kernel]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateVariadic() );
+}
+
+#endif
+#endif

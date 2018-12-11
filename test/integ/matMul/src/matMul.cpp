@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2018 Benjamin Worpitz
+ * Copyright 2014-2018 Benjamin Worpitz, Axel Huebl
  *
  * This file is part of alpaka.
  *
@@ -19,28 +19,12 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
-
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
-
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/queue/Queue.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <iostream>
 #include <typeinfo>
@@ -226,16 +210,10 @@ namespace alpaka
     }
 }
 
-BOOST_AUTO_TEST_SUITE(matMul)
-
-using TestAccs = alpaka::test::acc::EnabledAccs<
-    alpaka::dim::DimInt<2u>,
-    std::uint32_t>;
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    calculateAxpy,
-    TAcc,
-    TestAccs)
+struct TestTemplate
+{
+template< typename TAcc >
+void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -384,7 +362,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         }
     }
 
-    BOOST_REQUIRE_EQUAL(true, resultCorrect);
+    REQUIRE(resultCorrect);
 }
+};
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "matMul", "[matMul]")
+{
+    using TestAccs = alpaka::test::acc::EnabledAccs<
+        alpaka::dim::DimInt<2u>,
+        std::uint32_t>;
+
+    alpaka::meta::forEachType< TestAccs >( TestTemplate() );
+}

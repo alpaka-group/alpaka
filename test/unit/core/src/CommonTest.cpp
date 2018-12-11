@@ -21,23 +21,12 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <iostream>
 
-BOOST_AUTO_TEST_SUITE(core)
-
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(
-    printDefines)
+TEST_CASE("printDefines", "[core]")
 {
 #if BOOST_LANG_CUDA
     std::cout << "BOOST_LANG_CUDA" << std::endl;
@@ -70,5 +59,3 @@ BOOST_AUTO_TEST_CASE(
     std::cout << "BOOST_COMP_CLANG_CUDA" << std::endl;
 #endif
 }
-
-BOOST_AUTO_TEST_SUITE_END()

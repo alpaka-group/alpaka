@@ -19,28 +19,11 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
+#include <catch2/catch.hpp>
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
-
-BOOST_AUTO_TEST_SUITE(idx)
 
 //#############################################################################
 //! 1D: (17)
@@ -63,10 +46,10 @@ struct CreateExtentVal
 };
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    mapIdx,
-    TDim,
-    alpaka::test::acc::TestDims)
+struct TestTemplate
+{
+template< typename TDim >
+void operator()()
 {
     using Idx = std::size_t;
     using Vec = alpaka::vec::Vec<TDim, Idx>;
@@ -78,7 +61,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
 
     auto const idxNdResult(alpaka::idx::mapIdx<TDim::value>(idx1d, extentNd));
 
-    BOOST_REQUIRE_EQUAL(idxNd, idxNdResult);
+    REQUIRE(idxNd == idxNdResult);
 }
+};
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "mapIdx", "[idx]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestDims >( TestTemplate() );
+}

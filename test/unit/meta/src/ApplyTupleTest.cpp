@@ -21,17 +21,7 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
-
-BOOST_AUTO_TEST_SUITE(meta)
+#include <catch2/catch.hpp>
 
 //#############################################################################
 struct Foo {
@@ -56,23 +46,23 @@ struct AbsNum {
 };
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(invoke)
+TEST_CASE("invoke", "[meta]")
 {
     // invoke a free function
-    BOOST_REQUIRE_EQUAL(9, alpaka::meta::invoke(abs_num, -9));
+    REQUIRE(9 == alpaka::meta::invoke(abs_num, -9));
 
     // invoke a lambda
-    BOOST_REQUIRE_EQUAL(42, alpaka::meta::invoke([]() { return abs_num(-42); }));
+    REQUIRE(42 == alpaka::meta::invoke([]() { return abs_num(-42); }));
 
     // invoke a member function
     const Foo foo(-314159);
-    BOOST_REQUIRE_EQUAL(-314158, alpaka::meta::invoke(&Foo::add, foo, 1));
+    REQUIRE(-314158 == alpaka::meta::invoke(&Foo::add, foo, 1));
 
     // invoke (access) a data member
-    BOOST_REQUIRE_EQUAL(-314159, alpaka::meta::invoke(&Foo::num_, foo));
+    REQUIRE(-314159 == alpaka::meta::invoke(&Foo::num_, foo));
 
     // invoke a function object
-    BOOST_REQUIRE_EQUAL(18, alpaka::meta::invoke(AbsNum(), -18));
+    REQUIRE(18 == alpaka::meta::invoke(AbsNum(), -18));
 }
 
 //-----------------------------------------------------------------------------
@@ -90,12 +80,10 @@ T add_generic(T first, T second)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(applyTuple)
+TEST_CASE("applyTuple", "[meta]")
 {
-    BOOST_REQUIRE_EQUAL(3, alpaka::meta::apply(add, std::make_tuple(1, 2)));
+    REQUIRE(3 == alpaka::meta::apply(add, std::make_tuple(1, 2)));
 
     // intended compilation error: template argument deduction/substitution fails
-    // BOOST_REQUIRE_EQUAL(5.0, alpaka::meta::apply(add_generic, std::make_tuple(2.0f,3.0f)));
+    // REQUIRE(5.0 == alpaka::meta::apply(add_generic, std::make_tuple(2.0f, 3.0f)));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

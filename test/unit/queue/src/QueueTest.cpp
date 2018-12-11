@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2017 Benjamin Worpitz
+ * Copyright 2017-2018 Benjamin Worpitz, Axel Huebl
  *
  * This file is part of alpaka.
  *
@@ -19,51 +19,34 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
+#include <catch2/catch.hpp>
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/queue/QueueTestFixture.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
-
 #include <future>
 #include <thread>
 
-BOOST_AUTO_TEST_SUITE(queue)
-
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    queueIsInitiallyEmpty,
-    TDevQueue,
-    alpaka::test::queue::TestQueues)
+struct TestTemplateEmpty
+{
+template< typename TDevQueue >
+void operator()()
 {
     using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
 
-    BOOST_CHECK_EQUAL(true, alpaka::queue::empty(f.m_queue));
+    CHECK(alpaka::queue::empty(f.m_queue));
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    queueCallbackIsWorking,
-    TDevQueue,
-    alpaka::test::queue::TestQueues)
+struct TestTemplateCallback
+{
+template< typename TDevQueue >
+void operator()()
 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
@@ -79,15 +62,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         }
     );
 
-    BOOST_CHECK_EQUAL(true, promise.get_future().get());
+    CHECK(promise.get_future().get());
 #endif
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    queueWaitShouldWork,
-    TDevQueue,
-    alpaka::test::queue::TestQueues)
+struct TestTemplateWait
+{
+template< typename TDevQueue >
+void operator()()
 {
     using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
@@ -102,14 +86,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         });
 
     alpaka::wait::wait(f.m_queue);
-    BOOST_CHECK_EQUAL(true, CallbackFinished);
+    CHECK(CallbackFinished);
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    queueShouldNotBeEmptyWhenLastTaskIsStillExecutingAndIsEmptyAfterProcessingFinished,
-    TDevQueue,
-    alpaka::test::queue::TestQueues)
+struct TestTemplateExecNotEmpty
+{
+template< typename TDevQueue >
+void operator()()
 {
     using Fixture = alpaka::test::queue::QueueTestFixture<TDevQueue>;
     Fixture f;
@@ -119,7 +104,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         f.m_queue,
         [&f, &CallbackFinished]() noexcept
         {
-            BOOST_CHECK_EQUAL(false, alpaka::queue::empty(f.m_queue));
+            CHECK(!alpaka::queue::empty(f.m_queue));
             std::this_thread::sleep_for(std::chrono::milliseconds(100u));
             CallbackFinished = true;
         });
@@ -130,8 +115,29 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         alpaka::wait::wait(f.m_queue);
     }
 
-    BOOST_CHECK_EQUAL(true, alpaka::queue::empty(f.m_queue));
-    BOOST_CHECK_EQUAL(true, CallbackFinished);
+    CHECK(alpaka::queue::empty(f.m_queue));
+    CHECK(CallbackFinished);
+}
+};
+
+using TestQueues = alpaka::test::queue::TestQueues;
+
+TEST_CASE( "queueIsInitiallyEmpty", "[queue]")
+{
+    alpaka::meta::forEachType< TestQueues >( TestTemplateEmpty() );
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "queueCallbackIsWorking", "[queue]")
+{
+    alpaka::meta::forEachType< TestQueues >( TestTemplateCallback() );
+}
+
+TEST_CASE( "queueWaitShouldWork", "[queue]")
+{
+    alpaka::meta::forEachType< TestQueues >( TestTemplateWait() );
+}
+
+TEST_CASE( "queueShouldNotBeEmptyWhenLastTaskIsStillExecutingAndIsEmptyAfterProcessingFinished", "[queue]")
+{
+    alpaka::meta::forEachType< TestQueues >( TestTemplateExecNotEmpty() );
+}
