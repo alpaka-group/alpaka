@@ -58,6 +58,7 @@ services:
 # ALPAKA_ACC_GPU_HIP_ENABLE                     : {ON, OFF}
 #   [ON] ALPAKA_CI_HIP_BRANCH                   : {master}
 #   [ON] ALPAKA_HIP_PLATFORM                    : {nvcc}
+#   [ON] ALPAKA_CI_CATCH2_BRANCH                : {2.4.0}
 env:
     global:
         - ALPAKA_CI=TRAVIS
@@ -66,6 +67,8 @@ env:
         - ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH=${ALPAKA_CI_DOCKER_CACHE_DIR}/${ALPAKA_CI_DOCKER_IMAGE_NAME}.tar.gz
         - ALPAKA_CI_BOOST_ROOT_DIR=${HOME}/boost
         - ALPAKA_CI_BOOST_LIB_DIR=${HOME}/boost_libs/x64
+        - ALPAKA_CI_CATCH2_BRANCH=v2.4.0
+        - ALPAKA_CI_CATCH2_ROOT_DIR=${HOME}/catch2
         - ALPAKA_CI_CLANG_DIR=${HOME}/llvm
         - ALPAKA_CI_CMAKE_DIR=${HOME}/CMake
         - ALPAKA_CI_CUDA_DIR=${HOME}/CUDA
