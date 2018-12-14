@@ -87,6 +87,14 @@ namespace alpaka
 #if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
     #error "Cuda device capability >= 2.0 is required!"
 #endif
+
+// with clang it is not possible to query std::result_of for a pure device lambda created on the host side
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
+                    static_assert(
+                        std::is_same<typename std::result_of<
+                            TKernelFnObj(acc::AccGpuCudaRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
+                        "The TKernelFnObj is required to return void!");
+#endif
                     acc::AccGpuCudaRt<TDim, TIdx> acc(threadElemExtent);
 
                     kernelFnObj(

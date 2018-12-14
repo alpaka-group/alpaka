@@ -151,6 +151,27 @@ namespace alpaka
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wdocumentation"  // clang does not support the syntax for variadic template arguments "args,..."
 #endif
+
+        namespace detail
+        {
+            //#############################################################################
+            //! Check that the return of TKernelFnObj is void
+            template<typename TAcc>
+            struct CheckFnReturnType
+            {
+                template<
+                    typename TKernelFnObj,
+                    typename... TArgs>
+                void operator()(
+                    TKernelFnObj const &,
+                    TArgs const & ...)
+                {
+                    static_assert(
+                        std::is_same<typename std::result_of<TKernelFnObj(TAcc const &, TArgs const & ...)>::type, void>::value,
+                        "The TKernelFnObj is required to return void!");
+                }
+            };
+        }
         //-----------------------------------------------------------------------------
         //! Creates a kernel execution task.
         //!
@@ -184,12 +205,9 @@ namespace alpaka
                 args...))
 #endif
         {
-                // FIXME: For unknown reasons std::result_of fails with __device__ lambdas.
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
-            static_assert(
-                std::is_same<typename std::result_of<TKernelFnObj(TAcc const &, TArgs const & ...)>::type, void>::value,
-                "The TKernelFnObj is required to return void!");
-#endif
+            // check for void return type
+            detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
+
             static_assert(
                 dim::Dim<typename std::decay<TWorkDiv>::type>::value == dim::Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");
