@@ -18,7 +18,7 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.7.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0)
 
 SET(_COMMON_TARGET_NAME "common")
 
