@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2018 Benjamin Worpitz
+# Copyright 2018-2019 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #

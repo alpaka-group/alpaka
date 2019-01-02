@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2018 Benjamin Worpitz, Matthias Werner
+ * Copyright 2018-2019 Benjamin Worpitz, Matthias Werner
  *
  * This file is part of alpaka.
  *
