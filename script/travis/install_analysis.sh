@@ -22,9 +22,7 @@
 
 source ./script/travis/travis_retry.sh
 
-#-------------------------------------------------------------------------------
-# e: exit as soon as one command returns a non-zero exit code.
-set -euo pipefail
+source ./script/travis/set.sh
 
 #-------------------------------------------------------------------------------
 # Install sloc

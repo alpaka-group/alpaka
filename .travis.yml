@@ -206,23 +206,13 @@ cache:
         - $ALPAKA_CI_DOCKER_CACHE_DIR
 
 script:
+    - set -eovx pipefail
     - sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install smem
-    - sudo smem
-    - sudo free -m -t
-
-    - ./script/travis/print_travisEnv.sh
-
-    - sudo apt-get -y --quiet install moreutils
-
-    - source ./script/travis/before_install.sh
-    - ./script/travis/docker_install.sh | ts
-    - ./script/travis/docker_run.sh | ts
+    - sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install moreutils
+    - ./script/travis/script.sh | ts
 
 after_failure:
-    - sudo smem
-    - sudo free -m -t
-    # show actions of the OOM killer
-    - sudo dmesg
+    - ./script/travis/after_failure.sh
 
 notifications:
     email: false
