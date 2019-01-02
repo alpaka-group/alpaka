@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2016 Benjamin Worpitz, Maximilian Knespel
+# Copyright 2015-2019 Benjamin Worpitz, Maximilian Knespel
 #
 # This file is part of alpaka.
 #

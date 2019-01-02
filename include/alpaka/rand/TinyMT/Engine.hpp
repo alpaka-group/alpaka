@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2018 Axel Huebl
+* Copyright 2018-2019 Axel Huebl
 *
 * This file is part of alpaka.
 *

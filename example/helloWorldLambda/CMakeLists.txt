@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2017 Erik Zenker, Benjamin Worpitz
+# Copyright 2014-2019 Erik Zenker, Benjamin Worpitz
 #
 # This file is part of alpaka.
 #

@@ -1,5 +1,5 @@
 #
-# Copyright 2014-2016 Benjamin Worpitz
+# Copyright 2014-2019 Benjamin Worpitz
 #
 # This file is part of alpaka.
 #

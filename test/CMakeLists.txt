@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2018 Benjamin Worpitz, Axel Huebl
+# Copyright 2015-2019 Benjamin Worpitz, Axel Huebl
 #
 # This file is part of alpaka.
 #

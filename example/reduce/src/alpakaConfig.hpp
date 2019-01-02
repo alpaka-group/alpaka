@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2018 Sebastian Benner, Jonas Schenke
+ * Copyright 2018-2019 Sebastian Benner, Jonas Schenke
  *
  * This file is part of alpaka.
  *

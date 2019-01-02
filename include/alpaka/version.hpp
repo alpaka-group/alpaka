@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2016-2018 Erik Zenker, Benjamin Worpitz
+* Copyright 2016-2019 Erik Zenker, Benjamin Worpitz
 *
 * This file is part of alpaka.
 *

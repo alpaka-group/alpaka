@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2018 Jonas Schenke
+ * Copyright 2018-2019 Jonas Schenke
  *
  * This file is part of alpaka.
  *
