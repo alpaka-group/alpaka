@@ -92,7 +92,9 @@ if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE
 then
     if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
     then
-        # FIXME: BOOST_AUTO_TEST_CASE_TEMPLATE is not compilable with nvcc in Release mode.
+        # FIXME: GCC-5.5 has broken avx512vlintrin.h in Release mode with NVCC 9.X
+        #   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=76731
+        #   https://github.com/tensorflow/tensorflow/issues/10220
         if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
         then
             export CMAKE_BUILD_TYPE=Debug

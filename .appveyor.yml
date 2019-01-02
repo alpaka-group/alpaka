@@ -50,11 +50,9 @@ environment:
         - ALPAKA_DEBUG: 2
           OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: boost-1.66.0
-          ALPAKA_CATCH2_BRANCH: v2.4.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: boost-1.64.0
-          ALPAKA_CATCH2_BRANCH: v2.5.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 matrix:
@@ -150,19 +148,6 @@ before_build:
 
     - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_BOOST_TOOLSET=msvc-14.1
     - cmd: b2 -j2 --toolset=%ALPAKA_BOOST_TOOLSET% --layout=versioned %ALPAKA_BOOST_B2% architecture=x86 address-model=%ALPAKA_BOOST_ADDRESS_MODEL% variant=%ALPAKA_BOOST_VARIANT% link=static threading=multi runtime-link=shared define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS define=_ENABLE_EXTENDED_ALIGNED_STORAGE --stagedir="%ALPAKA_B2_STAGE_DIR%"
-
-    #-------------------------------------------------------------------------------
-    # Install Catch2
-    - cmd: set ALPAKA_CI_CATCH2_ROOT_DIR=C:\projects\catch2
-    - cmd: set ALPAKA_CI_CATCH2_STAGE_DIR=%ALPAKA_CI_CATCH2_ROOT_DIR%\sources
-    - cmd: git clone -b %ALPAKA_CATCH2_BRANCH% --recursive --single-branch --depth 1 https://github.com/catchorg/Catch2.git %ALPAKA_CI_CATCH2_STAGE_DIR%
-    - cmd: cd %ALPAKA_CI_CATCH2_STAGE_DIR%
-    - cmd: mkdir build
-    - cmd: cd build
-    - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DCMAKE_INSTALL_PREFIX=%ALPAKA_CI_CATCH2_ROOT_DIR% -DBUILD_TESTING=OFF ..
-    - cmd: cmake --build . --config %CONFIGURATION%
-    - cmd: cmake --build . --config %CONFIGURATION% --target install
-    - cmd: set CMAKE_PREFIX_PATH=%ALPAKA_CI_CATCH2_ROOT_DIR%;%CMAKE_PREFIX_PATH%
 
     #-------------------------------------------------------------------------------
     # Install TBB
