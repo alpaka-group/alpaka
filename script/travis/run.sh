@@ -43,6 +43,9 @@ fi
 export PATH=${ALPAKA_CI_CMAKE_DIR}/bin:${PATH}
 cmake --version
 
+# Catch2
+export CMAKE_PREFIX_PATH=${ALPAKA_CI_CATCH2_ROOT_DIR}:${CMAKE_PREFIX_PATH:-}
+
 if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
 then
     # CUDA

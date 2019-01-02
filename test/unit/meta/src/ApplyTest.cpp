@@ -21,20 +21,10 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <tuple>
 #include <type_traits>
-
-BOOST_AUTO_TEST_SUITE(meta)
 
 template<
     typename... T>
@@ -42,7 +32,7 @@ struct TypeList
 {};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(apply)
+TEST_CASE("apply", "[meta]")
 {
     using ApplyInput =
         std::tuple<
@@ -69,5 +59,3 @@ BOOST_AUTO_TEST_CASE(apply)
         >::value,
         "alpaka::meta::Apply failed!");
 }
-
-BOOST_AUTO_TEST_SUITE_END()

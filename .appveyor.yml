@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2017 Benjamin Worpitz, Erik Zenker
+# Copyright 2015-2018 Benjamin Worpitz, Erik Zenker, Axel Huebl
 #
 # This file is part of alpaka.
 #
@@ -50,9 +50,11 @@ environment:
         - ALPAKA_DEBUG: 2
           OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: boost-1.66.0
+          ALPAKA_CATCH2_BRANCH: v2.4.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         - OMP_NUM_THREADS: 4
           ALPAKA_BOOST_BRANCH: boost-1.64.0
+          ALPAKA_CATCH2_BRANCH: v2.5.0
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 matrix:
@@ -120,6 +122,12 @@ before_build:
     - cmd: echo "%CONFIGURATION%"
 
     #-------------------------------------------------------------------------------
+    # Select CMake Visual Studio Generator
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_CMAKE_GENERATOR=Visual Studio 15 2017
+    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" amd64
+    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_CMAKE_GENERATOR=%ALPAKA_CMAKE_GENERATOR% Win64
+
+    #-------------------------------------------------------------------------------
     # Clone boost.
     - cmd: set ALPAKA_CI_BOOST_ROOT_DIR=C:\projects\boost
     - cmd: set ALPAKA_B2_STAGE_DIR=C:\projects\boost_libs
@@ -144,6 +152,19 @@ before_build:
     - cmd: b2 -j2 --toolset=%ALPAKA_BOOST_TOOLSET% --layout=versioned %ALPAKA_BOOST_B2% architecture=x86 address-model=%ALPAKA_BOOST_ADDRESS_MODEL% variant=%ALPAKA_BOOST_VARIANT% link=static threading=multi runtime-link=shared define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS define=_ENABLE_EXTENDED_ALIGNED_STORAGE --stagedir="%ALPAKA_B2_STAGE_DIR%"
 
     #-------------------------------------------------------------------------------
+    # Install Catch2
+    - cmd: set ALPAKA_CI_CATCH2_ROOT_DIR=C:\projects\catch2
+    - cmd: set ALPAKA_CI_CATCH2_STAGE_DIR=%ALPAKA_CI_CATCH2_ROOT_DIR%\sources
+    - cmd: git clone -b %ALPAKA_CATCH2_BRANCH% --recursive --single-branch --depth 1 https://github.com/catchorg/Catch2.git %ALPAKA_CI_CATCH2_STAGE_DIR%
+    - cmd: cd %ALPAKA_CI_CATCH2_STAGE_DIR%
+    - cmd: mkdir build
+    - cmd: cd build
+    - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DCMAKE_INSTALL_PREFIX=%ALPAKA_CI_CATCH2_ROOT_DIR% -DBUILD_TESTING=OFF ..
+    - cmd: cmake --build . --config %CONFIGURATION%
+    - cmd: cmake --build . --config %CONFIGURATION% --target install
+    - cmd: set CMAKE_PREFIX_PATH=%ALPAKA_CI_CATCH2_ROOT_DIR%;%CMAKE_PREFIX_PATH%
+
+    #-------------------------------------------------------------------------------
     # Install TBB
     - cmd: set TBB_ARCHIVE_VER=tbb44_20160526oss
     - cmd: set TBB_DOWNLOAD_URL=https://www.threadingbuildingblocks.org/sites/default/files/software_releases/windows/%TBB_ARCHIVE_VER%_win_0.zip
@@ -158,12 +179,8 @@ before_build:
     - cmd: set PATH=%PATH%;%ALPAKA_TBB_BIN_DIR%
 
     #-------------------------------------------------------------------------------
-    # Build the visual studio soultion from the cmake files.
+    # Build the visual studio solution from the cmake files.
     - cmd: cd C:\projects\alpaka
-
-    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" set ALPAKA_CMAKE_GENERATOR=Visual Studio 15 2017
-    - cmd: if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" amd64
-    - cmd: if "%PLATFORM%"=="x64" set ALPAKA_CMAKE_GENERATOR=%ALPAKA_CMAKE_GENERATOR% Win64
     - cmd: mkdir build
     - cmd: cd build
     - cmd: cmake -G "%ALPAKA_CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CONFIGURATION% -DTBB_ROOT_DIR="%TBB_ROOT_DIR%" -DBOOST_ROOT="%ALPAKA_CI_BOOST_ROOT_DIR%" -DBOOST_LIBRARYDIR="%ALPAKA_CI_BOOST_LIB_DIR%" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE="%ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE%" -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE="%ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE%" -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE="%ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE%" -DALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE="%ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE%" -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE="%ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE%" -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE="%ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE%" -DALPAKA_ACC_CPU_BT_OMP4_ENABLE="%ALPAKA_ACC_CPU_BT_OMP4_ENABLE%" -DALPAKA_ACC_GPU_CUDA_ENABLE="%ALPAKA_ACC_GPU_CUDA_ENABLE%" -DALPAKA_ACC_GPU_CUDA_ONLY_MODE="%ALPAKA_ACC_GPU_CUDA_ONLY_MODE%" -DALPAKA_DEBUG="%ALPAKA_DEBUG%" -DALPAKA_CI=APPVEYOR ".."

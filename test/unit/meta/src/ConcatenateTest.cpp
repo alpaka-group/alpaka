@@ -21,24 +21,15 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <string>
 #include <tuple>
 #include <type_traits>
 
-BOOST_AUTO_TEST_SUITE(meta)
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(concatenate)
+TEST_CASE("concatenate", "[meta]")
 {
     using TestTuple1 =
         std::tuple<
@@ -72,5 +63,3 @@ BOOST_AUTO_TEST_CASE(concatenate)
         >::value,
         "alpaka::meta::Concatenate failed!");
 }
-
-BOOST_AUTO_TEST_SUITE_END()

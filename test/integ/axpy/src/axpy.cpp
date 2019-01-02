@@ -1,6 +1,6 @@
 /**
  * \file
- * Copyright 2014-2018 Benjamin Worpitz
+ * Copyright 2014-2018 Benjamin Worpitz, Axel Huebl
  *
  * This file is part of alpaka.
  *
@@ -19,24 +19,9 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
+#include <boost/current_function.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
-#include <boost/math/special_functions/relative_difference.hpp>
+#include <catch2/catch.hpp>
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/MeasureKernelRunTime.hpp>
@@ -47,6 +32,9 @@
 #include <typeinfo>
 #include <random>
 #include <limits>
+#include <cmath>
+#include <algorithm>
+
 
 //#############################################################################
 //! A vector addition kernel.
@@ -99,17 +87,10 @@ public:
     }
 };
 
-BOOST_AUTO_TEST_SUITE(axpy)
-
-using TestAccs = alpaka::test::acc::EnabledAccs<
-    alpaka::dim::DimInt<1u>,
-    std::size_t>;
-
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    calculateAxpy,
-    TAcc,
-    TestAccs)
+struct TestTemplate
+{
+template< typename TAcc >
+void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -239,14 +220,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     {
         auto const & val(pBufHostY[i]);
         auto const correctResult(alpha * pBufHostX[i] + pBufHostOrigY[i]);
-        if( boost::math::relative_difference(val, correctResult) > std::numeric_limits<Val>::epsilon() )
+        auto const relDiff = std::abs((val - correctResult) / std::min(val, correctResult));
+        if( relDiff > std::numeric_limits<Val>::epsilon() )
         {
             std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;
         }
     }
 
-    BOOST_REQUIRE_EQUAL(true, resultCorrect);
+    REQUIRE(resultCorrect);
 }
+};
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "axpy", "[axpy]")
+{
+    using TestAccs = alpaka::test::acc::EnabledAccs<
+        alpaka::dim::DimInt<1u>,
+        std::size_t>;
+
+    alpaka::meta::forEachType< TestAccs >( TestTemplate() );
+}

@@ -20,20 +20,10 @@
  */
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
-BOOST_AUTO_TEST_SUITE(kernel)
 
 //#############################################################################
 //! It is not possible to use a alpaka kernel function object without a templated operator() when the CUDA accelerator is hard-coded.
@@ -79,17 +69,14 @@ struct KernelNoTemplateCpu
 };
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(kernelNoTemplateCpu)
+TEST_CASE("kernelNoTemplateCpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
         alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelNoTemplateCpu kernel;
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
 }
 #endif
 
@@ -112,17 +99,14 @@ struct KernelNoTemplateGpu
 };
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(kernelNoTemplateGpu)
+TEST_CASE("kernelNoTemplateGpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
         alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelNoTemplateGpu kernel;
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
 }
 #endif*/
 
@@ -146,17 +130,14 @@ struct KernelWithoutTemplateParamCpu
 };
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamCpu)
+TEST_CASE("kernelWithoutTemplateParamCpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
         alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelWithoutTemplateParamCpu kernel;
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
 }
 #endif
 
@@ -181,18 +162,13 @@ struct KernelWithoutTemplateParamGpu
 };
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(kernelWithoutTemplateParamGpu)
+TEST_CASE("kernelWithoutTemplateParamGpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
         alpaka::vec::Vec<Dim, Idx>::ones());
 
     KernelWithoutTemplateParamGpu kernel;
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
 }
 #endif
-
-BOOST_AUTO_TEST_SUITE_END()

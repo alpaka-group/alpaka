@@ -19,36 +19,18 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
-
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/mem/view/ViewTest.hpp>
 #include <alpaka/test/Extent.hpp>
+#include <alpaka/meta/ForEachType.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <type_traits>
 #include <numeric>
 
-
-
-BOOST_AUTO_TEST_SUITE(memP2P)
 
 //-----------------------------------------------------------------------------
 template<
@@ -65,8 +47,8 @@ static auto testP2P(
     using Idx = alpaka::idx::Idx<TAcc>;
 
     if(alpaka::pltf::getDevCount<Pltf>()<2) {
-      BOOST_TEST_MESSAGE( "No two devices found to test peer-to-peer copy." );
-      BOOST_CHECK(true);
+      std::cerr << "No two devices found to test peer-to-peer copy." << std::endl;
+      CHECK(true);
       return;
     }
 
@@ -89,18 +71,17 @@ static auto testP2P(
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    memP2PTest,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplate
 {
-
+template< typename TAcc >
+void operator()()
+{
 #if defined(ALPAKA_CI) &&                             \
     BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(7,2,0) && \
     BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(8,0,0) && \
     defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED)
-    BOOST_TEST_MESSAGE( "Currently, memP2P is not working with gcc7.2 / gcc7.3 on Ubuntu14.04 on travis/CI.");
-    BOOST_CHECK(true);
+    std::cerr << "Currently, memP2P is not working with gcc7.2 / gcc7.3 on Ubuntu14.04 on travis/CI." << std::endl;
+    CHECK(true);
 #else
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
@@ -110,5 +91,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
     testP2P<TAcc>( extent );
 #endif
 }
+};
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "memP2PTest", "[memP2P]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplate() );
+}

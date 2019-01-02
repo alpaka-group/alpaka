@@ -21,27 +21,17 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <tuple>
 #include <type_traits>
-
-BOOST_AUTO_TEST_SUITE(meta)
 
 template<
     typename T>
 using AddConst = T const;
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(transform)
+TEST_CASE("transform", "[meta]")
 {
     using TransformInput =
         std::tuple<
@@ -70,7 +60,7 @@ BOOST_AUTO_TEST_CASE(transform)
 }
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(transformVariadic)
+TEST_CASE("transformVariadic", "[meta]")
 {
     using TransformInput =
         std::tuple<
@@ -97,5 +87,3 @@ BOOST_AUTO_TEST_CASE(transformVariadic)
         >::value,
         "alpaka::meta::Transform failed!");
 }
-
-BOOST_AUTO_TEST_SUITE_END()

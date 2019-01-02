@@ -26,16 +26,10 @@
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/mem/view/Iterator.hpp>
 
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <numeric>
+
 
 namespace alpaka
 {
@@ -75,7 +69,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::dev::traits::GetDev
                     {
-                        BOOST_REQUIRE(
+                        REQUIRE(
                             dev == alpaka::dev::getDev(view));
                     }
 
@@ -98,8 +92,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::extent::traits::GetExtent
                     {
-                        BOOST_REQUIRE_EQUAL(
-                            extent,
+                        REQUIRE(
+                            extent ==
                             alpaka::extent::getExtentVec(view));
                     }
 
@@ -120,8 +114,8 @@ namespace alpaka
 
                         for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
                         {
-                            BOOST_REQUIRE_GE(
-                                pitchView[i-1],
+                            REQUIRE(
+                                pitchView[i-1] >=
                                 pitchMinimum[i-1]);
                         }
                     }
@@ -142,8 +136,8 @@ namespace alpaka
                         {
                             // The pointer is only required to be non-null when the extent is > 0.
                             TElem const * const invalidPtr(nullptr);
-                            BOOST_REQUIRE_NE(
-                                invalidPtr,
+                            REQUIRE(
+                                invalidPtr !=
                                 alpaka::mem::view::getPtrNative(view));
                         }
                         else
@@ -156,8 +150,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::offset::traits::GetOffset
                     {
-                        BOOST_REQUIRE_EQUAL(
-                            offset,
+                        REQUIRE(
+                            offset ==
                             alpaka::offset::getOffsetVec(view));
                     }
 
@@ -216,8 +210,7 @@ namespace alpaka
 
                     VerifyBytesSetKernel verifyBytesSet;
 
-                    BOOST_REQUIRE_EQUAL(
-                        true,
+                    REQUIRE(
                         fixture(
                             verifyBytesSet,
                             alpaka::test::mem::view::begin(view),
@@ -286,8 +279,7 @@ namespace alpaka
 
                     VerifyViewsEqualKernel verifyViewsEqualKernel;
 
-                    BOOST_REQUIRE_EQUAL(
-                        true,
+                    REQUIRE(
                         fixture(
                             verifyViewsEqualKernel,
                             alpaka::test::mem::view::begin(viewA),

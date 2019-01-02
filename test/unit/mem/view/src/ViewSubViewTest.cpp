@@ -19,13 +19,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
+#include <catch2/catch.hpp>
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
@@ -34,14 +28,6 @@
 #include <alpaka/test/Extent.hpp>
 
 #include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
 
 #include <type_traits>
 #include <numeric>
@@ -93,8 +79,8 @@ namespace view
 
             for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
             {
-                BOOST_REQUIRE_EQUAL(
-                    pitchBuf[i-static_cast<TIdx>(1u)],
+                REQUIRE(
+                    pitchBuf[i-static_cast<TIdx>(1u)] ==
                     pitchView[i-static_cast<TIdx>(1u)]);
             }
         }
@@ -112,8 +98,8 @@ namespace view
                 auto const pitch = (i < static_cast<TIdx>(TDim::value)) ? pitchBuf[i] : static_cast<TIdx>(sizeof(TElem));
                 viewPtrNative += offsetView[i - static_cast<TIdx>(1u)] * pitch;
             }
-            BOOST_REQUIRE_EQUAL(
-                reinterpret_cast<TElem *>(viewPtrNative),
+            REQUIRE(
+                reinterpret_cast<TElem *>(viewPtrNative) ==
                 alpaka::mem::view::getPtrNative(view));
         }
     }
@@ -237,33 +223,47 @@ namespace view
     #pragma GCC diagnostic pop
 #endif
 
-BOOST_AUTO_TEST_SUITE(memView)
-
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    viewSubViewNoOffsetTest,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateNoOffset
+{
+template< typename TAcc >
+void operator()()
 {
     alpaka::test::mem::view::testViewSubViewNoOffset<TAcc, float>();
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    viewSubViewOffsetTest,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateOffset
+{
+template< typename TAcc >
+void operator()()
 {
     alpaka::test::mem::view::testViewSubViewOffset<TAcc, float>();
 }
+};
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    viewSubViewOffsetConstTest,
-    TAcc,
-    alpaka::test::acc::TestAccs)
+struct TestTemplateConst
+{
+template< typename TAcc >
+void operator()()
 {
     alpaka::test::mem::view::testViewSubViewOffsetConst<TAcc, float>();
 }
+};
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "viewSubViewNoOffsetTest", "[memView]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateNoOffset() );
+}
+
+TEST_CASE( "viewSubViewOffsetTest", "[memView]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateOffset() );
+}
+
+TEST_CASE( "viewSubViewOffsetConstTest", "[memView]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateConst() );
+}

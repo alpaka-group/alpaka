@@ -21,23 +21,14 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #include <tuple>
 #include <type_traits>
 
-BOOST_AUTO_TEST_SUITE(meta)
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(cartesianProduct)
+TEST_CASE("cartesianProduct", "[meta]")
 {
     using TestDims =
         std::tuple<
@@ -73,5 +64,3 @@ BOOST_AUTO_TEST_CASE(cartesianProduct)
         >::value,
         "alpaka::meta::CartesianProduct failed!");
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -19,30 +19,15 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-// \Hack: Boost.MPL defines BOOST_MPL_CFG_GPU_ENABLED to __host__ __device__ if nvcc is used.
-// BOOST_AUTO_TEST_CASE_TEMPLATE and its internals are not GPU enabled but is using boost::mpl::for_each internally.
-// For each template parameter this leads to:
-// /home/travis/build/boost/boost/mpl/for_each.hpp(78): warning: calling a __host__ function from a __host__ __device__ function is not allowed
-// because boost::mpl::for_each has the BOOST_MPL_CFG_GPU_ENABLED attribute but the test internals are pure host methods.
-// Because we do not use MPL within GPU code here, we can disable the MPL GPU support.
-#define BOOST_MPL_CFG_GPU_ENABLED
-
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/queue/Queue.hpp>
-
+#include <alpaka/meta/ForEachType.hpp>
 #include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
 
-BOOST_AUTO_TEST_SUITE(viewStaticAccMem)
+#include <catch2/catch.hpp>
+
 
 using Elem = std::uint32_t;
 using Dim = alpaka::dim::DimInt<2u>;
@@ -92,10 +77,10 @@ struct StaticDeviceMemoryTestKernel
 using TestAccs = alpaka::test::acc::EnabledAccs<Dim, Idx>;
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    staticDeviceMemoryConstant,
-    TAcc,
-    TestAccs)
+struct TestTemplateGlobal
+{
+template< typename TAcc >
+void operator()()
 {
     using DevAcc = alpaka::dev::Dev<TAcc>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
@@ -118,11 +103,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 devAcc,
                 extent));
 
-        BOOST_REQUIRE_EQUAL(
-            true,
-            fixture(
-                kernel,
-                alpaka::mem::view::getPtrNative(viewConstantMemInitialized)));
+        REQUIRE(fixture(
+            kernel,
+            alpaka::mem::view::getPtrNative(viewConstantMemInitialized)));
     }
     //-----------------------------------------------------------------------------
     // uninitialized static constant device memory
@@ -145,14 +128,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         alpaka::mem::view::copy(queueAcc, viewConstantMemUninitialized, bufHost, extent);
         alpaka::wait::wait(queueAcc);
 
-        BOOST_REQUIRE_EQUAL(
-            true,
-            fixture(
-                kernel,
-                alpaka::mem::view::getPtrNative(viewConstantMemUninitialized)));
+        REQUIRE(fixture(
+            kernel,
+            alpaka::mem::view::getPtrNative(viewConstantMemUninitialized)));
     }
 #endif
 }
+};
 
 // These forward declarations are only necessary when you want to access those variables
 // from a different compilation unit and should be moved to a common header.
@@ -171,10 +153,10 @@ ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DInitialized[3][2] =
 ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE_TEMPLATE(
-    staticDeviceMemoryGlobal,
-    TAcc,
-    TestAccs)
+struct TestTemplateConstant
+{
+template< typename TAcc >
+void operator()()
 {
     using DevAcc = alpaka::dev::Dev<TAcc>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
@@ -197,8 +179,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
                 devAcc,
                 extent));
 
-        BOOST_REQUIRE_EQUAL(
-            true,
+        REQUIRE(
             fixture(
                 kernel,
                 alpaka::mem::view::getPtrNative(viewGlobalMemInitialized)));
@@ -225,13 +206,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(
         alpaka::mem::view::copy(queueAcc, viewGlobalMemUninitialized, bufHost, extent);
         alpaka::wait::wait(queueAcc);
 
-        BOOST_REQUIRE_EQUAL(
-            true,
+        REQUIRE(
             fixture(
                 kernel,
                 alpaka::mem::view::getPtrNative(viewGlobalMemUninitialized)));
     }
 #endif
 }
+};
 
-BOOST_AUTO_TEST_SUITE_END()
+TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]")
+{
+    alpaka::meta::forEachType< TestAccs >( TestTemplateGlobal() );
+}
+
+TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]")
+{
+    alpaka::meta::forEachType< TestAccs >( TestTemplateConstant() );
+}

@@ -19,30 +19,10 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define BOOST_TEST_MODULE headerCheck
+#include <catch2/catch.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#if BOOST_COMP_MSVC
-    #pragma warning(push)
-    #pragma warning(disable: 4702)
-#endif
-#include <boost/test/included/unit_test.hpp>
-#if BOOST_COMP_MSVC
-    #pragma warning(pop)
-#endif
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
 
-BOOST_AUTO_TEST_SUITE(headerCheck)
-
-BOOST_AUTO_TEST_CASE(headerCheckMain)
+TEST_CASE("headerCheckMain", "[headerCheck]")
 {
-    BOOST_CHECK(true);
+    REQUIRE(true);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

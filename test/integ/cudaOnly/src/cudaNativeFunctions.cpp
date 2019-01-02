@@ -22,15 +22,7 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
-#include <alpaka/core/BoostPredef.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <boost/test/unit_test.hpp>
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#include <catch2/catch.hpp>
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
 
@@ -72,10 +64,9 @@ public:
     }
 };
 
-BOOST_AUTO_TEST_SUITE(cudaOnly)
 
 //-----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(cudaOnlyModeWorking)
+TEST_CASE("cudaOnlyModeWorking", "[cudaOnly]")
 {
     using TAcc = alpaka::acc::AccGpuCudaRt<alpaka::dim::DimInt<1u>, std::uint32_t>;
     using Dim = alpaka::dim::Dim<TAcc>;
@@ -86,12 +77,7 @@ BOOST_AUTO_TEST_CASE(cudaOnlyModeWorking)
 
     CudaOnlyTestKernel kernel;
 
-    BOOST_REQUIRE_EQUAL(
-        true,
-        fixture(
-            kernel));
+    REQUIRE(fixture(kernel));
 }
-
-BOOST_AUTO_TEST_SUITE_END()
 
 #endif
