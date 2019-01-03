@@ -26,9 +26,15 @@ FIND_PACKAGE(alpaka REQUIRED)
 
 ADD_SUBDIRECTORY("common/")
 
-find_package(Catch2 2.4.0 CONFIG REQUIRED)
-set_target_properties(Catch2::Catch2 PROPERTIES IMPORTED_GLOBAL TRUE)
-message(STATUS "Catch2: Found version ${Catch2_VERSION}")
+OPTION(ALPAKA_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON)
+
+IF(ALPAKA_USE_INTERNAL_CATCH2)
+    message(STATUS "Catch2: Using INTERNAL version 2.5.0")
+ELSE()
+    find_package(Catch2 2.4.0 CONFIG REQUIRED)
+    set_target_properties(Catch2::Catch2 PROPERTIES IMPORTED_GLOBAL TRUE)
+    message(STATUS "Catch2: Found version ${Catch2_VERSION}")
+ENDIF()
 
 add_library(CatchMain CatchMain.cpp)
 # target_compile_features(CatchMain PUBLIC cxx_std_11)  # min C++11
@@ -39,11 +45,16 @@ set_target_properties(CatchMain PROPERTIES
     POSITION_INDEPENDENT_CODE ON
     WINDOWS_EXPORT_ALL_SYMBOLS ON
 )
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     target_compile_options(CatchMain PUBLIC "/bigobj")
-endif()
-target_include_directories(CatchMain SYSTEM PUBLIC
-    $<TARGET_PROPERTY:Catch2::Catch2,INTERFACE_INCLUDE_DIRECTORIES>)
+ENDIF()
+IF(ALPAKA_USE_INTERNAL_CATCH2)
+    target_include_directories(CatchMain SYSTEM PUBLIC
+        ${alpakaAll_SOURCE_DIR}/thirdParty/catch2/include)
+ELSE()
+    target_include_directories(CatchMain SYSTEM PUBLIC
+        $<TARGET_PROPERTY:Catch2::Catch2,INTERFACE_INCLUDE_DIRECTORIES>)
+ENDIF()
 
 # NVCC does not incorporate the COMPILE_OPTIONS of a target but only the CMAKE_CXX_FLAGS
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE AND NOT ALPAKA_CUDA_COMPILER MATCHES "clang")

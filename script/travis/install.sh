@@ -41,7 +41,6 @@ then
 fi
 if [ "${CXX}" == "g++" ] ;then ./script/travis/install_gcc.sh ;fi
 if [ "${CXX}" == "clang++" ] ;then source ./script/travis/install_clang.sh ;fi
-./script/travis/install_catch2.sh
 # If the variable is not set, the backend will most probably be used by default so we install it.
 if [[ ! -v ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE || "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}" == "ON" ]] ;then ./script/travis/install_tbb.sh ;fi
 if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] ;then ./script/travis/install_hip.sh ;fi
