@@ -64,8 +64,8 @@ env:
         - ALPAKA_CI_DOCKER_IMAGE_NAME=alpaka_ubuntu
         - ALPAKA_CI_DOCKER_CACHE_DIR=${HOME}/cache/docker
         - ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH=${ALPAKA_CI_DOCKER_CACHE_DIR}/${ALPAKA_CI_DOCKER_IMAGE_NAME}.tar.gz
-        - ALPAKA_CI_BOOST_ROOT_DIR=${HOME}/boost
-        - ALPAKA_CI_BOOST_LIB_DIR=${HOME}/boost_libs/x64
+        - BOOST_ROOT=${HOME}/boost
+        - ALPAKA_CI_BOOST_LIB_DIR=${HOME}/boost_libs/
         - ALPAKA_CI_CLANG_DIR=${HOME}/llvm
         - ALPAKA_CI_CMAKE_DIR=${HOME}/CMake
         - ALPAKA_CI_CUDA_DIR=${HOME}/CUDA

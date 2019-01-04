@@ -22,7 +22,7 @@
 
 source ./script/travis/set.sh
 
-: ${ALPAKA_CI_BOOST_ROOT_DIR?"ALPAKA_CI_BOOST_ROOT_DIR must be specified"}
+: ${BOOST_ROOT?"BOOST_ROOT must be specified"}
 : ${ALPAKA_CI_BOOST_LIB_DIR?"ALPAKA_CI_BOOST_LIB_DIR must be specified"}
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
@@ -32,23 +32,23 @@ fi
 : ${CXX?"CXX must be specified"}
 : ${CC?"CC must be specified"}
 
-git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${ALPAKA_CI_BOOST_ROOT_DIR}"
+git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
 
 # Bootstrap boost.
 if [ "$TRAVIS_OS_NAME" = "windows" ]
 then
-    (cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; ./bootstrap.bat)
+    (cd "${BOOST_ROOT}"; ./bootstrap.bat)
 else
-    (cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; sudo ./bootstrap.sh --with-toolset="${CC}")
+    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
 fi
-(cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; cat ./bootstrap.log)
+(cd "${BOOST_ROOT}"; cat ./bootstrap.log)
 
 # Create file links.
 if [ "$TRAVIS_OS_NAME" = "windows" ]
 then
-    (cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; ./b2 headers)
+    (cd "${BOOST_ROOT}"; ./b2 headers)
 else
-    (cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; sudo ./b2 headers)
+    (cd "${BOOST_ROOT}"; sudo ./b2 headers)
 fi
 
 # Prepare the library destination directory.
@@ -138,7 +138,7 @@ ALPAKA_BOOST_B2+=" --stagedir=${ALPAKA_CI_BOOST_LIB_DIR} stage"
 
 # Build boost.
 echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
-(cd "${ALPAKA_CI_BOOST_ROOT_DIR}"; eval "${ALPAKA_BOOST_B2}")
+(cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
 
 # Clean the intermediate build files.
 if [ "$TRAVIS_OS_NAME" = "windows" ]
