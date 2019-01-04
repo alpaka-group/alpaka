@@ -38,14 +38,17 @@ echo TRAVIS_REPO_SLUG: "${TRAVIS_REPO_SLUG}"
 echo TRAVIS_OS_NAME: "${TRAVIS_OS_NAME}"
 echo TRAVIS_TAG: "${TRAVIS_TAG}"
 
-# Show all running services
-sudo service --status-all
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+    # Show all running services
+    sudo service --status-all
 
-# Stop some unnecessary services to save memory
-sudo /etc/init.d/mysql stop
-sudo /etc/init.d/postgresql stop
-sudo /etc/init.d/redis-server stop
+    # Stop some unnecessary services to save memory
+    sudo /etc/init.d/mysql stop
+    sudo /etc/init.d/postgresql stop
+    sudo /etc/init.d/redis-server stop
 
-# Show memory stats
-sudo smem
-sudo free -m -t
+    # Show memory stats
+    sudo smem
+    sudo free -m -t
+fi

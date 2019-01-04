@@ -23,24 +23,39 @@
 source ./script/travis/set.sh
 
 : ${ALPAKA_CI_CMAKE_DIR?"ALPAKA_CI_CMAKE_DIR must be specified"}
-: ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
-: ${ALPAKA_CI_STDLIB?"ALPAKA_CI_STDLIB must be specified"}
-: ${CXX?"CXX must be specified"}
-
 echo "ALPAKA_CI_CMAKE_DIR: ${ALPAKA_CI_CMAKE_DIR}"
+: ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
 echo "ALPAKA_CI_ANALYSIS: ${ALPAKA_CI_ANALYSIS}"
-echo "ALPAKA_CI_STDLIB: ${ALPAKA_CI_STDLIB}"
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+    : ${ALPAKA_CI_STDLIB?"ALPAKA_CI_STDLIB must be specified"}
+    echo "ALPAKA_CI_STDLIB: ${ALPAKA_CI_STDLIB}"
+fi
+: ${CXX?"CXX must be specified"}
 echo "CXX: ${CXX}"
 
-if [[ ! -v LD_LIBRARY_PATH ]]
+
+if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    LD_LIBRARY_PATH=
+    if [[ ! -v LD_LIBRARY_PATH ]]
+    then
+        LD_LIBRARY_PATH=
+    fi
 fi
 
 # CMake
 export PATH=${ALPAKA_CI_CMAKE_DIR}/bin:${PATH}
 cmake --version
 
+#TBB
+if [ "$TRAVIS_OS_NAME" = "windows" ]
+then
+    #ALPAKA_TBB_BIN_DIR="${TBB_ROOT_DIR}/bin/ia32/vc14"
+    ALPAKA_TBB_BIN_DIR="${TBB_ROOT_DIR}/bin/intel64/vc14"
+    export PATH=${PATH}:"${ALPAKA_TBB_BIN_DIR}"
+fi
+
+# CUDA
 if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
 then
     # CUDA
@@ -56,6 +71,7 @@ then
     fi
 fi
 
+# HIP
 if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ]
 then
     # && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
@@ -77,6 +93,7 @@ then
     echo
 fi
 
+# clang
 if [ "${CXX}" == "clang++" ]
 then
     # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
@@ -89,25 +106,34 @@ then
     export CPPFLAGS="-I ${ALPAKA_CI_CLANG_DIR}/include/c++/v1 ${CPPFLAGS}"
 fi
 
-if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+# stdlib
+if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    if [[ ! -v CMAKE_CXX_FLAGS ]]
+    if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
     then
-        export CMAKE_CXX_FLAGS=
-    fi
-    CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libc++"
+        if [[ ! -v CMAKE_CXX_FLAGS ]]
+        then
+            export CMAKE_CXX_FLAGS=
+        fi
+        CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libc++"
 
-    if [[ ! -v CMAKE_EXE_LINKER_FLAGS ]]
-    then
-        export CMAKE_EXE_LINKER_FLAGS=
+        if [[ ! -v CMAKE_EXE_LINKER_FLAGS ]]
+        then
+            export CMAKE_EXE_LINKER_FLAGS=
+        fi
+        CMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS} -lc++ -lc++abi"
     fi
-    CMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS} -lc++ -lc++abi"
+
+    which "${CXX}"
+    ${CXX} -v
+
+    source ./script/travis/prepare_sanitizers.sh
+    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/run_analysis.sh ;fi
 fi
 
-which "${CXX}"
-${CXX} -v
-
-source ./script/travis/prepare_sanitizers.sh
-if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/run_analysis.sh ;fi
 ./script/travis/run_build.sh
-if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/travis/run_tests.sh ;fi
+
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+    if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/travis/run_tests.sh ;fi
+fi

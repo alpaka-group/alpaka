@@ -2,7 +2,6 @@
 =================================================================
 
 [![Travis CI Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
-[![Appveyor Build Status](https://ci.appveyor.com/api/projects/status/55gm6o3f2t9tixl4/branch/develop?svg=true)](https://ci.appveyor.com/project/BenjaminW3/alpaka-t7xmf/branch/develop)
 [![Language](https://img.shields.io/badge/language-C%2B%2B11-orange.svg)](https://isocpp.org/)
 [![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows-lightgrey.svg)](https://github.com/ComputationalRadiationPhysics/alpaka)
 [![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.de.html)
@@ -66,7 +65,7 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|Accelerator Back-end|gcc 4.9.4|gcc 5.5|gcc 6.4/7.3|gcc 8.1|clang 4|clang 5|clang 6|clang 7|MSVC 2017.7|
+|Accelerator Back-end|gcc 4.9.4|gcc 5.5|gcc 6.4/7.3|gcc 8.1|clang 4|clang 5|clang 6|clang 7|MSVC 2017.9|
 |---|---|---|---|---|---|---|---|---|---|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0+ blocks|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|

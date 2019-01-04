@@ -20,11 +20,17 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
-source ./script/travis/travis_retry.sh
-
 source ./script/travis/set.sh
 
 ./script/travis/print_travisEnv.sh
 source ./script/travis/before_install.sh
-./script/travis/docker_install.sh
-./script/travis/docker_run.sh
+
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+  ./script/travis/docker_install.sh
+  ./script/travis/docker_run.sh
+elif [ "$TRAVIS_OS_NAME" = "windows" ]
+then
+  ./script/travis/install.sh
+  ./script/travis/run.sh
+fi

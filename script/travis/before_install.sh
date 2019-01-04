@@ -23,12 +23,23 @@
 source ./script/travis/set.sh
 
 #-------------------------------------------------------------------------------
+# Those are set to g++/gcc within the git bash even though they are overwritten in the .travis.yml file.
+if [ "$TRAVIS_OS_NAME" = "windows" ]
+then
+    CXX=cl.exe
+    CC=cl.exe
+fi
+
+#-------------------------------------------------------------------------------
 # CMake
-ALPAKA_CI_CMAKE_VER_SEMANTIC=( ${ALPAKA_CI_CMAKE_VER//./ } )
-export ALPAKA_CI_CMAKE_VER_MAJOR="${ALPAKA_CI_CMAKE_VER_SEMANTIC[0]}"
-echo ALPAKA_CI_CMAKE_VER_MAJOR: "${ALPAKA_CI_CMAKE_VER_MAJOR}"
-export ALPAKA_CI_CMAKE_VER_MINOR="${ALPAKA_CI_CMAKE_VER_SEMANTIC[1]}"
-echo ALPAKA_CI_CMAKE_VER_MINOR: "${ALPAKA_CI_CMAKE_VER_MINOR}"
+if [[ -v ALPAKA_CI_CMAKE_VER ]]
+then
+    ALPAKA_CI_CMAKE_VER_SEMANTIC=( ${ALPAKA_CI_CMAKE_VER//./ } )
+    export ALPAKA_CI_CMAKE_VER_MAJOR="${ALPAKA_CI_CMAKE_VER_SEMANTIC[0]}"
+    echo ALPAKA_CI_CMAKE_VER_MAJOR: "${ALPAKA_CI_CMAKE_VER_MAJOR}"
+    export ALPAKA_CI_CMAKE_VER_MINOR="${ALPAKA_CI_CMAKE_VER_SEMANTIC[1]}"
+    echo ALPAKA_CI_CMAKE_VER_MINOR: "${ALPAKA_CI_CMAKE_VER_MINOR}"
+fi
 
 #-------------------------------------------------------------------------------
 # gcc
@@ -65,24 +76,27 @@ export ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
 echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 #-------------------------------------------------------------------------------
-if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    if [ "${CXX}" == "g++" ]
+    if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
     then
-        echo "using libc++ with g++ not yet supported."
-        exit 1
-    fi
+        if [ "${CXX}" == "g++" ]
+        then
+            echo "using libc++ with g++ not yet supported."
+            exit 1
+        fi
 
-    if [ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == "ubuntu:14.04" ]
-    then
-        echo "using libc++ with ubuntu:14.04 not supported."
-        exit 1
-    fi
+        if [ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == "ubuntu:14.04" ]
+        then
+            echo "using libc++ with ubuntu:14.04 not supported."
+            exit 1
+        fi
 
-    if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 65 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
-    then
-        echo "using libc++ with boost < 1.65 is not supported."
-        exit 1
+        if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 65 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
+        then
+            echo "using libc++ with boost < 1.65 is not supported."
+            exit 1
+        fi
     fi
 fi
 
