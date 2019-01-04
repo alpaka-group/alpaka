@@ -133,7 +133,4 @@ fi
 
 ./script/travis/run_build.sh
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
-then
-    if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/travis/run_tests.sh ;fi
-fi
+if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/travis/run_tests.sh ;fi
