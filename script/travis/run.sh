@@ -26,6 +26,8 @@ source ./script/travis/set.sh
 echo "ALPAKA_CI_CMAKE_DIR: ${ALPAKA_CI_CMAKE_DIR}"
 : ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
 echo "ALPAKA_CI_ANALYSIS: ${ALPAKA_CI_ANALYSIS}"
+: ${ALPAKA_CI_INSTALL_CUDA?"ALPAKA_CI_INSTALL_CUDA must be specified"}
+: ${ALPAKA_CI_INSTALL_HIP?"ALPAKA_CI_INSTALL_HIP must be specified"}
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
     : ${ALPAKA_CI_STDLIB?"ALPAKA_CI_STDLIB must be specified"}
@@ -56,7 +58,7 @@ then
 fi
 
 # CUDA
-if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
+if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
     # CUDA
     export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
@@ -72,9 +74,8 @@ then
 fi
 
 # HIP
-if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ]
+if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ]
 then
-    # && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
     # HIP
     # HIP_PATH required by HIP tools
     export HIP_PATH=${ALPAKA_CI_HIP_ROOT_DIR}

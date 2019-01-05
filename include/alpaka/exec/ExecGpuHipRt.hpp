@@ -90,7 +90,7 @@ namespace alpaka
 #endif
                     static_assert(
                         std::is_same<typename std::result_of<
-                            TKernelFnObj(acc::AccGpuCudaRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
+                            TKernelFnObj(acc::AccGpuHipRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
                         "The TKernelFnObj is required to return void!");
                     
                     acc::AccGpuHipRt<TDim, TIdx> acc(threadElemExtent);

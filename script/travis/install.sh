@@ -25,9 +25,8 @@ source ./script/travis/travis_retry.sh
 source ./script/travis/set.sh
 
 : ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
-: ${ALPAKA_ACC_GPU_CUDA_ENABLE?"ALPAKA_ACC_GPU_CUDA_ENABLE must be specified"}
-: ${ALPAKA_ACC_GPU_HIP_ENABLE?"ALPAKA_ACC_GPU_HIP_ENABLE must be specified"}
-: ${ALPAKA_HIP_PLATFORM?"ALPAKA_HIP_PLATFORM must be specified"}
+: ${ALPAKA_CI_INSTALL_CUDA?"ALPAKA_CI_INSTALL_CUDA must be specified"}
+: ${ALPAKA_CI_INSTALL_HIP?"ALPAKA_CI_INSTALL_HIP must be specified"}
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
@@ -42,13 +41,10 @@ then
     ./script/travis/install_cmake.sh
     if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/install_analysis.sh ;fi
     # Install CUDA before installing gcc as it installs gcc-4.8 and overwrites our selected compiler
-    if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ] || [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] && [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
-    then
-        ./script/travis/install_cuda.sh
-    fi
+    if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/travis/install_cuda.sh ;fi
     if [ "${CXX}" == "g++" ] ;then ./script/travis/install_gcc.sh ;fi
     if [ "${CXX}" == "clang++" ] ;then source ./script/travis/install_clang.sh ;fi
-    if [ "${ALPAKA_ACC_GPU_HIP_ENABLE}" == "ON" ] ;then ./script/travis/install_hip.sh ;fi
+    if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/travis/install_hip.sh ;fi
 fi
 
 # If the variable is not set, the backend will most probably be used by default so we install it.
