@@ -150,6 +150,9 @@ namespace alpaka
 
                 if(::omp_in_parallel() != 0)
                 {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION << " already within a parallel region." << std::endl;
+#endif
                     parallelFn(
                         boundKernelFnObj,
                         blockSharedMemDynSizeBytes,
@@ -158,6 +161,9 @@ namespace alpaka
                 }
                 else
                 {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION << " opening new parallel region." << std::endl;
+#endif
                     #pragma omp parallel
                     parallelFn(
                         boundKernelFnObj,
@@ -177,14 +183,20 @@ namespace alpaka
                 vec::Vec<TDim, TIdx> const & gridBlockExtent) const
             -> void
             {
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                // The first thread does some debug logging.
-                if(::omp_get_thread_num() == 0)
+                #pragma omp single nowait
                 {
-                    int const numThreads(::omp_get_num_threads());
-                    std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << numThreads << std::endl;
-                }
+                    // The OpenMP runtime does not create a parallel region when only one thread is required in the num_threads clause.
+                    // In all other cases we expect to be in a parallel region now.
+                    if((numBlocksInGrid > 1) && (::omp_in_parallel() == 0))
+                    {
+                        throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
+                    }
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                    std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << ::omp_get_num_threads() << std::endl;
 #endif
+                }
+
                 acc::AccCpuOmp2Blocks<TDim, TIdx> acc(
                     *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
