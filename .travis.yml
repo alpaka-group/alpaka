@@ -102,12 +102,12 @@ matrix:
       os: windows
       dist: 1803-containers
       language: cpp
-      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            OMP_NUM_THREADS=4
+      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            OMP_NUM_THREADS=4 ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF
     - name: MSVC-2017 Debug
       os: windows
       dist: 1803-containers
       language: cpp
-      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            OMP_NUM_THREADS=4
+      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            OMP_NUM_THREADS=4 ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF
 
     ### Ubuntu
     ## native

@@ -75,8 +75,8 @@ then
     echo "OMP_NUM_THREADS=${OMP_NUM_THREADS}"
 fi
 
-mkdir --parents build/make/
-cd build/make/
+mkdir --parents build/
+cd build/
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
@@ -107,7 +107,7 @@ cmake -G "${ALPAKA_CI_CMAKE_GENERATOR}" \
     "$(env2cmake ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA)" "$(env2cmake ALPAKA_CUDA_NVCC_EXPT_RELAXED_CONSTEXPR)" \
     "$(env2cmake ALPAKA_ACC_GPU_HIP_ENABLE)" "$(env2cmake ALPAKA_HIP_ARCH)" "$(env2cmake ALPAKA_HIP_PLATFORM)" \
     "$(env2cmake ALPAKA_DEBUG)" "$(env2cmake ALPAKA_CI)" "$(env2cmake ALPAKA_CI_ANALYSIS)" \
-    "../../"
+    ".."
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
     make VERBOSE=1
@@ -116,4 +116,4 @@ then
     MSBuild.exe "alpakaAll.sln" -p:Configuration=${CMAKE_BUILD_TYPE} -maxcpucount:1 -verbosity:minimal
 fi
 
-cd ../../
+cd ..
