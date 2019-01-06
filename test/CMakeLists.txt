@@ -39,13 +39,16 @@ ENDIF()
 add_library(CatchMain CatchMain.cpp)
 # target_compile_features(CatchMain PUBLIC cxx_std_11)  # min C++11
 set_target_properties(CatchMain PROPERTIES
+    FOLDER "test"
     CXX_STANDARD 11  # exactly C++11
     CXX_EXTENSIONS OFF
     CXX_STANDARD_REQUIRED ON
     POSITION_INDEPENDENT_CODE ON
     WINDOWS_EXPORT_ALL_SYMBOLS ON
 )
-IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+target_compile_definitions(CatchMain PUBLIC "CATCH_CONFIG_FAST_COMPILE")
+IF(MSVC)
+    target_compile_definitions(CatchMain PUBLIC "CATCH_CONFIG_WINDOWS_CRTDBG")
     target_compile_options(CatchMain PUBLIC "/bigobj")
 ENDIF()
 IF(ALPAKA_USE_INTERNAL_CATCH2)

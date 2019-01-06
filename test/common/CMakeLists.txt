@@ -33,7 +33,6 @@ append_recursive_files_add_to_src_group("${_COMMON_SOURCE_DIRECTORY}" "${_COMMON
 INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
 LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
 IF(MSVC)
-    LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC "/bigobj")
     LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.
 ENDIF()
 
@@ -41,11 +40,6 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE OR (ALPAKA_ACC_GPU_HIP_ENABLE AND HIP_PLATFORM MAT
     # CUDA driver API is used by EventHostManualTrigger
     LIST(APPEND _COMMON_LINK_LIBRARIES_PUBLIC "general;${CUDA_CUDA_LIBRARY}")
     LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC "CUDA_API_PER_THREAD_DEFAULT_STREAM")
-ENDIF()
-
-IF(MSVC)
-    # Disable autolink feature of boost. We explicitly link the required libs.
-    LIST(APPEND _COMMON_COMPILE_DEFINITIONS_PUBLIC "BOOST_ALL_NO_LIB")
 ENDIF()
 
 ADD_LIBRARY(
