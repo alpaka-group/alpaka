@@ -35,7 +35,7 @@ services:
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # ALPAKA_CI                                     : {TRAVIS}
 # ALPAKA_CI_DOCKER_BASE_IMAGE_NAME              : {ubuntu:14.04, ubuntu:16.04, ubuntu:17.10, ubuntu:18.04}
-# ALPAKA_CI_BOOST_BRANCH                        : {boost-1.62.0, boost-1.63.0, boost-1.64.0, boost-1.65.1, boost-1.66.0, boost-1.67.0, boost-1.68.0, boost-1.69.0}
+# ALPAKA_CI_BOOST_BRANCH                        : {[CXX!=cl.exe]:boost-1.62.0, [CXX!=cl.exe]:boost-1.63.0, boost-1.64.0, boost-1.65.1, boost-1.66.0, boost-1.67.0, boost-1.68.0, boost-1.69.0}
 # ALPAKA_CI_CMAKE_VER                           : {3.11.0, 3.11.4, 3.12.4, 3.13.0, 3.13.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan, ESan}
 #    TSan is not currently used because it produces many unexpected errors
@@ -95,7 +95,7 @@ matrix:
       os: windows
       dist: 1803-containers
       language: cpp
-      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
+      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.69.0                            ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
 
     ### Windows
     - name: MSVC-2017 Release
@@ -107,7 +107,7 @@ matrix:
       os: windows
       dist: 1803-containers
       language: cpp
-      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            OMP_NUM_THREADS=4 ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF
+      env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.64.0                            OMP_NUM_THREADS=4 ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF
 
     ### Ubuntu
     ## native
