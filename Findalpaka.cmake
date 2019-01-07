@@ -34,6 +34,7 @@
 # Set the following CMake variables BEFORE calling find_packages to
 # change the behaviour of this module:
 # - ``ALPAKA_ACC_GPU_CUDA_ONLY_MODE`` {ON, OFF}
+# - ``ALPAKA_ACC_GPU_HIP_ONLY_MODE`` {ON, OFF}
 # - ``ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE`` {ON, OFF}
 # - ``ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE`` {ON, OFF}
 # - ``ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE`` {ON, OFF}
@@ -42,6 +43,7 @@
 # - ``ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE`` {ON, OFF}
 # - ``ALPAKA_ACC_CPU_BT_OMP4_ENABLE`` {ON, OFF}
 # - ``ALPAKA_ACC_GPU_CUDA_ENABLE`` {ON, OFF}
+# - ``ALPAKA_ACC_GPU_HIP_ENABLE`` {ON, OFF}
 # - ``ALPAKA_CUDA_VERSION`` {8.0, ...}
 # - ``ALPAKA_CUDA_ARCH`` {sm_20, sm...}
 # - ``ALPAKA_CUDA_FAST_MATH`` {ON, OFF}

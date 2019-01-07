@@ -661,9 +661,9 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
                 ENDIF()
 
                 IF(CUDA_VERSION VERSION_LESS 9.0)
-                    SET(ALPAKA_HIP_ARCH "20" CACHE STRING "GPU architecture")
+                    SET(ALPAKA_CUDA_ARCH "20" CACHE STRING "GPU architecture")
                 ELSE()
-                    SET(ALPAKA_HIP_ARCH "30" CACHE STRING "GPU architecture")
+                    SET(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
                 ENDIF()
 
                 # CUDA 9.0 removed the __CUDACC_VER__ macro. Boost versions lower than 1.65.1 still use this macro.
@@ -689,7 +689,7 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
                 LIST(APPEND HIP_NVCC_FLAGS "--expt-relaxed-constexpr")
                 LIST(APPEND _ALPAKA_HIP_LIBRARIES "cudart")
 
-                FOREACH(_HIP_ARCH_ELEM ${ALPAKA_HIP_ARCH})
+                FOREACH(_HIP_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
                     SET(HIP_NVCC_FLAGS ${HIP_NVCC_FLAGS}
                         "--generate-code arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM} --generate-code arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}")
