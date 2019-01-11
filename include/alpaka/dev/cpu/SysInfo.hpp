@@ -232,13 +232,13 @@ namespace alpaka
                     std::size_t len = sizeof(free_pages);
                     if(sysctlbyname("vm.page_free_count", &free_pages, &len, NULL, 0) < 0)
                     {
-                      throw std::logic_error("getFreeGlobalMemSizeBytes failed calling sysctl(vm.page_free_count)!");
+                        throw std::logic_error("getFreeGlobalMemSizeBytes failed calling sysctl(vm.page_free_count)!");
                     }
                     int page_size = 0;
                     len = sizeof(page_size);
                     if(sysctlbyname("vm.pagesize", &page_size, &len, NULL, 0) < 0)
                     {
-                      throw std::logic_error("getFreeGlobalMemSizeBytes failed calling sysctl(vm.pagesize)!");
+                        throw std::logic_error("getFreeGlobalMemSizeBytes failed calling sysctl(vm.pagesize)!");
                     }
                     return static_cast<std::size_t>(free_pages) * static_cast<std::size_t>(page_size);
 #else
