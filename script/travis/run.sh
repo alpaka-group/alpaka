@@ -46,7 +46,10 @@ then
 fi
 
 # CMake
-export PATH=${ALPAKA_CI_CMAKE_DIR}/bin:${PATH}
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+    export PATH=${ALPAKA_CI_CMAKE_DIR}/bin:${PATH}
+fi
 cmake --version
 
 #TBB
