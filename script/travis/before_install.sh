@@ -31,48 +31,19 @@ then
 fi
 
 #-------------------------------------------------------------------------------
-# CMake
-if [ -v ALPAKA_CI_CMAKE_VER ]
-then
-    ALPAKA_CI_CMAKE_VER_SEMANTIC=( ${ALPAKA_CI_CMAKE_VER//./ } )
-    export ALPAKA_CI_CMAKE_VER_MAJOR="${ALPAKA_CI_CMAKE_VER_SEMANTIC[0]}"
-    echo ALPAKA_CI_CMAKE_VER_MAJOR: "${ALPAKA_CI_CMAKE_VER_MAJOR}"
-    export ALPAKA_CI_CMAKE_VER_MINOR="${ALPAKA_CI_CMAKE_VER_SEMANTIC[1]}"
-    echo ALPAKA_CI_CMAKE_VER_MINOR: "${ALPAKA_CI_CMAKE_VER_MINOR}"
-fi
-
-#-------------------------------------------------------------------------------
 # gcc
-if [ "${CXX}" == "g++" ]
+if [ -v ALPAKA_CI_GCC_VER ]
 then
     ALPAKA_CI_GCC_VER_SEMANTIC=( ${ALPAKA_CI_GCC_VER//./ } )
     export ALPAKA_CI_GCC_VER_MAJOR="${ALPAKA_CI_GCC_VER_SEMANTIC[0]}"
     echo ALPAKA_CI_GCC_VER_MAJOR: "${ALPAKA_CI_GCC_VER_MAJOR}"
-    if [[ -v ALPAKA_CI_GCC_VER_SEMANTIC[1] ]]
-    then
-        export ALPAKA_CI_GCC_VER_MINOR="${ALPAKA_CI_GCC_VER_SEMANTIC[1]}"
-    else
-        export ALPAKA_CI_GCC_VER_MINOR=0
-    fi
-    echo ALPAKA_CI_GCC_VER_MINOR: "${ALPAKA_CI_GCC_VER_MINOR}"
-fi
-
-#-------------------------------------------------------------------------------
-# clang
-if [ "${CXX}" == "clang++" ]
-then
-    ALPAKA_CI_CLANG_VER_SEMANTIC=( ${ALPAKA_CI_CLANG_VER//./ } )
-    export ALPAKA_CI_CLANG_VER_MAJOR="${ALPAKA_CI_CLANG_VER_SEMANTIC[0]}"
-    echo ALPAKA_CI_CLANG_VER_MAJOR: "${ALPAKA_CI_CLANG_VER_MAJOR}"
-    export ALPAKA_CI_CLANG_VER_MINOR="${ALPAKA_CI_CLANG_VER_SEMANTIC[1]}"
-    echo ALPAKA_CI_CLANG_VER_MINOR: "${ALPAKA_CI_CLANG_VER_MINOR}"
 fi
 
 #-------------------------------------------------------------------------------
 # Boost.
-export ALPAKA_CI_BOOST_BRANCH_MAJOR=${ALPAKA_CI_BOOST_BRANCH:6:1}
+ALPAKA_CI_BOOST_BRANCH_MAJOR=${ALPAKA_CI_BOOST_BRANCH:6:1}
 echo ALPAKA_CI_BOOST_BRANCH_MAJOR: "${ALPAKA_CI_BOOST_BRANCH_MAJOR}"
-export ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
+ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
 echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 #-------------------------------------------------------------------------------
@@ -115,16 +86,22 @@ then
     fi
 fi
 
+# GCC-5.5 has broken avx512vlintrin.h in Release mode with NVCC 9.X
+#   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=76731
+#   https://github.com/tensorflow/tensorflow/issues/10220
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
     if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
     then
-        # FIXME: GCC-5.5 has broken avx512vlintrin.h in Release mode with NVCC 9.X
-        #   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=76731
-        #   https://github.com/tensorflow/tensorflow/issues/10220
-        if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
+        if [ "${CXX}" == "g++" ]
         then
-            export CMAKE_BUILD_TYPE=Debug
+            if (( "${ALPAKA_CI_GCC_VER_MAJOR}" == 5 ))
+            then
+                if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
+                then
+                    export CMAKE_BUILD_TYPE=Debug
+                fi
+            fi
         fi
     fi
 fi

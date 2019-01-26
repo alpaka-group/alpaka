@@ -835,8 +835,10 @@ ELSE()
     # Add linker options.
     # lipthread:
     LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;pthread")
-    # librt: undefined reference to `clock_gettime'
-    LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
+    IF(NOT APPLE)
+        # librt: undefined reference to `clock_gettime'
+        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
+    ENDIF()
 
     # GNU
     IF(CMAKE_COMPILER_IS_GNUCXX)

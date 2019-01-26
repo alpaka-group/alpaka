@@ -35,7 +35,7 @@ services:
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # ALPAKA_CI                                     : {TRAVIS}
 # ALPAKA_CI_DOCKER_BASE_IMAGE_NAME              : {ubuntu:14.04, ubuntu:16.04, ubuntu:17.10, ubuntu:18.04}
-# ALPAKA_CI_BOOST_BRANCH                        : {[CXX!=cl.exe]:boost-1.62.0, [CXX!=cl.exe]:boost-1.63.0, boost-1.64.0, boost-1.65.1, boost-1.66.0, boost-1.67.0, boost-1.68.0, boost-1.69.0}
+# ALPAKA_CI_BOOST_BRANCH                        : {[CXX!=cl.exe&&OS!=osx]:boost-1.62.0, [CXX!=cl.exe&&OS!=osx]:boost-1.63.0, [OS!=osx]boost-1.64.0, boost-1.65.1, boost-1.66.0, boost-1.67.0, boost-1.68.0, boost-1.69.0}
 # ALPAKA_CI_CMAKE_VER                           : {3.11.0, 3.11.4, 3.12.4, 3.13.0, 3.13.2}
 # ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan, ESan}
 #    TSan is not currently used because it produces many unexpected errors
@@ -90,11 +90,25 @@ matrix:
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=clang++ CC=clang ALPAKA_CI_CLANG_VER=4.0.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_STDLIB=libc++    ALPAKA_CI_BOOST_BRANCH=boost-1.69.0 ALPAKA_CI_CMAKE_VER=3.11.4 ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=1 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VERSION=8.0 ALPAKA_CUDA_COMPILER=clang
     - name: clang-6 Debug Analysis
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:18.04 CXX=clang++ CC=clang ALPAKA_CI_CLANG_VER=6.0.1 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_STDLIB=libc++    ALPAKA_CI_BOOST_BRANCH=boost-1.68.0 ALPAKA_CI_CMAKE_VER=3.13.0 ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
+    - name: macOS 10.13 Xcode 10.1 Debug Analysis
+      os: osx
+      osx_image: xcode10.1
+      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
     - name: MSVC-2017 Debug Analysis
       os: windows
       dist: 1803-containers
       language: cpp
       env:                                               CXX=cl.exe  CC=cl.exe                          CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.69.0                            ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
+
+    ### macOS
+    - name: macOS 10.13 Xcode 10.1 Debug
+      os: osx
+      osx_image: xcode10.1
+      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.67.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
+    - name: macOS 10.13 Xcode 10.1 Release
+      os: osx
+      osx_image: xcode10.1
+      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.69.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
 
     ### Windows
     - name: MSVC-2017 Release
