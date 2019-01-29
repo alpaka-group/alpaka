@@ -29,7 +29,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
   ./script/travis/docker_install.sh
   ./script/travis/docker_run.sh
-elif [ "$TRAVIS_OS_NAME" = "windows" ]
+elif [ "$TRAVIS_OS_NAME" = "windows" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
 then
   ./script/travis/install.sh
   ./script/travis/run.sh

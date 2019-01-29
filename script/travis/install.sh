@@ -27,6 +27,7 @@ source ./script/travis/set.sh
 : ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
 : ${ALPAKA_CI_INSTALL_CUDA?"ALPAKA_CI_INSTALL_CUDA must be specified"}
 : ${ALPAKA_CI_INSTALL_HIP?"ALPAKA_CI_INSTALL_HIP must be specified"}
+: ${ALPAKA_CI_INSTALL_TBB?"ALPAKA_CI_INSTALL_TBB must be specified"}
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
@@ -47,8 +48,7 @@ then
     if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/travis/install_hip.sh ;fi
 fi
 
-# If the variable is not set, the backend will most probably be used by default so we install it.
-if [[ ! -v ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE || "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}" == "ON" ]]
+if [ "${ALPAKA_CI_INSTALL_TBB}" = "ON" ]
 then
     ./script/travis/install_tbb.sh
 fi

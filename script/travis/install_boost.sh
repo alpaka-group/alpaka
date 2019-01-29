@@ -31,6 +31,7 @@ fi
 : ${CMAKE_BUILD_TYPE?"CMAKE_BUILD_TYPE must be specified"}
 : ${CXX?"CXX must be specified"}
 : ${CC?"CC must be specified"}
+: ${ALPAKA_CI_INSTALL_FIBERS?"ALPAKA_CI_INSTALL_FIBERS must be specified"}
 
 git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
 
@@ -52,7 +53,7 @@ else
 fi
 
 # Prepare the library destination directory.
-mkdir --parents "${ALPAKA_CI_BOOST_LIB_DIR}"
+mkdir -p "${ALPAKA_CI_BOOST_LIB_DIR}"
 
 # Create the boost build command.
 ALPAKA_BOOST_B2=""
@@ -65,7 +66,7 @@ then
 fi
 ALPAKA_BOOST_B2="./b2 -j1"
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
 then
     ALPAKA_BOOST_B2_CFLAGS+="-fPIC"
     ALPAKA_BOOST_B2_CXXFLAGS+="-fPIC"
@@ -101,7 +102,7 @@ then
 fi
 # Select the libraries required.
 # If the variable is not set, the backend will most probably be used by default so we install it.
-if [[ ! -v ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE || "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" == "ON" ]]
+if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
 then
     ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"
     ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"

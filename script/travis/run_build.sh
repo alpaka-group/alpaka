@@ -46,31 +46,31 @@ function env2cmake()
 
 #-------------------------------------------------------------------------------
 # Build and execute all tests.
-if [[ -v CMAKE_CXX_FLAGS ]]
+if [ -v CMAKE_CXX_FLAGS ]
 then
     echo "CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}"
 fi
-if [[ -v CMAKE_EXE_LINKER_FLAGS ]]
+if [ -v CMAKE_EXE_LINKER_FLAGS ]
 then
     echo "CMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}"
 fi
-if [[ -v KMP_DEVICE_THREAD_LIMIT ]]
+if [ -v KMP_DEVICE_THREAD_LIMIT ]
 then
     echo "KMP_DEVICE_THREAD_LIMIT=${KMP_DEVICE_THREAD_LIMIT}"
 fi
-if [[ -v KMP_ALL_THREADS ]]
+if [ -v KMP_ALL_THREADS ]
 then
     echo "KMP_ALL_THREADS=${KMP_ALL_THREADS}"
 fi
-if [[ -v KMP_TEAMS_THREAD_LIMIT ]]
+if [ -v KMP_TEAMS_THREAD_LIMIT ]
 then
     echo "KMP_TEAMS_THREAD_LIMIT=${KMP_TEAMS_THREAD_LIMIT}"
 fi
-if [[ -v OMP_THREAD_LIMIT ]]
+if [ -v OMP_THREAD_LIMIT ]
 then
     echo "OMP_THREAD_LIMIT=${OMP_THREAD_LIMIT}"
 fi
-if [[ -v OMP_NUM_THREADS ]]
+if [ -v OMP_NUM_THREADS ]
 then
     echo "OMP_NUM_THREADS=${OMP_NUM_THREADS}"
 fi

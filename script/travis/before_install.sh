@@ -32,7 +32,7 @@ fi
 
 #-------------------------------------------------------------------------------
 # CMake
-if [[ -v ALPAKA_CI_CMAKE_VER ]]
+if [ -v ALPAKA_CI_CMAKE_VER ]
 then
     ALPAKA_CI_CMAKE_VER_SEMANTIC=( ${ALPAKA_CI_CMAKE_VER//./ } )
     export ALPAKA_CI_CMAKE_VER_MAJOR="${ALPAKA_CI_CMAKE_VER_SEMANTIC[0]}"
@@ -142,4 +142,32 @@ then
         echo "HIP(hcc) not supported yet."
         exit 1
     fi
+fi
+
+#-------------------------------------------------------------------------------
+# TBB
+export ALPAKA_CI_INSTALL_TBB="OFF"
+if [ -v ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE ]
+then
+    if [ "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}" = "ON" ]
+    then
+        export ALPAKA_CI_INSTALL_TBB="ON"
+    fi
+else
+    # If the variable is not set, the backend will most probably be used by default so we install it.
+    export ALPAKA_CI_INSTALL_TBB="ON"
+fi
+
+#-------------------------------------------------------------------------------
+# Fibers
+export ALPAKA_CI_INSTALL_FIBERS="OFF"
+if [ -v ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE ]
+then
+    if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" = "ON" ]
+    then
+        export ALPAKA_CI_INSTALL_FIBERS="ON"
+    fi
+else
+    # If the variable is not set, the backend will most probably be used by default so we install it.
+    export ALPAKA_CI_INSTALL_FIBERS="ON"
 fi
