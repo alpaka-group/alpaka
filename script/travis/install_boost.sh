@@ -60,11 +60,11 @@ ALPAKA_BOOST_B2=""
 ALPAKA_BOOST_B2_CFLAGS=""
 ALPAKA_BOOST_B2_CXXFLAGS=""
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
 then
     ALPAKA_BOOST_B2+="sudo "
 fi
-ALPAKA_BOOST_B2="./b2 -j1"
+ALPAKA_BOOST_B2+="./b2 -j1"
 
 if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
 then
@@ -138,7 +138,7 @@ fi
 ALPAKA_BOOST_B2+=" --stagedir=${ALPAKA_CI_BOOST_LIB_DIR} stage"
 
 # Build boost.
-echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
+#echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
 (cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
 
 # Clean the intermediate build files.

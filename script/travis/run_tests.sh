@@ -29,7 +29,7 @@ if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "OFF" ] && [ "${ALPAKA_ACC_GPU_HIP_ENABL
 then
     cd build/
 
-    if [ "$TRAVIS_OS_NAME" = "linux" ]
+    if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
     then
         ctest -V
     elif [ "$TRAVIS_OS_NAME" = "windows" ]

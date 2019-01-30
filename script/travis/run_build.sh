@@ -75,10 +75,10 @@ then
     echo "OMP_NUM_THREADS=${OMP_NUM_THREADS}"
 fi
 
-mkdir --parents build/
+mkdir -p build/
 cd build/
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
 then
     ALPAKA_CI_CMAKE_GENERATOR="Unix Makefiles"
 elif [ "$TRAVIS_OS_NAME" = "windows" ]
@@ -108,7 +108,7 @@ cmake -G "${ALPAKA_CI_CMAKE_GENERATOR}" \
     "$(env2cmake ALPAKA_ACC_GPU_HIP_ENABLE)" "$(env2cmake ALPAKA_ACC_GPU_HIP_ONLY_MODE)" "$(env2cmake ALPAKA_HIP_PLATFORM)" \
     "$(env2cmake ALPAKA_DEBUG)" "$(env2cmake ALPAKA_CI)" "$(env2cmake ALPAKA_CI_ANALYSIS)" \
     ".."
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
 then
     make VERBOSE=1
 elif [ "$TRAVIS_OS_NAME" = "windows" ]
