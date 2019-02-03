@@ -32,7 +32,7 @@ fi
 
 #-------------------------------------------------------------------------------
 # gcc
-if [ -v ALPAKA_CI_GCC_VER ]
+if [ ! -z ${ALPAKA_CI_GCC_VER+x} ]
 then
     ALPAKA_CI_GCC_VER_SEMANTIC=( ${ALPAKA_CI_GCC_VER//./ } )
     export ALPAKA_CI_GCC_VER_MAJOR="${ALPAKA_CI_GCC_VER_SEMANTIC[0]}"
@@ -124,7 +124,7 @@ fi
 #-------------------------------------------------------------------------------
 # TBB
 export ALPAKA_CI_INSTALL_TBB="OFF"
-if [ -v ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE ]
+if [ ! -z ${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE+x} ]
 then
     if [ "${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE}" = "ON" ]
     then
@@ -138,7 +138,7 @@ fi
 #-------------------------------------------------------------------------------
 # Fibers
 export ALPAKA_CI_INSTALL_FIBERS="OFF"
-if [ -v ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE ]
+if [ ! -z ${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE+x} ]
 then
     if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" = "ON" ]
     then

@@ -52,99 +52,103 @@ else
     (cd "${BOOST_ROOT}"; sudo ./b2 headers)
 fi
 
-# Prepare the library destination directory.
-mkdir -p "${ALPAKA_CI_BOOST_LIB_DIR}"
-
-# Create the boost build command.
-ALPAKA_BOOST_B2=""
-ALPAKA_BOOST_B2_CFLAGS=""
-ALPAKA_BOOST_B2_CXXFLAGS=""
-
-if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
-then
-    ALPAKA_BOOST_B2+="sudo "
-fi
-ALPAKA_BOOST_B2+="./b2 -j1"
-
-if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
-then
-    ALPAKA_BOOST_B2_CFLAGS+="-fPIC"
-    ALPAKA_BOOST_B2_CXXFLAGS+="-fPIC"
-fi
-
-if [ "$TRAVIS_OS_NAME" = "windows" ]
-then
-    ALPAKA_BOOST_B2+=" --layout=versioned --toolset=msvc-14.1"
-else
-    ALPAKA_BOOST_B2+=" --layout=tagged --toolset=${CC}"
-fi
-
-# TODO: Win32: adress-model=32
-ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 link=static threading=multi runtime-link=shared"
-
-if [ "$TRAVIS_OS_NAME" = "windows" ]
-then
-    ALPAKA_BOOST_B2+=" define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS define=_ENABLE_EXTENDED_ALIGNED_STORAGE"
-fi
-
-if [ "${CMAKE_BUILD_TYPE}" == "Debug" ]
-then
-  ALPAKA_BOOST_B2+=" variant=debug"
-else
-  ALPAKA_BOOST_B2+=" variant=release"
-fi
-
-# Clang is not supported by the FindBoost script.
-# boost (especially old versions) produces too much warnings when using clang (newer versions) so that the 4 MiB log is too short.
-if [ "${CXX}" == "clang++" ]
-then
-    ALPAKA_BOOST_B2_CXXFLAGS+=" -Wunused-private-field -Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros"
-fi
-# Select the libraries required.
-# If the variable is not set, the backend will most probably be used by default so we install it.
+# Only build boost if we need some of the non-header-only libraries
 if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
 then
-    ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"
-    ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
-fi
-if [ "${ALPAKA_BOOST_B2_CFLAGS}" != "" ]
-then
-    ALPAKA_BOOST_B2+=' cflags="'
-    ALPAKA_BOOST_B2+="${ALPAKA_BOOST_B2_CFLAGS}"
-    ALPAKA_BOOST_B2+='"'
-fi
-if [ "${ALPAKA_BOOST_B2_CXXFLAGS}" != "" ]
-then
-    ALPAKA_BOOST_B2+=' cxxflags="'
-    ALPAKA_BOOST_B2+="${ALPAKA_BOOST_B2_CXXFLAGS}"
+    # Prepare the library destination directory.
+    mkdir -p "${ALPAKA_CI_BOOST_LIB_DIR}"
+
+    # Create the boost build command.
+    ALPAKA_BOOST_B2=""
+    ALPAKA_BOOST_B2_CFLAGS=""
+    ALPAKA_BOOST_B2_CXXFLAGS=""
+
+    if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
+    then
+        ALPAKA_BOOST_B2+="sudo "
+    fi
+    ALPAKA_BOOST_B2+="./b2 -j1"
+
+    if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
+    then
+        ALPAKA_BOOST_B2_CFLAGS+="-fPIC"
+        ALPAKA_BOOST_B2_CXXFLAGS+="-fPIC"
+    fi
+
+    if [ "$TRAVIS_OS_NAME" = "windows" ]
+    then
+        ALPAKA_BOOST_B2+=" --layout=versioned --toolset=msvc-14.1"
+    else
+        ALPAKA_BOOST_B2+=" --layout=tagged --toolset=${CC}"
+    fi
+
+    # TODO: Win32: adress-model=32
+    ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 link=static threading=multi runtime-link=shared"
+
+    if [ "$TRAVIS_OS_NAME" = "windows" ]
+    then
+        ALPAKA_BOOST_B2+=" define=_CRT_NONSTDC_NO_DEPRECATE define=_CRT_SECURE_NO_DEPRECATE define=_SCL_SECURE_NO_DEPRECAT define=BOOST_USE_WINFIBERS define=_ENABLE_EXTENDED_ALIGNED_STORAGE"
+    fi
+
+    if [ "${CMAKE_BUILD_TYPE}" == "Debug" ]
+    then
+      ALPAKA_BOOST_B2+=" variant=debug"
+    else
+      ALPAKA_BOOST_B2+=" variant=release"
+    fi
+
+    # Clang is not supported by the FindBoost script.
+    # boost (especially old versions) produces too much warnings when using clang (newer versions) so that the 4 MiB log is too short.
+    if [ "${CXX}" == "clang++" ]
+    then
+        ALPAKA_BOOST_B2_CXXFLAGS+=" -Wunused-private-field -Wno-unused-local-typedef -Wno-c99-extensions -Wno-variadic-macros"
+    fi
+    # Select the libraries required.
+    # If the variable is not set, the backend will most probably be used by default so we install it.
+    if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
+    then
+        ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"
+        ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
+    fi
+    if [ "${ALPAKA_BOOST_B2_CFLAGS}" != "" ]
+    then
+        ALPAKA_BOOST_B2+=' cflags="'
+        ALPAKA_BOOST_B2+="${ALPAKA_BOOST_B2_CFLAGS}"
+        ALPAKA_BOOST_B2+='"'
+    fi
+    if [ "${ALPAKA_BOOST_B2_CXXFLAGS}" != "" ]
+    then
+        ALPAKA_BOOST_B2+=' cxxflags="'
+        ALPAKA_BOOST_B2+="${ALPAKA_BOOST_B2_CXXFLAGS}"
+        if [ "$TRAVIS_OS_NAME" = "linux" ]
+        then
+            if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+            then
+                ALPAKA_BOOST_B2+=" -stdlib=libc++"
+            fi
+        fi
+        ALPAKA_BOOST_B2+='"'
+    fi
+
     if [ "$TRAVIS_OS_NAME" = "linux" ]
     then
         if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
         then
-            ALPAKA_BOOST_B2+=" -stdlib=libc++"
+            ALPAKA_BOOST_B2+=' linkflags="-stdlib=libc++"'
         fi
     fi
-    ALPAKA_BOOST_B2+='"'
-fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
-then
-    if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+    ALPAKA_BOOST_B2+=" --stagedir=${ALPAKA_CI_BOOST_LIB_DIR} stage"
+
+    # Build boost.
+    #echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
+    (cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
+
+    # Clean the intermediate build files.
+    if [ "$TRAVIS_OS_NAME" = "windows" ]
     then
-        ALPAKA_BOOST_B2+=' linkflags="-stdlib=libc++"'
+        rm -rf bin.v2
+    else
+        sudo rm -rf bin.v2
     fi
-fi
-
-ALPAKA_BOOST_B2+=" --stagedir=${ALPAKA_CI_BOOST_LIB_DIR} stage"
-
-# Build boost.
-#echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
-(cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
-
-# Clean the intermediate build files.
-if [ "$TRAVIS_OS_NAME" = "windows" ]
-then
-    rm -rf bin.v2
-else
-    sudo rm -rf bin.v2
 fi

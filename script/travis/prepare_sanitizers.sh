@@ -24,19 +24,19 @@ source ./script/travis/set.sh
 
 #-------------------------------------------------------------------------------
 # Exports the CMAKE_CXX_FLAGS and CMAKE_EXE_LINKER_FLAGS to enable the sanitizers listed in ALPAKA_CI_SANITIZERS.
-if [[ ! -v CMAKE_CXX_FLAGS ]]
+if [ -z ${CMAKE_CXX_FLAGS+x} ]
 then
     export CMAKE_CXX_FLAGS=
 fi
-if [[ ! -v CMAKE_EXE_LINKER_FLAGS ]]
+if [ -z ${CMAKE_EXE_LINKER_FLAGS+x} ]
 then
     export CMAKE_EXE_LINKER_FLAGS=
 fi
-if [[ ! -v ASAN_OPTIONS ]]
+if [ -z ${ASAN_OPTIONS+x} ]
 then
     export ASAN_OPTIONS=
 fi
-if [[ ! -v LSAN_OPTIONS ]]
+if [ -z ${LSAN_OPTIONS+x} ]
 then
     export LSAN_OPTIONS=
 fi
