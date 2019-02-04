@@ -57,12 +57,12 @@ sudo update-alternatives --install /usr/bin/cc cc "${ALPAKA_CI_CLANG_DIR}"/bin/c
 sudo update-alternatives --install /usr/bin/c++ c++ "${ALPAKA_CI_CLANG_DIR}"/bin/clang++ 50
 # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
 export PATH=${ALPAKA_CI_CLANG_DIR}/bin:${PATH}
-if [[ ! -v LD_LIBRARY_PATH ]]
+if [ -z ${LD_LIBRARY_PATH+x} ]
 then
     LD_LIBRARY_PATH=
 fi
 export LD_LIBRARY_PATH=${ALPAKA_CI_CLANG_DIR}/lib:${LD_LIBRARY_PATH}
-if [[ ! -v CPPFLAGS ]]
+if [ -z ${CPPFLAGS+x} ]
 then
     CPPFLAGS=
 fi

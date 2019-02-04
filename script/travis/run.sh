@@ -39,7 +39,7 @@ echo "CXX: ${CXX}"
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    if [ ! -v LD_LIBRARY_PATH ]
+    if [ -z ${LD_LIBRARY_PATH+x} ]
     then
         LD_LIBRARY_PATH=
     fi
@@ -103,7 +103,7 @@ then
     # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
     export PATH=${ALPAKA_CI_CLANG_DIR}/bin:${PATH}
     export LD_LIBRARY_PATH=${ALPAKA_CI_CLANG_DIR}/lib:${LD_LIBRARY_PATH}
-    if [ ! -v CPPFLAGS ]
+    if [ -z ${CPPFLAGS+x} ]
     then
         CPPFLAGS=
     fi
@@ -115,13 +115,13 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
     then
-        if [ ! -v CMAKE_CXX_FLAGS ]
+        if [ -z ${CMAKE_CXX_FLAGS+x} ]
         then
             export CMAKE_CXX_FLAGS=
         fi
         CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libc++"
 
-        if [ ! -v CMAKE_EXE_LINKER_FLAGS ]
+        if [ -z ${CMAKE_EXE_LINKER_FLAGS+x} ]
         then
             export CMAKE_EXE_LINKER_FLAGS=
         fi

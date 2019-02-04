@@ -39,38 +39,38 @@ source ./script/travis/set.sh
 # @endcode
 function env2cmake()
 {
-    if [ -v "$1" ] ; then
+    if [ ! -z ${1+x} ] ; then
         echo -n "-D$1=${!1}"
     fi
 }
 
 #-------------------------------------------------------------------------------
 # Build and execute all tests.
-if [ -v CMAKE_CXX_FLAGS ]
+if [ ! -z ${CMAKE_CXX_FLAGS+x} ]
 then
     echo "CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}"
 fi
-if [ -v CMAKE_EXE_LINKER_FLAGS ]
+if [ ! -z ${CMAKE_EXE_LINKER_FLAGS+x} ]
 then
     echo "CMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}"
 fi
-if [ -v KMP_DEVICE_THREAD_LIMIT ]
+if [ ! -z ${KMP_DEVICE_THREAD_LIMIT+x} ]
 then
     echo "KMP_DEVICE_THREAD_LIMIT=${KMP_DEVICE_THREAD_LIMIT}"
 fi
-if [ -v KMP_ALL_THREADS ]
+if [ ! -z ${KMP_ALL_THREADS+x} ]
 then
     echo "KMP_ALL_THREADS=${KMP_ALL_THREADS}"
 fi
-if [ -v KMP_TEAMS_THREAD_LIMIT ]
+if [ ! -z ${KMP_TEAMS_THREAD_LIMIT+x} ]
 then
     echo "KMP_TEAMS_THREAD_LIMIT=${KMP_TEAMS_THREAD_LIMIT}"
 fi
-if [ -v OMP_THREAD_LIMIT ]
+if [ ! -z ${OMP_THREAD_LIMIT+x} ]
 then
     echo "OMP_THREAD_LIMIT=${OMP_THREAD_LIMIT}"
 fi
-if [ -v OMP_NUM_THREADS ]
+if [ ! -z ${OMP_NUM_THREADS+x} ]
 then
     echo "OMP_NUM_THREADS=${OMP_NUM_THREADS}"
 fi
