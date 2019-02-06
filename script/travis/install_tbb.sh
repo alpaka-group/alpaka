@@ -28,6 +28,9 @@ source ./script/travis/set.sh
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
+elif [ "$TRAVIS_OS_NAME" = "osx" ]
+then
+    brew install tbb
 elif [ "$TRAVIS_OS_NAME" = "windows" ]
 then
     TBB_ARCHIVE_VER="tbb44_20160526oss"
