@@ -38,8 +38,15 @@ then
     # binutils: ld
     # xz-utils: xzcat
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils xz-utils
+fi
 
+if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "windows" ]
+then
     ./script/travis/install_cmake.sh
+fi
+
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
     if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/install_analysis.sh ;fi
     # Install CUDA before installing gcc as it installs gcc-4.8 and overwrites our selected compiler
     if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/travis/install_cuda.sh ;fi
