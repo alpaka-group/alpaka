@@ -53,16 +53,16 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         //#############################################################################
-        //! The CPU threads executor.
+        //! The CPU threads execution task.
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuThreads final :
+        class TaskKernelCpuThreads final :
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         private:
@@ -92,7 +92,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST ExecCpuThreads(
+            ALPAKA_FN_HOST TaskKernelCpuThreads(
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) :
@@ -102,18 +102,18 @@ namespace alpaka
             {
                 static_assert(
                     dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
-                    "The work division and the executor have to be of the same dimensionality!");
+                    "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            ExecCpuThreads(ExecCpuThreads const &) = default;
+            TaskKernelCpuThreads(TaskKernelCpuThreads const &) = default;
             //-----------------------------------------------------------------------------
-            ExecCpuThreads(ExecCpuThreads &&) = default;
+            TaskKernelCpuThreads(TaskKernelCpuThreads &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuThreads const &) -> ExecCpuThreads & = default;
+            auto operator=(TaskKernelCpuThreads const &) -> TaskKernelCpuThreads & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuThreads &&) -> ExecCpuThreads & = default;
+            auto operator=(TaskKernelCpuThreads &&) -> TaskKernelCpuThreads & = default;
             //-----------------------------------------------------------------------------
-            ~ExecCpuThreads() = default;
+            ~TaskKernelCpuThreads() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
@@ -162,7 +162,7 @@ namespace alpaka
                         {
                             return
                                 std::bind(
-                                    &ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>::gridBlockExecHost,
+                                    &TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>::gridBlockExecHost,
                                     std::ref(acc),
                                     std::placeholders::_1,
                                     std::ref(blockThreadExtent),
@@ -198,7 +198,7 @@ namespace alpaka
 
                 // Bind the kernel and its arguments to the host block thread execution function.
                 auto boundBlockThreadExecHost(std::bind(
-                    &ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>::blockThreadExecHost,
+                    &TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>::blockThreadExecHost,
                     std::ref(acc),
                     std::ref(futuresInBlock),
                     std::placeholders::_1,
@@ -316,14 +316,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads executor accelerator type trait specialization.
+            //! The CPU threads execution task accelerator type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct AccType<
-                exec::ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = acc::AccCpuThreads<TDim, TIdx>;
             };
@@ -334,14 +334,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads executor device type trait specialization.
+            //! The CPU threads execution task device type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DevType<
-                exec::ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevCpu;
             };
@@ -352,14 +352,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads executor dimension getter trait specialization.
+            //! The CPU threads execution task dimension getter trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DimType<
-                exec::ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
             };
@@ -370,14 +370,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads executor platform type trait specialization.
+            //! The CPU threads execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct PltfType<
-                exec::ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = pltf::PltfCpu;
             };
@@ -388,14 +388,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads executor idx type trait specialization.
+            //! The CPU threads execution task idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct IdxType<
-                exec::ExecCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TIdx;
             };

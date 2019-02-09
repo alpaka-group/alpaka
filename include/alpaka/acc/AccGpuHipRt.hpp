@@ -59,14 +59,14 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecGpuHipRt;
+        class TaskKernelGpuHipRt;
     }
     namespace acc
     {
@@ -242,7 +242,7 @@ namespace alpaka
             //
             // It is not possible to determine the result type of a __device__ lambda for CUDA on the host side.
             // https://github.com/ComputationalRadiationPhysics/alpaka/pull/695#issuecomment-446103194
-            // The executor ExecGpuHipRt is therefore performing this check on device side.
+            // The execution task TaskKernelGpuHipRt is therefore performing this check on device side.
             template<
                 typename TDim,
                 typename TIdx>
@@ -265,7 +265,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The GPU HIP accelerator executor type trait specialization.
+            //! The GPU HIP accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -284,7 +284,7 @@ namespace alpaka
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                -> exec::ExecGpuHipRt<
+                -> kernel::TaskKernelGpuHipRt<
                     TDim,
                     TIdx,
                     TKernelFnObj,
@@ -292,7 +292,7 @@ namespace alpaka
 #endif
                 {
                     return
-                        exec::ExecGpuHipRt<
+                        kernel::TaskKernelGpuHipRt<
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -309,7 +309,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU HIP executor platform type trait specialization.
+            //! The CPU HIP execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>

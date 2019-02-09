@@ -79,7 +79,7 @@ public:
 auto main()
 -> int
 {
-// This example is hard-coded to use the sequential executor.
+// This example is hard-coded to use the sequential backend.
 #if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
 
     // Define the index domain
@@ -166,7 +166,7 @@ auto main()
         alpaka::mem::view::getPtrNative(bufAccC),
         numElements));
 
-    // Enqueue the kernel executor
+    // Enqueue the kernel execution task
     alpaka::queue::enqueue(queue, taskKernel);
 
     // Copy back the result

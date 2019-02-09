@@ -60,14 +60,14 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuOmp4;
+        class TaskKernelCpuOmp4;
     }
     namespace acc
     {
@@ -102,7 +102,7 @@ namespace alpaka
                 typename TIdx2,
                 typename TKernelFnObj,
                 typename... TArgs>
-            friend class ::alpaka::exec::ExecCpuOmp4;
+            friend class ::alpaka::kernel::TaskKernelCpuOmp4;
 
         private:
             //-----------------------------------------------------------------------------
@@ -253,7 +253,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator executor type trait specialization.
+            //! The CPU OpenMP 4.0 accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -272,7 +272,7 @@ namespace alpaka
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                -> exec::ExecCpuOmp4<
+                -> kernel::TaskKernelCpuOmp4<
                     TDim,
                     TIdx,
                     TKernelFnObj,
@@ -280,7 +280,7 @@ namespace alpaka
 #endif
                 {
                     return
-                        exec::ExecCpuOmp4<
+                        kernel::TaskKernelCpuOmp4<
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -297,7 +297,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 executor platform type trait specialization.
+            //! The CPU OpenMP 4.0 execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>

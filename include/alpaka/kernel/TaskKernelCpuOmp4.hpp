@@ -21,7 +21,11 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+
+#if _OPENMP < 201307
+    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#endif
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
@@ -31,14 +35,17 @@
 #include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/acc/AccCpuSerial.hpp>
-#include <alpaka/core/Unused.hpp>
+#include <alpaka/acc/AccCpuOmp4.hpp>
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/idx/MapIdx.hpp>
 #include <alpaka/kernel/Traits.hpp>
-#include <alpaka/meta/NdLoop.hpp>
-#include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 
+#include <alpaka/meta/ApplyTuple.hpp>
+
+#include <omp.h>
+
+#include <stdexcept>
 #include <tuple>
 #include <type_traits>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -47,23 +54,23 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         //#############################################################################
-        //! The CPU serial executor implementation.
+        //! The CPU OpenMP 4.0 accelerator execution task.
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuSerial final :
+        class TaskKernelCpuOmp4 final :
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         public:
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST ExecCpuSerial(
+            ALPAKA_FN_HOST TaskKernelCpuOmp4(
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) :
@@ -73,18 +80,18 @@ namespace alpaka
             {
                 static_assert(
                     dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
-                    "The work division and the executor have to be of the same dimensionality!");
+                    "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            ExecCpuSerial(ExecCpuSerial const &) = default;
+            TaskKernelCpuOmp4(TaskKernelCpuOmp4 const & other) = default;
             //-----------------------------------------------------------------------------
-            ExecCpuSerial(ExecCpuSerial &&) = default;
+            TaskKernelCpuOmp4(TaskKernelCpuOmp4 && other) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = default;
+            auto operator=(TaskKernelCpuOmp4 const &) -> TaskKernelCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuSerial &&) -> ExecCpuSerial & = default;
+            auto operator=(TaskKernelCpuOmp4 &&) -> TaskKernelCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
-            ~ExecCpuSerial() = default;
+            ~TaskKernelCpuOmp4() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
@@ -107,7 +114,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuSerial<TDim, TIdx>>(
+                                    acc::AccCpuOmp4<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -133,28 +140,90 @@ namespace alpaka
                         },
                         m_args));
 
-                acc::AccCpuSerial<TDim, TIdx> acc(
-                    *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
-                    blockSharedMemDynSizeBytes);
+                // The number of blocks in the grid.
+                TIdx const gridBlockCount(gridBlockExtent.prod());
+                // The number of threads in a block.
+                TIdx const blockThreadCount(blockThreadExtent.prod());
 
-                if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
+                // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
+                auto const maxOmpThreadCount(::omp_get_max_threads());
+                auto const maxTeamCount(maxOmpThreadCount/static_cast<int>(blockThreadCount));
+                auto const teamCount(std::min(maxTeamCount, static_cast<int>(gridBlockCount)));
+
+                if(::omp_in_parallel() != 0)
                 {
-                    throw std::runtime_error("A block for the serial accelerator can only ever have one single thread!");
+                    throw std::runtime_error("The OpenMP 4.0 backend can not be used within an existing parallel region!");
                 }
 
-                // Execute the blocks serially.
-                meta::ndLoopIncIdx(
-                    gridBlockExtent,
-                    [&](vec::Vec<TDim, TIdx> const & blockThreadIdx)
+                // Force the environment to use the given number of threads.
+                int const ompIsDynamic(::omp_get_dynamic());
+                ::omp_set_dynamic(0);
+
+                // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
+                #pragma omp target if(0)
+                {
+                    #pragma omp teams num_teams(teamCount) thread_limit(blockThreadCount)
                     {
-                        acc.m_gridBlockIdx = blockThreadIdx;
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                        // The first team does some checks ...
+                        if((::omp_get_team_num() == 0))
+                        {
+                            int const iNumTeams(::omp_get_num_teams());
+                            printf("%s omp_get_num_teams: %d\n", BOOST_CURRENT_FUNCTION, iNumTeams);
+                        }
+#endif
+                        acc::AccCpuOmp4<TDim, TIdx> acc(
+                            *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
+                            blockSharedMemDynSizeBytes);
 
-                        boundKernelFnObj(
-                            acc);
+                        #pragma omp distribute
+                        for(TIdx b = 0u; b<gridBlockCount; ++b)
+                        {
+                            vec::Vec<dim::DimInt<1u>, TIdx> const gridBlockIdx(b);
+                            // When this is not repeated here:
+                            // error: gridBlockExtent referenced in target region does not have a mappable type
+                            auto const gridBlockExtent2(
+                                workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this)));
+                            acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(
+                                gridBlockIdx,
+                                gridBlockExtent2);
 
-                        // After a block has been processed, the shared memory has to be deleted.
-                        block::shared::st::freeMem(acc);
-                    });
+                            // Execute the threads in parallel.
+
+                            // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                            // So we have to spawn one OS thread per thread in a block.
+                            // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                            // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                            #pragma omp parallel num_threads(blockThreadCount)
+                            {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                                // The first thread does some checks in the first block executed.
+                                if((::omp_get_thread_num() == 0) && (b == 0))
+                                {
+                                    int const numThreads(::omp_get_num_threads());
+                                    printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, numThreads);
+                                    if(numThreads != static_cast<int>(blockThreadCount))
+                                    {
+                                        throw std::runtime_error("ERROR: The OpenMP runtime did not use the number of threads that had been required!");
+                                    }
+                                }
+#endif
+                                boundKernelFnObj(
+                                    acc);
+
+                                // Wait for all threads to finish before deleting the shared memory.
+                                // This is done by default if the omp 'nowait' clause is missing
+                                //block::sync::syncBlockThreads(acc);
+                            }
+
+                            // After a block has been processed, the shared memory has to be deleted.
+                            block::shared::st::freeMem(acc);
+                        }
+                    }
+                }
+
+                // Reset the dynamic thread number setting.
+                ::omp_set_dynamic(ompIsDynamic);
             }
 
         private:
@@ -168,16 +237,16 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU serial executor accelerator type trait specialization.
+            //! The CPU OpenMP 4.0 execution task accelerator type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct AccType<
-                exec::ExecCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = acc::AccCpuSerial<TDim, TIdx>;
+                using type = acc::AccCpuOmp4<TDim, TIdx>;
             };
         }
     }
@@ -186,14 +255,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU serial executor device type trait specialization.
+            //! The CPU OpenMP 4.0 execution task device type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DevType<
-                exec::ExecCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevCpu;
             };
@@ -204,14 +273,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU serial executor dimension getter trait specialization.
+            //! The CPU OpenMP 4.0 execution task dimension getter trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DimType<
-                exec::ExecCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
             };
@@ -222,14 +291,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU serial executor platform type trait specialization.
+            //! The CPU OpenMP 4.0 execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct PltfType<
-                exec::ExecCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = pltf::PltfCpu;
             };
@@ -240,14 +309,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU serial executor idx type trait specialization.
+            //! The CPU OpenMP 4.0 execution task idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct IdxType<
-                exec::ExecCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TIdx;
             };

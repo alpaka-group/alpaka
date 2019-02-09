@@ -309,7 +309,7 @@ namespace alpaka
                 //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
                 //!
                 //! \param concurrentExecutionCount
-                //!    The guaranteed number of concurrent executors used in the pool.
+                //!    The guaranteed number of concurrent executor used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
                 ConcurrentExecPool(
                     TIdx concurrentExecutionCount) :
@@ -483,7 +483,7 @@ namespace alpaka
             //#############################################################################
             //! ConcurrentExecPool using a condition variable to wait for new work.
             //!
-            //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).
+            //! \tparam TConcurrentExec The type of concurrent executors (for example std::thread).
             //! \tparam TPromise The promise type returned by the task.
             //! \tparam TYield Unused. The type is required to have a static method "void yield()" to yield the current thread if there is no work.
             //! \tparam TMutex The mutex type used for locking threads.
@@ -506,10 +506,10 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
+                //! Creates a concurrent executors pool with a specific number of concurrent executorss and a maximum number of queued tasks.
                 //!
                 //! \param concurrentExecutionCount
-                //!    The guaranteed number of concurrent executors used in the pool.
+                //!    The guaranteed number of concurrent executorss used in the pool.
                 //!    This is also the maximum number of tasks worked on concurrently.
                 ConcurrentExecPool(
                     TIdx concurrentExecutionCount) :
@@ -527,7 +527,7 @@ namespace alpaka
 
                     m_vConcurrentExecs.reserve(static_cast<std::size_t>(concurrentExecutionCount));
 
-                    // Create all concurrent executors.
+                    // Create all concurrent executorss.
                     for(TIdx concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
                         m_vConcurrentExecs.emplace_back([this](){concurrentExecFn();});
@@ -550,7 +550,7 @@ namespace alpaka
                     {
                         std::unique_lock<TMutex> lock(m_mtxWakeup);
 
-                        // Signal that concurrent executors should not perform any new work
+                        // Signal that concurrent executorss should not perform any new work
                         m_bShutdownFlag = true;
                     }
 
@@ -628,7 +628,7 @@ namespace alpaka
                     return future;
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The number of concurrent executors available.
+                //! \return The number of concurrent executorss available.
                 auto getConcurrentExecutionCount() const
                 -> TIdx
                 {
@@ -644,7 +644,7 @@ namespace alpaka
 
             private:
                 //-----------------------------------------------------------------------------
-                //! The function the concurrent executors are executing.
+                //! The function the concurrent executorss are executing.
                 void concurrentExecFn()
                 {
                     // Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).
@@ -674,7 +674,7 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Joins all concurrent executors.
+                //! Joins all concurrent executorss.
                 void joinAllConcurrentExecs()
                 {
                     for(auto && concurrentExec : m_vConcurrentExecs)

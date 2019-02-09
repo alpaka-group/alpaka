@@ -144,7 +144,7 @@ then
     # NOTE: Currently we can not enable this for CI as this finds some 'use-of-uninitialized-value' inside:
     #   - boost`s smart pointers used by the unit test framework
     #   - alpaka/test/integ/mandelbrot/src/main.cpp:450:9 std::replace
-    #   - alpaka/include/alpaka/exec/ExecCpuThreads.hpp:307:21 used alpaka/include/alpaka/idx/bt/IdxBtRefThreadIdMap.hpp:130:44
+    #   - alpaka/include/alpaka/kernel/TaskKernelCpuThreads.hpp:307:21 used alpaka/include/alpaka/idx/bt/IdxBtRefThreadIdMap.hpp:130:44
     if [[ "${ALPAKA_CI_SANITIZERS}" == *"MSan"* ]]
     then
         if ( [[ "${ALPAKA_CI_SANITIZERS}" == *"ASan"* ]] || [[ "${ALPAKA_CI_SANITIZERS}" == *"TSan"* ]] )

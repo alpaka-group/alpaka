@@ -55,14 +55,14 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuThreads;
+        class TaskKernelCpuThreads;
     }
     namespace acc
     {
@@ -97,7 +97,7 @@ namespace alpaka
                 typename TIdx2,
                 typename TKernelFnObj,
                 typename... TArgs>
-            friend class ::alpaka::exec::ExecCpuThreads;
+            friend class ::alpaka::kernel::TaskKernelCpuThreads;
 
         private:
             //-----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads accelerator executor type trait specialization.
+            //! The CPU threads accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -275,7 +275,7 @@ namespace alpaka
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                -> exec::ExecCpuThreads<
+                -> kernel::TaskKernelCpuThreads<
                     TDim,
                     TIdx,
                     TKernelFnObj,
@@ -283,7 +283,7 @@ namespace alpaka
 #endif
                 {
                     return
-                        exec::ExecCpuThreads<
+                        kernel::TaskKernelCpuThreads<
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -300,7 +300,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads executor platform type trait specialization.
+            //! The CPU threads execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>

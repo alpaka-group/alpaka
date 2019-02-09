@@ -21,10 +21,10 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
 
-#if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#if _OPENMP < 200203
+    #error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #endif
 
 // Specialized traits.
@@ -35,13 +35,13 @@
 #include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/acc/AccCpuOmp4.hpp>
+#include <alpaka/acc/AccCpuOmp2Threads.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/idx/MapIdx.hpp>
 #include <alpaka/kernel/Traits.hpp>
-#include <alpaka/workdiv/WorkDivMembers.hpp>
-
+#include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #include <omp.h>
 
@@ -54,23 +54,23 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         //#############################################################################
-        //! The CPU OpenMP 4.0 accelerator executor.
+        //! The CPU OpenMP 2.0 thread accelerator execution task.
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuOmp4 final :
+        class TaskKernelCpuOmp2Threads final :
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         public:
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST ExecCpuOmp4(
+            ALPAKA_FN_HOST TaskKernelCpuOmp2Threads(
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) :
@@ -80,18 +80,18 @@ namespace alpaka
             {
                 static_assert(
                     dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
-                    "The work division and the executor have to be of the same dimensionality!");
+                    "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
+            TaskKernelCpuOmp2Threads(TaskKernelCpuOmp2Threads const &) = default;
             //-----------------------------------------------------------------------------
-            ExecCpuOmp4(ExecCpuOmp4 && other) = default;
+            TaskKernelCpuOmp2Threads(TaskKernelCpuOmp2Threads &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
+            auto operator=(TaskKernelCpuOmp2Threads const &) -> TaskKernelCpuOmp2Threads & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
+            auto operator=(TaskKernelCpuOmp2Threads &&) -> TaskKernelCpuOmp2Threads & = default;
             //-----------------------------------------------------------------------------
-            ~ExecCpuOmp4() = default;
+            ~TaskKernelCpuOmp2Threads() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
@@ -114,7 +114,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuOmp4<TDim, TIdx>>(
+                                    acc::AccCpuOmp2Threads<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -140,87 +140,74 @@ namespace alpaka
                         },
                         m_args));
 
-                // The number of blocks in the grid.
-                TIdx const gridBlockCount(gridBlockExtent.prod());
-                // The number of threads in a block.
-                TIdx const blockThreadCount(blockThreadExtent.prod());
+                acc::AccCpuOmp2Threads<TDim, TIdx> acc(
+                    *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
+                    blockSharedMemDynSizeBytes);
 
-                // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
-                auto const maxOmpThreadCount(::omp_get_max_threads());
-                auto const maxTeamCount(maxOmpThreadCount/static_cast<int>(blockThreadCount));
-                auto const teamCount(std::min(maxTeamCount, static_cast<int>(gridBlockCount)));
+                // The number of threads in this block.
+                TIdx const blockThreadCount(blockThreadExtent.prod());
+                int const iBlockThreadCount(static_cast<int>(blockThreadCount));
+                alpaka::ignore_unused(iBlockThreadCount);
 
                 if(::omp_in_parallel() != 0)
                 {
-                    throw std::runtime_error("The OpenMP 4.0 backend can not be used within an existing parallel region!");
+                    throw std::runtime_error("The OpenMP 2.0 thread backend can not be used within an existing parallel region!");
                 }
 
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
                 ::omp_set_dynamic(0);
 
-                // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
-                #pragma omp target if(0)
-                {
-                    #pragma omp teams num_teams(teamCount) thread_limit(blockThreadCount)
+                // Execute the blocks serially.
+                meta::ndLoopIncIdx(
+                    gridBlockExtent,
+                    [&](vec::Vec<TDim, TIdx> const & gridBlockIdx)
                     {
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                        // The first team does some checks ...
-                        if((::omp_get_team_num() == 0))
+                        acc.m_gridBlockIdx = gridBlockIdx;
+
+                        // Execute the threads in parallel.
+
+                        // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                        // So we have to spawn one OS thread per thread in a block.
+                        // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                        // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                        #pragma omp parallel num_threads(iBlockThreadCount)
                         {
-                            int const iNumTeams(::omp_get_num_teams());
-                            printf("%s omp_get_num_teams: %d\n", BOOST_CURRENT_FUNCTION, iNumTeams);
-                        }
-#endif
-                        acc::AccCpuOmp4<TDim, TIdx> acc(
-                            *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
-                            blockSharedMemDynSizeBytes);
-
-                        #pragma omp distribute
-                        for(TIdx b = 0u; b<gridBlockCount; ++b)
-                        {
-                            vec::Vec<dim::DimInt<1u>, TIdx> const gridBlockIdx(b);
-                            // When this is not repeated here:
-                            // error: gridBlockExtent referenced in target region does not have a mappable type
-                            auto const gridBlockExtent2(
-                                workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this)));
-                            acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(
-                                gridBlockIdx,
-                                gridBlockExtent2);
-
-                            // Execute the threads in parallel.
-
-                            // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
-                            // So we have to spawn one OS thread per thread in a block.
-                            // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
-                            // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                            #pragma omp parallel num_threads(blockThreadCount)
+                            #pragma omp single nowait
                             {
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                                // The first thread does some checks in the first block executed.
-                                if((::omp_get_thread_num() == 0) && (b == 0))
+                                // The OpenMP runtime does not create a parallel region when only one thread is required in the num_threads clause.
+                                // In all other cases we expect to be in a parallel region now.
+                                if((iBlockThreadCount > 1) && (::omp_in_parallel() == 0))
                                 {
-                                    int const numThreads(::omp_get_num_threads());
-                                    printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, numThreads);
-                                    if(numThreads != static_cast<int>(blockThreadCount))
-                                    {
-                                        throw std::runtime_error("ERROR: The OpenMP runtime did not use the number of threads that had been required!");
-                                    }
+                                    throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
+                                }
+
+                                // GCC 5.1 fails with:
+                                // error: redeclaration of const int& iBlockThreadCount
+                                // if(numThreads != iBlockThreadCount)
+                                //                  ^
+                                // note: const int& iBlockThreadCount previously declared here
+                                // #pragma omp parallel num_threads(iBlockThreadCount)
+                                //         ^
+#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0)) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0))
+                                int const numThreads(::omp_get_num_threads());
+                                if(numThreads != iBlockThreadCount)
+                                {
+                                    throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
                                 }
 #endif
-                                boundKernelFnObj(
-                                    acc);
-
-                                // Wait for all threads to finish before deleting the shared memory.
-                                // This is done by default if the omp 'nowait' clause is missing
-                                //block::sync::syncBlockThreads(acc);
                             }
+                            boundKernelFnObj(
+                                acc);
 
-                            // After a block has been processed, the shared memory has to be deleted.
-                            block::shared::st::freeMem(acc);
+                            // Wait for all threads to finish before deleting the shared memory.
+                            // This is done by default if the omp 'nowait' clause is missing on the omp parallel directive
+                            //block::sync::syncBlockThreads(acc);
                         }
-                    }
-                }
+
+                        // After a block has been processed, the shared memory has to be deleted.
+                        block::shared::st::freeMem(acc);
+                    });
 
                 // Reset the dynamic thread number setting.
                 ::omp_set_dynamic(ompIsDynamic);
@@ -237,16 +224,16 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 executor accelerator type trait specialization.
+            //! The CPU OpenMP 2.0 block thread execution task accelerator type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct AccType<
-                exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = acc::AccCpuOmp4<TDim, TIdx>;
+                using type = acc::AccCpuOmp2Threads<TDim, TIdx>;
             };
         }
     }
@@ -255,14 +242,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 executor device type trait specialization.
+            //! The CPU OpenMP 2.0 block thread execution task device type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DevType<
-                exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevCpu;
             };
@@ -273,14 +260,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 executor dimension getter trait specialization.
+            //! The CPU OpenMP 2.0 block thread execution task dimension getter trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DimType<
-                exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
             };
@@ -291,14 +278,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 executor platform type trait specialization.
+            //! The CPU OpenMP 2.0 block thread execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct PltfType<
-                exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = pltf::PltfCpu;
             };
@@ -309,14 +296,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 executor idx type trait specialization.
+            //! The CPU OpenMP 2.0 block thread execution task idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct IdxType<
-                exec::ExecCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TIdx;
             };

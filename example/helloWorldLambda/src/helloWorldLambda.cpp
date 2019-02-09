@@ -64,7 +64,7 @@ void ALPAKA_FN_ACC hiWorldFunction(
 auto main()
 -> int
 {
-// This example is hard-coded to use the sequential executor.
+// This example is hard-coded to use the sequential backend.
 #if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
 
     // Define the index domain

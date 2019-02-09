@@ -53,14 +53,14 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuTbbBlocks;
+        class TaskKernelCpuTbbBlocks;
     }
     namespace acc
     {
@@ -93,7 +93,7 @@ namespace alpaka
                 typename TIdx2,
                 typename TKernelFnObj,
                 typename... TArgs>
-            friend class ::alpaka::exec::ExecCpuTbbBlocks;
+            friend class ::alpaka::kernel::TaskKernelCpuTbbBlocks;
 
         private:
             //-----------------------------------------------------------------------------
@@ -238,7 +238,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU TBB block accelerator executor type trait specialization.
+            //! The CPU TBB block accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -257,7 +257,7 @@ namespace alpaka
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                -> exec::ExecCpuTbbBlocks<
+                -> kernel::TaskKernelCpuTbbBlocks<
                     TDim,
                     TIdx,
                     TKernelFnObj,
@@ -265,7 +265,7 @@ namespace alpaka
 #endif
                 {
                     return
-                        exec::ExecCpuTbbBlocks<
+                        kernel::TaskKernelCpuTbbBlocks<
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -282,7 +282,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU TBB block executor platform type trait specialization.
+            //! The CPU TBB block execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>

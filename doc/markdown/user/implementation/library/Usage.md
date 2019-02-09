@@ -26,7 +26,7 @@ ALPAKA_FN_ACC auto doSomethingOnAccelerator(
 Kernel Definition
 -----------------
 
-There is no difference between the kernel entry point function and any other accelerator function in *alpaka* except that the kernel entry point is required to be a function object which has to have the accelerator as first argument.
+There is no difference between the kernel entry point function and any other accelerator function in *alpaka* except that it has to return void and the kernel entry point is required to be a function object which has to have the accelerator as first argument.
 This means, the kernel is an object that has implemented the `operator()` member function and can be called like any other function.
 The following code snippet shows a basic example kernel function object.
 
