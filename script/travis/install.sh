@@ -48,11 +48,6 @@ then
     if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/travis/install_hip.sh ;fi
 fi
 
-if [ "$TRAVIS_OS_NAME" = "osx" ]
-then
-    brew install tbb
-fi
-
 if [ "${ALPAKA_CI_INSTALL_TBB}" = "ON" ]
 then
     ./script/travis/install_tbb.sh
