@@ -203,8 +203,8 @@ void operator()()
     auto blockRetValsAcc(alpaka::mem::buf::alloc<Val, Idx>(devAcc, resultElemCount));
     alpaka::mem::view::copy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
-    // Create the executor task.
-    auto const exec(alpaka::kernel::createTaskExec<TAcc>(
+    // Create the kernel execution task.
+    auto const taskKernel(alpaka::kernel::createTaskKernel<TAcc>(
         workDiv,
         kernel,
         alpaka::mem::view::getPtrNative(blockRetValsAcc)));
@@ -213,7 +213,7 @@ void operator()()
     std::cout << "Execution time: "
         << alpaka::test::integ::measureTaskRunTimeMs(
             queue,
-            exec)
+            taskKernel)
         << " ms"
         << std::endl;
 

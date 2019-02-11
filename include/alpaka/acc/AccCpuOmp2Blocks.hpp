@@ -252,14 +252,14 @@ namespace alpaka
                 typename TWorkDiv,
                 typename TKernelFnObj,
                 typename... TArgs>
-            struct CreateTaskExec<
+            struct CreateTaskKernel<
                 acc::AccCpuOmp2Blocks<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto createTaskExec(
+                ALPAKA_FN_HOST static auto createTaskKernel(
                     TWorkDiv const & workDiv,
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
