@@ -27,11 +27,11 @@ Kernel Definition
 -----------------
 
 A kernel is a special function object which has to conform to the following requirements:
-* it has to fulfill the std::is_trivially_copyable trait (has to be copyable via memcpy)
+* it has to fulfill the `std::is_trivially_copyable` trait (has to be copyable via memcpy)
 * the `operator()` is the kernel entry point
   * it has to be an accelerator executable function
-  * it has to return void.
-  * it's first argument has to be the accelerator (templated for arbitrary accelerator backends).
+  * it has to return `void`.
+  * its first argument has to be the accelerator (templated for arbitrary accelerator backends).
 
 The following code snippet shows a basic example of a kernel function object.
 
