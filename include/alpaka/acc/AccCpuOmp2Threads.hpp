@@ -60,14 +60,14 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuOmp2Threads;
+        class TaskKernelCpuOmp2Threads;
     }
     namespace acc
     {
@@ -102,7 +102,7 @@ namespace alpaka
                 typename TIdx2,
                 typename TKernelFnObj,
                 typename... TArgs>
-            friend class ::alpaka::exec::ExecCpuOmp2Threads;
+            friend class ::alpaka::kernel::TaskKernelCpuOmp2Threads;
 
         private:
             //-----------------------------------------------------------------------------
@@ -253,7 +253,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 thread accelerator executor type trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -272,7 +272,7 @@ namespace alpaka
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                -> exec::ExecCpuOmp2Threads<
+                -> kernel::TaskKernelCpuOmp2Threads<
                     TDim,
                     TIdx,
                     TKernelFnObj,
@@ -280,7 +280,7 @@ namespace alpaka
 #endif
                 {
                     return
-                        exec::ExecCpuOmp2Threads<
+                        kernel::TaskKernelCpuOmp2Threads<
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -297,7 +297,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 thread executor platform type trait specialization.
+            //! The CPU OpenMP 2.0 thread execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>

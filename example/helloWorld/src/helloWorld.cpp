@@ -74,7 +74,7 @@ struct HelloWorldKernel
 auto main()
 -> int
 {
-// This example is hard-coded to use the sequential executor.
+// This example is hard-coded to use the sequential backend.
 #if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
 
     // Define the index domain
@@ -130,8 +130,8 @@ auto main()
     //
     // A queue can be interpreted as the work queue
     // of a particular device. Queues are filled with
-    // executors and alpaka takes care that these
-    // executors will be executed. Queues are provided in
+    // tasks and alpaka takes care that these
+    // tasks will be executed. Queues are provided in
     // async and sync variants.
     // The example queue is a sync queue to a cpu device,
     // but it also exists an async queue for this
@@ -143,7 +143,7 @@ auto main()
     // A kernel is executed for each element of a
     // n-dimensional grid distinguished by the element indices.
     // The work division defines the number of kernel instantiations as
-    // well as the type of parallelism used by the executor.
+    // well as the type of parallelism used by the kernel execution task.
     // Different accelerators have different requirements on the work
     // division. For example, the sequential accelerator can not
     // provide any thread level parallelism (synchronizable as well as non synchronizable),

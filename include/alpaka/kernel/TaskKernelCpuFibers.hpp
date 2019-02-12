@@ -52,16 +52,16 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         //#############################################################################
-        //! The CPU fibers accelerator executor.
+        //! The CPU fibers accelerator execution task.
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuFibers final :
+        class TaskKernelCpuFibers final :
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         private:
@@ -93,7 +93,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST ExecCpuFibers(
+            ALPAKA_FN_HOST TaskKernelCpuFibers(
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) :
@@ -103,18 +103,18 @@ namespace alpaka
             {
                 static_assert(
                     dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
-                    "The work division and the executor have to be of the same dimensionality!");
+                    "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            ExecCpuFibers(ExecCpuFibers const &) = default;
+            TaskKernelCpuFibers(TaskKernelCpuFibers const &) = default;
             //-----------------------------------------------------------------------------
-            ExecCpuFibers(ExecCpuFibers &&) = default;
+            TaskKernelCpuFibers(TaskKernelCpuFibers &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuFibers const &) -> ExecCpuFibers & = default;
+            auto operator=(TaskKernelCpuFibers const &) -> TaskKernelCpuFibers & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuFibers &&) -> ExecCpuFibers & = default;
+            auto operator=(TaskKernelCpuFibers &&) -> TaskKernelCpuFibers & = default;
             //-----------------------------------------------------------------------------
-            ~ExecCpuFibers() = default;
+            ~TaskKernelCpuFibers() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
@@ -168,7 +168,7 @@ namespace alpaka
                             // Bind the kernel and its arguments to the grid block function.
                             return
                                 std::bind(
-                                    &ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>::gridBlockExecHost,
+                                    &TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>::gridBlockExecHost,
                                     std::ref(acc),
                                     std::placeholders::_1,
                                     std::ref(blockThreadExtent),
@@ -204,7 +204,7 @@ namespace alpaka
 
                 // Bind the kernel and its arguments to the host block thread execution function.
                 auto boundBlockThreadExecHost(std::bind(
-                    &ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>::blockThreadExecHost,
+                    &TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>::blockThreadExecHost,
                     std::ref(acc),
                     std::ref(futuresInBlock),
                     std::placeholders::_1,
@@ -314,14 +314,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers executor accelerator type trait specialization.
+            //! The CPU fibers execution task accelerator type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct AccType<
-                exec::ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = acc::AccCpuFibers<TDim, TIdx>;
             };
@@ -332,14 +332,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers executor device type trait specialization.
+            //! The CPU fibers execution task device type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DevType<
-                exec::ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevCpu;
             };
@@ -350,14 +350,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers executor dimension getter trait specialization.
+            //! The CPU fibers execution task dimension getter trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DimType<
-                exec::ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
             };
@@ -368,14 +368,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers executor platform type trait specialization.
+            //! The CPU fibers execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct PltfType<
-                exec::ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = pltf::PltfCpu;
             };
@@ -386,14 +386,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers executor idx type trait specialization.
+            //! The CPU fibers execution task idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct IdxType<
-                exec::ExecCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TIdx;
             };

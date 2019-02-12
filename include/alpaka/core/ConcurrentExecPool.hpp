@@ -506,7 +506,7 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
+                //! Creates a concurrent executors pool with a specific number of concurrent executors and a maximum number of queued tasks.
                 //!
                 //! \param concurrentExecutionCount
                 //!    The guaranteed number of concurrent executors used in the pool.

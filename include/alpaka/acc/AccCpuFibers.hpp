@@ -56,14 +56,14 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuFibers;
+        class TaskKernelCpuFibers;
     }
     namespace acc
     {
@@ -100,7 +100,7 @@ namespace alpaka
                 typename TIdx2,
                 typename TKernelFnObj,
                 typename... TArgs>
-            friend class ::alpaka::exec::ExecCpuFibers;
+            friend class ::alpaka::kernel::TaskKernelCpuFibers;
 
         private:
             //-----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers accelerator executor type trait specialization.
+            //! The CPU fibers accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -275,7 +275,7 @@ namespace alpaka
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                -> exec::ExecCpuFibers<
+                -> kernel::TaskKernelCpuFibers<
                     TDim,
                     TIdx,
                     TKernelFnObj,
@@ -283,7 +283,7 @@ namespace alpaka
 #endif
                 {
                     return
-                        exec::ExecCpuFibers<
+                        kernel::TaskKernelCpuFibers<
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -300,7 +300,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU fibers executor platform type trait specialization.
+            //! The CPU fibers execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>

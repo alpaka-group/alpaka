@@ -53,23 +53,23 @@
 
 namespace alpaka
 {
-    namespace exec
+    namespace kernel
     {
         //#############################################################################
-        //! The CPU TBB block accelerator executor.
+        //! The CPU TBB block accelerator execution task.
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class ExecCpuTbbBlocks final :
+        class TaskKernelCpuTbbBlocks final :
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         public:
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST ExecCpuTbbBlocks(
+            ALPAKA_FN_HOST TaskKernelCpuTbbBlocks(
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) :
@@ -79,18 +79,18 @@ namespace alpaka
             {
                 static_assert(
                     dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
-                    "The work division and the executor have to be of the same dimensionality!");
+                    "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            ExecCpuTbbBlocks(ExecCpuTbbBlocks const &) = default;
+            TaskKernelCpuTbbBlocks(TaskKernelCpuTbbBlocks const &) = default;
             //-----------------------------------------------------------------------------
-            ExecCpuTbbBlocks(ExecCpuTbbBlocks &&) = default;
+            TaskKernelCpuTbbBlocks(TaskKernelCpuTbbBlocks &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuTbbBlocks const &) -> ExecCpuTbbBlocks & = default;
+            auto operator=(TaskKernelCpuTbbBlocks const &) -> TaskKernelCpuTbbBlocks & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(ExecCpuTbbBlocks &&) -> ExecCpuTbbBlocks & = default;
+            auto operator=(TaskKernelCpuTbbBlocks &&) -> TaskKernelCpuTbbBlocks & = default;
             //-----------------------------------------------------------------------------
-            ~ExecCpuTbbBlocks() = default;
+            ~TaskKernelCpuTbbBlocks() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
@@ -181,14 +181,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU TBB block executor accelerator type trait specialization.
+            //! The CPU TBB block execution task accelerator type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct AccType<
-                exec::ExecCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = acc::AccCpuTbbBlocks<TDim, TIdx>;
             };
@@ -199,14 +199,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU TBB block executor device type trait specialization.
+            //! The CPU TBB block execution task device type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DevType<
-                exec::ExecCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevCpu;
             };
@@ -217,14 +217,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU TBB block executor dimension getter trait specialization.
+            //! The CPU TBB block execution task dimension getter trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DimType<
-                exec::ExecCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
             };
@@ -235,14 +235,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU TBB block executor platform type trait specialization.
+            //! The CPU TBB block execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct PltfType<
-                exec::ExecCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = pltf::PltfCpu;
             };
@@ -253,14 +253,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU TBB block executor idx type trait specialization.
+            //! The CPU TBB block execution task idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct IdxType<
-                exec::ExecCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TIdx;
             };

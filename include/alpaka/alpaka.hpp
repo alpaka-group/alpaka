@@ -113,17 +113,6 @@
 #include <alpaka/event/EventCpu.hpp>
 #include <alpaka/event/Traits.hpp>
 //-----------------------------------------------------------------------------
-// exec
-#include <alpaka/exec/ExecCpuSerial.hpp>
-#include <alpaka/exec/ExecCpuThreads.hpp>
-#include <alpaka/exec/ExecCpuFibers.hpp>
-#include <alpaka/exec/ExecCpuTbbBlocks.hpp>
-#include <alpaka/exec/ExecCpuOmp2Blocks.hpp>
-#include <alpaka/exec/ExecCpuOmp2Threads.hpp>
-#include <alpaka/exec/ExecCpuOmp4.hpp>
-#include <alpaka/exec/ExecGpuCudaRt.hpp>
-#include <alpaka/exec/ExecGpuHipRt.hpp>
-//-----------------------------------------------------------------------------
 // extent
 #include <alpaka/extent/Traits.hpp>
 //-----------------------------------------------------------------------------
@@ -141,6 +130,15 @@
 #include <alpaka/idx/MapIdx.hpp>
 //-----------------------------------------------------------------------------
 // kernel
+#include <alpaka/kernel/TaskKernelCpuSerial.hpp>
+#include <alpaka/kernel/TaskKernelCpuThreads.hpp>
+#include <alpaka/kernel/TaskKernelCpuFibers.hpp>
+#include <alpaka/kernel/TaskKernelCpuTbbBlocks.hpp>
+#include <alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp>
+#include <alpaka/kernel/TaskKernelCpuOmp2Threads.hpp>
+#include <alpaka/kernel/TaskKernelCpuOmp4.hpp>
+#include <alpaka/kernel/TaskKernelGpuCudaRt.hpp>
+#include <alpaka/kernel/TaskKernelGpuHipRt.hpp>
 #include <alpaka/kernel/Traits.hpp>
 //-----------------------------------------------------------------------------
 // math
