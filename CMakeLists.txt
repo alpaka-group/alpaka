@@ -26,6 +26,16 @@ cmake_minimum_required(VERSION 3.7.0)
 project("alpakaAll")
 
 ################################################################################
+# CMake policies
+#
+# Search in <PackageName>_ROOT:
+#   https://cmake.org/cmake/help/v3.12/policy/CMP0074.html
+
+if(POLICY CMP0074)
+    cmake_policy(SET CMP0074 NEW)
+endif()
+
+################################################################################
 # Options and Variants
 
 option(alpaka_BUILD_EXAMPLES "Build the examples" ON)
