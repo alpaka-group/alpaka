@@ -20,6 +20,12 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0)
 
+# Search in <PackageName>_ROOT:
+# https://cmake.org/cmake/help/v3.12/policy/CMP0074.html
+if(POLICY CMP0074)
+    cmake_policy(SET CMP0074 NEW)
+endif()
+
 SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../" CACHE STRING "The location of the alpaka library")
 LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE(alpaka REQUIRED)
