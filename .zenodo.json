@@ -38,7 +38,7 @@
     "heterogeneous computing",
     "performance portability"
   ],
-  "license": "LGPL-3.0",
+  "license": "MPL-2.0",
   "upload_type": "software",
   "grants": [
     {

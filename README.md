@@ -4,7 +4,7 @@
 [![Travis CI Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 [![Language](https://img.shields.io/badge/language-C%2B%2B11-orange.svg)](https://isocpp.org/)
 [![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20mac-lightgrey.svg)](https://github.com/ComputationalRadiationPhysics/alpaka)
-[![License](https://img.shields.io/badge/license-LGPLv3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.de.html)
+[![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
 
 ![Alpaka](doc/images/alpaka_401x135.png)
 
@@ -34,7 +34,7 @@ By using this abstraction the execution can be optimally adapted to the availabl
 Software License
 ----------------
 
-**alpaka** is licensed under **LGPLv3** or later.
+**alpaka** is licensed under **MPL-2.0**.
 
 
 Documentation
