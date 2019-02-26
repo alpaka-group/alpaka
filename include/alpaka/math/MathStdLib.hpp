@@ -30,6 +30,7 @@
 #include <alpaka/math/round/RoundStdLib.hpp>
 #include <alpaka/math/rsqrt/RsqrtStdLib.hpp>
 #include <alpaka/math/sin/SinStdLib.hpp>
+#include <alpaka/math/sincos/SinCosStdLib.hpp>
 #include <alpaka/math/sqrt/SqrtStdLib.hpp>
 #include <alpaka/math/tan/TanStdLib.hpp>
 #include <alpaka/math/trunc/TruncStdLib.hpp>
@@ -63,6 +64,7 @@ namespace alpaka
             public RoundStdLib,
             public RsqrtStdLib,
             public SinStdLib,
+            public SinCosStdLib,
             public SqrtStdLib,
             public TanStdLib,
             public TruncStdLib

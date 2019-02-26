@@ -38,6 +38,7 @@
 #include <alpaka/math/round/RoundHipBuiltIn.hpp>
 #include <alpaka/math/rsqrt/RsqrtHipBuiltIn.hpp>
 #include <alpaka/math/sin/SinHipBuiltIn.hpp>
+#include <alpaka/math/sincos/SinCosHipBuiltIn.hpp>
 #include <alpaka/math/sqrt/SqrtHipBuiltIn.hpp>
 #include <alpaka/math/tan/TanHipBuiltIn.hpp>
 #include <alpaka/math/trunc/TruncHipBuiltIn.hpp>
@@ -70,6 +71,7 @@ namespace alpaka
             public RemainderHipBuiltIn,
             public RoundHipBuiltIn,
             public RsqrtHipBuiltIn,
+            public SinCosHipBuiltIn,
             public SinHipBuiltIn,
             public SqrtHipBuiltIn,
             public TanHipBuiltIn,
