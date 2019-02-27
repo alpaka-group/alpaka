@@ -1,21 +1,11 @@
 #
 # Copyright 2014-2019 Benjamin Worpitz, Erik Zenker, Axel Huebl
 #
-# This file is part of alpaka.
+# This file is part of Alpaka.
 #
-# alpaka is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# alpaka is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with alpaka.
-# If not, see <http://www.gnu.org/licenses/>.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
 ################################################################################
@@ -958,7 +948,7 @@ SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_CMAKE} PROPERTIES HEADER_FILE_ONLY T
 append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/doc/markdown" "${_ALPAKA_ROOT_DIR}" "md" _ALPAKA_FILES_DOC)
 SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_DOC} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-SET(_ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/.gitignore" "${_ALPAKA_ROOT_DIR}/.travis.yml" "${_ALPAKA_ROOT_DIR}/.zenodo.json" "${_ALPAKA_ROOT_DIR}/COPYING" "${_ALPAKA_ROOT_DIR}/COPYING.LESSER" "${_ALPAKA_ROOT_DIR}/README.md")
+SET(_ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}/.gitignore" "${_ALPAKA_ROOT_DIR}/.travis.yml" "${_ALPAKA_ROOT_DIR}/.zenodo.json" "${_ALPAKA_ROOT_DIR}/LICENSE" "${_ALPAKA_ROOT_DIR}/README.md")
 SET_SOURCE_FILES_PROPERTIES(${_ALPAKA_FILES_OTHER} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 #-------------------------------------------------------------------------------
