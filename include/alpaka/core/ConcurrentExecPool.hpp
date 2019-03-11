@@ -339,7 +339,7 @@ namespace alpaka
 
                     joinAllConcurrentExecs();
 
-                    auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
+                    auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
 
                     // Signal to each incomplete task that it will not complete due to pool destruction.
                     while(popTask(currentTaskPackage))
@@ -426,7 +426,7 @@ namespace alpaka
                     // Checks whether pool is being destroyed, if so, stop running.
                     while(!m_bShutdownFlag.load(std::memory_order_relaxed))
                     {
-                        auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
+                        auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
 
                         // Use popTask so we only ever have one reference to the ITaskPkg
                         if(popTask(currentTaskPackage))
@@ -547,7 +547,7 @@ namespace alpaka
 
                     joinAllConcurrentExecs();
 
-                    auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
+                    auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
 
                     // Signal to each incomplete task that it will not complete due to pool destruction.
                     while(popTask(currentTaskPackage))
@@ -639,7 +639,7 @@ namespace alpaka
                     // Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).
                     while(!m_bShutdownFlag)
                     {
-                        auto currentTaskPackage(std::shared_ptr<ITaskPkg>{nullptr});
+                        auto currentTaskPackage = std::shared_ptr<ITaskPkg>{nullptr};
 
                         // Use popTask so we only ever have one reference to the ITaskPkg
                         if(popTask(currentTaskPackage))

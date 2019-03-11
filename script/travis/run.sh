@@ -53,6 +53,8 @@ fi
 # CUDA
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
+    : ${ALPAKA_CUDA_VERSION?"ALPAKA_CUDA_VERSION must be specified"}
+
     if [ "$TRAVIS_OS_NAME" = "linux" ]
     then
         # CUDA
@@ -68,8 +70,8 @@ then
         fi
     elif [ "$TRAVIS_OS_NAME" = "windows" ]
     then
-        export PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\bin":$PATH
-        export CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0"
+        export PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v${ALPAKA_CUDA_VERSION}\bin":$PATH
+        export CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v${ALPAKA_CUDA_VERSION}"
     fi
 fi
 
