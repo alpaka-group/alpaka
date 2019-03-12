@@ -595,7 +595,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     IF(((CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0) OR
                         (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.8)) AND
                         CUDA_VERSION VERSION_LESS 9.0)
-                        MESSAGE(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} not support -G with CUDA <= 8! "
+                        MESSAGE(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} does not support -G with CUDA <= 8! "
+                                        "Device debug symbols NOT added.")
+                    ELSEIF(MSVC)
+                        MESSAGE(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} does not support -G with CUDA! "
                                         "Device debug symbols NOT added.")
                     ELSE()
                         LIST(APPEND CUDA_NVCC_FLAGS "-G")

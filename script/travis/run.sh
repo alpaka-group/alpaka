@@ -53,16 +53,23 @@ fi
 # CUDA
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
-    # CUDA
-    export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
-    export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/lib64:${LD_LIBRARY_PATH}
-    # We have to explicitly add the stub libcuda.so to CUDA_LIB_PATH because the real one would be installed by the driver (which we can not install).
-    export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs/
-
-    if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
+    if [ "$TRAVIS_OS_NAME" = "linux" ]
     then
-        which nvcc
-        nvcc -V
+        # CUDA
+        export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
+        export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/lib64:${LD_LIBRARY_PATH}
+        # We have to explicitly add the stub libcuda.so to CUDA_LIB_PATH because the real one would be installed by the driver (which we can not install).
+        export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs/
+
+        if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
+        then
+            which nvcc
+            nvcc -V
+        fi
+    elif [ "$TRAVIS_OS_NAME" = "windows" ]
+    then
+        export PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0\bin":$PATH
+        export CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.0"
     fi
 fi
 

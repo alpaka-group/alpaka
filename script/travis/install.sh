@@ -38,8 +38,13 @@ fi
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
     if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/install_analysis.sh ;fi
-    # Install CUDA before installing gcc as it installs gcc-4.8 and overwrites our selected compiler
-    if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/travis/install_cuda.sh ;fi
+fi
+
+# Install CUDA before installing gcc as it installs gcc-4.8 and overwrites our selected compiler
+if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/travis/install_cuda.sh ;fi
+
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
     if [ "${CXX}" == "g++" ] ;then ./script/travis/install_gcc.sh ;fi
     if [ "${CXX}" == "clang++" ] ;then source ./script/travis/install_clang.sh ;fi
     if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/travis/install_hip.sh ;fi
