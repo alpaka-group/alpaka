@@ -7,9 +7,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
-#include <boost/current_function.hpp>
-
 #include <catch2/catch.hpp>
 
 #include <alpaka/alpaka.hpp>
@@ -152,12 +149,12 @@ void operator()()
     Val const alpha( dist(eng) );
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-    std::cout << BOOST_CURRENT_FUNCTION
+    std::cout << __func__
         << " alpha: " << alpha << std::endl;
-    std::cout << BOOST_CURRENT_FUNCTION << " X_host: ";
+    std::cout << __func__ << " X_host: ";
     alpaka::mem::view::print(memBufHostX, std::cout);
     std::cout << std::endl;
-    std::cout << BOOST_CURRENT_FUNCTION << " Y_host: ";
+    std::cout << __func__ << " Y_host: ";
     alpaka::mem::view::print(memBufHostOrigY, std::cout);
     std::cout << std::endl;
 #endif
@@ -173,10 +170,10 @@ void operator()()
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     alpaka::wait::wait(queue);
 
-    std::cout << BOOST_CURRENT_FUNCTION << " X_Dev: ";
+    std::cout << __func__ << " X_Dev: ";
     alpaka::mem::view::print(memBufHostX, std::cout);
     std::cout << std::endl;
-    std::cout << BOOST_CURRENT_FUNCTION << " Y_Dev: ";
+    std::cout << __func__ << " Y_Dev: ";
     alpaka::mem::view::print(memBufHostX, std::cout);
     std::cout << std::endl;
 #endif

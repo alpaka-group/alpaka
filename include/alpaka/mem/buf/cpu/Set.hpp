@@ -87,7 +87,7 @@ namespace alpaka
                         ALPAKA_FN_HOST auto printDebug() const
                         -> void
                         {
-                            std::cout << BOOST_CURRENT_FUNCTION
+                            std::cout << __func__
                                 << " e: " << this->m_extent
                                 << " ewb: " << this->m_extentWidthBytes
                                 << " de: " << this->m_dstExtent

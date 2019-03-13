@@ -302,10 +302,10 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     //std::size_t printfFifoSize;
                     //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                    //std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
                     //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
                     //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
+                    //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
                     auto const gridBlockExtent(
                         workdiv::getWorkDiv<Grid, Blocks>(task));
@@ -319,7 +319,7 @@ namespace alpaka
                     kernel::cuda::detail::checkVecOnly3Dim(threadElemExtent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION
+                    std::cout << __func__
                         << " gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x
                         << " blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x
                         << std::endl;
@@ -350,7 +350,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory idx.
-                    std::cout << BOOST_CURRENT_FUNCTION
+                    std::cout << __func__
                         << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
 
@@ -358,7 +358,7 @@ namespace alpaka
                     // Log the function attributes.
                     cudaFuncAttributes funcAttrs;
                     cudaFuncGetAttributes(&funcAttrs, kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, TArgs...>);
-                    std::cout << BOOST_CURRENT_FUNCTION
+                    std::cout << __func__
                         << " binaryVersion: " << funcAttrs.binaryVersion
                         << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
                         << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
@@ -424,10 +424,10 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     //std::size_t printfFifoSize;
                     //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                    //std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
                     //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
                     //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
+                    //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
                     auto const gridBlockExtent(
                         workdiv::getWorkDiv<Grid, Blocks>(task));
@@ -441,8 +441,8 @@ namespace alpaka
                     kernel::cuda::detail::checkVecOnly3Dim(threadElemExtent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
-                    std::cout << BOOST_CURRENT_FUNCTION << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
+                    std::cout << __func__ << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
+                    std::cout << __func__ << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -470,7 +470,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory idx.
-                    std::cout << BOOST_CURRENT_FUNCTION
+                    std::cout << __func__
                         << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
 
@@ -478,7 +478,7 @@ namespace alpaka
                     // Log the function attributes.
                     cudaFuncAttributes funcAttrs;
                     cudaFuncGetAttributes(&funcAttrs, kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, TArgs...>);
-                    std::cout << BOOST_CURRENT_FUNCTION
+                    std::cout << __func__
                         << " binaryVersion: " << funcAttrs.binaryVersion
                         << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
                         << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"

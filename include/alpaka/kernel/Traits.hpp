@@ -205,7 +205,7 @@ namespace alpaka
                 "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-            std::cout << BOOST_CURRENT_FUNCTION
+            std::cout << __func__
                 << " gridBlockExtent: " << workdiv::getWorkDiv<Grid, Blocks>(workDiv)
                 << ", blockThreadExtent: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
                 << std::endl;

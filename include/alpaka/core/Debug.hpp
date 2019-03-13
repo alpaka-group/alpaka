@@ -12,8 +12,6 @@
 
 #include <alpaka/core/BoostPredef.hpp>
 
-#include <boost/current_function.hpp>
-
 #include <string>
 #include <iostream>
 
@@ -76,7 +74,7 @@ namespace alpaka
 // Define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE.
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE\
-        ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(BOOST_CURRENT_FUNCTION)
+        ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(__func__)
 #else
     #define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE
 #endif
@@ -85,7 +83,7 @@ namespace alpaka
 // Define ALPAKA_DEBUG_FULL_LOG_SCOPE.
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     #define ALPAKA_DEBUG_FULL_LOG_SCOPE\
-        ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(BOOST_CURRENT_FUNCTION)
+        ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(__func__)
 #else
     #define ALPAKA_DEBUG_FULL_LOG_SCOPE
 #endif
