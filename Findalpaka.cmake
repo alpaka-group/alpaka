@@ -52,6 +52,7 @@
 # - ``ALPAKA_CUDA_KEEP_FILES`` {ON, OFF}
 # - ``ALPAKA_CUDA_SHOW_CODELINES`` {ON, OFF}
 # - ``ALPAKA_DEBUG`` {0, 1, 2}
+# - ``ALPAKA_CXX_STANDARD`` {11, 14, 17}
 #
 # Result Variables
 # ^^^^^^^^^^^^^^^^

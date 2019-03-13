@@ -17,8 +17,7 @@
 // Generic lambdas are a C++14 feature.
 #if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
 // CUDA C Programming guide says: "__host__ __device__ extended lambdas cannot be generic lambdas"
-// However, it seems to work on all compilers except MSVC even though it is documented differently.
-#if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_COMP_MSVC)
+#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 //-----------------------------------------------------------------------------
 struct TestTemplateGeneric
 {
