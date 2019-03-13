@@ -71,13 +71,13 @@ namespace alpaka
                 {
                     static_assert(
                         dim::Dim<TIndex>::value > 0u,
-                        "The dimension given to ndLoopIncIdx has to be larger than zero!");
+                        "The dimension given to ndLoop has to be larger than zero!");
                     static_assert(
                         dim::Dim<TIndex>::value == dim::Dim<TExtentVec>::value,
                         "The dimensions of the iteration vector and the extent vector have to be identical!");
                     static_assert(
                         dim::Dim<TIndex>::value > Tdim,
-                        "The current dimension has to be in the rang [0,dim-1]!");
+                        "The current dimension has to be in the range [0,dim-1]!");
 
                     for(idx[Tdim] = 0u; idx[Tdim] < extent[Tdim]; ++idx[Tdim])
                     {
@@ -88,10 +88,11 @@ namespace alpaka
             //#############################################################################
             //! N-dimensional loop iteration template.
             template<
-                std::size_t Tdim,
+                std::size_t Tdim0,
+                std::size_t Tdim1,
                 std::size_t... Tdims>
             struct NdLoop<
-                meta::IndexSequence<Tdim, Tdims...>>
+                meta::IndexSequence<Tdim0, Tdim1, Tdims...>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
@@ -112,13 +113,13 @@ namespace alpaka
                         dim::Dim<TIndex>::value == dim::Dim<TExtentVec>::value,
                         "The dimensions of the iteration vector and the extent vector have to be identical!");
                     static_assert(
-                        dim::Dim<TIndex>::value > Tdim,
-                        "The current dimension has to be in the rang [0,dim-1]!");
+                        dim::Dim<TIndex>::value > Tdim0,
+                        "The current dimension has to be in the range [0,dim-1]!");
 
-                    for(idx[Tdim] = 0u; idx[Tdim] < extent[Tdim]; ++idx[Tdim])
+                    for(idx[Tdim0] = 0u; idx[Tdim0] < extent[Tdim0]; ++idx[Tdim0])
                     {
                         detail::NdLoop<
-                            meta::IndexSequence<Tdims...>>
+                            meta::IndexSequence<Tdim1, Tdims...>>
                         ::template ndLoop(
                                 idx,
                                 extent,
@@ -131,7 +132,7 @@ namespace alpaka
         //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
         //! The loops are nested in the order given by the IndexSequence with the first element being the outermost and the last index the innermost loop.
         //!
-        //! \param indexSequence A sequence of indices being a permutation of the values [0, dim-1], where every values occurs at most once.
+        //! \param indexSequence A sequence of indices being a permutation of the values [0, dim-1].
         //! \param extent N-dimensional loop extent.
         //! \param f The function called at each iteration.
         ALPAKA_NO_HOST_ACC_WARNING
