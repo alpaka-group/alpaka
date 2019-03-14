@@ -135,7 +135,7 @@ namespace alpaka
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << BOOST_CURRENT_FUNCTION
+                std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 acc::AccCpuFibers<TDim, TIdx> acc(
@@ -143,7 +143,7 @@ namespace alpaka
                     blockSharedMemDynSizeBytes);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << BOOST_CURRENT_FUNCTION
+                std::cout << __func__
                     << " Fiber stack idx: " << boost::fibers::fixedsize_stack::traits_type::default_size() << " B" << std::endl;
 #endif
 

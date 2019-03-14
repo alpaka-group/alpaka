@@ -134,7 +134,7 @@ namespace alpaka
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << BOOST_CURRENT_FUNCTION
+                std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 acc::AccCpuThreads<TDim, TIdx> acc(

@@ -349,7 +349,7 @@ namespace alpaka
                                 static_cast<std::size_t>(widthBytes)));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << BOOST_CURRENT_FUNCTION
+                        std::cout << __func__
                             << " ew: " << width
                             << " ewb: " << widthBytes
                             << " ptr: " << memPtr
@@ -404,7 +404,7 @@ namespace alpaka
                         ALPAKA_ASSERT(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << BOOST_CURRENT_FUNCTION
+                        std::cout << __func__
                             << " ew: " << width
                             << " eh: " << height
                             << " ewb: " << widthBytes
@@ -460,7 +460,7 @@ namespace alpaka
 
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << BOOST_CURRENT_FUNCTION
+                        std::cout << __func__
                             << " ew: " << extent::getWidth(extent)
                             << " eh: " << cudaExtentVal.height
                             << " ed: " << cudaExtentVal.depth

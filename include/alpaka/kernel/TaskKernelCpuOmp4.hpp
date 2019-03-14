@@ -112,7 +112,7 @@ namespace alpaka
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << BOOST_CURRENT_FUNCTION
+                std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
@@ -158,7 +158,7 @@ namespace alpaka
                         if((::omp_get_team_num() == 0))
                         {
                             int const iNumTeams(::omp_get_num_teams());
-                            printf("%s omp_get_num_teams: %d\n", BOOST_CURRENT_FUNCTION, iNumTeams);
+                            printf("%s omp_get_num_teams: %d\n", __func__, iNumTeams);
                         }
 #endif
                         acc::AccCpuOmp4<TDim, TIdx> acc(
@@ -190,7 +190,7 @@ namespace alpaka
                                 if((::omp_get_thread_num() == 0) && (b == 0))
                                 {
                                     int const numThreads(::omp_get_num_threads());
-                                    printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, numThreads);
+                                    printf("%s omp_get_num_threads: %d\n", __func__, numThreads);
                                     if(numThreads != static_cast<int>(blockThreadCount))
                                     {
                                         throw std::runtime_error("ERROR: The OpenMP runtime did not use the number of threads that had been required!");

@@ -115,7 +115,7 @@ namespace alpaka
     #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         printDeviceProperties(devProp);
     #elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                        std::cout << BOOST_CURRENT_FUNCTION << devProp.name << std::endl;
+                        std::cout << __func__ << devProp.name << std::endl;
     #endif
                     }
                     else

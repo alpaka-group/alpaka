@@ -81,7 +81,7 @@ namespace alpaka
                                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            std::cout << BOOST_CURRENT_FUNCTION
+                            std::cout << __func__
                                 << " e: " << m_extentElements
                                 << " ptr: " << static_cast<void *>(m_pMem)
                                 << " pitch: " << m_pitchBytes

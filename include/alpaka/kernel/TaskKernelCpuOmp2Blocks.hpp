@@ -113,7 +113,7 @@ namespace alpaka
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << BOOST_CURRENT_FUNCTION
+                std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
@@ -140,7 +140,7 @@ namespace alpaka
                 if(::omp_in_parallel() != 0)
                 {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION << " already within a parallel region." << std::endl;
+                    std::cout << __func__ << " already within a parallel region." << std::endl;
 #endif
                     parallelFn(
                         boundKernelFnObj,
@@ -151,7 +151,7 @@ namespace alpaka
                 else
                 {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION << " opening new parallel region." << std::endl;
+                    std::cout << __func__ << " opening new parallel region." << std::endl;
 #endif
                     #pragma omp parallel
                     parallelFn(
@@ -182,7 +182,7 @@ namespace alpaka
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << ::omp_get_num_threads() << std::endl;
+                    std::cout << __func__ << " omp_get_num_threads: " << ::omp_get_num_threads() << std::endl;
 #endif
                 }
 

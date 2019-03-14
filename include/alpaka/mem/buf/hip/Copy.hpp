@@ -114,7 +114,7 @@ namespace alpaka
                         ALPAKA_FN_HOST auto printDebug() const
                         -> void
                         {
-                            std::cout << BOOST_CURRENT_FUNCTION
+                            std::cout << __func__
                                 << " ddev: " << m_iDstDevice
                                 << " ew: " << m_extentWidth
                                 << " ewb: " << m_extentWidthBytes
@@ -213,7 +213,7 @@ namespace alpaka
                         ALPAKA_FN_HOST auto printDebug() const
                         -> void
                         {
-                            std::cout << BOOST_CURRENT_FUNCTION
+                            std::cout << __func__
                                 << " ew: " << m_extentWidth
                                 << " eh: " << m_extentHeight
                                 << " ewb: " << m_extentWidthBytes
@@ -335,7 +335,7 @@ namespace alpaka
                         ALPAKA_FN_HOST auto printDebug() const
                         -> void
                         {
-                            std::cout << BOOST_CURRENT_FUNCTION
+                            std::cout << __func__
                                 << " ew: " << m_extentWidth
                                 << " eh: " << m_extentHeight
                                 << " ed: " << m_extentDepth
@@ -411,7 +411,7 @@ namespace alpaka
                             ALPAKA_HIP_RT_CHECK(hipDeviceCanAccessPeer(&canAccessPeer, devSrc, devDst));
                             if(!canAccessPeer) {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            std::cout << BOOST_CURRENT_FUNCTION
+                            std::cout << __func__
                                 << " Direct peer access between given GPUs is not possible!"
                                 << " src=" << devSrc
                                 << " dst=" << devDst
