@@ -184,6 +184,9 @@ ENDIF()
 SET(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
 SET_PROPERTY(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 
+SET(ALPAKA_CXX_STANDARD "11" CACHE STRING "C++ standard version")
+SET_PROPERTY(CACHE ALPAKA_CXX_STANDARD PROPERTY STRINGS "11;14;17")
+
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
 IF(${ALPAKA_DEBUG} GREATER 1)
@@ -478,6 +481,14 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-save-temps")
                 ENDIF()
 
+                # When libstdc++ is used and -std=gnu++XX is set, we get the following compile error:
+                # /usr/lib/gcc/x86_64-linux-gnu/5.5.0/../../../../include/c++/5.5.0/type_traits:311:39: error: __float128 is not supported on this target struct __is_floating_point_helper<__float128>
+                # Clang doesn't support the __float128 type (at least when building CUDA device code)
+                # * Due to the minimum requirement to compile with C++11 and because extensions are enabled by default by CMake, it adds -std=gnu++11 instead of -std=c++11 to the command line.
+                #   Due to alpaka being an INTERFACE library (header-only) we are not allowed to set CXX_EXTENSIONS to OFF and transitively disable extensions for inherited targets.
+                # * Defining __float128 on the command line is the least invasive workaround found here: https://bugs.llvm.org/show_bug.cgi?id=13530#c6
+                LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "__float128=void")
+
             ELSE()
                 IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
                     IF(CUDA_VERSION VERSION_EQUAL 8.0)
@@ -527,6 +538,12 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     SET(_ALPAKA_FOUND FALSE)
                 ENDIF()
 
+                # CUDA 9.0 is the first to support c++14.
+                IF((CUDA_VERSION VERSION_LESS 9.0) AND (ALPAKA_CXX_STANDARD GREATER 11))
+                    MESSAGE(WARNING "CUDA 9.0 or newer is required for c++14 or higher!")
+                    SET(_ALPAKA_FOUND FALSE)
+                ENDIF()
+
                 IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
                     MESSAGE(FATAL_ERROR "NVCC does not support boost.fiber!")
                 ENDIF()
@@ -567,7 +584,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDFOREACH()
 
                 IF(NOT MSVC)
-                    LIST(APPEND CUDA_NVCC_FLAGS "-std=c++11")
+                    LIST(APPEND CUDA_NVCC_FLAGS "-std=c++${ALPAKA_CXX_STANDARD}")
                 ENDIF()
 
                 SET(CUDA_HOST_COMPILER "${CMAKE_CXX_COMPILER}")
@@ -797,7 +814,7 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
 
 
             LIST(APPEND HIP_HIPCC_FLAGS "-D__HIPCC__")
-            LIST(APPEND HIP_HIPCC_FLAGS "-std=c++11")
+            LIST(APPEND HIP_HIPCC_FLAGS "-std=c++${ALPAKA_CXX_STANDARD}")
 
             IF(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
                 LIST(APPEND HIP_HIPCC_FLAGS "-g")
@@ -829,9 +846,6 @@ IF(MSVC)
     # Empty append to define it if it does not already exist.
     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC)
 ELSE()
-    # Select C++ standard version.
-    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-std=c++11")
-
     # Add linker options.
     # lipthread:
     LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;pthread")
@@ -960,6 +974,10 @@ IF(NOT TARGET "alpaka")
     # Therefore those files will be added to projects "linking" to the INTERFACE library, but are not added to the project itself within an IDE.
     add_custom_target("alpakaIde"
         SOURCES ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SCRIPT} ${_ALPAKA_FILES_CMAKE} ${_ALPAKA_FILES_DOC} ${_ALPAKA_FILES_OTHER}
+    )
+
+    target_compile_features("alpaka"
+        INTERFACE cxx_std_${ALPAKA_CXX_STANDARD}
     )
 
     # Compile options.

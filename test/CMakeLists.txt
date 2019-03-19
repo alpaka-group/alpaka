@@ -54,6 +54,9 @@ ELSE()
     target_include_directories(CatchMain SYSTEM PUBLIC
         $<TARGET_PROPERTY:Catch2::Catch2,INTERFACE_INCLUDE_DIRECTORIES>)
 ENDIF()
+SET_TARGET_PROPERTIES(
+    CatchMain
+    PROPERTIES FOLDER "test")
 
 # NVCC does not incorporate the COMPILE_OPTIONS of a target but only the CMAKE_CXX_FLAGS
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE AND NOT ALPAKA_CUDA_COMPILER MATCHES "clang")
