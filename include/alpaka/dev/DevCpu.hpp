@@ -65,13 +65,13 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     DevCpuImpl() = default;
                     //-----------------------------------------------------------------------------
-                    DevCpuImpl(DevCpuImpl const &) = default;
+                    DevCpuImpl(DevCpuImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    DevCpuImpl(DevCpuImpl &&) = default;
+                    DevCpuImpl(DevCpuImpl &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(DevCpuImpl const &) -> DevCpuImpl & = default;
+                    auto operator=(DevCpuImpl const &) -> DevCpuImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(DevCpuImpl &&) -> DevCpuImpl & = default;
+                    auto operator=(DevCpuImpl &&) -> DevCpuImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ~DevCpuImpl() = default;
 

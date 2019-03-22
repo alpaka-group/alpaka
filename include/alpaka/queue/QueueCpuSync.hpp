@@ -52,7 +52,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueCpuSyncImpl const &) -> QueueCpuSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuSyncImpl &&) -> QueueCpuSyncImpl & = default;
+                    auto operator=(QueueCpuSyncImpl &&) -> QueueCpuSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ~QueueCpuSyncImpl() = default;
 

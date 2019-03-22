@@ -65,11 +65,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     QueueCpuAsyncImpl(QueueCpuAsyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueCpuAsyncImpl(QueueCpuAsyncImpl &&) = default;
+                    QueueCpuAsyncImpl(QueueCpuAsyncImpl &&) = delete;
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueCpuAsyncImpl const &) -> QueueCpuAsyncImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuAsyncImpl &&) -> QueueCpuAsyncImpl & = default;
+                    auto operator=(QueueCpuAsyncImpl &&) -> QueueCpuAsyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ~QueueCpuAsyncImpl() = default;
 

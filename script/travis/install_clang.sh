@@ -22,7 +22,7 @@ source ./script/travis/set.sh
 
 if [ -z "$(ls -A "${ALPAKA_CI_CLANG_DIR}")" ]
 then
-    ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CI_CLANG_VER}-x86_64-linux-gnu-ubuntu-14.04.tar.xz
+    ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CI_CLANG_VER}-x86_64-linux-gnu-ubuntu-16.04.tar.xz
     travis_retry wget --no-verbose "http://llvm.org/releases/${ALPAKA_CI_CLANG_VER}/${ALPAKA_CLANG_PKG_FILE_NAME}"
     mkdir -p "${ALPAKA_CI_CLANG_DIR}"
     xzcat "${ALPAKA_CLANG_PKG_FILE_NAME}" | tar -xf - --strip 1 -C "${ALPAKA_CI_CLANG_DIR}"

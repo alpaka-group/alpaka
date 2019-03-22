@@ -91,7 +91,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Move constructor.
                         //-----------------------------------------------------------------------------
-                        EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl &&) = default;
+                        EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl &&) = delete;
                         //-----------------------------------------------------------------------------
                         //! Copy assignment operator.
                         //-----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Move assignment operator.
                         //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerCpuImpl &&) -> EventHostManualTriggerCpuImpl & = default;
+                        auto operator=(EventHostManualTriggerCpuImpl &&) -> EventHostManualTriggerCpuImpl & = delete;
 
                         //-----------------------------------------------------------------------------
                         //!
@@ -421,11 +421,11 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl const &) = delete;
                         //-----------------------------------------------------------------------------
-                        EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl &&) = default;
+                        EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl &&) = delete;
                         //-----------------------------------------------------------------------------
                         auto operator=(EventHostManualTriggerCudaImpl const &) -> EventHostManualTriggerCudaImpl & = delete;
                         //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerCudaImpl &&) -> EventHostManualTriggerCudaImpl & = default;
+                        auto operator=(EventHostManualTriggerCudaImpl &&) -> EventHostManualTriggerCudaImpl & = delete;
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST ~EventHostManualTriggerCudaImpl()
                         {
