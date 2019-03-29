@@ -51,11 +51,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     EventCpuImpl(EventCpuImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    EventCpuImpl(EventCpuImpl &&) = default;
+                    EventCpuImpl(EventCpuImpl &&) = delete;
                     //-----------------------------------------------------------------------------
                     auto operator=(EventCpuImpl const &) -> EventCpuImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(EventCpuImpl &&) -> EventCpuImpl & = default;
+                    auto operator=(EventCpuImpl &&) -> EventCpuImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ~EventCpuImpl() noexcept = default;
 

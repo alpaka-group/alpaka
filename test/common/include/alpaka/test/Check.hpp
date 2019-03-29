@@ -13,8 +13,11 @@
 #include <cstdio>
 
 #define ALPAKA_CHECK(success, expression) \
-    if(!(expression)) \
+    do \
     { \
-        printf("ALPAKA_CHECK failed because '!(%s)'\n", #expression); \
-        success = false; \
-    }
+        if(!(expression)) \
+        { \
+            printf("ALPAKA_CHECK failed because '!(%s)'\n", #expression); \
+            success = false; \
+        } \
+    } while ( 0 )

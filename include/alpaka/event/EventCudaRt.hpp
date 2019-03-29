@@ -75,7 +75,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     auto operator=(EventCudaImpl const &) -> EventCudaImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(EventCudaImpl &&) -> EventCudaImpl & = default;
+                    auto operator=(EventCudaImpl &&) -> EventCudaImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST ~EventCudaImpl()
                     {

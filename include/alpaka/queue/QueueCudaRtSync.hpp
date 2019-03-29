@@ -85,7 +85,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueCudaRtSyncImpl const &) -> QueueCudaRtSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCudaRtSyncImpl &&) -> QueueCudaRtSyncImpl & = default;
+                    auto operator=(QueueCudaRtSyncImpl &&) -> QueueCudaRtSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST ~QueueCudaRtSyncImpl()
                     {
