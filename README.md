@@ -74,7 +74,7 @@ This library uses C++11 (or newer when available).
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
 |TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA (nvcc)|:white_check_mark: <br/> (CUDA 8.0-10.0)|:white_check_mark: <br/> (CUDA 9.0-10.0)|:white_check_mark: <br/> (CUDA 9.2-10.0) |:x:|:white_check_mark: <br/> (CUDA 9.1-10.0)|:white_check_mark: <br/> (CUDA 10.0)|:white_check_mark: <br/> (CUDA 10.0)|:x:|:x:|:x:|:x:|
+|CUDA (nvcc)|:white_check_mark: <br/> (CUDA 8.0-10.0)|:white_check_mark: <br/> (CUDA 9.0-10.0)|:white_check_mark: <br/> (CUDA 9.2-10.0) |:x:|:white_check_mark: <br/> (CUDA 9.1-10.0)|:white_check_mark: <br/> (CUDA 10.0)|:white_check_mark: <br/> (CUDA 10.0)|:x:|:x:|:x:|:white_check_mark: <br/> (CUDA 10.0)|
 |CUDA (clang) | - | - | - | - | :white_check_mark: <br/> (CUDA 8.0)| :white_check_mark: <br/> (CUDA 8.0)| :white_check_mark: <br/> (CUDA 8.0-9.0) | :white_check_mark: <br/> (CUDA 8.0-9.2) | :white_check_mark: <br/> (CUDA 8.0-10.0) | - | - |
 |[HIP](doc/markdown/user/implementation/mapping/HIP.md) (nvcc)|:white_check_mark: <br/> (nvcc 8.0)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|
 

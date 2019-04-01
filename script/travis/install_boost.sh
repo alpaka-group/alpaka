@@ -97,7 +97,10 @@ then
     # If the variable is not set, the backend will most probably be used by default so we install it.
     if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
     then
-        ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"
+        if [ "$TRAVIS_OS_NAME" = "linux" ]
+        then
+            ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"
+        fi
         ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
     fi
     if [ "${ALPAKA_BOOST_B2_CFLAGS}" != "" ]
