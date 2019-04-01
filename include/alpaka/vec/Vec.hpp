@@ -411,6 +411,11 @@ namespace alpaka
                         f,
                         IdxSequence());
             }
+// suppress strange warning produced by nvcc+MSVC in release mode
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4702)  // unreachable code
+#endif
             //-----------------------------------------------------------------------------
             //! \return The product of all values.
             ALPAKA_NO_HOST_ACC_WARNING
@@ -423,6 +428,9 @@ namespace alpaka
                         return static_cast<TVal>(a * b);
                     });
             }
+#if BOOST_COMP_MSVC
+    #pragma warning(pop)
+#endif
             //-----------------------------------------------------------------------------
             //! \return The sum of all values.
             ALPAKA_NO_HOST_ACC_WARNING
