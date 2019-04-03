@@ -49,7 +49,7 @@
 //! WARNING: Only use this method if there is no other way.
 //! Most cases can be solved by #if BOOST_ARCH_PTX or #if BOOST_LANG_CUDA.
 #if (BOOST_LANG_CUDA && !BOOST_COMP_CLANG_CUDA) || BOOST_LANG_HIP
-    #if BOOST_COMP_MSVC
+    #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
         #define ALPAKA_NO_HOST_ACC_WARNING __pragma(hd_warning_disable)
     #else
         #define ALPAKA_NO_HOST_ACC_WARNING _Pragma("hd_warning_disable")

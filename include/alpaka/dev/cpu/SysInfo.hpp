@@ -56,7 +56,7 @@ namespace alpaka
                     __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
                 }
 
-    #elif BOOST_COMP_MSVC || defined(__INTEL_COMPILER)
+    #elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED) || defined(__INTEL_COMPILER)
         #include <intrin.h>
                 //-----------------------------------------------------------------------------
                 inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])

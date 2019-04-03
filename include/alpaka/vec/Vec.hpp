@@ -376,7 +376,7 @@ namespace alpaka
                         IdxSequence());
             }
 // suppress strange warning produced by nvcc+MSVC in release mode
-#if BOOST_COMP_MSVC
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
     #pragma warning(push)
     #pragma warning(disable: 4702)  // unreachable code
 #endif
@@ -388,7 +388,7 @@ namespace alpaka
             {
                 return foldrAll(std::multiplies<TVal>());
             }
-#if BOOST_COMP_MSVC
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
     #pragma warning(pop)
 #endif
             //-----------------------------------------------------------------------------
