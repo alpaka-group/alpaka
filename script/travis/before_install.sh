@@ -37,55 +37,6 @@ ALPAKA_CI_BOOST_BRANCH_MINOR=${ALPAKA_CI_BOOST_BRANCH:8:2}
 echo ALPAKA_CI_BOOST_BRANCH_MINOR: "${ALPAKA_CI_BOOST_BRANCH_MINOR}"
 
 #-------------------------------------------------------------------------------
-if [ "$TRAVIS_OS_NAME" = "linux" ]
-then
-    if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
-    then
-        if [ "${CXX}" == "g++" ]
-        then
-            echo "using libc++ with g++ not yet supported."
-            exit 1
-        fi
-
-        if [ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == "ubuntu:14.04" ]
-        then
-            echo "using libc++ with ubuntu:14.04 not supported."
-            exit 1
-        fi
-
-        if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 65 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
-        then
-            echo "using libc++ with boost < 1.65 is not supported."
-            exit 1
-        fi
-    fi
-
-    if [ "${ALPAKA_CI_STDLIB}" == "libstdc++" ]
-    then
-        if [ "${CXX}" == "clang++" ]
-        then
-            if [ ! -z ${ALPAKA_CXX_STANDARD+x} ]
-            then
-                if (( "${ALPAKA_CXX_STANDARD}" >= 17 ))
-                then
-                    if (( "${ALPAKA_CI_CLANG_LIBSTDCPP_VERSION}" < 7 ))
-                    then
-                        echo "Clang used in c++17 mode requires libstdc++-7 or newer."
-                        exit 1
-                    fi
-                    # https://github.com/boostorg/coroutine2/issues/26
-                    if [ "${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE}" != "OFF" ]
-                    then
-                        echo "Clang used in c++17 mode with libstdc++ is not compatible with boost.fibers."
-                        exit 1
-                    fi
-                fi
-            fi
-        fi
-    fi
-fi
-
-#-------------------------------------------------------------------------------
 # CUDA
 export ALPAKA_CI_INSTALL_CUDA="OFF"
 if [ "${ALPAKA_ACC_GPU_CUDA_ENABLE}" == "ON" ]
@@ -97,26 +48,6 @@ then
     if [ "${ALPAKA_HIP_PLATFORM}" == "nvcc" ]
     then
         export ALPAKA_CI_INSTALL_CUDA="ON"
-    fi
-fi
-
-# GCC-5.5 has broken avx512vlintrin.h in Release mode with NVCC 9.X
-#   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=76731
-#   https://github.com/tensorflow/tensorflow/issues/10220
-if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
-then
-    if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
-    then
-        if [ "${CXX}" == "g++" ]
-        then
-            if (( "${ALPAKA_CI_GCC_VER_MAJOR}" == 5 ))
-            then
-                if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
-                then
-                    export CMAKE_BUILD_TYPE=Debug
-                fi
-            fi
-        fi
     fi
 fi
 
@@ -161,4 +92,77 @@ then
 else
     # If the variable is not set, the backend will most probably be used by default so we install it.
     export ALPAKA_CI_INSTALL_FIBERS="ON"
+fi
+
+
+# GCC-5.5 has broken avx512vlintrin.h in Release mode with NVCC 9.X
+#   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=76731
+#   https://github.com/tensorflow/tensorflow/issues/10220
+if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
+then
+    if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
+    then
+        if [ "${CXX}" == "g++" ]
+        then
+            if (( "${ALPAKA_CI_GCC_VER_MAJOR}" == 5 ))
+            then
+                if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
+                then
+                    export CMAKE_BUILD_TYPE=Debug
+                fi
+            fi
+        fi
+    fi
+fi
+
+#-------------------------------------------------------------------------------
+if [ "$TRAVIS_OS_NAME" = "linux" ]
+then
+    if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+    then
+        if [ "${CXX}" == "g++" ]
+        then
+            echo "using libc++ with g++ not yet supported."
+            exit 1
+        fi
+
+        if [ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == "ubuntu:14.04" ]
+        then
+            echo "using libc++ with ubuntu:14.04 not supported."
+            exit 1
+        fi
+
+        if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 65 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
+        then
+            echo "using libc++ with boost < 1.65 is not supported."
+            exit 1
+        fi
+    fi
+
+    if [ "${ALPAKA_CI_STDLIB}" == "libstdc++" ]
+    then
+        if [ "${CXX}" == "clang++" ]
+        then
+            if [ ! -z ${ALPAKA_CXX_STANDARD+x} ]
+            then
+                if (( "${ALPAKA_CXX_STANDARD}" >= 17 ))
+                then
+                    if (( "${ALPAKA_CI_CLANG_LIBSTDCPP_VERSION}" < 7 ))
+                    then
+                        echo "Clang used in c++17 mode requires libstdc++-7 or newer."
+                        exit 1
+                    fi
+                    if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
+                    then
+                        if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 67 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
+                        then
+                            # https://github.com/boostorg/coroutine2/issues/26
+                            echo "Clang used in c++17 mode with libstdc++ is not compatible with boost.fibers in boost-1.66 and below."
+                            exit 1
+                        fi
+                    fi
+                fi
+            fi
+        fi
+    fi
 fi
