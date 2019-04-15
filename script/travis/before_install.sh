@@ -14,10 +14,13 @@ source ./script/travis/set.sh
 
 #-------------------------------------------------------------------------------
 # Those are set to g++/gcc within the git bash even though they are overwritten in the .travis.yml file.
-if [ "$TRAVIS_OS_NAME" = "windows" ]
+if [ "$ALPAKA_CI" = "TRAVIS" ]
 then
-    CXX=cl.exe
-    CC=cl.exe
+    if [ "$TRAVIS_OS_NAME" = "windows" ]
+    then
+        CXX=cl.exe
+        CC=cl.exe
+    fi
 fi
 
 #-------------------------------------------------------------------------------

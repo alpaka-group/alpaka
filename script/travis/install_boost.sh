@@ -22,6 +22,11 @@ fi
 : "${CXX?'CXX must be specified'}"
 : "${CC?'CC must be specified'}"
 : "${ALPAKA_CI_INSTALL_FIBERS?'ALPAKA_CI_INSTALL_FIBERS must be specified'}"
+: "${ALPAKA_CI_BOOST_LIB_DIR?'ALPAKA_CI_BOOST_LIB_DIR must be specified'}"
+if [ "$TRAVIS_OS_NAME" = "windows" ]
+then
+    : "${ALPAKA_CI_CL_VER?'ALPAKA_CI_CL_VER must be specified'}"
+fi
 
 git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
 
@@ -67,7 +72,14 @@ then
 
     if [ "$TRAVIS_OS_NAME" = "windows" ]
     then
-        ALPAKA_BOOST_B2+=" --layout=versioned --toolset=msvc-14.1"
+        ALPAKA_BOOST_B2+=" --layout=versioned"
+        if [ "$ALPAKA_CI_CL_VER" = "2017" ]
+        then
+            ALPAKA_BOOST_B2+=" --toolset=msvc-14.1"
+        elif [ "$ALPAKA_CI_CL_VER" = "2019" ]
+        then
+            ALPAKA_BOOST_B2+=" --toolset=msvc-14.2"
+        fi
     else
         ALPAKA_BOOST_B2+=" --layout=tagged --toolset=${CC}"
     fi

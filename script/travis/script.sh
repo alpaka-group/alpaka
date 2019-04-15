@@ -12,7 +12,7 @@
 
 source ./script/travis/set.sh
 
-./script/travis/print_travisEnv.sh
+./script/travis/print_env.sh
 source ./script/travis/before_install.sh
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]

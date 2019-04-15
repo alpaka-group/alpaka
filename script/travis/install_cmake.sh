@@ -37,5 +37,5 @@ then
 elif [ "$TRAVIS_OS_NAME" = "windows" ]
 then
     choco uninstall cmake.install
-    choco install cmake.install --version ${ALPAKA_CI_CMAKE_VER}
+    choco install cmake.install --no-progress --version ${ALPAKA_CI_CMAKE_VER}
 fi
