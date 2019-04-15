@@ -17,9 +17,10 @@ services:
 ################################################################################
 # NOTE: Testing the full matrix is not practical.
 # Therefore we aim to have each value been set in at lest one job.
-# CXX                                           : {g++, clang++, cl.exe}
+# CXX                                           : {g++, clang++}
 #   [g++] ALPAKA_CI_GCC_VER                     : {5, 6, 7, 8, 9}
 #   [clang++] ALPAKA_CI_CLANG_VER               : {4.0.0, 5.0.2, 6.0.1, 7.0.1, 8.0.0, 9.0.0}
+#   [cl.exe] ALPAKA_CI_CL_VER                   : {2017, 2019}
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [CXX==clang++]:libc++}
 #   [clang++] ALPAKA_CI_CLANG_LIBSTDCPP_VERSION : {5, 7}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
@@ -83,11 +84,6 @@ matrix:
       os: osx
       osx_image: xcode11.2
       env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-    - name: MSVC-2017 Debug Analysis
-      os: windows
-      dist: 1803-containers
-      language: cpp
-      env:                                               CXX=cl.exe  CC=cl.exe ALPAKA_CI_CL_VER=2017    CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.69.0 ALPAKA_CI_CMAKE_VER=3.15.7 ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
 
     ### macOS
     - name: macOS 10.14 Xcode 10.2.1 Debug
@@ -143,18 +139,6 @@ matrix:
       os: osx
       osx_image: xcode11.3
       env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.71.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_CXX_STANDARD=17
-
-    ### Windows
-    - name: MSVC-2017 Release
-      os: windows
-      dist: 1803-containers
-      language: cpp
-      env:                                               CXX=cl.exe  CC=cl.exe ALPAKA_CI_CL_VER=2017    CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.71.0 ALPAKA_CI_CMAKE_VER=3.15.7 OMP_NUM_THREADS=4 ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF
-    - name: MSVC-2017 Debug
-      os: windows
-      dist: 1803-containers
-      language: cpp
-      env:                                               CXX=cl.exe  CC=cl.exe ALPAKA_CI_CL_VER=2017    CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1 ALPAKA_CI_CMAKE_VER=3.16.4 OMP_NUM_THREADS=4 ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=OFF ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=OFF ALPAKA_CXX_STANDARD=17
 
     ### Ubuntu
     ## native
