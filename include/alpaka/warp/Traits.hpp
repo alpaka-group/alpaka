@@ -70,6 +70,11 @@ namespace alpaka::warp
     //! tries to call device function from a host-device one. The reason
     //! is unclear, but likely related to deducing the return type.
     //!
+    //! Note:
+    //! * The programmer must ensure that all threads calling this function are executing
+    //!   the same line of code. In particular it is not portable to write
+    //!   if(a) {activemask} else {activemask}.
+    //!
     //! \tparam TWarp The warp implementation type.
     //! \param warp The warp implementation.
     //! \return 32-bit or 64-bit unsigned type depending on the accelerator.
@@ -89,6 +94,11 @@ namespace alpaka::warp
     //! the operation is applied for all active threads.
     //! The modern CUDA counterpart would be __all_sync(__activemask(), predicate).
     //!
+    //! Note:
+    //! * The programmer must ensure that all threads calling this function are executing
+    //!   the same line of code. In particular it is not portable to write
+    //!   if(a) {all} else {all}.
+    //!
     //! \tparam TWarp The warp implementation type.
     //! \param warp The warp implementation.
     //! \param predicate The predicate value for current thread.
@@ -106,6 +116,11 @@ namespace alpaka::warp
     //! It follows the logic of __any(predicate) in CUDA before version 9.0 and HIP,
     //! the operation is applied for all active threads.
     //! The modern CUDA counterpart would be __any_sync(__activemask(), predicate).
+    //!
+    //! Note:
+    //! * The programmer must ensure that all threads calling this function are executing
+    //!   the same line of code. In particular it is not portable to write
+    //!   if(a) {any} else {any}.
     //!
     //! \tparam TWarp The warp implementation type.
     //! \param warp The warp implementation.
@@ -127,6 +142,11 @@ namespace alpaka::warp
     //! the operation is applied for all active threads.
     //! The modern CUDA counterpart would be __ballot_sync(__activemask(), predicate).
     //! Return type is 64-bit to fit all platforms.
+    //!
+    //! Note:
+    //! * The programmer must ensure that all threads calling this function are executing
+    //!   the same line of code. In particular it is not portable to write
+    //!   if(a) {ballot} else {ballot}.
     //!
     //! \tparam TWarp The warp implementation type.
     //! \param warp The warp implementation.

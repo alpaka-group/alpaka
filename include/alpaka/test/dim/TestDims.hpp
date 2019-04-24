@@ -1,4 +1,4 @@
-/* Copyright 2022 Benjamin Worpitz, Andrea Bocci
+/* Copyright 2022 Benjamin Worpitz, Andrea Bocci, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -14,20 +14,17 @@
 
 #include <tuple>
 
-namespace alpaka
+namespace alpaka::test
 {
-    namespace test
-    {
-        //! A std::tuple holding dimensions.
-        using TestDims = std::tuple<
-            alpaka::DimInt<1u>,
-            alpaka::DimInt<2u>,
-            alpaka::DimInt<3u>
-        // The CUDA & HIP accelerators do not currently support 4D buffers and 4D acceleration.
-#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-            ,
-            alpaka::DimInt<4u>
+    //! A std::tuple holding dimensions.
+    using TestDims = std::tuple<
+        alpaka::DimInt<1u>,
+        alpaka::DimInt<2u>,
+        alpaka::DimInt<3u>
+    // The CUDA & HIP accelerators do not currently support 4D buffers and 4D acceleration.
+#if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !defined(ALPAKA_ACC_SYCL_ENABLED)
+        ,
+        alpaka::DimInt<4u>
 #endif
-            >;
-    } // namespace test
-} // namespace alpaka
+        >;
+} // namespace alpaka::test

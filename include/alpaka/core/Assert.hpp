@@ -14,10 +14,9 @@
 #include <cassert>
 #include <type_traits>
 
-
 #define ALPAKA_ASSERT(EXPRESSION) assert(EXPRESSION)
 
-#ifdef ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
+#if defined(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) || defined(SYCL_EXT_ONEAPI_ASSERT)
 #    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION) ALPAKA_ASSERT(EXPRESSION)
 #elif defined __AMDGCN__ && (!defined NDEBUG)
 #    define ALPAKA_ASSERT_OFFLOAD(EXPRESSION)                                                                         \
