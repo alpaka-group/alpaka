@@ -9,6 +9,7 @@
 #
 
 include(CMakePrintHelpers) # for easier printing of variables and properties
+include(CMakeDependentOption) # Make options depend on other options
 
 #-------------------------------------------------------------------------------
 # Options.
@@ -82,6 +83,7 @@ option(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block threa
 option(ALPAKA_ACC_ANY_BT_OMP5_ENABLE "Enable the OpenMP 5.0 CPU block and block thread back-end" OFF)
 option(ALPAKA_ACC_ANY_BT_OACC_ENABLE "Enable the OpenACC block and block thread back-end" OFF)
 option(ALPAKA_ACC_CPU_DISABLE_ATOMIC_REF "Disable boost::atomic_ref for CPU back-ends" OFF)
+option(ALPAKA_ACC_SYCL_ENABLE "Enable the SYCL back-end" OFF)
 
 # Unified compiler options
 alpaka_compiler_option(FAST_MATH "Enable fast-math" DEFAULT)
@@ -95,7 +97,8 @@ if((ALPAKA_ACC_GPU_CUDA_ONLY_MODE OR ALPAKA_ACC_GPU_HIP_ONLY_MODE)
     ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OR
     ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
     ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
-    ALPAKA_ACC_ANY_BT_OMP5_ENABLE))
+    ALPAKA_ACC_ANY_BT_OMP5_ENABLE OR
+    ALPAKA_ACC_SYCL_ENABLE))
     if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
         message(FATAL_ERROR "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only back-ends using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA back-ends from being enabled.")
     endif()
@@ -154,7 +157,7 @@ endif()
 
 set(ALPAKA_OFFLOAD_MAX_BLOCK_SIZE "256" CACHE STRING "Maximum number threads per block to be suggested by any target offloading backends ANY_BT_OMP5 and ANY_BT_OACC.")
 option(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST "Allow host-only contructs like assert in offload code in debug mode." ON)
-set(ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ)")
+set(ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ, SYCL)")
 
 set(ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM "OFF" CACHE STRING "Whether to use OMP5 built-in directives for block-shared memory and how to treat dynamic shared memory.")
 set_property(CACHE ALPAKA_OFFLOAD_USE_BUILTIN_SHARED_MEM PROPERTY STRINGS "OFF;DYN_FIXED;DYN_ALLOC")
@@ -548,6 +551,144 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
 endif() # HIP
 
 #-------------------------------------------------------------------------------
+# SYCL settings
+if(ALPAKA_ACC_SYCL_ENABLE)
+    # Possible SYCL platforms
+    cmake_dependent_option(ALPAKA_SYCL_PLATFORM_ONEAPI "Enable Intel oneAPI platform for the SYCL back-end" OFF "ALPAKA_ACC_SYCL_ENABLE" OFF)
+    cmake_dependent_option(ALPAKA_SYCL_PLATFORM_XILINX "Enable Xilinx platform for the SYCL back-end" OFF "ALPAKA_ACC_SYCL_ENABLE" OFF)
+    # Possible oneAPI targets
+    cmake_dependent_option(ALPAKA_SYCL_ONEAPI_CPU "Enable oneAPI CPU targets for the SYCL back-end" OFF "ALPAKA_SYCL_PLATFORM_ONEAPI" OFF)
+    cmake_dependent_option(ALPAKA_SYCL_ONEAPI_FPGA "Enable oneAPI FPGA targets for the SYCL back-end" OFF "ALPAKA_SYCL_PLATFORM_ONEAPI" OFF)
+    cmake_dependent_option(ALPAKA_SYCL_ONEAPI_GPU "Enable oneAPI GPU targets for the SYCL back-end" OFF "ALPAKA_SYCL_PLATFORM_ONEAPI" OFF)
+    # Intel FPGA emulation / simulation
+    if(ALPAKA_SYCL_ONEAPI_FPGA)
+        set(ALPAKA_SYCL_ONEAPI_FPGA_MODE "emulation" CACHE STRING "Synthesis type for oneAPI FPGA targets")
+        set_property(CACHE ALPAKA_SYCL_ONEAPI_FPGA_MODE PROPERTY STRINGS "emulation;simulation;hardware")
+    endif()
+    # Xilinx FPGA emulation / synthesis
+    if(ALPAKA_SYCL_PLATFORM_XILINX)
+        set(ALPAKA_SYCL_XILINX_FPGA_MODE "simulation" CACHE STRING "Synthesis type for Xilinx FPGA targets")
+        set_property(CACHE ALPAKA_SYCL_XILINX_FPGA_MODE PROPERTY STRINGS "simulation;hardware")
+    endif()
+
+    # Enable device-side printing to stdout
+    cmake_dependent_option(ALPAKA_SYCL_ENABLE_IOSTREAM "Enable device-side printing to stdout" OFF "ALPAKA_ACC_SYCL_ENABLE" OFF)
+    if(BUILD_TESTING)
+        set(ALPAKA_SYCL_ENABLE_IOSTREAM ON CACHE BOOL "Enable device-side printing to stdout" FORCE)
+    endif()
+
+    if(NOT (ALPAKA_SYCL_PLATFORM_ONEAPI OR ALPAKA_SYCL_PLATFORM_XILINX))
+        message(FATAL_ERROR "You must specify at least one SYCL platform!")
+    endif()
+
+    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl")
+    target_link_options(alpaka INTERFACE "-fsycl")
+    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-sycl-std=2020")
+
+    #-----------------------------------------------------------------------------------------------------------------
+    # Determine SYCL targets
+    set(ALPAKA_SYCL_ONEAPI_CPU_TARGET "spir64_x86_64")
+    set(ALPAKA_SYCL_ONEAPI_FPGA_TARGET "spir64_fpga")
+    set(ALPAKA_SYCL_ONEAPI_GPU_TARGET "spir64_gen")
+    set(ALPAKA_SYCL_XILINX_FPGA_HARDWARE_EMULATION_TARGET "fpga64_hls_hw_emu")
+    set(ALPAKA_SYCL_XILINX_FPGA_HARDWARE_TARGET "fpga64_hls_hw")
+
+    if(ALPAKA_SYCL_PLATFORM_ONEAPI)
+        if(ALPAKA_SYCL_ONEAPI_CPU)
+            list(APPEND ALPAKA_SYCL_TARGETS ${ALPAKA_SYCL_ONEAPI_CPU_TARGET})
+        endif()
+
+        if(ALPAKA_SYCL_ONEAPI_FPGA)
+            list(APPEND ALPAKA_SYCL_TARGETS ${ALPAKA_SYCL_ONEAPI_FPGA_TARGET})
+        endif()
+
+        if(ALPAKA_SYCL_ONEAPI_GPU)
+            list(APPEND ALPAKA_SYCL_TARGETS ${ALPAKA_SYCL_ONEAPI_GPU_TARGET})
+        endif()
+
+        if(NOT ALPAKA_SYCL_TARGETS)
+            message(FATAL_ERROR "You must specify at least one oneAPI hardware target!")
+        endif()
+    endif()
+
+    if(ALPAKA_SYCL_PLATFORM_XILINX)
+        if(ALPAKA_SYCL_XILINX_FPGA_MODE STREQUAL "simulation")
+            list(APPEND ALPAKA_SYCL_TARGETS ${ALPAKA_SYCL_XILINX_FPGA_HARDWARE_EMULATION_TARGET})
+        elseif(ALPAKA_SYCL_XILINX_FPGA_MODE STREQUAL "hardware")
+            list(APPEND ALPAKA_SYCL_TARGETS ${ALPAKA_SYCL_XILINX_FPGA_HARDWARE_TARGET})
+        else()
+            message(FATAL_ERROR "You must specify at least one Xilinx FPGA target!")
+        endif()
+    endif()
+
+    list(JOIN ALPAKA_SYCL_TARGETS "," ALPAKA_SYCL_TARGETS_CONCAT)
+    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl-targets=${ALPAKA_SYCL_TARGETS_CONCAT}")
+    target_link_options(alpaka INTERFACE "-fsycl-targets=${ALPAKA_SYCL_TARGETS_CONCAT}")
+    
+    #-----------------------------------------------------------------------------------------------------------------
+    # Determine actual hardware to compile for 
+    if(ALPAKA_SYCL_ONEAPI_CPU)
+        set(ALPAKA_SYCL_ONEAPI_CPU_ISA "avx2" CACHE STRING "Intel ISA to compile for")
+        set_property(CACHE ALPAKA_SYCL_ONEAPI_CPU_ISA PROPERTY STRINGS "sse4.2;avx;avx2;avx512")
+
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_CPU")
+        target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${ALPAKA_SYCL_ONEAPI_CPU_TARGET} \"-march=${ALPAKA_SYCL_ONEAPI_CPU_ISA}\"")
+    endif()
+
+    if(ALPAKA_SYCL_ONEAPI_FPGA)
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_FPGA")
+        # try to come as close to -fintelfpga as possible with the following two flags
+        alpaka_set_compiler_options(DEVICE target alpaka $<$<AND:$<CONFIG:Debug>,$<PLATFORM_ID:Linux>>:"SHELL:-g">
+                                                         $<$<AND:$<CONFIG:Debug>,$<PLATFORM_ID:Windows>>:"SHELL:-Zi">)
+        alpaka_set_compiler_options(DEVICE target alpaka "-MMD") # prevent FPGA compiler from complaining about missing dependency files
+
+        if(ALPAKA_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_FPGA_EMULATION")
+            # No extra link flag needed because emulation is the default
+        elseif(ALPAKA_SYCL_ONEAPI_FPGA_MODE STREQUAL "simulation")
+            alpaka_set_compiler_options(DEVICE target alpaka "SHELL:-Xsycl-target-backend=${ALPAKA_SYCL_ONEAPI_FPGA_TARGET} \"-simulation\"")
+            target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${ALPAKA_SYCL_ONEAPI_FPGA_TARGET} \"-simulation\"")
+        elseif(ALPAKA_SYCL_ONEAPI_FPGA_MODE STREQUAL "hardware")
+            alpaka_set_compiler_options(DEVICE target alpaka "SHELL:-Xsycl-target-backend=${ALPAKA_SYCL_ONEAPI_FPGA_TARGET} \"-hardware\"")
+            target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${ALPAKA_SYCL_ONEAPI_FPGA_TARGET} \"-hardware\"")
+        endif()
+
+        if(NOT ALPAKA_SYCL_ONEAPI_FPGA_MODE STREQUAL "emulation")
+            set(ALPAKA_SYCL_ONEAPI_FPGA_BOARD "pac_a10" CACHE STRING "Intel FPGA board to compile for")
+            set_property(CACHE ALPAKA_SYCL_ONEAPI_FPGA_BOARD PROPERTY STRINGS "pac_a10;pac_s10;pac_s10_usm")
+
+            set(ALPAKA_SYCL_ONEAPI_FPGA_BSP "intel_a10gx_pac" CACHE STRING "Path to or name of the Intel FPGA board support package")
+            set_property(CACHE ALPAKA_SYCL_ONEAPI_FPGA_BSP PROPERTY STRINGS "intel_a10gx_pac;intel_s10sx_pac")
+            target_link_options(alpaka INTERFACE "-Xsycl-target-backend=${ALPAKA_SYCL_ONEAPI_FPGA_TARGET} \"-board=${ALPAKA_SYCL_ONEAPI_FPGA_BSP}:${ALPAKA_SYCL_ONEAPI_FPGA_BOARD}\"")
+        endif()
+
+    endif()
+
+    if(ALPAKA_SYCL_ONEAPI_GPU)
+        # Create a drop-down list (in cmake-gui) of valid Intel GPU targets. On the command line the user can specifiy
+        # additional targets, such as ranges: "Gen8-Gen12LP" or lists: "icclp;skl".
+        set(ALPAKA_SYCL_ONEAPI_GPU_DEVICES "bdw" CACHE STRING "Intel GPU devices / generations to compile for")
+        set_property(CACHE ALPAKA_SYCL_ONEAPI_GPU_DEVICES
+                     PROPERTY STRINGS "bdw;skl;kbl;cfl;bxt;glk;icllp;lkf;ehl;tgllp;rkl;adls;adlp;dg1;xe_hp_sdv;Gen8;Gen9;Gen11;Gen12LP;XE_HP_CORE")
+        # If the user has given us a list turn all ';' into ',' to pacify the Intel OpenCL compiler.
+        string(REPLACE ALPAKA_ONEAPI_GPU_DEVICES REPLACE ";" ",")
+        
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_ONEAPI_GPU")
+        target_link_options(alpaka INTERFACE "SHELL:-Xsycl-target-backend=${ALPAKA_SYCL_ONEAPI_GPU_TARGET} \"-device ${ALPAKA_SYCL_ONEAPI_GPU_DEVICES}\"")
+    endif()
+
+    #-----------------------------------------------------------------------------------------------------------------
+    # Generic SYCL options
+    if(ALPAKA_SYCL_ENABLE_IOSTREAM)
+        set(ALPAKA_SYCL_IOSTREAM_KIB "64" CACHE STRING "Kibibytes (1024B) of memory to allocate per block for SYCL's on-device iostream")
+
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_ENABLED")
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_IOSTREAM_KIB=${ALPAKA_SYCL_IOSTREAM_KIB}")
+    endif()
+    alpaka_set_compiler_options(DEVICE target alpaka "-fsycl-unnamed-lambda") # Compiler default but made explicit here
+endif()
+
+#-------------------------------------------------------------------------------
 # alpaka.
 if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_GPU_CUDA_ONLY_MODE")
@@ -600,6 +741,29 @@ endif()
 if(ALPAKA_ACC_GPU_HIP_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_GPU_HIP_ENABLED")
     message(STATUS ALPAKA_ACC_GPU_HIP_ENABLED)
+endif()
+
+if(ALPAKA_ACC_SYCL_ENABLE)
+    target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_SYCL_ENABLED")
+    if(ALPAKA_SYCL_PLATFORM_ONEAPI)
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_BACKEND_ONEAPI")
+        if(ALPAKA_SYCL_ONEAPI_CPU)
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_TARGET_CPU")
+        endif()
+        if(ALPAKA_SYCL_ONEAPI_FPGA)
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_TARGET_FPGA")
+        endif()
+        if(ALPAKA_SYCL_ONEAPI_GPU)
+            target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_TARGET_GPU")
+        endif()
+    endif()
+
+    if(ALPAKA_SYCL_PLATFORM_XILINX)
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_BACKEND_XILINX")
+        target_compile_definitions(alpaka INTERFACE "ALPAKA_SYCL_TARGET_FPGA")
+    endif()
+
+    message(STATUS ALPAKA_ACC_SYCL_ENABLED)
 endif()
 
 target_compile_definitions(alpaka INTERFACE "ALPAKA_DEBUG=${ALPAKA_DEBUG}")

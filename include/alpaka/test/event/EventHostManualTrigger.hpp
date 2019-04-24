@@ -728,3 +728,78 @@ namespace alpaka
     } // namespace traits
 } // namespace alpaka
 #endif
+
+#ifdef ALPAKA_ACC_SYCL_ENABLED
+namespace alpaka
+{
+    namespace test
+    {
+        template<typename TPltf>
+        class EventHostManualTriggerSycl
+        {
+        public:
+            EventHostManualTriggerSycl(experimental::DevGenericSycl<TPltf> const&)
+            {
+            }
+
+            auto trigger()
+            {
+            }
+        };
+
+        namespace traits
+        {
+            template<typename TPltf>
+            struct EventHostManualTriggerType<experimental::DevGenericSycl<TPltf>>
+            {
+                using type = alpaka::test::EventHostManualTriggerSycl<TPltf>;
+            };
+
+            template<typename TPltf>
+            struct IsEventHostManualTriggerSupported<experimental::DevGenericSycl<TPltf>>
+            {
+                ALPAKA_FN_HOST static auto isSupported(experimental::DevGenericSycl<TPltf> const&) -> bool
+                {
+                    return false;
+                }
+            };
+        } // namespace traits
+    } // namespace test
+
+    namespace traits
+    {
+        template<typename TPltf>
+        struct Enqueue<
+            experimental::QueueGenericSyclBlocking<experimental::DevGenericSycl<TPltf>>,
+            test::EventHostManualTriggerSycl<TPltf>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(
+                experimental::QueueGenericSyclBlocking<experimental::DevGenericSycl<TPltf>>& queue,
+                test::EventHostManualTriggerSycl<TPltf>& event) -> void
+            {
+            }
+        };
+
+        template<typename TPltf>
+        struct Enqueue<
+            experimental::QueueGenericSyclNonBlocking<experimental::DevGenericSycl<TPltf>>,
+            test::EventHostManualTriggerSycl<TPltf>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(
+                experimental::QueueGenericSyclNonBlocking<experimental::DevGenericSycl<TPltf>>& queue,
+                test::EventHostManualTriggerSycl<TPltf>& event) -> void
+            {
+            }
+        };
+
+        template<typename TPltf>
+        struct IsComplete<test::EventHostManualTriggerSycl<TPltf>>
+        {
+            ALPAKA_FN_HOST static auto isComplete(test::EventHostManualTriggerSycl<TPltf> const& event) -> bool
+            {
+                return true;
+            }
+        };
+    } // namespace traits
+} // namespace alpaka
+#endif
