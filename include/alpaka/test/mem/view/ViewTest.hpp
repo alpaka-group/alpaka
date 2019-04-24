@@ -125,7 +125,7 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<typename TAcc, typename TIter>
             ALPAKA_FN_ACC void operator()(
-                TAcc const& /* acc */,
+                TAcc const& acc [[maybe_unused]], // used by SYCL back-end
                 bool* success,
                 TIter const& begin,
                 TIter const& end,
@@ -166,7 +166,7 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<typename TAcc, typename TIterA, typename TIterB>
             ALPAKA_FN_ACC void operator()(
-                TAcc const& /* acc */,
+                TAcc const& acc [[maybe_unused]], // used by SYCL back-end
                 bool* success,
                 TIterA beginA,
                 TIterA const& endA,

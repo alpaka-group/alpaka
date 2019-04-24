@@ -19,9 +19,8 @@
 
 # Vim project files
 .vimrc
-
-# Neovim project files
 .exrc
+tags
 
 # IDE & tmp build
 .idea/
@@ -29,6 +28,7 @@ cmake-build-*/
 .kdev?/
 *.kdev?
 spack-build*
+build/
 
 # Eclipse project files
 /.project
@@ -37,8 +37,11 @@ spack-build*
 
 # Visual Studio Code project files
 .vscode/
-.cache/
 
 # Visual Studio project files
 .vs/
 out
+
+# clangd files
+.cache/
+compile_commands.json
