@@ -132,11 +132,7 @@ namespace alpaka::trait
         static auto getAccDevProps(typename DevType<TAcc<TDim, TIdx>>::type const& dev) -> AccDevProps<TDim, TIdx>
         {
             auto const device = dev.getNativeHandle().first;
-            auto const max_threads_dim
-                = device.template get_info<sycl::info::device::max_work_item_sizes<TDim::value>>();
-            Vec<TDim, TIdx> max_threads_dim_vec{};
-            for(int i = 0; i < static_cast<int>(TDim::value); i++)
-                max_threads_dim_vec[i] = alpaka::core::clipCast<TIdx>(max_threads_dim[i]);
+            auto max_threads_dim = device.template get_info<sycl::info::device::max_work_item_sizes>();
             return {// m_multiProcessorCount
                     alpaka::core::clipCast<TIdx>(device.template get_info<sycl::info::device::max_compute_units>()),
                     // m_gridBlockExtentMax
