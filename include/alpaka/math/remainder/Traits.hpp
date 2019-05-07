@@ -51,7 +51,7 @@ namespace alpaka
         //! \tparam T The type of the object specializing Remainder.
         //! \tparam Tx The type of the first argument.
         //! \tparam Ty The type of the second argument.
-        //! \param remainder The object specializing Max.
+        //! \param remainder_ctx The object specializing Max.
         //! \param x The first argument.
         //! \param y The second argument.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -60,7 +60,7 @@ namespace alpaka
             typename Tx,
             typename Ty>
         ALPAKA_FN_HOST_ACC auto remainder(
-            T const & remainder,
+            T const & remainder_ctx,
             Tx const & x,
             Ty const & y)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
@@ -70,7 +70,7 @@ namespace alpaka
                 Tx,
                 Ty>
             ::remainder(
-                remainder,
+                remainder_ctx,
                 x,
                 y))
 #endif
@@ -81,7 +81,7 @@ namespace alpaka
                     Tx,
                     Ty>
                 ::remainder(
-                    remainder,
+                    remainder_ctx,
                     x,
                     y);
         }
@@ -108,13 +108,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto remainder(
-                    T const & remainder,
+                    T const & remainder_ctx,
                     Tx const & x,
                     Ty const & y)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::remainder(
-                        static_cast<typename T::RemainderBase const &>(remainder),
+                        static_cast<typename T::RemainderBase const &>(remainder_ctx),
                         x,
                         y))
 #endif
@@ -122,7 +122,7 @@ namespace alpaka
                     // Delegate the call to the base class.
                     return
                         math::remainder(
-                            static_cast<typename T::RemainderBase const &>(remainder),
+                            static_cast<typename T::RemainderBase const &>(remainder_ctx),
                             x,
                             y);
                 }

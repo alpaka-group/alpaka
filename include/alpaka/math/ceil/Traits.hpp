@@ -49,14 +49,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Ceil.
         //! \tparam TArg The arg type.
-        //! \param ceil The object specializing Ceil.
+        //! \param ceil_ctx The object specializing Ceil.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto ceil(
-            T const & ceil,
+            T const & ceil_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -64,7 +64,7 @@ namespace alpaka
                 T,
                 TArg>
             ::ceil(
-                ceil,
+                ceil_ctx,
                 arg))
 #endif
         {
@@ -73,7 +73,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::ceil(
-                    ceil,
+                    ceil_ctx,
                     arg);
         }
 
@@ -97,19 +97,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto ceil(
-                    T const & ceil,
+                    T const & ceil_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::ceil(
-                        static_cast<typename T::CeilBase const &>(ceil),
+                        static_cast<typename T::CeilBase const &>(ceil_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::ceil(
-                            static_cast<typename T::CeilBase const &>(ceil),
+                            static_cast<typename T::CeilBase const &>(ceil_ctx),
                             arg);
                 }
             };

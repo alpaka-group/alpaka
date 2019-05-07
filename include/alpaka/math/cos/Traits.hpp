@@ -49,14 +49,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Cos.
         //! \tparam TArg The arg type.
-        //! \param cos The object specializing Cos.
+        //! \param cos_ctx The object specializing Cos.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto cos(
-            T const & cos,
+            T const & cos_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -64,7 +64,7 @@ namespace alpaka
                 T,
                 TArg>
             ::cos(
-                cos,
+                cos_ctx,
                 arg))
 #endif
         {
@@ -73,7 +73,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::cos(
-                    cos,
+                    cos_ctx,
                     arg);
         }
 
@@ -97,19 +97,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto cos(
-                    T const & cos,
+                    T const & cos_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::cos(
-                        static_cast<typename T::CosBase const &>(cos),
+                        static_cast<typename T::CosBase const &>(cos_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::cos(
-                            static_cast<typename T::CosBase const &>(cos),
+                            static_cast<typename T::CosBase const &>(cos_ctx),
                             arg);
                 }
             };

@@ -51,14 +51,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Abs.
         //! \tparam TArg The arg type.
-        //! \param abs The object specializing Abs.
+        //! \param abs_ctx The object specializing Abs.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto abs(
-            T const & abs,
+            T const & abs_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -66,7 +66,7 @@ namespace alpaka
                 T,
                 TArg>
             ::abs(
-                abs,
+                abs_ctx,
                 arg))
 #endif
         {
@@ -75,7 +75,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::abs(
-                    abs,
+                    abs_ctx,
                     arg);
         }
 
@@ -99,19 +99,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto abs(
-                    T const & abs,
+                    T const & abs_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::abs(
-                        static_cast<typename T::AbsBase const &>(abs),
+                        static_cast<typename T::AbsBase const &>(abs_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::abs(
-                            static_cast<typename T::AbsBase const &>(abs),
+                            static_cast<typename T::AbsBase const &>(abs_ctx),
                             arg);
                 }
             };
