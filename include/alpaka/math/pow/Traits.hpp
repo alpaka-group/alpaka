@@ -40,7 +40,7 @@ namespace alpaka
         //! \tparam T The type of the object specializing Pow.
         //! \tparam TBase The base type.
         //! \tparam TExp The exponent type.
-        //! \param pow The object specializing Pow.
+        //! \param pow_ctx The object specializing Pow.
         //! \param base The base.
         //! \param exp The exponent.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -49,7 +49,7 @@ namespace alpaka
             typename TBase,
             typename TExp>
         ALPAKA_FN_HOST_ACC auto pow(
-            T const & pow,
+            T const & pow_ctx,
             TBase const & base,
             TExp const & exp)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
@@ -59,7 +59,7 @@ namespace alpaka
                 TBase,
                 TExp>
             ::pow(
-                pow,
+                pow_ctx,
                 base,
                 exp))
 #endif
@@ -70,7 +70,7 @@ namespace alpaka
                     TBase,
                     TExp>
                 ::pow(
-                    pow,
+                    pow_ctx,
                     base,
                     exp);
         }
@@ -97,13 +97,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto pow(
-                    T const & pow,
+                    T const & pow_ctx,
                     TBase const & base,
                     TExp const & exp)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::pow(
-                        static_cast<typename T::PowBase const &>(pow),
+                        static_cast<typename T::PowBase const &>(pow_ctx),
                         base,
                         exp))
 #endif
@@ -111,7 +111,7 @@ namespace alpaka
                     // Delegate the call to the base class.
                     return
                         math::pow(
-                            static_cast<typename T::PowBase const &>(pow),
+                            static_cast<typename T::PowBase const &>(pow_ctx),
                             base,
                             exp);
                 }

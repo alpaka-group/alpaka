@@ -60,11 +60,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto sin(
-                    SinHipBuiltIn const & /*sin*/,
+                    SinHipBuiltIn const & sin_ctx,
                     TArg const & arg)
                 -> decltype(::sin(arg))
                 {
-                    //boost::ignore_unused(sin);
+                    alpaka::ignore_unused(sin_ctx);
                     return ::sin(arg);
                 }
             };

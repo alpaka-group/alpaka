@@ -63,12 +63,12 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 __device__ static auto min(
-                    MinHipBuiltIn const & /*min*/,
+                    MinHipBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::min(x, y))
                 {
-                    //boost::ignore_unused(min);
+                    alpaka::ignore_unused(min_ctx);
                     return ::min(x, y);
                 }
             };
@@ -88,12 +88,12 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 __device__ static auto max(
-                    MinHipBuiltIn const & /*min*/,
+                    MinHipBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::fmin(x, y))
                 {
-                    //boost::ignore_unused(min);
+                    alpaka::ignore_unused(min_ctx);
                     return ::fmin(x, y);
                 }
             };

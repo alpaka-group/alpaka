@@ -37,14 +37,14 @@ namespace alpaka
         //! Computes the principal value of the arc cosine.
         //!
         //! \tparam TArg The arg type.
-        //! \param acos The object specializing Acos.
+        //! \param acos_ctx The object specializing Acos.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto acos(
-            T const & acos,
+            T const & acos_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -52,7 +52,7 @@ namespace alpaka
                 T,
                 TArg>
             ::acos(
-                acos,
+                acos_ctx,
                 arg))
 #endif
         {
@@ -61,7 +61,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::acos(
-                    acos,
+                    acos_ctx,
                     arg);
         }
 
@@ -85,19 +85,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto acos(
-                    T const & acos,
+                    T const & acos_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::acos(
-                        static_cast<typename T::AcosBase const &>(acos),
+                        static_cast<typename T::AcosBase const &>(acos_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::acos(
-                            static_cast<typename T::AcosBase const &>(acos),
+                            static_cast<typename T::AcosBase const &>(acos_ctx),
                             arg);
                 }
             };

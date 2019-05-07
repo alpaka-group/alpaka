@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto asin(
-                    AsinStdLib const & asin,
+                    AsinStdLib const & asin_ctx,
                     TArg const & arg)
                 -> decltype(std::asin(arg))
                 {
-                    alpaka::ignore_unused(asin);
+                    alpaka::ignore_unused(asin_ctx);
                     return std::asin(arg);
                 }
             };

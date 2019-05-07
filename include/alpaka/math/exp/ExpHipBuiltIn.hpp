@@ -59,11 +59,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto exp(
-                    ExpHipBuiltIn const & /*exp*/,
+                    ExpHipBuiltIn const & exp_ctx,
                     TArg const & arg)
                 -> decltype(::exp(arg))
                 {
-                    //boost::ignore_unused(exp);
+                    alpaka::ignore_unused(exp_ctx);
                     return ::exp(arg);
                 }
             };

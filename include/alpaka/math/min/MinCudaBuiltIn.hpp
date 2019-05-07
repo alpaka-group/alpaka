@@ -54,12 +54,12 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 __device__ static auto min(
-                    MinCudaBuiltIn const & min,
+                    MinCudaBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::min(x, y))
                 {
-                    alpaka::ignore_unused(min);
+                    alpaka::ignore_unused(min_ctx);
                     return ::min(x, y);
                 }
             };
@@ -79,12 +79,12 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 __device__ static auto min(
-                    MinCudaBuiltIn const & min,
+                    MinCudaBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::fmin(x, y))
                 {
-                    alpaka::ignore_unused(min);
+                    alpaka::ignore_unused(min_ctx);
                     return ::fmin(x, y);
                 }
             };

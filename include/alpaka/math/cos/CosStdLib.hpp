@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto cos(
-                    CosStdLib const & cos,
+                    CosStdLib const & cos_ctx,
                     TArg const & arg)
                 -> decltype(std::cos(arg))
                 {
-                    alpaka::ignore_unused(cos);
+                    alpaka::ignore_unused(cos_ctx);
                     return std::cos(arg);
                 }
             };

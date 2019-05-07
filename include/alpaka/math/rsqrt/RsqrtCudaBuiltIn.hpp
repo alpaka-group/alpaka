@@ -50,11 +50,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 __device__ static auto rsqrt(
-                    RsqrtCudaBuiltIn const & rsqrt,
+                    RsqrtCudaBuiltIn const & rsqrt_ctx,
                     TArg const & arg)
                 -> decltype(::rsqrt(arg))
                 {
-                    alpaka::ignore_unused(rsqrt);
+                    alpaka::ignore_unused(rsqrt_ctx);
                     return ::rsqrt(arg);
                 }
             };

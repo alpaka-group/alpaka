@@ -62,12 +62,12 @@ namespace alpaka
                     && std::is_floating_point<Ty>::value>::type>
             {
                 __device__ static auto fmod(
-                    FmodHipBuiltIn const & /*fmod*/,
+                    FmodHipBuiltIn const & fmod_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::fmod(x, y))
                 {
-                    //boost::ignore_unused(fmod);
+                    alpaka::ignore_unused(fmod_ctx);
                     return ::fmod(x, y);
                 }
             };

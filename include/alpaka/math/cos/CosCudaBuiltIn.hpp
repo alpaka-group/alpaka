@@ -50,11 +50,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto cos(
-                    CosCudaBuiltIn const & cos,
+                    CosCudaBuiltIn const & cos_ctx,
                     TArg const & arg)
                 -> decltype(::cos(arg))
                 {
-                    alpaka::ignore_unused(cos);
+                    alpaka::ignore_unused(cos_ctx);
                     return ::cos(arg);
                 }
             };

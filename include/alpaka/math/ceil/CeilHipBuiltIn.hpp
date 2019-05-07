@@ -59,11 +59,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto ceil(
-                    CeilHipBuiltIn const & /*ceil*/,
+                    CeilHipBuiltIn const & ceil_ctx,
                     TArg const & arg)
                 -> decltype(::ceil(arg))
                 {
-                    //boost::ignore_unused(ceil);
+                    alpaka::ignore_unused(ceil_ctx);
                     return ::ceil(arg);
                 }
             };

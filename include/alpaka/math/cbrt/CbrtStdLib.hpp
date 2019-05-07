@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto cbrt(
-                    CbrtStdLib const & cbrt,
+                    CbrtStdLib const & cbrt_ctx,
                     TArg const & arg)
                 -> decltype(std::cbrt(arg))
                 {
-                    alpaka::ignore_unused(cbrt);
+                    alpaka::ignore_unused(cbrt_ctx);
                     return std::cbrt(arg);
                 }
             };

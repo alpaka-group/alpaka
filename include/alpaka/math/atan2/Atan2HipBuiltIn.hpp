@@ -62,12 +62,12 @@ namespace alpaka
                     && std::is_floating_point<Tx>::value>::type>
             {
                 __device__ static auto atan2(
-                    Atan2HipBuiltIn const & /*abs*/,
+                    Atan2HipBuiltIn const & atan2_ctx,
                     Ty const & y,
                     Tx const & x)
                 -> decltype(::atan2(y, x))
                 {
-                    //boost::ignore_unused(abs);
+                    alpaka::ignore_unused(atan2_ctx);
                     return ::atan2(y, x);
                 }
             };

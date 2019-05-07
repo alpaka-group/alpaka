@@ -37,14 +37,14 @@ namespace alpaka
         //! Computes the principal value of the arc tangent.
         //!
         //! \tparam TArg The arg type.
-        //! \param atan The object specializing Atan.
+        //! \param atan_ctx The object specializing Atan.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto atan(
-            T const & atan,
+            T const & atan_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -52,7 +52,7 @@ namespace alpaka
                 T,
                 TArg>
             ::atan(
-                atan,
+                atan_ctx,
                 arg))
 #endif
         {
@@ -61,7 +61,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::atan(
-                    atan,
+                    atan_ctx,
                     arg);
         }
 
@@ -85,19 +85,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto atan(
-                    T const & atan,
+                    T const & atan_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::atan(
-                        static_cast<typename T::AtanBase const &>(atan),
+                        static_cast<typename T::AtanBase const &>(atan_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::atan(
-                            static_cast<typename T::AtanBase const &>(atan),
+                            static_cast<typename T::AtanBase const &>(atan_ctx),
                             arg);
                 }
             };

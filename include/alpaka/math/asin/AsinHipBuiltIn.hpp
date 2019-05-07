@@ -58,11 +58,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto asin(
-                    AsinHipBuiltIn const & /*asin*/,
+                    AsinHipBuiltIn const & asin_ctx,
                     TArg const & arg)
                 -> decltype(::asin(arg))
                 {
-                    //boost::ignore_unused(asin);
+                    alpaka::ignore_unused(asin_ctx);
                     return ::asin(arg);
                 }
             };

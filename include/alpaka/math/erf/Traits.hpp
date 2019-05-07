@@ -38,14 +38,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Erf.
         //! \tparam TArg The arg type.
-        //! \param erf The object specializing Erf.
+        //! \param erf_ctx The object specializing Erf.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto erf(
-            T const & erf,
+            T const & erf_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -53,7 +53,7 @@ namespace alpaka
                 T,
                 TArg>
             ::erf(
-                erf,
+                erf_ctx,
                 arg))
 #endif
         {
@@ -62,7 +62,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::erf(
-                    erf,
+                    erf_ctx,
                     arg);
         }
 
@@ -86,19 +86,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto erf(
-                    T const & erf,
+                    T const & erf_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::erf(
-                        static_cast<typename T::ErfBase const &>(erf),
+                        static_cast<typename T::ErfBase const &>(erf_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::erf(
-                            static_cast<typename T::ErfBase const &>(erf),
+                            static_cast<typename T::ErfBase const &>(erf_ctx),
                             arg);
                 }
             };

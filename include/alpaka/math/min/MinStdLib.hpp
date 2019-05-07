@@ -46,12 +46,12 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 ALPAKA_FN_HOST static auto min(
-                    MinStdLib const & min,
+                    MinStdLib const & min_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::min(x, y))
                 {
-                    alpaka::ignore_unused(min);
+                    alpaka::ignore_unused(min_ctx);
                     return std::min(x, y);
                 }
             };
@@ -71,12 +71,12 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 ALPAKA_FN_HOST static auto min(
-                    MinStdLib const & min,
+                    MinStdLib const & min_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::fmin(x, y))
                 {
-                    alpaka::ignore_unused(min);
+                    alpaka::ignore_unused(min_ctx);
                     return std::fmin(x, y);
                 }
             };

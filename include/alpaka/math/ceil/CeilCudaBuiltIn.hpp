@@ -50,11 +50,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto ceil(
-                    CeilCudaBuiltIn const & ceil,
+                    CeilCudaBuiltIn const & ceil_ctx,
                     TArg const & arg)
                 -> decltype(::ceil(arg))
                 {
-                    alpaka::ignore_unused(ceil);
+                    alpaka::ignore_unused(ceil_ctx);
                     return ::ceil(arg);
                 }
             };

@@ -59,11 +59,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto trunc(
-                    TruncHipBuiltIn const & /*trunc*/,
+                    TruncHipBuiltIn const & trunc_ctx,
                     TArg const & arg)
                 -> decltype(::trunc(arg))
                 {
-                    //boost::ignore_unused(trunc);
+                    alpaka::ignore_unused(trunc_ctx);
                     return ::trunc(arg);
                 }
             };

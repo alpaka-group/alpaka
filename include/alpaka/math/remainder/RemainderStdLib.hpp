@@ -45,12 +45,12 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 ALPAKA_FN_HOST static auto remainder(
-                    RemainderStdLib const & remainder,
+                    RemainderStdLib const & remainder_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::remainder(x, y))
                 {
-                    alpaka::ignore_unused(remainder);
+                    alpaka::ignore_unused(remainder_ctx);
                     return std::remainder(x, y);
                 }
             };

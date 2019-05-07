@@ -60,11 +60,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 __device__ static auto rsqrt(
-                    RsqrtHipBuiltIn const & /*rsqrt*/,
+                    RsqrtHipBuiltIn const & rsqrt_ctx,
                     TArg const & arg)
                 -> decltype(::rsqrt(arg))
                 {
-                    //boost::ignore_unused(rsqrt);
+                    alpaka::ignore_unused(rsqrt_ctx);
                     return ::rsqrt(arg);
                 }
             };

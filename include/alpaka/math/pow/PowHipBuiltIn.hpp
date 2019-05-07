@@ -63,12 +63,12 @@ namespace alpaka
                     && std::is_floating_point<TExp>::value>::type>
             {
                 __device__ static auto pow(
-                    PowHipBuiltIn const & /*pow*/,
+                    PowHipBuiltIn const & pow_ctx,
                     TBase const & base,
                     TExp const & exp)
                 -> decltype(::pow(base, exp))
                 {
-                    //boost::ignore_unused(pow);
+                    alpaka::ignore_unused(pow_ctx);
                     return ::pow(base, exp);
                 }
             };

@@ -59,11 +59,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto floor(
-                    FloorHipBuiltIn const & /*floor*/,
+                    FloorHipBuiltIn const & floor_ctx,
                     TArg const & arg)
                 -> decltype(::floor(arg))
                 {
-                    //boost::ignore_unused(floor);
+                    alpaka::ignore_unused(floor_ctx);
                     return ::floor(arg);
                 }
             };

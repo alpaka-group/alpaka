@@ -45,12 +45,12 @@ namespace alpaka
                     && std::is_arithmetic<Ty>::value>::type>
             {
                 ALPAKA_FN_HOST static auto fmod(
-                    FmodStdLib const & fmod,
+                    FmodStdLib const & fmod_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::fmod(x, y))
                 {
-                    alpaka::ignore_unused(fmod);
+                    alpaka::ignore_unused(fmod_ctx);
                     return std::fmod(x, y);
                 }
             };

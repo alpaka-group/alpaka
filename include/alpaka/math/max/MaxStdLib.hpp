@@ -46,12 +46,12 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 ALPAKA_FN_HOST static auto max(
-                    MaxStdLib const & max,
+                    MaxStdLib const & max_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::max(x, y))
                 {
-                    alpaka::ignore_unused(max);
+                    alpaka::ignore_unused(max_ctx);
                     return std::max(x, y);
                 }
             };
@@ -71,12 +71,12 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 ALPAKA_FN_HOST static auto max(
-                    MaxStdLib const & max,
+                    MaxStdLib const & max_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(std::fmax(x, y))
                 {
-                    alpaka::ignore_unused(max);
+                    alpaka::ignore_unused(max_ctx);
                     return std::fmax(x, y);
                 }
             };
