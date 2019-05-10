@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto acos(
-                    AcosStdLib const & acos,
+                    AcosStdLib const & acos_ctx,
                     TArg const & arg)
                 -> decltype(std::acos(arg))
                 {
-                    alpaka::ignore_unused(acos);
+                    alpaka::ignore_unused(acos_ctx);
                     return std::acos(arg);
                 }
             };

@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto floor(
-                    FloorStdLib const & floor,
+                    FloorStdLib const & floor_ctx,
                     TArg const & arg)
                 -> decltype(std::floor(arg))
                 {
-                    alpaka::ignore_unused(floor);
+                    alpaka::ignore_unused(floor_ctx);
                     return std::floor(arg);
                 }
             };

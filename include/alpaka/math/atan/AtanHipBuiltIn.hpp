@@ -58,11 +58,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto atan(
-                    AtanHipBuiltIn const & /*atan*/,
+                    AtanHipBuiltIn const & atan_ctx,
                     TArg const & arg)
                 -> decltype(::atan(arg))
                 {
-                    //boost::ignore_unused(atan);
+                    alpaka::ignore_unused(atan_ctx);
                     return ::atan(arg);
                 }
             };

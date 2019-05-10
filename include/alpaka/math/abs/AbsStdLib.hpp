@@ -44,11 +44,11 @@ namespace alpaka
                     && std::is_signed<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto abs(
-                    AbsStdLib const & abs,
+                    AbsStdLib const & abs_ctx,
                     TArg const & arg)
                 -> decltype(std::abs(arg))
                 {
-                    alpaka::ignore_unused(abs);
+                    alpaka::ignore_unused(abs_ctx);
                     return std::abs(arg);
                 }
             };

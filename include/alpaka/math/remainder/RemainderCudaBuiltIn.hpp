@@ -50,11 +50,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto remainder(
-                    RemainderCudaBuiltIn const & remainder,
+                    RemainderCudaBuiltIn const & remainder_ctx,
                     TArg const & arg)
                 -> decltype(::remainder(arg))
                 {
-                    alpaka::ignore_unused(remainder);
+                    alpaka::ignore_unused(remainder_ctx);
                     return ::remainder(arg);
                 }
             };

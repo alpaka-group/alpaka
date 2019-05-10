@@ -59,11 +59,11 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 __device__ static auto acos(
-                    AcosHipBuiltIn const & /*acos*/,
+                    AcosHipBuiltIn const & acos_ctx,
                     TArg const & arg)
                 -> decltype(::acos(arg))
                 {
-                    //boost::ignore_unused(acos);
+                    alpaka::ignore_unused(acos_ctx);
                     return ::acos(arg);
                 }
             };

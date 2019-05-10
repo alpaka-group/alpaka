@@ -13,6 +13,7 @@
 #include <alpaka/meta/IsStrictBase.hpp>
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <boost/config.hpp>
 
@@ -54,14 +55,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Round.
         //! \tparam TArg The arg type.
-        //! \param round The object specializing Round.
+        //! \param round_ctx The object specializing Round.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto round(
-            T const & round,
+            T const & round_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -69,7 +70,7 @@ namespace alpaka
                 T,
                 TArg>
             ::round(
-                round,
+                round_ctx,
                 arg))
 #endif
         {
@@ -78,7 +79,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::round(
-                    round,
+                    round_ctx,
                     arg);
         }
         //-----------------------------------------------------------------------------
@@ -86,14 +87,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Round.
         //! \tparam TArg The arg type.
-        //! \param lround The object specializing Round.
+        //! \param lround_ctx The object specializing Round.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto lround(
-            T const & lround,
+            T const & lround_ctx,
             TArg const & arg)
         -> long int
         {
@@ -102,7 +103,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::lround(
-                    lround,
+                    lround_ctx,
                     arg);
         }
         //-----------------------------------------------------------------------------
@@ -110,14 +111,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Round.
         //! \tparam TArg The arg type.
-        //! \param llround The object specializing Round.
+        //! \param llround_ctx The object specializing Round.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto llround(
-            T const & llround,
+            T const & llround_ctx,
             TArg const & arg)
         -> long long int
         {
@@ -126,7 +127,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::llround(
-                    llround,
+                    llround_ctx,
                     arg);
         }
 
@@ -150,19 +151,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto round(
-                    T const & round,
+                    T const & round_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::round(
-                        static_cast<typename T::RoundBase const &>(round),
+                        static_cast<typename T::RoundBase const &>(round_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::round(
-                            static_cast<typename T::RoundBase const &>(round),
+                            static_cast<typename T::RoundBase const &>(round_ctx),
                             arg);
                 }
             };
@@ -184,19 +185,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto lround(
-                    T const & lround,
+                    T const & lround_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::lround(
-                        static_cast<typename T::RoundBase const &>(lround),
+                        static_cast<typename T::RoundBase const &>(lround_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::lround(
-                            static_cast<typename T::RoundBase const &>(lround),
+                            static_cast<typename T::RoundBase const &>(lround_ctx),
                             arg);
                 }
             };
@@ -218,19 +219,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto llround(
-                    T const & llround,
+                    T const & llround_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::llround(
-                        static_cast<typename T::RoundBase const &>(llround),
+                        static_cast<typename T::RoundBase const &>(llround_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::llround(
-                            static_cast<typename T::RoundBase const &>(llround),
+                            static_cast<typename T::RoundBase const &>(llround_ctx),
                             arg);
                 }
             };

@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto sin(
-                    SinStdLib const & sin,
+                    SinStdLib const & sin_ctx,
                     TArg const & arg)
                 -> decltype(std::sin(arg))
                 {
-                    alpaka::ignore_unused(sin);
+                    alpaka::ignore_unused(sin_ctx);
                     return std::sin(arg);
                 }
             };

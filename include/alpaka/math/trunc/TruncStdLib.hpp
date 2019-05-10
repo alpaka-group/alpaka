@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto trunc(
-                    TruncStdLib const & trunc,
+                    TruncStdLib const & trunc_ctx,
                     TArg const & arg)
                 -> decltype(std::trunc(arg))
                 {
-                    alpaka::ignore_unused(trunc);
+                    alpaka::ignore_unused(trunc_ctx);
                     return std::trunc(arg);
                 }
             };

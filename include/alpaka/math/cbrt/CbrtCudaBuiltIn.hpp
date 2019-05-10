@@ -49,12 +49,12 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 __device__ static auto cbrt(
-                    CbrtCudaBuiltIn const & cbrt,
+                    CbrtCudaBuiltIn const & cbrt_ctx,
                     TArg const & arg)
-                -> decltype(std::cbrt(arg))
+                -> decltype(::cbrt(arg))
                 {
-                    alpaka::ignore_unused(cbrt);
-                    return std::cbrt(arg);
+                    alpaka::ignore_unused(cbrt_ctx);
+                    return ::cbrt(arg);
                 }
             };
         }

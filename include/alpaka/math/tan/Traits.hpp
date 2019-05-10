@@ -38,14 +38,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Tan.
         //! \tparam TArg The arg type.
-        //! \param tan The object specializing Tan.
+        //! \param tan_ctx The object specializing Tan.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto tan(
-            T const & tan,
+            T const & tan_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -53,7 +53,7 @@ namespace alpaka
                 T,
                 TArg>
             ::tan(
-                tan,
+                tan_ctx,
                 arg))
 #endif
         {
@@ -62,7 +62,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::tan(
-                    tan,
+                    tan_ctx,
                     arg);
         }
 
@@ -87,19 +87,19 @@ namespace alpaka
                 //
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto tan(
-                    T const & tan,
+                    T const & tan_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::tan(
-                        static_cast<typename T::TanBase const &>(tan),
+                        static_cast<typename T::TanBase const &>(tan_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::tan(
-                            static_cast<typename T::TanBase const &>(tan),
+                            static_cast<typename T::TanBase const &>(tan_ctx),
                             arg);
                 }
             };

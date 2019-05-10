@@ -62,12 +62,12 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 __device__ static auto max(
-                    MaxHipBuiltIn const & /*max*/,
+                    MaxHipBuiltIn const & max_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::max(x, y))
                 {
-                    //boost::ignore_unused(max);
+                    alpaka::ignore_unused(max_ctx);
                     return ::max(x, y);
                 }
             };
@@ -87,12 +87,12 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 __device__ static auto max(
-                    MaxHipBuiltIn const & /*max*/,
+                    MaxHipBuiltIn const & max_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::fmax(x, y))
                 {
-                    //boost::ignore_unused(max);
+                    alpaka::ignore_unused(max_ctx);
                     return ::fmax(x, y);
                 }
             };

@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto round(
-                    RoundStdLib const & round,
+                    RoundStdLib const & round_ctx,
                     TArg const & arg)
                 -> decltype(std::round(arg))
                 {
-                    alpaka::ignore_unused(round);
+                    alpaka::ignore_unused(round_ctx);
                     return std::round(arg);
                 }
             };
@@ -61,11 +61,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto lround(
-                    RoundStdLib const & lround,
+                    RoundStdLib const & lround_ctx,
                     TArg const & arg)
                 -> long int
                 {
-                    alpaka::ignore_unused(lround);
+                    alpaka::ignore_unused(lround_ctx);
                     return std::lround(arg);
                 }
             };
@@ -80,11 +80,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto llround(
-                    RoundStdLib const & llround,
+                    RoundStdLib const & llround_ctx,
                     TArg const & arg)
                 -> long int
                 {
-                    alpaka::ignore_unused(llround);
+                    alpaka::ignore_unused(llround_ctx);
                     return std::llround(arg);
                 }
             };

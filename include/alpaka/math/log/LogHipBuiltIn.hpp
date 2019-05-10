@@ -59,11 +59,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto log(
-                    LogHipBuiltIn const & /*log*/,
+                    LogHipBuiltIn const & log_ctx,
                     TArg const & arg)
                 -> decltype(::log(arg))
                 {
-                    //boost::ignore_unused(log);
+                    alpaka::ignore_unused(log_ctx);
                     return ::log(arg);
                 }
             };

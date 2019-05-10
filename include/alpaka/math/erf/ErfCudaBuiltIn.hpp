@@ -50,11 +50,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto erf(
-                    ErfCudaBuiltIn const & erf,
+                    ErfCudaBuiltIn const & erf_ctx,
                     TArg const & arg)
                 -> decltype(::erf(arg))
                 {
-                    alpaka::ignore_unused(erf);
+                    alpaka::ignore_unused(erf_ctx);
                     return ::erf(arg);
                 }
             };

@@ -50,11 +50,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto abs(
-                    AbsCudaBuiltIn const & abs,
+                    AbsCudaBuiltIn const & abs_ctx,
                     TArg const & arg)
                 -> decltype(::abs(arg))
                 {
-                    alpaka::ignore_unused(abs);
+                    alpaka::ignore_unused(abs_ctx);
                     return ::abs(arg);
                 }
             };

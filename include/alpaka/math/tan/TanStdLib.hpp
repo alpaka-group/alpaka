@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto tan(
-                    TanStdLib const & tan,
+                    TanStdLib const & tan_ctx,
                     TArg const & arg)
                 -> decltype(std::tan(arg))
                 {
-                    alpaka::ignore_unused(tan);
+                    alpaka::ignore_unused(tan_ctx);
                     return std::tan(arg);
                 }
             };

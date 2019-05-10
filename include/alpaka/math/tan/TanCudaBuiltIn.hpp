@@ -50,11 +50,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto tan(
-                    TanCudaBuiltIn const & tan,
+                    TanCudaBuiltIn const & tan_ctx,
                     TArg const & arg)
                 -> decltype(::tan(arg))
                 {
-                    alpaka::ignore_unused(tan);
+                    alpaka::ignore_unused(tan_ctx);
                     return ::tanf(arg);
                 }
             };

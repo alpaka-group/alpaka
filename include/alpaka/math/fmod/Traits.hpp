@@ -40,7 +40,7 @@ namespace alpaka
         //! \tparam T The type of the object specializing Fmod.
         //! \tparam Tx The type of the first argument.
         //! \tparam Ty The type of the second argument.
-        //! \param fmod The object specializing Fmod.
+        //! \param fmod_ctx The object specializing Fmod.
         //! \param x The first argument.
         //! \param y The second argument.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -49,7 +49,7 @@ namespace alpaka
             typename Tx,
             typename Ty>
         ALPAKA_FN_HOST_ACC auto fmod(
-            T const & fmod,
+            T const & fmod_ctx,
             Tx const & x,
             Ty const & y)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
@@ -59,7 +59,7 @@ namespace alpaka
                 Tx,
                 Ty>
             ::fmod(
-                fmod,
+                fmod_ctx,
                 x,
                 y))
 #endif
@@ -70,7 +70,7 @@ namespace alpaka
                     Tx,
                     Ty>
                 ::fmod(
-                    fmod,
+                    fmod_ctx,
                     x,
                     y);
         }
@@ -95,19 +95,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto fmod(
-                    T const & fmod,
+                    T const & fmod_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::fmod(
-                        static_cast<typename T::FmodBase const &>(fmod),
+                        static_cast<typename T::FmodBase const &>(fmod_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::fmod(
-                            static_cast<typename T::FmodBase const &>(fmod),
+                            static_cast<typename T::FmodBase const &>(fmod_ctx),
                             arg);
                 }
             };

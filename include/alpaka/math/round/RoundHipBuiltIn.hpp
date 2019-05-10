@@ -60,11 +60,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto round(
-                    RoundHipBuiltIn const & /*round*/,
+                    RoundHipBuiltIn const & round_ctx,
                     TArg const & arg)
                 -> decltype(::round(arg))
                 {
-                    //boost::ignore_unused(round);
+                    alpaka::ignore_unused(round_ctx);
                     return ::round(arg);
                 }
             };
@@ -79,11 +79,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto lround(
-                    RoundHipBuiltIn const & /*lround*/,
+                    RoundHipBuiltIn const & lround_ctx,
                     TArg const & arg)
                 -> long int
                 {
-                    //boost::ignore_unused(lround);
+                    alpaka::ignore_unused(lround_ctx);
                     return ::lround(arg);
                 }
             };
@@ -98,11 +98,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto llround(
-                    RoundHipBuiltIn const & /*llround*/,
+                    RoundHipBuiltIn const & llround_ctx,
                     TArg const & arg)
                 -> long int
                 {
-                    //boost::ignore_unused(llround);
+                    alpaka::ignore_unused(llround_ctx);
                     return ::llround(arg);
                 }
             };

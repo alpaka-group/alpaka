@@ -45,12 +45,12 @@ namespace alpaka
                     && std::is_arithmetic<TExp>::value>::type>
             {
                 ALPAKA_FN_HOST static auto pow(
-                    PowStdLib const & pow,
+                    PowStdLib const & pow_ctx,
                     TBase const & base,
                     TExp const & exp)
                 -> decltype(std::pow(base, exp))
                 {
-                    alpaka::ignore_unused(pow);
+                    alpaka::ignore_unused(pow_ctx);
                     return std::pow(base, exp);
                 }
             };

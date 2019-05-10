@@ -60,11 +60,11 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 __device__ static auto sqrt(
-                    SqrtHipBuiltIn const & /*sqrt*/,
+                    SqrtHipBuiltIn const & sqrt_ctx,
                     TArg const & arg)
                 -> decltype(::sqrt(arg))
                 {
-                    //boost::ignore_unused(sqrt);
+                    alpaka::ignore_unused(sqrt_ctx);
                     return ::sqrt(arg);
                 }
             };

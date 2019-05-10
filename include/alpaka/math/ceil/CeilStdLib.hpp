@@ -42,11 +42,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_HOST static auto ceil(
-                    CeilStdLib const & ceil,
+                    CeilStdLib const & ceil_ctx,
                     TArg const & arg)
                 -> decltype(std::ceil(arg))
                 {
-                    alpaka::ignore_unused(ceil);
+                    alpaka::ignore_unused(ceil_ctx);
                     return std::ceil(arg);
                 }
             };
