@@ -18,6 +18,9 @@
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
+#include <atomic>
+#include <mutex>
+
 namespace alpaka
 {
     namespace event
@@ -48,7 +51,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     QueueCpuSyncImpl(QueueCpuSyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueCpuSyncImpl(QueueCpuSyncImpl &&) = default;
+                    QueueCpuSyncImpl(QueueCpuSyncImpl &&) = delete;
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueCpuSyncImpl const &) -> QueueCpuSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
@@ -58,7 +61,8 @@ namespace alpaka
 
                 public:
                     dev::DevCpu const m_dev;            //!< The device this queue is bound to.
-                    bool m_bCurrentlyExecutingTask;
+                    std::mutex mutable m_mutex;
+                    std::atomic<bool> m_bCurrentlyExecutingTask;
                 };
             }
         }
@@ -162,8 +166,12 @@ namespace alpaka
                     TTask const & task)
                 -> void
                 {
+                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
+
                     queue.m_spQueueImpl->m_bCurrentlyExecutingTask = true;
+
                     task();
+
                     queue.m_spQueueImpl->m_bCurrentlyExecutingTask = false;
                 }
             };
@@ -201,7 +209,7 @@ namespace alpaka
                     queue::QueueCpuSync const & queue)
                 -> void
                 {
-                    alpaka::ignore_unused(queue);
+                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
                 }
             };
         }
