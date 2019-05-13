@@ -38,6 +38,7 @@
 #include <alpaka/math/round/RoundCudaBuiltIn.hpp>
 #include <alpaka/math/rsqrt/RsqrtCudaBuiltIn.hpp>
 #include <alpaka/math/sin/SinCudaBuiltIn.hpp>
+#include <alpaka/math/sincos/SinCosCudaBuiltIn.hpp>
 #include <alpaka/math/sqrt/SqrtCudaBuiltIn.hpp>
 #include <alpaka/math/tan/TanCudaBuiltIn.hpp>
 #include <alpaka/math/trunc/TruncCudaBuiltIn.hpp>
@@ -71,6 +72,7 @@ namespace alpaka
             public RoundCudaBuiltIn,
             public RsqrtCudaBuiltIn,
             public SinCudaBuiltIn,
+            public SinCosCudaBuiltIn,
             public SqrtCudaBuiltIn,
             public TanCudaBuiltIn,
             public TruncCudaBuiltIn
