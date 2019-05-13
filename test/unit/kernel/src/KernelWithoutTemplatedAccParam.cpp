@@ -31,7 +31,7 @@
 
 using Dim = alpaka::dim::DimInt<2u>;
 using Idx = std::uint32_t;
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && !defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
+#if defined(ALPAKA_ACC_CPU_SERIAL_ENABLED)
 using AccCpu = alpaka::acc::AccCpuSerial<Dim, Idx>;
 #endif
 #if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
@@ -40,7 +40,7 @@ using AccGpu = alpaka::acc::AccGpuHipRt<Dim, Idx>;
 using AccGpu = alpaka::acc::AccGpuCudaRt<Dim, Idx>;
 #endif
 
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && !defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
+#if defined(ALPAKA_ACC_CPU_SERIAL_ENABLED)
 //#############################################################################
 struct KernelNoTemplateCpu
 {
@@ -99,7 +99,7 @@ TEST_CASE("kernelNoTemplateGpu", "[kernel]")
 }
 #endif*/
 
-#if !defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)  && !defined(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
+#if defined(ALPAKA_ACC_CPU_SERIAL_ENABLED)
 //#############################################################################
 struct KernelWithoutTemplateParamCpu
 {

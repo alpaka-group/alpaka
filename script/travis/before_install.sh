@@ -100,11 +100,11 @@ fi
 #   https://github.com/tensorflow/tensorflow/issues/10220
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
-    if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
+    if [ "${CXX}" == "g++" ]
     then
-        if [ "${CXX}" == "g++" ]
+        if (( "${ALPAKA_CI_GCC_VER_MAJOR}" == 5 ))
         then
-            if (( "${ALPAKA_CI_GCC_VER_MAJOR}" == 5 ))
+            if [ "${ALPAKA_CUDA_COMPILER}" == "nvcc" ]
             then
                 if [ "${CMAKE_BUILD_TYPE}" == "Release" ]
                 then
