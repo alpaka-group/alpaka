@@ -130,4 +130,5 @@ if [[ "$(docker images -q ${ALPAKA_CI_DOCKER_IMAGE_NAME} 2> /dev/null)" == "" ]]
     gzip -dc "${ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH}" | docker load
 fi
 
-docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" --rm "${ALPAKA_CI_DOCKER_IMAGE_NAME}" /bin/bash ./script/travis/run.sh
+# --cap-add SYS_PTRACE is required for LSAN to work
+docker run --cap-add SYS_PTRACE -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" --rm "${ALPAKA_CI_DOCKER_IMAGE_NAME}" /bin/bash ./script/travis/run.sh
