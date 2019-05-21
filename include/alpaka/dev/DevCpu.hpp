@@ -60,7 +60,7 @@ namespace alpaka
                 //! The CPU device implementation.
                 class DevCpuImpl
                 {
-                    friend queue::QueueCpuNonBlocking;                   // queue::QueueCpuNonBlocking::QueueCpuNonBlocking calls RegisterAsyncQueue.
+                    friend queue::QueueCpuNonBlocking;                   // queue::QueueCpuNonBlocking::QueueCpuNonBlocking calls RegisterNonBlockingQueue.
                 public:
                     //-----------------------------------------------------------------------------
                     DevCpuImpl() = default;
@@ -76,7 +76,7 @@ namespace alpaka
                     ~DevCpuImpl() = default;
 
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto GetAllAsyncQueueImpls() const
+                    ALPAKA_FN_HOST auto GetAllNonBlockingQueueImpls() const
                     -> std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>>
                     {
                         std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>> vspQueues;
@@ -103,7 +103,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Registers the given queue on this device.
                     //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                    ALPAKA_FN_HOST auto RegisterAsyncQueue(std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> spQueueImpl)
+                    ALPAKA_FN_HOST auto RegisterNonBlockingQueue(std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> spQueueImpl)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);

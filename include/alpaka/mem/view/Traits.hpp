@@ -305,7 +305,7 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            //! Sets the memory to the given value asynchronously.
+            //! Sets the memory to the given value.
             //!
             //! \param queue The queue to enqueue the view fill task into.
             //! \param view The memory view to fill.

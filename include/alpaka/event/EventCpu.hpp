@@ -178,7 +178,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU async device queue enqueue trait specialization.
+            //! The CPU non-blocking device queue enqueue trait specialization.
             template<>
             struct Enqueue<
                 std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>,
@@ -225,7 +225,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU async device queue enqueue trait specialization.
+            //! The CPU non-blocking device queue enqueue trait specialization.
             template<>
             struct Enqueue<
                 queue::QueueCpuNonBlocking,
@@ -243,7 +243,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU sync device queue enqueue trait specialization.
+            //! The CPU blocking device queue enqueue trait specialization.
             template<>
             struct Enqueue<
                 std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl>,
@@ -267,7 +267,7 @@ namespace alpaka
                         std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
                         ++spEventImpl->m_enqueueCount;
-                        // NOTE: Difference to async version: directly set the event state instead of enqueuing.
+                        // NOTE: Difference to non-blocking version: directly set the event state instead of enqueuing.
                         spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
 
                         spEventImpl->m_future = promise.get_future();
@@ -276,7 +276,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU sync device queue enqueue trait specialization.
+            //! The CPU blocking device queue enqueue trait specialization.
             template<>
             struct Enqueue<
                 queue::QueueCpuBlocking,
@@ -339,7 +339,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU async device queue event wait trait specialization.
+            //! The CPU non-blocking device queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
                 std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>,
@@ -379,7 +379,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU async device queue event wait trait specialization.
+            //! The CPU non-blocking device queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
                 queue::QueueCpuNonBlocking,
@@ -395,7 +395,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU sync device queue event wait trait specialization.
+            //! The CPU blocking device queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
                 std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl>,
@@ -412,12 +412,12 @@ namespace alpaka
                     // Copy the shared pointer of the event implementation.
                     // This is forwarded to the lambda that is enqueued into the queue to ensure that the event implementation is alive as long as it is enqueued.
                     auto spEventImpl(event.m_spEventImpl);
-                    // NOTE: Difference to async version: directly wait for event.
+                    // NOTE: Difference to non-blocking version: directly wait for event.
                     wait::wait(spEventImpl);
                 }
             };
             //#############################################################################
-            //! The CPU sync device queue event wait trait specialization.
+            //! The CPU blocking device queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
                 queue::QueueCpuBlocking,
@@ -433,7 +433,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU async device event wait trait specialization.
+            //! The CPU non-blocking device event wait trait specialization.
             //!
             //! Any future work submitted in any queue of this device will wait for event to complete before beginning execution.
             template<>
@@ -450,7 +450,7 @@ namespace alpaka
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
                     auto vspQueues(
-                        dev.m_spDevCpuImpl->GetAllAsyncQueueImpls());
+                        dev.m_spDevCpuImpl->GetAllNonBlockingQueueImpls());
 
                     // Let all the queues wait for this event.
                     // \TODO: This should be done atomically for all queues.
@@ -463,7 +463,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CPU async device queue thread wait trait specialization.
+            //! The CPU non-blocking device queue thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
             template<>

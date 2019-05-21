@@ -91,7 +91,7 @@ namespace alpaka
                 dev::DevCpu const & dev) :
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuNonBlockingImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterAsyncQueue(m_spQueueImpl);
+                dev.m_spDevCpuImpl->RegisterNonBlockingQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
             QueueCpuNonBlocking(QueueCpuNonBlocking const &) = default;
@@ -126,7 +126,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU async device queue device type trait specialization.
+            //! The CPU non-blocking device queue device type trait specialization.
             template<>
             struct DevType<
                 queue::QueueCpuNonBlocking>
@@ -134,7 +134,7 @@ namespace alpaka
                 using type = dev::DevCpu;
             };
             //#############################################################################
-            //! The CPU async device queue device get trait specialization.
+            //! The CPU non-blocking device queue device get trait specialization.
             template<>
             struct GetDev<
                 queue::QueueCpuNonBlocking>
@@ -154,7 +154,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU async device queue event type trait specialization.
+            //! The CPU non-blocking device queue event type trait specialization.
             template<>
             struct EventType<
                 queue::QueueCpuNonBlocking>
@@ -168,7 +168,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU async device queue enqueue trait specialization.
+            //! The CPU non-blocking device queue enqueue trait specialization.
             //! This default implementation for all tasks directly invokes the function call operator of the task.
             template<
                 typename TTask>
@@ -195,7 +195,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU async device queue test trait specialization.
+            //! The CPU non-blocking device queue test trait specialization.
             template<>
             struct Empty<
                 queue::QueueCpuNonBlocking>

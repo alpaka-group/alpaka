@@ -110,7 +110,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device queue device type trait specialization.
+            //! The CPU blocking device queue device type trait specialization.
             template<>
             struct DevType<
                 queue::QueueCpuBlocking>
@@ -118,7 +118,7 @@ namespace alpaka
                 using type = dev::DevCpu;
             };
             //#############################################################################
-            //! The CPU sync device queue device get trait specialization.
+            //! The CPU blocking device queue device get trait specialization.
             template<>
             struct GetDev<
                 queue::QueueCpuBlocking>
@@ -138,7 +138,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device queue event type trait specialization.
+            //! The CPU blocking device queue event type trait specialization.
             template<>
             struct EventType<
                 queue::QueueCpuBlocking>
@@ -152,7 +152,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device queue enqueue trait specialization.
+            //! The CPU blocking device queue enqueue trait specialization.
             //! This default implementation for all tasks directly invokes the function call operator of the task.
             template<
                 typename TTask>
@@ -176,7 +176,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU sync device queue test trait specialization.
+            //! The CPU blocking device queue test trait specialization.
             template<>
             struct Empty<
                 queue::QueueCpuBlocking>
@@ -197,7 +197,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device queue thread wait trait specialization.
+            //! The CPU blocking device queue thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
             template<>

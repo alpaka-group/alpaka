@@ -92,14 +92,14 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The sync queue trait.
+                //! The blocking queue trait.
                 template<
                     typename TQueue,
                     typename TSfinae = void>
                 struct IsBlockingQueue;
 
                 //#############################################################################
-                //! The sync queue trait specialization for a sync CPU queue.
+                //! The blocking queue trait specialization for a blocking CPU queue.
                 template<>
                 struct IsBlockingQueue<
                     alpaka::queue::QueueCpuBlocking>
@@ -108,7 +108,7 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The sync queue trait specialization for a async CPU queue.
+                //! The blocking queue trait specialization for a non-blocking CPU queue.
                 template<>
                 struct IsBlockingQueue<
                     alpaka::queue::QueueCpuNonBlocking>
@@ -122,7 +122,7 @@ namespace alpaka
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
                 //#############################################################################
-                //! The sync queue trait specialization for a sync CUDA RT queue.
+                //! The blocking queue trait specialization for a blocking CUDA RT queue.
                 template<>
                 struct IsBlockingQueue<
                     alpaka::queue::QueueCudaRtBlocking>
@@ -131,7 +131,7 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The sync queue trait specialization for a async CUDA RT queue.
+                //! The blocking queue trait specialization for a non-blocking CUDA RT queue.
                 template<>
                 struct IsBlockingQueue<
                     alpaka::queue::QueueCudaRtNonBlocking>
@@ -146,7 +146,7 @@ namespace alpaka
     #error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #endif
                 //#############################################################################
-                //! The sync queue trait specialization for a sync HIP RT queue.
+                //! The blocking queue trait specialization for a blocking HIP RT queue.
                 template<>
                 struct IsBlockingQueue<
                     alpaka::queue::QueueHipRtBlocking>
@@ -155,7 +155,7 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The sync queue trait specialization for a async HIP RT queue.
+                //! The blocking queue trait specialization for a non-blocking HIP RT queue.
                 template<>
                 struct IsBlockingQueue<
                     alpaka::queue::QueueHipRtNonBlocking>

@@ -111,7 +111,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The CUDA RT async queue.
+        //! The CUDA RT non-blocking queue.
         class QueueCudaRtNonBlocking final
         {
         public:
@@ -153,7 +153,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT async queue device type trait specialization.
+            //! The CUDA RT non-blocking queue device type trait specialization.
             template<>
             struct DevType<
                 queue::QueueCudaRtNonBlocking>
@@ -161,7 +161,7 @@ namespace alpaka
                 using type = dev::DevCudaRt;
             };
             //#############################################################################
-            //! The CUDA RT async queue device get trait specialization.
+            //! The CUDA RT non-blocking queue device get trait specialization.
             template<>
             struct GetDev<
                 queue::QueueCudaRtNonBlocking>
@@ -181,7 +181,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT async queue event type trait specialization.
+            //! The CUDA RT non-blocking queue event type trait specialization.
             template<>
             struct EventType<
                 queue::QueueCudaRtNonBlocking>
@@ -292,7 +292,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA RT async queue test trait specialization.
+            //! The CUDA RT non-blocking queue test trait specialization.
             template<>
             struct Empty<
                 queue::QueueCudaRtNonBlocking>
@@ -320,7 +320,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT async queue thread wait trait specialization.
+            //! The CUDA RT non-blocking queue thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
             template<>

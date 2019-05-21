@@ -51,7 +51,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The HIP RT async queue implementation.
+                //! The HIP RT non-blocking queue implementation.
                 class QueueHipRtNonBlockingImpl final
                 {
                 public:
@@ -112,7 +112,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The HIP RT async queue.
+        //! The HIP RT non-blocking queue.
         class QueueHipRtNonBlocking final
         {
         public:
@@ -154,7 +154,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT async queue device type trait specialization.
+            //! The HIP RT non-blocking queue device type trait specialization.
             template<>
             struct DevType<
                 queue::QueueHipRtNonBlocking>
@@ -162,7 +162,7 @@ namespace alpaka
                 using type = dev::DevHipRt;
             };
             //#############################################################################
-            //! The HIP RT async queue device get trait specialization.
+            //! The HIP RT non-blocking queue device get trait specialization.
             template<>
             struct GetDev<
                 queue::QueueHipRtNonBlocking>
@@ -182,7 +182,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT async queue event type trait specialization.
+            //! The HIP RT non-blocking queue event type trait specialization.
             template<>
             struct EventType<
                 queue::QueueHipRtNonBlocking>
@@ -196,7 +196,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT sync queue enqueue trait specialization.
+            //! The HIP RT blocking queue enqueue trait specialization.
             template<
                 typename TTask>
             struct Enqueue<
@@ -302,7 +302,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP RT async queue test trait specialization.
+            //! The HIP RT non-blocking queue test trait specialization.
             template<>
             struct Empty<
                 queue::QueueHipRtNonBlocking>
@@ -336,7 +336,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT async queue thread wait trait specialization.
+            //! The HIP RT non-blocking queue thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
             template<>

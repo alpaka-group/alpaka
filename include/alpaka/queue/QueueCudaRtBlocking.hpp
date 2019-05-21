@@ -51,7 +51,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The CUDA RT sync queue implementation.
+                //! The CUDA RT blocking queue implementation.
                 class QueueCudaRtBlocking final
                 {
                 public:
@@ -111,7 +111,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The CUDA RT sync queue.
+        //! The CUDA RT blocking queue.
         class QueueCudaRtBlocking final
         {
         public:
@@ -153,7 +153,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT sync queue device type trait specialization.
+            //! The CUDA RT blocking queue device type trait specialization.
             template<>
             struct DevType<
                 queue::QueueCudaRtBlocking>
@@ -161,7 +161,7 @@ namespace alpaka
                 using type = dev::DevCudaRt;
             };
             //#############################################################################
-            //! The CUDA RT sync queue device get trait specialization.
+            //! The CUDA RT blocking queue device get trait specialization.
             template<>
             struct GetDev<
                 queue::QueueCudaRtBlocking>
@@ -181,7 +181,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT sync queue event type trait specialization.
+            //! The CUDA RT blocking queue event type trait specialization.
             template<>
             struct EventType<
                 queue::QueueCudaRtBlocking>
@@ -195,7 +195,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT sync queue enqueue trait specialization.
+            //! The CUDA RT blocking queue enqueue trait specialization.
             template<
                 typename TTask>
             struct Enqueue<
@@ -292,7 +292,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA RT sync queue test trait specialization.
+            //! The CUDA RT blocking queue test trait specialization.
             template<>
             struct Empty<
                 queue::QueueCudaRtBlocking>
@@ -320,7 +320,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT sync queue thread wait trait specialization.
+            //! The CUDA RT blocking queue thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
             template<>

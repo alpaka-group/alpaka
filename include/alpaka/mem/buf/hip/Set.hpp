@@ -128,7 +128,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP async device queue 1D set enqueue trait specialization.
+            //! The HIP non-blocking device queue 1D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
@@ -184,7 +184,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP sync device queue 1D set enqueue trait specialization.
+            //! The HIP blocking device queue 1D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
@@ -241,7 +241,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP async device queue 2D set enqueue trait specialization.
+            //! The HIP non-blocking device queue 2D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
@@ -303,7 +303,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP sync device queue 2D set enqueue trait specialization.
+            //! The HIP blocking device queue 2D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
@@ -364,7 +364,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP async device queue 3D set enqueue trait specialization.
+            //! The HIP non-blocking device queue 3D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
@@ -444,7 +444,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP sync device queue 3D set enqueue trait specialization.
+            //! The HIP blocking device queue 3D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>

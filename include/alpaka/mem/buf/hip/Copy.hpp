@@ -637,7 +637,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP async device queue 1D copy enqueue trait specialization.
+            //! The HIP non-blocking device queue 1D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -702,7 +702,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP sync device queue 1D copy enqueue trait specialization.
+            //! The HIP blocking device queue 1D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -764,7 +764,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP async device queue 2D copy enqueue trait specialization.
+            //! The HIP non-blocking device queue 2D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -830,7 +830,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP sync device queue 2D copy enqueue trait specialization.
+            //! The HIP blocking device queue 2D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -895,7 +895,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP async device queue 3D copy enqueue trait specialization.
+            //! The HIP non-blocking device queue 3D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -947,7 +947,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP sync device queue 3D copy enqueue trait specialization.
+            //! The HIP blocking device queue 3D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,

@@ -81,7 +81,7 @@ namespace alpaka
                         std::is_same<typename std::result_of<
                             TKernelFnObj(acc::AccGpuHipRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
                         "The TKernelFnObj is required to return void!");
-                    
+
                     acc::AccGpuHipRt<TDim, TIdx> acc(threadElemExtent);
 
                     kernelFnObj(
@@ -283,7 +283,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP asynchronous kernel enqueue trait specialization.
+            //! The HIP non-blocking kernel enqueue trait specialization.
             template<
                 typename TDim,
                 typename TIdx,

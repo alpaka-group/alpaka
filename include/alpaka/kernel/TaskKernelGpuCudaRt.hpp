@@ -280,7 +280,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA asynchronous kernel enqueue trait specialization.
+            //! The CUDA non-blocking kernel enqueue trait specialization.
             template<
                 typename TDim,
                 typename TIdx,

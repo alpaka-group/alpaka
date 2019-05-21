@@ -751,7 +751,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA async device queue 1D copy enqueue trait specialization.
+            //! The CUDA non-blocking device queue 1D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -818,7 +818,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA sync device queue 1D copy enqueue trait specialization.
+            //! The CUDA blocking device queue 1D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -883,7 +883,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA async device queue 2D copy enqueue trait specialization.
+            //! The CUDA non-blocking device queue 2D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -959,7 +959,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA sync device queue 2D copy enqueue trait specialization.
+            //! The CUDA blocking device queue 2D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -1033,7 +1033,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA async device queue 3D copy enqueue trait specialization.
+            //! The CUDA non-blocking device queue 3D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
@@ -1095,7 +1095,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA sync device queue 3D copy enqueue trait specialization.
+            //! The CUDA blocking device queue 3D copy enqueue trait specialization.
             template<
                 typename TExtent,
                 typename TViewSrc,
