@@ -49,14 +49,14 @@ void operator()()
         alpaka::event::Event<Queue> e1(f1.m_dev);
         alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
 
-        if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+        if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
         {
             alpaka::queue::enqueue(q1, k1);
         }
 
         alpaka::queue::enqueue(q1, e1);
 
-        if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+        if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
         {
             REQUIRE(alpaka::event::test(e1) == false);
 
@@ -84,7 +84,7 @@ void operator()()
     using Queue = typename Fixture::Queue;
     using Dev = typename Fixture::Dev;
 
-    if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+    if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
     {
         Fixture f1;
         if(alpaka::test::event::isEventHostManualTriggerSupported(f1.m_dev))
@@ -146,7 +146,7 @@ void operator()()
     using Queue = typename Fixture::Queue;
     using Dev = typename Fixture::Dev;
 
-    if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+    if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
     {
         Fixture f1;
         Fixture f2;
@@ -225,7 +225,7 @@ void operator()()
     using Queue = typename Fixture::Queue;
     using Dev = typename Fixture::Dev;
 
-    if(!alpaka::test::queue::IsSyncQueue<Queue>::value)
+    if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
     {
         Fixture f1;
         Fixture f2;

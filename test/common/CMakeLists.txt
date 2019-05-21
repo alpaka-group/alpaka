@@ -20,7 +20,7 @@ SET(_COMMON_SOURCE_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/src")
 append_recursive_files_add_to_src_group("${_COMMON_INCLUDE_DIRECTORY}" "${_COMMON_INCLUDE_DIRECTORY}" "hpp" _COMMON_FILES_HEADER)
 append_recursive_files_add_to_src_group("${_COMMON_SOURCE_DIRECTORY}" "${_COMMON_SOURCE_DIRECTORY}" "cpp" _COMMON_FILES_SOURCE)
 
-INCLUDE("${ALPAKA_ROOT}cmake/dev.cmake")
+INCLUDE("${_ALPAKA_ROOT_DIR}/cmake/dev.cmake")
 LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
 IF(MSVC)
     LIST(APPEND _COMMON_COMPILE_OPTIONS_PUBLIC "/wd4996")   # This function or variable may be unsafe. Consider using <safe_version> instead.

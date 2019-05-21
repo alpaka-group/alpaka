@@ -30,8 +30,8 @@
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/dev/DevCudaRt.hpp>
 #include <alpaka/kernel/Traits.hpp>
-#include <alpaka/queue/QueueCudaRtAsync.hpp>
-#include <alpaka/queue/QueueCudaRtSync.hpp>
+#include <alpaka/queue/QueueCudaRtNonBlocking.hpp>
+#include <alpaka/queue/QueueCudaRtBlocking.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -287,12 +287,12 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                queue::QueueCudaRtAsync,
+                queue::QueueCudaRtNonBlocking,
                 kernel::TaskKernelGpuCudaRt<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtAsync & queue,
+                    queue::QueueCudaRtNonBlocking & queue,
                     kernel::TaskKernelGpuCudaRt<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {
@@ -409,12 +409,12 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                queue::QueueCudaRtSync,
+                queue::QueueCudaRtBlocking,
                 kernel::TaskKernelGpuCudaRt<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtSync & queue,
+                    queue::QueueCudaRtBlocking & queue,
                     kernel::TaskKernelGpuCudaRt<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {

@@ -69,7 +69,7 @@ auto main()
 
     // Define the accelerator
     using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
-    using Queue = alpaka::queue::QueueCpuSync;
+    using Queue = alpaka::queue::QueueCpuBlocking;
     using Dev = alpaka::dev::Dev<Acc>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
 

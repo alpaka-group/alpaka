@@ -23,8 +23,8 @@
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/queue/QueueCudaRtAsync.hpp>
-#include <alpaka/queue/QueueCudaRtSync.hpp>
+#include <alpaka/queue/QueueCudaRtNonBlocking.hpp>
+#include <alpaka/queue/QueueCudaRtBlocking.hpp>
 #include <alpaka/core/Cuda.hpp>
 
 #include <stdexcept>
@@ -195,12 +195,12 @@ namespace alpaka
             //! The CUDA RT queue enqueue trait specialization.
             template<>
             struct Enqueue<
-                queue::QueueCudaRtAsync,
+                queue::QueueCudaRtNonBlocking,
                 event::EventCudaRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtAsync & queue,
+                    queue::QueueCudaRtNonBlocking & queue,
                     event::EventCudaRt & event)
                 -> void
                 {
@@ -215,12 +215,12 @@ namespace alpaka
             //! The CUDA RT queue enqueue trait specialization.
             template<>
             struct Enqueue<
-                queue::QueueCudaRtSync,
+                queue::QueueCudaRtBlocking,
                 event::EventCudaRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtSync & queue,
+                    queue::QueueCudaRtBlocking & queue,
                     event::EventCudaRt & event)
                 -> void
                 {
@@ -262,12 +262,12 @@ namespace alpaka
             //! The CUDA RT queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                queue::QueueCudaRtAsync,
+                queue::QueueCudaRtNonBlocking,
                 event::EventCudaRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueCudaRtAsync & queue,
+                    queue::QueueCudaRtNonBlocking & queue,
                     event::EventCudaRt const & event)
                 -> void
                 {
@@ -283,12 +283,12 @@ namespace alpaka
             //! The CUDA RT queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                queue::QueueCudaRtSync,
+                queue::QueueCudaRtBlocking,
                 event::EventCudaRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueCudaRtSync & queue,
+                    queue::QueueCudaRtBlocking & queue,
                     event::EventCudaRt const & event)
                 -> void
                 {

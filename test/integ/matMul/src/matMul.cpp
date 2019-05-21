@@ -218,7 +218,7 @@ void operator()()
     using QueueAcc = alpaka::test::queue::DefaultQueue<alpaka::dev::Dev<TAcc>>;
     using PltfHost = alpaka::pltf::PltfCpu;
     using DevHost = alpaka::dev::Dev<PltfHost>;
-    using QueueHost = alpaka::queue::QueueCpuAsync;
+    using QueueHost = alpaka::queue::QueueCpuNonBlocking;
 
     // Create the kernel function object.
     MatMulKernel kernel;

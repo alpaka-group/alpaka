@@ -27,13 +27,13 @@ namespace alpaka
 {
     namespace queue
     {
-        class QueueCpuAsync;
+        class QueueCpuNonBlocking;
 
         namespace cpu
         {
             namespace detail
             {
-                class QueueCpuAsyncImpl;
+                class QueueCpuNonBlockingImpl;
             }
         }
     }
@@ -60,7 +60,7 @@ namespace alpaka
                 //! The CPU device implementation.
                 class DevCpuImpl
                 {
-                    friend queue::QueueCpuAsync;                   // queue::QueueCpuAsync::QueueCpuAsync calls RegisterAsyncQueue.
+                    friend queue::QueueCpuNonBlocking;                   // queue::QueueCpuNonBlocking::QueueCpuNonBlocking calls RegisterAsyncQueue.
                 public:
                     //-----------------------------------------------------------------------------
                     DevCpuImpl() = default;
@@ -77,9 +77,9 @@ namespace alpaka
 
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST auto GetAllAsyncQueueImpls() const
-                    -> std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl>>
+                    -> std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>>
                     {
-                        std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl>> vspQueues;
+                        std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>> vspQueues;
 
                         std::lock_guard<std::mutex> lk(m_Mutex);
 
@@ -103,7 +103,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Registers the given queue on this device.
                     //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                    ALPAKA_FN_HOST auto RegisterAsyncQueue(std::shared_ptr<queue::cpu::detail::QueueCpuAsyncImpl> spQueueImpl)
+                    ALPAKA_FN_HOST auto RegisterAsyncQueue(std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> spQueueImpl)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -116,7 +116,7 @@ namespace alpaka
 
                 private:
                     std::mutex mutable m_Mutex;
-                    std::vector<std::weak_ptr<queue::cpu::detail::QueueCpuAsyncImpl>> mutable m_queues;
+                    std::vector<std::weak_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>> mutable m_queues;
                 };
             }
         }

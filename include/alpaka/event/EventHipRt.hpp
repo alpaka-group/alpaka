@@ -23,8 +23,8 @@
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/queue/QueueHipRtAsync.hpp>
-#include <alpaka/queue/QueueHipRtSync.hpp>
+#include <alpaka/queue/QueueHipRtNonBlocking.hpp>
+#include <alpaka/queue/QueueHipRtBlocking.hpp>
 #include <alpaka/core/Hip.hpp>
 
 #include <stdexcept>
@@ -211,13 +211,13 @@ namespace alpaka
             //! The HIP RT queue enqueue trait specialization.
             template<>
             struct Enqueue<
-                queue::QueueHipRtAsync,
+                queue::QueueHipRtNonBlocking,
                 event::EventHipRt>
             {
                 //-----------------------------------------------------------------------------
 
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueHipRtAsync & queue,
+                    queue::QueueHipRtNonBlocking & queue,
                     event::EventHipRt & event)
                 -> void
                 {
@@ -232,13 +232,13 @@ namespace alpaka
             //! The HIP RT queue enqueue trait specialization.
             template<>
             struct Enqueue<
-                queue::QueueHipRtSync,
+                queue::QueueHipRtBlocking,
                 event::EventHipRt>
             {
                 //-----------------------------------------------------------------------------
 
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueHipRtSync & queue,
+                    queue::QueueHipRtBlocking & queue,
                     event::EventHipRt & event)
                 -> void
                 {
@@ -282,13 +282,13 @@ namespace alpaka
             //! The HIP RT queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                queue::QueueHipRtAsync,
+                queue::QueueHipRtNonBlocking,
                 event::EventHipRt>
             {
                 //-----------------------------------------------------------------------------
 
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueHipRtAsync & queue,
+                    queue::QueueHipRtNonBlocking & queue,
                     event::EventHipRt const & event)
                 -> void
                 {
@@ -304,13 +304,13 @@ namespace alpaka
             //! The HIP RT queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                queue::QueueHipRtSync,
+                queue::QueueHipRtBlocking,
                 event::EventHipRt>
             {
                 //-----------------------------------------------------------------------------
 
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueHipRtSync & queue,
+                    queue::QueueHipRtBlocking & queue,
                     event::EventHipRt const & event)
                 -> void
                 {

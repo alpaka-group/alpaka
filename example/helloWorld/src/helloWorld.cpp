@@ -103,10 +103,10 @@ auto main()
     // By exchanging the Acc and Queue types you can select where to execute the kernel.
 #if 1
     using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
-    using Queue = alpaka::queue::QueueCpuSync;
+    using Queue = alpaka::queue::QueueCpuBlocking;
 #else
     using Acc = alpaka::acc::AccGpuCudaRt<Dim, Idx>;
-    using Queue = alpaka::queue::QueueCudaRtSync;
+    using Queue = alpaka::queue::QueueCudaRtBlocking;
 #endif
     using Dev = alpaka::dev::Dev<Acc>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
@@ -131,7 +131,7 @@ auto main()
     // async and sync variants.
     // The example queue is a sync queue to a cpu device,
     // but it also exists an async queue for this
-    // device (QueueCpuAsync).
+    // device (QueueCpuNonBlocking).
     Queue queue(devAcc);
 
     // Define the work division
