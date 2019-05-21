@@ -49,7 +49,7 @@ IF(MSVC)
 ENDIF()
 IF(ALPAKA_USE_INTERNAL_CATCH2)
     target_include_directories(CatchMain SYSTEM PUBLIC
-        ${alpakaAll_SOURCE_DIR}/thirdParty/catch2/include)
+        ${CMAKE_CURRENT_LIST_DIR}/../thirdParty/catch2/include)
 ELSE()
     target_include_directories(CatchMain SYSTEM PUBLIC
         $<TARGET_PROPERTY:Catch2::Catch2,INTERFACE_INCLUDE_DIRECTORIES>)
