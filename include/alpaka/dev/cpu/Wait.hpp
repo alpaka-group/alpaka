@@ -40,9 +40,9 @@ namespace alpaka
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
                     auto vspQueues(
-                        dev.m_spDevCpuImpl->GetAllAsyncQueueImpls());
+                        dev.m_spDevCpuImpl->GetAllNonBlockingQueueImpls());
 
-                    // Enqueue an event in every asynchronous queue on the device.
+                    // Enqueue an event in every non-blocking queue on the device.
                     // \FIXME: This should be done atomically for all queues.
                     // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!
                     std::vector<event::EventCpu> vEvents;

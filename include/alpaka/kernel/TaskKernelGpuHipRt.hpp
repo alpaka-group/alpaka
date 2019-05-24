@@ -30,8 +30,8 @@
 #include <alpaka/acc/AccGpuHipRt.hpp>
 #include <alpaka/dev/DevHipRt.hpp>
 #include <alpaka/kernel/Traits.hpp>
-#include <alpaka/queue/QueueHipRtSync.hpp>
-#include <alpaka/queue/QueueHipRtAsync.hpp>
+#include <alpaka/queue/QueueHipRtBlocking.hpp>
+#include <alpaka/queue/QueueHipRtNonBlocking.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -81,7 +81,7 @@ namespace alpaka
                         std::is_same<typename std::result_of<
                             TKernelFnObj(acc::AccGpuHipRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
                         "The TKernelFnObj is required to return void!");
-                    
+
                     acc::AccGpuHipRt<TDim, TIdx> acc(threadElemExtent);
 
                     kernelFnObj(
@@ -283,20 +283,20 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP asynchronous kernel enqueue trait specialization.
+            //! The HIP non-blocking kernel enqueue trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                queue::QueueHipRtAsync,
+                queue::QueueHipRtNonBlocking,
                 kernel::TaskKernelGpuHipRt<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 //-----------------------------------------------------------------------------
 
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueHipRtAsync & queue,
+                    queue::QueueHipRtNonBlocking & queue,
                     kernel::TaskKernelGpuHipRt<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {
@@ -422,13 +422,13 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                queue::QueueHipRtSync,
+                queue::QueueHipRtBlocking,
                 kernel::TaskKernelGpuHipRt<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 //-----------------------------------------------------------------------------
 
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueHipRtSync & queue,
+                    queue::QueueHipRtBlocking & queue,
                     kernel::TaskKernelGpuHipRt<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {

@@ -51,12 +51,12 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The HIP RT sync queue implementation.
-                class QueueHipRtSyncImpl final
+                //! The HIP RT blocking queue implementation.
+                class QueueHipRtBlockingImpl final
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST QueueHipRtSyncImpl(
+                    ALPAKA_FN_HOST QueueHipRtBlockingImpl(
                         dev::DevHipRt const & dev) :
                             m_dev(dev),
                             m_HipQueue()
@@ -79,15 +79,15 @@ namespace alpaka
                                 hipStreamNonBlocking));
                     }
                     //-----------------------------------------------------------------------------
-                    QueueHipRtSyncImpl(QueueHipRtSyncImpl const &) = delete;
+                    QueueHipRtBlockingImpl(QueueHipRtBlockingImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueHipRtSyncImpl(QueueHipRtSyncImpl &&) = default;
+                    QueueHipRtBlockingImpl(QueueHipRtBlockingImpl &&) = default;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueHipRtSyncImpl const &) -> QueueHipRtSyncImpl & = delete;
+                    auto operator=(QueueHipRtBlockingImpl const &) -> QueueHipRtBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueHipRtSyncImpl &&) -> QueueHipRtSyncImpl & = default;
+                    auto operator=(QueueHipRtBlockingImpl &&) -> QueueHipRtBlockingImpl & = default;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~QueueHipRtSyncImpl()
+                    ALPAKA_FN_HOST ~QueueHipRtBlockingImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -112,40 +112,40 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The HIP RT sync queue.
-        class QueueHipRtSync final
+        //! The HIP RT blocking queue.
+        class QueueHipRtBlocking final
         {
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST QueueHipRtSync(
+            ALPAKA_FN_HOST QueueHipRtBlocking(
                 dev::DevHipRt const & dev) :
-                m_spQueueImpl(std::make_shared<hip::detail::QueueHipRtSyncImpl>(dev))
+                m_spQueueImpl(std::make_shared<hip::detail::QueueHipRtBlockingImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
-            QueueHipRtSync(QueueHipRtSync const &) = default;
+            QueueHipRtBlocking(QueueHipRtBlocking const &) = default;
             //-----------------------------------------------------------------------------
-            QueueHipRtSync(QueueHipRtSync &&) = default;
+            QueueHipRtBlocking(QueueHipRtBlocking &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueHipRtSync const &) -> QueueHipRtSync & = default;
+            auto operator=(QueueHipRtBlocking const &) -> QueueHipRtBlocking & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueHipRtSync &&) -> QueueHipRtSync & = default;
+            auto operator=(QueueHipRtBlocking &&) -> QueueHipRtBlocking & = default;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator==(QueueHipRtSync const & rhs) const
+            ALPAKA_FN_HOST auto operator==(QueueHipRtBlocking const & rhs) const
             -> bool
             {
                 return (m_spQueueImpl == rhs.m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator!=(QueueHipRtSync const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(QueueHipRtBlocking const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~QueueHipRtSync() = default;
+            ALPAKA_FN_HOST ~QueueHipRtBlocking() = default;
 
         public:
-            std::shared_ptr<hip::detail::QueueHipRtSyncImpl> m_spQueueImpl;
+            std::shared_ptr<hip::detail::QueueHipRtBlockingImpl> m_spQueueImpl;
         };
     }
 
@@ -154,22 +154,22 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT sync queue device type trait specialization.
+            //! The HIP RT blocking queue device type trait specialization.
             template<>
             struct DevType<
-                queue::QueueHipRtSync>
+                queue::QueueHipRtBlocking>
             {
                 using type = dev::DevHipRt;
             };
             //#############################################################################
-            //! The HIP RT sync queue device get trait specialization.
+            //! The HIP RT blocking queue device get trait specialization.
             template<>
             struct GetDev<
-                queue::QueueHipRtSync>
+                queue::QueueHipRtBlocking>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    queue::QueueHipRtSync const & queue)
+                    queue::QueueHipRtBlocking const & queue)
                 -> dev::DevHipRt
                 {
                     return queue.m_spQueueImpl->m_dev;
@@ -182,10 +182,10 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT sync queue event type trait specialization.
+            //! The HIP RT blocking queue event type trait specialization.
             template<>
             struct EventType<
-                queue::QueueHipRtSync>
+                queue::QueueHipRtBlocking>
             {
                 using type = event::EventHipRt;
             };
@@ -196,11 +196,11 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT sync queue enqueue trait specialization.
+            //! The HIP RT blocking queue enqueue trait specialization.
             template<
                 typename TTask>
             struct Enqueue<
-                queue::QueueHipRtSync,
+                queue::QueueHipRtBlocking,
                 TTask>
             {
                 //#############################################################################
@@ -247,7 +247,7 @@ namespace alpaka
 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueHipRtSync & queue,
+                    queue::QueueHipRtBlocking & queue,
                     TTask const & task)
                 -> void
                 {
@@ -299,14 +299,14 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The HIP RT sync queue test trait specialization.
+            //! The HIP RT blocking queue test trait specialization.
             template<>
             struct Empty<
-                queue::QueueHipRtSync>
+                queue::QueueHipRtBlocking>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
-                    queue::QueueHipRtSync const & queue)
+                    queue::QueueHipRtBlocking const & queue)
                 -> bool
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -334,16 +334,16 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The HIP RT sync queue thread wait trait specialization.
+            //! The HIP RT blocking queue thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
             template<>
             struct CurrentThreadWaitFor<
-                queue::QueueHipRtSync>
+                queue::QueueHipRtBlocking>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    queue::QueueHipRtSync const & queue)
+                    queue::QueueHipRtBlocking const & queue)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

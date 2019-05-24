@@ -98,8 +98,8 @@ void operator()()
             CallbackFinished = true;
         });
 
-    // A synchronous queue will always stay empty because the task has been executed immediately.
-    if(!alpaka::test::queue::IsSyncQueue<typename Fixture::Queue>::value)
+    // A non-blocking queue will always stay empty because the task has been executed immediately.
+    if(!alpaka::test::queue::IsBlockingQueue<typename Fixture::Queue>::value)
     {
         alpaka::wait::wait(f.m_queue);
     }

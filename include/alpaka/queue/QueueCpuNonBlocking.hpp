@@ -42,7 +42,7 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CPU device queue implementation.
-                class QueueCpuAsyncImpl final
+                class QueueCpuNonBlockingImpl final
                 {
                 private:
                     //#############################################################################
@@ -57,21 +57,21 @@ namespace alpaka
 
                 public:
                     //-----------------------------------------------------------------------------
-                    QueueCpuAsyncImpl(
+                    QueueCpuNonBlockingImpl(
                         dev::DevCpu const & dev) :
                             m_dev(dev),
                             m_workerThread(1u)
                     {}
                     //-----------------------------------------------------------------------------
-                    QueueCpuAsyncImpl(QueueCpuAsyncImpl const &) = delete;
+                    QueueCpuNonBlockingImpl(QueueCpuNonBlockingImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueCpuAsyncImpl(QueueCpuAsyncImpl &&) = delete;
+                    QueueCpuNonBlockingImpl(QueueCpuNonBlockingImpl &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuAsyncImpl const &) -> QueueCpuAsyncImpl & = delete;
+                    auto operator=(QueueCpuNonBlockingImpl const &) -> QueueCpuNonBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuAsyncImpl &&) -> QueueCpuAsyncImpl & = delete;
+                    auto operator=(QueueCpuNonBlockingImpl &&) -> QueueCpuNonBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    ~QueueCpuAsyncImpl() = default;
+                    ~QueueCpuNonBlockingImpl() = default;
 
                 public:
                     dev::DevCpu const m_dev;            //!< The device this queue is bound to.
@@ -83,41 +83,41 @@ namespace alpaka
 
         //#############################################################################
         //! The CPU device queue.
-        class QueueCpuAsync final
+        class QueueCpuNonBlocking final
         {
         public:
             //-----------------------------------------------------------------------------
-            QueueCpuAsync(
+            QueueCpuNonBlocking(
                 dev::DevCpu const & dev) :
-                    m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuAsyncImpl>(dev))
+                    m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuNonBlockingImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterAsyncQueue(m_spQueueImpl);
+                dev.m_spDevCpuImpl->RegisterNonBlockingQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            QueueCpuAsync(QueueCpuAsync const &) = default;
+            QueueCpuNonBlocking(QueueCpuNonBlocking const &) = default;
             //-----------------------------------------------------------------------------
-            QueueCpuAsync(QueueCpuAsync &&) = default;
+            QueueCpuNonBlocking(QueueCpuNonBlocking &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueCpuAsync const &) -> QueueCpuAsync & = default;
+            auto operator=(QueueCpuNonBlocking const &) -> QueueCpuNonBlocking & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueCpuAsync &&) -> QueueCpuAsync & = default;
+            auto operator=(QueueCpuNonBlocking &&) -> QueueCpuNonBlocking & = default;
             //-----------------------------------------------------------------------------
-            auto operator==(QueueCpuAsync const & rhs) const
+            auto operator==(QueueCpuNonBlocking const & rhs) const
             -> bool
             {
                 return (m_spQueueImpl == rhs.m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            auto operator!=(QueueCpuAsync const & rhs) const
+            auto operator!=(QueueCpuNonBlocking const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ~QueueCpuAsync() = default;
+            ~QueueCpuNonBlocking() = default;
 
         public:
-            std::shared_ptr<cpu::detail::QueueCpuAsyncImpl> m_spQueueImpl;
+            std::shared_ptr<cpu::detail::QueueCpuNonBlockingImpl> m_spQueueImpl;
         };
     }
 
@@ -126,22 +126,22 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU async device queue device type trait specialization.
+            //! The CPU non-blocking device queue device type trait specialization.
             template<>
             struct DevType<
-                queue::QueueCpuAsync>
+                queue::QueueCpuNonBlocking>
             {
                 using type = dev::DevCpu;
             };
             //#############################################################################
-            //! The CPU async device queue device get trait specialization.
+            //! The CPU non-blocking device queue device get trait specialization.
             template<>
             struct GetDev<
-                queue::QueueCpuAsync>
+                queue::QueueCpuNonBlocking>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    queue::QueueCpuAsync const & queue)
+                    queue::QueueCpuNonBlocking const & queue)
                 -> dev::DevCpu
                 {
                     return queue.m_spQueueImpl->m_dev;
@@ -154,10 +154,10 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU async device queue event type trait specialization.
+            //! The CPU non-blocking device queue event type trait specialization.
             template<>
             struct EventType<
-                queue::QueueCpuAsync>
+                queue::QueueCpuNonBlocking>
             {
                 using type = event::EventCpu;
             };
@@ -168,21 +168,21 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU async device queue enqueue trait specialization.
+            //! The CPU non-blocking device queue enqueue trait specialization.
             //! This default implementation for all tasks directly invokes the function call operator of the task.
             template<
                 typename TTask>
             struct Enqueue<
-                queue::QueueCpuAsync,
+                queue::QueueCpuNonBlocking,
                 TTask>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    queue::QueueCpuAsync & queue,
+                    queue::QueueCpuNonBlocking & queue,
                     TTask const & task)
 #else
-                    queue::QueueCpuAsync &,
+                    queue::QueueCpuNonBlocking &,
                     TTask const &)
 #endif
                 -> void
@@ -195,14 +195,14 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU async device queue test trait specialization.
+            //! The CPU non-blocking device queue test trait specialization.
             template<>
             struct Empty<
-                queue::QueueCpuAsync>
+                queue::QueueCpuNonBlocking>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
-                    queue::QueueCpuAsync const & queue)
+                    queue::QueueCpuNonBlocking const & queue)
                 -> bool
                 {
                     return queue.m_spQueueImpl->m_workerThread.isIdle();

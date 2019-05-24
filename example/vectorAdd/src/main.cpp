@@ -87,7 +87,7 @@ auto main()
     using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using QueueAcc = alpaka::queue::QueueCpuSync;
+    using QueueAcc = alpaka::queue::QueueCpuBlocking;
 
     // Select a device
     DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));

@@ -188,10 +188,10 @@
 #include <alpaka/idx/Traits.hpp>
 //-----------------------------------------------------------------------------
 // queue
-#include <alpaka/queue/QueueCudaRtAsync.hpp>
-#include <alpaka/queue/QueueCudaRtSync.hpp>
-#include <alpaka/queue/QueueCpuAsync.hpp>
-#include <alpaka/queue/QueueCpuSync.hpp>
+#include <alpaka/queue/QueueCudaRtNonBlocking.hpp>
+#include <alpaka/queue/QueueCudaRtBlocking.hpp>
+#include <alpaka/queue/QueueCpuNonBlocking.hpp>
+#include <alpaka/queue/QueueCpuBlocking.hpp>
 #include <alpaka/queue/Traits.hpp>
 //-----------------------------------------------------------------------------
 // time

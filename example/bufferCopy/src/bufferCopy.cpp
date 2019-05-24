@@ -139,12 +139,12 @@ auto main()
 
     // Define the accelerator
     using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
-    using DevQueue = alpaka::queue::QueueCpuSync;
+    using DevQueue = alpaka::queue::QueueCpuBlocking;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
 
     using Host = alpaka::acc::AccCpuSerial<Dim, Idx>;
-    using HostQueue = alpaka::queue::QueueCpuSync;
+    using HostQueue = alpaka::queue::QueueCpuBlocking;
     using DevHost = alpaka::dev::Dev<Host>;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
 

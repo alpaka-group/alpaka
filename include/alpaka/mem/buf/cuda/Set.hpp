@@ -18,8 +18,8 @@
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
-#include <alpaka/queue/QueueCudaRtSync.hpp>
-#include <alpaka/queue/QueueCudaRtAsync.hpp>
+#include <alpaka/queue/QueueCudaRtBlocking.hpp>
+#include <alpaka/queue/QueueCudaRtNonBlocking.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
@@ -124,17 +124,17 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA async device queue 1D set enqueue trait specialization.
+            //! The CUDA non-blocking device queue 1D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
             struct Enqueue<
-                queue::QueueCudaRtAsync,
+                queue::QueueCudaRtNonBlocking,
                 mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtAsync & queue,
+                    queue::QueueCudaRtNonBlocking & queue,
                     mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -182,17 +182,17 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA sync device queue 1D set enqueue trait specialization.
+            //! The CUDA blocking device queue 1D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
             struct Enqueue<
-                queue::QueueCudaRtSync,
+                queue::QueueCudaRtBlocking,
                 mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtSync &,
+                    queue::QueueCudaRtBlocking &,
                     mem::view::cuda::detail::TaskSetCuda<dim::DimInt<1u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -239,17 +239,17 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA async device queue 2D set enqueue trait specialization.
+            //! The CUDA non-blocking device queue 2D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
             struct Enqueue<
-                queue::QueueCudaRtAsync,
+                queue::QueueCudaRtNonBlocking,
                 mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtAsync & queue,
+                    queue::QueueCudaRtNonBlocking & queue,
                     mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -304,17 +304,17 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA sync device queue 2D set enqueue trait specialization.
+            //! The CUDA blocking device queue 2D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
             struct Enqueue<
-                queue::QueueCudaRtSync,
+                queue::QueueCudaRtBlocking,
                 mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtSync &,
+                    queue::QueueCudaRtBlocking &,
                     mem::view::cuda::detail::TaskSetCuda<dim::DimInt<2u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -369,17 +369,17 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA async device queue 3D set enqueue trait specialization.
+            //! The CUDA non-blocking device queue 3D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
             struct Enqueue<
-                queue::QueueCudaRtAsync,
+                queue::QueueCudaRtNonBlocking,
                 mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtAsync & queue,
+                    queue::QueueCudaRtNonBlocking & queue,
                     mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent> const & task)
                 -> void
                 {
@@ -450,17 +450,17 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA sync device queue 3D set enqueue trait specialization.
+            //! The CUDA blocking device queue 3D set enqueue trait specialization.
             template<
                 typename TView,
                 typename TExtent>
             struct Enqueue<
-                queue::QueueCudaRtSync,
+                queue::QueueCudaRtBlocking,
                 mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaRtSync &,
+                    queue::QueueCudaRtBlocking &,
                     mem::view::cuda::detail::TaskSetCuda<dim::DimInt<3u>, TView, TExtent> const & task)
                 -> void
                 {
