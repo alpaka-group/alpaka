@@ -27,7 +27,7 @@ services:
 # ALPAKA_CI_DOCKER_BASE_IMAGE_NAME              : {ubuntu:14.04, ubuntu:16.04, ubuntu:18.04}
 # ALPAKA_CI_BOOST_BRANCH                        : {[CXX!=cl.exe&&OS!=osx]:boost-1.62.0, [CXX!=cl.exe&&OS!=osx]:boost-1.63.0, [OS!=osx]boost-1.64.0, boost-1.65.1, boost-1.66.0, boost-1.67.0, boost-1.68.0, boost-1.69.0, boost-1.70.0}
 # ALPAKA_CI_CMAKE_VER                           : {3.11.0, 3.11.4, 3.12.4, 3.13.0, 3.13.4, 3.14.0}
-# ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan, ESan}
+# ALPAKA_CI_SANITIZERS                          : {ASan, UBsan, TSan}
 #    TSan is not currently used because it produces many unexpected errors
 # ALPAKA_CI_ANALYSIS                            : {ON, OFF}
 # ALPAKA_DEBUG                                  : {0, 1, 2}
