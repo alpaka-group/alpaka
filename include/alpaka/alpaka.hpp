@@ -69,6 +69,7 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Align.hpp>
 #include <alpaka/core/BarrierThread.hpp>
+#include <alpaka/core/BindScope.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Common.hpp>

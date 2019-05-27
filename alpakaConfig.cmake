@@ -977,6 +977,8 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
         LIST(APPEND _ALPAKA_LINK_FLAGS_PUBLIC "-Xcompiler ${OpenMP_CXX_FLAGS}")
     ENDIF()
     IF(ALPAKA_HIP_PLATFORM MATCHES "hcc")
+        # https://llvm.org/docs/AMDGPUUsage.html
+        # TODO: provide cmake interface for AMD GPU targets
         # GFX600, GFX601, GFX700, GFX701, GFX702, GFX703, GFX704, GFX801, GFX802, GFX803, GFX810, GFX900, GFX902
         SET(_ALPAKA_LINK_LIBRARIES_PUBLIC "${_ALPAKA_LINK_LIBRARIES_PUBLIC}" "--amdgpu-target=gfx803 --amdgpu-target=gfx900 --amdgpu-target=gfx906")
     ENDIF()

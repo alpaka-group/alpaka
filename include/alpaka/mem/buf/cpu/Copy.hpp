@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/core/Assert.hpp>
+#include <alpaka/core/BindScope.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
@@ -169,13 +170,13 @@ namespace alpaka
                             {
                                 meta::ndLoopIncIdx(
                                     extentWithoutInnermost,
-                                    [&](vec::Vec<DimMin1, ExtentSize> const & idx)
-                                    {
-                                        std::memcpy(
-                                            reinterpret_cast<void *>(this->m_dstMemNative + (vec::cast<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
-                                            reinterpret_cast<void const *>(this->m_srcMemNative + (vec::cast<SrcSize>(idx) * srcPitchBytesWithoutOutmost).foldrAll(std::plus<SrcSize>())),
-                                            static_cast<std::size_t>(this->m_extentWidthBytes));
-                                    });
+                                    ALPAKA_FN_SCOPE_HOST( [&] (vec::Vec<DimMin1, ExtentSize> const & idx) {
+                                            std::memcpy(
+                                                reinterpret_cast<void *>(this->m_dstMemNative + (vec::cast<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
+                                                reinterpret_cast<void const *>(this->m_srcMemNative + (vec::cast<SrcSize>(idx) * srcPitchBytesWithoutOutmost).foldrAll(std::plus<SrcSize>())),
+                                                static_cast<std::size_t>(this->m_extentWidthBytes));
+                                    })
+                              );
                             }
                         }
                     };

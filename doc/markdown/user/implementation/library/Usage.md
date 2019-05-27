@@ -110,3 +110,42 @@ For the accelerator this has to be done indirectly by enumerating the required d
 To execute the kernel, an instance of the kernel function object has to be constructed.
 Following this, an execution task combining the work division (grid and block sizes) with the kernel function object and the bound invocation arguments has to be created.
 After that this task can be enqueued into a queue for immediate or later execution (depending on the queue used).
+
+Portable Lambdas and Scope
+--------------------------
+
+For writing portable host-device lambda functions two things have to be considered.
+While CUDA/nvcc requires proper annotation of the lambda to provide the context (see [CUDA documentation on lambdas](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#extended-lambda)), HIP(AMD) requires the host-device set of function overloads for the host and device context respectively, even if one part is not used by the final code.
+Therefore a function wrapper and an annotation wrapper is provided in alpaka.
+
+Note:
+- host-device lambdas are always `=`-capture (copy), thus `ALPAKA_FN_LAMBDA` already includes `[=]` (nvcc does not allow reference-capture host-device lambdas)
+- host-lambdas can be plain-style itself, also using `&`-capture (reference) is possible, and only require `ALPAKA_FN_SCOPE_HOST` for HIP(AMD)
+
+```c++
+// create a host-scoped callable from a lambda
+auto alpaka_callable =
+  // function wrapper, returns a host-device aware callable
+  alpaka::core::bindScope< alpaka::core::Scope::Host > (
+    // annotation wrapper for lambda (already includes [=])
+    ALPAKA_FN_LAMBDA (/* args */) /* -> return type */ { /*code*/ } );
+
+// more readable with shortcuts for bindScope
+ALPAKA_FN_SCOPE_HOST(
+  ALPAKA_FN_LAMBDA (/* args */) { /*code*/ } );
+```
+
+The scope options for bindScope:
+
+- `HostOnly`: callable is only compiled on host side
+- `DeviceOnly`: callable is only compiled on device side
+- `HostDevice`: callable is compiled for host and device
+- `Default`:
+  - HIP(Nvidia): equals `HostDevice`
+  - HIP(AMD): no explicit context information, leave it to compiler
+
+The scope shortcuts:
+
+- `ALPAKA_FN_SCOPE_HOST`: `alpaka::core::bindScope< alpaka::core::Scope::HostOnly >`
+- `ALPAKA_FN_SCOPE_DEVICE`: `alpaka::core::bindScope< alpaka::core::Scope::DeviceOnly >`
+- `ALPAKA_FN_SCOPE_HOST_DEVICE`: `alpaka::core::bindScope< alpaka::core::Scope::HostDevice >`
