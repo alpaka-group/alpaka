@@ -257,20 +257,26 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    alpaka::ignore_unused(spQueueImpl);
-
-                    auto spEventImpl(event.m_spEventImpl);
-
                     std::promise<void> promise;
                     {
-                        // Setting the event state and enqueuing it has to be atomic.
-                        std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
+                        std::lock_guard<std::mutex> lk(spQueueImpl->m_mutex);
 
-                        ++spEventImpl->m_enqueueCount;
-                        // NOTE: Difference to non-blocking version: directly set the event state instead of enqueuing.
-                        spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+                        spQueueImpl->m_bCurrentlyExecutingTask = true;
 
-                        spEventImpl->m_future = promise.get_future();
+                        auto spEventImpl(event.m_spEventImpl);
+
+                        {
+                            // Setting the event state and enqueuing it has to be atomic.
+                            std::lock_guard<std::mutex> evLk(spEventImpl->m_mutex);
+
+                            ++spEventImpl->m_enqueueCount;
+                            // NOTE: Difference to non-blocking version: directly set the event state instead of enqueuing.
+                            spEventImpl->m_LastReadyEnqueueCount = spEventImpl->m_enqueueCount;
+
+                            spEventImpl->m_future = promise.get_future();
+                        }
+
+                        spQueueImpl->m_bCurrentlyExecutingTask = false;
                     }
                     promise.set_value();
                 }
@@ -449,13 +455,21 @@ namespace alpaka
                 {
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
-                    auto vspQueues(
+                    auto vspQueuesNonBlocking(
                         dev.m_spDevCpuImpl->GetAllNonBlockingQueueImpls());
+                    auto vspQueuesBlocking(
+                        dev.m_spDevCpuImpl->GetAllBlockingQueueImpls());
 
                     // Let all the queues wait for this event.
                     // \TODO: This should be done atomically for all queues.
                     // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!
-                    for(auto && spQueue : vspQueues)
+                    for(auto && spQueue : vspQueuesNonBlocking)
+                    {
+                        wait::wait(spQueue, event);
+                    }
+
+                    // wait for blocking queues
+                    for(auto && spQueue : vspQueuesBlocking)
                     {
                         wait::wait(spQueue, event);
                     }

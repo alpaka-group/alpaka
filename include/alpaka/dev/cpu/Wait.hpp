@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz
+/* Copyright 2019 Benjamin Worpitz, Rene Widera
  *
  * This file is part of Alpaka.
  *
@@ -21,6 +21,32 @@ namespace alpaka
     {
         namespace traits
         {
+            namespace detail
+            {
+                template<typename TDevice, typename TQueueVector>
+                ALPAKA_FN_HOST auto currentThreadWaitForDevice(
+                    TDevice const & dev, TQueueVector & vQueues
+                )
+                ->void
+                {
+
+                    // Enqueue an event in every non-blocking queue on the device.
+                    // \FIXME: This should be done atomically for all queues.
+                    // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!
+                    std::vector<event::EventCpu> vEventsNonBlocking;
+                    for(auto && spQueue : vQueues)
+                    {
+                        vEventsNonBlocking.emplace_back(dev);
+                        queue::enqueue(spQueue, vEventsNonBlocking.back());
+                    }
+
+                    // Now wait for all the events.
+                    for(auto && event : vEventsNonBlocking)
+                    {
+                        wait::wait(event);
+                    }
+                }
+            }
             //#############################################################################
             //! The CPU device thread wait specialization.
             //!
@@ -39,24 +65,14 @@ namespace alpaka
 
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
-                    auto vspQueues(
+                    auto vspQueuesNonBlocking(
                         dev.m_spDevCpuImpl->GetAllNonBlockingQueueImpls());
 
-                    // Enqueue an event in every non-blocking queue on the device.
-                    // \FIXME: This should be done atomically for all queues.
-                    // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!
-                    std::vector<event::EventCpu> vEvents;
-                    for(auto && spQueue : vspQueues)
-                    {
-                        vEvents.emplace_back(dev);
-                        queue::enqueue(spQueue, vEvents.back());
-                    }
+                    auto vspQueuesBlocking(
+                        dev.m_spDevCpuImpl->GetAllBlockingQueueImpls());
 
-                    // Now wait for all the events.
-                    for(auto && event : vEvents)
-                    {
-                        wait::wait(event);
-                    }
+                    detail::currentThreadWaitForDevice(dev, vspQueuesNonBlocking);
+                    detail::currentThreadWaitForDevice(dev, vspQueuesBlocking);
                 }
             };
         }
