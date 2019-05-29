@@ -250,11 +250,10 @@ namespace alpaka
 
             //-----------------------------------------------------------------------------
             //! \return The pitch in bytes. This is the distance in bytes between two consecutive elements in the given dimension.
-            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 std::size_t Tidx,
                 typename TView>
-            ALPAKA_FN_HOST_ACC auto getPitchBytes(
+            auto getPitchBytes(
                 TView const & view)
             -> idx::Idx<TView>
             {
@@ -532,7 +531,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TPitch>
-                    ALPAKA_FN_HOST_ACC static auto create(
+                    static auto create(
                         TPitch const & pitch)
                     -> idx::Idx<TPitch>
                     {
@@ -544,7 +543,7 @@ namespace alpaka
             //! \return The pitch vector.
             template<
                 typename TPitch>
-            ALPAKA_FN_HOST_ACC auto getPitchBytesVec(
+            auto getPitchBytesVec(
                 TPitch const & pitch = TPitch())
             -> vec::Vec<dim::Dim<TPitch>, idx::Idx<TPitch>>
             {
@@ -576,12 +575,11 @@ namespace alpaka
 
             //-----------------------------------------------------------------------------
             //! \return A view to static device memory.
-            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElem,
                 typename TDev,
                 typename TExtent>
-            ALPAKA_FN_HOST_ACC auto createStaticDevMemView(
+            auto createStaticDevMemView(
                 TElem * pMem,
                 TDev const & dev,
                 TExtent const & extent)
