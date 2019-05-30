@@ -12,24 +12,24 @@
 
 source ./script/travis/set.sh
 
-: ${ALPAKA_CI_CMAKE_DIR?"ALPAKA_CI_CMAKE_DIR must be specified"}
+: "${ALPAKA_CI_CMAKE_DIR?'ALPAKA_CI_CMAKE_DIR must be specified'}"
 echo "ALPAKA_CI_CMAKE_DIR: ${ALPAKA_CI_CMAKE_DIR}"
-: ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
+: "${ALPAKA_CI_ANALYSIS?'ALPAKA_CI_ANALYSIS must be specified'}"
 echo "ALPAKA_CI_ANALYSIS: ${ALPAKA_CI_ANALYSIS}"
-: ${ALPAKA_CI_INSTALL_CUDA?"ALPAKA_CI_INSTALL_CUDA must be specified"}
-: ${ALPAKA_CI_INSTALL_HIP?"ALPAKA_CI_INSTALL_HIP must be specified"}
+: "${ALPAKA_CI_INSTALL_CUDA?'ALPAKA_CI_INSTALL_CUDA must be specified'}"
+: "${ALPAKA_CI_INSTALL_HIP?'ALPAKA_CI_INSTALL_HIP must be specified'}"
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    : ${ALPAKA_CI_STDLIB?"ALPAKA_CI_STDLIB must be specified"}
+    : "${ALPAKA_CI_STDLIB?'ALPAKA_CI_STDLIB must be specified'}"
     echo "ALPAKA_CI_STDLIB: ${ALPAKA_CI_STDLIB}"
 fi
-: ${CXX?"CXX must be specified"}
+: "${CXX?'CXX must be specified'}"
 echo "CXX: ${CXX}"
 
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    if [ -z ${LD_LIBRARY_PATH+x} ]
+    if [ -z "${LD_LIBRARY_PATH+x}" ]
     then
         LD_LIBRARY_PATH=
     fi
@@ -53,7 +53,7 @@ fi
 # CUDA
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
-    : ${ALPAKA_CUDA_VERSION?"ALPAKA_CUDA_VERSION must be specified"}
+    : "${ALPAKA_CUDA_VERSION?'ALPAKA_CUDA_VERSION must be specified'}"
 
     if [ "$TRAVIS_OS_NAME" = "linux" ]
     then
@@ -102,7 +102,7 @@ then
     # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
     export PATH=${ALPAKA_CI_CLANG_DIR}/bin:${PATH}
     export LD_LIBRARY_PATH=${ALPAKA_CI_CLANG_DIR}/lib:${LD_LIBRARY_PATH}
-    if [ -z ${CPPFLAGS+x} ]
+    if [ -z "${CPPFLAGS+x}" ]
     then
         CPPFLAGS=
     fi
@@ -114,13 +114,13 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
     then
-        if [ -z ${CMAKE_CXX_FLAGS+x} ]
+        if [ -z "${CMAKE_CXX_FLAGS+x}" ]
         then
             export CMAKE_CXX_FLAGS=
         fi
         CMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -stdlib=libc++"
 
-        if [ -z ${CMAKE_EXE_LINKER_FLAGS+x} ]
+        if [ -z "${CMAKE_EXE_LINKER_FLAGS+x}" ]
         then
             export CMAKE_EXE_LINKER_FLAGS=
         fi
