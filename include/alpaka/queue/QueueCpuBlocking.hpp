@@ -76,7 +76,9 @@ namespace alpaka
             QueueCpuBlocking(
                 dev::DevCpu const & dev) :
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuBlockingImpl>(dev))
-            {}
+            {
+                dev.m_spDevCpuImpl->RegisterBlockingQueue(m_spQueueImpl);
+            }
             //-----------------------------------------------------------------------------
             QueueCpuBlocking(QueueCpuBlocking const &) = default;
             //-----------------------------------------------------------------------------
