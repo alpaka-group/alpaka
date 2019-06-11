@@ -26,6 +26,11 @@
 #include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4505)  // CUDA\v9.2\include\crt/host_runtime.h(265): warning C4505: '__cudaUnregisterBinaryUtil': unreferenced local function has been removed
+#endif
+
 // cuda_runtime_api.h: CUDA Runtime API C-style interface that does not require compiling with nvcc.
 // cuda_runtime.h: CUDA Runtime API  C++-style interface built on top of the C API.
 //  It wraps some of the C API routines, using overloading, references and default arguments.

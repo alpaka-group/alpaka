@@ -420,6 +420,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
             OPTION(ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA "Enable experimental, extended host-device lambdas in NVCC" ON)
             OPTION(ALPAKA_CUDA_NVCC_EXPT_RELAXED_CONSTEXPR "Enable experimental, relaxed constexpr in NVCC" ON)
+            OPTION(ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION "Enable separable compilation in NVCC" OFF)
 
             IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
                 IF(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -565,6 +566,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 SET(CUDA_PROPAGATE_HOST_FLAGS ON)
 
+                IF(ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION)
+                    SET(CUDA_SEPARABLE_COMPILATION ON)
+                ENDIF()
+
                 # nvcc sets no linux/__linux macros on OpenPOWER linux
                 # nvidia bug id: 2448610
                 IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -587,8 +592,10 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
-                    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}
-                        "--generate-code arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM} --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}")
+                    LIST(APPEND CUDA_NVCC_FLAGS
+                        --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM}
+                        --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}
+                    )
                 ENDFOREACH()
 
                 IF(NOT MSVC)
@@ -628,7 +635,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDIF()
                 # avoids warnings on host-device signatured, default constructors/destructors
                 IF(CUDA_VERSION GREATER_EQUAL 9.0)
-                    LIST(APPEND CUDA_NVCC_FLAGS "-Xcudafe --diag_suppress=esa_on_defaulted_function_ignored")
+                    LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=esa_on_defaulted_function_ignored)
                 ENDIF()
 
                 IF(ALPAKA_CUDA_KEEP_FILES)
