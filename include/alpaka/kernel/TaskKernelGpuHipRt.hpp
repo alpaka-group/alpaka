@@ -390,15 +390,16 @@ namespace alpaka
                     meta::apply(
                         [&](TArgs ... args)
                         {
-                            hipLaunchKernel(
+                            hipLaunchKernelGGL(
                                 HIP_KERNEL_NAME(kernel::hip::detail::hipKernel< TDim, TIdx, TKernelFnObj, TArgs... >),
                                 gridDim,
                                 blockDim,
-                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+                                static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
                                 queue.m_spQueueImpl->m_HipQueue,
+                                hipLaunchParm{},
                                 threadElemExtent,
                                 task.m_kernelFnObj,
-                                args...
+                                std::move(args)...
                             );
 
                         },
