@@ -737,11 +737,11 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl const &) = delete;
                         //-----------------------------------------------------------------------------
-                        EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl &&) = default;
+                        EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl &&) = delete;
                         //-----------------------------------------------------------------------------
                         auto operator=(EventHostManualTriggerHipImpl const &) -> EventHostManualTriggerHipImpl & = delete;
                         //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerHipImpl &&) -> EventHostManualTriggerHipImpl & = default;
+                        auto operator=(EventHostManualTriggerHipImpl &&) -> EventHostManualTriggerHipImpl & = delete;
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST ~EventHostManualTriggerHipImpl()
                         {

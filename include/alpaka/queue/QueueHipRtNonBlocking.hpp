@@ -85,7 +85,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueHipRtNonBlockingImpl const &) -> QueueHipRtNonBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueHipRtNonBlockingImpl &&) -> QueueHipRtNonBlockingImpl & = default;
+                    auto operator=(QueueHipRtNonBlockingImpl &&) -> QueueHipRtNonBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST ~QueueHipRtNonBlockingImpl()
                     {
