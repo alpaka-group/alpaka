@@ -208,6 +208,8 @@ namespace alpaka
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>,
                 typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC
                 static auto getExtent(
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & extent)
                 -> TIdx
@@ -400,6 +402,8 @@ namespace alpaka
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC
                 static auto getOffset(
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const &)
                 -> TIdx
