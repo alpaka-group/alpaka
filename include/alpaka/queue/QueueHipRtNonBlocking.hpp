@@ -107,6 +107,7 @@ namespace alpaka
                     dev::DevHipRt const m_dev;   //!< The device this queue is bound to.
                     hipStream_t m_HipQueue;
                     int m_callees = 0; // FIXME: workaround for nonblocking hipStreamSynchronize for HCC
+                    std::mutex m_mutex;
                 };
             }
         }
@@ -251,15 +252,13 @@ namespace alpaka
                     TTask const & task)
                 -> void
                 {
-                    auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
-
                     {
-                        std::unique_lock<std::mutex> lock(pCallbackSynchronizationData.get()->m_mutex);
-                        // FIXME: workaround, see m_callees
+                        // thread-safe callee incrementing
+                        std::lock_guard<std::mutex> guard(queue.m_spQueueImpl->m_mutex);
                         queue.m_spQueueImpl->m_callees += 1;
                     }
-
-                    // see: https://github.com/ROCm-Developer-Tools/HIP/blob/roc-1.9.x/tests/src/runtimeApi/stream/hipStreamAddCallback.cpp
+                    auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
+                    // test example: https://github.com/ROCm-Developer-Tools/HIP/blob/roc-1.9.x/tests/src/runtimeApi/stream/hipStreamAddCallback.cpp
                     ALPAKA_HIP_RT_CHECK(hipStreamAddCallback(
                         queue.m_spQueueImpl->m_HipQueue,
                         hipRtCallback,
@@ -273,6 +272,9 @@ namespace alpaka
                     // before it executes the next task in the queue (HIP stream).
                     std::thread t(
                         [pCallbackSynchronizationData, task, &queue](){
+
+                            // thread-safe task execution and callee decrementing
+                            std::lock_guard<std::mutex> guard(queue.m_spQueueImpl->m_mutex);
 
                             // If the callback has not yet been called, we wait for it.
                             {
@@ -291,10 +293,10 @@ namespace alpaka
 
                                 // Notify the waiting HIP thread.
                                 pCallbackSynchronizationData->state = CallbackState::finished;
-                                // FIXME: workaround, see m_callees
-                                queue.m_spQueueImpl->m_callees -= 1;
                             }
                             pCallbackSynchronizationData->m_event.notify_one();
+
+                            queue.m_spQueueImpl->m_callees -= 1;
                         }
                     );
 
@@ -314,7 +316,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined( BOOST_COMP_HCC ) && BOOST_COMP_HCC
+#if BOOST_COMP_HCC
                     // FIXME: workaround, see m_callees
                     return (queue.m_spQueueImpl->m_callees==0);
 #else
@@ -349,7 +351,7 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-#if defined( BOOST_COMP_HCC ) && BOOST_COMP_HCC
+#if BOOST_COMP_HCC
                     // FIXME: workaround, see m_callees
                     while(queue.m_spQueueImpl->m_callees>0) {
                         std::this_thread::sleep_for(std::chrono::milliseconds(100u));
