@@ -52,11 +52,11 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The HIP RT blocking queue implementation.
-                class QueueHipRtBlockingImpl final
+                class QueueHipRtBlocking final
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST QueueHipRtBlockingImpl(
+                    ALPAKA_FN_HOST QueueHipRtBlocking(
                         dev::DevHipRt const & dev) :
                             m_dev(dev),
                             m_HipQueue()
@@ -79,15 +79,15 @@ namespace alpaka
                                 hipStreamNonBlocking));
                     }
                     //-----------------------------------------------------------------------------
-                    QueueHipRtBlockingImpl(QueueHipRtBlockingImpl const &) = delete;
+                    QueueHipRtBlocking(QueueHipRtBlocking const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueHipRtBlockingImpl(QueueHipRtBlockingImpl &&) = default;
+                    QueueHipRtBlocking(QueueHipRtBlocking &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueHipRtBlockingImpl const &) -> QueueHipRtBlockingImpl & = delete;
+                    auto operator=(QueueHipRtBlocking const &) -> QueueHipRtBlocking & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueHipRtBlockingImpl &&) -> QueueHipRtBlockingImpl & = delete;
+                    auto operator=(QueueHipRtBlocking &&) -> QueueHipRtBlocking & = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~QueueHipRtBlockingImpl()
+                    ALPAKA_FN_HOST ~QueueHipRtBlocking()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -119,7 +119,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST QueueHipRtBlocking(
                 dev::DevHipRt const & dev) :
-                m_spQueueImpl(std::make_shared<hip::detail::QueueHipRtBlockingImpl>(dev))
+                m_spQueueImpl(std::make_shared<hip::detail::QueueHipRtBlocking>(dev))
             {}
             //-----------------------------------------------------------------------------
             QueueHipRtBlocking(QueueHipRtBlocking const &) = default;
@@ -145,7 +145,7 @@ namespace alpaka
             ALPAKA_FN_HOST ~QueueHipRtBlocking() = default;
 
         public:
-            std::shared_ptr<hip::detail::QueueHipRtBlockingImpl> m_spQueueImpl;
+            std::shared_ptr<hip::detail::QueueHipRtBlocking> m_spQueueImpl;
         };
     }
 
