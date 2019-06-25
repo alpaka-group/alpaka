@@ -363,10 +363,12 @@ namespace alpaka
                                 reinterpret_cast<void **>(&pMemAcc),
                                 *pMem)));
 #else
-                        // FIXME: it does not work, although with unified memory it
-                        // should work (hipGetSymbolAddress is not
-                        // implemented in HIP)
-                        pMemAcc = pMem;
+                        // FIXME: still does not work in HIP(HCC) (results in hipErrorNotFound)
+                        // HIP_SYMBOL(X) not useful because it only does #X on HIP(HCC), while &X on HIP(NVCC)
+                        ALPAKA_HIP_RT_CHECK(
+                            hipGetSymbolAddress(
+                                reinterpret_cast<void **>(&pMemAcc),
+                                pMem));
 #endif
 
                         return
