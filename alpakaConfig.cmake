@@ -100,7 +100,7 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE)
     SET(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "" FORCE)
 ENDIF()
 
-IF(ALPAKA_ACC_GPU_HIP_ENABLE AND HIP_PLATFORM MATCHES "hcc")
+IF(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "hcc")
     MESSAGE(WARNING
         "The HIP back-end is currently experimental, especially for HCC. "
         "In alpaka HIP(HCC) has a few workarounds and does not support 3D memory and constant memory. "
@@ -672,6 +672,10 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
         SET(_ALPAKA_FOUND FALSE)
 
     ELSE()
+        # must set this for HIP package (note that you also need certain env vars)
+        SET(HIP_PLATFORM "${ALPAKA_HIP_PLATFORM}" CACHE STRING "")
+        SET(HIP_RUNTIME "${ALPAKA_HIP_PLATFORM}" CACHE STRING "")
+
         FIND_PACKAGE(HIP "${ALPAKA_HIP_VERSION}")
         IF(NOT HIP_FOUND)
             MESSAGE(WARNING "Optional alpaka dependency HIP could not be found! HIP back-end disabled!")
@@ -692,7 +696,7 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
 
             SET(HIP_HIPCC_FLAGS)
 
-            IF(HIP_PLATFORM MATCHES "nvcc")
+            IF(ALPAKA_HIP_PLATFORM MATCHES "nvcc")
                 FIND_PACKAGE(CUDA)
                 IF(NOT CUDA_FOUND)
                     MESSAGE(WARNING "Could not found CUDA while HIP platform is set to nvcc. Compiling might fail.")
@@ -787,7 +791,7 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
                 LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${HIP_RAND_LIBRARY}")
             ENDIF() # nvcc
 
-            IF(HIP_PLATFORM MATCHES "hcc")
+            IF(ALPAKA_HIP_PLATFORM MATCHES "hcc")
 
                 # random numbers library ( HIP(HCC) ) /rocrand
                 FIND_PATH(ROC_RAND_INC
@@ -963,7 +967,7 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
         LIST(REMOVE_ITEM _ALPAKA_LINK_FLAGS_PUBLIC "${OpenMP_CXX_FLAGS}")
         LIST(APPEND _ALPAKA_LINK_FLAGS_PUBLIC "-Xcompiler ${OpenMP_CXX_FLAGS}")
     ENDIF()
-    IF(HIP_PLATFORM MATCHES "hcc")
+    IF(ALPAKA_HIP_PLATFORM MATCHES "hcc")
         # GFX600, GFX601, GFX700, GFX701, GFX702, GFX703, GFX704, GFX801, GFX802, GFX803, GFX810, GFX900, GFX902
         SET(_ALPAKA_LINK_LIBRARIES_PUBLIC "${_ALPAKA_LINK_LIBRARIES_PUBLIC}" "--amdgpu-target=gfx803 --amdgpu-target=gfx900 --amdgpu-target=gfx906")
     ENDIF()

@@ -78,15 +78,26 @@ fi
 # HIP
 if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ]
 then
+: "${ALPAKA_CI_HIP_ROOT_DIR?'ALPAKA_CI_HIP_ROOT_DIR must be specified'}"
+
     # HIP
     # HIP_PATH required by HIP tools
     export HIP_PATH=${ALPAKA_CI_HIP_ROOT_DIR}
     # CUDA_PATH required by HIP tools
-    export CUDA_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}
+    if [ -n "$(command -v nvcc)" ]
+    then
+        export CUDA_PATH=$(dirname $(which nvcc))/../
+    else
+        export CUDA_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}
+    fi
+
     export PATH=${HIP_PATH}/bin:$PATH
     export LD_LIBRARY_PATH=${HIP_PATH}/lib64:${HIP_PATH}/hiprand/lib:${LD_LIBRARY_PATH}
     export CMAKE_PREFIX_PATH=${HIP_PATH}:${HIP_PATH}/hiprand:${CMAKE_PREFIX_PATH:-}
-
+    # to avoid "use of uninitialized value .." warnings in perl script hipcc
+    # TODO: rely on CI vars for platform and architecture
+    export HIP_PLATFORM=nvcc
+    export HIP_RUNTIME=nvcc
     # calls nvcc or hcc
     which hipcc
     hipcc -V
@@ -94,6 +105,16 @@ then
     hipconfig -v
     # print newline as previous command does not do this
     echo
+
+    ## rocRAND
+    export ROCRAND_SOURCE_DIR=${ALPAKA_CI_HIP_ROOT_DIR}/source-rocrand/
+    if [ ! -d "${ROCRAND_SOURCE_DIR}" ]
+    then
+        # install it into the HIP install dir
+        git clone --quiet --recursive https://github.com/ROCmSoftwarePlatform/rocRAND "${ROCRAND_SOURCE_DIR}"
+        (cd "${ROCRAND_SOURCE_DIR}"; mkdir -p build; cd build; cmake -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}" -DCMAKE_INSTALL_PREFIX="${ALPAKA_CI_HIP_ROOT_DIR}" -DBUILD_BENCHMARK=OFF -DBUILD_TEST=OFF -DNVGPU_TARGETS="30" -DCMAKE_MODULE_PATH="${ALPAKA_CI_HIP_ROOT_DIR}/cmake" -DHIP_PLATFORM="${HIP_PLATFORM}" .. && make && make install)
+    fi
+
 fi
 
 # clang
