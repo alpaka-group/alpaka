@@ -77,10 +77,13 @@ namespace alpaka
 #if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
     #error "Cuda device capability >= 2.0 is required!"
 #endif
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wignored-attributes"
                     static_assert(
                         std::is_same<typename std::result_of<
                             TKernelFnObj(acc::AccGpuHipRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
                         "The TKernelFnObj is required to return void!");
+#pragma clang diagnostic pop
 
                     acc::AccGpuHipRt<TDim, TIdx> acc(threadElemExtent);
 
@@ -390,15 +393,16 @@ namespace alpaka
                     meta::apply(
                         [&](TArgs ... args)
                         {
-                            hipLaunchKernel(
+                            hipLaunchKernelGGL(
                                 HIP_KERNEL_NAME(kernel::hip::detail::hipKernel< TDim, TIdx, TKernelFnObj, TArgs... >),
                                 gridDim,
                                 blockDim,
-                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+                                static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
                                 queue.m_spQueueImpl->m_HipQueue,
+                                hipLaunchParm{},
                                 threadElemExtent,
                                 task.m_kernelFnObj,
-                                args...
+                                std::move(args)...
                             );
 
                         },

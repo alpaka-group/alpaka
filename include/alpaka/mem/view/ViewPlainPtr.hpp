@@ -208,6 +208,8 @@ namespace alpaka
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>,
                 typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC
                 static auto getExtent(
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & extent)
                 -> TIdx
@@ -361,10 +363,12 @@ namespace alpaka
                                 reinterpret_cast<void **>(&pMemAcc),
                                 *pMem)));
 #else
-                        // FIXME: it does not work, although with unified memory it
-                        // should work (hipGetSymbolAddress is not
-                        // implemented in HIP)
-                        pMemAcc = pMem;
+                        // FIXME: still does not work in HIP(HCC) (results in hipErrorNotFound)
+                        // HIP_SYMBOL(X) not useful because it only does #X on HIP(HCC), while &X on HIP(NVCC)
+                        ALPAKA_HIP_RT_CHECK(
+                            hipGetSymbolAddress(
+                                reinterpret_cast<void **>(&pMemAcc),
+                                pMem));
 #endif
 
                         return
@@ -400,6 +404,8 @@ namespace alpaka
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC
                 static auto getOffset(
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const &)
                 -> TIdx

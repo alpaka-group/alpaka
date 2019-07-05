@@ -45,7 +45,6 @@ namespace alpaka
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    //! Constructor.
                     ALPAKA_FN_HOST EventHipImpl(
                         dev::DevHipRt const & dev,
                         bool bBusyWait) :
@@ -70,19 +69,14 @@ namespace alpaka
                                 (bBusyWait ? hipEventDefault : hipEventBlockingSync) | hipEventDisableTiming));
                     }
                     //-----------------------------------------------------------------------------
-                    //! Copy constructor.
                     EventHipImpl(EventHipImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    //! Move constructor.
                     EventHipImpl(EventHipImpl &&) = default;
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment operator.
                     auto operator=(EventHipImpl const &) -> EventHipImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Move assignment operator.
-                    auto operator=(EventHipImpl &&) -> EventHipImpl & = default;
+                    auto operator=(EventHipImpl &&) -> EventHipImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    //! Destructor.
                     ALPAKA_FN_HOST ~EventHipImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

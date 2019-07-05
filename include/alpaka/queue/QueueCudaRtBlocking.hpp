@@ -52,11 +52,11 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CUDA RT blocking queue implementation.
-                class QueueCudaRtBlocking final
+                class QueueCudaRtBlockingImpl final
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST QueueCudaRtBlocking(
+                    ALPAKA_FN_HOST QueueCudaRtBlockingImpl(
                         dev::DevCudaRt const & dev) :
                             m_dev(dev),
                             m_CudaQueue()
@@ -79,15 +79,15 @@ namespace alpaka
                                 cudaStreamNonBlocking));
                     }
                     //-----------------------------------------------------------------------------
-                    QueueCudaRtBlocking(QueueCudaRtBlocking const &) = delete;
+                    QueueCudaRtBlockingImpl(QueueCudaRtBlockingImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueCudaRtBlocking(QueueCudaRtBlocking &&) = default;
+                    QueueCudaRtBlockingImpl(QueueCudaRtBlockingImpl &&) = default;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCudaRtBlocking const &) -> QueueCudaRtBlocking & = delete;
+                    auto operator=(QueueCudaRtBlockingImpl const &) -> QueueCudaRtBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCudaRtBlocking &&) -> QueueCudaRtBlocking & = delete;
+                    auto operator=(QueueCudaRtBlockingImpl &&) -> QueueCudaRtBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~QueueCudaRtBlocking()
+                    ALPAKA_FN_HOST ~QueueCudaRtBlockingImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -118,7 +118,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST QueueCudaRtBlocking(
                 dev::DevCudaRt const & dev) :
-                m_spQueueImpl(std::make_shared<cuda::detail::QueueCudaRtBlocking>(dev))
+                m_spQueueImpl(std::make_shared<cuda::detail::QueueCudaRtBlockingImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
             QueueCudaRtBlocking(QueueCudaRtBlocking const &) = default;
@@ -144,7 +144,7 @@ namespace alpaka
             ~QueueCudaRtBlocking() = default;
 
         public:
-            std::shared_ptr<cuda::detail::QueueCudaRtBlocking> m_spQueueImpl;
+            std::shared_ptr<cuda::detail::QueueCudaRtBlockingImpl> m_spQueueImpl;
         };
     }
 

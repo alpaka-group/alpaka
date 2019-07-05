@@ -24,7 +24,12 @@
 
 #include <alpaka/core/Hip.hpp>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wduplicate-decl-specifier"
+
 #include <hiprand_kernel.h>
+
+#pragma clang diagnostic pop
 
 #include <type_traits>
 

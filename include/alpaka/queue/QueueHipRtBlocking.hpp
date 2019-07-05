@@ -81,11 +81,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     QueueHipRtBlockingImpl(QueueHipRtBlockingImpl const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueHipRtBlockingImpl(QueueHipRtBlockingImpl &&) = default;
+                    QueueHipRtBlockingImpl(QueueHipRtBlockingImpl &&) = delete;
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueHipRtBlockingImpl const &) -> QueueHipRtBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueHipRtBlockingImpl &&) -> QueueHipRtBlockingImpl & = default;
+                    auto operator=(QueueHipRtBlockingImpl &&) -> QueueHipRtBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST ~QueueHipRtBlockingImpl()
                     {
@@ -106,10 +106,12 @@ namespace alpaka
                 public:
                     dev::DevHipRt const m_dev;   //!< The device this queue is bound to.
                     hipStream_t m_HipQueue;
-                    int m_callees = 0; //FIXME: workaround for failing stream query
+                    //FIXME: workaround for failing stream query
+                    int m_callees = 0;
+                    std::mutex m_mutex;
                 };
-            }
-        }
+            } // detail
+        } // hip
 
         //#############################################################################
         //! The HIP RT blocking queue.
@@ -251,12 +253,13 @@ namespace alpaka
                     TTask const & task)
                 -> void
                 {
-                    auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
-
                     {
-                        std::unique_lock<std::mutex> lock(pCallbackSynchronizationData.get()->m_mutex);
+                        // thread-safe callee incrementing
+                        std::lock_guard<std::mutex> guard(queue.m_spQueueImpl->m_mutex);
                         queue.m_spQueueImpl->m_callees += 1;
                     }
+
+                    auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
 
                     ALPAKA_HIP_RT_CHECK(hipStreamAddCallback(
                         queue.m_spQueueImpl->m_HipQueue,
@@ -271,6 +274,9 @@ namespace alpaka
                     // before it executes the next task in the queue (HIP stream).
                     std::thread t(
                         [pCallbackSynchronizationData, task, &queue](){
+
+                            // thread-safe task execution and callee decrementing
+                            std::lock_guard<std::mutex> guard(queue.m_spQueueImpl->m_mutex);
 
                             // If the callback has not yet been called, we wait for it.
                             {
@@ -289,9 +295,10 @@ namespace alpaka
 
                                 // Notify the waiting HIP thread.
                                 pCallbackSynchronizationData->state = CallbackState::finished;
-                                queue.m_spQueueImpl->m_callees -= 1;
                             }
                             pCallbackSynchronizationData->m_event.notify_one();
+
+                            queue.m_spQueueImpl->m_callees -= 1;
                         }
                     );
 
@@ -313,7 +320,7 @@ namespace alpaka
 
                     // see: https://github.com/ROCm-Developer-Tools/HIP/blob/roc-1.9.x/tests/src/runtimeApi/stream/hipStreamWaitEvent.cpp
 
-#if defined( BOOST_COMP_HCC ) && BOOST_COMP_HCC
+#if BOOST_COMP_HCC
                     // FIXME: workaround, see m_callees
                     return (queue.m_spQueueImpl->m_callees==0);
 #else
@@ -348,7 +355,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined( BOOST_COMP_HCC ) && BOOST_COMP_HCC
+#if BOOST_COMP_HCC
                     // FIXME: workaround, see m_callees
                     while(queue.m_spQueueImpl->m_callees>0) {
                         std::this_thread::sleep_for(std::chrono::milliseconds(100u));
