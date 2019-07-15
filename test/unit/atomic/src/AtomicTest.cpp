@@ -973,5 +973,9 @@ struct TestTemplate
 
 TEST_CASE( "atomicOperationsWorking", "[atomic]")
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplate() );
+    using TestAccs = alpaka::test::acc::EnabledAccs<
+        alpaka::dim::DimInt<1u>,
+        std::size_t>;
+
+    alpaka::meta::forEachType< TestAccs >( TestTemplate() );
 }
