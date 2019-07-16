@@ -771,21 +771,23 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
                 ENDIF()
 
                 # random numbers library ( HIP(NVCC) ) /hiprand
+                # HIP_ROOT_DIR is set by FindHIP.cmake
                 FIND_PATH(HIP_RAND_INC
-                    hiprand_kernel.h
-                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}" "hiprand"
+                    NAMES "hiprand_kernel.h"
+                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}/include" "hiprand"
                     PATHS "/opt/rocm/rocrand/hiprand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "include")
+                    PATH_SUFFIXES "include" "hiprand")
                 FIND_LIBRARY(HIP_RAND_LIBRARY
-                    hiprand-d
-                    hiprand
+                    NAMES "hiprand-d" "hiprand"
                     PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}" "hiprand"
                     PATHS "/opt/rocm/rocrand/hiprand"
                     ENV HIP_PATH
                     PATH_SUFFIXES "lib" "lib64")
-                IF(NOT HIP_RAND_INC OR NOT HIP_RAND_LIBRARY)
-                    MESSAGE(FATAL_ERROR "Could not find hipRAND library")
+                IF(NOT HIP_RAND_INC)
+                    MESSAGE(FATAL_ERROR "Could not find hipRAND include (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}).")
+                ENDIF()
+                IF(NOT HIP_RAND_LIBRARY)
+                    MESSAGE(FATAL_ERROR "Could not find hipRAND library (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}).")
                 ENDIF()
                 LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${HIP_RAND_INC}")
                 LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${HIP_RAND_LIBRARY}")
