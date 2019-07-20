@@ -15,6 +15,9 @@
 #include <catch2/catch.hpp>
 
 #include <functional>
+#if BOOST_LANG_CUDA
+#include <nvfunctional>
+#endif
 
 //-----------------------------------------------------------------------------
 template<
@@ -74,4 +77,32 @@ TEST_CASE( "stdBindKernelIsWorking", "[kernel]")
 {
     alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateStdBind() );
 }
+#endif
+
+#if BOOST_LANG_CUDA
+// clang as a native CUDA compiler does not seem to support nvstd::function when ALPAKA_ACC_GPU_CUDA_ONLY_MODE is used.
+// error: reference to __device__ function 'kernelFn<alpaka::acc::AccGpuCudaRt<std::__1::integral_constant<unsigned long, 1>, unsigned long> >' in __host__ function const auto kernel = nvstd::function<void(TAcc const &, bool *, std::int32_t)>( kernelFn<TAcc> );
+#if !(defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && BOOST_COMP_CLANG_CUDA)
+//-----------------------------------------------------------------------------
+struct TestTemplateNvstdFunction
+{
+template< typename TAcc >
+void operator()()
+{
+    using Dim = alpaka::dim::Dim<TAcc>;
+    using Idx = alpaka::idx::Idx<TAcc>;
+
+    alpaka::test::KernelExecutionFixture<TAcc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
+
+    const auto kernel = nvstd::function<void(TAcc const &, bool *, std::int32_t)>( kernelFn<TAcc> );
+    REQUIRE(fixture(kernel, 42));
+  }
+};
+
+TEST_CASE( "nvstdFunctionKernelIsWorking", "[kernel]")
+{
+    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateNvstdFunction() );
+}
+#endif
 #endif
