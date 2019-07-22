@@ -733,8 +733,10 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
 
                 FOREACH(_HIP_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
-                    SET(HIP_NVCC_FLAGS ${HIP_NVCC_FLAGS}
-                        "--generate-code arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM} --generate-code arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}")
+                    LIST(APPEND CUDA_NVCC_FLAGS
+                        --generate-code arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM}
+                        --generate-code arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}
+                    )
                 ENDFOREACH()
                 # for CUDA cmake adds automatically compiler flags as nvcc does not do this,
                 # but for HIP we have to do this here

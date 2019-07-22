@@ -61,7 +61,8 @@ auto main()
 -> int
 {
 // This example is hard-coded to use the sequential backend.
-#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
+// It requires support for extended lambdas when using nvcc as CUDA compiler.
+#if defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED) && (!defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__) ))
 
     // Define the index domain
     using Dim = alpaka::dim::DimInt<3>;
