@@ -133,46 +133,6 @@ auto main()
         nExclamationMarks
     );
 
-    
-    // Run "Hello World" kernel with a std::function
-    //
-    // This kernel says hi to world by using 
-    // std::functions, which are available since
-    // the C++11 standard.
-    // The interface for std::function can be used
-    // to encapsulate normal c++ functions and 
-    // lambda functions into a function object. 
-    // Alpaka accepts these std::functions 
-    // as kernel functions. Therefore, it is easy
-    // to wrap allready existing code into a
-    // std::function and provide it to the alpaka 
-    // library.
-    alpaka::kernel::exec<Acc> (
-        queue,
-        workDiv,
-        std::function<void(Acc const &, size_t)>( hiWorldFunction<Acc> ),
-        nExclamationMarks);
-
-    
-    // Run "Hello World" kernel with a std::bind function object
-    //
-    // This kernel binds arguments of the existing function hiWorldFunction
-    // to a std::function objects and provides it as alpaka kernel.
-    // The syntax needs to be the following:
-    // - std::bind(foo<Acc>, std::placeholders::_1, arg1, arg2, ...)
-    //
-    // The placeholder will be filled by alpaka with the 
-    // particular accelerator object.
-    //
-    // This approach has the advantage that you do
-    // not need to provide the signature of your function
-    // as it is the case for the std::function example above.
-    alpaka::kernel::exec<Acc> (
-        queue,
-        workDiv,
-        std::bind( hiWorldFunction<Acc>, std::placeholders::_1, nExclamationMarks*2 )
-        );
-
     return EXIT_SUCCESS;
 
 #else
