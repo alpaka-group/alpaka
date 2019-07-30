@@ -883,12 +883,14 @@ ELSE()
         LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
     ENDIF()
 
-    # GNU
-    IF(CMAKE_COMPILER_IS_GNUCXX)
-        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth-512")
-    # Clang or AppleClang
-    ELSEIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth=512")
+    # Clang<4.0 or AppleClang<9.0
+    #   https://bugs.llvm.org/show_bug.cgi?id=18417
+    #   https://github.com/llvm/llvm-project/commit/e55b4737c026ea2e0b44829e4115d208577a67b2
+    IF(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang" AND
+        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1) OR
+       ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND
+        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
+        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth=1024")
     ENDIF()
 ENDIF()
 
