@@ -7,7 +7,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
@@ -18,6 +17,7 @@
 #if !defined(BOOST_NO_CXX14_GENERIC_LAMBDAS)
 // CUDA C Programming guide says: "__host__ __device__ extended lambdas cannot be generic lambdas"
 #if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+
 //-----------------------------------------------------------------------------
 struct TestTemplateGeneric
 {

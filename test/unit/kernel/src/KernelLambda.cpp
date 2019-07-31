@@ -7,10 +7,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 // NVCC needs --expt-extended-lambda
-#if !defined(__NVCC__) || \
-    ( defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__) )
+#if !defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__))
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
@@ -18,7 +16,6 @@
 #include <alpaka/core/BoostPredef.hpp>
 
 #include <catch2/catch.hpp>
-
 
 //-----------------------------------------------------------------------------
 struct TestTemplateLambda

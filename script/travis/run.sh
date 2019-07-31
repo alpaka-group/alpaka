@@ -102,18 +102,10 @@ then
     which hipcc
     hipcc -V
     which hipconfig
+    hipconfig --platform
     hipconfig -v
     # print newline as previous command does not do this
     echo
-
-    ## rocRAND
-    export ROCRAND_SOURCE_DIR=${ALPAKA_CI_HIP_ROOT_DIR}/source-rocrand/
-    if [ ! -d "${ROCRAND_SOURCE_DIR}" ]
-    then
-        # install it into the HIP install dir
-        git clone --quiet --recursive https://github.com/ROCmSoftwarePlatform/rocRAND "${ROCRAND_SOURCE_DIR}"
-        (cd "${ROCRAND_SOURCE_DIR}"; mkdir -p build; cd build; cmake -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}" -DCMAKE_INSTALL_PREFIX="${ALPAKA_CI_HIP_ROOT_DIR}" -DBUILD_BENCHMARK=OFF -DBUILD_TEST=OFF -DNVGPU_TARGETS="30" -DCMAKE_MODULE_PATH="${ALPAKA_CI_HIP_ROOT_DIR}/cmake" -DHIP_PLATFORM="${HIP_PLATFORM}" .. && make && make install)
-    fi
 
 fi
 
