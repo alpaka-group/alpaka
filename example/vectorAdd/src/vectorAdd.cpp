@@ -72,6 +72,27 @@ public:
     }
 };
 
+template<class A, class B>
+#if defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED)
+using DefaultAcc = alpaka::acc::AccCpuOmp4<A,B>;
+#elif defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
+using DefaultAcc = alpaka::acc::AccCpuOmp2Blocks<A,B>;
+#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
+using DefaultAcc = alpaka::acc::AccCpuFibers<A,B>;
+#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
+using DefaultAcc = alpaka::acc::AccCpuOmp2Threads<A,B>;
+#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
+using DefaultAcc = alpaka::acc::AccCpuSerial<A,B>;
+#elif defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)
+using DefaultAcc = alpaka::acc::AccCpuThreads<A,B>;
+#elif defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+using DefaultAcc = alpaka::acc::AccGpuCudaRt<A,B>;
+#else
+class Stub;
+#define NOP
+#warning "No supported backend selected."
+#endif
+
 auto main()
 -> int
 {
@@ -79,6 +100,7 @@ auto main()
 #if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
     return EXIT_SUCCESS;
 #else
+
     // Define the index domain
     using Dim = alpaka::dim::DimInt<1u>;
     using Idx = std::size_t;
@@ -95,7 +117,8 @@ auto main()
     // - AccCpuOmp4
     // - AccCpuTbbBlocks
     // - AccCpuSerial
-    using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    using Acc = DefaultAcc<Dim, Idx>;
+    std::cout << "Using alpaka accelerator: " << alpaka::acc::getAccName<Acc>() << std::endl;
 
     // Defines the synchronization behavior of a queue
     //
