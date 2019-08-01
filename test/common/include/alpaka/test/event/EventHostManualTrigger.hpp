@@ -78,7 +78,7 @@ namespace alpaka
                         //! Constructor.
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(
-                            dev::DevCpu const & dev) :
+                            dev::DevCpu const & dev) noexcept :
                                 m_dev(dev),
                                 m_mutex(),
                                 m_enqueueCount(0u),
