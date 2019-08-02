@@ -7,16 +7,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/mem/view/ViewSubView.hpp>
 
-#include <catch2/catch.hpp>
-
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/mem/view/ViewTest.hpp>
 #include <alpaka/test/Extent.hpp>
 
 #include <alpaka/core/BoostPredef.hpp>
+
+#include <catch2/catch.hpp>
 
 #include <type_traits>
 #include <numeric>

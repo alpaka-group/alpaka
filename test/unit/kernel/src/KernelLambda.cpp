@@ -10,8 +10,9 @@
 // NVCC needs --expt-extended-lambda
 #if !defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__))
 
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>
+#include <alpaka/kernel/Traits.hpp>
+
+#include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 
