@@ -127,3 +127,12 @@
         #define BOOST_COMP_INTEL BOOST_COMP_INTEL_DETECTION
     #endif
 #endif
+
+//-----------------------------------------------------------------------------
+// clang CUDA compiler detection
+// Currently __CUDA__ is only defined by clang when compiling CUDA code.
+#if defined(__clang__) && defined(__CUDA__)
+    #define BOOST_COMP_CLANG_CUDA BOOST_COMP_CLANG
+#else
+    #define BOOST_COMP_CLANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
+#endif
