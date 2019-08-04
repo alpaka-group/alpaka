@@ -733,8 +733,10 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
 
                 FOREACH(_HIP_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
-                    SET(HIP_NVCC_FLAGS ${HIP_NVCC_FLAGS}
-                        "--generate-code arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM} --generate-code arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}")
+                    LIST(APPEND CUDA_NVCC_FLAGS
+                        --generate-code arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM}
+                        --generate-code arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}
+                    )
                 ENDFOREACH()
                 # for CUDA cmake adds automatically compiler flags as nvcc does not do this,
                 # but for HIP we have to do this here
@@ -881,12 +883,14 @@ ELSE()
         LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
     ENDIF()
 
-    # GNU
-    IF(CMAKE_COMPILER_IS_GNUCXX)
-        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth-512")
-    # Clang or AppleClang
-    ELSEIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth=512")
+    # Clang<4.0 or AppleClang<9.0
+    #   https://bugs.llvm.org/show_bug.cgi?id=18417
+    #   https://github.com/llvm/llvm-project/commit/e55b4737c026ea2e0b44829e4115d208577a67b2
+    IF(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang" AND
+        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1) OR
+       ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND
+        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
+        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth=1024")
     ENDIF()
 ENDIF()
 

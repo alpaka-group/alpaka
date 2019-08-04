@@ -7,10 +7,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 // NVCC needs --expt-relaxed-constexpr
-#if !defined(__NVCC__) || \
-    ( defined(__NVCC__) && defined(__CUDACC_RELAXED_CONSTEXPR__) )
+#if !defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_RELAXED_CONSTEXPR__))
 
 #include <alpaka/alpaka.hpp>
 #include <alpaka/test/acc/Acc.hpp>
