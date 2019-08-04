@@ -44,7 +44,7 @@ namespace alpaka
                 public:
                     //-----------------------------------------------------------------------------
                     QueueCpuBlockingImpl(
-                        dev::DevCpu const & dev) :
+                        dev::DevCpu const & dev) noexcept :
                             m_dev(dev),
                             m_bCurrentlyExecutingTask(false)
                     {}
