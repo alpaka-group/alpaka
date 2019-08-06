@@ -146,6 +146,7 @@ namespace alpaka
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
+            // NOTE: for HCC streams workaround: no need to sync with spawned tasks as this queue is already syncing in enqueue
             ALPAKA_FN_HOST ~QueueHipRtBlocking() = default;
 
         public:

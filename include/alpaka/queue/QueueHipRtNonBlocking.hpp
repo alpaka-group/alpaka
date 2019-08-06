@@ -146,7 +146,12 @@ namespace alpaka
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~QueueHipRtNonBlocking() = default;
+            ALPAKA_FN_HOST ~QueueHipRtNonBlocking() {
+#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
+                // we are a non-blocking queue, so we have to wait here with its destruction until all spawned tasks have been processed
+                alpaka::wait::wait(*this);
+#endif
+            }
 
         public:
             std::shared_ptr<hip::detail::QueueHipRtNonBlockingImpl> m_spQueueImpl;
