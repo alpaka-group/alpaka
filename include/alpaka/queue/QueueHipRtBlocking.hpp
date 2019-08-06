@@ -369,7 +369,7 @@ namespace alpaka
 
 #if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
                     while(queue.m_spQueueImpl->m_callees>0) {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100u));
+                        std::this_thread::sleep_for(std::chrono::milliseconds(10u));
                     }
 #else
                     // Sync is allowed even for queues on non current device.
