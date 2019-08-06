@@ -210,6 +210,35 @@ IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE AND (ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAK
 ENDIF()
 
 #-------------------------------------------------------------------------------
+# Compiler settings.
+IF(MSVC)
+    # Empty append to define it if it does not already exist.
+    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC)
+
+    IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
+        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "/wd4505")   # CUDA\v9.2\include\crt/host_runtime.h(265): warning C4505: '__cudaUnregisterBinaryUtil': unreferenced local function has been removed
+    ENDIF()
+ELSE()
+    # Add linker options.
+    # lipthread:
+    LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;pthread")
+    IF(NOT APPLE)
+        # librt: undefined reference to `clock_gettime'
+        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
+    ENDIF()
+
+    # Clang<4.0 or AppleClang<9.0
+    #   https://bugs.llvm.org/show_bug.cgi?id=18417
+    #   https://github.com/llvm/llvm-project/commit/e55b4737c026ea2e0b44829e4115d208577a67b2
+    IF(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang" AND
+        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1) OR
+       ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND
+        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
+        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth=1024")
+    ENDIF()
+ENDIF()
+
+#-------------------------------------------------------------------------------
 # Find Boost.
 SET(_ALPAKA_BOOST_MIN_VER "1.62.0")
 IF(${ALPAKA_DEBUG} GREATER 1)
@@ -366,11 +395,6 @@ IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
             SET(ALPAKA_ACC_CPU_BT_OMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU block and thread back-end" FORCE)
         ENDIF()
 
-        # CUDA and HIP require some special handling
-        IF(ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE)
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-        ENDIF()
-
         LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC ${OpenMP_CXX_FLAGS})
         IF(NOT MSVC)
             LIST(APPEND _ALPAKA_LINK_FLAGS_PUBLIC ${OpenMP_CXX_FLAGS})
@@ -380,7 +404,6 @@ IF(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
         IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
             IF(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
                 LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-fopenmp-version=40")
-                SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp-version=40")
             ENDIF()
         ENDIF()
     ENDIF()
@@ -868,32 +891,6 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
     ENDIF()
 ENDIF() # HIP
 
-
-#-------------------------------------------------------------------------------
-# Compiler settings.
-IF(MSVC)
-    # Empty append to define it if it does not already exist.
-    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC)
-ELSE()
-    # Add linker options.
-    # lipthread:
-    LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;pthread")
-    IF(NOT APPLE)
-        # librt: undefined reference to `clock_gettime'
-        LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
-    ENDIF()
-
-    # Clang<4.0 or AppleClang<9.0
-    #   https://bugs.llvm.org/show_bug.cgi?id=18417
-    #   https://github.com/llvm/llvm-project/commit/e55b4737c026ea2e0b44829e4115d208577a67b2
-    IF(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang" AND
-        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1) OR
-       ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND
-        CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
-        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth=1024")
-    ENDIF()
-ENDIF()
-
 #-------------------------------------------------------------------------------
 # alpaka.
 IF(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
@@ -1074,6 +1071,12 @@ IF(NOT TARGET "alpaka")
             "alpaka"
             INTERFACE ${_ALPAKA_LINK_LIBRARIES_PUBLIC} ${_ALPAKA_LINK_FLAGS_PUBLIC})
     ENDIF()
+ENDIF()
+
+# NVCC does not incorporate the COMPILE_OPTIONS of a target but only the CMAKE_CXX_FLAGS
+IF((ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE) AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
+    STRING(REPLACE ";" " " _ALPAKA_COMPILE_OPTIONS_STRING "${_ALPAKA_COMPILE_OPTIONS_PUBLIC}")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_ALPAKA_COMPILE_OPTIONS_STRING}")
 ENDIF()
 
 #-------------------------------------------------------------------------------
