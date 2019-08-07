@@ -141,25 +141,25 @@ then
 
     if [ "${ALPAKA_CI_STDLIB}" == "libstdc++" ]
     then
-        if [ "${CXX}" == "clang++" ]
+        if [ ! -z "${ALPAKA_CXX_STANDARD+x}" ]
         then
-            if [ ! -z "${ALPAKA_CXX_STANDARD+x}" ]
+            if (( "${ALPAKA_CXX_STANDARD}" >= 17 ))
             then
-                if (( "${ALPAKA_CXX_STANDARD}" >= 17 ))
+                if [ "${CXX}" == "clang++" ]
                 then
                     if (( "${ALPAKA_CI_CLANG_LIBSTDCPP_VERSION}" < 7 ))
                     then
                         echo "Clang used in c++17 mode requires libstdc++-7 or newer."
                         exit 1
                     fi
-                    if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
+                fi
+                if [ "${ALPAKA_CI_INSTALL_FIBERS}" == "ON" ]
+                then
+                    if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 67 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
                     then
-                        if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 67 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
-                        then
-                            # https://github.com/boostorg/coroutine2/issues/26
-                            echo "Clang used in c++17 mode with libstdc++ is not compatible with boost.fibers in boost-1.66 and below."
-                            exit 1
-                        fi
+                        # https://github.com/boostorg/coroutine2/issues/26
+                        echo "libstdc++ in c++17 mode is not compatible with boost.fibers in boost-1.66 and below."
+                        exit 1
                     fi
                 fi
             fi
