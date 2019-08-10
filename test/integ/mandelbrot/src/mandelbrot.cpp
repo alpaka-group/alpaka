@@ -39,7 +39,8 @@ public:
     {}
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_HOST_ACC auto absSq()
+    ALPAKA_FN_INLINE
+    ALPAKA_FN_HOST_ACC auto absSq() const
     -> T
     {
         return r*r + i*i;
