@@ -14,7 +14,6 @@
 #include <tuple>
 #include <type_traits>
 
-
 class A {};
 class B : A {};
 class C {};

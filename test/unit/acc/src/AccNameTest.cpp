@@ -7,7 +7,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 #include <alpaka/acc/Traits.hpp>
 
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -15,7 +14,6 @@
 #include <catch2/catch.hpp>
 
 #include <iostream>
-
 
 //-----------------------------------------------------------------------------
 struct TestTemplate

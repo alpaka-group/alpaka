@@ -16,7 +16,6 @@
 #include <tuple>
 #include <type_traits>
 
-
 //-----------------------------------------------------------------------------
 TEST_CASE("cartesianProduct", "[meta]")
 {

@@ -15,7 +15,6 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-
 #include "alpakaConfig.hpp"
 #include "kernel.hpp"
 #include <alpaka/alpaka.hpp>

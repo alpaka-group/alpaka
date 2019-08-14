@@ -17,7 +17,6 @@
 
 #include <catch2/catch.hpp>
 
-
 using Elem = std::uint32_t;
 using Dim = alpaka::dim::DimInt<2u>;
 using Idx = std::uint32_t;

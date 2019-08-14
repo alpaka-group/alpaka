@@ -22,7 +22,6 @@
 #include <cmath>
 #include <algorithm>
 
-
 //#############################################################################
 //! A vector addition kernel.
 class AxpyKernel

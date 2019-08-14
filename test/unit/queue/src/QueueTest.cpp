@@ -17,7 +17,6 @@
 #include <future>
 #include <thread>
 
-
 //-----------------------------------------------------------------------------
 struct TestTemplateEmpty
 {

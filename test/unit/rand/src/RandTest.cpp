@@ -9,10 +9,10 @@
 
 #include <alpaka/rand/Traits.hpp>
 
-#include <catch2/catch.hpp>
-
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
+
+#include <catch2/catch.hpp>
 
 //#############################################################################
 class RandTestKernel
