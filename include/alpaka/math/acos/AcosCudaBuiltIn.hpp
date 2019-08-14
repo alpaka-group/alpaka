@@ -7,7 +7,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 #pragma once
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
@@ -49,7 +48,6 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_NO_HOST_ACC_WARNING
                 __device__ static auto acos(
                     AcosCudaBuiltIn const & acos_ctx,
                     TArg const & arg)
