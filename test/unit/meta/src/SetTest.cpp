@@ -14,7 +14,6 @@
 #include <tuple>
 #include <type_traits>
 
-
 //-----------------------------------------------------------------------------
 TEST_CASE("isSetTrue", "[meta]")
 {

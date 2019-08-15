@@ -7,7 +7,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 #include <alpaka/mem/buf/Traits.hpp>
 
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -20,7 +19,6 @@
 
 #include <type_traits>
 #include <numeric>
-
 
 //-----------------------------------------------------------------------------
 template<

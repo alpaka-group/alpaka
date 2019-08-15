@@ -15,7 +15,6 @@
 
 #include <catch2/catch.hpp>
 
-
 //#############################################################################
 class BlockSharedMemDynTestKernel
 {
