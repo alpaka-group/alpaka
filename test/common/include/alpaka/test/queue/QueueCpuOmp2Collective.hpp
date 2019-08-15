@@ -71,16 +71,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ~QueueCpuOmp2CollectiveImpl() = default;
                     //-----------------------------------------------------------------------------
-                    void enqueue(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu & ev) final
+                    void enqueue(event::EventCpu & ev) final
                     {
-                        auto spQueueImpl = std::static_pointer_cast<QueueCpuOmp2CollectiveImpl>(iQueue);
-                        queue::enqueue(spQueueImpl, ev);
+                        queue::enqueue(*this, ev);
                     }
                     //-----------------------------------------------------------------------------
-                    void wait(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu const & ev) final
+                    void wait(event::EventCpu const & ev) final
                     {
-                        auto spQueueImpl = std::static_pointer_cast<QueueCpuOmp2CollectiveImpl>(iQueue);
-                        wait::wait(spQueueImpl, ev);
+                        wait::wait(*this, ev);
                     }
 
                 public:
@@ -244,12 +242,12 @@ namespace alpaka
             //! The CPU OpenMP2 collective device queue enqueue trait specialization.
             template<>
             struct Enqueue<
-                std::shared_ptr<queue::cpu::detail::QueueCpuOmp2CollectiveImpl>,
+                queue::cpu::detail::QueueCpuOmp2CollectiveImpl,
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    std::shared_ptr<queue::cpu::detail::QueueCpuOmp2CollectiveImpl> &,
+                    queue::cpu::detail::QueueCpuOmp2CollectiveImpl &,
                     event::EventCpu &)
                 -> void
                 {
@@ -392,12 +390,12 @@ namespace alpaka
             //! The CPU OpenMP2 collective device queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                std::shared_ptr<queue::cpu::detail::QueueCpuOmp2CollectiveImpl>,
+                queue::cpu::detail::QueueCpuOmp2CollectiveImpl,
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    std::shared_ptr<queue::cpu::detail::QueueCpuOmp2CollectiveImpl> &,
+                    queue::cpu::detail::QueueCpuOmp2CollectiveImpl &,
                     event::EventCpu const &)
                 -> void
                 {

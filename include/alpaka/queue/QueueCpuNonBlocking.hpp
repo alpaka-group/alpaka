@@ -75,17 +75,15 @@ namespace alpaka
                     ~QueueCpuNonBlockingImpl() = default;
 
                     //-----------------------------------------------------------------------------
-                    void enqueue(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu & ev) final
+                    void enqueue(event::EventCpu & ev) final
                     {
-                        auto spQueueImpl = std::static_pointer_cast<QueueCpuNonBlockingImpl>(iQueue);
-                        queue::enqueue(spQueueImpl, ev);
+                        queue::enqueue(*this, ev);
                     }
 
                     //-----------------------------------------------------------------------------
-                    void wait(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu const & ev) final
+                    void wait(event::EventCpu const & ev) final
                     {
-                        auto spQueueImpl = std::static_pointer_cast<QueueCpuNonBlockingImpl>(iQueue);
-                        wait::wait(spQueueImpl, ev);
+                        wait::wait(*this, ev);
                     }
 
                 public:

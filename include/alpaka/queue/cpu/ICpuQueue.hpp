@@ -7,10 +7,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 #pragma once
-
-#include <memory>
 
 namespace alpaka
 {
@@ -34,10 +31,12 @@ namespace alpaka
             public:
                 //-----------------------------------------------------------------------------
                 ICpuQueue() = default;
-                //! enqueue the event into the given queue ------------------------------------
-                virtual void enqueue(std::shared_ptr<ICpuQueue> &, event::EventCpu &) = 0;
-                //! the given queue is waiting for the event-----------------------------------
-                virtual void wait(std::shared_ptr<ICpuQueue> &, event::EventCpu const &) = 0;
+                //-----------------------------------------------------------------------------
+                //! enqueue the event
+                virtual void enqueue(event::EventCpu &) = 0;
+                //-----------------------------------------------------------------------------
+                //! waiting for the event
+                virtual void wait(event::EventCpu const &) = 0;
                 //-----------------------------------------------------------------------------
                 virtual ~ICpuQueue() = default;
             };

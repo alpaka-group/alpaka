@@ -34,7 +34,7 @@ namespace alpaka
                     for(auto && spQueue : vQueues)
                     {
                         vEvents.emplace_back(dev);
-                        spQueue->enqueue(spQueue, vEvents.back());
+                        spQueue->enqueue(vEvents.back());
                     }
 
                     // Now wait for all the events.
