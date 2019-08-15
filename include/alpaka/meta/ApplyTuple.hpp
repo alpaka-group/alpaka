@@ -18,6 +18,7 @@
 #include <boost/config.hpp>
 
 #include <utility>
+#include <tuple>
 #include <type_traits>
 
 namespace alpaka

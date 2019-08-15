@@ -7,8 +7,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/meta/CartesianProduct.hpp>
 
-#include <alpaka/alpaka.hpp>
+#include <alpaka/dim/DimIntegralConst.hpp>
 
 #include <catch2/catch.hpp>
 

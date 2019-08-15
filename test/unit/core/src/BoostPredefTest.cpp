@@ -8,7 +8,7 @@
  */
 
 
-#include <alpaka/alpaka.hpp>
+#include <alpaka/core/BoostPredef.hpp>
 
 #include <catch2/catch.hpp>
 
