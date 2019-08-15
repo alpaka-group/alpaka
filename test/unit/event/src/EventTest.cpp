@@ -12,6 +12,7 @@
 #include <alpaka/test/event/EventHostManualTrigger.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/queue/QueueTestFixture.hpp>
+#include <alpaka/test/queue/QueueCpuOmp2Collective.hpp>
 
 #include <catch2/catch.hpp>
 
@@ -285,7 +286,13 @@ void operator()()
 }
 };
 
-using TestQueues = alpaka::test::queue::TestQueues;
+using TestQueues = alpaka::meta::Concatenate<
+        alpaka::test::queue::TestQueues
+ #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
+        ,
+        std::tuple<std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuOmp2Collective>>
+#endif
+    >;
 
 TEST_CASE( "eventTestShouldInitiallyBeTrue", "[event]")
 {
