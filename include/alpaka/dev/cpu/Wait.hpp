@@ -29,19 +29,16 @@ namespace alpaka
                 )
                 ->void
                 {
-
-                    // Enqueue an event in every non-blocking queue on the device.
-                    // \FIXME: This should be done atomically for all queues.
                     // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!
-                    std::vector<event::EventCpu> vEventsNonBlocking;
+                    std::vector<event::EventCpu> vEvents;
                     for(auto && spQueue : vQueues)
                     {
-                        vEventsNonBlocking.emplace_back(dev);
-                        queue::enqueue(spQueue, vEventsNonBlocking.back());
+                        vEvents.emplace_back(dev);
+                        spQueue->enqueue(spQueue, vEvents.back());
                     }
 
                     // Now wait for all the events.
-                    for(auto && event : vEventsNonBlocking)
+                    for(auto && event : vEvents)
                     {
                         wait::wait(event);
                     }
@@ -65,14 +62,10 @@ namespace alpaka
 
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
-                    auto vspQueuesNonBlocking(
-                        dev.m_spDevCpuImpl->GetAllNonBlockingQueueImpls());
+                    auto vspQueues(
+                        dev.m_spDevCpuImpl->GetAllQueues());
 
-                    auto vspQueuesBlocking(
-                        dev.m_spDevCpuImpl->GetAllBlockingQueueImpls());
-
-                    detail::currentThreadWaitForDevice(dev, vspQueuesNonBlocking);
-                    detail::currentThreadWaitForDevice(dev, vspQueuesBlocking);
+                    detail::currentThreadWaitForDevice(dev, vspQueues);
                 }
             };
         }

@@ -14,6 +14,7 @@
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 
+#include <alpaka/queue/cpu/ICpuQueue.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/cpu/SysInfo.hpp>
 
@@ -63,18 +64,13 @@ namespace alpaka
                 class DevCpuImpl
                 {
                 private:
-                    // queue::QueueCpuNonBlocking::QueueCpuNonBlocking calls RegisterNonBlockingQueue.
-                    friend queue::QueueCpuNonBlocking;
-                    // queue::QueueCpuBlocking::QueueCpuNonBlocking calls RegisterBlockingQueue.
-                    friend queue::QueueCpuBlocking;
 
                     //-----------------------------------------------------------------------------
-                    template< typename TQueue>
                     ALPAKA_FN_HOST auto GetAllQueueImpls(
-                        std::vector<std::weak_ptr<TQueue>> & queues) const
-                    -> std::vector<std::shared_ptr<TQueue>>
+                        std::vector<std::weak_ptr<queue::cpu::ICpuQueue>> & queues) const
+                    -> std::vector<std::shared_ptr<queue::cpu::ICpuQueue>>
                     {
-                        std::vector<std::shared_ptr<TQueue>> vspQueues;
+                        std::vector<std::shared_ptr<queue::cpu::ICpuQueue>> vspQueues;
 
                         std::lock_guard<std::mutex> lk(m_Mutex);
 
@@ -108,50 +104,27 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ~DevCpuImpl() = default;
 
-                    ALPAKA_FN_HOST auto GetAllNonBlockingQueueImpls() const
-                    -> std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>>
+                    ALPAKA_FN_HOST auto GetAllQueues() const
+                    -> std::vector<std::shared_ptr<queue::cpu::ICpuQueue>>
                     {
-                        return GetAllQueueImpls<
-                            queue::cpu::detail::QueueCpuNonBlockingImpl>(m_queuesNonBlocking);
+                        return GetAllQueueImpls(m_queues);
                     }
 
-                    ALPAKA_FN_HOST auto GetAllBlockingQueueImpls() const
-                    -> std::vector<std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl>>
-                    {
-                        return GetAllQueueImpls<
-                            queue::cpu::detail::QueueCpuBlockingImpl>(m_queuesBlocking);
-                    }
-
-                private:
                     //-----------------------------------------------------------------------------
                     //! Registers the given queue on this device.
                     //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                    ALPAKA_FN_HOST auto RegisterNonBlockingQueue(std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> spQueueImpl)
+                    ALPAKA_FN_HOST auto RegisterQueue(std::shared_ptr<queue::cpu::ICpuQueue> spQueue)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
 
                         // Register this queue on the device.
-                        // NOTE: We have to store the plain pointer next to the weak pointer.
-                        // This is necessary to find the entry on unregistering because the weak pointer will already be invalid at that point.
-                        m_queuesNonBlocking.push_back(spQueueImpl);
-                    }
-
-                    ALPAKA_FN_HOST auto RegisterBlockingQueue(std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl> spQueueImpl)
-                    -> void
-                    {
-                        std::lock_guard<std::mutex> lk(m_Mutex);
-
-                        // Register this queue on the device.
-                        // NOTE: We have to store the plain pointer next to the weak pointer.
-                        // This is necessary to find the entry on unregistering because the weak pointer will already be invalid at that point.
-                        m_queuesBlocking.push_back(spQueueImpl);
+                        m_queues.push_back(spQueue);
                     }
 
                 private:
                     std::mutex mutable m_Mutex;
-                    std::vector<std::weak_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>> mutable m_queuesNonBlocking;
-                    std::vector<std::weak_ptr<queue::cpu::detail::QueueCpuBlockingImpl>> mutable m_queuesBlocking;
+                    std::vector<std::weak_ptr<queue::cpu::ICpuQueue>> mutable m_queues;
                 };
             }
         }

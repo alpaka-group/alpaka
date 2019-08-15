@@ -23,6 +23,7 @@
 
 #include <mutex>
 #include <condition_variable>
+#include <future>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>
 #endif
@@ -455,23 +456,14 @@ namespace alpaka
                 {
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
-                    auto vspQueuesNonBlocking(
-                        dev.m_spDevCpuImpl->GetAllNonBlockingQueueImpls());
-                    auto vspQueuesBlocking(
-                        dev.m_spDevCpuImpl->GetAllBlockingQueueImpls());
+                    auto vspQueues(
+                        dev.m_spDevCpuImpl->GetAllQueues());
 
                     // Let all the queues wait for this event.
-                    // \TODO: This should be done atomically for all queues.
                     // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!
-                    for(auto && spQueue : vspQueuesNonBlocking)
+                    for(auto && spQueue : vspQueues)
                     {
-                        wait::wait(spQueue, event);
-                    }
-
-                    // wait for blocking queues
-                    for(auto && spQueue : vspQueuesBlocking)
-                    {
-                        wait::wait(spQueue, event);
+                        spQueue->wait(spQueue, event);
                     }
                 }
             };

@@ -11,6 +11,7 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/queue/cpu/ICpuQueue.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -42,7 +43,7 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CPU device queue implementation.
-                class QueueCpuNonBlockingImpl final
+                class QueueCpuNonBlockingImpl final : public cpu::ICpuQueue
                 {
                 private:
                     //#############################################################################
@@ -73,6 +74,20 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ~QueueCpuNonBlockingImpl() = default;
 
+                    //-----------------------------------------------------------------------------
+                    void enqueue(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu & ev) final
+                    {
+                        auto spQueueImpl = std::static_pointer_cast<QueueCpuNonBlockingImpl>(iQueue);
+                        queue::enqueue(spQueueImpl, ev);
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    void wait(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu const & ev) final
+                    {
+                        auto spQueueImpl = std::static_pointer_cast<QueueCpuNonBlockingImpl>(iQueue);
+                        wait::wait(spQueueImpl, ev);
+                    }
+
                 public:
                     dev::DevCpu const m_dev;            //!< The device this queue is bound to.
 
@@ -91,7 +106,7 @@ namespace alpaka
                 dev::DevCpu const & dev) :
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuNonBlockingImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterNonBlockingQueue(m_spQueueImpl);
+                dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
             QueueCpuNonBlocking(QueueCpuNonBlocking const &) = default;
@@ -211,3 +226,5 @@ namespace alpaka
         }
     }
 }
+
+#include <alpaka/event/EventCpu.hpp>

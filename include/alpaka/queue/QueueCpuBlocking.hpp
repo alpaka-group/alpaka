@@ -12,6 +12,7 @@
 
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/queue/cpu/ICpuQueue.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -39,7 +40,7 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CPU device queue implementation.
-                class QueueCpuBlockingImpl final
+                class QueueCpuBlockingImpl final : public cpu::ICpuQueue
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -59,6 +60,20 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ~QueueCpuBlockingImpl() = default;
 
+                    //-----------------------------------------------------------------------------
+                    void enqueue(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu & ev) final
+                    {
+                        auto spQueueImpl = std::static_pointer_cast<QueueCpuBlockingImpl>(iQueue);
+                        queue::enqueue(spQueueImpl, ev);
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    void wait(std::shared_ptr<cpu::ICpuQueue> & iQueue, event::EventCpu const & ev) final
+                    {
+                        auto spQueueImpl = std::static_pointer_cast<QueueCpuBlockingImpl>(iQueue);
+                        wait::wait(spQueueImpl, ev);
+                    }
+
                 public:
                     dev::DevCpu const m_dev;            //!< The device this queue is bound to.
                     std::mutex mutable m_mutex;
@@ -77,7 +92,7 @@ namespace alpaka
                 dev::DevCpu const & dev) :
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuBlockingImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterBlockingQueue(m_spQueueImpl);
+                dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
             QueueCpuBlocking(QueueCpuBlocking const &) = default;
@@ -217,3 +232,5 @@ namespace alpaka
         }
     }
 }
+
+#include <alpaka/event/EventCpu.hpp>
