@@ -22,7 +22,22 @@
 
 #include <catch2/catch.hpp>
 
-TEST_CASE( "queueCollective", "[queue]")
+struct QueueCollectiveTestKernel
+{
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const & acc,
+        int* resultsPtr) const
+    -> void
+    {
+        size_t threadId = alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
+        // avoid that one thread is doing all the work
+        std::this_thread::sleep_for(std::chrono::milliseconds(200u * threadId));
+        resultsPtr[threadId] = static_cast<int>(threadId);
+    }
+};
+
+TEST_CASE("queueCollective", "[queue]")
 {
     // Define the index domain
     using Dim = alpaka::dim::DimInt<1>;
@@ -53,23 +68,13 @@ TEST_CASE( "queueCollective", "[queue]")
 
     #pragma omp parallel num_threads(static_cast<int>(results.size()))
     {
-        auto kernel =
-        [&] ALPAKA_FN_ACC (
-            Acc const & acc) noexcept
-        -> void
-        {
-            size_t threadId = alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
-            // avoid that one thread is doing all the work
-            std::this_thread::sleep_for(std::chrono::milliseconds(200u * threadId));
-            results[threadId] = threadId;
-        };
-
         // The kernel will be performed collectively.
         // OpenMP will distribute the work between the threads from the parallel region
         alpaka::kernel::exec<Acc>(
                queue,
                workDiv,
-               kernel);
+               QueueCollectiveTestKernel{},
+               results.data());
 
         alpaka::wait::wait(queue);
     }
@@ -80,7 +85,7 @@ TEST_CASE( "queueCollective", "[queue]")
     }
 }
 
-TEST_CASE( "TestCollectiveMemcpy", "[queue]")
+TEST_CASE("TestCollectiveMemcpy", "[queue]")
 {
      // Define the index domain
     using Dim = alpaka::dim::DimInt<1>;
@@ -119,13 +124,13 @@ TEST_CASE( "TestCollectiveMemcpy", "[queue]")
         View dst(
             results.data() + threadId,
             dev,
-            Vec(1lu),
+            Vec(static_cast<Idx>(1u)),
             Vec(sizeof(int)));
 
         View src(
             &threadId,
             dev,
-            Vec(1lu),
+            Vec(static_cast<Idx>(1u)),
             Vec(sizeof(int)));
 
         // avoid that the first thread is executing the copy (can not be guaranteed)
@@ -133,7 +138,7 @@ TEST_CASE( "TestCollectiveMemcpy", "[queue]")
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
 
         // only one thread will perform this memcpy
-        alpaka::mem::view::copy(queue, dst, src, Vec(1lu));
+        alpaka::mem::view::copy(queue, dst, src, Vec(static_cast<Idx>(1u)));
 
         alpaka::wait::wait(queue);
     }

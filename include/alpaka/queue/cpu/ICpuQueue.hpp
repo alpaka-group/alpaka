@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <alpaka/core/BoostPredef.hpp>
+
 namespace alpaka
 {
     namespace event
@@ -24,13 +26,19 @@ namespace alpaka
         namespace cpu
         {
 
+
+#if BOOST_COMP_CLANG
+    // avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every translation unit [-Werror,-Wweak-vtables]"
+    // https://stackoverflow.com/a/29288300
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
+
             //#############################################################################
             //! The CPU queue interface
             class ICpuQueue
             {
             public:
-                //-----------------------------------------------------------------------------
-                ICpuQueue() = default;
                 //-----------------------------------------------------------------------------
                 //! enqueue the event
                 virtual void enqueue(event::EventCpu &) = 0;
@@ -40,6 +48,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 virtual ~ICpuQueue() = default;
             };
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
         }
     }
 }

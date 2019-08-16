@@ -41,9 +41,18 @@ namespace alpaka
         {
             namespace detail
             {
+#if BOOST_COMP_CLANG
+    // avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every translation unit [-Werror,-Wweak-vtables]"
+    // https://stackoverflow.com/a/29288300
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
                 //#############################################################################
                 //! The CPU device queue implementation.
                 class QueueCpuNonBlockingImpl final : public cpu::ICpuQueue
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
                 {
                 private:
                     //#############################################################################
@@ -71,8 +80,6 @@ namespace alpaka
                     auto operator=(QueueCpuNonBlockingImpl const &) -> QueueCpuNonBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueCpuNonBlockingImpl &&) -> QueueCpuNonBlockingImpl & = delete;
-                    //-----------------------------------------------------------------------------
-                    ~QueueCpuNonBlockingImpl() = default;
 
                     //-----------------------------------------------------------------------------
                     void enqueue(event::EventCpu & ev) final
