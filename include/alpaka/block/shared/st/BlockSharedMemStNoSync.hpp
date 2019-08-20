@@ -77,13 +77,12 @@ namespace alpaka
                             block::shared::st::BlockSharedMemStNoSync const & blockSharedMemSt)
                         -> T &
                         {
-                            static_assert(
-                                core::vectorization::defaultAlignment >= alignof(T),
-                                "Unable to get block shared static memory for types with alignment higher than defaultAlignment!");
+                            // TODO: replace with constexpr std::max in C++14
+                            constexpr std::size_t alignmentInBytes = (core::vectorization::defaultAlignment < alignof(T)) ? alignof(T) : core::vectorization::defaultAlignment;
 
                             blockSharedMemSt.m_sharedAllocs.emplace_back(
                                 reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(core::vectorization::defaultAlignment, sizeof(T))));
+                                    boost::alignment::aligned_alloc(alignmentInBytes, sizeof(T))));
                             return
                                 std::ref(
                                     *reinterpret_cast<T*>(
