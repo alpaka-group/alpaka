@@ -7,16 +7,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/queue/Traits.hpp>
 
-#include <catch2/catch.hpp>
-
-#include <alpaka/alpaka.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/queue/QueueTestFixture.hpp>
 
+#include <catch2/catch.hpp>
+
 #include <future>
 #include <thread>
-
 
 //-----------------------------------------------------------------------------
 struct TestTemplateEmpty

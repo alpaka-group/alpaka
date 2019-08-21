@@ -60,6 +60,7 @@ SET(_SOURCE_DIR "src/")
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "cpp" _FILES_SOURCE)
+append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "${_SOURCE_DIR}" "hpp" _FILES_HEADER)
 
 SET(_COMPILE_OPTIONS_PRIVATE ${ALPAKA_DEV_COMPILE_OPTIONS})
 
@@ -76,7 +77,8 @@ ENDIF()
 # Always add all files to the target executable build call to add them to the build project.
 ALPAKA_ADD_EXECUTABLE(
     ${_TARGET_NAME}
-    ${_FILES_SOURCE})
+    ${_FILES_SOURCE}
+    ${_FILES_HEADER})
 TARGET_COMPILE_OPTIONS(
     ${_TARGET_NAME}
     PRIVATE ${_COMPILE_OPTIONS_PRIVATE})

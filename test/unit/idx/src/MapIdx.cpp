@@ -7,12 +7,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/idx/Accessors.hpp>
+#include <alpaka/idx/MapIdx.hpp>
+
+#include <alpaka/meta/ForEachType.hpp>
+#include <alpaka/test/dim/TestDims.hpp>
 
 #include <catch2/catch.hpp>
-
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>
-
 
 //#############################################################################
 //! 1D: (17)
@@ -56,5 +57,5 @@ void operator()()
 
 TEST_CASE( "mapIdx", "[idx]")
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestDims >( TestTemplate() );
+    alpaka::meta::forEachType< alpaka::test::dim::TestDims >( TestTemplate() );
 }

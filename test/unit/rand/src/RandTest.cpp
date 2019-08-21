@@ -7,12 +7,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/rand/Traits.hpp>
+
+#include <alpaka/test/acc/TestAccs.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
 
 #include <catch2/catch.hpp>
-
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/acc/Acc.hpp>
-#include <alpaka/test/KernelExecutionFixture.hpp>
 
 //#############################################################################
 class RandTestKernel
