@@ -11,6 +11,7 @@
 
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/queue/cpu/ICpuQueue.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -36,9 +37,18 @@ namespace alpaka
         {
             namespace detail
             {
+#if BOOST_COMP_CLANG
+    // avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every translation unit [-Werror,-Wweak-vtables]"
+    // https://stackoverflow.com/a/29288300
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
                 //#############################################################################
                 //! The CPU device queue implementation.
-                class QueueCpuBlockingImpl final
+                class QueueCpuBlockingImpl final : public cpu::ICpuQueue
+#if BOOST_COMP_CLANG
+    #pragma clang diagnostic pop
+#endif
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -55,8 +65,18 @@ namespace alpaka
                     auto operator=(QueueCpuBlockingImpl const &) -> QueueCpuBlockingImpl & = delete;
                     //-----------------------------------------------------------------------------
                     auto operator=(QueueCpuBlockingImpl &&) -> QueueCpuBlockingImpl & = delete;
+
                     //-----------------------------------------------------------------------------
-                    ~QueueCpuBlockingImpl() = default;
+                    void enqueue(event::EventCpu & ev) final
+                    {
+                        queue::enqueue(*this, ev);
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    void wait(event::EventCpu const & ev) final
+                    {
+                        wait::wait(*this, ev);
+                    }
 
                 public:
                     dev::DevCpu const m_dev;            //!< The device this queue is bound to.
@@ -76,7 +96,7 @@ namespace alpaka
                 dev::DevCpu const & dev) :
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuBlockingImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterBlockingQueue(m_spQueueImpl);
+                dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
             QueueCpuBlocking(QueueCpuBlocking const &) = default;
@@ -216,3 +236,5 @@ namespace alpaka
         }
     }
 }
+
+#include <alpaka/event/EventCpu.hpp>

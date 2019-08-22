@@ -22,6 +22,7 @@
 
 #include <mutex>
 #include <condition_variable>
+#include <future>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>
 #endif
@@ -180,15 +181,15 @@ namespace alpaka
             //! The CPU non-blocking device queue enqueue trait specialization.
             template<>
             struct Enqueue<
-                std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>,
+                queue::cpu::detail::QueueCpuNonBlockingImpl,
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> & spQueueImpl,
+                    queue::cpu::detail::QueueCpuNonBlockingImpl & queueImpl,
 #else
-                    std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> &,
+                    queue::cpu::detail::QueueCpuNonBlockingImpl &,
 #endif
                     event::EventCpu & event)
                 -> void
@@ -209,7 +210,7 @@ namespace alpaka
                     auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                     // Enqueue a task that only resets the events flag if it is completed.
-                    spEventImpl->m_future = spQueueImpl->m_workerThread.enqueueTask(
+                    spEventImpl->m_future = queueImpl.m_workerThread.enqueueTask(
                         [spEventImpl, enqueueCount]()
                         {
                             std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
@@ -238,19 +239,19 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    queue::enqueue(queue.m_spQueueImpl, event);
+                    queue::enqueue(*queue.m_spQueueImpl, event);
                 }
             };
             //#############################################################################
             //! The CPU blocking device queue enqueue trait specialization.
             template<>
             struct Enqueue<
-                std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl>,
+                queue::cpu::detail::QueueCpuBlockingImpl,
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl> & spQueueImpl,
+                    queue::cpu::detail::QueueCpuBlockingImpl & queueImpl,
                     event::EventCpu & event)
                 -> void
                 {
@@ -258,9 +259,9 @@ namespace alpaka
 
                     std::promise<void> promise;
                     {
-                        std::lock_guard<std::mutex> lk(spQueueImpl->m_mutex);
+                        std::lock_guard<std::mutex> lk(queueImpl.m_mutex);
 
-                        spQueueImpl->m_bCurrentlyExecutingTask = true;
+                        queueImpl.m_bCurrentlyExecutingTask = true;
 
                         auto spEventImpl(event.m_spEventImpl);
 
@@ -275,7 +276,7 @@ namespace alpaka
                             spEventImpl->m_future = promise.get_future();
                         }
 
-                        spQueueImpl->m_bCurrentlyExecutingTask = false;
+                        queueImpl.m_bCurrentlyExecutingTask = false;
                     }
                     promise.set_value();
                 }
@@ -295,7 +296,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    queue::enqueue(queue.m_spQueueImpl, event);
+                    queue::enqueue(*queue.m_spQueueImpl, event);
                 }
             };
         }
@@ -347,15 +348,15 @@ namespace alpaka
             //! The CPU non-blocking device queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl>,
+                queue::cpu::detail::QueueCpuNonBlockingImpl,
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> & spQueueImpl,
+                    queue::cpu::detail::QueueCpuNonBlockingImpl & queueImpl,
 #else
-                    std::shared_ptr<queue::cpu::detail::QueueCpuNonBlockingImpl> &,
+                    queue::cpu::detail::QueueCpuNonBlockingImpl &,
 #endif
                     event::EventCpu const & event)
                 -> void
@@ -373,7 +374,7 @@ namespace alpaka
                         auto const enqueueCount = spEventImpl->m_enqueueCount;
 
                         // Enqueue a task that waits for the given event.
-                        spQueueImpl->m_workerThread.enqueueTask(
+                        queueImpl.m_workerThread.enqueueTask(
                             [spEventImpl, enqueueCount]()
                             {
                                 std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
@@ -396,23 +397,23 @@ namespace alpaka
                     event::EventCpu const & event)
                 -> void
                 {
-                    wait::wait(queue.m_spQueueImpl, event);
+                    wait::wait(*queue.m_spQueueImpl, event);
                 }
             };
             //#############################################################################
             //! The CPU blocking device queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl>,
+                queue::cpu::detail::QueueCpuBlockingImpl,
                 event::EventCpu>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    std::shared_ptr<queue::cpu::detail::QueueCpuBlockingImpl> & spQueueImpl,
+                    queue::cpu::detail::QueueCpuBlockingImpl & queueImpl,
                     event::EventCpu const & event)
                 -> void
                 {
-                    alpaka::ignore_unused(spQueueImpl);
+                    alpaka::ignore_unused(queueImpl);
 
                     // Copy the shared pointer of the event implementation.
                     // This is forwarded to the lambda that is enqueued into the queue to ensure that the event implementation is alive as long as it is enqueued.
@@ -434,7 +435,7 @@ namespace alpaka
                     event::EventCpu const & event)
                 -> void
                 {
-                    wait::wait(queue.m_spQueueImpl, event);
+                    wait::wait(*queue.m_spQueueImpl, event);
                 }
             };
             //#############################################################################
@@ -454,23 +455,14 @@ namespace alpaka
                 {
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
-                    auto vspQueuesNonBlocking(
-                        dev.m_spDevCpuImpl->GetAllNonBlockingQueueImpls());
-                    auto vspQueuesBlocking(
-                        dev.m_spDevCpuImpl->GetAllBlockingQueueImpls());
+                    auto vspQueues(
+                        dev.m_spDevCpuImpl->GetAllQueues());
 
                     // Let all the queues wait for this event.
-                    // \TODO: This should be done atomically for all queues.
                     // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!
-                    for(auto && spQueue : vspQueuesNonBlocking)
+                    for(auto && spQueue : vspQueues)
                     {
-                        wait::wait(spQueue, event);
-                    }
-
-                    // wait for blocking queues
-                    for(auto && spQueue : vspQueuesBlocking)
-                    {
-                        wait::wait(spQueue, event);
+                        spQueue->wait(event);
                     }
                 }
             };
