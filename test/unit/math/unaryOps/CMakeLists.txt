@@ -1,0 +1,17 @@
+SET(_TARGET_NAME "unaryOps")
+
+append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
+
+ALPAKA_ADD_EXECUTABLE(
+        ${_TARGET_NAME}
+        ${_FILES_SOURCE})
+TARGET_INCLUDE_DIRECTORIES(
+        ${_TARGET_NAME}
+        PRIVATE ${Boost_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(
+        ${_TARGET_NAME}
+        PRIVATE common)
+
+SET_TARGET_PROPERTIES(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
+
+ADD_TEST(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_ALPAKA_TEST_OPTIONS})
