@@ -21,6 +21,7 @@
 #include <random>
 #include <iostream>
 #include <typeinfo>
+#include <chrono>
 
 //#############################################################################
 //! A vector addition kernel.
@@ -116,7 +117,7 @@ auto main()
 
     // Define the work division
     Idx const numElements(123456);
-    Idx const elementsPerThread(3u);
+    Idx const elementsPerThread(8u);
     alpaka::vec::Vec<Dim, Idx> const extent(numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
@@ -182,13 +183,25 @@ auto main()
         numElements));
 
     // Enqueue the kernel execution task
-    alpaka::queue::enqueue(queue, taskKernel);
+    {
+        const auto beginT = std::chrono::high_resolution_clock::now();
+        alpaka::queue::enqueue(queue, taskKernel);
+        alpaka::wait::wait(queue); // wait in case we are using an asynchronous queue to time actual kernel runtime
+        const auto endT = std::chrono::high_resolution_clock::now();
+        std::cout << "Time for kernel execution: " << std::chrono::duration<double>(endT-beginT).count() << 's' << std::endl;
+    }
 
     // Copy back the result
-    alpaka::mem::view::copy(queue, bufHostC, bufAccC, extent);
-    alpaka::wait::wait(queue);
+    {
+        auto beginT = std::chrono::high_resolution_clock::now();
+        alpaka::mem::view::copy(queue, bufHostC, bufAccC, extent);
+        alpaka::wait::wait(queue);
+        const auto endT = std::chrono::high_resolution_clock::now();
+        std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT-beginT).count() << 's' << std::endl;
+    }
 
-    bool resultCorrect(true);
+    int falseResults = 0;
+    static constexpr int MAX_PRINT_FALSE_RESULTS = 20;
     for(Idx i(0u);
         i < numElements;
         ++i)
@@ -197,19 +210,21 @@ auto main()
         Data const correctResult(pBufHostA[i] + pBufHostB[i]);
         if(val != correctResult)
         {
-            std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
-            resultCorrect = false;
+            if (falseResults < MAX_PRINT_FALSE_RESULTS)
+                std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+            ++falseResults;
         }
     }
 
-    if(resultCorrect)
+    if(falseResults == 0)
     {
         std::cout << "Execution results correct!" << std::endl;
         return EXIT_SUCCESS;
     }
     else
     {
-        std::cout << "Execution results incorrect!" << std::endl;
+        std::cout << "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS << "\n"
+            << "Execution results incorrect!" << std::endl;
         return EXIT_FAILURE;
     }
 #endif
