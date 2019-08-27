@@ -116,20 +116,6 @@ namespace alpaka
                 std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
-                // Bind all arguments except the accelerator.
-                // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
-                auto const boundKernelFnObj(
-                    meta::apply(
-                        [this](ALPAKA_DECAY_T(TArgs) const & ... args)
-                        {
-                            return
-                                std::bind(
-                                    std::ref(m_kernelFnObj),
-                                    std::placeholders::_1,
-                                    std::ref(args)...);
-                        },
-                        m_args));
-
                 // The number of blocks in the grid.
                 TIdx const gridBlockCount(gridBlockExtent.prod());
                 // The number of threads in a block.
@@ -198,8 +184,14 @@ namespace alpaka
                                     }
                                 }
 #endif
-                                boundKernelFnObj(
-                                    acc);
+                                meta::apply(
+                                    [&](TArgs ... args)
+                                    {
+                                        m_kernelFnObj(
+                                                acc,
+                                                args...);
+                                    },
+                                    m_args);
 
                                 // Wait for all threads to finish before deleting the shared memory.
                                 // This is done by default if the omp 'nowait' clause is missing
