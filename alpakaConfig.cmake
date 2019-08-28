@@ -513,6 +513,12 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 # * Defining __float128 on the command line is the least invasive workaround found here: https://bugs.llvm.org/show_bug.cgi?id=13530#c6
                 LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "__float128=void")
 
+                # CMake 3.15 does not provide the `--std=c++11` argument to clang anymore.
+                # It is not necessary for basic c++ compilation because clangs default is already higher, but CUDA code compiled with -x cuda still defaults to c++98.
+                IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
+                    LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-std=c++${ALPAKA_CXX_STANDARD}")
+                ENDIF()
+
             ELSE()
                 IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
                     IF(CUDA_VERSION VERSION_EQUAL 8.0)
