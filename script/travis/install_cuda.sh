@@ -102,5 +102,6 @@ then
 
     curl -L -o cuda_installer.exe ${ALPAKA_CUDA_PKG_FILE_PATH}
     ./cuda_installer.exe -s "nvcc_${ALPAKA_CUDA_VERSION}" "curand_dev_${ALPAKA_CUDA_VERSION}"
-    rm -f cuda_installer.exe
+    # Deleting the installer worked until 08/2019 but something changed and this line now takes up to 25 minutes.
+    #rm -f cuda_installer.exe
 fi
