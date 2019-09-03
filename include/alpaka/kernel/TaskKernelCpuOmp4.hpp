@@ -136,7 +136,7 @@ namespace alpaka
                 ::omp_set_dynamic(0);
 
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
-                #pragma omp target if(0)
+                #pragma omp target
                 {
                     #pragma omp teams num_teams(teamCount) thread_limit(blockThreadCount)
                     {
@@ -180,7 +180,7 @@ namespace alpaka
                                     printf("%s omp_get_num_threads: %d\n", __func__, numThreads);
                                     if(numThreads != static_cast<int>(blockThreadCount))
                                     {
-                                        throw std::runtime_error("ERROR: The OpenMP runtime did not use the number of threads that had been required!");
+                                        printf("ERROR: The OpenMP runtime did not use the number of threads that had been requested!\n");
                                     }
                                 }
 #endif
