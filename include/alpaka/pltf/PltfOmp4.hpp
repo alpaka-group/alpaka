@@ -9,6 +9,12 @@
 
 #pragma once
 
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+
+#if _OPENMP < 201307
+    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#endif
+
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/dev/DevOmp4.hpp>
 
@@ -90,3 +96,5 @@ namespace alpaka
         }
     }
 }
+
+#endif
