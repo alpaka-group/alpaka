@@ -42,23 +42,10 @@ namespace alpaka
                     //#############################################################################
                     //! The Omp4 memory copy trait.
                     template<
-                        typename TDim,
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopyOmp4;
-
-                    //#############################################################################
-                    //! The 1D Omp4 memory copy trait.
-                    template<
-                        typename TViewDst,
-                        typename TViewSrc,
-                        typename TExtent>
-                    struct TaskCopyOmp4<
-                        dim::DimInt<1>,
-                        TViewDst,
-                        TViewSrc,
-                        TExtent>
+                    struct TaskCopyOmp4
                     {
                         static_assert(
                             !std::is_const<TViewDst>::value,
@@ -161,7 +148,6 @@ namespace alpaka
                                 int iDeviceSrc = 0
                                 )
                             -> mem::view::omp4::detail::TaskCopyOmp4<
-                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>
@@ -170,7 +156,6 @@ namespace alpaka
 
                                 return
                                     mem::view::omp4::detail::TaskCopyOmp4<
-                                        TDim,
                                         TViewDst,
                                         TViewSrc,
                                         TExtent>(
@@ -203,7 +188,6 @@ namespace alpaka
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::omp4::detail::TaskCopyOmp4<
-                        TDim,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -212,7 +196,6 @@ namespace alpaka
 
                         return
                             mem::view::omp4::detail::TaskCopyOmp4<
-                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>(
@@ -244,7 +227,6 @@ namespace alpaka
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::omp4::detail::TaskCopyOmp4<
-                        TDim,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -253,7 +235,6 @@ namespace alpaka
 
                         return
                             mem::view::omp4::detail::TaskCopyOmp4<
-                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>(
@@ -285,7 +266,6 @@ namespace alpaka
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::omp4::detail::TaskCopyOmp4<
-                        TDim,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -294,7 +274,6 @@ namespace alpaka
 
                         return
                             mem::view::omp4::detail::TaskCopyOmp4<
-                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>(
@@ -321,12 +300,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueOmp4Blocking,
-                mem::view::omp4::detail::TaskCopyOmp4<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+                mem::view::omp4::detail::TaskCopyOmp4<TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueOmp4Blocking & queue,
-                    mem::view::omp4::detail::TaskCopyOmp4<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::omp4::detail::TaskCopyOmp4<TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
