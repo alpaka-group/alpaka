@@ -120,6 +120,8 @@ namespace alpaka
                 TIdx const gridBlockCount(gridBlockExtent.prod());
                 // The number of threads in a block.
                 TIdx const blockThreadCount(blockThreadExtent.prod());
+                // The number of elements in a thread. (to avoid mapping vec to target)
+                TIdx const threadElemCount(threadElemExtent[0u]);
 
                 // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
                 auto const maxOmpThreadCount(::omp_get_max_threads());
@@ -149,7 +151,7 @@ namespace alpaka
                         }
 #endif
                         acc::AccCpuOmp4<TDim, TIdx> acc(
-                            *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
+                            threadElemCount,
                             blockSharedMemDynSizeBytes);
 
                         #pragma omp distribute

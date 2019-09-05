@@ -16,7 +16,7 @@
 #endif
 
 // Base classes.
-#include <alpaka/workdiv/WorkDivMembers.hpp>
+#include <alpaka/workdiv/WorkDivOmp4BuiltIn.hpp>
 #include <alpaka/idx/gb/IdxGbOmp4BuiltIn.hpp>
 #include <alpaka/idx/bt/IdxBtOmp4BuiltIn.hpp>
 #include <alpaka/atomic/AtomicStdLibLock.hpp>
@@ -69,7 +69,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccCpuOmp4 final :
-            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>,
             public idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>,
             public idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -98,12 +98,10 @@ namespace alpaka
 
         private:
             //-----------------------------------------------------------------------------
-            template<
-                typename TWorkDiv>
             ALPAKA_FN_HOST AccCpuOmp4(
-                TWorkDiv const & workDiv,
+                TIdx const & threadElemExtent,
                 TIdx const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>(threadElemExtent),
                     idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(),
                     idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
