@@ -54,7 +54,7 @@ namespace alpaka
                 public:
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST QueueOmp4BlockingImpl(
-                        dev::DevOmp4 const & dev) :
+                        dev::DevOmp4 const & dev) noexcept :
                             m_dev(dev)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
