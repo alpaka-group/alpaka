@@ -91,12 +91,16 @@ template<
     typename T>
 struct TestStruct
 {
-    std_func_ptr<T> stdOp;
-    alpaka_func_ptr<TAcc, T> alpakaOp;
+    std_func_ptr< T > stdOp;
+    alpaka_func_ptr<
+        TAcc,
+        T
+    > alpakaOp;
     Range range;
 };
 
-class UnaryOpsKernel{
+class UnaryOpsKernel
+{
 public:
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -121,14 +125,14 @@ public:
             switch (structs[gridThreadIdx].range)
             {
                 case Range::POSITIVE_ONLY:
-                    for(TIdx row(0); row < sizeArgs/2 -1; ++row)
+                    for(TIdx row(0); row < sizeArgs / 2 - 1; ++row)
                     {
                         arg = args[row];
                         results[row + gridThreadIdx* sizeArgs] = structs[gridThreadIdx].alpakaOp(acc, arg);
                     }
                     break;
                 case Range::POSITIVE_AND_ZERO:
-                    for(TIdx row(0); row < sizeArgs/2; ++row)
+                    for(TIdx row(0); row < sizeArgs / 2; ++row)
                     {
                         arg = args[row];
                         results[row + gridThreadIdx* sizeArgs] = structs[gridThreadIdx].alpakaOp(acc, arg);
@@ -165,20 +169,20 @@ public:
     }
 };
 
+template <typename Data>
 struct TestTemplate
 {
+public:
     template< typename TAcc >
     void operator()( )
     {
-        using Data = double; // this can be changed to float without problems
+        //using Data = double; // this can be changed to float without problems
         using Dim = alpaka::dim::Dim< TAcc >;
         using Idx = alpaka::idx::Idx< TAcc >;
         using DevAcc = alpaka::dev::Dev< TAcc >;
         using PltfAcc = alpaka::pltf::Pltf< DevAcc >;
         using QueueAcc = alpaka::test::queue::DefaultQueue< DevAcc >;
         using PltfHost = alpaka::pltf::PltfCpu;
-
-        std::cout << "\nTesting next AccType \n\n";
         // the functions that will be tested
 
         TestStruct<TAcc, Data> arr [] =
@@ -309,7 +313,10 @@ struct TestTemplate
             }
         }
 
-        test::fillWithRndArgs< Data >(pBufHostArgs, sizeArgs, randomRange);
+        unsigned long seed =
+            test::fillWithRndArgs< Data >(pBufHostArgs, sizeArgs, randomRange);
+        std::cout << "Using seed: " << seed <<std::endl;
+
 
         // Initiate the structs.
         for( Idx i( 0u ); i < numOps; ++i )
@@ -376,11 +383,6 @@ struct TestTemplate
             numOps
         );
 
-        for( Idx i( 0u ); i < sizeArgs; ++i )
-        {
-            std::cout << "bufferArgs: " << pBufHostArgs[i] << "\n";
-        }
-
         auto pMemBufAccArgs = alpaka::mem::view::getPtrNative( memBufAccArgs );
         auto pMemBufAccRes = alpaka::mem::view::getPtrNative( memBufAccRes );
         auto
@@ -424,19 +426,6 @@ struct TestTemplate
 
         // Wait for the queue to finish the memory operation.
         alpaka::wait::wait( queue );
-
-        // Print out all results.
-        for( Idx i( 0u ); i < numOps; ++i )
-        {
-            std::cout << "\nResults " << i + 1 << ". function:\n";
-
-            for( Idx j( 0u ); j < sizeArgs; ++j )
-            {
-                Data const & res( pBufHostRes[j + i * sizeArgs] );
-                std::cout << "bufferResults: " << res << "\n";
-            }
-        }
-
 
         // Check device result against host result.
         Data arg;
@@ -518,7 +507,7 @@ TEST_CASE("unaryOps", "[unaryOps]")
         alpaka::dim::DimInt< 1u >,
         std::size_t
     >;
-
-    alpaka::meta::forEachType< TestAccs >( TestTemplate( ) );
+    alpaka::meta::forEachType< TestAccs >( TestTemplate<double>( ) );
+    alpaka::meta::forEachType< TestAccs >( TestTemplate<float>( ) );
 }
 

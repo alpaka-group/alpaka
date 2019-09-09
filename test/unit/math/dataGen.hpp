@@ -7,6 +7,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <random>
+
 /**
  * @namespace test
  * @brief Only contains fillWithRndArgs.
@@ -24,10 +26,14 @@ namespace test
         Data * buffer,
         size_t size,
         size_t range
-    ) -> void
+    ) -> unsigned long
     {
         std::random_device rd {};
-        std::default_random_engine eng { rd( ) };
+        unsigned long seed = rd( );
+        // for every accelerator type one seed will be generated
+        std::default_random_engine eng { seed };
+        // these pseudo-random numbers are implementation specific
+        // and are not portable
         std::uniform_real_distribution< Data > dist(
             0,
             range
@@ -49,5 +55,8 @@ namespace test
         {
             buffer[i] = dist( eng ) - range;
         }
+
+        return seed;
+
     }
 }

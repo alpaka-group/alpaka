@@ -25,7 +25,7 @@
  * min       | Y | R^2
  * remainder | Y | R^2\{(x,0)|x in R}
  *
- * sincos is testes separately,
+ * sincos is tested separately,
  * because it manipulates two inputs and doesnt return a value
  *
  * If you want to add a new operation simply add it to the array.
@@ -239,14 +239,13 @@ public:
     }
 };
 
-
+template < typename Data >
 struct TestTemplate
 {
     template<
         typename TAcc>
     void operator()( )
     {
-        using Data = double; // this can be changed to float without problems
         using Dim = alpaka::dim::Dim< TAcc >;
         using Idx = alpaka::idx::Idx< TAcc >;
         using DevAcc = alpaka::dev::Dev< TAcc >;
@@ -254,7 +253,6 @@ struct TestTemplate
         using QueueAcc = alpaka::test::queue::DefaultQueue< DevAcc >;
         using PltfHost = alpaka::pltf::PltfCpu;
 
-        std::cout << "\nTesting next AccType \n\n";
         // the functions that will be tested
         TestStruct<TAcc, Data> arr [] =
             {/* normal callback,     const callback, alpaka callback,                           definition range*/
@@ -270,7 +268,7 @@ struct TestTemplate
             numOps =
             sizeof( arr ) / sizeof( TestStruct< TAcc, Data > );
         Idx const elementsPerThread( 1u );
-        Idx const sizeArgs( 10u );
+        Idx const sizeArgs( 100u );
         Idx const sizeRes = sizeArgs * numOps;
         constexpr size_t randomRange = 100u;
 
@@ -308,7 +306,6 @@ struct TestTemplate
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted
             )
         );
-
 
         // Allocate host memory buffers.
         auto
@@ -388,11 +385,12 @@ struct TestTemplate
         {
             pBufHostStructs[i] = arr[i];
         }
-
-            test::fillWithRndArgs< Data >( pBufHostArgsX, sizeArgs, randomRange );
+        unsigned long seed =
+        test::fillWithRndArgs< Data >( pBufHostArgsX, sizeArgs, randomRange );
+        std::cout << "Using seed: " << seed <<" for x-values\n";
+        seed =
         test::fillWithRndArgs< Data >( pBufHostArgsY, sizeArgs, randomRange );
-
-
+        std::cout << "Using seed: " << seed <<" for y-values\n";
 
         // Allocate the buffer on the accelerator.
         auto
@@ -470,12 +468,6 @@ struct TestTemplate
             numOps
         );
 
-        for( Idx i( 0u ); i < sizeArgs; ++i )
-        {
-            std::cout << "bufferArgs x: " << pBufHostArgsX[i] << " y: "
-                      << pBufHostArgsY[i] << std::endl;
-        }
-
         auto
             pMemBufAccArgsX = alpaka::mem::view::getPtrNative( memBufAccArgsX );
         auto
@@ -518,19 +510,6 @@ struct TestTemplate
 
         // Wait for the queue to finish the memory operation.
         alpaka::wait::wait( queue );
-
-
-        // Print out all results.
-        for( Idx i( 0 ); i < numOps; ++i )
-        {
-            std::cout << "\nResults " << i + 1 << ". function:\n";
-
-            for( Idx j( 0 ); j < sizeArgs; ++j )
-            {
-                Data const & res( pBufHostRes[j + i * sizeArgs] );
-                std::cout << "bufferResults: " << res << "\n";
-            }
-        }
 
         // Check device result against host result.
 
@@ -623,5 +602,6 @@ TEST_CASE("binaryOps", "[binaryOps]")
             alpaka::dim::DimInt<1u>,
             std::size_t>;
 
-    alpaka::meta::forEachType< TestAccs >( TestTemplate() );
+    alpaka::meta::forEachType< TestAccs >( TestTemplate<double>() );
+    alpaka::meta::forEachType< TestAccs >( TestTemplate<float>() );
 }
