@@ -87,7 +87,7 @@ namespace alpaka
                     && !(std::is_integral<Tx>::value
                         && std::is_integral<Ty>::value)>::type>
             {
-                __device__ static auto max(
+                __device__ static auto min(
                     MinHipBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)
