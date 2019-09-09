@@ -37,7 +37,7 @@ namespace alpaka
             using RemainderBase = RemainderCudaBuiltIn;
         };
 
-         namespace traits
+        namespace traits
         {
             //#############################################################################
             //! The standard library remainder trait specialization.

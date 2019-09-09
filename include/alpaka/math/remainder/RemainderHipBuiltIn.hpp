@@ -55,7 +55,7 @@ namespace alpaka
             struct Remainder<
                 RemainderHipBuiltIn,
                 Tx,
-                Ty>
+                Ty,
                 typename std::enable_if<
                     std::is_floating_point<Tx>::value
                     && std::is_floating_point<Ty>::value>::type>
