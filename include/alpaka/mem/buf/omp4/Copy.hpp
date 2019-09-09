@@ -203,7 +203,7 @@ namespace alpaka
                                     viewSrc,
                                     extent,
                                     dev::getDev(viewDst).m_iDevice,
-                                    0
+                                    omp_get_initial_device()
                                     );
                     }
                 };
@@ -241,7 +241,7 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-                                    0,
+                                    omp_get_initial_device(),
                                     dev::getDev(viewSrc).m_iDevice
                                     );
                     }
