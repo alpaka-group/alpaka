@@ -39,6 +39,7 @@ namespace alpaka
         //! \tparam TArg The arg type.
         //! \param exp_ctx The object specializing Exp.
         //! \param arg The arg.
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
