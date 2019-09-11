@@ -111,11 +111,11 @@ namespace alpaka
             //! The CUDA round float specialization.
             template<>
             struct Round<
-                RoundHipBuiltIn,
+                RoundCudaBuiltIn,
                 float>
             {
                 __device__ static auto round(
-                    RoundHipBuiltIn const & round_ctx,
+                    RoundCudaBuiltIn const & round_ctx,
                     float const & arg)
                 -> float
                 {

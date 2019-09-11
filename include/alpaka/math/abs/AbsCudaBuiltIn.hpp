@@ -73,11 +73,11 @@ namespace alpaka
             //! The CUDA built in abs float specialization.
             template<>
             struct Abs<
-                AbsHipBuiltIn,
+                AbsCudaBuiltIn,
                 float>
             {
                 __device__ static auto abs(
-                    AbsHipBuiltIn const & abs_ctx,
+                    AbsCudaBuiltIn const & abs_ctx,
                     float const & arg)
                 -> float
                 {
