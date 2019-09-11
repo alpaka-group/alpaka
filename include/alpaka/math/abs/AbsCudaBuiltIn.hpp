@@ -70,6 +70,21 @@ namespace alpaka
                     return ::abs(arg);
                 }
             };
+
+            template<>
+            struct Abs<
+                AbsHipBuiltIn,
+                float>
+            {
+                __device__ static auto abs(
+                    AbsHipBuiltIn const & abs_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::fabsf(arg);
+                }
+            };
         }
     }
 }

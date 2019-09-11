@@ -74,6 +74,23 @@ namespace alpaka
                     return ::atan2(y, x);
                 }
             };
+
+            template<>
+            struct Atan2<
+                Atan2CudaBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto atan2(
+                    Atan2CudaBuiltIn const & atan2_ctx,
+                    float const & y,
+                    float const & x)
+                -> float
+                {
+                    alpaka::ignore_unused(atan2_ctx);
+                    return ::atan2f(y, x);
+                }
+            };
         }
     }
 }

@@ -70,6 +70,21 @@ namespace alpaka
                     return ::atan(arg);
                 }
             };
+
+            template<>
+            struct Atan<
+                AtanCudaBuiltIn,
+                float>
+            {
+                __device__ static auto atan(
+                    AtanCudaBuiltIn const & atan_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(atan_ctx);
+                    return ::atanf(arg);
+                }
+            };
         }
     }
 }

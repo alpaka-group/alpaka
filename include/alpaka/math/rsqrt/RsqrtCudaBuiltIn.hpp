@@ -70,6 +70,21 @@ namespace alpaka
                     return ::rsqrt(arg);
                 }
             };
+
+            template<>
+            struct Rsqrt<
+                RsqrtCudaBuiltIn,
+                float>
+            {
+                __device__ static auto rsqrt(
+                    RsqrtCudaBuiltIn const & rsqrt_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(rsqrt_ctx);
+                    return ::rsqrtf(arg);
+                }
+            };
         }
     }
 }

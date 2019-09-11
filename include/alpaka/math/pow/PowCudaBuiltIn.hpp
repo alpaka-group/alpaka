@@ -74,6 +74,23 @@ namespace alpaka
                     return ::pow(base, exp);
                 }
             };
+
+            template<>
+            struct Pow<
+                PowCudaBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto pow(
+                    PowCudaBuiltIn const & pow_ctx,
+                    float const & base,
+                    float const & exp)
+                -> float
+                {
+                    alpaka::ignore_unused(pow_ctx);
+                    return ::powf(base, exp);
+                }
+            };
         }
     }
 }
