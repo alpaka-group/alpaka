@@ -69,11 +69,11 @@ namespace alpaka
             //! The HIP sin float specialization.
             template<>
             struct Sin<
-                SinCudaBuiltIn,
+                SinHipBuiltIn,
                 float>
             {
                 __device__ static auto sin(
-                    SinCudaBuiltIn const & sin_ctx,
+                    SinHipBuiltIn const & sin_ctx,
                     float const & arg)
                 -> float
                 {
