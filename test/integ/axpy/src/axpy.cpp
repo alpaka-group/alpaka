@@ -138,7 +138,7 @@ void operator()()
     // C++11 random generator for uniformly distributed numbers in [0,1)
     // keep in mind, this can generate different values on different platforms
     std::random_device rd{};
-    unsigned long seed = rd();
+    auto const seed = rd();
     std::default_random_engine eng{ seed };
     std::uniform_real_distribution<Val> dist(0.0, 1.0);
     std::cout << "using seed: " << seed << "\n";
