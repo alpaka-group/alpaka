@@ -42,7 +42,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library atan2.
+        //! The CUDA built in atan2.
         class Atan2CudaBuiltIn
         {
         public:
@@ -52,7 +52,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library atan2 trait specialization.
+            //! The CUDA atan2 trait specialization.
             template<
                 typename Ty,
                 typename Tx>

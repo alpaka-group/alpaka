@@ -42,7 +42,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library atan.
+        //! The CUDA built in atan.
         class AtanCudaBuiltIn
         {
         public:
@@ -52,7 +52,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library atan trait specialization.
+            //! The CUDA atan trait specialization.
             template<
                 typename TArg>
             struct Atan<

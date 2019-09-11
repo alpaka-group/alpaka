@@ -42,7 +42,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library trunc.
+        //! The CUDA trunc.
         class TruncCudaBuiltIn
         {
         public:
@@ -52,7 +52,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library trunc trait specialization.
+            //! The CUDA trunc trait specialization.
             template<
                 typename TArg>
             struct Trunc<
@@ -70,7 +70,7 @@ namespace alpaka
                     return ::trunc(arg);
                 }
             };
-
+            //! The CUDA trunc float specialization.
             template<>
             struct Trunc<
                 TruncCudaBuiltIn,
