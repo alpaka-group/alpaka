@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library tan.
+        //! The CUDA tan.
         class TanCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library tan trait specialization.
+            //! The CUDA tan trait specialization.
             template<
                 typename TArg>
             struct Tan<
@@ -58,7 +58,7 @@ namespace alpaka
                     return ::tan(arg);
                 }
             };
-
+            //! The CUDA tan float specialization.
             template<>
             struct Tan<
                 TanCudaBuiltIn,

@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library erf.
+        //! The HIP erf.
         class ErfHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library erf trait specialization.
+            //! The HIP erf trait specialization.
             template<
                 typename TArg>
             struct Erf<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::erf(arg);
                 }
             };
-
+            //! The HIP erf float specialization.
             template<>
             struct Erf<
                 ErfHipBuiltIn,

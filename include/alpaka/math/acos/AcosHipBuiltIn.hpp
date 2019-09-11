@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library acos.
+        //! The HIP acos.
         class AcosHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library acos trait specialization.
+            //! The HIP acos trait specialization.
             template<
                 typename TArg>
             struct Acos<
@@ -67,7 +67,7 @@ namespace alpaka
                     return ::acos(arg);
                 }
             };
-
+            //! The HIP acos float specialization.
             template<>
             struct Acos<
                 AcosHipBuiltIn,

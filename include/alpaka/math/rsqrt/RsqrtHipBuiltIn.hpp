@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library rsqrt.
+        //! The HIP rsqrt.
         class RsqrtHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library rsqrt trait specialization.
+            //! The HIP rsqrt trait specialization.
             template<
                 typename TArg>
             struct Rsqrt<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::rsqrt(arg);
                 }
             };
-
+            //! The HIP rsqrt float specialization.
             template<>
             struct Rsqrt<
                 RsqrtHipBuiltIn,

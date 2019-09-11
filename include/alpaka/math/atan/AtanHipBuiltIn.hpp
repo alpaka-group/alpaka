@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library atan.
+        //! The HIP atan.
         class AtanHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library atan trait specialization.
+            //! The HIP atan trait specialization.
             template<
                 typename TArg>
             struct Atan<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::atan(arg);
                 }
             };
-
+            //! The HIP atan float specialization.
             template<>
             struct Atan<
                 AtanHipBuiltIn,

@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library asin.
+        //! The HIP asin.
         class AsinHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library asin trait specialization.
+            //! The HIP asin trait specialization.
             template<
                 typename TArg>
             struct Asin<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::asin(arg);
                 }
             };
-
+            //! The HIP asin float specialization.
             template<>
             struct Asin<
                 AsinHipBuiltIn,

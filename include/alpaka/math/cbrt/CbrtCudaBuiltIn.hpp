@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library cbrt.
+        //! The CUDA built in cbrt.
         class CbrtCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library cbrt trait specialization.
+            //! The CUDA cbrt trait specialization.
             template<
                 typename TArg>
             struct Cbrt<

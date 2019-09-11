@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library floor.
+        //! The HIP floor.
         class FloorHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library floor trait specialization.
+            //! The HIP floor trait specialization.
             template<
                 typename TArg>
             struct Floor<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::floor(arg);
                 }
             };
-
+            //! The HIP floor float specialization.
             template<>
             struct Floor<
                 FloorHipBuiltIn,

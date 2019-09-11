@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library trunc.
+        //! The HIP trunc.
         class TruncHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library trunc trait specialization.
+            //! The HIP trunc trait specialization.
             template<
                 typename TArg>
             struct Trunc<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::trunc(arg);
                 }
             };
-
+            //! The HIP trunc float specialization.
             template<>
             struct Trunc<
                 TruncHipBuiltIn,

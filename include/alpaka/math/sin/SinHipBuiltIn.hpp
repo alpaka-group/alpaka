@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library sin.
+        //! The HIP sin.
         class SinHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library sin trait specialization.
+            //! The HIP sin trait specialization.
             template<
                 typename TArg>
             struct Sin<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::sin(arg);
                 }
             };
-
+            //! The HIP sin float specialization.
             template<>
             struct Sin<
                 SinCudaBuiltIn,

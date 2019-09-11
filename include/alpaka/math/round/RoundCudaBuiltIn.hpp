@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library round.
+        //! The CUDA round.
         class RoundCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The CUDA round trait specialization.
             template<
                 typename TArg>
             struct Round<
@@ -59,7 +59,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The CUDA lround trait specialization.
             template<
                 typename TArg>
             struct Lround<
@@ -78,7 +78,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The CUDA llround trait specialization.
             template<
                 typename TArg>
             struct Llround<
@@ -96,7 +96,7 @@ namespace alpaka
                     return ::llround(arg);
                 }
             };
-
+            //! The CUDA round float specialization.
             template<>
             struct Round<
                 RoundHipBuiltIn,

@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library round.
+        //! The HIP round.
         class RoundHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The HIP round trait specialization.
             template<
                 typename TArg>
             struct Round<
@@ -67,7 +67,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The HIP round trait specialization.
             template<
                 typename TArg>
             struct Lround<

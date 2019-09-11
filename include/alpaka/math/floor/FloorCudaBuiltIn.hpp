@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library floor.
+        //! The CUDA built in floor.
         class FloorCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library floor trait specialization.
+            //! The CUDA floor trait specialization.
             template<
                 typename TArg>
             struct Floor<
@@ -58,7 +58,7 @@ namespace alpaka
                     return ::floor(arg);
                 }
             };
-
+            //! The CUDA floor float specialization.
             template<>
             struct Floor<
                 FloorCudaBuiltIn,

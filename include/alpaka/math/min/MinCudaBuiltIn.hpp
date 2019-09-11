@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library min.
+        //! The CUDA built in min.
         class MinCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library integral min trait specialization.
+            //! The CUDA integral min trait specialization.
             template<
                 typename Tx,
                 typename Ty>

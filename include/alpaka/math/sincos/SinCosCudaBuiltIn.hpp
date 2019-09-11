@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! sincos.
+        //! The CUDA sincos.
         class SinCosCudaBuiltIn
         {
         public:
@@ -59,7 +59,7 @@ namespace alpaka
                 }
             };
 
-            //! sincos trait specialization.
+            //! The CUDA sin float specialization.
             template<>
             struct SinCos<
                 SinCosCudaBuiltIn,

@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library cos.
+        //! The HIP cos.
         class CosHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library cos trait specialization.
+            //! The HIP cos trait specialization.
             template<
                 typename TArg>
             struct Cos<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::cos(arg);
                 }
             };
-
+            //! The HIP cos float specialization.
             template<>
             struct Cos<
                 CosHipBuiltIn,

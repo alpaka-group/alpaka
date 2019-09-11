@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library cbrt.
+        //! The HIP cbrt.
         class CbrtHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library cbrt trait specialization.
+            //! The HIP cbrt trait specialization.
             template<
                 typename TArg>
             struct Cbrt<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::cbrt(arg);
                 }
             };
-
+            //! The HIP cbrt float specialization.
             template<>
             struct Cbrt<
                 CbrtHipBuiltIn,

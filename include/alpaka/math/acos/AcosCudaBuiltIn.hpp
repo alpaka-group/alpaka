@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library acos.
+        //! The CUDA built in acos.
         class AcosCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library acos trait specialization.
+            //! The CUDA acos trait specialization.
             template<
                 typename TArg>
             struct Acos<

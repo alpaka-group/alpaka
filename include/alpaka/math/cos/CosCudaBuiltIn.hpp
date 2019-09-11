@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library cos.
+        //! The CUDA built in cos.
         class CosCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library cos trait specialization.
+            //! The CUDA cos trait specialization.
             template<
                 typename TArg>
             struct Cos<

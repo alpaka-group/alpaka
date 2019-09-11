@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library log.
+        //! The HIP log.
         class LogHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library log trait specialization.
+            //! The HIP log trait specialization.
             template<
                 typename TArg>
             struct Log<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::log(arg);
                 }
             };
-
+            //! The HIP log float specialization.
             template<>
             struct Log<
                 LogHipBuiltIn,

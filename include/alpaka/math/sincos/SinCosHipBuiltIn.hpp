@@ -65,7 +65,7 @@ namespace alpaka
                 }
             };
 
-            //! sincos trait specialization.
+            //! The sincos float specialization.
             template<>
             struct SinCos<SinCosHipBuiltIn, float>
             {

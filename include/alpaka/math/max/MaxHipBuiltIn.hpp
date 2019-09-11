@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library max.
+        //! The HIP max.
         class MaxHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library integral max trait specialization.
+            //! The HIP integral max trait specialization.
             template<
                 typename Tx,
                 typename Ty>
@@ -71,7 +71,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The standard library mixed integral floating point max trait specialization.
+            //! The HIP mixed integral floating point max trait specialization.
             template<
                 typename Tx,
                 typename Ty>

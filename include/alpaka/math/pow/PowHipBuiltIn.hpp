@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library pow.
+        //! The HIP pow.
         class PowHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library pow trait specialization.
+            //! The HIP pow trait specialization.
             template<
                 typename TBase,
                 typename TExp>
@@ -70,7 +70,7 @@ namespace alpaka
                     return ::pow(base, exp);
                 }
             };
-
+            //! The HIP pow float specialization.
             template<>
             struct Pow<
                 PowCudaBuiltIn,

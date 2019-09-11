@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library ceil.
+        //! The HIP ceil.
         class CeilHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library ceil trait specialization.
+            //! The HIP ceil trait specialization.
             template<
                 typename TArg>
             struct Ceil<
@@ -66,7 +66,7 @@ namespace alpaka
                     return ::ceil(arg);
                 }
             };
-
+            //! The HIP cos float specialization.
             template<>
             struct Ceil<
                 CeilHipBuiltIn,
