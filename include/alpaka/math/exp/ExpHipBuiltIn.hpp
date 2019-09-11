@@ -66,6 +66,21 @@ namespace alpaka
                     return ::exp(arg);
                 }
             };
+
+            template<>
+            struct Exp<
+                ExpHipBuiltIn,
+                float>
+            {
+                __device__ static auto exp(
+                    ExpHipBuiltIn const & exp_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(exp_ctx);
+                    return ::expf(arg);
+                }
+            };
         }
     }
 }

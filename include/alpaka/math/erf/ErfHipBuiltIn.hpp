@@ -66,6 +66,21 @@ namespace alpaka
                     return ::erf(arg);
                 }
             };
+
+            template<>
+            struct Erf<
+                ErfHipBuiltIn,
+                float>
+            {
+                __device__ static auto erf(
+                    ErfHipBuiltIn const & erf_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(erf_ctx);
+                    return ::erff(arg);
+                }
+            };
         }
     }
 }

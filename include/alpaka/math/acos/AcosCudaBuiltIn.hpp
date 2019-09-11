@@ -58,6 +58,21 @@ namespace alpaka
                     return ::acos(arg);
                 }
             };
+
+            template<>
+            struct Acos<
+                AcosCudaBuiltIn,
+                float>
+            {
+                __device__ static auto acos(
+                    AcosCudaBuiltIn const & acos_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(acos_ctx);
+                    return ::acosf(arg);
+                }
+            };
         }
     }
 }

@@ -58,6 +58,21 @@ namespace alpaka
                     return ::cbrt(arg);
                 }
             };
+
+            template<>
+            struct Cbrt<
+                CbrtCudaBuiltIn,
+                float>
+            {
+                __device__ static auto cbrt(
+                    CbrtCudaBuiltIn const & cbrt_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(cbrt_ctx);
+                    return ::cbrtf(arg);
+                }
+            };
         }
     }
 }

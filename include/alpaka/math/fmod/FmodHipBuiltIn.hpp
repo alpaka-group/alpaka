@@ -70,6 +70,23 @@ namespace alpaka
                     return ::fmod(x, y);
                 }
             };
+
+            template<>
+            struct Fmod<
+                FmodHipBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto fmod(
+                    FmodHipBuiltIn const & fmod_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(fmod_ctx);
+                    return ::fmodf(x, y);
+                }
+            };
         }
     }
 }

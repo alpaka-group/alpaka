@@ -70,6 +70,25 @@ namespace alpaka
                     return ::remainder(x, y);
                 }
             };
+
+            template<>
+            struct Remainder<
+                RemainderHipBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto remainder(
+                    RemainderHipBuiltIn const & remainder_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(remainder_ctx);
+                    return ::remainderf(
+                        x,
+                        y);
+                }
+            };
         }
     }
 }

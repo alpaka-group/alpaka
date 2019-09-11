@@ -66,6 +66,21 @@ namespace alpaka
                     return ::sin(arg);
                 }
             };
+
+            template<>
+            struct Sin<
+                SinCudaBuiltIn,
+                float>
+            {
+                __device__ static auto sin(
+                    SinCudaBuiltIn const & sin_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(sin_ctx);
+                    return ::sinf(arg);
+                }
+            };
         }
     }
 }

@@ -58,6 +58,22 @@ namespace alpaka
                     return ::log(arg);
                 }
             };
+
+            template<>
+            struct Log<
+                LogCudaBuiltIn,
+                float>
+            {
+                __device__ static auto log(
+                    LogCudaBuiltIn const & log_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(log_ctx);
+                    return ::logf(arg);
+                }
+            };
+
         }
     }
 }

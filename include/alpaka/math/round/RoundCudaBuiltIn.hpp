@@ -96,6 +96,21 @@ namespace alpaka
                     return ::llround(arg);
                 }
             };
+
+            template<>
+            struct Round<
+                RoundHipBuiltIn,
+                float>
+            {
+                __device__ static auto round(
+                    RoundHipBuiltIn const & round_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(round_ctx);
+                    return ::roundf(arg);
+                }
+            };
         }
     }
 }

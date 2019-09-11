@@ -58,6 +58,21 @@ namespace alpaka
                     return ::ceil(arg);
                 }
             };
+
+            template<>
+            struct Ceil<
+                CeilCudaBuiltIn,
+                float>
+            {
+                __device__ static auto ceil(
+                    CeilCudaBuiltIn const & ceil_ctx,
+                    float const & arg)
+                ->float
+                {
+                    alpaka::ignore_unused(ceil_ctx);
+                    return ::ceilf(arg);
+                }
+            };
         }
     }
 }

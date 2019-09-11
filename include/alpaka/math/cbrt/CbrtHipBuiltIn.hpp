@@ -66,6 +66,21 @@ namespace alpaka
                     return ::cbrt(arg);
                 }
             };
+
+            template<>
+            struct Cbrt<
+                CbrtHipBuiltIn,
+                float>
+            {
+                __device__ static auto cbrt(
+                    CbrtHipBuiltIn const & cbrt_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(cbrt_ctx);
+                    return ::cbrtf(arg);
+                }
+            };
         }
     }
 }

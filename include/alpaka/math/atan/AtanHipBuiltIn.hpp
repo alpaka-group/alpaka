@@ -66,6 +66,21 @@ namespace alpaka
                     return ::atan(arg);
                 }
             };
+
+            template<>
+            struct Atan<
+                AtanHipBuiltIn,
+                float>
+            {
+                __device__ static auto atan(
+                    AtanHipBuiltIn const & atan_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(atan_ctx);
+                    return ::atanf(arg);
+                }
+            };
         }
     }
 }

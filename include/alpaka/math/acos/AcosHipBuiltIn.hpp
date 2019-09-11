@@ -67,6 +67,22 @@ namespace alpaka
                     return ::acos(arg);
                 }
             };
+
+            template<>
+            struct Acos<
+                AcosHipBuiltIn,
+                float>
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
+                __device__ static auto acos(
+                    AcosHipBuiltIn const & acos_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(acos_ctx);
+                    return ::acosf(arg);
+                }
+            };
         }
     }
 }

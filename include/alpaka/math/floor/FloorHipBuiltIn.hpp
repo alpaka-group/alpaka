@@ -66,6 +66,21 @@ namespace alpaka
                     return ::floor(arg);
                 }
             };
+
+            template<>
+            struct Floor<
+                FloorHipBuiltIn,
+                float>
+            {
+                __device__ static auto floor(
+                    FloorHipBuiltIn const & floor_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(floor_ctx);
+                    return ::floorf(arg);
+                }
+            };
         }
     }
 }

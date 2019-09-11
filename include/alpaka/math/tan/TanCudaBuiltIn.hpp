@@ -55,6 +55,21 @@ namespace alpaka
                 -> decltype(::tan(arg))
                 {
                     alpaka::ignore_unused(tan_ctx);
+                    return ::tan(arg);
+                }
+            };
+
+            template<>
+            struct Tan<
+                TanCudaBuiltIn,
+                float>
+            {
+                __device__ static auto tan(
+                    TanCudaBuiltIn const & tan_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(tan_ctx);
                     return ::tanf(arg);
                 }
             };

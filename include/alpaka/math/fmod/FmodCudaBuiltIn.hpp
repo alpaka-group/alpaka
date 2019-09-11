@@ -59,7 +59,28 @@ namespace alpaka
                 -> decltype(::fmod(x, y))
                 {
                     alpaka::ignore_unused(fmod_ctx);
-                    return ::fmod(x, y);
+                    return ::fmod(
+                        x,
+                        y);
+                }
+            };
+
+            template<>
+            struct Fmod<
+                FmodCudaBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto fmod(
+                    FmodCudaBuiltIn const & fmod_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(fmod_ctx);
+                    return ::fmodf(
+                        x,
+                        y);
                 }
             };
         }

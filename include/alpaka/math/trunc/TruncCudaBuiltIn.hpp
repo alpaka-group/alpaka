@@ -58,6 +58,21 @@ namespace alpaka
                     return ::trunc(arg);
                 }
             };
+
+            template<>
+            struct Trunc<
+                TruncCudaBuiltIn,
+                float>
+            {
+                __device__ static auto trunc(
+                    TruncCudaBuiltIn const & trunc_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(trunc_ctx);
+                    return ::truncf(arg);
+                }
+            };
         }
     }
 }

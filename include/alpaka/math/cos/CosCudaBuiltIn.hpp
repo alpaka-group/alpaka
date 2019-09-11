@@ -58,6 +58,21 @@ namespace alpaka
                     return ::cos(arg);
                 }
             };
+
+            template<>
+            struct Cos<
+                CosCudaBuiltIn,
+                float>
+            {
+                __device__ static auto cos(
+                    CosCudaBuiltIn const & cos_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(cos_ctx);
+                    return ::cosf(arg);
+                }
+            };
         }
     }
 }

@@ -58,6 +58,22 @@ namespace alpaka
                     return ::sqrt(arg);
                 }
             };
+
+            template<>
+            struct Sqrt<
+                SqrtCudaBuiltIn,
+                float>
+            {
+                __device__ static auto sqrt(
+                    SqrtCudaBuiltIn const & sqrt_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(sqrt_ctx);
+                    return ::sqrtf(arg);
+                }
+            };
+
         }
     }
 }
