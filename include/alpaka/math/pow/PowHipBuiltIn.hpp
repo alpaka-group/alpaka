@@ -73,12 +73,12 @@ namespace alpaka
             //! The HIP pow float specialization.
             template<>
             struct Pow<
-                PowCudaBuiltIn,
+                PowHipBuiltIn,
                 float,
                 float>
             {
                 __device__ static auto pow(
-                    PowCudaBuiltIn const & pow_ctx,
+                    PowHipBuiltIn const & pow_ctx,
                     float const & base,
                     float const & exp)
                 -> float
