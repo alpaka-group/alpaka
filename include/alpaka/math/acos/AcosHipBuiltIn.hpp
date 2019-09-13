@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library acos.
+        //! The HIP acos.
         class AcosHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library acos trait specialization.
+            //! The HIP acos trait specialization.
             template<
                 typename TArg>
             struct Acos<
@@ -65,6 +65,22 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(acos_ctx);
                     return ::acos(arg);
+                }
+            };
+            //! The HIP acos float specialization.
+            template<>
+            struct Acos<
+                AcosHipBuiltIn,
+                float>
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
+                __device__ static auto acos(
+                    AcosHipBuiltIn const & acos_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(acos_ctx);
+                    return ::acosf(arg);
                 }
             };
         }

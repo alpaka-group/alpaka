@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library log.
+        // ! The CUDA built in log.
         class LogCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library log trait specialization.
+            //! The CUDA log trait specialization.
             template<
                 typename TArg>
             struct Log<
@@ -58,6 +58,22 @@ namespace alpaka
                     return ::log(arg);
                 }
             };
+            //! The CUDA log float specialization.
+            template<>
+            struct Log<
+                LogCudaBuiltIn,
+                float>
+            {
+                __device__ static auto log(
+                    LogCudaBuiltIn const & log_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(log_ctx);
+                    return ::logf(arg);
+                }
+            };
+
         }
     }
 }

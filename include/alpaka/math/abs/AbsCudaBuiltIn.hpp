@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library abs.
+        //! The CUDA built in abs.
         class AbsCudaBuiltIn
         {
         public:
@@ -56,6 +56,21 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return ::abs(arg);
+                }
+            };
+            //! The CUDA built in abs float specialization.
+            template<>
+            struct Abs<
+                AbsCudaBuiltIn,
+                float>
+            {
+                __device__ static auto abs(
+                    AbsCudaBuiltIn const & abs_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::fabsf(arg);
                 }
             };
         }

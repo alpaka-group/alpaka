@@ -29,7 +29,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library max.
+        //! The CUDA built in max.
         class MaxCudaBuiltIn
         {
         public:
@@ -62,7 +62,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The standard library mixed integral floating point max trait specialization.
+            //! The CUDA mixed integral floating point max trait specialization.
             template<
                 typename Tx,
                 typename Ty>

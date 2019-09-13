@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library remainder.
+        //! The HIP remainder.
         class RemainderHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library remainder trait specialization.
+            //! The HIP remainder trait specialization.
             template<
                 typename Tx,
                 typename Ty>
@@ -68,6 +68,25 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(remainder_ctx);
                     return ::remainder(x, y);
+                }
+            };
+            //! The HIP remainder float specialization.
+            template<>
+            struct Remainder<
+                RemainderHipBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto remainder(
+                    RemainderHipBuiltIn const & remainder_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(remainder_ctx);
+                    return ::remainderf(
+                        x,
+                        y);
                 }
             };
         }

@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library sqrt.
+        //! The HIP sqrt.
         class SqrtHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library sqrt trait specialization.
+            //! The HIP sqrt trait specialization.
             template<
                 typename TArg>
             struct Sqrt<
@@ -64,6 +64,21 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(sqrt_ctx);
                     return ::sqrt(arg);
+                }
+            };
+            //! The HIP sqrt float specialization.
+            template<>
+            struct Sqrt<
+                SqrtHipBuiltIn,
+                float>
+            {
+                __device__ static auto sqrt(
+                    SqrtHipBuiltIn const & sqrt_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(sqrt_ctx);
+                    return ::sqrtf(arg);
                 }
             };
         }

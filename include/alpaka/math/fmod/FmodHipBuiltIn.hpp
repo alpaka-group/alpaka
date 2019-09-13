@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library fmod.
+        //! The HIP fmod.
         class FmodHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library fmod trait specialization.
+            //! The HIP fmod trait specialization.
             template<
                 typename Tx,
                 typename Ty>
@@ -68,6 +68,23 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(fmod_ctx);
                     return ::fmod(x, y);
+                }
+            };
+            //! The HIP fmod float specialization.
+            template<>
+            struct Fmod<
+                FmodHipBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto fmod(
+                    FmodHipBuiltIn const & fmod_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(fmod_ctx);
+                    return ::fmodf(x, y);
                 }
             };
         }
