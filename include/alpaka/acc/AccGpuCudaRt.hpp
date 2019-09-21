@@ -141,30 +141,67 @@ namespace alpaka
                     dev::DevCudaRt const & dev)
                 -> acc::AccDevProps<TDim, TIdx>
                 {
-                    cudaDeviceProp cudaDevProp;
-                    ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(
-                        &cudaDevProp,
+                    // Reading only the necessary attributes with cudaDeviceGetAttribute is faster than reading all with cudaGetDeviceProperties
+                    // https://devblogs.nvidia.com/cuda-pro-tip-the-fast-way-to-query-device-properties/
+                    int multiProcessorCount = {};
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &multiProcessorCount,
+                        cudaDevAttrMultiProcessorCount,
+                        dev.m_iDevice));
+
+                    int maxGridSize[3] = {};
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &maxGridSize[0],
+                        cudaDevAttrMaxGridDimX,
+                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &maxGridSize[1],
+                        cudaDevAttrMaxGridDimY,
+                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &maxGridSize[2],
+                        cudaDevAttrMaxGridDimZ,
+                        dev.m_iDevice));
+
+                    int maxBlockDim[3] = {};
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &maxBlockDim[0],
+                        cudaDevAttrMaxBlockDimX,
+                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &maxBlockDim[1],
+                        cudaDevAttrMaxBlockDimY,
+                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &maxBlockDim[2],
+                        cudaDevAttrMaxBlockDimZ,
+                        dev.m_iDevice));
+
+                    int maxThreadsPerBlock = {};
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceGetAttribute(
+                        &maxThreadsPerBlock,
+                        cudaDevAttrMaxThreadsPerBlock,
                         dev.m_iDevice));
 
                     return {
                         // m_multiProcessorCount
-                        alpaka::core::clipCast<TIdx>(cudaDevProp.multiProcessorCount),
+                        alpaka::core::clipCast<TIdx>(multiProcessorCount),
                         // m_gridBlockExtentMax
                         extent::getExtentVecEnd<TDim>(
                             vec::Vec<dim::DimInt<3u>, TIdx>(
-                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxGridSize[2u]),
-                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxGridSize[1u]),
-                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxGridSize[0u]))),
+                                alpaka::core::clipCast<TIdx>(maxGridSize[2u]),
+                                alpaka::core::clipCast<TIdx>(maxGridSize[1u]),
+                                alpaka::core::clipCast<TIdx>(maxGridSize[0u]))),
                         // m_gridBlockCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
                         extent::getExtentVecEnd<TDim>(
                             vec::Vec<dim::DimInt<3u>, TIdx>(
-                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsDim[2u]),
-                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsDim[1u]),
-                                alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsDim[0u]))),
+                                alpaka::core::clipCast<TIdx>(maxBlockDim[2u]),
+                                alpaka::core::clipCast<TIdx>(maxBlockDim[1u]),
+                                alpaka::core::clipCast<TIdx>(maxBlockDim[0u]))),
                         // m_blockThreadCountMax
-                        alpaka::core::clipCast<TIdx>(cudaDevProp.maxThreadsPerBlock),
+                        alpaka::core::clipCast<TIdx>(maxThreadsPerBlock),
                         // m_threadElemExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
