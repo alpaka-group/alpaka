@@ -200,14 +200,14 @@ namespace alpaka
                 for(TIdx i = 0; i < numBlocksInGrid; ++i)
 #endif
                 {
-                    acc.m_gridBlockIdx =
-                        idx::mapIdx<TDim::value>(
 #if _OPENMP < 200805
-                            vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(i)),
+                    auto const i_tidx  = static_cast<TIdx>(i); // for issue #840
+                    auto const index   = vec::Vec<dim::DimInt<1u>, TIdx>( i_tidx ); // for issue #840
 #else
-                            vec::Vec<dim::DimInt<1u>, TIdx>(i),
+                    auto const index   = vec::Vec<dim::DimInt<1u>, TIdx>( i ); // for issue #840
 #endif
-                            gridBlockExtent);
+                    acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(index,
+                                                                  gridBlockExtent);
 
                     boundKernelFnObj(
                         acc);

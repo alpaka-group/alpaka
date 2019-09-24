@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library remainder.
+        //! The HIP remainder.
         class RemainderHipBuiltIn
         {
         public:
@@ -48,22 +48,45 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library remainder trait specialization.
+            //! The HIP remainder trait specialization.
             template<
-                typename TArg>
+                typename Tx,
+                typename Ty>
             struct Remainder<
                 RemainderHipBuiltIn,
-                TArg,
+                Tx,
+                Ty,
                 typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                    std::is_floating_point<Tx>::value
+                    && std::is_floating_point<Ty>::value>::type>
             {
                 __device__ static auto remainder(
                     RemainderHipBuiltIn const & remainder_ctx,
-                    TArg const & arg)
-                -> decltype(::remainder(arg))
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(::remainder(x, y))
                 {
                     alpaka::ignore_unused(remainder_ctx);
-                    return ::remainder(arg);
+                    return ::remainder(x, y);
+                }
+            };
+            //! The HIP remainder float specialization.
+            template<>
+            struct Remainder<
+                RemainderHipBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto remainder(
+                    RemainderHipBuiltIn const & remainder_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(remainder_ctx);
+                    return ::remainderf(
+                        x,
+                        y);
                 }
             };
         }

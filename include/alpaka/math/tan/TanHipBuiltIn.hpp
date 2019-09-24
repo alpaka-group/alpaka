@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library tan.
+        //! The HIP tan.
         class TanHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library tan trait specialization.
+            //! The HIP tan trait specialization.
             template<
                 typename TArg>
             struct Tan<
@@ -61,6 +61,21 @@ namespace alpaka
                     TanHipBuiltIn const & tan_ctx,
                     TArg const & arg)
                 -> decltype(::tan(arg))
+                {
+                    alpaka::ignore_unused(tan_ctx);
+                    return ::tan(arg);
+                }
+            };
+            //! The HIP tan float specialization.
+            template<>
+            struct Tan<
+                TanHipBuiltIn,
+                float>
+            {
+                __device__ static auto tan(
+                    TanHipBuiltIn const & tan_ctx,
+                    float const & arg)
+                -> float
                 {
                     alpaka::ignore_unused(tan_ctx);
                     return ::tanf(arg);

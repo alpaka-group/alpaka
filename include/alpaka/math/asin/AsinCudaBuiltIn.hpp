@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library asin.
+        //! The CUDA built in asin.
         class AsinCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library asin trait specialization.
+            //! The CUDA asin trait specialization.
             template<
                 typename TArg>
             struct Asin<
@@ -56,6 +56,21 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(asin_ctx);
                     return ::asin(arg);
+                }
+            };
+
+            template<>
+            struct Asin<
+                AsinCudaBuiltIn,
+                float>
+            {
+                __device__ static auto asin(
+                    AsinCudaBuiltIn const & asin_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(asin_ctx);
+                    return ::asinf(arg);
                 }
             };
         }

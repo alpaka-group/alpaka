@@ -40,7 +40,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library min.
+        //! The HIP min.
         class MinHipBuiltIn
         {
         public:
@@ -50,7 +50,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library integral min trait specialization.
+            //! The HIP integral min trait specialization.
             template<
                 typename Tx,
                 typename Ty>
@@ -73,7 +73,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The standard library mixed integral floating point min trait specialization.
+            //! The HIP mixed integral floating point min trait specialization.
             template<
                 typename Tx,
                 typename Ty>
@@ -87,7 +87,7 @@ namespace alpaka
                     && !(std::is_integral<Tx>::value
                         && std::is_integral<Ty>::value)>::type>
             {
-                __device__ static auto max(
+                __device__ static auto min(
                     MinHipBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)

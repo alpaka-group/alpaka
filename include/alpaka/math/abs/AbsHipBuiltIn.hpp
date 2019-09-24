@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library abs.
+        //! The HIP built in abs.
         class AbsHipBuiltIn
         {
         public:
@@ -64,6 +64,21 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return ::abs(arg);
+                }
+            };
+            //! The HIP built in abs float specialization.
+            template<>
+            struct Abs<
+                AbsHipBuiltIn,
+                float>
+            {
+                __device__ static auto abs(
+                    AbsHipBuiltIn const & abs_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::fabsf(arg);
                 }
             };
         }

@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library erf.
+        //! The CUDA built in erf.
         class ErfCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library erf trait specialization.
+            //! The CUDA erf trait specialization.
             template<
                 typename TArg>
             struct Erf<
@@ -56,6 +56,21 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(erf_ctx);
                     return ::erf(arg);
+                }
+            };
+
+            template<>
+            struct Erf<
+                ErfCudaBuiltIn,
+                float>
+            {
+                __device__ static auto erf(
+                    ErfCudaBuiltIn const & erf_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(erf_ctx);
+                    return ::erff(arg);
                 }
             };
         }

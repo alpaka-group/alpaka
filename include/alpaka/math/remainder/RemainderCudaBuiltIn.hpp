@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library remainder.
+        //! The CUDA built in remainder.
         class RemainderCudaBuiltIn
         {
         public:
@@ -40,22 +40,49 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library remainder trait specialization.
+            //! The CUDA remainder trait specialization.
             template<
-                typename TArg>
+                typename Tx,
+                typename Ty>
             struct Remainder<
                 RemainderCudaBuiltIn,
-                TArg,
+                Tx,
+                Ty,
                 typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                    std::is_floating_point<Tx>::value
+                    && std::is_floating_point<Ty>::value>::type>
             {
                 __device__ static auto remainder(
                     RemainderCudaBuiltIn const & remainder_ctx,
-                    TArg const & arg)
-                -> decltype(::remainder(arg))
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(::remainder(
+                    x,
+                    y))
                 {
                     alpaka::ignore_unused(remainder_ctx);
-                    return ::remainder(arg);
+                    return ::remainder(
+                        x,
+                        y);
+                }
+            };
+            //! The CUDA remainder float specialization.
+            template<>
+            struct Remainder<
+                RemainderCudaBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto remainder(
+                    RemainderCudaBuiltIn const & remainder_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(remainder_ctx);
+                    return ::remainderf(
+                        x,
+                        y);
                 }
             };
         }
