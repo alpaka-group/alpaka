@@ -7,6 +7,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#pragma once
+
 #include <alpaka/alpaka.hpp>
 
 #include <alpaka/test/Check.hpp>
