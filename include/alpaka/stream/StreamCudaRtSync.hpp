@@ -87,7 +87,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaStreamCreateWithFlags(
                                 &m_CudaStream,
-                                cudaStreamNonBlocking));
+                                cudaStreamDefault));
                     }
                     //-----------------------------------------------------------------------------
                     StreamCudaRtSyncImpl(StreamCudaRtSyncImpl const &) = delete;
