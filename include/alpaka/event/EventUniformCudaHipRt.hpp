@@ -112,7 +112,9 @@ namespace alpaka
 
         //#############################################################################
         //! The CUDA/HIP RT device event.
-        class EventUniformCudaHipRt final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventUniformCudaHipRt>
+        class EventUniformCudaHipRt final
+            : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventUniformCudaHipRt>
+            , public concepts::Implements<dev::ConceptGetDev, EventUniformCudaHipRt>
         {
         public:
             //-----------------------------------------------------------------------------
