@@ -66,6 +66,21 @@ namespace alpaka
                     return ::abs(arg);
                 }
             };
+            //! The HIP built in abs double specialization.
+            template<>
+            struct Abs<
+                AbsHipBuiltIn,
+                double>
+            {
+                __device__ static auto abs(
+                    AbsHipBuiltIn const & abs_ctx,
+                    TArg const & arg)
+                -> decltype(::fabs(arg))
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::fabs(arg);
+                }
+            };
             //! The HIP built in abs float specialization.
             template<>
             struct Abs<
