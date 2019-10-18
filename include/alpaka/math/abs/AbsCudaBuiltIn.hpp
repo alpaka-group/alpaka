@@ -69,6 +69,21 @@ namespace alpaka
                     //boost::ignore_unused(abs);
                     return ::abs(arg);
                 }
+            }
+            //! The CUDA built in abs double specialization.
+            template<>
+            struct Abs<
+                AbsCudaBuiltIn,
+                double>
+            {
+                __device__ static auto abs(
+                    AbsCudaBuiltIn const & abs_ctx,
+                    TArg const & arg)
+                -> decltype(::fabs(arg))
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::fabs(arg);
+                }
             };
             //! The CUDA built in abs float specialization.
             template<>
