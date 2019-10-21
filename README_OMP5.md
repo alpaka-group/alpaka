@@ -8,12 +8,23 @@ cmake -DOpenMP_CXX_VERSION=5 -DALPAKA_ACC_CPU_BT_OMP4_ENABLE=on \
 ```
 Add flags to set the required compiler and linker flags, e.g:
 ```
-  -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp=libomp -fopenmp-targets=x86_64"
+  -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu"
   -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
+```
+
+## Test target
+
+```
+make vectorAdd
+./example/vectorAdd/vectorAdd
 ```
 
 ## Examples compilation status
 
-|target|location|phase|GGC 9.0|AOMP|LLVM 8.0|LLVM 9.0| 
-|---|---|---|---|---|---|---|
-|vectorAdd|example/vectorAdd|testing|compiles,segfault|ICE|??|??|
+|target|location|compiler|status|
+|---|---|---|---|
+|vectorAdd|example/vectorAdd|
+|||GGC 9.0 | compiles, segfault |
+|||AOMP|segfault|
+|||LLVM 8.0|compiles, segfault loading shared libs before main()|
+|||LLVM 9.0|segfault (same as AOMP)|
