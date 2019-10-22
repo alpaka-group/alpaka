@@ -21,10 +21,10 @@ make vectorAdd
 
 ## Examples compilation status
 
-|target|location|compiler|status|
-|---|---|---|---|
+|target|location|compiler|compile status|run status
+|---|---|---|---|---|
 |vectorAdd|example/vectorAdd|
-|||GGC 9.0 | compiles, segfault |
-|||AOMP|segfault|
-|||LLVM 8.0|compiles, segfault loading shared libs before main()|
-|||LLVM 9.0|segfault (same as AOMP)|
+|||GGC 9.1 | compiles| segfault |
+|||AOMP|segfault||
+|||LLVM 8.0|compiles| segfault loading shared libs before main()|
+|||LLVM 9.0|segfault (same as AOMP)||
