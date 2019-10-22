@@ -801,72 +801,28 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
                     LIST(APPEND HIP_HIPCC_FLAGS "-Xcudafe --diag_suppress=esa_on_defaulted_function_ignored")
                 ENDIF()
 
-                # random numbers library ( HIP(NVCC) ) /hiprand
-                # HIP_ROOT_DIR is set by FindHIP.cmake
-                FIND_PATH(HIP_RAND_INC
-                    NAMES "hiprand_kernel.h"
-                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}/include" "hiprand"
-                    PATHS "/opt/rocm/rocrand/hiprand"
-                    PATH_SUFFIXES "include" "hiprand")
-                FIND_LIBRARY(HIP_RAND_LIBRARY
-                    NAMES "hiprand-d" "hiprand"
-                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}" "hiprand"
-                    PATHS "/opt/rocm/rocrand/hiprand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "lib" "lib64")
-                IF(NOT HIP_RAND_INC)
-                    MESSAGE(FATAL_ERROR "Could not find hipRAND include (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}).")
-                ENDIF()
-                IF(NOT HIP_RAND_LIBRARY)
-                    MESSAGE(FATAL_ERROR "Could not find hipRAND library (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}).")
-                ENDIF()
-                LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${HIP_RAND_INC}")
-                LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${HIP_RAND_LIBRARY}")
+
             ENDIF() # nvcc
+
+            # # HIP random numbers
+            FIND_PACKAGE(hiprand REQUIRED CONFIG PATHS "${HIP_ROOT_DIR}/hiprand")
+            IF(hiprand_FOUND)
+                LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${hiprand_INCLUDE_DIRS}")
+                LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${hiprand_LIBRARIES}")
+            ELSE()
+                MESSAGE(FATAL_ERROR "Could not find hipRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/hiprand).")
+            ENDIF()
 
             IF(ALPAKA_HIP_PLATFORM MATCHES "hcc")
 
-                # random numbers library ( HIP(HCC) ) /rocrand
-                FIND_PATH(ROC_RAND_INC
-                    rocrand_kernel.h
-                    PATHS "${HIP_ROOT_DIR}/rocrand" "${HIP_ROOT_DIR}" "rocrand"
-                    PATHS "/opt/rocm/rocrand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "include")
-                FIND_LIBRARY(ROC_RAND_LIBRARY
-                    rocrand-d
-                    rocrand
-                    PATHS "${HIP_ROOT_DIR}/rocrand" "${HIP_ROOT_DIR}" "rocrand"
-                    PATHS "/opt/rocm/rocrand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "lib" "lib64")
-
-                # random numbers library ( HIP(HCC) ) rocrand/hiprand
-                FIND_PATH(HIP_RAND_INC
-                    hiprand_kernel.h
-                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}" "hiprand"
-                    PATHS "/opt/rocm/hiprand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "include")
-                FIND_LIBRARY(HIP_RAND_LIBRARY
-                    hiprand-d
-                    hiprand
-                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}" "hiprand"
-                    PATHS "/opt/rocm/hiprand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "lib" "lib64")
-                IF(NOT HIP_RAND_INC OR NOT HIP_RAND_LIBRARY)
-                    MESSAGE(FATAL_ERROR "Could not find hipRAND library")
+                # # hiprand requires ROCm implementation of random numbers by rocrand
+                FIND_PACKAGE(rocrand REQUIRED CONFIG PATHS "${HIP_ROOT_DIR}/rocrand")
+                IF(rocrand_FOUND)
+                    LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${rocrand_INCLUDE_DIRS}")
+                    LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${rocrand_LIBRARIES}")
+                ELSE()
+                    MESSAGE(FATAL_ERROR "Could not find rocRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/rocrand).")
                 ENDIF()
-                LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${HIP_RAND_INC}")
-                LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${HIP_RAND_LIBRARY}")
-
-                IF(NOT ROC_RAND_INC OR NOT ROC_RAND_LIBRARY)
-                    MESSAGE(FATAL_ERROR "Could not find rocRAND library")
-                ENDIF()
-
-                LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_PUBLIC "${ROC_RAND_INC}")
-                LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "${ROC_RAND_LIBRARY}")
 
             ENDIF()
 
