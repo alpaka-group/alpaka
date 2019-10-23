@@ -57,7 +57,7 @@ namespace alpaka
                     alpaka::ignore_unused(abs_ctx);
                     return ::abs(arg);
                 }
-            }
+            };
             //! The CUDA built in abs double specialization.
             template<>
             struct Abs<
