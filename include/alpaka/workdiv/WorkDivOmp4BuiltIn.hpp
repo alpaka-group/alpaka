@@ -55,7 +55,7 @@ namespace alpaka
         public:
             // \TODO: Optimize! Add WorkDivCudaBuiltInNoElems that has no member m_threadElemExtent as well as AccGpuCudaRtNoElems.
             // Use it instead of AccGpuCudaRt if the thread element extent is one to reduce the register usage.
-            vec::Vec<TDim, TIdx> const & m_threadElemExtent;
+            vec::Vec<TDim, TIdx> const m_threadElemExtent;
         };
     }
 
