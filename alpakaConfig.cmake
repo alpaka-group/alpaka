@@ -220,8 +220,6 @@ IF(MSVC)
     ENDIF()
 ELSE()
     # Add linker options.
-    # lipthread:
-    LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;pthread")
     IF(NOT APPLE)
         # librt: undefined reference to `clock_gettime'
         LIST(APPEND _ALPAKA_LINK_LIBRARIES_PUBLIC "general;rt")
@@ -236,6 +234,17 @@ ELSE()
         CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.0))
         LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-ftemplate-depth=1024")
     ENDIF()
+ENDIF()
+
+#-------------------------------------------------------------------------------
+# Find Threads.
+IF(NOT MSVC)
+    # for std::future we need to pass the pthreads flags for the compiler and linker
+    # https://github.com/ComputationalRadiationPhysics/cupla/pull/128#issuecomment-545078917
+    # The dependency pthread will be searched here and after defining the target alpaka
+    # we apply the dependency
+    SET(THREADS_PREFER_PTHREAD_FLAG TRUE)
+    FIND_PACKAGE(Threads REQUIRED)
 ENDIF()
 
 #-------------------------------------------------------------------------------
@@ -1087,6 +1096,11 @@ ENDIF()
 IF((ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE) AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
     STRING(REPLACE ";" " " _ALPAKA_COMPILE_OPTIONS_STRING "${_ALPAKA_COMPILE_OPTIONS_PUBLIC}")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_ALPAKA_COMPILE_OPTIONS_STRING}")
+ENDIF()
+
+IF(NOT MSVC)
+    # dependency for std::future
+    TARGET_LINK_LIBRARIES("alpaka" INTERFACE Threads::Threads)
 ENDIF()
 
 #-------------------------------------------------------------------------------
