@@ -258,7 +258,7 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto createTaskKernel(
                     TWorkDiv const & workDiv,
                     TKernelFnObj const & kernelFnObj,
-                    TArgs const & ... args)
+                    TArgs && ... args)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> kernel::TaskKernelCpuOmp2Threads<
                     TDim,
@@ -275,7 +275,7 @@ namespace alpaka
                             TArgs...>(
                                 workDiv,
                                 kernelFnObj,
-                                args...);
+                                std::forward<TArgs>(args)...);
                 }
             };
         }
