@@ -120,13 +120,15 @@ namespace alpaka
                 TIdx const gridBlockCount(gridBlockExtent.prod());
                 // The number of threads in a block.
                 TIdx const blockThreadCount(blockThreadExtent.prod());
-                // The number of elements in a thread. (to avoid mapping vec to target)
-                TIdx const threadElemCount(threadElemExtent[0u]);
 
                 // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
                 auto const maxOmpThreadCount(::omp_get_max_threads());
-                auto const maxTeamCount(maxOmpThreadCount/static_cast<int>(blockThreadCount));
-                auto const teamCount(std::min(maxTeamCount, static_cast<int>(gridBlockCount)));
+                unsigned int const maxTeamCount(static_cast<unsigned int>(maxOmpThreadCount)/blockThreadCount);
+                unsigned int const teamCount(std::min(maxTeamCount, static_cast<unsigned int>(gridBlockCount)));
+                // The number of elements in a thread. (to avoid mapping vec to
+                // target, also fix range if maxTeamCount is limting)
+                TIdx const threadElemCount((threadElemExtent[0u]) *
+                        (gridBlockCount/teamCount + ((gridBlockCount)/teamCount>0) ));
 
                 if(::omp_in_parallel() != 0)
                 {
