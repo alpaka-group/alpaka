@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP built in abs.
-        class AbsHipBuiltIn
+        class AbsHipBuiltIn : public concepts::Implements<ConceptMathAbs, AbsHipBuiltIn>
         {
-        public:
-            using AbsBase = AbsHipBuiltIn;
         };
 
         namespace traits

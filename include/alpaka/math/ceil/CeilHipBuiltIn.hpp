@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP ceil.
-        class CeilHipBuiltIn
+        class CeilHipBuiltIn : public concepts::Implements<ConceptMathCeil, CeilHipBuiltIn>
         {
-        public:
-            using CeilBase = CeilHipBuiltIn;
         };
 
         namespace traits

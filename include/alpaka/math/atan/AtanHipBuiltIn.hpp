@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP atan.
-        class AtanHipBuiltIn
+        class AtanHipBuiltIn : public concepts::Implements<ConceptMathAtan, AtanHipBuiltIn>
         {
-        public:
-            using AtanBase = AtanHipBuiltIn;
         };
 
         namespace traits

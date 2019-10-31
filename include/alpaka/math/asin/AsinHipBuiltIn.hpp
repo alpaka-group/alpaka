@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP asin.
-        class AsinHipBuiltIn
+        class AsinHipBuiltIn : public concepts::Implements<ConceptMathAsin, AsinHipBuiltIn>
         {
-        public:
-            using AsinBase = AsinHipBuiltIn;
         };
 
         namespace traits

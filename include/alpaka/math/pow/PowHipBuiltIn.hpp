@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP pow.
-        class PowHipBuiltIn
+        class PowHipBuiltIn : public concepts::Implements<ConceptMathPow, PowHipBuiltIn>
         {
-        public:
-            using PowBase = PowHipBuiltIn;
         };
 
         namespace traits

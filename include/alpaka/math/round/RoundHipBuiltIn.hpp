@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP round.
-        class RoundHipBuiltIn
+        class RoundHipBuiltIn : public concepts::Implements<ConceptMathRound, RoundHipBuiltIn>
         {
-        public:
-            using RoundBase = RoundHipBuiltIn;
         };
 
         namespace traits

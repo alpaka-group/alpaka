@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP exp.
-        class ExpHipBuiltIn
+        class ExpHipBuiltIn : public concepts::Implements<ConceptMathExp, ExpHipBuiltIn>
         {
-        public:
-            using ExpBase = ExpHipBuiltIn;
         };
 
         namespace traits

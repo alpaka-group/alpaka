@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP log.
-        class LogHipBuiltIn
+        class LogHipBuiltIn : public concepts::Implements<ConceptMathLog, LogHipBuiltIn>
         {
-        public:
-            using LogBase = LogHipBuiltIn;
         };
 
         namespace traits

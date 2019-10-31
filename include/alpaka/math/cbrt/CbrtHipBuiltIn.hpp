@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP cbrt.
-        class CbrtHipBuiltIn
+        class CbrtHipBuiltIn : public concepts::Implements<ConceptMathCbrt, CbrtHipBuiltIn>
         {
-        public:
-            using CbrtBase = CbrtHipBuiltIn;
         };
 
         namespace traits

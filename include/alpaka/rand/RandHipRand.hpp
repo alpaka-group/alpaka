@@ -38,10 +38,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP rand implementation.
-        class RandHipRand
+        class RandHipRand : public concepts::Implements<ConceptRand, RandHipRand>
         {
-        public:
-            using RandBase = RandHipRand;
         };
 
         namespace generator

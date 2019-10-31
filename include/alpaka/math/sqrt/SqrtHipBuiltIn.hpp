@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP sqrt.
-        class SqrtHipBuiltIn
+        class SqrtHipBuiltIn : public concepts::Implements<ConceptMathSqrt, SqrtHipBuiltIn>
         {
-        public:
-            using SqrtBase = SqrtHipBuiltIn;
         };
 
         namespace traits

@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP erf.
-        class ErfHipBuiltIn
+        class ErfHipBuiltIn : public concepts::Implements<ConceptMathErf, ErfHipBuiltIn>
         {
-        public:
-            using ErfBase = ErfHipBuiltIn;
         };
 
         namespace traits
