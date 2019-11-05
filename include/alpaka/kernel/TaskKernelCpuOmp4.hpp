@@ -123,12 +123,14 @@ namespace alpaka
 
                 // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
                 auto const maxOmpThreadCount(::omp_get_max_threads());
-                unsigned int const maxTeamCount(static_cast<unsigned int>(maxOmpThreadCount)/blockThreadCount);
-                unsigned int const teamCount(std::min(maxTeamCount, static_cast<unsigned int>(gridBlockCount)));
+                // unsigned int const maxTeamCount(static_cast<unsigned int>(maxOmpThreadCount)/blockThreadCount + (maxOmpThreadCount<blockThreadCount));
+                // unsigned int const teamCount(std::min(maxTeamCount, static_cast<unsigned int>(gridBlockCount)));
+                assert(blockThreadCount*gridBlockCount <= static_cast<TIdx>(maxOmpThreadCount));
+                TIdx const teamCount(gridBlockCount);
                 // The number of elements in a thread. (to avoid mapping vec to
                 // target, also fix range if maxTeamCount is limting)
-                TIdx const threadElemCount((threadElemExtent[0u]) *
-                        (gridBlockCount/teamCount + ((gridBlockCount)/teamCount>0) ));
+                TIdx const threadElemCount(threadElemExtent[0u]);
+                std::cout << "threadElemCount " << threadElemCount << std::endl;
 
                 if(::omp_in_parallel() != 0)
                 {
