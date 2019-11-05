@@ -139,6 +139,10 @@ ELSE()
         # as they are stored as members. Therefore, the padding warning is triggered by the calling code
         # and does not indicate a failure within alpaka.
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wno-padded")
+        # Triggers for all instances of ALPAKA_DEBUG_MINIMAL_LOG_SCOPE and similar macros followed by semicolon
+        IF(CLANG_VERSION_MAJOR GREATER 7)
+            LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wno-extra-semi-stmt")
+        ENDIF()
     # ICC
     ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wall")
