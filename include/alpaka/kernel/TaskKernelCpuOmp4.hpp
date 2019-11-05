@@ -140,7 +140,8 @@ namespace alpaka
                 ::omp_set_dynamic(0);
 
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
-                #pragma omp target
+                auto argsD = m_args;
+                #pragma omp target map(from:argsD)
                 {
                     #pragma omp teams num_teams(teamCount) thread_limit(blockThreadCount)
                     {
@@ -195,7 +196,7 @@ namespace alpaka
                                                 acc,
                                                 args...);
                                     },
-                                    m_args);
+                                    argsD);
 
                                 // Wait for all threads to finish before deleting the shared memory.
                                 // This is done by default if the omp 'nowait' clause is missing
