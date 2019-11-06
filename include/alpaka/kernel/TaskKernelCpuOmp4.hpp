@@ -97,6 +97,10 @@ namespace alpaka
                 auto const threadElemExtent(
                     workdiv::getWorkDiv<Thread, Elems>(*this));
 
+                std::cout << "m_gridBlockExtent=" << this->m_gridBlockExtent << "\tgridBlockExtent=" << gridBlockExtent << std::endl;
+                std::cout << "m_blockThreadExtent=" << this->m_blockThreadExtent << "\tblockThreadExtent=" << blockThreadExtent << std::endl;
+                std::cout << "m_threadElemExtent=" << this->m_threadElemExtent << "\tthreadElemExtent=" << threadElemExtent << std::endl;
+
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
                     meta::apply(
@@ -123,14 +127,13 @@ namespace alpaka
 
                 // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
                 auto const maxOmpThreadCount(::omp_get_max_threads());
-                // unsigned int const maxTeamCount(static_cast<unsigned int>(maxOmpThreadCount)/blockThreadCount + (maxOmpThreadCount<blockThreadCount));
-                // unsigned int const teamCount(std::min(maxTeamCount, static_cast<unsigned int>(gridBlockCount)));
-                assert(blockThreadCount*gridBlockCount <= static_cast<TIdx>(maxOmpThreadCount));
-                TIdx const teamCount(gridBlockCount);
+                assert(blockThreadCount <= static_cast<TIdx>(maxOmpThreadCount));
+                TIdx const teamCount(std::min(static_cast<TIdx>(maxOmpThreadCount)/blockThreadCount, gridBlockCount));
                 // The number of elements in a thread. (to avoid mapping vec to
                 // target, also fix range if maxTeamCount is limting)
                 TIdx const threadElemCount(threadElemExtent[0u]);
-                std::cout << "threadElemCount " << threadElemCount << std::endl;
+                std::cout << "threadElemCount=" << threadElemCount << std::endl;
+                std::cout << "teamCount=" << teamCount << "\tgridBlockCount=" << gridBlockCount << std::endl;
 
                 if(::omp_in_parallel() != 0)
                 {
@@ -155,58 +158,69 @@ namespace alpaka
                             printf("%s omp_get_num_teams: %d\n", __func__, iNumTeams);
                         }
 #endif
-                        acc::AccCpuOmp4<TDim, TIdx> acc(
-                            threadElemCount,
-                            blockSharedMemDynSizeBytes);
-
-                        #pragma omp distribute
-                        for(TIdx b = 0u; b<gridBlockCount; ++b)
+                        printf("threadElemCount_dev %d\n", int(threadElemCount));
+                        // iterate over groups of teams to stay withing thread limit
+                        for(TIdx t = 0u; t < gridBlockCount; t+=teamCount)
                         {
-                            vec::Vec<dim::DimInt<1u>, TIdx> const gridBlockIdx(b);
-                            // When this is not repeated here:
-                            // error: gridBlockExtent referenced in target region does not have a mappable type
-                            auto const gridBlockExtent2(
-                                workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this)));
-                            acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(
-                                gridBlockIdx,
-                                gridBlockExtent2);
+                            acc::AccCpuOmp4<TDim, TIdx> acc(
+                                threadElemCount,
+                                gridBlockCount,
+                                t,
+                                blockSharedMemDynSizeBytes);
 
-                            // Execute the threads in parallel.
+                            printf("acc->threadElemCount %d\n"
+                                    , int(acc.m_threadElemExtent[0]));
 
-                            // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
-                            // So we have to spawn one OS thread per thread in a block.
-                            // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
-                            // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                            #pragma omp parallel num_threads(blockThreadCount)
+                            const TIdx bsup = std::min(t + teamCount, gridBlockCount);
+                            #pragma omp distribute
+                            for(TIdx b = t; b<bsup; ++b)
                             {
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                                // The first thread does some checks in the first block executed.
-                                if((::omp_get_thread_num() == 0) && (b == 0))
+                                vec::Vec<dim::DimInt<1u>, TIdx> const gridBlockIdx(b);
+                                // When this is not repeated here:
+                                // error: gridBlockExtent referenced in target region does not have a mappable type
+                                auto const gridBlockExtent2(
+                                    workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this)));
+                                acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(
+                                    gridBlockIdx,
+                                    gridBlockExtent2);
+
+                                // Execute the threads in parallel.
+
+                                // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                                // So we have to spawn one OS thread per thread in a block.
+                                // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                                // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                                #pragma omp parallel num_threads(blockThreadCount)
                                 {
-                                    int const numThreads(::omp_get_num_threads());
-                                    printf("%s omp_get_num_threads: %d\n", __func__, numThreads);
-                                    if(numThreads != static_cast<int>(blockThreadCount))
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                                    // The first thread does some checks in the first block executed.
+                                    if((::omp_get_thread_num() == 0) && (b == 0))
                                     {
-                                        printf("ERROR: The OpenMP runtime did not use the number of threads that had been requested!\n");
+                                        int const numThreads(::omp_get_num_threads());
+                                        printf("%s omp_get_num_threads: %d\n", __func__, numThreads);
+                                        if(numThreads != static_cast<int>(blockThreadCount))
+                                        {
+                                            printf("ERROR: The OpenMP runtime did not use the number of threads that had been requested!\n");
+                                        }
                                     }
-                                }
 #endif
-                                meta::apply(
-                                    [&](TArgs ... args)
-                                    {
-                                        m_kernelFnObj(
-                                                acc,
-                                                args...);
-                                    },
-                                    argsD);
+                                    meta::apply(
+                                        [&](TArgs ... args)
+                                        {
+                                            m_kernelFnObj(
+                                                    acc,
+                                                    args...);
+                                        },
+                                        argsD);
 
-                                // Wait for all threads to finish before deleting the shared memory.
-                                // This is done by default if the omp 'nowait' clause is missing
-                                //block::sync::syncBlockThreads(acc);
+                                    // Wait for all threads to finish before deleting the shared memory.
+                                    // This is done by default if the omp 'nowait' clause is missing
+                                    //block::sync::syncBlockThreads(acc);
+                                }
+
+                                // After a block has been processed, the shared memory has to be deleted.
+                                block::shared::st::freeMem(acc);
                             }
-
-                            // After a block has been processed, the shared memory has to be deleted.
-                            block::shared::st::freeMem(acc);
                         }
                     }
                 }
