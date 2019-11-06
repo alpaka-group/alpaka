@@ -100,9 +100,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST AccCpuOmp4(
                 TIdx const & threadElemExtent,
+                TIdx const & gridBlockExtent,
+                TIdx const & gridBlockOffset,
                 TIdx const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>(threadElemExtent),
-                    idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(),
+                    workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>(threadElemExtent, gridBlockExtent),
+                    idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(gridBlockOffset),
                     idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicStdLibLock<16>,// atomics between grids

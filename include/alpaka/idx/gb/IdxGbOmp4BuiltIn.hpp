@@ -41,7 +41,8 @@ namespace alpaka
                 static_assert(TDim::value == 1, "Omp4 only supports 1D grids.");
 
                 //-----------------------------------------------------------------------------
-                IdxGbOmp4BuiltIn() = default;
+                IdxGbOmp4BuiltIn() : m_gridBlockOffset(static_cast<TIdx>(0u)) {}
+                IdxGbOmp4BuiltIn(const TIdx &gridBlockOffset) : m_gridBlockOffset(gridBlockOffset) {}
                 //-----------------------------------------------------------------------------
                 IdxGbOmp4BuiltIn(IdxGbOmp4BuiltIn const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -52,6 +53,8 @@ namespace alpaka
                 auto operator=(IdxGbOmp4BuiltIn &&) -> IdxGbOmp4BuiltIn & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxGbOmp4BuiltIn() = default;
+
+                TIdx const m_gridBlockOffset;
             };
         }
     }
@@ -95,8 +98,7 @@ namespace alpaka
                     TWorkDiv const &)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    alpaka::ignore_unused(idx);
-                    return vec::Vec<TDim, TIdx>(static_cast<TIdx>(omp_get_team_num()));
+                    return idx.m_gridBlockOffset + static_cast<TIdx>(omp_get_team_num());
                 }
             };
         }
