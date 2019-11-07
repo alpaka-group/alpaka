@@ -25,10 +25,21 @@ incorrect!` at the end.
 
 ## Examples compilation status
 
-|target|location|compiler|compile status|run status
+### branch omp4
+
+|target|compiler|compile status|target|run status|
 |---|---|---|---|---|
-|vectorAdd|example/vectorAdd|
-|||GGC 9.1 | compiles| segfault |
-|||AOMP|segfault||
-|||LLVM 8.0|compiles| segfault loading shared libs before main()|
-|||LLVM 9.0|segfault (same as AOMP)||
+|vectorAdd|
+||GGC 9.1 | ok|nvptx| GPUptr, but not on GPU: segfault |
+||AOMP 0.7-4|ok|x86|omp_target_alloc() returns 0|
+||AOMP 0.7-4|linker: multiple def. of gpuHeap (1)|amdhsa|--|
+||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
+
+#### errors:
+1. error: Linking globals named 'gpuHeap': symbol multiply defined!
+    /usr/bin/ld: cannot find a.out-openmp-amdgcn-amd-amdhsa-gfx900
+    /usr/bin/ld: cannot find a.out-openmp-amdgcn-amd-amdhsa-gfx900
+    clang-9: error: amdgcn-link command failed with exit code 1 (use -v to see 
+    invocation)
+    clang-9: error: linker command failed with exit code 1 (use -v to see 
+    invocation)
