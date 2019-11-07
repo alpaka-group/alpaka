@@ -49,7 +49,8 @@ incorrect!` at the end.
 ||AOMP 0.7-4|ok|x86|omp_target_alloc() returns 0|
 ||AOMP 0.7-4|linker: multiple def. of gpuHeap (1)|amdhsa|--|
 ||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
-||LLVM 9.0 (claix)|omp tuple warning| x86|args tuple not/wrongly mapped|
+||LLVM 9.0 (claix)|omp tuple warning| x86|ok|
+||LLVM 9.0 (claix)|ptx linker error (2)| nvptx|--|
 
 #### errors:
 1. error: Linking globals named 'gpuHeap': symbol multiply defined!
@@ -59,3 +60,7 @@ incorrect!` at the end.
     invocation)
     clang-9: error: linker command failed with exit code 1 (use -v to see 
     invocation)
+2. ptxas /tmp/yn622878/login-g_6260/main-d4ddfc.s, line 6798; warning : Instruction 'vote' without '.sync' is deprecated since PTX ISA version 6.0 and will be discontinued in a future PTX ISA version
+    [100%] Linking CXX executable vectorAdd
+    nvlink error   : Undefined reference to '__assert_fail' in '/tmp/yn622878/login-g_6260/main-83ce50.cubin'
+    clang-9: error: nvlink command failed with exit code 255 (use -v to see invocation)
