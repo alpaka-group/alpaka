@@ -45,9 +45,11 @@ incorrect!` at the end.
 |---|---|---|---|---|
 |vectorAdd|
 ||GGC 9.1 | ok|nvptx| GPUptr, but not on GPU: segfault |
+||GGC 9.2 (claix)| ok|nvptx| GPUptr, but not on GPU: segfault (GPU context created, nvprof shows no kernels)|
 ||AOMP 0.7-4|ok|x86|omp_target_alloc() returns 0|
 ||AOMP 0.7-4|linker: multiple def. of gpuHeap (1)|amdhsa|--|
 ||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
+||LLVM 9.0 (claix)|omp tuple warning| x86|args tuple not/wrongly mapped|
 
 #### errors:
 1. error: Linking globals named 'gpuHeap': symbol multiply defined!
