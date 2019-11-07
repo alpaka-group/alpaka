@@ -7,10 +7,24 @@ version supported by the compiler. CMake does not determine it automatically.
 cmake -DOpenMP_CXX_VERSION=5 -DALPAKA_ACC_CPU_BT_OMP4_ENABLE=on \
 ```
 Add flags to set the required compiler and linker flags, e.g:
-```
-  -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu"
-  -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
-```
+- clang/AOMP, target x86:
+  ```
+    -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu"
+    -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
+  ```
+- AOMP, target amdhsa:
+  ```
+    -DCMAKE_CXX_FLAGS="-fopenmp=libomp -fopenmp-targets=amdgcn-amd-amdhsa -Xopenmp-target=amdgcn-amd-amdhsa -march=gfx900 --save-temps"
+    -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
+  ```
+- GCC, target nvptx:
+  ```
+    -DCMAKE_CXX_FLAGS="-foffload=nvptx-none -foffload=-lm -fno-lto"
+  ```
+
+With clang 9, AOMP 0.7-4, use libc++ instead of libstdc++, the latter will make
+the compiler crash: https://bugs.llvm.org/show_bug.cgi?id=43771 .
+
 
 ## Test target
 
