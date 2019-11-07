@@ -146,7 +146,7 @@ namespace alpaka
 
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 auto argsD = m_args;
-                #pragma omp target map(from:argsD)
+                #pragma omp target map(to:argsD)
                 {
                     #pragma omp teams num_teams(teamCount) thread_limit(blockThreadCount)
                     {
