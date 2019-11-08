@@ -33,10 +33,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The CUDA rand implementation.
-        class RandCuRand
+        class RandCuRand : public concepts::Implements<ConceptRand, RandCuRand>
         {
-        public:
-            using RandBase = RandCuRand;
         };
 
         namespace generator

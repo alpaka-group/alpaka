@@ -54,6 +54,11 @@ namespace alpaka
                 atomicHierarchy::Empty2,
                 TThreadAtomic
             >::type
+            , public concepts::Implements<ConceptAtomic, AtomicHierarchy<
+                TGridAtomic,
+                TBlockAtomic,
+                TThreadAtomic
+            >>
         {
             public:
             using UsedAtomicHierarchies = AtomicHierarchy<

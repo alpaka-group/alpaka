@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP floor.
-        class FloorHipBuiltIn
+        class FloorHipBuiltIn : public concepts::Implements<ConceptMathFloor, FloorHipBuiltIn>
         {
-        public:
-            using FloorBase = FloorHipBuiltIn;
         };
 
         namespace traits

@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP cos.
-        class CosHipBuiltIn
+        class CosHipBuiltIn : public concepts::Implements<ConceptMathCos, CosHipBuiltIn>
         {
-        public:
-            using CosBase = CosHipBuiltIn;
         };
 
         namespace traits

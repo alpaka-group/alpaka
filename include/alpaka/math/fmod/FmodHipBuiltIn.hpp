@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP fmod.
-        class FmodHipBuiltIn
+        class FmodHipBuiltIn : public concepts::Implements<ConceptMathFmod, FmodHipBuiltIn>
         {
-        public:
-            using FmodBase = FmodHipBuiltIn;
         };
 
         namespace traits

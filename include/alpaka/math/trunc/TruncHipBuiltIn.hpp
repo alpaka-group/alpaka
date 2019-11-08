@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP trunc.
-        class TruncHipBuiltIn
+        class TruncHipBuiltIn : public concepts::Implements<ConceptMathTrunc, TruncHipBuiltIn>
         {
-        public:
-            using TruncBase = TruncHipBuiltIn;
         };
 
         namespace traits

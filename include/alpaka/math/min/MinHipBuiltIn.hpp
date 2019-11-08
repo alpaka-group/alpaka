@@ -41,10 +41,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP min.
-        class MinHipBuiltIn
+        class MinHipBuiltIn : public concepts::Implements<ConceptMathMin, MinHipBuiltIn>
         {
-        public:
-            using MinBase = MinHipBuiltIn;
         };
 
         namespace traits

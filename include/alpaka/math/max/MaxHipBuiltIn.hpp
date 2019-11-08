@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP max.
-        class MaxHipBuiltIn
+        class MaxHipBuiltIn : public concepts::Implements<ConceptMathMax, MaxHipBuiltIn>
         {
-        public:
-            using MaxBase = MaxHipBuiltIn;
         };
 
         namespace traits

@@ -27,11 +27,9 @@ namespace alpaka
         {
             //#############################################################################
             //! The GPU HIP block synchronization.
-            class BlockSyncHipBuiltIn
+            class BlockSyncHipBuiltIn : public concepts::Implements<ConceptBlockSync, BlockSyncHipBuiltIn>
             {
             public:
-                using BlockSyncBase = BlockSyncHipBuiltIn;
-
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 ALPAKA_FN_HOST_ACC BlockSyncHipBuiltIn() = default;

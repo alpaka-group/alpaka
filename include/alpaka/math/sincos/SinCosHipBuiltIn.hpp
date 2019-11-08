@@ -39,16 +39,13 @@ namespace alpaka
     {
         //#############################################################################
         //! sincos.
-        class SinCosHipBuiltIn
+        class SinCosHipBuiltIn : public concepts::Implements<ConceptMathSinCos, SinCosHipBuiltIn>
         {
-        public:
-            using SinCosBase = SinCosHipBuiltIn;
         };
 
         namespace traits
         {
             //#############################################################################
-
             //! sincos trait specialization.
             template<>
             struct SinCos<SinCosHipBuiltIn, double>

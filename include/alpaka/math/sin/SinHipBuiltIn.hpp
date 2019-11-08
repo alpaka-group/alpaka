@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP sin.
-        class SinHipBuiltIn
+        class SinHipBuiltIn : public concepts::Implements<ConceptMathSin, SinHipBuiltIn>
         {
-        public:
-            using SinBase = SinHipBuiltIn;
         };
 
         namespace traits

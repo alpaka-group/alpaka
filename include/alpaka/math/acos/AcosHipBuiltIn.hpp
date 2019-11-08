@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP acos.
-        class AcosHipBuiltIn
+        class AcosHipBuiltIn : public concepts::Implements<ConceptMathAcos, AcosHipBuiltIn>
         {
-        public:
-            using AcosBase = AcosHipBuiltIn;
         };
 
         namespace traits

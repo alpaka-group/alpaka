@@ -39,10 +39,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP remainder.
-        class RemainderHipBuiltIn
+        class RemainderHipBuiltIn : public concepts::Implements<ConceptMathRemainder, RemainderHipBuiltIn>
         {
-        public:
-            using RemainderBase = RemainderHipBuiltIn;
         };
 
         namespace traits
