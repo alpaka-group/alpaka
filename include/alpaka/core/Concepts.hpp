@@ -27,24 +27,61 @@ namespace alpaka
 
         namespace detail
         {
-            //#############################################################################
-            //! Given a derived class (TDerived) it finds the base class (TBase) which implements the given concept (TConcept).
             template<
                 typename TConcept,
                 typename TDerived>
-            struct ImplementationBaseType
-            {
-                template <typename TBase>
-                static auto base(Implements<TConcept, TBase>*) -> TBase;
+            struct ImplementsConcept {
+                template<
+                    typename TBase>
+                static auto implements(Implements<TConcept, TBase>&) -> std::true_type;
+                static auto implements(...) -> std::false_type;
 
-                using type = decltype(base(std::declval<TDerived*>()));
+                static constexpr auto value = decltype(implements(std::declval<TDerived&>()))::value;
+            };
+
+            //#############################################################################
+            //! Returns the type that implements the given concept in the inheritance hierarchy.
+            template<
+                typename TConcept,
+                typename TDerived,
+                typename Sfinae = void>
+            struct ImplementationBaseType;
+
+            //#############################################################################
+            //! Base case for types that do not inherit from "Implements<TConcept, ...>" is the type itself.
+            template<
+                typename TConcept,
+                typename TDerived>
+            struct ImplementationBaseType<
+                TConcept,
+                TDerived,
+                typename std::enable_if<!ImplementsConcept<TConcept, TDerived>::value>::type>
+            {
+                using type = TDerived;
+            };
+
+            //#############################################################################
+            //! For types that inherit from "Implements<TConcept, ...>" it finds the base class (TBase) which implements the concept.
+            template<
+                typename TConcept,
+                typename TDerived>
+            struct ImplementationBaseType<
+                TConcept,
+                TDerived,
+                typename std::enable_if<ImplementsConcept<TConcept, TDerived>::value>::type>
+            {
+                template<
+                    typename TBase>
+                static auto implementer(Implements<TConcept, TBase>&) -> TBase;
+
+                using type = decltype(implementer(std::declval<TDerived&>()));
 
                 static_assert(std::is_base_of<type, TDerived>::value, "The type implementing the concept has to be a publicly accessible base class!");
             };
         }
 
         //#############################################################################
-        //! Given a derived class (TDerived) it finds the base class (TBase) which implements the given concept (TConcept).
+        //! Returns the type that implements the given concept in the inheritance hierarchy.
         template<
             typename TConcept,
             typename TDerived>

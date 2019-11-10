@@ -66,7 +66,7 @@ struct ImplementerNonMatchingTaggedTaggedToBase
 };
 
 //-----------------------------------------------------------------------------
-/*TEST_CASE("ImplementerNotTagged", "[meta]")
+TEST_CASE("ImplementerNotTagged", "[meta]")
 {
     using ImplementationBase = alpaka::concepts::ImplementationBase<ConceptExample, ImplementerNotTagged>;
 
@@ -89,7 +89,7 @@ TEST_CASE("ImplementerNotTaggedButNonMatchingTagged", "[meta]")
             ImplementationBase
         >::value,
         "alpaka::meta::ImplementationBase failed!");
-}*/
+}
 
 //-----------------------------------------------------------------------------
 TEST_CASE("ImplementerTagged", "[meta]")
