@@ -37,7 +37,7 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The CPU device event implementation.
-                class EventCpuImpl final
+                class EventCpuImpl final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventCpuImpl>
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ namespace alpaka
 
         //#############################################################################
         //! The CPU device event.
-        class EventCpu final
+        class EventCpu final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventCpu>
         {
         public:
             //-----------------------------------------------------------------------------
