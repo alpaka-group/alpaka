@@ -12,6 +12,11 @@ Add flags to set the required compiler and linker flags, e.g:
     -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu"
     -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
   ```
+- clang, target nvptx:
+  ```
+    -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp-targets=nvptx64-nvidia-cuda -O2"
+    -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
+  ```
 - AOMP, target amdhsa:
   ```
     -DCMAKE_CXX_FLAGS="-fopenmp=libomp -fopenmp-targets=amdgcn-amd-amdhsa -Xopenmp-target=amdgcn-amd-amdhsa -march=gfx900 --save-temps"
@@ -50,7 +55,7 @@ incorrect!` at the end.
 ||AOMP 0.7-4|linker: multiple def. of gpuHeap (1)|amdhsa|--|
 ||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
 ||LLVM 9.0 (claix)|omp tuple warning| x86|ok|
-||LLVM 9.0 (claix)|ptx linker error (2)| nvptx|--|
+||LLVM 9.0 (claix)|ok (with -O2, else 2)| nvptx|ok|
 
 #### errors:
 1. error: Linking globals named 'gpuHeap': symbol multiply defined!
