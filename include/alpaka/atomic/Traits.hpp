@@ -21,7 +21,43 @@ namespace alpaka
     //! The atomic operation traits specifics.
     namespace atomic
     {
-        struct ConceptAtomic;
+        struct ConceptAtomicGrids;
+        struct ConceptAtomicBlocks;
+        struct ConceptAtomicThreads;
+
+        namespace detail
+        {
+            template<
+                typename THierarchy
+            >
+            struct AtomicHierarchyConceptType;
+
+            template<>
+            struct AtomicHierarchyConceptType<
+                hierarchy::Threads>
+            {
+                using type = ConceptAtomicThreads;
+            };
+
+            template<>
+            struct AtomicHierarchyConceptType<
+                hierarchy::Blocks>
+            {
+                using type = ConceptAtomicBlocks;
+            };
+
+            template<>
+            struct AtomicHierarchyConceptType<
+                hierarchy::Grids>
+            {
+                using type = ConceptAtomicGrids;
+            };
+        }
+
+        template<
+            typename THierarchy
+        >
+        using AtomicHierarchyConcept = typename detail::AtomicHierarchyConceptType<THierarchy>::type;
 
         //-----------------------------------------------------------------------------
         //! The atomic operation traits.
@@ -36,14 +72,6 @@ namespace alpaka
                 typename THierarchy,
                 typename TSfinae = void>
             struct AtomicOp;
-
-            //#############################################################################
-            //! Get the atomic implementation for a hierarchy level
-            template<
-                typename TAtomic,
-                typename THierarchy
-            >
-            struct AtomicBase;
         }
 
         //-----------------------------------------------------------------------------
@@ -68,7 +96,7 @@ namespace alpaka
             THierarchy const & = THierarchy())
         -> T
         {
-            using ImplementationBase = typename traits::AtomicBase<concepts::ImplementationBase<ConceptAtomic, TAtomic>, THierarchy>::type;
+            using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
             return
                 traits::AtomicOp<
                     TOp,
@@ -105,7 +133,7 @@ namespace alpaka
             THierarchy const & = THierarchy())
         -> T
         {
-            using ImplementationBase = typename traits::AtomicBase<concepts::ImplementationBase<ConceptAtomic, TAtomic>, THierarchy>::type;
+            using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
             return
                 traits::AtomicOp<
                     TOp,
