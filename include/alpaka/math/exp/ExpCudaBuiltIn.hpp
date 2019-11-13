@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library exp.
+        //! The CUDA built in exp.
         class ExpCudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library exp trait specialization.
+            //! The CUDA exp trait specialization.
             template<
                 typename TArg>
             struct Exp<
@@ -56,6 +56,21 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(exp_ctx);
                     return ::exp(arg);
+                }
+            };
+            //! The CUDA exp float specialization.
+            template<>
+            struct Exp<
+                ExpCudaBuiltIn,
+                float>
+            {
+                __device__ static auto exp(
+                    ExpCudaBuiltIn const & exp_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(exp_ctx);
+                    return ::expf(arg);
                 }
             };
         }

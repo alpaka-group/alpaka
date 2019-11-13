@@ -38,7 +38,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library exp.
+        //! The HIP exp.
         class ExpHipBuiltIn
         {
         public:
@@ -48,7 +48,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library exp trait specialization.
+            //! The HIP exp trait specialization.
             template<
                 typename TArg>
             struct Exp<
@@ -64,6 +64,21 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(exp_ctx);
                     return ::exp(arg);
+                }
+            };
+            //! The HIP exp float specialization.
+            template<>
+            struct Exp<
+                ExpHipBuiltIn,
+                float>
+            {
+                __device__ static auto exp(
+                    ExpHipBuiltIn const & exp_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(exp_ctx);
+                    return ::expf(arg);
                 }
             };
         }

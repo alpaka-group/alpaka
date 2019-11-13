@@ -80,7 +80,9 @@ TEST_CASE( "stdBindKernelIsWorking", "[kernel]")
 }
 #endif
 
-#if BOOST_LANG_CUDA
+// This test is disabled due to #836 (cudaErrorIllegalInstruction crash)
+#if 0
+//#if BOOST_LANG_CUDA
 // clang as a native CUDA compiler does not seem to support nvstd::function when ALPAKA_ACC_GPU_CUDA_ONLY_MODE is used.
 // error: reference to __device__ function 'kernelFn<alpaka::acc::AccGpuCudaRt<std::__1::integral_constant<unsigned long, 1>, unsigned long> >' in __host__ function const auto kernel = nvstd::function<void(TAcc const &, bool *, std::int32_t)>( kernelFn<TAcc> );
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && BOOST_COMP_CLANG_CUDA)

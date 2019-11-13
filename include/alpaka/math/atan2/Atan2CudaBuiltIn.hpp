@@ -30,7 +30,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library atan2.
+        //! The CUDA built in atan2.
         class Atan2CudaBuiltIn
         {
         public:
@@ -40,7 +40,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library atan2 trait specialization.
+            //! The CUDA atan2 trait specialization.
             template<
                 typename Ty,
                 typename Tx>
@@ -60,6 +60,23 @@ namespace alpaka
                 {
                     alpaka::ignore_unused(atan2_ctx);
                     return ::atan2(y, x);
+                }
+            };
+
+            template<>
+            struct Atan2<
+                Atan2CudaBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto atan2(
+                    Atan2CudaBuiltIn const & atan2_ctx,
+                    float const & y,
+                    float const & x)
+                -> float
+                {
+                    alpaka::ignore_unused(atan2_ctx);
+                    return ::atan2f(y, x);
                 }
             };
         }
