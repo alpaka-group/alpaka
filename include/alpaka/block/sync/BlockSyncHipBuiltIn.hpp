@@ -82,7 +82,7 @@ namespace alpaka
                         int predicate)
                     -> int
                     {
-#if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && BOOST_COMP_HCC
+#if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && (BOOST_COMP_HCC || BOOST_COMP_HIP)
                         // workaround for unsupported syncthreads_* operation on HIP(HCC)
                         __shared__ int tmp;
                         __syncthreads();
@@ -114,7 +114,7 @@ namespace alpaka
                         int predicate)
                     -> int
                     {
-#if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && BOOST_COMP_HCC
+#if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && (BOOST_COMP_HCC || BOOST_COMP_HIP)
                         // workaround for unsupported syncthreads_* operation on HIP(HCC)
                         __shared__ int tmp;
                         __syncthreads();
@@ -146,7 +146,7 @@ namespace alpaka
                         int predicate)
                     -> int
                     {
-#if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && BOOST_COMP_HCC
+#if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && (BOOST_COMP_HCC || BOOST_COMP_HIP)
                         // workaround for unsupported syncthreads_* operation on HIP(HCC)
                         __shared__ int tmp;
                         __syncthreads();
