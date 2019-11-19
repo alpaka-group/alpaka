@@ -42,7 +42,7 @@ namespace alpaka
     {
         //#############################################################################
         //! The CUDA RT device handle.
-        class DevCudaRt
+        class DevCudaRt : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevCudaRt>
         {
             friend struct pltf::traits::GetDevByIdx<pltf::PltfCudaRt>;
 
