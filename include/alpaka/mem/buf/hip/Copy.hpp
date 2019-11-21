@@ -999,7 +999,7 @@ namespace alpaka
 
                     // Initiate the memory copy.
                     ALPAKA_HIP_RT_CHECK(
-                        hipMemcpy3D(
+                        hipMemcpy3DAsync(
                             &hipMemCpy3DParms,
                             queue.m_spQueueImpl->m_HipQueue));
 
