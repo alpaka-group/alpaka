@@ -53,12 +53,12 @@ namespace alpaka
                 public:
 
                     //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //
                     // After calling this constructor the instance is not valid initialized and
                     // need to be overwritten with a valid object
                     //-----------------------------------------------------------------------------
-                    Xor() = default;
+                    ALPAKA_FN_HOST_ACC Xor() : m_State(hiprandStateXORWOW_t{})
+                    {
+                    }
 
                     //-----------------------------------------------------------------------------
                     //! Constructor.
