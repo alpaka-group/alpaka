@@ -33,6 +33,8 @@ void operator()()
 }
 };
 
+#if !BOOST_COMP_HIP // HIP-clang is currently not supporting callbacks
+
 //-----------------------------------------------------------------------------
 struct TestTemplateCallback
 {
@@ -161,6 +163,8 @@ void operator()()
 }
 };
 
+#endif
+
 using TestQueues = alpaka::meta::Concatenate<
         alpaka::test::queue::TestQueues
  #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
@@ -173,6 +177,8 @@ TEST_CASE( "queueIsInitiallyEmpty", "[queue]")
 {
     alpaka::meta::forEachType< TestQueues >( TestTemplateEmpty() );
 }
+
+#if !BOOST_COMP_HIP // HIP-clang is currently not supporting callbacks
 
 TEST_CASE( "queueCallbackIsWorking", "[queue]")
 {
@@ -193,3 +199,5 @@ TEST_CASE( "queueShouldNotExecuteTasksInParallel", "[queue]")
 {
     alpaka::meta::forEachType< TestQueues >( TestQueueDoesNotExecuteTasksInParallel() );
 }
+
+#endif

@@ -82,7 +82,7 @@ void operator()()
 
     //-----------------------------------------------------------------------------
     // FIXME: constant memory in HIP(HCC) is still not working
-#if !defined(BOOST_COMP_HCC) || !BOOST_COMP_HCC
+#if !BOOST_COMP_HCC && !BOOST_COMP_HIP
     // initialized static constant device memory
     {
         auto const viewConstantMemInitialized(
@@ -158,7 +158,7 @@ void operator()()
 
     //-----------------------------------------------------------------------------
     // FIXME: static device memory in HIP(HCC) is still not working
-#if !defined(BOOST_COMP_HCC) || !BOOST_COMP_HCC
+#if !BOOST_COMP_HCC && !BOOST_COMP_HIP
     // initialized static global device memory
     {
         auto const viewGlobalMemInitialized(
