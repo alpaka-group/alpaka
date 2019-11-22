@@ -93,14 +93,14 @@ OPTION(ALPAKA_ACC_GPU_HIP_ONLY_MODE "Only back-ends using HIP can be enabled in 
 
 # Drop-down combo box in cmake-gui for HIP platforms.
 SET(ALPAKA_HIP_PLATFORM "nvcc" CACHE STRING "Specify HIP platform")
-SET_PROPERTY(CACHE ALPAKA_HIP_PLATFORM PROPERTY STRINGS "nvcc;hcc")
+SET_PROPERTY(CACHE ALPAKA_HIP_PLATFORM PROPERTY STRINGS "nvcc;hcc;clang")
 
 IF(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE)
     MESSAGE(WARNING "HIP back-end must be used together with ALPAKA_ACC_GPU_HIP_ONLY_MODE")
     SET(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "" FORCE)
 ENDIF()
 
-IF(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "hcc")
+IF(ALPAKA_ACC_GPU_HIP_ENABLE AND (ALPAKA_HIP_PLATFORM MATCHES "hcc" OR ALPAKA_HIP_PLATFORM MATCHES "clang"))
     MESSAGE(WARNING
         "The HIP back-end is currently experimental, especially for HCC. "
         "In alpaka HIP(HCC) has a few workarounds and does not support 3D memory and constant memory. "

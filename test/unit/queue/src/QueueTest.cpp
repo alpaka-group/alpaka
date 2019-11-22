@@ -38,6 +38,8 @@ TEMPLATE_LIST_TEST_CASE( "queueIsInitiallyEmpty", "[queue]", TestQueues)
     CHECK(alpaka::queue::empty(f.m_queue));
 }
 
+#if !BOOST_COMP_HIP // HIP-clang is currently not supporting callbacks
+
 //-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE( "queueCallbackIsWorking", "[queue]", TestQueues)
 {
@@ -153,3 +155,5 @@ TEMPLATE_LIST_TEST_CASE( "queueShouldNotExecuteTasksInParallel", "[queue]", Test
     firstTaskFinishedFuture.get();
     secondTaskFinishedFuture.get();
 }
+
+#endif

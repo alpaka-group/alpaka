@@ -80,7 +80,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestA
 
     //-----------------------------------------------------------------------------
     // FIXME: constant memory in HIP(HCC) is still not working
-#if !defined(BOOST_COMP_HCC) || !BOOST_COMP_HCC
+#if !BOOST_COMP_HCC && !BOOST_COMP_HIP
     // initialized static constant device memory
     {
         auto const viewConstantMemInitialized(
@@ -153,7 +153,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
 
     //-----------------------------------------------------------------------------
     // FIXME: static device memory in HIP(HCC) is still not working
-#if !defined(BOOST_COMP_HCC) || !BOOST_COMP_HCC
+#if !BOOST_COMP_HCC && !BOOST_COMP_HIP
     // initialized static global device memory
     {
         auto const viewGlobalMemInitialized(

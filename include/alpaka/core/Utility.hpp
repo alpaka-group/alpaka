@@ -27,7 +27,7 @@ namespace alpaka
         // within an alpaka accelerator kernel too.
         // This function can be used only within std::decltype().
         //-----------------------------------------------------------------------------
-#if BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA
+#if BOOST_LANG_CUDA && BOOST_COMP_CLANG_CUDA || BOOST_COMP_HIP
         template< class T >
         ALPAKA_FN_HOST_ACC
         typename std::add_rvalue_reference<T>::type
