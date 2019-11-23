@@ -25,12 +25,12 @@ public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
         template<
-        typename TAcc,
+        typename Acc,
         typename TByValue,
         typename TByConstValue,
         typename TByConstReference>
         ALPAKA_FN_ACC auto operator()(
-            TAcc const & acc,
+            Acc const & acc,
             bool * success,
             TByValue,
             TByConstValue const,
@@ -39,7 +39,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByValue, TExpected>::value,
@@ -55,63 +55,54 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-struct TestTemplateDeductionFromValue
+TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromValue", "[kernel]", alpaka::test::acc::TestAccs)
 {
-    template< typename TAcc >
-    void operator()()
-    {
-        using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+    using Acc = TestType;
+    using Dim = alpaka::dim::Dim<Acc>;
+    using Idx = alpaka::idx::Idx<Acc>;
 
-        alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
-        using Value = std::int32_t;
-        KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
+    using Value = std::int32_t;
+    KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
 
-        Value value{ };
-        REQUIRE(fixture(kernel, value, value, value));
-    }
-};
+    Value value{ };
+    REQUIRE(fixture(kernel, value, value, value));
+}
 
-struct TestTemplateDeductionFromConstValue
+TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstValue", "[kernel]", alpaka::test::acc::TestAccs)
 {
-    template< typename TAcc >
-    void operator()()
-    {
-        using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+    using Acc = TestType;
+    using Dim = alpaka::dim::Dim<Acc>;
+    using Idx = alpaka::idx::Idx<Acc>;
 
-        alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
-        using Value = std::int32_t;
-        KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
+    using Value = std::int32_t;
+    KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
 
-        Value const constValue{ };
-        REQUIRE(fixture(kernel, constValue, constValue, constValue));
-    }
-};
+    Value const constValue{ };
+    REQUIRE(fixture(kernel, constValue, constValue, constValue));
+}
 
-struct TestTemplateDeductionFromConstReference
+TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstReference", "[kernel]", alpaka::test::acc::TestAccs)
 {
-    template< typename TAcc >
-    void operator()()
-    {
-        using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+    using Acc = TestType;
+    using Dim = alpaka::dim::Dim<Acc>;
+    using Idx = alpaka::idx::Idx<Acc>;
 
-        alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
-        using Value = std::int32_t;
-        KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
+    using Value = std::int32_t;
+    KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
 
-        Value value{ };
-        Value const & constReference = value;
-        REQUIRE(fixture(kernel, constReference, constReference, constReference));
-    }
-};
+    Value value{ };
+    Value const & constReference = value;
+    REQUIRE(fixture(kernel, constReference, constReference, constReference));
+}
 
 //#############################################################################
 template<
@@ -124,11 +115,11 @@ public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
         template<
-        typename TAcc,
+        typename Acc,
         typename TByPointer,
         typename TByPointerToConst>
         ALPAKA_FN_ACC auto operator()(
-            TAcc const & acc,
+            Acc const & acc,
             bool * success,
             TByPointer *,
             TByPointerToConst const *) const
@@ -136,7 +127,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByPointer, TExpectedFirst>::value,
@@ -149,115 +140,68 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-struct TestTemplateDeductionFromPointer
+TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointer", "[kernel]", alpaka::test::acc::TestAccs)
 {
-    template< typename TAcc >
-    void operator()()
-    {
-        using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+    using Acc = TestType;
+    using Dim = alpaka::dim::Dim<Acc>;
+    using Idx = alpaka::idx::Idx<Acc>;
 
-        alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
-        using Value = std::int32_t;
-        KernelInvocationTemplateDeductionPointerSemantics< Value > kernel;
+    using Value = std::int32_t;
+    KernelInvocationTemplateDeductionPointerSemantics< Value > kernel;
 
-        Value value{ };
-        Value * pointer = &value;
-        REQUIRE(fixture(kernel, pointer, pointer));
-    }
-};
-
-struct TestTemplateDeductionFromPointerToConst
-{
-    template< typename TAcc >
-    void operator()()
-    {
-        using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
-
-        alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
-
-        using Value = std::int32_t;
-        KernelInvocationTemplateDeductionPointerSemantics< Value const, Value > kernel;
-
-        Value const constValue{ };
-        Value const * pointerToConst = &constValue;
-        REQUIRE(fixture(kernel, pointerToConst, pointerToConst));
-    }
-};
-
-struct TestTemplateDeductionFromStaticArray
-{
-    template< typename TAcc >
-    void operator()()
-    {
-        using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
-
-        alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
-
-        using Value = std::int32_t;
-        KernelInvocationTemplateDeductionPointerSemantics< Value > kernel;
-
-        Value staticArray[4] = { };
-        REQUIRE(fixture(kernel, staticArray, staticArray));
-    }
-};
-
-struct TestTemplateDeductionFromConstStaticArray
-{
-    template< typename TAcc >
-    void operator()()
-    {
-        using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
-
-        alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
-
-        using Value = std::int32_t;
-        KernelInvocationTemplateDeductionPointerSemantics< Value const, Value > kernel;
-
-        Value const constStaticArray[4] = { };
-        REQUIRE(fixture(kernel, constStaticArray, constStaticArray));
-    }
-};
-
-TEST_CASE( "kernelFuntionObjectTemplateDeductionFromValue", "[kernel]")
-{
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateDeductionFromValue() );
+    Value value{ };
+    Value * pointer = &value;
+    REQUIRE(fixture(kernel, pointer, pointer));
 }
 
-TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstValue", "[kernel]")
+TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointerToConst", "[kernel]", alpaka::test::acc::TestAccs)
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateDeductionFromConstValue() );
+    using Acc = TestType;
+    using Dim = alpaka::dim::Dim<Acc>;
+    using Idx = alpaka::idx::Idx<Acc>;
+
+    alpaka::test::KernelExecutionFixture<Acc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
+
+    using Value = std::int32_t;
+    KernelInvocationTemplateDeductionPointerSemantics< Value const, Value > kernel;
+
+    Value const constValue{ };
+    Value const * pointerToConst = &constValue;
+    REQUIRE(fixture(kernel, pointerToConst, pointerToConst));
 }
 
-TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstReference", "[kernel]")
+TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromStaticArray", "[kernel]", alpaka::test::acc::TestAccs)
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateDeductionFromConstReference() );
+    using Acc = TestType;
+    using Dim = alpaka::dim::Dim<Acc>;
+    using Idx = alpaka::idx::Idx<Acc>;
+
+    alpaka::test::KernelExecutionFixture<Acc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
+
+    using Value = std::int32_t;
+    KernelInvocationTemplateDeductionPointerSemantics< Value > kernel;
+
+    Value staticArray[4] = { };
+    REQUIRE(fixture(kernel, staticArray, staticArray));
 }
 
-TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointer", "[kernel]")
+TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstStaticArray", "[kernel]", alpaka::test::acc::TestAccs)
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateDeductionFromPointer() );
-}
+    using Acc = TestType;
+    using Dim = alpaka::dim::Dim<Acc>;
+    using Idx = alpaka::idx::Idx<Acc>;
 
-TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointerToConst", "[kernel]")
-{
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateDeductionFromPointerToConst() );
-}
+    alpaka::test::KernelExecutionFixture<Acc> fixture(
+        alpaka::vec::Vec<Dim, Idx>::ones());
 
-TEST_CASE( "kernelFuntionObjectTemplateDeductionFromStaticArray", "[kernel]")
-{
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateDeductionFromStaticArray() );
-}
+    using Value = std::int32_t;
+    KernelInvocationTemplateDeductionPointerSemantics< Value const, Value > kernel;
 
-TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstStaticArray", "[kernel]")
-{
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateDeductionFromConstStaticArray() );
+    Value const constStaticArray[4] = { };
+    REQUIRE(fixture(kernel, constStaticArray, constStaticArray));
 }
