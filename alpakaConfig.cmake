@@ -675,6 +675,21 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=esa_on_defaulted_function_ignored)
                 ENDIF()
 
+                # avoids warnings on host-device signature of 'std::__shared_count<>'
+                IF(CUDA_VERSION EQUAL 10.0)
+                    LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=2905)
+                ENDIF()
+
+                # avoids warnings on host-device signature of 'std::__shared_count<>'
+                IF(CUDA_VERSION EQUAL 10.1)
+                    LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=2912)
+                ENDIF()
+
+                # avoids warnings on host-device signature of 'std::__shared_count<>'
+                IF(CUDA_VERSION EQUAL 10.2)
+                    LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=2976)
+                ENDIF()
+
                 IF(ALPAKA_CUDA_KEEP_FILES)
                     MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
                     LIST(APPEND CUDA_NVCC_FLAGS "--keep" "--keep-dir" "${PROJECT_BINARY_DIR}/nvcc_tmp")
