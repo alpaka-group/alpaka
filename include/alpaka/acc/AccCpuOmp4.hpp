@@ -98,13 +98,14 @@ namespace alpaka
 
         private:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AccCpuOmp4(
-                TIdx const & threadElemExtent,
-                TIdx const & gridBlockExtent,
-                TIdx const & gridBlockOffset,
+            AccCpuOmp4(
+                vec::Vec<TDim, TIdx> const & gridBlockExtent,
+                vec::Vec<TDim, TIdx> const & blockThreadExtent,
+                vec::Vec<TDim, TIdx> const & threadElemExtent,
+                TIdx const & teamOffset,
                 TIdx const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>(threadElemExtent, gridBlockExtent),
-                    idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(gridBlockOffset),
+                    workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>(threadElemExtent, blockThreadExtent, gridBlockExtent),
+                    idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(teamOffset),
                     idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicStdLibLock<16>,// atomics between grids
@@ -123,13 +124,13 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AccCpuOmp4(AccCpuOmp4 const &) = delete;
+            AccCpuOmp4(AccCpuOmp4 const &) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AccCpuOmp4(AccCpuOmp4 &&) = delete;
+            AccCpuOmp4(AccCpuOmp4 &&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
+            auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
+            auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AccCpuOmp4() = default;
 
@@ -168,12 +169,14 @@ namespace alpaka
                 {
 #ifdef ALPAKA_CI
                     auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(std::min(4, ::omp_get_max_threads())));
+                    auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(std::min(4, ::omp_get_max_threads())));
 #else
                     auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(::omp_get_max_threads()));
+                    auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(::omp_get_max_threads())); //! \todo fix max block size for target
 #endif
                     return {
                         // m_multiProcessorCount
-                        static_cast<TIdx>(1),
+                        static_cast<TIdx>(gridBlockCountMax),
                         // m_gridBlockExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax

@@ -129,10 +129,7 @@ namespace alpaka
                 auto const maxOmpThreadCount(::omp_get_max_threads());
                 assert(blockThreadCount <= static_cast<TIdx>(maxOmpThreadCount));
                 TIdx const teamCount(std::min(static_cast<TIdx>(maxOmpThreadCount)/blockThreadCount, gridBlockCount));
-                // The number of elements in a thread. (to avoid mapping vec to
-                // target, also fix range if maxTeamCount is limting)
-                TIdx const threadElemCount(threadElemExtent[0u]);
-                std::cout << "threadElemCount=" << threadElemCount << std::endl;
+                std::cout << "threadElemCount=" << threadElemExtent[0u] << std::endl;
                 std::cout << "teamCount=" << teamCount << "\tgridBlockCount=" << gridBlockCount << std::endl;
 
                 if(::omp_in_parallel() != 0)
@@ -158,13 +155,14 @@ namespace alpaka
                             printf("%s omp_get_num_teams: %d\n", __func__, iNumTeams);
                         }
 #endif
-                        printf("threadElemCount_dev %d\n", int(threadElemCount));
+                        printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
                         // iterate over groups of teams to stay withing thread limit
                         for(TIdx t = 0u; t < gridBlockCount; t+=teamCount)
                         {
                             acc::AccCpuOmp4<TDim, TIdx> acc(
-                                threadElemCount,
-                                gridBlockCount,
+                                threadElemExtent,
+                                blockThreadExtent,
+                                gridBlockExtent,
                                 t,
                                 blockSharedMemDynSizeBytes);
 
