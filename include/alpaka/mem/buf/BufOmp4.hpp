@@ -17,6 +17,7 @@
 
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/queue/QueueOmp4Blocking.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 #include <alpaka/dev/Traits.hpp>
@@ -378,7 +379,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         auto size = extent[0]*static_cast<TIdx>(sizeof(TElem));
-                        for (int a = 1; a < TDim::value; ++a)
+                        for (TIdx a = 1u; a < TDim::value; ++a)
                             size *= extent[a];
 
                         void * memPtr = omp_target_alloc(size, dev.m_iDevice);
