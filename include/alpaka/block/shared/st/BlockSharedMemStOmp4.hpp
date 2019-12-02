@@ -19,6 +19,8 @@
 
 #include <type_traits>
 #include <cstdint>
+#include <omp.h>
+#include <array>
 
 namespace alpaka
 {

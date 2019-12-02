@@ -39,8 +39,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             WorkDivOmp4BuiltIn(
                 vec::Vec<TDim, TIdx> const & threadElemExtent,
+                vec::Vec<TDim, TIdx> const & blockThreadExtent,
                 vec::Vec<TDim, TIdx> const & gridBlockExtent) :
                     m_threadElemExtent(threadElemExtent),
+                    m_blockThreadExtent(blockThreadExtent),
                     m_gridBlockExtent(gridBlockExtent)
             {
                 // printf("WorkDivOmp4BuiltIn ctor threadElemExtent %d\n", int(threadElemExtent[0]));
@@ -59,7 +61,7 @@ namespace alpaka
         public:
             // \TODO: Optimize! Add WorkDivCudaBuiltInNoElems that has no member m_threadElemExtent as well as AccGpuCudaRtNoElems.
             // Use it instead of AccGpuCudaRt if the thread element extent is one to reduce the register usage.
-            vec::Vec<TDim, TIdx> const m_threadElemExtent, m_gridBlockExtent;
+            vec::Vec<TDim, TIdx> const m_threadElemExtent, m_blockThreadExtent, m_gridBlockExtent;
         };
     }
 
@@ -135,8 +137,8 @@ namespace alpaka
                     WorkDivOmp4BuiltIn<TDim, TIdx> const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    alpaka::ignore_unused(workDiv);
-                    return vec::Vec<TDim, TIdx>(static_cast<TIdx>(omp_get_num_threads()));
+                    return workDiv.m_blockThreadExtent;
+                    // return vec::Vec<TDim, TIdx>(static_cast<TIdx>(omp_get_num_threads()));
                 }
             };
 

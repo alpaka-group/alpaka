@@ -113,6 +113,22 @@ namespace alpaka
                 };
 #endif
 
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+
+                //#############################################################################
+                //! The default queue type trait specialization for the OMP4 device.
+                template<>
+                struct DefaultQueueType<
+                    alpaka::dev::DevOmp4>
+                {
+#if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+                    using type = alpaka::queue::QueueOmp4Blocking;
+#else
+                    using type = alpaka::queue::QueueOmp4Blocking;
+#endif
+                };
+#endif
+
             }
             //#############################################################################
             //! The queue type that should be used for the given accelerator.

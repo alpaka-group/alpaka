@@ -19,8 +19,10 @@
 
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Omp4.hpp>
+#include <alpaka/workdiv/WorkDivOmp4BuiltIn.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/idx/MapIdx.hpp>
 
 namespace alpaka
 {
@@ -37,8 +39,6 @@ namespace alpaka
             {
             public:
                 using IdxBtBase = IdxBtOmp4BuiltIn;
-
-                static_assert(TDim::value == 1, "Omp4 only supports 1D blocks.");
 
                 //-----------------------------------------------------------------------------
                 IdxBtOmp4BuiltIn() = default;
@@ -91,12 +91,37 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 static auto getIdx(
-                    idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx> const & idx,
-                    TWorkDiv const &)
+                    idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx> const &,
+                    TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
+                    // We assume that the thread id is positive.
+                    ALPAKA_ASSERT(::omp_get_thread_num()>=0);
+                    // \TODO: Would it be faster to precompute the index and cache it inside an array?
+                    return idx::mapIdx<TDim::value>(
+                        vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
+                        workdiv::getWorkDiv<Block, Threads>(workDiv));
+                }
+            };
+
+            template<
+                typename TIdx>
+            struct GetIdx<
+                idx::bt::IdxBtOmp4BuiltIn<dim::DimInt<1u>, TIdx>,
+                origin::Block,
+                unit::Threads>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The index of the current thread in the block.
+                template<
+                    typename TWorkDiv>
+                static auto getIdx(
+                    idx::bt::IdxBtOmp4BuiltIn<dim::DimInt<1u>, TIdx> const & idx,
+                    TWorkDiv const &)
+                -> vec::Vec<dim::DimInt<1u>, TIdx>
+                {
                     alpaka::ignore_unused(idx);
-                    return vec::Vec<TDim, TIdx>(static_cast<TIdx>(omp_get_thread_num()));
+                    return vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(omp_get_thread_num()));
                 }
             };
         }

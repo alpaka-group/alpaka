@@ -135,6 +135,8 @@ namespace alpaka
                 omp4::detail::BufOmp4Impl<TElem, TDim, TIdx>& operator*() {return *m_spBufImpl;}
                 const omp4::detail::BufOmp4Impl<TElem, TDim, TIdx>& operator*() const {return *m_spBufImpl;}
 
+                inline const vec::Vec<TDim, TIdx>& extentElements() const {return m_spBufImpl->m_extentElements;}
+
             private:
                 std::shared_ptr<omp4::detail::BufOmp4Impl<TElem, TDim, TIdx>> m_spBufImpl;
             };
@@ -229,7 +231,7 @@ namespace alpaka
                     mem::buf::BufOmp4<TElem, TDim, TIdx> const & extent)
                 -> TIdx
                 {
-                    return extent.m_extentElements[TIdxIntegralConst::value];
+                    return extent.extentElements()[TIdxIntegralConst::value];
                 }
             };
         }
@@ -312,7 +314,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The CUDA 1D memory allocation trait specialization.
+                //! The BufOmp4 1D memory allocation trait specialization.
                 template<
                     typename TElem,
                     typename TIdx>
@@ -352,8 +354,53 @@ namespace alpaka
                                 extent);
                     }
                 };
+
                 //#############################################################################
-                //! The BufOmp4 CUDA device memory mapping trait specialization.
+                //! The BufOmp4 nD memory allocation trait specialization. \todo Add pitch
+                template<
+                    typename TElem,
+                    typename TDim,
+                    typename TIdx>
+                struct Alloc<
+                    TElem,
+                    TDim,
+                    TIdx,
+                    dev::DevOmp4>
+                {
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TExtent>
+                    ALPAKA_FN_HOST static auto alloc(
+                        dev::DevOmp4 const & dev,
+                        TExtent const & extent)
+                    -> mem::buf::BufOmp4<TElem, TDim, TIdx>
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        auto size = extent[0]*static_cast<TIdx>(sizeof(TElem));
+                        for (int a = 1; a < TDim::value; ++a)
+                            size *= extent[a];
+
+                        void * memPtr = omp_target_alloc(size, dev.m_iDevice);
+                        std::cerr << "alloc'd " << TDim::value << "D device ptr: " << memPtr << '\n';
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                        std::cout << __func__
+                            << " ew: " << volume/sizeof(TElem)
+                            << " ewb: " << volume
+                            << " ptr: " << memPtr
+                            << std::endl;
+#endif
+                        return
+                            mem::buf::BufOmp4<TElem, TDim, TIdx>(
+                                dev,
+                                reinterpret_cast<TElem *>(memPtr),
+                                extent);
+                    }
+                };
+
+                //#############################################################################
+                //! The BufOmp4 device memory mapping trait specialization.
                 template<
                     typename TElem,
                     typename TDim,
@@ -378,7 +425,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The BufOmp4 CUDA device memory unmapping trait specialization.
+                //! The BufOmp4 device memory unmapping trait specialization.
                 template<
                     typename TElem,
                     typename TDim,
