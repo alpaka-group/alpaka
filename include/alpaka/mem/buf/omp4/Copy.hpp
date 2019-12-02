@@ -23,11 +23,13 @@
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 
+#include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Omp4.hpp>
 
 #include <set>
 #include <tuple>
+#include <utility>
 
 namespace alpaka
 {
@@ -39,9 +41,63 @@ namespace alpaka
             {
                 namespace detail
                 {
+                    template<
+                        typename TDim,
+                        typename TVal,
+                        typename TView,
+                        template<std::size_t> class Fn,
+                        std::size_t DIM = TDim::value
+                        >
+                    struct VecFromDimTrait
+                    {
+                        static_assert(DIM > 0, "DIM !> 0");
+                        template<typename... TArgs>
+                        static auto vecFromDimTrait(TView const &view, TArgs... args)
+                            -> vec::Vec<TDim, TVal>
+                        {
+                            return VecFromDimTrait<TDim, TVal, TView, Fn, DIM-1>
+                                ::vecFromDimTrait(view,
+                                        std::forward<TArgs>(args)...,
+                                        static_cast<TVal>(Fn<DIM>::getExtent(view)));
+                        }
+                    };
+
+                    template<
+                        typename TDim,
+                        typename TVal,
+                        typename TView,
+                        template<std::size_t> class Fn
+                        >
+                    struct VecFromDimTrait<
+                        TDim,
+                        TVal,
+                        TView,
+                        Fn,
+                        0u
+                        >
+                    {
+                        template<typename... TArgs>
+                        static auto vecFromDimTrait(TView const &, TArgs... args)
+                            -> vec::Vec<TDim, TVal>
+                        {
+                            return vec::Vec<TDim, TVal>(std::forward<TArgs>(args)...);
+                        }
+                    };
+
+                    template<std::size_t TIdx>
+                    struct MyGetExtent
+                    {
+                        template<typename TExtent>
+                        static inline size_t getExtent (TExtent const & extent)
+                        {
+                            return static_cast<size_t>(extent::getExtent<TIdx>(extent));
+                        }
+                    };
+
                     //#############################################################################
                     //! The Omp4 memory copy trait.
                     template<
+                        typename TDim,
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
@@ -52,11 +108,98 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
+                            dim::Dim<TViewSrc>::value == TDim::value,
+                            "The source view is required to have dimensionality TDim!");
+                        static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
                             dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
+                        // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
+                        static_assert(
+                            std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                            "The source and the destination view are required to have the same element type!");
+
+                        using Idx = idx::Idx<TExtent>;
+
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FN_HOST TaskCopyOmp4(
+                            TViewDst & viewDst,
+                            TViewSrc const & viewSrc,
+                            TExtent const & extent,
+                            int const & iDstDevice,
+                            int const & iSrcDevice) :
+                                m_iDstDevice(iDstDevice),
+                                m_iSrcDevice(iSrcDevice),
+                                m_extent(VecFromDimTrait<
+                                        TDim, size_t, TExtent,
+                                        MyGetExtent>::vecFromDimTrait(extent)),
+                                m_dstExtent(VecFromDimTrait<
+                                        TDim, size_t, TViewDst,
+                                        MyGetExtent>::vecFromDimTrait(viewDst)),
+                                m_srcExtent(VecFromDimTrait<
+                                        TDim, size_t, TViewSrc,
+                                        MyGetExtent>::vecFromDimTrait(viewSrc)),
+                                m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
+                                m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
+                        {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                            ALPAKA_ASSERT(m_extent[0] <= m_dstExtent[0]);
+                            ALPAKA_ASSERT(m_extent[0] <= m_srcExtent[0]);
+#endif
+                        }
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FN_HOST auto printDebug() const
+                        -> void
+                        {
+                            std::cout << __func__
+                                << " ddev: " << m_iDstDevice
+                                << " ew: " << m_extent
+                                << " dw: " << m_dstExtent
+                                << " dptr: " << m_dstMemNative
+                                << " sdev: " << m_iSrcDevice
+                                << " sw: " << m_srcExtent
+                                << " sptr: " << m_srcMemNative
+                                << std::endl;
+                        }
+#endif
+                        int m_iDstDevice;
+                        int m_iSrcDevice;
+                        vec::Vec<TDim, size_t> m_extent;
+                        vec::Vec<TDim, size_t> m_dstExtent;
+                        vec::Vec<TDim, size_t> m_srcExtent;
+                        void * m_dstMemNative;
+                        void const * m_srcMemNative;
+                    };
+
+                    //#############################################################################
+                    //! The Omp4 memory copy trait.
+                    template<
+                        typename TViewDst,
+                        typename TViewSrc,
+                        typename TExtent>
+                    struct TaskCopyOmp4<
+                        dim::DimInt<1>,
+                        TViewDst,
+                        TViewSrc,
+                        TExtent>
+                    {
+                        static_assert(
+                            !std::is_const<TViewDst>::value,
+                            "The destination view can not be const!");
+
+                        static_assert(
+                            dim::Dim<TViewSrc>::value == 1,
+                            "The source view is required to have dimensionality 1!");
+                        static_assert(
+                            dim::Dim<TViewDst>::value == 1,
+                            "The source view is required to have dimensionality 1!");
+                        static_assert(
+                            dim::Dim<TExtent>::value == 1,
+                            "The extent is required to have dimensionality 1!");
                         // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
@@ -148,6 +291,7 @@ namespace alpaka
                                 int iDeviceSrc = 0
                                 )
                             -> mem::view::omp4::detail::TaskCopyOmp4<
+                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>
@@ -156,6 +300,7 @@ namespace alpaka
 
                                 return
                                     mem::view::omp4::detail::TaskCopyOmp4<
+                                        TDim,
                                         TViewDst,
                                         TViewSrc,
                                         TExtent>(
@@ -188,6 +333,7 @@ namespace alpaka
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::omp4::detail::TaskCopyOmp4<
+                        TDim,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -196,6 +342,7 @@ namespace alpaka
 
                         return
                             mem::view::omp4::detail::TaskCopyOmp4<
+                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>(
@@ -227,6 +374,7 @@ namespace alpaka
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::omp4::detail::TaskCopyOmp4<
+                        TDim,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -235,6 +383,7 @@ namespace alpaka
 
                         return
                             mem::view::omp4::detail::TaskCopyOmp4<
+                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>(
@@ -266,6 +415,7 @@ namespace alpaka
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
                     -> mem::view::omp4::detail::TaskCopyOmp4<
+                        TDim,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -274,6 +424,7 @@ namespace alpaka
 
                         return
                             mem::view::omp4::detail::TaskCopyOmp4<
+                                TDim,
                                 TViewDst,
                                 TViewSrc,
                                 TExtent>(
@@ -293,6 +444,56 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
+            //! The Omp4 blocking device queue ND copy enqueue trait specialization.
+            template<
+                typename TDim,
+                typename TExtent,
+                typename TViewSrc,
+                typename TViewDst>
+            struct Enqueue<
+                queue::QueueOmp4Blocking,
+                mem::view::omp4::detail::TaskCopyOmp4<TDim, TViewDst, TViewSrc, TExtent>>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto enqueue(
+                    queue::QueueOmp4Blocking & queue,
+                    mem::view::omp4::detail::TaskCopyOmp4<TDim, TViewDst, TViewSrc, TExtent> const & task)
+                -> void
+                {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    task.printDebug();
+#endif
+                    auto const & iDstDev(task.m_iDstDevice);
+                    auto const & iSrcDev(task.m_iSrcDevice);
+
+                    auto const & extent(task.m_extent);
+                    auto const & dstExtent(task.m_dstExtent);
+                    auto const & srcExtent(task.m_srcExtent);
+
+                    auto const & dstNativePtr(task.m_dstMemNative);
+                    auto const & srcNativePtr(task.m_srcMemNative);
+                    const auto zero = vec::Vec<TDim, size_t>::all(0u);
+
+                    alpaka::ignore_unused(queue); //! \todo
+
+                    ALPAKA_OMP4_CHECK(
+                        omp_target_memcpy_rect(
+                            dstNativePtr, const_cast<void*>(srcNativePtr),
+                            sizeof(elem::Elem<TViewDst>),
+                            TDim::value,
+                            reinterpret_cast<size_t const *>(&extent),
+                            reinterpret_cast<size_t const *>(&zero),
+                            reinterpret_cast<size_t const *>(&zero), // no support for offsets in alpaka
+                            //! \todo Add pitch
+                            reinterpret_cast<size_t const *>(&dstExtent),
+                            reinterpret_cast<size_t const *>(&srcExtent),
+                            iDstDev, iSrcDev));
+                }
+            };
+
+            //#############################################################################
             //! The Omp4 blocking device queue 1D copy enqueue trait specialization.
             template<
                 typename TExtent,
@@ -300,12 +501,12 @@ namespace alpaka
                 typename TViewDst>
             struct Enqueue<
                 queue::QueueOmp4Blocking,
-                mem::view::omp4::detail::TaskCopyOmp4<TViewDst, TViewSrc, TExtent>>
+                mem::view::omp4::detail::TaskCopyOmp4<dim::DimInt<1>, TViewDst, TViewSrc, TExtent>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueOmp4Blocking & queue,
-                    mem::view::omp4::detail::TaskCopyOmp4<TViewDst, TViewSrc, TExtent> const & task)
+                    mem::view::omp4::detail::TaskCopyOmp4<dim::DimInt<1>, TViewDst, TViewSrc, TExtent> const & task)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
