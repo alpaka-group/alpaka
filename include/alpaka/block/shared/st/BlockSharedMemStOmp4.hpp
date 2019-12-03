@@ -83,7 +83,7 @@ namespace alpaka
                             block::shared::st::BlockSharedMemStOmp4 const &smem)
                         -> T &
                         {
-                            return *smem.alloc<T>();
+                            return smem.alloc<T>();
                         }
                     };
                     //#############################################################################
