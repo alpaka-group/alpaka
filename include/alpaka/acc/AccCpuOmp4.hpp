@@ -73,7 +73,7 @@ namespace alpaka
             public idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>,
             public idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>,
             public atomic::AtomicHierarchy<
-                atomic::AtomicStdLibLock<16>,   // grid atomics
+                atomic::AtomicOmpBuiltIn,   // grid atomics
                 atomic::AtomicOmpBuiltIn,    // block atomics
                 atomic::AtomicOmpBuiltIn     // thread atomics
             >,
@@ -108,7 +108,7 @@ namespace alpaka
                     idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(teamOffset),
                     idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
-                        atomic::AtomicStdLibLock<16>,// atomics between grids
+                        atomic::AtomicOmpBuiltIn,// atomics between grids
                         atomic::AtomicOmpBuiltIn, // atomics between blocks
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
