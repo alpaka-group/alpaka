@@ -671,6 +671,6 @@ namespace alpaka
 }
 
 #include <alpaka/mem/buf/omp4/Copy.hpp>
-// #include <alpaka/mem/buf/omp4/Set.hpp>
+#include <alpaka/mem/buf/omp4/Set.hpp>
 
 #endif
