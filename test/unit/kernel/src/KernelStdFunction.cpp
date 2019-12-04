@@ -7,6 +7,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#define TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
+
 #include <alpaka/kernel/Traits.hpp>
 
 #include <alpaka/test/acc/TestAccs.hpp>
