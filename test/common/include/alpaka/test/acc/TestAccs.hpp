@@ -108,7 +108,7 @@ namespace alpaka
                     typename TIdx>
                 using AccCpuOmp2ThreadsIfAvailableElseInt = int;
 #endif
-#if defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED) && !defined(ALPAKA_CUDA_CI)
+#if defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED) && !defined(ALPAKA_CUDA_CI) && !(defined(TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION))
                 template<
                     typename TDim,
                     typename TIdx>
