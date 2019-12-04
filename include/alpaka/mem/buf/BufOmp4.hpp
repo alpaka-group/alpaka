@@ -378,9 +378,9 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        auto size = extent[0]*static_cast<TIdx>(sizeof(TElem));
-                        for (TIdx a = 1u; a < TDim::value; ++a)
-                            size *= extent[a];
+                        std::size_t size = static_cast<std::size_t>(extent[0]*static_cast<TIdx>(sizeof(TElem)));
+                        for (unsigned int a = 1u; a < static_cast<unsigned int>(TDim::value); ++a)
+                            size *= static_cast<std::size_t>(extent[a]);
 
                         void * memPtr = omp_target_alloc(size, dev.m_iDevice);
                         std::cerr << "alloc'd " << TDim::value << "D device ptr: " << memPtr << '\n';

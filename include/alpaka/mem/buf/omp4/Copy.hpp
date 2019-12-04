@@ -527,7 +527,7 @@ namespace alpaka
                     auto const & iDstDev(task.m_iDstDevice);
                     auto const & iSrcDev(task.m_iSrcDevice);
 
-                    auto const & extentWidthBytes(task.m_extentWidthBytes);
+                    std::size_t const extentWidthBytes(static_cast<std::size_t>(task.m_extentWidthBytes));
 
                     auto const & dstNativePtr(task.m_dstMemNative);
                     auto const & srcNativePtr(task.m_srcMemNative);
