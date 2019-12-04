@@ -141,6 +141,11 @@ namespace alpaka
                                 m_srcExtent(VecFromDimTrait<
                                         TDim, size_t, TViewSrc,
                                         MyGetExtent>::vecFromDimTrait(viewSrc)),
+#if 0
+                                m_extent(alpaka::extent::getExtentVec(extent)),
+                                m_dstExtent(alpaka::extent::getExtentVec(viewDst)),
+                                m_srcExtent(alpaka::extent::getExtentVec(viewSrc)),
+#endif
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
