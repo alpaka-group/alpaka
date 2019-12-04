@@ -42,7 +42,7 @@ namespace alpaka
     {
         //#############################################################################
         //! The HIP RT device handle.
-        class DevHipRt
+        class DevHipRt : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevHipRt>
         {
             friend struct pltf::traits::GetDevByIdx<pltf::PltfHipRt>;
 

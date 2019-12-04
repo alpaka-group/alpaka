@@ -72,6 +72,7 @@
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/ConcurrentExecPool.hpp>
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/core/Debug.hpp>

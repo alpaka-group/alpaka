@@ -30,10 +30,8 @@ namespace alpaka
             //! \tparam TAlignment An integral constant containing the alignment.
             template<
                 typename TAlignment>
-            class AllocCpuBoostAligned
+            class AllocCpuBoostAligned : public concepts::Implements<ConceptMemAlloc, AllocCpuBoostAligned<TAlignment>>
             {
-            public:
-                using AllocBase = AllocCpuBoostAligned<TAlignment>;
             };
 
             namespace traits
