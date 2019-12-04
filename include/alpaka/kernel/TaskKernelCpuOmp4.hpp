@@ -127,9 +127,9 @@ namespace alpaka
                 TIdx const blockThreadCount(blockThreadExtent.prod());
 
                 // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
-                auto const maxOmpThreadCount(::omp_get_max_threads());
+                TIdx const maxOmpThreadCount(static_cast<TIdx>(::omp_get_max_threads()));
                 assert(blockThreadCount <= static_cast<TIdx>(maxOmpThreadCount));
-                TIdx const teamCount(std::min(static_cast<TIdx>(maxOmpThreadCount)/blockThreadCount, gridBlockCount));
+                TIdx const teamCount(std::min(static_cast<TIdx>(maxOmpThreadCount/blockThreadCount), gridBlockCount));
                 std::cout << "threadElemCount=" << threadElemExtent[0u] << std::endl;
                 std::cout << "teamCount=" << teamCount << "\tgridBlockCount=" << gridBlockCount << std::endl;
 
@@ -170,7 +170,7 @@ namespace alpaka
                             printf("acc->threadElemCount %d\n"
                                     , int(acc.m_threadElemExtent[0]));
 
-                            const TIdx bsup = std::min(t + teamCount, gridBlockCount);
+                            const TIdx bsup = std::min(static_cast<TIdx>(t + teamCount), gridBlockCount);
                             #pragma omp distribute
                             for(TIdx b = t; b<bsup; ++b)
                             {

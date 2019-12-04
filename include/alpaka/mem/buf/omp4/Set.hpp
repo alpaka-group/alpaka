@@ -77,12 +77,13 @@ namespace alpaka
                             TExtent extent) const
                         -> void
                         {
+                            using Idx = typename idx::traits::IdxType<TExtent>::type;
                             auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
                             auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
                             auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
                             auto idx = idxThreadFirstElem.prod();
                             constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
-                            const auto lastIdx = std::min(idx + threadElemExtent[lastDim], extent[lastDim]);
+                            const auto lastIdx = std::min(static_cast<Idx>(idx + threadElemExtent[lastDim]), extent[lastDim]);
 
                             if(idx < extent.prod())
                             {
@@ -107,7 +108,6 @@ namespace alpaka
                     TDim,
                     dev::DevOmp4>
                 {
-                    using Idx = std::size_t;
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent,
@@ -118,14 +118,15 @@ namespace alpaka
                         TExtent const & extent)
                     -> kernel::TaskKernelCpuOmp4<
                         TDim,
-                        Idx,
+                        typename idx::traits::IdxType<TExtent>::type,
                         view::omp4::detail::MemSetKernel,
                         std::uint8_t,
                         std::uint8_t*,
                         decltype(alpaka::extent::getExtentVec(extent))
                         >
                     {
-                        auto elementsPerThread = vec::Vec<TDim, Idx>::all(1u);
+                        using Idx = typename idx::traits::IdxType<TExtent>::type;
+                        auto elementsPerThread = vec::Vec<TDim, Idx>::all(static_cast<Idx>(1u));
                         elementsPerThread[TDim::value-1] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
                         alpaka::workdiv::WorkDivMembers<TDim, Idx> const workDiv(
