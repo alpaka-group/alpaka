@@ -25,6 +25,7 @@
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/meta/Integral.hpp>
 #include <alpaka/vec/Vec.hpp>
+#include <alpaka/extent/Traits.hpp>
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/idx/Accessors.hpp>
 #include <alpaka/workdiv/WorkDivHelpers.hpp>
@@ -76,11 +77,10 @@ namespace alpaka
                             TExtent extent) const
                         -> void
                         {
-                            using Idx = typename idx::traits::IdxType<TAcc>::type;
-                            Idx const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
-                            Idx const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
-                            Idx const idxThreadFirstElem = getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
-                            const auto idx = idxThreadFirstElem.prod();
+                            auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
+                            auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
+                            auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
+                            auto idx = idxThreadFirstElem.prod();
                             constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
                             const auto lastIdx = std::min(idx + threadElemExtent[lastDim], extent[lastDim]);
 
@@ -121,10 +121,11 @@ namespace alpaka
                         Idx,
                         view::omp4::detail::MemSetKernel,
                         std::uint8_t,
-                        vec::Vec<Idx, TDim>
+                        std::uint8_t*,
+                        decltype(alpaka::extent::getExtentVec(extent))
                         >
                     {
-                        auto elementsPerThread = vec::Vec<Idx, TDim>::all(1u);
+                        auto elementsPerThread = vec::Vec<TDim, Idx>::all(1u);
                         elementsPerThread[TDim::value-1] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
                         alpaka::workdiv::WorkDivMembers<TDim, Idx> const workDiv(
@@ -139,8 +140,8 @@ namespace alpaka
                                     workDiv,
                                     view::omp4::detail::MemSetKernel(),
                                     byte,
-                                    alpaka::mem::view::getPtrNative(view),
-                                    extent
+                                    reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
+                                    alpaka::extent::getExtentVec(extent)
                                     );
                     }
                 };
