@@ -483,18 +483,21 @@ namespace alpaka
 
                     alpaka::ignore_unused(queue); //! \todo
 
-                    ALPAKA_OMP4_CHECK(
-                        omp_target_memcpy_rect(
-                            dstNativePtr, const_cast<void*>(srcNativePtr),
-                            sizeof(elem::Elem<TViewDst>),
-                            TDim::value,
-                            reinterpret_cast<size_t const *>(&extent),
-                            reinterpret_cast<size_t const *>(&zero),
-                            reinterpret_cast<size_t const *>(&zero), // no support for offsets in alpaka
-                            //! \todo Add pitch
-                            reinterpret_cast<size_t const *>(&dstExtent),
-                            reinterpret_cast<size_t const *>(&srcExtent),
-                            iDstDev, iSrcDev));
+                    if(extent.prod() > 0)
+                    {
+                        ALPAKA_OMP4_CHECK(
+                            omp_target_memcpy_rect(
+                                dstNativePtr, const_cast<void*>(srcNativePtr),
+                                sizeof(elem::Elem<TViewDst>),
+                                TDim::value,
+                                reinterpret_cast<size_t const *>(&extent),
+                                reinterpret_cast<size_t const *>(&zero),
+                                reinterpret_cast<size_t const *>(&zero), // no support for offsets in alpaka
+                                //! \todo Add pitch
+                                reinterpret_cast<size_t const *>(&dstExtent),
+                                reinterpret_cast<size_t const *>(&srcExtent),
+                                iDstDev, iSrcDev));
+                    }
                 }
             };
 

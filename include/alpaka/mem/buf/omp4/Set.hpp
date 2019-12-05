@@ -81,9 +81,10 @@ namespace alpaka
                             auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
                             auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
                             auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
-                            auto idx = idxThreadFirstElem.prod();
+                            auto idx = idx::mapIdx<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, extent)[0];
                             constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
-                            const auto lastIdx = std::min(static_cast<Idx>(idx + threadElemExtent[lastDim]), extent[lastDim]);
+                            const auto lastIdx = idx +
+                                std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim]-idxThreadFirstElem[lastDim]));
 
                             if(idx < extent.prod())
                             {
@@ -126,13 +127,28 @@ namespace alpaka
                         >
                     {
                         using Idx = typename idx::traits::IdxType<TExtent>::type;
+                        auto byteExtent(alpaka::extent::getExtentVec(extent));
+
+                        if(byteExtent.prod() <= 0)
+                            return kernel::createTaskKernel<acc::AccCpuOmp4<TDim,Idx>>(
+                                    workdiv::WorkDivMembers<TDim, Idx>(
+                                        vec::Vec<TDim, Idx>::ones(),
+                                        vec::Vec<TDim, Idx>::ones(),
+                                        vec::Vec<TDim, Idx>::ones()),
+                                    view::omp4::detail::MemSetKernel(),
+                                    byte,
+                                    reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
+                                    byteExtent
+                                ); // NOP if size is zero
+
+                        byteExtent[TDim::value-1] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
                         auto elementsPerThread = vec::Vec<TDim, Idx>::all(static_cast<Idx>(1u));
                         elementsPerThread[TDim::value-1] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
-                        alpaka::workdiv::WorkDivMembers<TDim, Idx> const workDiv(
-                            alpaka::workdiv::getValidWorkDiv<acc::AccCpuOmp4<TDim,Idx>>(
+                        workdiv::WorkDivMembers<TDim, Idx> const workDiv(
+                            workdiv::getValidWorkDiv<acc::AccCpuOmp4<TDim,Idx>>(
                                 dev::getDev(view),
-                                extent,
+                                byteExtent,
                                 elementsPerThread,
                                 false,
                                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
@@ -142,8 +158,8 @@ namespace alpaka
                                     view::omp4::detail::MemSetKernel(),
                                     byte,
                                     reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
-                                    alpaka::extent::getExtentVec(extent)
-                                    );
+                                    byteExtent
+                                );
                     }
                 };
             }
