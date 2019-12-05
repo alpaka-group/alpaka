@@ -58,7 +58,7 @@ namespace alpaka
                             return VecFromDimTrait<TDim, TVal, TView, Fn, DIM-1>
                                 ::vecFromDimTrait(view,
                                         std::forward<TArgs>(args)...,
-                                        static_cast<TVal>(Fn<DIM>::getExtent(view)));
+                                        static_cast<TVal>(Fn<DIM-1>::getExtent(view)));
                         }
                     };
 
