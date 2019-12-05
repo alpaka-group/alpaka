@@ -115,7 +115,7 @@ namespace alpaka
                     math::MathStdLib(),
                     block::shared::dyn::BlockSharedMemDynOmp4(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
-                    block::shared::st::BlockSharedMemStOmp4(),
+                    block::shared::st::BlockSharedMemStOmp4(staticMemBegin()),
                     block::sync::BlockSyncBarrierOmp(),
                     rand::RandStdLib(),
                     time::TimeOmp(),

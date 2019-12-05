@@ -18,6 +18,7 @@
 #include <alpaka/block/shared/dyn/Traits.hpp>
 
 #include <type_traits>
+#include <array>
 
 namespace alpaka
 {
@@ -31,11 +32,14 @@ namespace alpaka
                 //! The GPU CUDA block shared memory allocator.
                 class BlockSharedMemDynOmp4
                 {
+                    mutable std::array<char, 32<<10> m_mem; // ! static 32kB
+                    std::size_t m_dynSize;
+
                 public:
                     using BlockSharedMemDynBase = BlockSharedMemDynOmp4;
 
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynOmp4(size_t) {}
+                    BlockSharedMemDynOmp4(size_t sizeBytes) : m_dynSize(sizeBytes) {}
                     //-----------------------------------------------------------------------------
                     BlockSharedMemDynOmp4(BlockSharedMemDynOmp4 const &) = delete;
                     //-----------------------------------------------------------------------------
@@ -46,6 +50,9 @@ namespace alpaka
                     auto operator=(BlockSharedMemDynOmp4 &&) -> BlockSharedMemDynOmp4 & = delete;
                     //-----------------------------------------------------------------------------
                     /*virtual*/ ~BlockSharedMemDynOmp4() = default;
+
+                    char* dynMemBegin() const {return m_mem.data();}
+                    char* staticMemBegin() const {return m_mem.data()+m_dynSize;}
                 };
 
                 namespace traits
@@ -59,14 +66,10 @@ namespace alpaka
                     {
                         //-----------------------------------------------------------------------------
                         static auto getMem(
-                            block::shared::dyn::BlockSharedMemDynOmp4 const &)
+                            block::shared::dyn::BlockSharedMemDynOmp4 const &mem)
                         -> T *
                         {
-                            /*! dynamic shared memory does not appear to be
-                            properly implemented in any other backend, so just
-                            returning nullptr here to make it fail if used.
-                            */
-                            return nullptr;
+                            return reinterpret_cast<T*>(mem.dynMemBegin());
                         }
                     };
                 }

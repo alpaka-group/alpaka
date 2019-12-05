@@ -20,7 +20,6 @@
 #include <type_traits>
 #include <cstdint>
 #include <omp.h>
-#include <array>
 
 namespace alpaka
 {
@@ -35,13 +34,13 @@ namespace alpaka
                 class BlockSharedMemStOmp4
                 {
                     mutable unsigned int m_allocdBytes = 0;
-                    mutable std::array<char, 32<<10> m_mem; // ! static 32kB
+                    mutable char* m_mem;
 
                 public:
                     using BlockSharedMemStBase = BlockSharedMemStOmp4;
 
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemStOmp4() = default;
+                    BlockSharedMemStOmp4(char* mem) : m_mem(mem) {}
                     //-----------------------------------------------------------------------------
                     BlockSharedMemStOmp4(BlockSharedMemStOmp4 const &) = delete;
                     //-----------------------------------------------------------------------------
