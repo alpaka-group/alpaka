@@ -102,7 +102,7 @@ namespace alpaka
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return idx::mapIdx<TDim::value>(
                         vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(idx.m_teamOffset + static_cast<TIdx>(::omp_get_team_num()))),
-                        workdiv::getWorkDiv<Block, Threads>(workDiv));
+                        workdiv::getWorkDiv<Grid, Blocks>(workDiv));
                 }
             };
 
