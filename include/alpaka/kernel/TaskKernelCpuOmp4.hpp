@@ -161,14 +161,14 @@ namespace alpaka
                         for(TIdx t = 0u; t < gridBlockCount; t+=teamCount)
                         {
                             acc::AccCpuOmp4<TDim, TIdx> acc(
-                                threadElemExtent,
-                                blockThreadExtent,
                                 gridBlockExtent,
+                                blockThreadExtent,
+                                threadElemExtent,
                                 t,
                                 blockSharedMemDynSizeBytes);
 
-                            printf("acc->threadElemCount %d\n"
-                                    , int(acc.m_threadElemExtent[0]));
+                            // printf("acc->threadElemCount %d\n"
+                            //         , int(acc.m_threadElemExtent[0]));
 
                             const TIdx bsup = std::min(static_cast<TIdx>(t + teamCount), gridBlockCount);
                             #pragma omp distribute
