@@ -50,6 +50,21 @@ namespace alpaka
             {
                 namespace detail
                 {
+
+                    template<
+                        typename TDim,
+                        typename TIdx>
+                    ALPAKA_FN_HOST_ACC auto pitchVecToExtentVec(
+                        vec::Vec<TDim, TIdx> pitch)
+                    -> vec::Vec<TDim, TIdx>
+                    {
+                        for(unsigned int i = 0; i < static_cast<unsigned int>(TDim::value) - 1u; ++i)
+                        {
+                            pitch[i] /= pitch[i+1u];
+                        }
+                        return pitch;
+                    }
+
                     //#############################################################################
                     //! The OMP4 device ND memory set kernel.
                     class MemSetKernel
@@ -69,26 +84,33 @@ namespace alpaka
                         template<
                             typename TAcc,
                             typename TElem,
-                            typename TExtent>
+                            typename TExtent,
+                            typename TPitch>
                         ALPAKA_FN_ACC auto operator()(
                             TAcc const & acc,
                             TElem const val,
                             TElem * dst,
-                            TExtent extent) const
+                            TExtent extent,
+                            TPitch pitch) const
                         -> void
                         {
                             using Idx = typename idx::traits::IdxType<TExtent>::type;
                             auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
                             auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
                             auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
-                            auto idx = idx::mapIdx<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, extent)[0];
+                            auto idx = idx::mapIdxPitch<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
                             constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
                             const auto lastIdx = idx +
                                 std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim]-idxThreadFirstElem[lastDim]));
 
-                            if(idx < extent.prod())
+                            if ([&idxThreadFirstElem, &extent](){
+                                    for(auto i = 0u; i < dim::Dim<TAcc>::value; ++i)
+                                        if(idxThreadFirstElem[i] >= extent[i])
+                                            return false;
+                                    return true;
+                                }())
                             {
-                                // assuming elements = {1,1,1,...,n}
+                                // assuming elements = {1,1,...,1,n}
                                 for(; idx<lastIdx; ++idx)
                                 {
                                     dst[idx] = val;
@@ -123,13 +145,17 @@ namespace alpaka
                         view::omp4::detail::MemSetKernel,
                         std::uint8_t,
                         std::uint8_t*,
-                        decltype(alpaka::extent::getExtentVec(extent))
+                        decltype(extent::getExtentVec(extent)),
+                        decltype(view::getPitchBytesVec(view))
                         >
                     {
                         using Idx = typename idx::traits::IdxType<TExtent>::type;
-                        auto byteExtent(alpaka::extent::getExtentVec(extent));
+                        auto pitch = view::getPitchBytesVec(view);
+                        auto byteExtent = extent::getExtentVec(extent);
+                        byteExtent[TDim::value-1] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
+                        constexpr auto lastDim = TDim::value - 1;
 
-                        if(byteExtent.prod() <= 0)
+                        if(pitch[0] <= 0)
                             return kernel::createTaskKernel<acc::AccCpuOmp4<TDim,Idx>>(
                                     workdiv::WorkDivMembers<TDim, Idx>(
                                         vec::Vec<TDim, Idx>::ones(),
@@ -138,12 +164,13 @@ namespace alpaka
                                     view::omp4::detail::MemSetKernel(),
                                     byte,
                                     reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
-                                    byteExtent
+                                    byteExtent,
+                                    pitch
                                 ); // NOP if size is zero
 
-                        byteExtent[TDim::value-1] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
+                        std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
                         auto elementsPerThread = vec::Vec<TDim, Idx>::all(static_cast<Idx>(1u));
-                        elementsPerThread[TDim::value-1] = 4;
+                        elementsPerThread[lastDim] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
                         workdiv::WorkDivMembers<TDim, Idx> const workDiv(
                             workdiv::getValidWorkDiv<acc::AccCpuOmp4<TDim,Idx>>(
@@ -158,7 +185,8 @@ namespace alpaka
                                     view::omp4::detail::MemSetKernel(),
                                     byte,
                                     reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
-                                    byteExtent
+                                    byteExtent,
+                                    pitch
                                 );
                     }
                 };
