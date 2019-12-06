@@ -70,6 +70,22 @@ namespace alpaka
                     private:
                         using Elem = TElem;
                         using Dim = TDim;
+                        //-----------------------------------------------------------------------------
+                        //! Calculate the pitches purely from the extents.
+                        template<
+                            typename TExtent>
+                        ALPAKA_FN_HOST static auto calculatePitchesFromExtents(
+                            TExtent const & extent)
+                        -> vec::Vec<TDim, TIdx>
+                        {
+                            vec::Vec<TDim, TIdx> pitchBytes(vec::Vec<TDim, TIdx>::all(0));
+                            pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
+                            for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
+                            {
+                                pitchBytes[i-1] = extent[i-1] * pitchBytes[i];
+                            }
+                            return pitchBytes;
+                        }
 
                     public:
                         //-----------------------------------------------------------------------------
@@ -82,6 +98,7 @@ namespace alpaka
                             TExtent const & extent) :
                                 m_dev(dev),
                                 m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
+                                m_pitchBytes(calculatePitchesFromExtents(m_extentElements)),
                                 m_pMem(pMem)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -97,6 +114,7 @@ namespace alpaka
                     public:
                         dev::DevOmp4 m_dev;
                         vec::Vec<TDim, TIdx> m_extentElements;
+                        vec::Vec<TDim, TIdx> m_pitchBytes;
                         TElem* m_pMem;
 
                             BufOmp4Impl(const BufOmp4Impl&) = delete;
@@ -306,6 +324,25 @@ namespace alpaka
                         {
                             throw std::runtime_error("The buffer is not accessible from the given device!");
                         }
+                    }
+                };
+                //#############################################################################
+                //! The BufOmp4 pitch get trait specialization.
+                template<
+                    typename TIdxIntegralConst,
+                    typename TElem,
+                    typename TDim,
+                    typename TIdx>
+                struct GetPitchBytes<
+                    TIdxIntegralConst,
+                    mem::buf::BufOmp4<TElem, TDim, TIdx>>
+                {
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto getPitchBytes(
+                        mem::buf::BufOmp4<TElem, TDim, TIdx> const & pitch)
+                    -> TIdx
+                    {
+                        return (*pitch).m_pitchBytes[TIdxIntegralConst::value];
                     }
                 };
             }
