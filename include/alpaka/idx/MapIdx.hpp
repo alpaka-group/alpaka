@@ -157,5 +157,138 @@ namespace alpaka
                     idx,
                     extent);
         }
+
+        namespace detail
+        {
+            //#############################################################################
+            //! Maps a linear index to a N dimensional index.
+            template<
+                std::size_t TidxDimOut,
+                std::size_t TidxDimIn,
+                typename TSfinae = void>
+            struct MapIdxPitch;
+            //#############################################################################
+            //! Maps a N dimensional index to the same N dimensional index.
+            template<
+                std::size_t TidxDim>
+            struct MapIdxPitch<
+                TidxDim,
+                TidxDim>
+            {
+                //-----------------------------------------------------------------------------
+                // \tparam TElem Type of the index values.
+                // \param idx Idx to be mapped.
+                // \param pitch Spatial pitch (in elems) to map the index to
+                // \return A N dimensional vector.
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElem>
+                ALPAKA_FN_HOST_ACC static auto mapIdxPitch(
+                    vec::Vec<dim::DimInt<TidxDim>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<TidxDim>, TElem> const & pitch)
+                -> vec::Vec<dim::DimInt<TidxDim>, TElem>
+                {
+                    alpaka::ignore_unused(pitch);
+
+                    return idx;
+                }
+            };
+            //#############################################################################
+            //! Maps a 1 dimensional index to a N dimensional index.
+            template<
+                std::size_t TidxDimOut>
+            struct MapIdxPitch<
+                TidxDimOut,
+                1u,
+                typename std::enable_if<TidxDimOut != 1u>::type>
+            {
+                //-----------------------------------------------------------------------------
+                // \tparam TElem Type of the index values.
+                // \param idx Idx to be mapped.
+                // \param pitch Spatial pitch (in elems) to map the index to
+                // \return A N dimensional vector.
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElem>
+                ALPAKA_FN_HOST_ACC static auto mapIdxPitch(
+                    vec::Vec<dim::DimInt<1u>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<TidxDimOut>, TElem> const & pitch)
+                -> vec::Vec<dim::DimInt<TidxDimOut>, TElem>
+                {
+                    auto idxNd(vec::Vec<dim::DimInt<TidxDimOut>, TElem>::all(0u));
+
+                    constexpr std::size_t lastIdx(TidxDimOut - 1u);
+
+                    TElem tmp = idx[0u];
+                    for(std::size_t d(0u); d < lastIdx; ++d)
+                    {
+                        idxNd[d] = static_cast<TElem>(tmp / pitch[d+1]);
+                        tmp %= pitch[d+1];
+                    }
+                    idxNd[lastIdx] = tmp;
+
+                    return idxNd;
+                }
+            };
+            //#############################################################################
+            //! Maps a N dimensional index to a 1 dimensional index.
+            template<
+                std::size_t TidxDimIn>
+            struct MapIdxPitch<
+                1u,
+                TidxDimIn,
+                typename std::enable_if<TidxDimIn != 1u>::type>
+            {
+                //-----------------------------------------------------------------------------
+                // \tparam TElem Type of the index values.
+                // \param idx Idx to be mapped.
+                // \param pitch Spatial pitch (in elems) to map the index to
+                // \return A 1 dimensional vector.
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElem>
+                ALPAKA_FN_HOST_ACC static auto mapIdxPitch(
+                    vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
+                    vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & pitch)
+                -> vec::Vec<dim::DimInt<1u>, TElem>
+                {
+                    constexpr auto lastDim = TidxDimIn - 1;
+                    TElem idx1d(idx[lastDim]);
+                    for(std::size_t d(0u); d < lastDim; ++d)
+                    {
+                        idx1d = static_cast<TElem>(idx1d + pitch[d+1] * idx[d]);
+                    }
+                    return {idx1d};
+                }
+            };
+        }
+
+        //#############################################################################
+        //! Maps a N dimensional index to a N dimensional position.
+        //!
+        //! \tparam TidxDimOut Dimension of the index vector to map to.
+        //! \tparam TidxDimIn Dimension of the index vector to map from.
+        //! \tparam TElem Type of the elements of the index vector to map from.
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            std::size_t TidxDimOut,
+            std::size_t TidxDimIn,
+            typename TElem>
+        ALPAKA_FN_HOST_ACC auto mapIdxPitch(
+            vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
+            vec::Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & pitch)
+        -> vec::Vec<dim::DimInt<TidxDimOut>, TElem>
+        {
+            static_assert(TidxDimOut > 0u, "The dimension of the output vector has to be greater than zero!");
+            static_assert(TidxDimIn > 0u, "The dimension of the input vector has to be greater than zero!");
+
+            return
+                detail::MapIdxPitch<
+                    TidxDimOut,
+                    TidxDimIn>
+                ::mapIdxPitch(
+                    idx,
+                    pitch);
+        }
     }
 }
