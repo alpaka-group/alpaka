@@ -25,7 +25,7 @@ IF(MSVC)
     LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "/WX")
     # Improve debugging.
     IF(CMAKE_BUILD_TYPE MATCHES "Debug")
-        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-d2Zi+")
+        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "/Zo")
     ENDIF()
     IF(MSVC_VERSION GREATER 1900)
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "/permissive-")
@@ -125,7 +125,7 @@ ELSE()
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Werror")
         # Weverything really means everything (including Wall, Wextra, pedantic, ...)
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Weverything")
-        # We are not C++98 compatible (we use C++11 features)
+        # We are not C++98 compatible
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wno-c++98-compat")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wno-c++98-compat-pedantic")
         # The following warnings are triggered by all instantiations of BOOST_AUTO_TEST_SUITE

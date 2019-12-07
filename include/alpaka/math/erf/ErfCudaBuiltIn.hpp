@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto erf(
                     ErfCudaBuiltIn const & erf_ctx,
                     TArg const & arg)
-                -> decltype(::erf(arg))
                 {
                     alpaka::ignore_unused(erf_ctx);
                     return ::erf(arg);

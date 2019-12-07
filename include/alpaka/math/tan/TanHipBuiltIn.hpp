@@ -58,7 +58,6 @@ namespace alpaka
                 __device__ static auto tan(
                     TanHipBuiltIn const & tan_ctx,
                     TArg const & arg)
-                -> decltype(::tan(arg))
                 {
                     alpaka::ignore_unused(tan_ctx);
                     return ::tan(arg);

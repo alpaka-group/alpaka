@@ -58,7 +58,6 @@ namespace alpaka
                 __device__ static auto cbrt(
                     CbrtHipBuiltIn const & cbrt_ctx,
                     TArg const & arg)
-                -> decltype(::cbrt(arg))
                 {
                     alpaka::ignore_unused(cbrt_ctx);
                     return ::cbrt(arg);

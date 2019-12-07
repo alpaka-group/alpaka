@@ -58,7 +58,6 @@ namespace alpaka
                 __device__ static auto abs(
                     AbsHipBuiltIn const & abs_ctx,
                     TArg const & arg)
-                -> decltype(::abs(arg))
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return ::abs(arg);
@@ -73,7 +72,6 @@ namespace alpaka
                 __device__ static auto abs(
                     AbsHipBuiltIn const & abs_ctx,
                     double const & arg)
-                -> decltype(::fabs(arg))
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return ::fabs(arg);

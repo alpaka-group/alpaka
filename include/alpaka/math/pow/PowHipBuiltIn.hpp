@@ -62,7 +62,6 @@ namespace alpaka
                     PowHipBuiltIn const & pow_ctx,
                     TBase const & base,
                     TExp const & exp)
-                -> decltype(::pow(base, exp))
                 {
                     alpaka::ignore_unused(pow_ctx);
                     return ::pow(base, exp);

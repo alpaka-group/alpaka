@@ -26,6 +26,7 @@
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 
+#include <functional>
 #include <memory>
 
 namespace alpaka

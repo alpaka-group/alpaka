@@ -31,6 +31,7 @@
 #include <alpaka/meta/ApplyTuple.hpp>
 
 #include <algorithm>
+#include <functional>
 #include <vector>
 #include <tuple>
 #include <type_traits>

@@ -88,7 +88,7 @@ namespace alpaka
 
             //#############################################################################
             //! ITaskPkg.
-            // \NOTE: We can not use C++11 std::packaged_task as it forces the use of std::future
+            // \NOTE: We can not use std::packaged_task as it forces the use of std::future
             // but we additionally support boost::fibers::promise.
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic push
@@ -250,9 +250,6 @@ namespace alpaka
             auto invokeBothReturnFirst(
                     TFnObj0 && fn0,
                     TFnObj1 && fn1)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-             -> decltype(std::declval<TFnObj0>()())
-#endif
             {
                 auto ret = fn0();
                 fn1();
@@ -369,14 +366,6 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                // FIXME: gcc 4.9 does not support the syntax below. Restricting the return type to void works because we never use something else within alpaka.
-                -> decltype(std::declval<TPromise<void>>().get_future())
-#else
-                -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
-#endif
-#endif
                 {
                     auto boundTask([=](){return task(args...);});
                     auto decrementNumActiveTasks([this](){--m_numActiveTasks;});
@@ -577,14 +566,6 @@ namespace alpaka
                 auto enqueueTask(
                     TFnObj && task,
                     TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                // FIXME: gcc 4.9 does not support the syntax below. Restricting the return type to void works because we never use something else within alpaka.
-                -> decltype(std::declval<TPromise<void>>().get_future())
-#else
-                -> decltype(std::declval<TPromise<decltype(task(args...))>>().get_future())
-#endif
-#endif
                 {
                     auto boundTask([=](){return task(args...);});
                     auto decrementNumActiveTasks([this](){--m_numActiveTasks;});

@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto sin(
                     SinCudaBuiltIn const & sin_ctx,
                     TArg const & arg)
-                -> decltype(::sin(arg))
                 {
                     alpaka::ignore_unused(sin_ctx);
                     return ::sin(arg);

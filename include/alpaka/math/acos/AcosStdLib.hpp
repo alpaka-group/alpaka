@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto acos(
                     AcosStdLib const & acos_ctx,
                     TArg const & arg)
-                -> decltype(std::acos(arg))
                 {
                     alpaka::ignore_unused(acos_ctx);
                     return std::acos(arg);

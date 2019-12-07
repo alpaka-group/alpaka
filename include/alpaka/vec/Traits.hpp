@@ -69,14 +69,6 @@ namespace alpaka
             typename TVec>
         ALPAKA_FN_HOST_ACC auto subVecFromIndices(
             TVec const & vec)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::SubVecFromIndices<
-                TVec,
-                TIndexSequence>
-            ::subVecFromIndices(
-                vec))
-#endif
         {
             return
                 traits::SubVecFromIndices<
@@ -94,16 +86,6 @@ namespace alpaka
             typename TVec>
         ALPAKA_FN_HOST_ACC auto subVecBegin(
             TVec const & vec)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            subVecFromIndices<
-                meta::MakeIntegerSequence<
-                    std::size_t,
-                    TSubDim::value
-                >
-            >(
-                vec))
-#endif
         {
             static_assert(
                 TSubDim::value <= dim::Dim<TVec>::value,
@@ -128,17 +110,6 @@ namespace alpaka
             typename TVec>
         ALPAKA_FN_HOST_ACC auto subVecEnd(
             TVec const & vec)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            subVecFromIndices<
-                meta::MakeIntegerSequenceOffset<
-                    std::size_t,
-                    dim::Dim<TVec>::value - TSubDim::value,
-                    TSubDim::value
-                >
-            >(
-                vec))
-#endif
         {
             static_assert(
                 TSubDim::value <= dim::Dim<TVec>::value,
@@ -166,14 +137,6 @@ namespace alpaka
             typename TVec>
         ALPAKA_FN_HOST_ACC auto cast(
             TVec const & vec)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::Cast<
-                TVal,
-                TVec>
-            ::cast(
-                vec))
-#endif
         {
             return
                 traits::Cast<
@@ -190,13 +153,6 @@ namespace alpaka
             typename TVec>
         ALPAKA_FN_HOST_ACC auto reverse(
             TVec const & vec)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::Reverse<
-                TVec>
-            ::reverse(
-                vec))
-#endif
         {
             return
                 traits::Reverse<
@@ -214,15 +170,6 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto concat(
             TVecL const & vecL,
             TVecR const & vecR)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::Concat<
-                TVecL,
-                TVecR>
-            ::concat(
-                vecL,
-                vecR))
-#endif
         {
             return
                 traits::Concat<

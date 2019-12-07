@@ -62,7 +62,6 @@ namespace alpaka
                     FmodHipBuiltIn const & fmod_ctx,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(::fmod(x, y))
                 {
                     alpaka::ignore_unused(fmod_ctx);
                     return ::fmod(x, y);

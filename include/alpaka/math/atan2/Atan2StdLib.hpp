@@ -45,7 +45,6 @@ namespace alpaka
                     Atan2StdLib const & abs,
                     Ty const & y,
                     Tx const & x)
-                -> decltype(std::atan2(y, x))
                 {
                     alpaka::ignore_unused(abs);
                     return std::atan2(y, x);

@@ -43,7 +43,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto abs(
                     AbsStdLib const & abs_ctx,
                     TArg const & arg)
-                -> decltype(std::abs(arg))
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return std::abs(arg);

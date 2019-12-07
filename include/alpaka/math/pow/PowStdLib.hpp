@@ -45,7 +45,6 @@ namespace alpaka
                     PowStdLib const & pow_ctx,
                     TBase const & base,
                     TExp const & exp)
-                -> decltype(std::pow(base, exp))
                 {
                     alpaka::ignore_unused(pow_ctx);
                     return std::pow(base, exp);

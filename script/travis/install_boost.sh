@@ -99,7 +99,7 @@ then
     then
         if [ "$TRAVIS_OS_NAME" = "linux" ]
         then
-            ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++11"
+            ALPAKA_BOOST_B2_CXXFLAGS+=" -std=c++14"
         fi
         ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
     fi

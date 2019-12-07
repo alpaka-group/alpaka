@@ -184,8 +184,8 @@ ENDIF()
 SET(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
 SET_PROPERTY(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 
-SET(ALPAKA_CXX_STANDARD "11" CACHE STRING "C++ standard version")
-SET_PROPERTY(CACHE ALPAKA_CXX_STANDARD PROPERTY STRINGS "11;14;17")
+SET(ALPAKA_CXX_STANDARD "14" CACHE STRING "C++ standard version")
+SET_PROPERTY(CACHE ALPAKA_CXX_STANDARD PROPERTY STRINGS "14;17;20")
 
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
@@ -414,11 +414,11 @@ ENDIF()
 IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
     IF(NOT DEFINED ALPAKA_CUDA_VERSION)
-        SET(ALPAKA_CUDA_VERSION 8.0)
+        SET(ALPAKA_CUDA_VERSION 9.0)
     ENDIF()
 
-    IF(ALPAKA_CUDA_VERSION VERSION_LESS 8.0)
-        MESSAGE(WARNING "CUDA Toolkit < 8.0 is not supported!")
+    IF(ALPAKA_CUDA_VERSION VERSION_LESS 9.0)
+        MESSAGE(WARNING "CUDA Toolkit < 9.0 is not supported!")
         SET(_ALPAKA_FOUND FALSE)
 
     ELSE()
@@ -429,9 +429,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
         ELSE()
             SET(ALPAKA_CUDA_VERSION "${CUDA_VERSION}")
-            IF(CUDA_VERSION VERSION_LESS 9.0)
-                SET(ALPAKA_CUDA_ARCH "20" CACHE STRING "GPU architecture")
-            ELSEIF(CUDA_VERSION VERSION_LESS 10.3)
+            IF(CUDA_VERSION VERSION_LESS 10.3)
                 SET(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
             ELSE()
                 SET(ALPAKA_CUDA_ARCH "35" CACHE STRING "GPU architecture")
@@ -444,7 +442,6 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
             OPTION(ALPAKA_CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
             OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
             OPTION(ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA "Enable experimental, extended host-device lambdas in NVCC" ON)
-            OPTION(ALPAKA_CUDA_NVCC_EXPT_RELAXED_CONSTEXPR "Enable experimental, relaxed constexpr in NVCC" ON)
             OPTION(ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION "Enable separable compilation in NVCC" OFF)
 
             IF(ALPAKA_CUDA_COMPILER MATCHES "clang")
@@ -518,12 +515,12 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 # When libstdc++ is used and -std=gnu++XX is set, we get the following compile error:
                 # /usr/lib/gcc/x86_64-linux-gnu/5.5.0/../../../../include/c++/5.5.0/type_traits:311:39: error: __float128 is not supported on this target struct __is_floating_point_helper<__float128>
                 # Clang doesn't support the __float128 type (at least when building CUDA device code)
-                # * Due to the minimum requirement to compile with C++11 and because extensions are enabled by default by CMake, it adds -std=gnu++11 instead of -std=c++11 to the command line.
+                # * Due to the minimum requirement to compile with C++14 and because extensions are enabled by default by CMake, it adds -std=gnu++14 instead of -std=c++14 to the command line.
                 #   Due to alpaka being an INTERFACE library (header-only) we are not allowed to set CXX_EXTENSIONS to OFF and transitively disable extensions for inherited targets.
                 # * Defining __float128 on the command line is the least invasive workaround found here: https://bugs.llvm.org/show_bug.cgi?id=13530#c6
                 LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_PUBLIC "__float128=void")
 
-                # CMake 3.15 does not provide the `--std=c++11` argument to clang anymore.
+                # CMake 3.15 does not provide the `--std=c++*` argument to clang anymore.
                 # It is not necessary for basic c++ compilation because clangs default is already higher, but CUDA code compiled with -x cuda still defaults to c++98.
                 IF(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
                     LIST(APPEND _ALPAKA_COMPILE_OPTIONS_PUBLIC "-std=c++${ALPAKA_CXX_STANDARD}")
@@ -531,37 +528,29 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
             ELSE()
                 IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-                    IF(CUDA_VERSION VERSION_EQUAL 8.0)
-                        IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 5.4)
-                            MESSAGE(FATAL_ERROR "NVCC 8.0 does not support GCC 5.4+. Please use GCC 4.9 - 5.3!")
-                        ENDIF()
-                    ELSEIF((CUDA_VERSION VERSION_EQUAL 9.0) OR (CUDA_VERSION VERSION_EQUAL 9.1))
+                    IF((CUDA_VERSION VERSION_EQUAL 9.0) OR (CUDA_VERSION VERSION_EQUAL 9.1))
                         IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 6.0)
-                            MESSAGE(FATAL_ERROR "NVCC 9.0 - 9.1 do not support GCC 7+ and fail compiling the std::tuple implementation in GCC 6+. Please use GCC 4.9 - 5.5!")
+                            MESSAGE(FATAL_ERROR "NVCC 9.0 - 9.1 do not support GCC 7+ and fail compiling the std::tuple implementation in GCC 6+. Please use GCC 5!")
                         ENDIF()
                     ELSEIF(CUDA_VERSION VERSION_EQUAL 9.2)
                         IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 8.0)
-                            MESSAGE(FATAL_ERROR "NVCC 9.2 does not support GCC 8+. Please use GCC 4.9, 5, 6 or 7!")
+                            MESSAGE(FATAL_ERROR "NVCC 9.2 does not support GCC 8+. Please use GCC 5, 6 or 7!")
                         ENDIF()
                     ELSEIF(CUDA_VERSION VERSION_EQUAL 10.0)
                         IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 8.0)
-                            MESSAGE(FATAL_ERROR "NVCC 10.0 does not support GCC 8+. Please use GCC 4.9, 5, 6 or 7!")
+                            MESSAGE(FATAL_ERROR "NVCC 10.0 does not support GCC 8+. Please use GCC 5, 6 or 7!")
                         ENDIF()
                     ELSEIF(CUDA_VERSION VERSION_EQUAL 10.1)
                         IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 9.0)
-                            MESSAGE(FATAL_ERROR "NVCC 10.1 does not support GCC 9+. Please use GCC 4.9, 5, 6, 7 or 8!")
+                            MESSAGE(FATAL_ERROR "NVCC 10.1 does not support GCC 9+. Please use GCC 5, 6, 7 or 8!")
                         ENDIF()
                     ELSEIF(CUDA_VERSION VERSION_EQUAL 10.2)
                         IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 9.0)
-                            MESSAGE(FATAL_ERROR "NVCC 10.2 does not support GCC 9+. Please use GCC 4.9, 5, 6, 7 or 8!")
+                            MESSAGE(FATAL_ERROR "NVCC 10.2 does not support GCC 9+. Please use GCC 5, 6, 7 or 8!")
                         ENDIF()
                     ENDIF()
                 ELSEIF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-                    IF(CUDA_VERSION VERSION_EQUAL 8.0)
-                        IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 4.0)
-                            MESSAGE(FATAL_ERROR "NVCC 8.0 does not support clang 4+. Please use NVCC 9.1!")
-                        ENDIF()
-                    ELSEIF(CUDA_VERSION VERSION_EQUAL 9.0)
+                    IF(CUDA_VERSION VERSION_EQUAL 9.0)
                         IF(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 4.0)
                             MESSAGE(FATAL_ERROR "NVCC 9.0 does not support clang 4+. Please use NVCC 9.1!")
                         ENDIF()
@@ -589,14 +578,8 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 ENDIF()
 
                 # CUDA 9.0 removed the __CUDACC_VER__ macro. Boost versions lower than 1.65.1 still use this macro.
-                IF(CUDA_VERSION VERSION_GREATER_EQUAL 9.0 AND Boost_VERSION VERSION_LESS 1.65.1)
+                IF(Boost_VERSION VERSION_LESS 1.65.1)
                     MESSAGE(WARNING "CUDA 9.0 or newer requires boost-1.65.1 or newer!")
-                    SET(_ALPAKA_FOUND FALSE)
-                ENDIF()
-
-                # CUDA 9.0 is the first to support c++14.
-                IF((CUDA_VERSION VERSION_LESS 9.0) AND (ALPAKA_CXX_STANDARD GREATER 11))
-                    MESSAGE(WARNING "CUDA 9.0 or newer is required for c++14 or higher!")
                     SET(_ALPAKA_FOUND FALSE)
                 ENDIF()
 
@@ -625,17 +608,12 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     ENDIF()
                 ENDIF()
 
-                IF(CUDA_VERSION VERSION_EQUAL 8.0)
-                    LIST(APPEND CUDA_NVCC_FLAGS "-Wno-deprecated-gpu-targets")
-                ENDIF()
-
-
+                # NOTE: Since CUDA 10.2 this option is also alternatively called '--extended-lambda'
                 IF(ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA)
                     LIST(APPEND CUDA_NVCC_FLAGS "--expt-extended-lambda")
                 ENDIF()
-                IF(ALPAKA_CUDA_NVCC_EXPT_RELAXED_CONSTEXPR)
-                    LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
-                ENDIF()
+                # This is mandatory because with c++14 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
+                LIST(APPEND CUDA_NVCC_FLAGS "--expt-relaxed-constexpr")
 
                 FOREACH(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
@@ -653,13 +631,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 IF(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
                     LIST(APPEND CUDA_NVCC_FLAGS "-g")
-                    # https://github.com/ComputationalRadiationPhysics/alpaka/issues/428
-                    IF(((CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0) OR
-                        (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.8)) AND
-                        CUDA_VERSION VERSION_LESS 9.0)
-                        MESSAGE(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} does not support -G with CUDA <= 8! "
-                                        "Device debug symbols NOT added.")
-                    ELSEIF(MSVC)
+                    IF(MSVC)
                         MESSAGE(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} does not support -G with CUDA! "
                                         "Device debug symbols NOT added.")
                     ELSE()
@@ -685,9 +657,7 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --display_error_number)
 
                 # avoids warnings on host-device signatured, default constructors/destructors
-                IF(CUDA_VERSION GREATER_EQUAL 9.0)
-                    LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=esa_on_defaulted_function_ignored)
-                ENDIF()
+                LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=esa_on_defaulted_function_ignored)
 
                 # avoids warnings on host-device signature of 'std::__shared_count<>'
                 IF(CUDA_VERSION EQUAL 10.0)
@@ -762,24 +732,16 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
                     MESSAGE(WARNING "Could not found CUDA while HIP platform is set to nvcc. Compiling might fail.")
                 ENDIF()
 
-                IF(CUDA_VERSION VERSION_LESS 9.0)
-                    SET(ALPAKA_CUDA_ARCH "20" CACHE STRING "GPU architecture")
-                ELSE()
-                    SET(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
-                ENDIF()
+                SET(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
 
                 # CUDA 9.0 removed the __CUDACC_VER__ macro. Boost versions lower than 1.65.1 still use this macro.
-                IF(CUDA_VERSION VERSION_GREATER_EQUAL 9.0 AND Boost_VERSION VERSION_LESS 1.65.1)
+                IF(Boost_VERSION VERSION_LESS 1.65.1)
                     MESSAGE(WARNING "CUDA 9.0 or newer requires boost-1.65.1 or newer!")
                     SET(_ALPAKA_FOUND FALSE)
                 ENDIF()
 
-                IF(CUDA_VERSION VERSION_EQUAL 8.0)
-                    LIST(APPEND HIP_HIPCC_FLAGS "-Wno-deprecated-gpu-targets")
-                ENDIF()
-
-                IF(CUDA_VERSION VERSION_LESS 8.0)
-                    MESSAGE(WARNING "CUDA Toolkit < 8.0 is not supported!")
+                IF(CUDA_VERSION VERSION_LESS 9.0)
+                    MESSAGE(WARNING "CUDA Toolkit < 9.0 is not supported!")
                     SET(_ALPAKA_FOUND FALSE)
                 ENDIF()
 

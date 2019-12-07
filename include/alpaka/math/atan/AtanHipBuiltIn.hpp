@@ -58,7 +58,6 @@ namespace alpaka
                 __device__ static auto atan(
                     AtanHipBuiltIn const & atan_ctx,
                     TArg const & arg)
-                -> decltype(::atan(arg))
                 {
                     alpaka::ignore_unused(atan_ctx);
                     return ::atan(arg);

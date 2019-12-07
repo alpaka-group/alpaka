@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto exp(
                     ExpStdLib const & exp_ctx,
                     TArg const & arg)
-                -> decltype(std::exp(arg))
                 {
                     alpaka::ignore_unused(exp_ctx);
                     return std::exp(arg);

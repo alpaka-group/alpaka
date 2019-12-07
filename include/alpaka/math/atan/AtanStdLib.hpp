@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto atan(
                     AtanStdLib const & atan_ctx,
                     TArg const & arg)
-                -> decltype(std::atan(arg))
                 {
                     alpaka::ignore_unused(atan_ctx);
                     return std::atan(arg);

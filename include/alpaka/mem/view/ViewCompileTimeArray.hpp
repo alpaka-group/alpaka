@@ -109,12 +109,11 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 static constexpr auto getExtent(
-                    TFixedSizeArray const & //extent
+                    TFixedSizeArray const & extent
                 )
                 -> idx::Idx<TFixedSizeArray>
                 {
-                    // C++14 constexpr with void return
-                    //alpaka::ignore_unused(extent);
+                    alpaka::ignore_unused(extent);
                     return std::extent<TFixedSizeArray, TIdxIntegralConst::value>::value;
                 }
             };

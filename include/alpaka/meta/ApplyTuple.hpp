@@ -66,9 +66,6 @@ namespace alpaka
 
         template< class F, class... ArgTypes>
         auto invoke(F && f, ArgTypes &&... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(detail::invoke_impl(std::forward<F>(f), std::forward<ArgTypes>(args)...))
-#endif
         {
             return detail::invoke_impl(std::forward<F>(f), std::forward<ArgTypes>(args)...);
         }
@@ -79,12 +76,6 @@ namespace alpaka
         {
             template<class F, class Tuple, std::size_t... I>
             auto apply_impl( F && f, Tuple && t, meta::IndexSequence<I...> )
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-            -> decltype(
-                meta::invoke(
-                    std::forward<F>(f),
-                    std::get<I>(std::forward<Tuple>(t))...))
-#endif
             {
                 // If the the index sequence is empty, t will not be used at all.
                 alpaka::ignore_unused(t);
@@ -98,13 +89,6 @@ namespace alpaka
 
         template<class F, class Tuple>
         auto apply(F && f, Tuple && t)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            detail::apply_impl(
-                std::forward<F>(f),
-                std::forward<Tuple>(t),
-                meta::MakeIndexSequence<std::tuple_size<typename std::decay<Tuple>::type>::value>{}))
-#endif
         {
             return
                 detail::apply_impl(

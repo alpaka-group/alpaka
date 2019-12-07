@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto round(
                     RoundStdLib const & round_ctx,
                     TArg const & arg)
-                -> decltype(std::round(arg))
                 {
                     alpaka::ignore_unused(round_ctx);
                     return std::round(arg);

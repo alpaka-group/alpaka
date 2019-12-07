@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto floor(
                     FloorCudaBuiltIn const & floor_ctx,
                     TArg const & arg)
-                -> decltype(::floor(arg))
                 {
                     alpaka::ignore_unused(floor_ctx);
                     return ::floor(arg);

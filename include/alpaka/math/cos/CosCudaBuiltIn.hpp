@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto cos(
                     CosCudaBuiltIn const & cos_ctx,
                     TArg const & arg)
-                -> decltype(::cos(arg))
                 {
                     alpaka::ignore_unused(cos_ctx);
                     return ::cos(arg);

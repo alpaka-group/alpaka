@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto log(
                     LogStdLib const & log_ctx,
                     TArg const & arg)
-                -> decltype(std::log(arg))
                 {
                     alpaka::ignore_unused(log_ctx);
                     return std::log(arg);

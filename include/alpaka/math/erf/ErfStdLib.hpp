@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto erf(
                     ErfStdLib const & erf_ctx,
                     TArg const & arg)
-                -> decltype(std::erf(arg))
                 {
                     alpaka::ignore_unused(erf_ctx);
                     return std::erf(arg);

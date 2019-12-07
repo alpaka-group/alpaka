@@ -62,7 +62,6 @@ namespace alpaka
                     RemainderHipBuiltIn const & remainder_ctx,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(::remainder(x, y))
                 {
                     alpaka::ignore_unused(remainder_ctx);
                     return ::remainder(x, y);
