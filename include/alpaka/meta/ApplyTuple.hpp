@@ -12,8 +12,6 @@
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
 
-#include <alpaka/meta/IntegerSequence.hpp>
-
 #include <boost/config.hpp>
 
 #include <utility>
@@ -75,9 +73,9 @@ namespace alpaka
         namespace detail
         {
             template<class F, class Tuple, std::size_t... I>
-            auto apply_impl( F && f, Tuple && t, meta::IndexSequence<I...> )
+            auto apply_impl( F && f, Tuple && t, std::index_sequence<I...> )
             {
-                // If the the index sequence is empty, t will not be used at all.
+                // If the index sequence is empty, t will not be used at all.
                 alpaka::ignore_unused(t);
 
                 return
@@ -94,7 +92,7 @@ namespace alpaka
                 detail::apply_impl(
                     std::forward<F>(f),
                     std::forward<Tuple>(t),
-                    meta::MakeIndexSequence<std::tuple_size<typename std::decay<Tuple>::type>::value>{});
+                    std::make_index_sequence<std::tuple_size<typename std::decay<Tuple>::type>::value>{});
         }
     }
 }
