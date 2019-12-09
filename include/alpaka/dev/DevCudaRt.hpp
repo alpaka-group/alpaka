@@ -22,6 +22,9 @@
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
+#include <alpaka/queue/Traits.hpp>
+#include <alpaka/queue/Properties.hpp>
+
 #include <alpaka/core/Cuda.hpp>
 
 namespace alpaka
@@ -36,6 +39,12 @@ namespace alpaka
             struct GetDevByIdx;
         }
         class PltfCudaRt;
+    }
+
+    namespace queue
+    {
+        class QueueCudaRtBlocking;
+        class QueueCudaRtNonBlocking;
     }
 
     namespace dev
@@ -251,6 +260,29 @@ namespace alpaka
                         dev.m_iDevice));
                     ALPAKA_CUDA_RT_CHECK(cudaDeviceSynchronize());
                 }
+            };
+        }
+    }
+    namespace queue
+    {
+        namespace traits
+        {
+            template<>
+            struct QueueType<
+                dev::DevCudaRt,
+                queue::Blocking
+            >
+            {
+                using type = queue::QueueCudaRtBlocking;
+            };
+
+            template<>
+            struct QueueType<
+                dev::DevCudaRt,
+                queue::NonBlocking
+            >
+            {
+                using type = queue::QueueCudaRtNonBlocking;
             };
         }
     }

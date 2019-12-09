@@ -18,6 +18,9 @@
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/cpu/SysInfo.hpp>
 
+#include <alpaka/queue/Traits.hpp>
+#include <alpaka/queue/Properties.hpp>
+
 #include <map>
 #include <mutex>
 #include <memory>
@@ -283,6 +286,29 @@ namespace alpaka
                 dev::DevCpu>
             {
                 using type = pltf::PltfCpu;
+            };
+        }
+    }
+    namespace queue
+    {
+        namespace traits
+        {
+            template<>
+            struct QueueType<
+                dev::DevCpu,
+                queue::Blocking
+            >
+            {
+                using type = queue::QueueCpuBlocking;
+            };
+
+            template<>
+            struct QueueType<
+                dev::DevCpu,
+                queue::NonBlocking
+            >
+            {
+                using type = queue::QueueCpuNonBlocking;
             };
         }
     }

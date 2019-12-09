@@ -40,6 +40,14 @@ namespace alpaka
                 typename TQueue,
                 typename TSfinae = void>
             struct Empty;
+
+            //#############################################################################
+            //! Queue for an accelerator
+            template<
+                typename TAcc,
+                typename TProperty,
+                typename TSfinae = void>
+            struct QueueType;
         }
 
         //-----------------------------------------------------------------------------
@@ -78,5 +86,14 @@ namespace alpaka
                 ::empty(
                     queue);
         }
+
+        //-----------------------------------------------------------------------------
+        //! Queue based on the environment and a property
+        //
+        // Environment type can be a accelerator, device or a platform.
+        template<
+            typename TEnv,
+            typename TProperty>
+        using Queue = typename traits::QueueType<TEnv, TProperty>::type;
     }
 }

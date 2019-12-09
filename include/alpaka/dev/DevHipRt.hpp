@@ -22,6 +22,9 @@
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
+#include <alpaka/queue/Traits.hpp>
+#include <alpaka/queue/Properties.hpp>
+
 #include <alpaka/core/Hip.hpp>
 
 namespace alpaka
@@ -36,6 +39,12 @@ namespace alpaka
             struct GetDevByIdx;
         }
         class PltfHipRt;
+    }
+
+    namespace queue
+    {
+        class QueueHipRtBlocking;
+        class QueueHipRtNonBlocking;
     }
 
     namespace dev
@@ -251,6 +260,29 @@ namespace alpaka
                         dev.m_iDevice));
                     ALPAKA_HIP_RT_CHECK(hipDeviceSynchronize());
                 }
+            };
+        }
+    }
+    namespace queue
+    {
+        namespace traits
+        {
+            template<>
+            struct QueueType<
+                dev::DevHipRt,
+                queue::Blocking
+            >
+            {
+                using type = queue::QueueHipRtBlocking;
+            };
+
+            template<>
+            struct QueueType<
+                dev::DevHipRt,
+                queue::NonBlocking
+            >
+            {
+                using type = queue::QueueHipRtNonBlocking;
             };
         }
     }

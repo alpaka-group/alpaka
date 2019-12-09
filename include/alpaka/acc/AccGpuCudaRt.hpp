@@ -39,6 +39,7 @@
 
 // Implementation details.
 #include <alpaka/core/ClipCast.hpp>
+#include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Cuda.hpp>
 #include <alpaka/dev/DevCudaRt.hpp>
 
@@ -78,7 +79,8 @@ namespace alpaka
             public block::shared::st::BlockSharedMemStCudaBuiltIn,
             public block::sync::BlockSyncCudaBuiltIn,
             public rand::RandCuRand,
-            public time::TimeCudaBuiltIn
+            public time::TimeCudaBuiltIn,
+            public concepts::Implements<ConceptAcc, AccGpuCudaRt<TDim, TIdx>>
         {
         public:
             //-----------------------------------------------------------------------------
