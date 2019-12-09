@@ -90,7 +90,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Queue based on the environment and a property
         //
-        // Environment type can be a accelerator, device or a platform.
+        // \tparam TEnv Environment type, e.g.  accelerator, device or a platform.
+        //              queue::traits::QueueType must be specialized for TEnv
+        // \tparam TProperty Property to define the behavior of TEnv.
         template<
             typename TEnv,
             typename TProperty>
