@@ -30,14 +30,12 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The GPU CUDA block shared memory allocator.
-                class BlockSharedMemDynOmp4
+                class BlockSharedMemDynOmp4 : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynOmp4>
                 {
                     mutable std::array<char, 32<<10> m_mem; // ! static 32kB
                     std::size_t m_dynSize;
 
                 public:
-                    using BlockSharedMemDynBase = BlockSharedMemDynOmp4;
-
                     //-----------------------------------------------------------------------------
                     BlockSharedMemDynOmp4(size_t sizeBytes) : m_dynSize(sizeBytes) {}
                     //-----------------------------------------------------------------------------

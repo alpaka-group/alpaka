@@ -204,7 +204,7 @@ namespace alpaka
                                     }
 #endif
                                     meta::apply(
-                                        [&](TArgs ... args)
+                                        [&](typename std::decay<TArgs>::type const & ... args)
                                         {
                                             m_kernelFnObj(
                                                     acc,

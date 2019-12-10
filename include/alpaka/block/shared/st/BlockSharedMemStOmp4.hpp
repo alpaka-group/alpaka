@@ -31,14 +31,12 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The GPU CUDA block shared memory allocator.
-                class BlockSharedMemStOmp4
+                class BlockSharedMemStOmp4 : public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStOmp4>
                 {
                     mutable unsigned int m_allocdBytes = 0;
                     mutable char* m_mem;
 
                 public:
-                    using BlockSharedMemStBase = BlockSharedMemStOmp4;
-
                     //-----------------------------------------------------------------------------
                     BlockSharedMemStOmp4(char* mem) : m_mem(mem) {}
                     //-----------------------------------------------------------------------------
