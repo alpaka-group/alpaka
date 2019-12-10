@@ -20,6 +20,7 @@
 #include <alpaka/queue/QueueOmp4Blocking.hpp>
 
 #include <alpaka/core/Assert.hpp>
+#include <alpaka/core/Utility.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
@@ -139,15 +140,21 @@ namespace alpaka
                         TView & view,
                         std::uint8_t const & byte,
                         TExtent const & extent)
-                    -> kernel::TaskKernelCpuOmp4<
-                        TDim,
-                        typename idx::traits::IdxType<TExtent>::type,
-                        view::omp4::detail::MemSetKernel,
-                        std::uint8_t,
-                        std::uint8_t*,
-                        decltype(extent::getExtentVec(extent)),
-                        decltype(view::getPitchBytesVec(view))
-                        >
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                    -> decltype(
+                            kernel::createTaskKernel<acc::AccCpuOmp4<TDim,typename idx::traits::IdxType<TExtent>::type>>(
+                                workdiv::WorkDivMembers<TDim, typename idx::traits::IdxType<TExtent>::type>(
+                                    vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones(),
+                                    vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones(),
+                                    vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones()),
+                                view::omp4::detail::MemSetKernel(),
+                                byte,
+                                reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
+                                alpaka::core::declval<decltype(extent::getExtentVec(extent))&>(),
+                                alpaka::core::declval<decltype(view::getPitchBytesVec(view))&>()
+                            )
+                        )
+#endif
                     {
                         using Idx = typename idx::traits::IdxType<TExtent>::type;
                         auto pitch = view::getPitchBytesVec(view);

@@ -31,11 +31,9 @@ namespace alpaka
         template<
             typename TDim,
             typename TIdx>
-        class WorkDivOmp4BuiltIn
+        class WorkDivOmp4BuiltIn : public concepts::Implements<ConceptWorkDiv, WorkDivOmp4BuiltIn<TDim, TIdx>>
         {
         public:
-            using WorkDivBase = WorkDivOmp4BuiltIn;
-
             //-----------------------------------------------------------------------------
             WorkDivOmp4BuiltIn(
                 vec::Vec<TDim, TIdx> const & threadElemExtent,
