@@ -35,11 +35,9 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TIdx>
-            class IdxGbOmp4BuiltIn
+            class IdxGbOmp4BuiltIn : public concepts::Implements<ConceptIdxGb, IdxGbOmp4BuiltIn<TDim, TIdx>>
             {
             public:
-                using IdxGbBase = IdxGbOmp4BuiltIn;
-
                 //-----------------------------------------------------------------------------
                 IdxGbOmp4BuiltIn(const TIdx &teamOffset = static_cast<TIdx>(0u)) : m_teamOffset(teamOffset) {}
                 //-----------------------------------------------------------------------------

@@ -35,11 +35,9 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TIdx>
-            class IdxBtOmp4BuiltIn
+            class IdxBtOmp4BuiltIn : public concepts::Implements<ConceptIdxBt, IdxBtOmp4BuiltIn<TDim, TIdx>>
             {
             public:
-                using IdxBtBase = IdxBtOmp4BuiltIn;
-
                 //-----------------------------------------------------------------------------
                 IdxBtOmp4BuiltIn() = default;
                 //-----------------------------------------------------------------------------
