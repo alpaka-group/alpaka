@@ -21,6 +21,11 @@ environment requirements. Add flags to set the required compiler and linker flag
     -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu" \
     -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
   ```
+- clang/AOMP, target ppc64le:
+  ```
+    -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp=libomp -fopenmp-targets=ppc64le-pc-linux-gnu" \
+    -DCMAKE_EXE_LINKER_FLAGS="-fopenmp"
+  ```
 - clang, target nvptx:
   ```
     -DCMAKE_CXX_FLAGS="-fopenmp -fopenmp-targets=nvptx64-nvidia-cuda -O2" \
@@ -35,10 +40,13 @@ environment requirements. Add flags to set the required compiler and linker flag
   ```
     -DCMAKE_CXX_FLAGS="-foffload=nvptx-none -foffload=-lm -fno-lto"
   ```
+- XL, offload:
+  ```
+    -DCMAKE_CXX_FLAGS="-qoffload -qsmp -O2"
+  ```
 
 With clang 9, AOMP 0.7-4, use libc++ instead of libstdc++, the latter will make
 the compiler crash: https://bugs.llvm.org/show_bug.cgi?id=43771 .
-
 
 ## Test target
 
@@ -63,8 +71,8 @@ incorrect!` at the end.
 ||AOMP 0.7-4|ok|x86|omp_target_alloc() returns 0|
 ||AOMP 0.7-4|linker: multiple def. of gpuHeap (1)|amdhsa|--|
 ||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
-||LLVM 9.0 (claix)|omp tuple warning| x86|ok|
-||LLVM 9.0 (claix)|ok (with -O2, else 2)| nvptx|ok|
+||LLVM 9.0 (RWTH Aachen)|omp tuple warning| x86|ok|
+||LLVM 9.0 (RWTH Aachen)|ok (with -O2, else 2)| nvptx|ok|
 
 #### errors:
 1. error: Linking globals named 'gpuHeap': symbol multiply defined!
@@ -86,8 +94,29 @@ Run `make` and upon success `ctest`.
 |test|compiler|compile status|target|run status|
 |---|---|---|---|---|
 |ALL|
-||LLVM 9.0 (claix)|ok|x86|pass|
-||LLVM 9.0 (claix)|ok (with -O2, else 2)| nvptx|omp_target_alloc() fails [1]|
+||LLVM 9.0 (RWTH Aachen)|ok|x86|pass|
+||LLVM 9.0 (RWTH Aachen)|ok (with -O2, else 2)| nvptx|omp_target_alloc() fails [1]|
+||LLVM 9.0.0-1 (Summit)|ok|ppc64le|fail [3]|
+||LLVM 9.0.0-1 (Summit)|fail [4]|nvptx|--|
+||LLVM 9.0.0-2 (Summit)|ok|ppc64le|fail [3]|
+||LLVM 9.0.0-2 (Summit)|fail [4]|nvptx|--|
+||GCC 9.1.0 (Summit)|fail [5]|nvptx|--|
 
 #### errors:
 1. omp_target_alloc() always returns NULL with nvptx backend.
+2. ptxas /tmp/yn622878/login-g_6260/main-d4ddfc.s, line 6798; warning : Instruction 'vote' without '.sync' is deprecated since PTX ISA version 6.0 and will be discontinued in a future PTX ISA version
+    [100%] Linking CXX executable vectorAdd
+    nvlink error   : Undefined reference to '__assert_fail' in '/tmp/yn622878/login-g_6260/main-83ce50.cubin'
+    clang-9: error: nvlink command failed with exit code 255 (use -v to see invocation)
+3. Libomptarget fatal error 1: failure of target construct while offloading is mandatory
+4. nvlink error   : Undefined reference to '_ZNSt17integral_constantIbLb0EE5valueE' in '/tmp/vectorAdd-016d41.cubin'
+   * this maybe because of libstd++, need LLVM with libc++
+5. /autofs/nccs-svm1_home1/kelling/checkout/alpaka/include/alpaka/kernel/TaskKernelCpuOmp4.hpp: In member function 'void alpaka::kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs>::operator()() const [with TDim = std::integral_constant<long unsigned int, 1>; TIdx = long unsigned int; TKernelFnObj = VectorAddKernel; TArgs = {unsigned int*, unsigned int*, unsigned int*, const long unsigned int&}]':
+	/autofs/nccs-svm1_home1/kelling/checkout/alpaka/include/alpaka/kernel/TaskKernelCpuOmp4.hpp:157:80: error: 'threadElemExtent' referenced in target region does not have a mappable type
+	  157 |                         printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
+		  |                                                                ~~~~~~~~~~~~~~~~^
+	/autofs/nccs-svm1_home1/kelling/checkout/alpaka/include/alpaka/kernel/TaskKernelCpuOmp4.hpp:161:57: error: 'gridBlockExtent' referenced in target region does not have a mappable type
+	  161 |                             acc::AccCpuOmp4<TDim, TIdx> acc(
+		  |                                                         ^~~
+	/autofs/nccs-svm1_home1/kelling/checkout/alpaka/include/alpaka/kernel/TaskKernelCpuOmp4.hpp:161:57: error: 'blockThreadExtent' referenced in target region does not have a mappable type
+  * Type Vec<...> should be mappable.
