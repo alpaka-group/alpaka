@@ -136,7 +136,7 @@ namespace alpaka
 
         private:
             // getIdx
-            vec::Vec<TDim, TIdx> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
+            vec::Vec<TDim, TIdx> m_gridBlockIdx;    //!< The index of the currently executed block.
         };
     }
 
