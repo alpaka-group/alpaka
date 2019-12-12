@@ -109,6 +109,8 @@ Run `make` and upon success `ctest`.
     nvlink error   : Undefined reference to '__assert_fail' in '/tmp/yn622878/login-g_6260/main-83ce50.cubin'
     clang-9: error: nvlink command failed with exit code 255 (use -v to see invocation)
 3. Libomptarget fatal error 1: failure of target construct while offloading is mandatory
+  * Triggered by muteable member in acc/AccCpuOmp4.hpp:133, instanciation at kernel/TaskKernelCpuOmp4.hpp:282 .
+  * Triggered by call to meta::apply(...) at kernel/TaskKernelCpuOmp4.hpp:335, even with empty lambda, no clojure, tuple<int,int> and no parameter pack.
 4. nvlink error   : Undefined reference to '_ZNSt17integral_constantIbLb0EE5valueE' in '/tmp/vectorAdd-016d41.cubin'
    * this maybe because of libstd++, need LLVM with libc++
 5. /autofs/nccs-svm1_home1/kelling/checkout/alpaka/include/alpaka/kernel/TaskKernelCpuOmp4.hpp: In member function 'void alpaka::kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs>::operator()() const [with TDim = std::integral_constant<long unsigned int, 1>; TIdx = long unsigned int; TKernelFnObj = VectorAddKernel; TArgs = {unsigned int*, unsigned int*, unsigned int*, const long unsigned int&}]':
