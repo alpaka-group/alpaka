@@ -42,7 +42,11 @@ environment requirements. Add flags to set the required compiler and linker flag
   ```
 - XL, offload:
   ```
-    -DCMAKE_CXX_FLAGS="-qoffload -qsmp -O2"
+    -DCMAKE_CXX_FLAGS="-qoffload -qsmp"
+  ```
+- XL, no offload:
+  ```
+    -DCMAKE_CXX_FLAGS=""
   ```
 
 With clang 9, AOMP 0.7-4, use libc++ instead of libstdc++, the latter will make
@@ -73,7 +77,8 @@ incorrect!` at the end.
 ||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
 ||LLVM 9.0 (RWTH Aachen)|omp tuple warning| x86|ok|
 ||LLVM 9.0 (RWTH Aachen)|ok (with -O2, else 2)| nvptx|ok|
-||XL 16.1.1-5 (Summit)|ok| ppc64le|ok (num_threads workaround) (3)|
+||XL 16.1.1-5 (Summit)|ok| nvptx|ok (num_threads workaround) (3)|
+||XL 16.1.1-5 (Summit)|ok| ppc64le| sigsegv (device mem alloc'son GPU)|
 
 #### errors:
 1. error: Linking globals named 'gpuHeap': symbol multiply defined!
@@ -107,6 +112,7 @@ Run `make` and upon success `ctest`.
 ||LLVM 9.0.0-2 (Summit)|ok|ppc64le|fail [3]|
 ||LLVM 9.0.0-2 (Summit)|fail [4]|nvptx|--|
 ||GCC 9.1.0 (Summit)|fail [5]|nvptx|--|
+||XL 16.1.1-5 (Summit)|no-halt [6]|nvptx|--|
 ||XL 16.1.1-5 (Summit)|no-halt [6]|ppc64le|--|
 
 #### errors:
