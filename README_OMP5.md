@@ -73,6 +73,7 @@ incorrect!` at the end.
 ||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
 ||LLVM 9.0 (RWTH Aachen)|omp tuple warning| x86|ok|
 ||LLVM 9.0 (RWTH Aachen)|ok (with -O2, else 2)| nvptx|ok|
+||XL 16.1.1-5 (Summit)|ok| ppc64le|ok (num_threads workaround) (3)|
 
 #### errors:
 1. error: Linking globals named 'gpuHeap': symbol multiply defined!
@@ -86,6 +87,11 @@ incorrect!` at the end.
     [100%] Linking CXX executable vectorAdd
     nvlink error   : Undefined reference to '__assert_fail' in '/tmp/yn622878/login-g_6260/main-83ce50.cubin'
     clang-9: error: nvlink command failed with exit code 255 (use -v to see invocation)
+3. IBM XL: When setting num_threads, either in #pragma omp parallel or via
+   omp_set_num_threads to any value the runtime only executes one thread per
+   team. Workaround is to not do jthat with XL, which leads to $OMP_NUM_THREADS
+   being run per team. Minimal example:
+   https://github.com/jkelling/omp5tests/blob/master/parallel/parallel.cpp
 
 ## Integration and Unit Tests
 
@@ -101,6 +107,7 @@ Run `make` and upon success `ctest`.
 ||LLVM 9.0.0-2 (Summit)|ok|ppc64le|fail [3]|
 ||LLVM 9.0.0-2 (Summit)|fail [4]|nvptx|--|
 ||GCC 9.1.0 (Summit)|fail [5]|nvptx|--|
+||XL 16.1.1-5 (Summit)|no-halt [6]|ppc64le|--|
 
 #### errors:
 1. omp_target_alloc() always returns NULL with nvptx backend.
@@ -122,3 +129,10 @@ Run `make` and upon success `ctest`.
 		  |                                                         ^~~
 	/autofs/nccs-svm1_home1/kelling/checkout/alpaka/include/alpaka/kernel/TaskKernelCpuOmp4.hpp:161:57: error: 'blockThreadExtent' referenced in target region does not have a mappable type
   * Type Vec<...> should be mappable.
+6. XL does not appear to terminate when compiling targets like `blockShared` in
+   which tests are executed through the fixture in
+   ~alpaka/test/common/include/alpaka/test/KernelExecutionFixture.hpp .
+   Removing the call
+   alpaka/test/unit/block/shared/src/BlockSharedMemDyn.cpp:92-94 yields finite
+   compilation time for BlockSharedMemDyn.cpp.o . XL is extremely slow
+   compiling code using the test framework catch2 used in Alpaka.
