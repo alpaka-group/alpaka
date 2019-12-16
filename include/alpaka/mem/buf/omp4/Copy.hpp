@@ -144,12 +144,6 @@ namespace alpaka
                                 m_extent(VecFromDimTrait<
                                         TDim, size_t, TExtent,
                                         MyGetExtent>::vecFromDimTrait(extent)),
-                                // m_dstExtent(VecFromDimTrait<
-                                //         TDim, size_t, TViewDst,
-                                //         MyGetExtent>::vecFromDimTrait(viewDst)),
-                                // m_srcExtent(VecFromDimTrait<
-                                //         TDim, size_t, TViewSrc,
-                                //         MyGetExtent>::vecFromDimTrait(viewSrc)),
                                 m_dstPitchBytes(VecFromDimTrait<
                                         TDim, size_t, TViewDst,
                                         MyGetPitch>::vecFromDimTrait(viewDst)),
@@ -165,8 +159,19 @@ namespace alpaka
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            ALPAKA_ASSERT(m_extent[0] <= m_dstExtent[0]);
-                            ALPAKA_ASSERT(m_extent[0] <= m_srcExtent[0]);
+                            const auto dstExtent(VecFromDimTrait<
+                                    TDim, size_t, TViewDst,
+                                    MyGetExtent>::vecFromDimTrait(viewDst));
+                            const auto srcExtent(VecFromDimTrait<
+                                    TDim, size_t, TViewSrc,
+                                    MyGetExtent>::vecFromDimTrait(viewSrc));
+                            for(auto i = static_cast<decltype(TDim::value)>(0u); i < TDim::value; ++i)
+                            {
+                                ALPAKA_ASSERT(m_extent[i] <= dstExtent[i]);
+                                ALPAKA_ASSERT(m_extent[i] <= srcExtent[i]);
+                            }
+                            std::cout << "TaskCopyOmp4<" << TDim::value << ",...>::ctor\tdstExtent="
+                            << alpaka::extent::getExtentVec(viewDst) << ", m_dstExtent=" << dstExtent << std::endl;
 #endif
                         }
 
