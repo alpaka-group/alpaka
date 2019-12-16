@@ -420,15 +420,9 @@ namespace alpaka
                             size *= static_cast<std::size_t>(extent[a]);
 
                         void * memPtr = omp_target_alloc(size, dev.m_iDevice);
-                        std::cerr << "alloc'd " << TDim::value << "D device ptr: " << memPtr << " on device " << dev.m_iDevice
-                            << " size " << size << " = " << static_cast<std::size_t>(extent::getExtentVec(extent).prod())*sizeof(TElem) << '\n';
-
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << __func__
-                            << " ew: " << volume/sizeof(TElem)
-                            << " ewb: " << volume
-                            << " ptr: " << memPtr
-                            << std::endl;
+                        std::cout << __func__ << "alloc'd " << TDim::value << "D device ptr: " << memPtr << " on device " << dev.m_iDevice
+                            << " size " << size << " = " << static_cast<std::size_t>(extent::getExtentVec(extent).prod())*sizeof(TElem) << '\n';
 #endif
                         return
                             mem::buf::BufOmp4<TElem, TDim, TIdx>(
