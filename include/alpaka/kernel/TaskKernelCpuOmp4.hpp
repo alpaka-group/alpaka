@@ -190,8 +190,8 @@ namespace alpaka
                                 // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                                 // Therefore we use 'omp parallel' with the specified number of threads in a block.
 #ifndef __ibmxl_vrm__
-								// setting num_threads to any value leads XL to run only one thread per team
-								omp_set_num_threads(blockThreadCount);
+                                // setting num_threads to any value leads XL to run only one thread per team
+                                omp_set_num_threads(static_cast<int>(blockThreadCount));
 #endif
                                 #pragma omp parallel
                                 {
