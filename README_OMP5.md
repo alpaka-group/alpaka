@@ -52,7 +52,7 @@ environment requirements. Add flags to set the required compiler and linker flag
 With clang 9, AOMP 0.7-4, use libc++ instead of libstdc++, the latter will make
 the compiler crash: https://bugs.llvm.org/show_bug.cgi?id=43771 .
 
-## Test target
+## 1. Test target
 
 ```
 make vectorAdd
@@ -63,7 +63,7 @@ correct!` otherwise it will print items where the result from the offload code
 disagrees with the expected result and print `Execution results
 incorrect!` at the end.
 
-## Examples compilation status
+## 2. Examples compilation status
 
 ### branch omp4
 
@@ -113,7 +113,7 @@ incorrect!` at the end.
       include/alpaka/kernel/TaskKernelCpuOmp4.hpp:161:57: error: 'gridBlockExtent' referenced in target region does not have a mappable type
    ```
 
-## Integration and Unit Tests
+## 3. Integration and Unit Tests
 
 Run `make` and upon success `ctest`.
 
