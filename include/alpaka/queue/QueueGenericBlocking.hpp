@@ -10,9 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Unused.hpp>
-#include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/queue/cpu/ICpuQueue.hpp>
-#include <alpaka/queue/QueueGenericBlocking.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -26,7 +23,8 @@ namespace alpaka
 {
     namespace event
     {
-        using EventCpu = EventGeneric<dev::DevCpu>;
+        template<typename TDev>
+        class EventGeneric;
     }
 }
 
@@ -34,9 +32,7 @@ namespace alpaka
 {
     namespace queue
     {
-        using QueueCpuBlocking = QueueGenericBlocking<dev::DevCpu, cpu::ICpuQueue>;
-#if 0
-        namespace cpu
+        namespace generic
         {
             namespace detail
             {
@@ -48,41 +44,44 @@ namespace alpaka
 #endif
                 //#############################################################################
                 //! The CPU device queue implementation.
-                class QueueCpuBlockingImpl final : public cpu::ICpuQueue
+                template<
+                    typename TDev,
+                    typename TIFace>
+                class QueueGenericBlockingImpl final : public TIFace
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    QueueCpuBlockingImpl(
-                        dev::DevCpu const & dev) noexcept :
+                    QueueGenericBlockingImpl(
+                        TDev const & dev) noexcept :
                             m_dev(dev),
                             m_bCurrentlyExecutingTask(false)
                     {}
                     //-----------------------------------------------------------------------------
-                    QueueCpuBlockingImpl(QueueCpuBlockingImpl const &) = delete;
+                    QueueGenericBlockingImpl(QueueGenericBlockingImpl<TDev, TIFace> const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueCpuBlockingImpl(QueueCpuBlockingImpl &&) = delete;
+                    QueueGenericBlockingImpl(QueueGenericBlockingImpl<TDev, TIFace> &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuBlockingImpl const &) -> QueueCpuBlockingImpl & = delete;
+                    auto operator=(QueueGenericBlockingImpl<TDev, TIFace> const &) -> QueueGenericBlockingImpl<TDev, TIFace> & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuBlockingImpl &&) -> QueueCpuBlockingImpl & = delete;
+                    auto operator=(QueueGenericBlockingImpl<TDev, TIFace> &&) -> QueueGenericBlockingImpl<TDev, TIFace> & = delete;
 
                     //-----------------------------------------------------------------------------
-                    void enqueue(event::EventCpu & ev) final
+                    void enqueue(event::EventGeneric<TDev> & ev) final
                     {
                         queue::enqueue(*this, ev);
                     }
 
                     //-----------------------------------------------------------------------------
-                    void wait(event::EventCpu const & ev) final
+                    void wait(event::EventGeneric<TDev> const & ev) final
                     {
                         wait::wait(*this, ev);
                     }
 
                 public:
-                    dev::DevCpu const m_dev;            //!< The device this queue is bound to.
+                    TDev const m_dev;            //!< The device this queue is bound to.
                     std::mutex mutable m_mutex;
                     std::atomic<bool> m_bCurrentlyExecutingTask;
                 };
@@ -91,41 +90,44 @@ namespace alpaka
 
         //#############################################################################
         //! The CPU device queue.
-        class QueueCpuBlocking final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueCpuBlocking>
+        template<
+            typename TDev,
+            typename TIFace>
+        class QueueGenericBlocking final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericBlocking<TDev, TIFace>>
         {
         public:
             //-----------------------------------------------------------------------------
-            QueueCpuBlocking(
-                dev::DevCpu const & dev) :
-                    m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuBlockingImpl>(dev))
+            QueueGenericBlocking(
+                TDev const & dev) :
+                    m_spQueueImpl(std::make_shared<generic::detail::QueueGenericBlockingImpl<TDev, TIFace>>(dev))
             {
                 dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            QueueCpuBlocking(QueueCpuBlocking const &) = default;
+            QueueGenericBlocking(QueueGenericBlocking<TDev, TIFace> const &) = default;
             //-----------------------------------------------------------------------------
-            QueueCpuBlocking(QueueCpuBlocking &&) = default;
+            QueueGenericBlocking(QueueGenericBlocking<TDev, TIFace> &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueCpuBlocking const &) -> QueueCpuBlocking & = default;
+            auto operator=(QueueGenericBlocking<TDev, TIFace> const &) -> QueueGenericBlocking<TDev, TIFace> & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueCpuBlocking &&) -> QueueCpuBlocking & = default;
+            auto operator=(QueueGenericBlocking<TDev, TIFace> &&) -> QueueGenericBlocking<TDev, TIFace> & = default;
             //-----------------------------------------------------------------------------
-            auto operator==(QueueCpuBlocking const & rhs) const
+            auto operator==(QueueGenericBlocking<TDev, TIFace> const & rhs) const
             -> bool
             {
                 return (m_spQueueImpl == rhs.m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            auto operator!=(QueueCpuBlocking const & rhs) const
+            auto operator!=(QueueGenericBlocking<TDev, TIFace> const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ~QueueCpuBlocking() = default;
+            ~QueueGenericBlocking() = default;
 
         public:
-            std::shared_ptr<cpu::detail::QueueCpuBlockingImpl> m_spQueueImpl;
+            std::shared_ptr<generic::detail::QueueGenericBlockingImpl<TDev, TIFace>> m_spQueueImpl;
         };
     }
 
@@ -135,22 +137,26 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU blocking device queue device type trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct DevType<
-                queue::QueueCpuBlocking>
+                queue::QueueGenericBlocking<TDev, TIFace>>
             {
-                using type = dev::DevCpu;
+                using type = TDev;
             };
             //#############################################################################
             //! The CPU blocking device queue device get trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct GetDev<
-                queue::QueueCpuBlocking>
+                queue::QueueGenericBlocking<TDev, TIFace>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    queue::QueueCpuBlocking const & queue)
-                -> dev::DevCpu
+                    queue::QueueGenericBlocking<TDev, TIFace> const & queue)
+                -> TDev
                 {
                     return queue.m_spQueueImpl->m_dev;
                 }
@@ -163,11 +169,13 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU blocking device queue event type trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct EventType<
-                queue::QueueCpuBlocking>
+                queue::QueueGenericBlocking<TDev, TIFace>>
             {
-                using type = event::EventCpu;
+                using type = event::EventGeneric<TDev>;
             };
         }
     }
@@ -179,14 +187,16 @@ namespace alpaka
             //! The CPU blocking device queue enqueue trait specialization.
             //! This default implementation for all tasks directly invokes the function call operator of the task.
             template<
+                typename TDev,
+                typename TIFace,
                 typename TTask>
             struct Enqueue<
-                queue::QueueCpuBlocking,
+                queue::QueueGenericBlocking<TDev, TIFace>,
                 TTask>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCpuBlocking & queue,
+                    queue::QueueGenericBlocking<TDev, TIFace> & queue,
                     TTask const & task)
                 -> void
                 {
@@ -201,13 +211,15 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU blocking device queue test trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct Empty<
-                queue::QueueCpuBlocking>
+                queue::QueueGenericBlocking<TDev, TIFace>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
-                    queue::QueueCpuBlocking const & queue)
+                    queue::QueueGenericBlocking<TDev, TIFace> const & queue)
                 -> bool
                 {
                     return !queue.m_spQueueImpl->m_bCurrentlyExecutingTask;
@@ -224,21 +236,22 @@ namespace alpaka
             //! The CPU blocking device queue thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct CurrentThreadWaitFor<
-                queue::QueueCpuBlocking>
+                queue::QueueGenericBlocking<TDev, TIFace>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    queue::QueueCpuBlocking const & queue)
+                    queue::QueueGenericBlocking<TDev, TIFace> const & queue)
                 -> void
                 {
                     std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
                 }
             };
         }
-#endif
     }
 }
 
-#include <alpaka/event/EventCpu.hpp>
+#include <alpaka/event/EventGeneric.hpp>

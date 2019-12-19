@@ -9,10 +9,6 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/queue/cpu/ICpuQueue.hpp>
-#include <alpaka/queue/QueueGenericNonBlocking.hpp>
-
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
@@ -29,7 +25,8 @@ namespace alpaka
 {
     namespace event
     {
-        using EventCpu = EventGeneric<dev::DevCpu>;
+        template<typename TDev>
+        class EventGeneric;
     }
 }
 
@@ -37,9 +34,7 @@ namespace alpaka
 {
     namespace queue
     {
-        using QueueCpuNonBlocking = QueueGenericNonBlocking<dev::DevCpu, cpu::ICpuQueue>;
-#if 0
-        namespace cpu
+        namespace generic
         {
             namespace detail
             {
@@ -51,7 +46,10 @@ namespace alpaka
 #endif
                 //#############################################################################
                 //! The CPU device queue implementation.
-                class QueueCpuNonBlockingImpl final : public cpu::ICpuQueue
+                template<
+                    typename TDev,
+                    typename TIFace>
+                class QueueGenericNonBlockingImpl final : public TIFace
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
@@ -69,34 +67,34 @@ namespace alpaka
 
                 public:
                     //-----------------------------------------------------------------------------
-                    QueueCpuNonBlockingImpl(
-                        dev::DevCpu const & dev) :
+                    QueueGenericNonBlockingImpl(
+                        TDev const & dev) :
                             m_dev(dev),
                             m_workerThread(1u)
                     {}
                     //-----------------------------------------------------------------------------
-                    QueueCpuNonBlockingImpl(QueueCpuNonBlockingImpl const &) = delete;
+                    QueueGenericNonBlockingImpl(QueueGenericNonBlockingImpl<TDev, TIFace> const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueCpuNonBlockingImpl(QueueCpuNonBlockingImpl &&) = delete;
+                    QueueGenericNonBlockingImpl(QueueGenericNonBlockingImpl<TDev, TIFace> &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuNonBlockingImpl const &) -> QueueCpuNonBlockingImpl & = delete;
+                    auto operator=(QueueGenericNonBlockingImpl<TDev, TIFace> const &) -> QueueGenericNonBlockingImpl<TDev, TIFace> & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueCpuNonBlockingImpl &&) -> QueueCpuNonBlockingImpl & = delete;
+                    auto operator=(QueueGenericNonBlockingImpl<TDev, TIFace> &&) -> QueueGenericNonBlockingImpl<TDev, TIFace> & = delete;
 
                     //-----------------------------------------------------------------------------
-                    void enqueue(event::EventCpu & ev) final
+                    void enqueue(event::EventGeneric<TDev> & ev) final
                     {
                         queue::enqueue(*this, ev);
                     }
 
                     //-----------------------------------------------------------------------------
-                    void wait(event::EventCpu const & ev) final
+                    void wait(event::EventGeneric<TDev> const & ev) final
                     {
                         wait::wait(*this, ev);
                     }
 
                 public:
-                    dev::DevCpu const m_dev;            //!< The device this queue is bound to.
+                    TDev const m_dev;            //!< The device this queue is bound to.
 
                     ThreadPool m_workerThread;
                 };
@@ -105,41 +103,44 @@ namespace alpaka
 
         //#############################################################################
         //! The CPU device queue.
-        class QueueCpuNonBlocking final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueCpuNonBlocking>
+        template<
+            typename TDev,
+            typename TIFace>
+        class QueueGenericNonBlocking final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericNonBlocking<TDev, TIFace>>
         {
         public:
             //-----------------------------------------------------------------------------
-            QueueCpuNonBlocking(
-                dev::DevCpu const & dev) :
-                    m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuNonBlockingImpl>(dev))
+            QueueGenericNonBlocking(
+                TDev const & dev) :
+                    m_spQueueImpl(std::make_shared<generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace>>(dev))
             {
                 dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            QueueCpuNonBlocking(QueueCpuNonBlocking const &) = default;
+            QueueGenericNonBlocking(QueueGenericNonBlocking<TDev, TIFace> const &) = default;
             //-----------------------------------------------------------------------------
-            QueueCpuNonBlocking(QueueCpuNonBlocking &&) = default;
+            QueueGenericNonBlocking(QueueGenericNonBlocking<TDev, TIFace> &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueCpuNonBlocking const &) -> QueueCpuNonBlocking & = default;
+            auto operator=(QueueGenericNonBlocking<TDev, TIFace> const &) -> QueueGenericNonBlocking<TDev, TIFace> & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueCpuNonBlocking &&) -> QueueCpuNonBlocking & = default;
+            auto operator=(QueueGenericNonBlocking<TDev, TIFace> &&) -> QueueGenericNonBlocking<TDev, TIFace> & = default;
             //-----------------------------------------------------------------------------
-            auto operator==(QueueCpuNonBlocking const & rhs) const
+            auto operator==(QueueGenericNonBlocking<TDev, TIFace> const & rhs) const
             -> bool
             {
                 return (m_spQueueImpl == rhs.m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            auto operator!=(QueueCpuNonBlocking const & rhs) const
+            auto operator!=(QueueGenericNonBlocking<TDev, TIFace> const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ~QueueCpuNonBlocking() = default;
+            ~QueueGenericNonBlocking() = default;
 
         public:
-            std::shared_ptr<cpu::detail::QueueCpuNonBlockingImpl> m_spQueueImpl;
+            std::shared_ptr<generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace>> m_spQueueImpl;
         };
     }
 
@@ -149,22 +150,26 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU non-blocking device queue device type trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct DevType<
-                queue::QueueCpuNonBlocking>
+                queue::QueueGenericNonBlocking<TDev, TIFace>>
             {
-                using type = dev::DevCpu;
+                using type = TDev;
             };
             //#############################################################################
             //! The CPU non-blocking device queue device get trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct GetDev<
-                queue::QueueCpuNonBlocking>
+                queue::QueueGenericNonBlocking<TDev, TIFace>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    queue::QueueCpuNonBlocking const & queue)
-                -> dev::DevCpu
+                    queue::QueueGenericNonBlocking<TDev, TIFace> const & queue)
+                -> TDev
                 {
                     return queue.m_spQueueImpl->m_dev;
                 }
@@ -177,11 +182,13 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU non-blocking device queue event type trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct EventType<
-                queue::QueueCpuNonBlocking>
+                queue::QueueGenericNonBlocking<TDev, TIFace>>
             {
-                using type = event::EventCpu;
+                using type = event::EventGeneric<TDev>;
             };
         }
     }
@@ -193,18 +200,20 @@ namespace alpaka
             //! The CPU non-blocking device queue enqueue trait specialization.
             //! This default implementation for all tasks directly invokes the function call operator of the task.
             template<
+                typename TDev,
+                typename TIFace,
                 typename TTask>
             struct Enqueue<
-                queue::QueueCpuNonBlocking,
+                queue::QueueGenericNonBlocking<TDev, TIFace>,
                 TTask>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    queue::QueueCpuNonBlocking & queue,
+                    queue::QueueGenericNonBlocking<TDev, TIFace> & queue,
                     TTask const & task)
 #else
-                    queue::QueueCpuNonBlocking &,
+                    queue::QueueGenericNonBlocking<TDev, TIFace> &,
                     TTask const &)
 #endif
                 -> void
@@ -218,21 +227,22 @@ namespace alpaka
             };
             //#############################################################################
             //! The CPU non-blocking device queue test trait specialization.
-            template<>
+            template<
+                typename TDev,
+                typename TIFace>
             struct Empty<
-                queue::QueueCpuNonBlocking>
+                queue::QueueGenericNonBlocking<TDev, TIFace>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
-                    queue::QueueCpuNonBlocking const & queue)
+                    queue::QueueGenericNonBlocking<TDev, TIFace> const & queue)
                 -> bool
                 {
                     return queue.m_spQueueImpl->m_workerThread.isIdle();
                 }
             };
         }
-#endif
     }
 }
 
-#include <alpaka/event/EventCpu.hpp>
+#include <alpaka/event/EventGeneric.hpp>
