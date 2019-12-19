@@ -19,6 +19,8 @@
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
+#include <alpaka/queue/Traits.hpp>
+#include <alpaka/queue/Properties.hpp>
 
 #include <alpaka/core/Omp4.hpp>
 
@@ -189,6 +191,32 @@ namespace alpaka
                 dev::DevOmp4>
             {
                 using type = pltf::PltfOmp4;
+            };
+        }
+    }
+    namespace queue
+    {
+        // class QueueOmp4NonBlocking;
+        class QueueOmp4Blocking;
+
+        namespace traits
+        {
+            template<>
+            struct QueueType<
+                dev::DevOmp4,
+                queue::Blocking
+            >
+            {
+                using type = queue::QueueOmp4Blocking;
+            };
+
+            template<>
+            struct QueueType<
+                dev::DevOmp4,
+                queue::NonBlocking
+            >
+            {
+                using type = queue::QueueOmp4Blocking; //! \todo non-blocking
             };
         }
     }
