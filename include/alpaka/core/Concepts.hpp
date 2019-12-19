@@ -25,20 +25,22 @@ namespace alpaka
         {
         };
 
+        //#############################################################################
+        //! Checks whether the concept is implemented by the given class
+        template<
+            typename TConcept,
+            typename TDerived>
+        struct ImplementsConcept {
+            template<
+                typename TBase>
+            static auto implements(Implements<TConcept, TBase>&) -> std::true_type;
+            static auto implements(...) -> std::false_type;
+
+            static constexpr auto value = decltype(implements(std::declval<TDerived&>()))::value;
+        };
+
         namespace detail
         {
-            template<
-                typename TConcept,
-                typename TDerived>
-            struct ImplementsConcept {
-                template<
-                    typename TBase>
-                static auto implements(Implements<TConcept, TBase>&) -> std::true_type;
-                static auto implements(...) -> std::false_type;
-
-                static constexpr auto value = decltype(implements(std::declval<TDerived&>()))::value;
-            };
-
             //#############################################################################
             //! Returns the type that implements the given concept in the inheritance hierarchy.
             template<

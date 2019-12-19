@@ -34,6 +34,7 @@
 
 // Implementation details.
 #include <alpaka/core/ClipCast.hpp>
+#include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Fibers.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
@@ -79,7 +80,8 @@ namespace alpaka
             public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncBarrierFiber<TIdx>,
             public rand::RandStdLib,
-            public time::TimeStdLib
+            public time::TimeStdLib,
+            public concepts::Implements<ConceptAcc, AccCpuFibers<TDim, TIdx>>
         {
         public:
             // Partial specialization with the correct TDim and TIdx is not allowed.

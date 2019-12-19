@@ -38,6 +38,7 @@
 
 // Implementation details.
 #include <alpaka/core/ClipCast.hpp>
+#include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
@@ -81,7 +82,8 @@ namespace alpaka
             public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncBarrierOmp,
             public rand::RandStdLib,
-            public time::TimeOmp
+            public time::TimeOmp,
+            public concepts::Implements<ConceptAcc, AccCpuOmp4<TDim, TIdx>>
         {
         public:
             // Partial specialization with the correct TDim and TIdx is not allowed.

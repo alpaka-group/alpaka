@@ -193,6 +193,7 @@
 #include <alpaka/queue/QueueCpuNonBlocking.hpp>
 #include <alpaka/queue/QueueCpuBlocking.hpp>
 #include <alpaka/queue/Traits.hpp>
+#include <alpaka/queue/Properties.hpp>
 //-----------------------------------------------------------------------------
 // time
 #include <alpaka/time/Traits.hpp>
