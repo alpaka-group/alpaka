@@ -43,8 +43,8 @@
      id="namedview11118"
      showgrid="false"
      inkscape:zoom="1.6935207"
-     inkscape:cx="154.01728"
-     inkscape:cy="746.52118"
+     inkscape:cx="431.29848"
+     inkscape:cy="535.92444"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -5561,45 +5561,6 @@
        d="M 364.992038 35.804751 L 364.992038 0.00228209 L 0.000861166 0.00228209 L 0.000861166 35.804751 Z M 364.992038 35.804751 "
        transform="matrix(0.70875,0,0,0.70875,198.776733,431.580414)"
        id="path10137" />
-    <g
-       style="fill:rgb(100%,100%,100%);fill-opacity:1;"
-       id="g10153">
-      <use
-         xlink:href="#glyph0-18"
-         x="309.722656"
-         y="447.714844"
-         id="use10139" />
-      <use
-         xlink:href="#glyph0-8"
-         x="316.547144"
-         y="447.714844"
-         id="use10141" />
-      <use
-         xlink:href="#glyph0-11"
-         x="321.802783"
-         y="447.714844"
-         id="use10143" />
-      <use
-         xlink:href="#glyph0-16"
-         x="327.57522"
-         y="447.714844"
-         id="use10145" />
-      <use
-         xlink:href="#glyph0-5"
-         x="333.347657"
-         y="447.714844"
-         id="use10147" />
-      <use
-         xlink:href="#glyph0-6"
-         x="339.650733"
-         y="447.714844"
-         id="use10149" />
-      <use
-         xlink:href="#glyph0-14"
-         x="342.797657"
-         y="447.714844"
-         id="use10151" />
-    </g>
     <path
        style="fill-rule:evenodd;fill:rgb(51.372549%,70.196078%,89.019608%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:10;"
        d="M 117.74041 35.804751 L 117.74041 0.00228209 L -0.000990341 0.00228209 L -0.000990341 35.804751 Z M 117.74041 35.804751 "
@@ -5664,45 +5625,6 @@
        d="M 364.844025 35.805138 L 364.844025 0.00266962 L 0.00165774 0.00266962 L 0.00165774 35.805138 Z M 364.844025 35.805138 "
        transform="matrix(0.70875,0,0,0.70875,198.881638,459.81842)"
        id="path10179" />
-    <g
-       style="fill:rgb(100%,100%,100%);fill-opacity:1;"
-       id="g10195">
-      <use
-         xlink:href="#glyph0-10"
-         x="310.433594"
-         y="476.066406"
-         id="use10181" />
-      <use
-         xlink:href="#glyph0-8"
-         x="318.305518"
-         y="476.066406"
-         id="use10183" />
-      <use
-         xlink:href="#glyph0-6"
-         x="323.561157"
-         y="476.066406"
-         id="use10185" />
-      <use
-         xlink:href="#glyph0-19"
-         x="326.708081"
-         y="476.066406"
-         id="use10187" />
-      <use
-         xlink:href="#glyph0-5"
-         x="332.480518"
-         y="476.066406"
-         id="use10189" />
-      <use
-         xlink:href="#glyph0-6"
-         x="338.783594"
-         y="476.066406"
-         id="use10191" />
-      <use
-         xlink:href="#glyph0-14"
-         x="341.930518"
-         y="476.066406"
-         id="use10193" />
-    </g>
     <path
        style="fill-rule:evenodd;fill:rgb(51.372549%,70.196078%,89.019608%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:10;"
        d="M 117.704155 35.805138 L 117.704155 0.00266962 L 0.00133481 0.00266962 L 0.00133481 35.805138 Z M 117.704155 35.805138 "
@@ -6323,79 +6245,6 @@
        d="M 59.998053 35.807894 L 59.998053 -0.0000861166 L 0.00025835 -0.0000861166 L 0.00025835 35.807894 Z M 59.998053 35.807894 "
        transform="matrix(0.70875,0,0,0.70875,414.941223,403.343811)"
        id="path10639" />
-    <g
-       style="fill:rgb(100%,100%,100%);fill-opacity:1;"
-       id="g10653">
-      <use
-         xlink:href="#glyph9-0"
-         x="419.578125"
-         y="413.695313"
-         id="use10641" />
-      <use
-         xlink:href="#glyph9-1"
-         x="426.222514"
-         y="413.695313"
-         id="use10643" />
-      <use
-         xlink:href="#glyph9-2"
-         x="429.286391"
-         y="413.695313"
-         id="use10645" />
-      <use
-         xlink:href="#glyph9-3"
-         x="434.906493"
-         y="413.695313"
-         id="use10647" />
-      <use
-         xlink:href="#glyph9-4"
-         x="443.087314"
-         y="413.695313"
-         id="use10649" />
-      <use
-         xlink:href="#glyph9-5"
-         x="445.643539"
-         y="413.695313"
-         id="use10651" />
-    </g>
-    <g
-       style="fill:rgb(100%,100%,100%);fill-opacity:1;"
-       id="g10669">
-      <use
-         xlink:href="#glyph37-0"
-         x="418.871094"
-         y="425.035156"
-         id="use10655" />
-      <use
-         xlink:href="#glyph37-1"
-         x="425.057654"
-         y="425.035156"
-         id="use10657" />
-      <use
-         xlink:href="#glyph37-2"
-         x="428.146405"
-         y="425.035156"
-         id="use10659" />
-      <use
-         xlink:href="#glyph37-3"
-         x="430.723383"
-         y="425.035156"
-         id="use10661" />
-      <use
-         xlink:href="#glyph37-4"
-         x="436.389113"
-         y="425.035156"
-         id="use10663" />
-      <use
-         xlink:href="#glyph37-5"
-         x="442.054843"
-         y="425.035156"
-         id="use10665" />
-      <use
-         xlink:href="#glyph37-6"
-         x="447.213329"
-         y="425.035156"
-         id="use10667" />
-    </g>
     <path
        style="fill-rule:evenodd;fill:rgb(50.588235%,72.941176%,80.784314%);fill-opacity:0.901961;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:10;"
        d="M 116.943315 35.808884 L 116.943315 0.000904225 L 0.00107646 0.000904225 L 0.00107646 35.808884 Z M 116.943315 35.808884 "
@@ -7119,30 +6968,6 @@
        d="M 76.926945 13.699002 L 76.926945 -0.00249738 L -0.0020668 -0.00249738 L -0.0020668 13.699002 Z M 76.926945 13.699002 "
        transform="matrix(0.70875,0,0,0.70875,133.481934,323.329895)"
        id="path10965" />
-    <g
-       style="fill:rgb(100%,100%,100%);fill-opacity:1;"
-       id="g10975">
-      <use
-         xlink:href="#glyph0-5"
-         x="150.253906"
-         y="331.480469"
-         id="use10967" />
-      <use
-         xlink:href="#glyph0-3"
-         x="156.556983"
-         y="331.480469"
-         id="use10969" />
-      <use
-         xlink:href="#glyph0-34"
-         x="159.182495"
-         y="331.480469"
-         id="use10971" />
-      <use
-         xlink:href="#glyph0-1"
-         x="163.907495"
-         y="331.480469"
-         id="use10973" />
-    </g>
     <path
        style="fill-rule:evenodd;fill:rgb(94.901961%,63.529412%,50.980392%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,76.470588%,48.627451%);stroke-opacity:1;stroke-miterlimit:10;"
        d="M 76.926708 13.788391 L 76.926708 -0.00129175 L -0.00230362 -0.00129175 L -0.00230362 13.788391 Z M 76.926708 13.788391 "
@@ -7172,30 +6997,6 @@
        d="M 76.929894 13.698011 L 76.929894 0.00202374 L 0.000882695 0.00202374 L 0.000882695 13.698011 Z M 76.929894 13.698011 "
        transform="matrix(0.70875,0,0,0.70875,133.456406,257.221222)"
        id="path10987" />
-    <g
-       style="fill:rgb(100%,100%,100%);fill-opacity:1;"
-       id="g10997">
-      <use
-         xlink:href="#glyph0-5"
-         x="150.253906"
-         y="265.566406"
-         id="use10989" />
-      <use
-         xlink:href="#glyph0-3"
-         x="156.556983"
-         y="265.566406"
-         id="use10991" />
-      <use
-         xlink:href="#glyph0-34"
-         x="159.182495"
-         y="265.566406"
-         id="use10993" />
-      <use
-         xlink:href="#glyph0-1"
-         x="163.907495"
-         y="265.566406"
-         id="use10995" />
-    </g>
     <path
        style="fill-rule:evenodd;fill:rgb(94.901961%,63.529412%,50.980392%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,76.470588%,48.627451%);stroke-opacity:1;stroke-miterlimit:10;"
        d="M 70.401867 9.59886 L 70.401867 -0.00210986 L -0.00157163 -0.00210986 L -0.00157163 9.59886 Z M 70.401867 9.59886 "
@@ -7225,30 +7026,6 @@
        d="M 70.401651 9.646569 L 70.401651 0.00150704 L -0.00178692 0.00150704 L -0.00178692 9.646569 Z M 70.401651 9.646569 "
        transform="matrix(0.70875,0,0,0.70875,135.512985,222.830963)"
        id="path11009" />
-    <g
-       style="fill:rgb(100%,100%,100%);fill-opacity:1;"
-       id="g11019">
-      <use
-         xlink:href="#glyph47-0"
-         x="151.671875"
-         y="230.128906"
-         id="use11011" />
-      <use
-         xlink:href="#glyph47-1"
-         x="157.344644"
-         y="230.128906"
-         id="use11013" />
-      <use
-         xlink:href="#glyph47-2"
-         x="159.707605"
-         y="230.128906"
-         id="use11015" />
-      <use
-         xlink:href="#glyph47-3"
-         x="163.960105"
-         y="230.128906"
-         id="use11017" />
-    </g>
     <path
        style="fill-rule:evenodd;fill:rgb(88.235294%,60.392157%,0%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(88.235294%,60.392157%,0%);stroke-opacity:1;stroke-miterlimit:10;"
        d="M 292.750517 28.998901 L 292.750519 -0.00242146 L -0.00192686 -0.00244356 L -0.00192905 28.998879 Z M 292.750517 28.998901 "
@@ -7632,5 +7409,93 @@
          x="486.80798"
          y="309.20752"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.75">AccGpuCudaRt</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="299.33441"
+       y="476.06265"
+       id="text2526"><tspan
+         sodipodi:role="line"
+         id="tspan2524"
+         x="299.33441"
+         y="476.06265"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.5px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">MathStdLib</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="298.69595"
+       y="448.33591"
+       id="text2526-9"><tspan
+         sodipodi:role="line"
+         id="tspan2524-3"
+         x="298.69595"
+         y="448.33591"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.5px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">RandStdLib</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="421.19025"
+       y="410.96387"
+       id="text2526-9-4"><tspan
+         sodipodi:role="line"
+         id="tspan2524-3-4"
+         x="421.19025"
+         y="410.96387"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">Atomic</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="422.19257"
+       y="418.88211"
+       id="text2526-9-4-2"><tspan
+         sodipodi:role="line"
+         id="tspan2524-3-4-5"
+         x="422.19257"
+         y="418.88211"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">StdLib</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="425.73904"
+       y="427.34244"
+       id="text2526-9-4-2-4"><tspan
+         sodipodi:role="line"
+         id="tspan2524-3-4-5-7"
+         x="425.73904"
+         y="427.34244"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">Lock</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="155.08113"
+       y="229.43451"
+       id="text2602"><tspan
+         sodipodi:role="line"
+         id="tspan2600"
+         x="155.08113"
+         y="229.43451"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">Idx</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="153.80452"
+       y="265.3833"
+       id="text2602-6"><tspan
+         sodipodi:role="line"
+         id="tspan2600-6"
+         x="153.80452"
+         y="265.3833"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">Idx</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:30px;line-height:1.25;font-family:'Linux Biolinum';-inkscape-font-specification:'Linux Biolinum';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.75"
+       x="153.67401"
+       y="330.9798"
+       id="text2602-6-1"><tspan
+         sodipodi:role="line"
+         id="tspan2600-6-4"
+         x="153.67401"
+         y="330.9798"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#ffffff;stroke-width:0.75">Idx</tspan></text>
   </g>
 </svg>
