@@ -469,7 +469,7 @@ namespace alpaka
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
                     auto vspQueues(
-                        dev.m_spDevCpuImpl->GetAllQueues());
+                        dev::traits::GetAllQueues<TDev>::getAllQueues(dev));
 
                     // Let all the queues wait for this event.
                     // Furthermore there should not even be a chance to enqueue something between getting the queues and adding our wait events!

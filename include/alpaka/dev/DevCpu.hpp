@@ -244,6 +244,43 @@ namespace alpaka
                     // The CPU does nothing on reset.
                 }
             };
+
+            //#############################################################################
+            //! The CPU device register queue trait specialization.
+            template<>
+            struct RegisterQueue<
+                dev::DevCpu>
+            {
+                //-----------------------------------------------------------------------------
+                template<
+                    template<typename TDev> class TQueue>
+                ALPAKA_FN_HOST static auto registerQueue(
+                    dev::DevCpu const & dev,
+                    TQueue<dev::DevCpu> const & queue)
+                -> void
+                {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                    dev.m_spDevCpuImpl->RegisterQueue(queue.m_spQueueImpl);
+                }
+            };
+
+            //#############################################################################
+            //! The CPU device get all queues trait specialization.
+            template<>
+            struct GetAllQueues<
+                dev::DevCpu>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getAllQueues(
+                    dev::DevCpu const & dev)
+#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
+                -> decltype(dev.m_spDevCpuImpl->GetAllQueues())
+#endif
+                {
+                    return dev.m_spDevCpuImpl->GetAllQueues();
+                }
+            };
         }
     }
     namespace mem

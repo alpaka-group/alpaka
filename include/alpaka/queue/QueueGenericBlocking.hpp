@@ -101,7 +101,9 @@ namespace alpaka
                 TDev const & dev) :
                     m_spQueueImpl(std::make_shared<generic::detail::QueueGenericBlockingImpl<TDev>>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
+                dev::traits::RegisterQueue<TDev>::registerQueue(
+                    dev,
+                    *this);
             }
             //-----------------------------------------------------------------------------
             QueueGenericBlocking(QueueGenericBlocking<TDev> const &) = default;
