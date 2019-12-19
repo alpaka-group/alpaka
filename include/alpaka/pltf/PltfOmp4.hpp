@@ -17,6 +17,7 @@
 
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/core/Concepts.hpp>
 
 #include <sstream>
 #include <vector>
@@ -27,7 +28,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU device platform.
-        class PltfOmp4
+        class PltfOmp4 :
+            public concepts::Implements<ConceptPltf, PltfOmp4>
         {
         public:
             //-----------------------------------------------------------------------------
