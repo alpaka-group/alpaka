@@ -171,7 +171,7 @@ namespace alpaka
             typename T,
             T... Tvals>
         struct IntegerSequenceValuesUnique<
-            IntegerSequence<T, Tvals...>>
+            std::integer_sequence<T, Tvals...>>
         {
             static constexpr bool value = IntegralValuesUnique<T, Tvals...>::value;
         };
@@ -231,7 +231,7 @@ namespace alpaka
             T Tmin,
             T Tmax>
         struct IntegerSequenceValuesInRange<
-            IntegerSequence<T, Tvals...>,
+            std::integer_sequence<T, Tvals...>,
             T,
             Tmin,
             Tmax>
