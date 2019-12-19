@@ -11,13 +11,14 @@
 
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Unused.hpp>
-#include <alpaka/queue/QueueGenericNonBlocking.hpp>
-#include <alpaka/queue/QueueGenericBlocking.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
+
+#include <alpaka/queue/QueueGenericNonBlocking.hpp>
+#include <alpaka/queue/QueueGenericBlocking.hpp>
 
 #include <mutex>
 #include <condition_variable>
@@ -187,18 +188,17 @@ namespace alpaka
             //#############################################################################
             //! The CPU non-blocking device queue enqueue trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct Enqueue<
-                queue::generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace>,
+                queue::generic::detail::QueueGenericNonBlockingImpl<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace> & queueImpl,
+                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> & queueImpl,
 #else
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace> &,
+                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> &,
 #endif
                     event::EventGeneric<TDev> & event)
                 -> void
@@ -236,15 +236,14 @@ namespace alpaka
             //#############################################################################
             //! The CPU non-blocking device queue enqueue trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct Enqueue<
-                queue::QueueGenericNonBlocking<TDev, TIFace>,
+                queue::QueueGenericNonBlocking<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueGenericNonBlocking<TDev, TIFace> & queue,
+                    queue::QueueGenericNonBlocking<TDev> & queue,
                     event::EventGeneric<TDev> & event)
                 -> void
                 {
@@ -256,15 +255,14 @@ namespace alpaka
             //#############################################################################
             //! The CPU blocking device queue enqueue trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct Enqueue<
-                queue::generic::detail::QueueGenericBlockingImpl<TDev, TIFace>,
+                queue::generic::detail::QueueGenericBlockingImpl<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::generic::detail::QueueGenericBlockingImpl<TDev, TIFace> & queueImpl,
+                    queue::generic::detail::QueueGenericBlockingImpl<TDev> & queueImpl,
                     event::EventGeneric<TDev> & event)
                 -> void
                 {
@@ -297,15 +295,14 @@ namespace alpaka
             //#############################################################################
             //! The CPU blocking device queue enqueue trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct Enqueue<
-                queue::QueueGenericBlocking<TDev, TIFace>,
+                queue::QueueGenericBlocking<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueGenericBlocking<TDev, TIFace> & queue,
+                    queue::QueueGenericBlocking<TDev> & queue,
                     event::EventGeneric<TDev> & event)
                 -> void
                 {
@@ -362,18 +359,17 @@ namespace alpaka
             //#############################################################################
             //! The CPU non-blocking device queue event wait trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct WaiterWaitFor<
-                queue::generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace>,
+                queue::generic::detail::QueueGenericNonBlockingImpl<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace> & queueImpl,
+                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> & queueImpl,
 #else
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev, TIFace> &,
+                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> &,
 #endif
                     event::EventGeneric<TDev> const & event)
                 -> void
@@ -404,15 +400,14 @@ namespace alpaka
             //#############################################################################
             //! The CPU non-blocking device queue event wait trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct WaiterWaitFor<
-                queue::QueueGenericNonBlocking<TDev, TIFace>,
+                queue::QueueGenericNonBlocking<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueGenericNonBlocking<TDev, TIFace> & queue,
+                    queue::QueueGenericNonBlocking<TDev> & queue,
                     event::EventGeneric<TDev> const & event)
                 -> void
                 {
@@ -422,15 +417,14 @@ namespace alpaka
             //#############################################################################
             //! The CPU blocking device queue event wait trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct WaiterWaitFor<
-                queue::generic::detail::QueueGenericBlockingImpl<TDev, TIFace>,
+                queue::generic::detail::QueueGenericBlockingImpl<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::generic::detail::QueueGenericBlockingImpl<TDev, TIFace> & queueImpl,
+                    queue::generic::detail::QueueGenericBlockingImpl<TDev> & queueImpl,
                     event::EventGeneric<TDev> const & event)
                 -> void
                 {
@@ -443,15 +437,14 @@ namespace alpaka
             //#############################################################################
             //! The CPU blocking device queue event wait trait specialization.
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct WaiterWaitFor<
-                queue::QueueGenericBlocking<TDev, TIFace>,
+                queue::QueueGenericBlocking<TDev>,
                 event::EventGeneric<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueGenericBlocking<TDev, TIFace> & queue,
+                    queue::QueueGenericBlocking<TDev> & queue,
                     event::EventGeneric<TDev> const & event)
                 -> void
                 {
@@ -492,20 +485,19 @@ namespace alpaka
             //!
             //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
             template<
-                typename TDev,
-                typename TIFace>
+                typename TDev>
             struct CurrentThreadWaitFor<
-                queue::QueueGenericNonBlocking<TDev, TIFace>>
+                queue::QueueGenericNonBlocking<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    queue::QueueGenericNonBlocking<TDev, TIFace> const & queue)
+                    queue::QueueGenericNonBlocking<TDev> const & queue)
                 -> void
                 {
                     event::EventGeneric<TDev> event(
                         dev::getDev(queue));
                     queue::enqueue(
-                        const_cast<queue::QueueGenericNonBlocking<TDev, TIFace> &>(queue),
+                        const_cast<queue::QueueGenericNonBlocking<TDev> &>(queue),
                         event);
                     wait::wait(
                         event);

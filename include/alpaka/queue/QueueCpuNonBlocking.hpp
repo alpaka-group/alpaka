@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/queue/cpu/ICpuQueue.hpp>
 #include <alpaka/queue/QueueGenericNonBlocking.hpp>
 
 #include <alpaka/dev/Traits.hpp>
@@ -27,17 +26,9 @@
 
 namespace alpaka
 {
-    namespace event
-    {
-        using EventCpu = EventGeneric<dev::DevCpu>;
-    }
-}
-
-namespace alpaka
-{
     namespace queue
     {
-        using QueueCpuNonBlocking = QueueGenericNonBlocking<dev::DevCpu, cpu::ICpuQueue>;
+        using QueueCpuNonBlocking = QueueGenericNonBlocking<dev::DevCpu>;
 #if 0
         namespace cpu
         {

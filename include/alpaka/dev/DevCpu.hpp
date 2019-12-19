@@ -14,7 +14,7 @@
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-// #include <alpaka/queue/cpu/ICpuQueue.hpp>
+#include <alpaka/queue/IGenericQueue.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/cpu/SysInfo.hpp>
 
@@ -32,11 +32,15 @@
 
 namespace alpaka
 {
+    namespace dev
+    {
+        class DevCpu;
+    }
     namespace queue
     {
         namespace cpu
         {
-            class ICpuQueue;
+            using ICpuQueue = IGenericQueue<dev::DevCpu>;
         }
     }
     namespace pltf
@@ -287,8 +291,8 @@ namespace alpaka
     }
     namespace queue
     {
-        using QueueCpuNonBlocking = QueueGenericNonBlocking<dev::DevCpu, cpu::ICpuQueue>;
-        using QueueCpuBlocking = QueueGenericBlocking<dev::DevCpu, cpu::ICpuQueue>;
+        using QueueCpuNonBlocking = QueueGenericNonBlocking<dev::DevCpu>;
+        using QueueCpuBlocking = QueueGenericBlocking<dev::DevCpu>;
 
         namespace traits
         {
@@ -312,5 +316,3 @@ namespace alpaka
         }
     }
 }
-
-#include <alpaka/queue/cpu/ICpuQueue.hpp>
