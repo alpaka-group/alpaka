@@ -70,6 +70,7 @@ public:
     }
 };
 
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
 template<typename B>
 struct not_omp4 : public std::integral_constant<
     bool,
@@ -87,6 +88,11 @@ using TestAccs = alpaka::meta::Filter<
         std::size_t>,
         not_omp4
         >;
+#else
+using TestAccs =  alpaka::test::acc::EnabledAccs<
+    alpaka::dim::DimInt<1u>,
+    std::size_t>;
+#endif
 
 TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestAccs)
 {
