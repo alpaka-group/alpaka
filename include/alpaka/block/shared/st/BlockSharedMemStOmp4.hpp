@@ -53,6 +53,7 @@ namespace alpaka
                     template<class T>
                     T& alloc() const
                     {
+                        #pragma omp barrier
                         if(omp_get_thread_num() == 0)
                         {
                             char* buf = &m_mem[m_allocdBytes];
