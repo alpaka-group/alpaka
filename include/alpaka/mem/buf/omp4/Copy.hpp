@@ -200,6 +200,58 @@ namespace alpaka
                         vec::Vec<TDim, size_t> m_srcPitchBytes;
                         void * m_dstMemNative;
                         void const * m_srcMemNative;
+
+                        //-----------------------------------------------------------------------------
+                        //! Executes the kernel function object.
+                        ALPAKA_FN_HOST auto operator()() const
+                        -> void
+                        {
+                            ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                            task.printDebug();
+#endif
+                            constexpr auto lastDim = TDim::value - 1;
+
+                            if(m_extent.prod() > 0)
+                            {
+                                // offsets == 0 by ptr shift (?)
+                                auto dstOffset(vec::Vec<TDim, size_t>::zeros());
+                                auto srcOffset(vec::Vec<TDim, size_t>::zeros());
+
+                                auto dstExtentFull(vec::Vec<TDim, size_t>::zeros());
+                                auto srcExtentFull(vec::Vec<TDim, size_t>::zeros());
+
+                                const size_t elementSize =
+                                    ( m_dstPitchBytes[0]%sizeof(elem::Elem<TViewDst>) || m_srcPitchBytes[0]%sizeof(elem::Elem<TViewDst>) )
+                                    ? 1 : sizeof(elem::Elem<TViewDst>);
+
+                                dstExtentFull[lastDim] = m_dstPitchBytes[lastDim]/elementSize;
+                                srcExtentFull[lastDim] = m_srcPitchBytes[lastDim]/elementSize;
+                                for(int i = lastDim - 1; i >= 0; --i)
+                                {
+                                    dstExtentFull[i] = m_dstPitchBytes[i]/m_dstPitchBytes[i+1];
+                                    srcExtentFull[i] = m_srcPitchBytes[i]/m_srcPitchBytes[i+1];
+                                }
+
+                                // std::cout << "copy " << TDim::value << "d\textent=" << m_extent
+                                //     << "\tdstExtentFull=" << dstExtentFull << " (p " << m_dstPitchBytes
+                                //     << " )\tsrcExtentFull=" << srcExtentFull << " (p " << m_srcPitchBytes
+                                //     << " )\telementSize=" << elementSize << std::endl;
+
+                                ALPAKA_OMP4_CHECK(
+                                    omp_target_memcpy_rect(
+                                        m_dstMemNative, const_cast<void*>(m_srcMemNative),
+                                        sizeof(elem::Elem<TViewDst>),
+                                        TDim::value,
+                                        reinterpret_cast<size_t const *>(&m_extent),
+                                        reinterpret_cast<size_t const *>(&dstOffset),
+                                        reinterpret_cast<size_t const *>(&srcOffset),
+                                        reinterpret_cast<size_t const *>(&dstExtentFull),
+                                        reinterpret_cast<size_t const *>(&srcExtentFull),
+                                        m_iDstDevice, m_iSrcDevice));
+                            }
+                        }
                     };
 
                     //#############################################################################
@@ -285,6 +337,27 @@ namespace alpaka
                         Idx m_extentWidthBytes;
                         void * m_dstMemNative;
                         void const * m_srcMemNative;
+
+                        //-----------------------------------------------------------------------------
+                        //! Executes the kernel function object.
+                        ALPAKA_FN_HOST auto operator()() const
+                        -> void
+                        {
+                            ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                            task.printDebug();
+#endif
+                            if(m_extentWidthBytes == 0)
+                            {
+                                return;
+                            }
+
+                            ALPAKA_OMP4_CHECK(
+                                omp_target_memcpy(
+                                    m_dstMemNative, const_cast<void*>(m_srcMemNative), m_extentWidthBytes,
+                                    0,0, m_iDstDevice, m_iSrcDevice));
+                        }
                     };
                 }
             }
@@ -464,131 +537,6 @@ namespace alpaka
                     }
                 };
             }
-        }
-    }
-    namespace queue
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The Omp4 blocking device queue ND copy enqueue trait specialization.
-            template<
-                typename TDim,
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueOmp4Blocking,
-                mem::view::omp4::detail::TaskCopyOmp4<TDim, TViewDst, TViewSrc, TExtent>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueOmp4Blocking & queue,
-                    mem::view::omp4::detail::TaskCopyOmp4<TDim, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    task.printDebug();
-#endif
-                    auto const & iDstDev(task.m_iDstDevice);
-                    auto const & iSrcDev(task.m_iSrcDevice);
-
-                    auto const & extent(task.m_extent);
-                    // auto const & dstExtent(task.m_dstExtent);
-                    // auto const & srcExtent(task.m_srcExtent);
-                    auto const & dstPitchBytes(task.m_dstPitchBytes);
-                    auto const & srcPitchBytes(task.m_srcPitchBytes);
-
-                    auto const & dstNativePtr(task.m_dstMemNative);
-                    auto const & srcNativePtr(task.m_srcMemNative);
-                    constexpr auto lastDim = TDim::value - 1;
-
-                    alpaka::ignore_unused(queue); //! \todo
-
-                    if(extent.prod() > 0)
-                    {
-                        // offsets == 0 by ptr shift (?)
-                        auto dstOffset(vec::Vec<TDim, size_t>::zeros());
-                        auto srcOffset(vec::Vec<TDim, size_t>::zeros());
-
-                        auto dstExtentFull(vec::Vec<TDim, size_t>::zeros());
-                        auto srcExtentFull(vec::Vec<TDim, size_t>::zeros());
-
-                        const size_t elementSize =
-                            ( dstPitchBytes[0]%sizeof(elem::Elem<TViewDst>) || srcPitchBytes[0]%sizeof(elem::Elem<TViewDst>) )
-                            ? 1 : sizeof(elem::Elem<TViewDst>);
-
-                        dstExtentFull[lastDim] = dstPitchBytes[lastDim]/elementSize;
-                        srcExtentFull[lastDim] = srcPitchBytes[lastDim]/elementSize;
-                        for(int i = lastDim - 1; i >= 0; --i)
-                        {
-                            dstExtentFull[i] = dstPitchBytes[i]/dstPitchBytes[i+1];
-                            srcExtentFull[i] = srcPitchBytes[i]/srcPitchBytes[i+1];
-                        }
-
-                        // std::cout << "copy " << TDim::value << "d\textent=" << extent
-                        //     << "\tdstExtentFull=" << dstExtentFull << " (p " << dstPitchBytes
-                        //     << " )\tsrcExtentFull=" << srcExtentFull << " (p " << srcPitchBytes
-                        //     << " )\telementSize=" << elementSize << std::endl;
-
-                        ALPAKA_OMP4_CHECK(
-                            omp_target_memcpy_rect(
-                                dstNativePtr, const_cast<void*>(srcNativePtr),
-                                sizeof(elem::Elem<TViewDst>),
-                                TDim::value,
-                                reinterpret_cast<size_t const *>(&extent),
-                                reinterpret_cast<size_t const *>(&dstOffset),
-                                reinterpret_cast<size_t const *>(&srcOffset),
-                                reinterpret_cast<size_t const *>(&dstExtentFull),
-                                reinterpret_cast<size_t const *>(&srcExtentFull),
-                                iDstDev, iSrcDev));
-                    }
-                }
-            };
-
-            //#############################################################################
-            //! The Omp4 blocking device queue 1D copy enqueue trait specialization.
-            template<
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueOmp4Blocking,
-                mem::view::omp4::detail::TaskCopyOmp4<dim::DimInt<1>, TViewDst, TViewSrc, TExtent>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueOmp4Blocking & queue,
-                    mem::view::omp4::detail::TaskCopyOmp4<dim::DimInt<1>, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    task.printDebug();
-#endif
-                    if(task.m_extentWidthBytes == 0)
-                    {
-                        return;
-                    }
-
-                    auto const & iDstDev(task.m_iDstDevice);
-                    auto const & iSrcDev(task.m_iSrcDevice);
-
-                    std::size_t const extentWidthBytes(static_cast<std::size_t>(task.m_extentWidthBytes));
-
-                    auto const & dstNativePtr(task.m_dstMemNative);
-                    auto const & srcNativePtr(task.m_srcMemNative);
-
-                    alpaka::ignore_unused(queue); //! \TODO
-
-                    ALPAKA_OMP4_CHECK(
-                        omp_target_memcpy(
-                            dstNativePtr, const_cast<void*>(srcNativePtr), extentWidthBytes, 0,0, iDstDev, iSrcDev));
-                }
-            };
         }
     }
 }
