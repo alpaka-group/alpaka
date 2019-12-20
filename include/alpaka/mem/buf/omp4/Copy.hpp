@@ -209,7 +209,7 @@ namespace alpaka
                             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            task.printDebug();
+                            printDebug();
 #endif
                             constexpr auto lastDim = TDim::value - 1;
 
@@ -346,7 +346,7 @@ namespace alpaka
                             ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            task.printDebug();
+                            printDebug();
 #endif
                             if(m_extentWidthBytes == 0)
                             {
