@@ -22,6 +22,7 @@
 #include <thread>
 #include <mutex>
 #include <future>
+#include <memory>
 
 namespace alpaka
 {
