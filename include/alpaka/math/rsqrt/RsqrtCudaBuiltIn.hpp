@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/rsqrt/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -62,11 +61,11 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto rsqrt(
-                    RsqrtCudaBuiltIn const & /*rsqrt*/,
+                    RsqrtCudaBuiltIn const & rsqrt_ctx,
                     TArg const & arg)
                 -> decltype(::rsqrt(arg))
                 {
-                    //boost::ignore_unused(rsqrt);
+                    alpaka::ignore_unused(rsqrt_ctx);
                     return ::rsqrt(arg);
                 }
             };

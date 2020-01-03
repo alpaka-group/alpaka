@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/pow/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -65,12 +64,12 @@ namespace alpaka
                     && std::is_floating_point<TExp>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto pow(
-                    PowCudaBuiltIn const & /*pow*/,
+                    PowCudaBuiltIn const & pow_ctx,
                     TBase const & base,
                     TExp const & exp)
                 -> decltype(::pow(base, exp))
                 {
-                    //boost::ignore_unused(pow);
+                    alpaka::ignore_unused(pow_ctx);
                     return ::pow(base, exp);
                 }
             };
