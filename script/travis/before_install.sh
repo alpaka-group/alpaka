@@ -125,12 +125,6 @@ then
             echo "using libc++ with g++ not yet supported."
             exit 1
         fi
-
-        if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 65 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
-        then
-            echo "using libc++ with boost < 1.65 is not supported."
-            exit 1
-        fi
     fi
 
     if [ "${ALPAKA_CI_STDLIB}" == "libstdc++" ]

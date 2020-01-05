@@ -240,7 +240,7 @@ ENDIF()
 
 #-------------------------------------------------------------------------------
 # Find Boost.
-SET(_ALPAKA_BOOST_MIN_VER "1.62.0")
+SET(_ALPAKA_BOOST_MIN_VER "1.65.1")
 IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DEBUG ON)
     SET(Boost_DETAILED_FAILURE_MSG ON)
@@ -577,12 +577,6 @@ IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     ENDIF()
                 ENDIF()
 
-                # CUDA 9.0 removed the __CUDACC_VER__ macro. Boost versions lower than 1.65.1 still use this macro.
-                IF(Boost_VERSION VERSION_LESS 1.65.1)
-                    MESSAGE(WARNING "CUDA 9.0 or newer requires boost-1.65.1 or newer!")
-                    SET(_ALPAKA_FOUND FALSE)
-                ENDIF()
-
                 IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
                     MESSAGE(FATAL_ERROR "NVCC does not support boost.fiber!")
                 ENDIF()
@@ -733,12 +727,6 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
                 ENDIF()
 
                 SET(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
-
-                # CUDA 9.0 removed the __CUDACC_VER__ macro. Boost versions lower than 1.65.1 still use this macro.
-                IF(Boost_VERSION VERSION_LESS 1.65.1)
-                    MESSAGE(WARNING "CUDA 9.0 or newer requires boost-1.65.1 or newer!")
-                    SET(_ALPAKA_FOUND FALSE)
-                ENDIF()
 
                 IF(CUDA_VERSION VERSION_LESS 9.0)
                     MESSAGE(WARNING "CUDA Toolkit < 9.0 is not supported!")
