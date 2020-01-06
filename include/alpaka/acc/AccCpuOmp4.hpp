@@ -19,7 +19,6 @@
 #include <alpaka/workdiv/WorkDivOmp4BuiltIn.hpp>
 #include <alpaka/idx/gb/IdxGbOmp4BuiltIn.hpp>
 #include <alpaka/idx/bt/IdxBtOmp4BuiltIn.hpp>
-#include <alpaka/atomic/AtomicStdLibLock.hpp>
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
 #include <alpaka/math/MathStdLib.hpp>
