@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto sqrt(
                     SqrtStdLib const & sqrt_ctx,
                     TArg const & arg)
-                -> decltype(std::sqrt(arg))
                 {
                     alpaka::ignore_unused(sqrt_ctx);
                     return std::sqrt(arg);

@@ -33,6 +33,7 @@
 
 #include <omp.h>
 
+#include <functional>
 #include <stdexcept>
 #include <tuple>
 #include <type_traits>

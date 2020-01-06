@@ -27,6 +27,7 @@
 #include <alpaka/meta/ApplyTuple.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 
+#include <functional>
 #include <tuple>
 #include <type_traits>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL

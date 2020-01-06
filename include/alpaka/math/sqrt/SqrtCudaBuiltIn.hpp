@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto sqrt(
                     SqrtCudaBuiltIn const & sqrt_ctx,
                     TArg const & arg)
-                -> decltype(::sqrt(arg))
                 {
                     alpaka::ignore_unused(sqrt_ctx);
                     return ::sqrt(arg);

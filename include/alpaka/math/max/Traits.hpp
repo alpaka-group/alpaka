@@ -53,17 +53,6 @@ namespace alpaka
             T const & max_ctx,
             Tx const & x,
             Ty const & y)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::Max<
-                concepts::ImplementationBase<ConceptMathMax, T>,
-                Tx,
-                Ty>
-            ::max(
-                max_ctx,
-                x,
-                y))
-#endif
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathMax, T>;
             return

@@ -45,7 +45,6 @@ namespace alpaka
                     FmodStdLib const & fmod_ctx,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(std::fmod(x, y))
                 {
                     alpaka::ignore_unused(fmod_ctx);
                     return std::fmod(x, y);

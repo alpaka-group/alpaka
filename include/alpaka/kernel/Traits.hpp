@@ -180,18 +180,6 @@ namespace alpaka
             TWorkDiv const & workDiv,
             TKernelFnObj const & kernelFnObj,
             TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::CreateTaskKernel<
-                TAcc,
-                TWorkDiv,
-                TKernelFnObj,
-                TArgs...>
-            ::createTaskKernel(
-                workDiv,
-                kernelFnObj,
-                std::forward<TArgs>(args)...))
-#endif
         {
             // check for void return type
             detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);

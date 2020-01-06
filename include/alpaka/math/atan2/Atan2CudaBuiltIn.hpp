@@ -54,7 +54,6 @@ namespace alpaka
                     Atan2CudaBuiltIn const & atan2_ctx,
                     Ty const & y,
                     Tx const & x)
-                -> decltype(::atan2(y, x))
                 {
                     alpaka::ignore_unused(atan2_ctx);
                     return ::atan2(y, x);

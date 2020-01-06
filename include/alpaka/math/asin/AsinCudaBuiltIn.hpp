@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto asin(
                     AsinCudaBuiltIn const & asin_ctx,
                     TArg const & arg)
-                -> decltype(::asin(arg))
                 {
                     alpaka::ignore_unused(asin_ctx);
                     return ::asin(arg);

@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto rsqrt(
                     RsqrtCudaBuiltIn const & rsqrt_ctx,
                     TArg const & arg)
-                -> decltype(::rsqrt(arg))
                 {
                     alpaka::ignore_unused(rsqrt_ctx);
                     return ::rsqrt(arg);

@@ -45,7 +45,6 @@ namespace alpaka
                     RemainderStdLib const & remainder_ctx,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(std::remainder(x, y))
                 {
                     alpaka::ignore_unused(remainder_ctx);
                     return std::remainder(x, y);

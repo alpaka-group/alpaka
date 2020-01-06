@@ -58,7 +58,6 @@ namespace alpaka
                 __device__ static auto ceil(
                     CeilHipBuiltIn const & ceil_ctx,
                     TArg const & arg)
-                -> decltype(::ceil(arg))
                 {
                     alpaka::ignore_unused(ceil_ctx);
                     return ::ceil(arg);

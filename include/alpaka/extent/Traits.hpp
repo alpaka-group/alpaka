@@ -17,7 +17,6 @@
 #include <alpaka/meta/IntegerSequence.hpp>
 
 #include <type_traits>
-#include <functional>
 
 namespace alpaka
 {

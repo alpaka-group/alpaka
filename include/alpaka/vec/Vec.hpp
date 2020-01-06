@@ -20,9 +20,10 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
-#include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/meta/Fold.hpp>
+#include <alpaka/meta/Functional.hpp>
+#include <alpaka/meta/IntegerSequence.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <boost/config.hpp>
 
@@ -60,9 +61,6 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
             meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
             TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
-#endif
         {
             alpaka::ignore_unused(indices);
 
@@ -79,14 +77,6 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFn(
             TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            createVecFromIndexedFnArbitrary<
-                TDim,
-                TTFnObj>(
-                    meta::MakeIntegerSequence<typename TDim::value_type, TDim::value>(),
-                    std::forward<TArgs>(args)...))
-#endif
         {
             using IdxSequence = meta::MakeIntegerSequence<typename TDim::value_type, TDim::value>;
             return
@@ -107,14 +97,6 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnOffset(
             TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            createVecFromIndexedFnArbitrary<
-                TDim,
-                TTFnObj>(
-                    meta::ConvertIntegerSequence<typename TIdxOffset::value_type, meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>>(),
-                    std::forward<TArgs>(args)...))
-#endif
         {
             using IdxSubSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>;
             using IdxSubSequence = meta::ConvertIntegerSequence<typename TIdxOffset::value_type, IdxSubSequenceSigned>;
@@ -374,12 +356,6 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC auto foldrByIndices(
                 TFnObj const & f,
                 meta::IntegerSequence<std::size_t, TIndices...> const & indices) const
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-            -> decltype(
-                meta::foldr(
-                    f,
-                    ((*this)[TIndices])...))
-#endif
             {
                 alpaka::ignore_unused(indices);
 
@@ -394,16 +370,6 @@ namespace alpaka
                 typename TFnObj>
             ALPAKA_FN_HOST_ACC auto foldrAll(
                 TFnObj const & f) const
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-            -> decltype(
-#if (BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))) || BOOST_COMP_INTEL || BOOST_COMP_NVCC
-                this->foldrByIndices(
-#else
-                foldrByIndices(
-#endif
-                    f,
-                    IdxSequence()))
-#endif
             {
                 return
                     foldrByIndices(
@@ -421,11 +387,7 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC auto prod() const
             -> TVal
             {
-                return foldrAll(
-                    [](TVal a, TVal b)
-                    {
-                        return static_cast<TVal>(a * b);
-                    });
+                return foldrAll(std::multiplies<TVal>());
             }
 #if BOOST_COMP_MSVC
     #pragma warning(pop)
@@ -436,11 +398,7 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC auto sum() const
             -> TVal
             {
-                return foldrAll(
-                    [](TVal a, TVal b)
-                    {
-                        return static_cast<TVal>(a + b);
-                    });
+                return foldrAll(std::plus<TVal>());
             }
             //-----------------------------------------------------------------------------
             //! \return The min of all values.
@@ -448,11 +406,7 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC auto min() const
             -> TVal
             {
-                return foldrAll(
-                    [](TVal a, TVal b)
-                    {
-                        return (b < a) ? b : a;
-                    });
+                return foldrAll(meta::min<TVal>());
             }
             //-----------------------------------------------------------------------------
             //! \return The max of all values.
@@ -460,11 +414,7 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC auto max() const
             -> TVal
             {
-                return foldrAll(
-                    [](TVal a, TVal b)
-                    {
-                        return (b > a) ? b : a;
-                    });
+                return foldrAll(meta::max<TVal>());
             }
             //-----------------------------------------------------------------------------
             //! \return The index of the minimal element.
@@ -510,9 +460,6 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnWorkaround(
             TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> alpaka::vec::Vec<TDim, TVal>
-#endif
         {
             return
                 alpaka::vec::
@@ -540,9 +487,6 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnOffsetWorkaround(
             TArgs && ... args)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> alpaka::vec::Vec<TDim, TVal>
-#endif
         {
             return
                 alpaka::vec::

@@ -64,7 +64,6 @@ namespace alpaka
                     MinHipBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(::min(x, y))
                 {
                     alpaka::ignore_unused(min_ctx);
                     return ::min(x, y);
@@ -89,7 +88,6 @@ namespace alpaka
                     MinHipBuiltIn const & min_ctx,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(::fmin(x, y))
                 {
                     alpaka::ignore_unused(min_ctx);
                     return ::fmin(x, y);

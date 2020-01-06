@@ -28,6 +28,7 @@
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/ApplyTuple.hpp>
 
+#include <functional>
 #include <stdexcept>
 #include <tuple>
 #include <type_traits>

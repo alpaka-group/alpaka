@@ -47,15 +47,6 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto sin(
             T const & sin_ctx,
             TArg const & arg)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::Sin<
-                concepts::ImplementationBase<ConceptMathSin, T>,
-                TArg>
-            ::sin(
-                sin_ctx,
-                arg))
-#endif
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathSin, T>;
             return

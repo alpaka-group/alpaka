@@ -114,8 +114,7 @@ auto main()
 
     // Run "Hello World" kernel with a lambda function
     //
-    // Alpaka is able to execute lambda functions (anonymous functions) which
-    // are available since the C++11 standard.
+    // Alpaka is able to execute lambda functions (anonymous functions).
     // Alpaka forces the lambda function to accept
     // the utilized accelerator as first argument.
     // All following arguments can be provided after

@@ -47,15 +47,6 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto exp(
             T const & exp_ctx,
             TArg const & arg)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(
-            traits::Exp<
-                concepts::ImplementationBase<ConceptMathExp, T>,
-                TArg>
-            ::exp(
-                exp_ctx,
-                arg))
-#endif
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathExp, T>;
             return

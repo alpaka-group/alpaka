@@ -58,7 +58,6 @@ namespace alpaka
                 __device__ static auto trunc(
                     TruncHipBuiltIn const & trunc_ctx,
                     TArg const & arg)
-                -> decltype(::trunc(arg))
                 {
                     alpaka::ignore_unused(trunc_ctx);
                     return ::trunc(arg);

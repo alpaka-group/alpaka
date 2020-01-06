@@ -50,7 +50,6 @@ namespace alpaka
                 __device__ static auto round(
                     RoundCudaBuiltIn const & round_ctx,
                     TArg const & arg)
-                -> decltype(::round(arg))
                 {
                     alpaka::ignore_unused(round_ctx);
                     return ::round(arg);

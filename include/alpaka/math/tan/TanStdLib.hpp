@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto tan(
                     TanStdLib const & tan_ctx,
                     TArg const & arg)
-                -> decltype(std::tan(arg))
                 {
                     alpaka::ignore_unused(tan_ctx);
                     return std::tan(arg);

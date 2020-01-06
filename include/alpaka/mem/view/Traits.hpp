@@ -279,16 +279,6 @@ namespace alpaka
                 TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-            -> decltype(
-                traits::CreateTaskSet<
-                    dim::Dim<TView>,
-                    dev::Dev<TView>>
-                ::createTaskSet(
-                    view,
-                    byte,
-                    extent))
-#endif
             {
                 static_assert(
                     dim::Dim<TView>::value == dim::Dim<TExtent>::value,
@@ -344,17 +334,6 @@ namespace alpaka
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-            -> decltype(
-                traits::CreateTaskCopy<
-                    dim::Dim<TViewDst>,
-                    dev::Dev<TViewDst>,
-                    dev::Dev<TViewSrc>>
-                ::createTaskCopy(
-                    viewDst,
-                    viewSrc,
-                    extent))
-#endif
             {
                 static_assert(
                     dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
@@ -586,15 +565,6 @@ namespace alpaka
                 TElem * pMem,
                 TDev const & dev,
                 TExtent const & extent)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-            -> decltype(
-                traits::CreateStaticDevMemView<
-                        TDev>
-                    ::createStaticDevMemView(
-                        pMem,
-                        dev,
-                        extent))
-#endif
             {
                 return
                     traits::CreateStaticDevMemView<

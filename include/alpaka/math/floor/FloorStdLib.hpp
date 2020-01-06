@@ -41,7 +41,6 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto floor(
                     FloorStdLib const & floor_ctx,
                     TArg const & arg)
-                -> decltype(std::floor(arg))
                 {
                     alpaka::ignore_unused(floor_ctx);
                     return std::floor(arg);

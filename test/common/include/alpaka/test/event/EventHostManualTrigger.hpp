@@ -528,24 +528,15 @@ namespace alpaka
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-#if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(9, 0, 0)
                         alpaka::dev::DevCudaRt const & dev)
-#else
-                        alpaka::dev::DevCudaRt const &)
-#endif
                     -> bool
                     {
-#if BOOST_LANG_CUDA >= BOOST_VERSION_NUMBER(9, 0, 0)
                         int result = 0;
                         cuDeviceGetAttribute(
                             &result,
                             CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS,
                             dev.m_iDevice);
                         return result != 0;
-#else
-                        // In CUDA 8.0 there is no way to find out if those operations are really supported.
-                        return false;
-#endif
                     }
                 };
             }

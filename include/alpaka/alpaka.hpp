@@ -161,6 +161,7 @@
 #include <alpaka/meta/Filter.hpp>
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/meta/ForEachType.hpp>
+#include <alpaka/meta/Functional.hpp>
 #include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/meta/Integral.hpp>
 #include <alpaka/meta/IsStrictBase.hpp>

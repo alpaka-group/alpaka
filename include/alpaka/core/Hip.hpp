@@ -22,7 +22,6 @@
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
-#include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/meta/Metafunctions.hpp>
 
 #include <hip/hip_runtime.h>
@@ -88,8 +87,7 @@ namespace alpaka
             {
                 if(error != hipSuccess)
                 {
-                    // https://stackoverflow.com/questions/18792731/can-we-omit-the-double-braces-for-stdarray-in-c14/18792782#18792782
-                    std::array<hipError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{{ignoredErrorCodes...}};
+                    std::array<hipError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{ignoredErrorCodes...};
                     // If the error code is not one of the ignored ones.
                     if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
                     {
@@ -381,7 +379,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtent const & extent)
-                -> decltype(extent.x)
                 {
                     return extent.x;
                 }
@@ -400,7 +397,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtent const & extent)
-                -> decltype(extent.y)
                 {
                     return extent.y;
                 }
@@ -419,7 +415,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtent const & extent)
-                -> decltype(extent.z)
                 {
                     return extent.z;
                 }
@@ -438,7 +433,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtent const & extent)
-                -> decltype(extent.w)
                 {
                     return extent.w;
                 }
@@ -551,7 +545,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
-                -> decltype(offsets.x)
                 {
                     return offsets.x;
                 }
@@ -570,7 +563,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
-                -> decltype(offsets.y)
                 {
                     return offsets.y;
                 }
@@ -589,7 +581,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
-                -> decltype(offsets.z)
                 {
                     return offsets.z;
                 }
@@ -608,7 +599,6 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
-                -> decltype(offsets.w)
                 {
                     return offsets.w;
                 }
