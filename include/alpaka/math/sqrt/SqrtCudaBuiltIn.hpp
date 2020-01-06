@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/sqrt/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library sqrt.
+        //! The CUDA sqrt.
         class SqrtCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library sqrt trait specialization.
+            //! The CUDA sqrt trait specialization.
             template<
                 typename TArg>
             struct Sqrt<
@@ -62,14 +61,30 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto sqrt(
-                    SqrtCudaBuiltIn const & /*sqrt*/,
+                    SqrtCudaBuiltIn const & sqrt_ctx,
                     TArg const & arg)
                 -> decltype(::sqrt(arg))
                 {
-                    //boost::ignore_unused(sqrt);
+                    alpaka::ignore_unused(sqrt_ctx);
                     return ::sqrt(arg);
                 }
             };
+            //! The CUDA sqrt float specialization.
+            template<>
+            struct Sqrt<
+                SqrtCudaBuiltIn,
+                float>
+            {
+                __device__ static auto sqrt(
+                    SqrtCudaBuiltIn const & sqrt_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(sqrt_ctx);
+                    return ::sqrtf(arg);
+                }
+            };
+
         }
     }
 }

@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/ceil/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library ceil.
+        //! The CUDA built in ceil.
         class CeilCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library ceil trait specialization.
+            //! The CUDA ceil trait specialization.
             template<
                 typename TArg>
             struct Ceil<
@@ -62,12 +61,27 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto ceil(
-                    CeilCudaBuiltIn const & /*ceil*/,
+                    CeilCudaBuiltIn const & ceil_ctx,
                     TArg const & arg)
                 -> decltype(::ceil(arg))
                 {
-                    //boost::ignore_unused(ceil);
+                    alpaka::ignore_unused(ceil_ctx);
                     return ::ceil(arg);
+                }
+            };
+            //
+            template<>
+            struct Ceil<
+                CeilCudaBuiltIn,
+                float>
+            {
+                __device__ static auto ceil(
+                    CeilCudaBuiltIn const & ceil_ctx,
+                    float const & arg)
+                ->float
+                {
+                    alpaka::ignore_unused(ceil_ctx);
+                    return ::ceilf(arg);
                 }
             };
         }

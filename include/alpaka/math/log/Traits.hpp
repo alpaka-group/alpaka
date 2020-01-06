@@ -49,14 +49,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Log.
         //! \tparam TArg The arg type.
-        //! \param log The object specializing Log.
+        //! \param log_ctx The object specializing Log.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto log(
-            T const & log,
+            T const & log_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -64,7 +64,7 @@ namespace alpaka
                 T,
                 TArg>
             ::log(
-                log,
+                log_ctx,
                 arg))
 #endif
         {
@@ -73,7 +73,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::log(
-                    log,
+                    log_ctx,
                     arg);
         }
 
@@ -97,19 +97,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto log(
-                    T const & log,
+                    T const & log_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::log(
-                        static_cast<typename T::LogBase const &>(log),
+                        static_cast<typename T::LogBase const &>(log_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::log(
-                            static_cast<typename T::LogBase const &>(log),
+                            static_cast<typename T::LogBase const &>(log_ctx),
                             arg);
                 }
             };

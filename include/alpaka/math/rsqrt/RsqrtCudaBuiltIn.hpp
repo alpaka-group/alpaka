@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/rsqrt/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library rsqrt.
+        //! The CUDA rsqrt.
         class RsqrtCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library rsqrt trait specialization.
+            //! The CUDA rsqrt trait specialization.
             template<
                 typename TArg>
             struct Rsqrt<
@@ -62,12 +61,27 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto rsqrt(
-                    RsqrtCudaBuiltIn const & /*rsqrt*/,
+                    RsqrtCudaBuiltIn const & rsqrt_ctx,
                     TArg const & arg)
                 -> decltype(::rsqrt(arg))
                 {
-                    //boost::ignore_unused(rsqrt);
+                    alpaka::ignore_unused(rsqrt_ctx);
                     return ::rsqrt(arg);
+                }
+            };
+            //! The CUDA rsqrt float specialization.
+            template<>
+            struct Rsqrt<
+                RsqrtCudaBuiltIn,
+                float>
+            {
+                __device__ static auto rsqrt(
+                    RsqrtCudaBuiltIn const & rsqrt_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(rsqrt_ctx);
+                    return ::rsqrtf(arg);
                 }
             };
         }

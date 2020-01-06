@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/max/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library max.
+        //! The CUDA built in max.
         class MaxCudaBuiltIn
         {
         public:
@@ -65,17 +64,17 @@ namespace alpaka
                     && std::is_integral<Ty>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto max(
-                    MaxCudaBuiltIn const & /*max*/,
+                    MaxCudaBuiltIn const & max_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::max(x, y))
                 {
-                    //boost::ignore_unused(max);
+                    alpaka::ignore_unused(max_ctx);
                     return ::max(x, y);
                 }
             };
             //#############################################################################
-            //! The standard library mixed integral floating point max trait specialization.
+            //! The CUDA mixed integral floating point max trait specialization.
             template<
                 typename Tx,
                 typename Ty>
@@ -90,12 +89,12 @@ namespace alpaka
                         && std::is_integral<Ty>::value)>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto max(
-                    MaxCudaBuiltIn const & /*max*/,
+                    MaxCudaBuiltIn const & max_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::fmax(x, y))
                 {
-                    //boost::ignore_unused(max);
+                    alpaka::ignore_unused(max_ctx);
                     return ::fmax(x, y);
                 }
             };

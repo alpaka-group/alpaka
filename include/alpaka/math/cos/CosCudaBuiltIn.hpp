@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/cos/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library cos.
+        //! The CUDA built in cos.
         class CosCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library cos trait specialization.
+            //! The CUDA cos trait specialization.
             template<
                 typename TArg>
             struct Cos<
@@ -62,12 +61,27 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto cos(
-                    CosCudaBuiltIn const & /*cos*/,
+                    CosCudaBuiltIn const & cos_ctx,
                     TArg const & arg)
                 -> decltype(::cos(arg))
                 {
-                    //boost::ignore_unused(cos);
+                    alpaka::ignore_unused(cos_ctx);
                     return ::cos(arg);
+                }
+            };
+
+            template<>
+            struct Cos<
+                CosCudaBuiltIn,
+                float>
+            {
+                __device__ static auto cos(
+                    CosCudaBuiltIn const & cos_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(cos_ctx);
+                    return ::cosf(arg);
                 }
             };
         }

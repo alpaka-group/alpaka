@@ -49,14 +49,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Sqrt.
         //! \tparam TArg The arg type.
-        //! \param sqrt The object specializing Sqrt.
+        //! \param sqrt_ctx The object specializing Sqrt.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto sqrt(
-            T const & sqrt,
+            T const & sqrt_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -64,7 +64,7 @@ namespace alpaka
                 T,
                 TArg>
             ::sqrt(
-                sqrt,
+                sqrt_ctx,
                 arg))
 #endif
         {
@@ -73,7 +73,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::sqrt(
-                    sqrt,
+                    sqrt_ctx,
                     arg);
         }
 
@@ -97,19 +97,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto sqrt(
-                    T const & sqrt,
+                    T const & sqrt_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::sqrt(
-                        static_cast<typename T::SqrtBase const &>(sqrt),
+                        static_cast<typename T::SqrtBase const &>(sqrt_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::sqrt(
-                            static_cast<typename T::SqrtBase const &>(sqrt),
+                            static_cast<typename T::SqrtBase const &>(sqrt_ctx),
                             arg);
                 }
             };

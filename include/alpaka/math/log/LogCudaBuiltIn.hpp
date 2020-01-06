@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/log/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library log.
+        // ! The CUDA built in log.
         class LogCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library log trait specialization.
+            //! The CUDA log trait specialization.
             template<
                 typename TArg>
             struct Log<
@@ -62,14 +61,30 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto log(
-                    LogCudaBuiltIn const & /*log*/,
+                    LogCudaBuiltIn const & log_ctx,
                     TArg const & arg)
                 -> decltype(::log(arg))
                 {
-                    //boost::ignore_unused(log);
+                    alpaka::ignore_unused(log_ctx);
                     return ::log(arg);
                 }
             };
+            //! The CUDA log float specialization.
+            template<>
+            struct Log<
+                LogCudaBuiltIn,
+                float>
+            {
+                __device__ static auto log(
+                    LogCudaBuiltIn const & log_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(log_ctx);
+                    return ::logf(arg);
+                }
+            };
+
         }
     }
 }

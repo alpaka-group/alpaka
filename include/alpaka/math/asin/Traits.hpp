@@ -48,14 +48,14 @@ namespace alpaka
         //! Computes the principal value of the arc sine.
         //!
         //! \tparam TArg The arg type.
-        //! \param asin The object specializing Asin.
+        //! \param asin_ctx The object specializing Asin.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto asin(
-            T const & asin,
+            T const & asin_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -63,7 +63,7 @@ namespace alpaka
                 T,
                 TArg>
             ::asin(
-                asin,
+                asin_ctx,
                 arg))
 #endif
         {
@@ -72,7 +72,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::asin(
-                    asin,
+                    asin_ctx,
                     arg);
         }
 
@@ -96,19 +96,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto asin(
-                    T const & asin,
+                    T const & asin_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::asin(
-                        static_cast<typename T::AsinBase const &>(asin),
+                        static_cast<typename T::AsinBase const &>(asin_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::asin(
-                            static_cast<typename T::AsinBase const &>(asin),
+                            static_cast<typename T::AsinBase const &>(asin_ctx),
                             arg);
                 }
             };

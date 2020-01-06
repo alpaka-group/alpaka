@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/fmod/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library fmod.
+        //! The CUDA built in fmod.
         class FmodCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library fmod trait specialization.
+            //! The CUDA fmod trait specialization.
             template<
                 typename Tx,
                 typename Ty>
@@ -65,13 +64,34 @@ namespace alpaka
                     && std::is_floating_point<Ty>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto fmod(
-                    FmodCudaBuiltIn const & /*fmod*/,
+                    FmodCudaBuiltIn const & fmod_ctx,
                     Tx const & x,
                     Ty const & y)
                 -> decltype(::fmod(x, y))
                 {
-                    //boost::ignore_unused(fmod);
-                    return ::fmod(x, y);
+                    alpaka::ignore_unused(fmod_ctx);
+                    return ::fmod(
+                        x,
+                        y);
+                }
+            };
+            //! The CUDA fmod float specialization.
+            template<>
+            struct Fmod<
+                FmodCudaBuiltIn,
+                float,
+                float>
+            {
+                __device__ static auto fmod(
+                    FmodCudaBuiltIn const & fmod_ctx,
+                    float const & x,
+                    float const & y)
+                -> float
+                {
+                    alpaka::ignore_unused(fmod_ctx);
+                    return ::fmodf(
+                        x,
+                        y);
                 }
             };
         }

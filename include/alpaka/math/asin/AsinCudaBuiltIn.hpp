@@ -24,6 +24,7 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
@@ -42,7 +43,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library asin.
+        //! The CUDA built in asin.
         class AsinCudaBuiltIn
         {
         public:
@@ -52,7 +53,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library asin trait specialization.
+            //! The CUDA asin trait specialization.
             template<
                 typename TArg>
             struct Asin<
@@ -62,12 +63,27 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto asin(
-                    AsinCudaBuiltIn const & /*asin*/,
+                    AsinCudaBuiltIn const & asin_ctx,
                     TArg const & arg)
                 -> decltype(::asin(arg))
                 {
-                    //boost::ignore_unused(asin);
+                    alpaka::ignore_unused(asin_ctx);
                     return ::asin(arg);
+                }
+            };
+
+            template<>
+            struct Asin<
+                AsinCudaBuiltIn,
+                float>
+            {
+                __device__ static auto asin(
+                    AsinCudaBuiltIn const & asin_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(asin_ctx);
+                    return ::asinf(arg);
                 }
             };
         }

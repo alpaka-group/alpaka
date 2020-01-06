@@ -49,14 +49,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Trunc.
         //! \tparam TArg The arg type.
-        //! \param trunc The object specializing Trunc.
+        //! \param trunc_ctx The object specializing Trunc.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto trunc(
-            T const & trunc,
+            T const & trunc_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -64,7 +64,7 @@ namespace alpaka
                 T,
                 TArg>
             ::trunc(
-                trunc,
+                trunc_ctx,
                 arg))
 #endif
         {
@@ -73,7 +73,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::trunc(
-                    trunc,
+                    trunc_ctx,
                     arg);
         }
 
@@ -97,19 +97,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto trunc(
-                    T const & trunc,
+                    T const & trunc_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::trunc(
-                        static_cast<typename T::TruncBase const &>(trunc),
+                        static_cast<typename T::TruncBase const &>(trunc_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::trunc(
-                            static_cast<typename T::TruncBase const &>(trunc),
+                            static_cast<typename T::TruncBase const &>(trunc_ctx),
                             arg);
                 }
             };

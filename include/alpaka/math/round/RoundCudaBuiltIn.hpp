@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/round/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library round.
+        //! The CUDA round.
         class RoundCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The CUDA round trait specialization.
             template<
                 typename TArg>
             struct Round<
@@ -62,16 +61,16 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto round(
-                    RoundCudaBuiltIn const & /*round*/,
+                    RoundCudaBuiltIn const & round_ctx,
                     TArg const & arg)
                 -> decltype(::round(arg))
                 {
-                    //boost::ignore_unused(round);
+                    alpaka::ignore_unused(round_ctx);
                     return ::round(arg);
                 }
             };
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The CUDA lround trait specialization.
             template<
                 typename TArg>
             struct Lround<
@@ -81,16 +80,16 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto lround(
-                    RoundCudaBuiltIn const & /*lround*/,
+                    RoundCudaBuiltIn const & lround_ctx,
                     TArg const & arg)
                 -> long int
                 {
-                    //boost::ignore_unused(lround);
+                    alpaka::ignore_unused(lround_ctx);
                     return ::lround(arg);
                 }
             };
             //#############################################################################
-            //! The standard library round trait specialization.
+            //! The CUDA llround trait specialization.
             template<
                 typename TArg>
             struct Llround<
@@ -100,12 +99,27 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto llround(
-                    RoundCudaBuiltIn const & /*llround*/,
+                    RoundCudaBuiltIn const & llround_ctx,
                     TArg const & arg)
                 -> long int
                 {
-                    //boost::ignore_unused(llround);
+                    alpaka::ignore_unused(llround_ctx);
                     return ::llround(arg);
+                }
+            };
+            //! The CUDA round float specialization.
+            template<>
+            struct Round<
+                RoundCudaBuiltIn,
+                float>
+            {
+                __device__ static auto round(
+                    RoundCudaBuiltIn const & round_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(round_ctx);
+                    return ::roundf(arg);
                 }
             };
         }

@@ -51,7 +51,7 @@ namespace alpaka
         //! \tparam T The type of the object specializing Atan2.
         //! \tparam Ty The y arg type.
         //! \tparam Tx The x arg type.
-        //! \param atan2 The object specializing Atan2.
+        //! \param atan2_ctx The object specializing Atan2.
         //! \param y The y arg.
         //! \param x The x arg.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -60,7 +60,7 @@ namespace alpaka
             typename Ty,
             typename Tx>
         ALPAKA_FN_HOST_ACC auto atan2(
-            T const & atan2,
+            T const & atan2_ctx,
             Ty const & y,
             Tx const & x)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
@@ -70,7 +70,7 @@ namespace alpaka
                 Ty,
                 Tx>
             ::atan2(
-                atan2,
+                atan2_ctx,
                 y,
                 x))
 #endif
@@ -81,7 +81,7 @@ namespace alpaka
                     Ty,
                     Tx>
                 ::atan2(
-                    atan2,
+                    atan2_ctx,
                     y,
                     x);
         }
@@ -108,13 +108,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto atan2(
-                    T const & atan2,
+                    T const & atan2_ctx,
                     Ty const & y,
                     Tx const & x)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::atan2(
-                        static_cast<typename T::Atan2Base const &>(atan2),
+                        static_cast<typename T::Atan2Base const &>(atan2_ctx),
                         y,
                         x))
 #endif
@@ -122,7 +122,7 @@ namespace alpaka
                     // Delegate the call to the base class.
                     return
                         math::atan2(
-                            static_cast<typename T::Atan2Base const &>(atan2),
+                            static_cast<typename T::Atan2Base const &>(atan2_ctx),
                             y,
                             x);
                 }

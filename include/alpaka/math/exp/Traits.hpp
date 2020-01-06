@@ -49,13 +49,13 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Exp.
         //! \tparam TArg The arg type.
-        //! \param exp The object specializing Exp.
+        //! \param exp_ctx The object specializing Exp.
         //! \param arg The arg.
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto exp(
-            T const & exp,
+            T const & exp_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -63,7 +63,7 @@ namespace alpaka
                 T,
                 TArg>
             ::exp(
-                exp,
+                exp_ctx,
                 arg))
 #endif
         {
@@ -72,7 +72,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::exp(
-                    exp,
+                    exp_ctx,
                     arg);
         }
 
@@ -96,19 +96,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto exp(
-                    T const & exp,
+                    T const & exp_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::exp(
-                        static_cast<typename T::ExpBase const &>(exp),
+                        static_cast<typename T::ExpBase const &>(exp_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::exp(
-                            static_cast<typename T::ExpBase const &>(exp),
+                            static_cast<typename T::ExpBase const &>(exp_ctx),
                             arg);
                 }
             };

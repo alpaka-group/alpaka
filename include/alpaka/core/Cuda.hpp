@@ -85,6 +85,8 @@ namespace alpaka
                     std::cerr << sError << std::endl;
 #endif
                     ALPAKA_DEBUG_BREAK;
+                    // reset the last error to allow user side error handling
+                    cudaGetLastError();
                     throw std::runtime_error(sError);
                 }
             }

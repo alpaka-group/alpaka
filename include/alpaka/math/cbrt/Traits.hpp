@@ -49,14 +49,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Cbrt.
         //! \tparam TArg The arg type.
-        //! \param cbrt The object specializing Cbrt.
+        //! \param cbrt_ctx The object specializing Cbrt.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto cbrt(
-            T const & cbrt,
+            T const & cbrt_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -64,7 +64,7 @@ namespace alpaka
                 T,
                 TArg>
             ::cbrt(
-                cbrt,
+                cbrt_ctx,
                 arg))
 #endif
         {
@@ -73,7 +73,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::cbrt(
-                    cbrt,
+                    cbrt_ctx,
                     arg);
         }
 
@@ -97,19 +97,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto cbrt(
-                    T const & cbrt,
+                    T const & cbrt_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::cbrt(
-                        static_cast<typename T::CbrtBase const &>(cbrt),
+                        static_cast<typename T::CbrtBase const &>(cbrt_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::cbrt(
-                            static_cast<typename T::CbrtBase const &>(cbrt),
+                            static_cast<typename T::CbrtBase const &>(cbrt_ctx),
                             arg);
                 }
             };

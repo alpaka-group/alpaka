@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/tan/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library tan.
+        //! The CUDA tan.
         class TanCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library tan trait specialization.
+            //! The CUDA tan trait specialization.
             template<
                 typename TArg>
             struct Tan<
@@ -62,11 +61,26 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto tan(
-                    TanCudaBuiltIn const & /*tan*/,
+                    TanCudaBuiltIn const & tan_ctx,
                     TArg const & arg)
                 -> decltype(::tan(arg))
                 {
-                    //boost::ignore_unused(tan);
+                    alpaka::ignore_unused(tan_ctx);
+                    return ::tan(arg);
+                }
+            };
+            //! The CUDA tan float specialization.
+            template<>
+            struct Tan<
+                TanCudaBuiltIn,
+                float>
+            {
+                __device__ static auto tan(
+                    TanCudaBuiltIn const & tan_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(tan_ctx);
                     return ::tanf(arg);
                 }
             };

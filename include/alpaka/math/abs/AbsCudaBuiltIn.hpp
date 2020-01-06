@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/abs/Traits.hpp>
-
-//#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library abs.
+        //! The CUDA built in abs.
         class AbsCudaBuiltIn
         {
         public:
@@ -62,12 +61,42 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto abs(
-                    AbsCudaBuiltIn const & /*abs*/,
+                    AbsCudaBuiltIn const & abs_ctx,
                     TArg const & arg)
                 -> decltype(::abs(arg))
                 {
-                    //boost::ignore_unused(abs);
+                    alpaka::ignore_unused(abs_ctx);
                     return ::abs(arg);
+                }
+            };
+            //! The CUDA built in abs double specialization.
+            template<>
+            struct Abs<
+                AbsCudaBuiltIn,
+                double>
+            {
+                __device__ static auto abs(
+                    AbsCudaBuiltIn const & abs_ctx,
+                    double const & arg)
+                -> decltype(::fabs(arg))
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::fabs(arg);
+                }
+            };
+            //! The CUDA built in abs float specialization.
+            template<>
+            struct Abs<
+                AbsCudaBuiltIn,
+                float>
+            {
+                __device__ static auto abs(
+                    AbsCudaBuiltIn const & abs_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(abs_ctx);
+                    return ::fabsf(arg);
                 }
             };
         }

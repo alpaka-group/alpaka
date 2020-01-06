@@ -49,14 +49,14 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Rsqrt.
         //! \tparam TArg The arg type.
-        //! \param rsqrt The object specializing Rsqrt.
+        //! \param rsqrt_ctx The object specializing Rsqrt.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
         ALPAKA_FN_HOST_ACC auto rsqrt(
-            T const & rsqrt,
+            T const & rsqrt_ctx,
             TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
         -> decltype(
@@ -64,7 +64,7 @@ namespace alpaka
                 T,
                 TArg>
             ::rsqrt(
-                rsqrt,
+                rsqrt_ctx,
                 arg))
 #endif
         {
@@ -73,7 +73,7 @@ namespace alpaka
                     T,
                     TArg>
                 ::rsqrt(
-                    rsqrt,
+                    rsqrt_ctx,
                     arg);
         }
 
@@ -97,19 +97,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto rsqrt(
-                    T const & rsqrt,
+                    T const & rsqrt_ctx,
                     TArg const & arg)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                 -> decltype(
                     math::rsqrt(
-                        static_cast<typename T::RsqrtBase const &>(rsqrt),
+                        static_cast<typename T::RsqrtBase const &>(rsqrt_ctx),
                         arg))
 #endif
                 {
                     // Delegate the call to the base class.
                     return
                         math::rsqrt(
-                            static_cast<typename T::RsqrtBase const &>(rsqrt),
+                            static_cast<typename T::RsqrtBase const &>(rsqrt_ctx),
                             arg);
                 }
             };

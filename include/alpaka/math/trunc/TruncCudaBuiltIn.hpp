@@ -24,14 +24,13 @@
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #if !BOOST_LANG_CUDA
     #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
 #endif
 
 #include <alpaka/math/trunc/Traits.hpp>
-
-#include <boost/core/ignore_unused.hpp>
 
 #include <cuda_runtime.h>
 #include <type_traits>
@@ -42,7 +41,7 @@ namespace alpaka
     namespace math
     {
         //#############################################################################
-        //! The standard library trunc.
+        //! The CUDA trunc.
         class TruncCudaBuiltIn
         {
         public:
@@ -52,7 +51,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The standard library trunc trait specialization.
+            //! The CUDA trunc trait specialization.
             template<
                 typename TArg>
             struct Trunc<
@@ -62,12 +61,27 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto trunc(
-                    TruncCudaBuiltIn const & /*trunc*/,
+                    TruncCudaBuiltIn const & trunc_ctx,
                     TArg const & arg)
                 -> decltype(::trunc(arg))
                 {
-                    //boost::ignore_unused(trunc);
+                    alpaka::ignore_unused(trunc_ctx);
                     return ::trunc(arg);
+                }
+            };
+            //! The CUDA trunc float specialization.
+            template<>
+            struct Trunc<
+                TruncCudaBuiltIn,
+                float>
+            {
+                __device__ static auto trunc(
+                    TruncCudaBuiltIn const & trunc_ctx,
+                    float const & arg)
+                -> float
+                {
+                    alpaka::ignore_unused(trunc_ctx);
+                    return ::truncf(arg);
                 }
             };
         }
