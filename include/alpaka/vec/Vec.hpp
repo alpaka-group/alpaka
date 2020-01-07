@@ -887,7 +887,7 @@ namespace alpaka
                     // In the case of a zero dimensional vector, vec is unused.
                     alpaka::ignore_unused(vec);
 
-                    static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same idx) then the origin vector.");
+                    static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) than the origin vector.");
 
                     return Vec<dim::DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
                 }

@@ -14,9 +14,10 @@
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/idx/Traits.hpp>
-#include <alpaka/meta/IntegerSequence.hpp>
 
 #include <type_traits>
+#include <utility>
+#include <functional>
 
 namespace alpaka
 {
@@ -117,7 +118,7 @@ namespace alpaka
                 size_t... TIndices>
             ALPAKA_FN_HOST_ACC auto getExtentProductInternal(
                 TExtent const & extent,
-                alpaka::meta::IndexSequence<TIndices...> const & indices)
+                std::index_sequence<TIndices...> const & indices)
             -> idx::Idx<TExtent>
             {
                 alpaka::ignore_unused(indices);
@@ -138,7 +139,7 @@ namespace alpaka
             TExtent const & extent = TExtent())
         -> idx::Idx<TExtent>
         {
-            using IdxSequence = alpaka::meta::MakeIndexSequence<dim::Dim<TExtent>::value>;
+            using IdxSequence = std::make_index_sequence<dim::Dim<TExtent>::value>;
             return
                 detail::getExtentProductInternal(
                     extent,
