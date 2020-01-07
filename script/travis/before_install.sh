@@ -126,12 +126,6 @@ then
             exit 1
         fi
 
-        if [ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == "ubuntu:14.04" ]
-        then
-            echo "using libc++ with ubuntu:14.04 not supported."
-            exit 1
-        fi
-
         if (( ( ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" == 1 ) && ( "${ALPAKA_CI_BOOST_BRANCH_MINOR}" < 65 ) ) || ( "${ALPAKA_CI_BOOST_BRANCH_MAJOR}" < 1 ) ))
         then
             echo "using libc++ with boost < 1.65 is not supported."
