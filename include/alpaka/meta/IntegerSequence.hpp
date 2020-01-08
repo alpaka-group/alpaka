@@ -108,14 +108,16 @@ namespace alpaka
             };
             //#############################################################################
             template<typename T, T Tbegin, T... Tvals>
-            struct MakeIntegerSequenceHelper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, IntegerSequence<T, Tvals...> > :
-                IntegerSequence<T, Tvals...>
-            {};
+            struct MakeIntegerSequenceHelper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, IntegerSequence<T, Tvals...> >
+            {
+                using type = IntegerSequence<T, Tvals...>;
+            };
             //#############################################################################
             template<typename T, T Tbegin, T TIdx, T... Tvals>
-            struct MakeIntegerSequenceHelper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, IntegerSequence<T, Tvals...> > :
-                MakeIntegerSequenceHelper<false, TIdx == (Tbegin+1), T, Tbegin, std::integral_constant<T, TIdx - 1>, IntegerSequence<T, TIdx - 1, Tvals...> >
-            {};
+            struct MakeIntegerSequenceHelper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, IntegerSequence<T, Tvals...> >
+            {
+                using type = typename MakeIntegerSequenceHelper<false, TIdx == (Tbegin+1), T, Tbegin, std::integral_constant<T, TIdx - 1>, IntegerSequence<T, TIdx - 1, Tvals...> >::type;
+            };
         }
 
         //#############################################################################
