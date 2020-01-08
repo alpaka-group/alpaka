@@ -171,14 +171,14 @@ namespace alpaka
                                     throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
                                 }
 
-                                // GCC 5.1 fails with:
+                                // GCC fails with:
                                 // error: redeclaration of const int& iBlockThreadCount
                                 // if(numThreads != iBlockThreadCount)
                                 //                  ^
                                 // note: const int& iBlockThreadCount previously declared here
                                 // #pragma omp parallel num_threads(iBlockThreadCount)
                                 //         ^
-#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0)) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0))
+#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(6, 0, 0))
                                 int const numThreads(::omp_get_num_threads());
                                 if(numThreads != iBlockThreadCount)
                                 {
