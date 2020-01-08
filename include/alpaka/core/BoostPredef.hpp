@@ -122,22 +122,6 @@
 #endif
 
 //-----------------------------------------------------------------------------
-// In boost since 1.64.0
-// Work around for broken intel detection
-#if BOOST_COMP_INTEL == 0
-    #if defined(__INTEL_COMPILER)
-        #ifdef BOOST_COMP_INTEL_DETECTION
-            #undef BOOST_COMP_INTEL_DETECTION
-        #endif
-        #define BOOST_COMP_INTEL_DETECTION BOOST_PREDEF_MAKE_10_VVRR(__INTEL_COMPILER)
-        #if defined(BOOST_COMP_INTEL)
-            #undef BOOST_COMP_INTEL
-        #endif
-        #define BOOST_COMP_INTEL BOOST_COMP_INTEL_DETECTION
-    #endif
-#endif
-
-//-----------------------------------------------------------------------------
 // clang CUDA compiler detection
 // Currently __CUDA__ is only defined by clang when compiling CUDA code.
 #if defined(__clang__) && defined(__CUDA__)

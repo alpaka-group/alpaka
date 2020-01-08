@@ -84,7 +84,7 @@ Other compilers or combinations marked with :x: in the table above may work but 
 Dependencies
 ------------
 
-[Boost](https://boost.org/) 1.62+ is the only mandatory external dependency (for CUDA 9+ Boost >=1.65.1 is required).
+[Boost](https://boost.org/) 1.65.1+ is the only mandatory external dependency.
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
