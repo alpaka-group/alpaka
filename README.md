@@ -19,8 +19,6 @@ There is no need to write special CUDA, OpenMP or custom threading code.
 Accelerator back-ends can be mixed within a device queue.
 The decision which accelerator back-end executes which kernel can be made at runtime.
 
-The **alpaka** API is currently unstable (beta state).
-
 The abstraction used is very similar to the CUDA grid-blocks-threads division strategy.
 Algorithms that should be parallelized have to be divided into a multi-dimensional grid consisting of small uniform work items.
 These functions are called kernels and are executed in parallel threads.
