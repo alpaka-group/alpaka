@@ -130,29 +130,6 @@ namespace alpaka
 
 
         //#############################################################################
-        template<
-            std::size_t... Tvals>
-        using IndexSequence = IntegerSequence<std::size_t, Tvals...>;
-
-        //#############################################################################
-        template<
-            typename T,
-            T Tbegin,
-            T Tsize>
-        using MakeIndexSequenceOffset = MakeIntegerSequenceOffset<std::size_t, Tbegin, Tsize>;
-
-        //#############################################################################
-        template<
-            std::size_t Tsize>
-        using MakeIndexSequence = MakeIntegerSequence<std::size_t, Tsize>;
-
-        //#############################################################################
-        template<
-            typename... Ts>
-        using IndexSequenceFor = MakeIndexSequence<sizeof...(Ts)>;
-
-
-        //#############################################################################
         //! Checks if the integral values are unique.
         template<
             typename T,
