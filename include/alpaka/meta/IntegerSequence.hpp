@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>
 #include <alpaka/meta/Set.hpp>
 
 #include <type_traits>
@@ -20,25 +19,6 @@ namespace alpaka
 {
     namespace meta
     {
-        //#############################################################################
-        // This could be replaced with c++14 std::IntegerSequence if we raise the minimum.
-        template<
-            typename T,
-            T... Tvals>
-        struct IntegerSequence
-        {
-            static_assert(std::is_integral<T>::value, "IntegerSequence<T, I...> requires T to be an integral type.");
-
-            using type = IntegerSequence<T, Tvals...>;
-            using value_type = T;
-
-            ALPAKA_FN_HOST_ACC static auto size() noexcept
-            -> std::size_t
-            {
-                return (sizeof...(Tvals));
-            }
-        };
-
         namespace detail
         {
             //#############################################################################
@@ -53,9 +33,9 @@ namespace alpaka
                 T... Tvals>
             struct ConvertIntegerSequence<
                 TDstType,
-                IntegerSequence<T, Tvals...>>
+                std::integer_sequence<T, Tvals...>>
             {
-                using type = IntegerSequence<TDstType, static_cast<TDstType>(Tvals)...>;
+                using type = std::integer_sequence<TDstType, static_cast<TDstType>(Tvals)...>;
             };
         }
         //#############################################################################
@@ -74,26 +54,21 @@ namespace alpaka
             };
             //#############################################################################
             template<typename T, T Tbegin, T... Tvals>
-            struct MakeIntegerSequenceHelper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, IntegerSequence<T, Tvals...> >
+            struct MakeIntegerSequenceHelper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, std::integer_sequence<T, Tvals...> >
             {
-                using type = IntegerSequence<T, Tvals...>;
+                using type = std::integer_sequence<T, Tvals...>;
             };
             //#############################################################################
             template<typename T, T Tbegin, T TIdx, T... Tvals>
-            struct MakeIntegerSequenceHelper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, IntegerSequence<T, Tvals...> >
+            struct MakeIntegerSequenceHelper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, std::integer_sequence<T, Tvals...> >
             {
-                using type = typename MakeIntegerSequenceHelper<false, TIdx == (Tbegin+1), T, Tbegin, std::integral_constant<T, TIdx - 1>, IntegerSequence<T, TIdx - 1, Tvals...> >::type;
+                using type = typename MakeIntegerSequenceHelper<false, TIdx == (Tbegin+1), T, Tbegin, std::integral_constant<T, TIdx - 1>, std::integer_sequence<T, TIdx - 1, Tvals...> >::type;
             };
         }
 
         //#############################################################################
         template<typename T, T Tbegin, T Tsize>
-        using MakeIntegerSequenceOffset = typename detail::MakeIntegerSequenceHelper<(Tsize < 0), (Tsize == 0), T, Tbegin, std::integral_constant<T, Tbegin+Tsize>, IntegerSequence<T> >::type;
-
-        //#############################################################################
-        template<typename T, T Tsize>
-        using MakeIntegerSequence = MakeIntegerSequenceOffset<T, 0u, Tsize>;
-
+        using MakeIntegerSequenceOffset = typename detail::MakeIntegerSequenceHelper<(Tsize < 0), (Tsize == 0), T, Tbegin, std::integral_constant<T, Tbegin+Tsize>, std::integer_sequence<T> >::type;
 
         //#############################################################################
         //! Checks if the integral values are unique.

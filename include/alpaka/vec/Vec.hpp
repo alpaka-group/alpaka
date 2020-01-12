@@ -59,7 +59,7 @@ namespace alpaka
             typename TIdxSize,
             TIdxSize... TIndices>
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-            meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
+            std::integer_sequence<TIdxSize, TIndices...> const & indices,
             TArgs && ... args)
         {
             alpaka::ignore_unused(indices);
@@ -78,7 +78,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto createVecFromIndexedFn(
             TArgs && ... args)
         {
-            using IdxSequence = meta::MakeIntegerSequence<typename TDim::value_type, TDim::value>;
+            using IdxSequence = std::make_integer_sequence<typename TDim::value_type, TDim::value>;
             return
                 createVecFromIndexedFnArbitrary<
                     TDim,
@@ -126,7 +126,7 @@ namespace alpaka
         private:
             //! A sequence of integers from 0 to dim-1.
             //! This can be used to write compile time indexing algorithms.
-            using IdxSequence = meta::MakeIntegerSequence<std::size_t, TDim::value>;
+            using IdxSequence = std::make_integer_sequence<std::size_t, TDim::value>;
 
         public:
             //-----------------------------------------------------------------------------
@@ -169,7 +169,7 @@ namespace alpaka
                 typename TIdxSize,
                 TIdxSize... TIndices>
             ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
-                meta::IntegerSequence<TIdxSize, TIndices...> const & indices,
+                std::integer_sequence<TIdxSize, TIndices...> const & indices,
                 TArgs && ... args)
             -> Vec<TDim, TVal>
             {
@@ -355,7 +355,7 @@ namespace alpaka
                 std::size_t... TIndices>
             ALPAKA_FN_HOST_ACC auto foldrByIndices(
                 TFnObj const & f,
-                meta::IntegerSequence<std::size_t, TIndices...> const & indices) const
+                std::integer_sequence<std::size_t, TIndices...> const & indices) const
             {
                 alpaka::ignore_unused(indices);
 
@@ -871,11 +871,11 @@ namespace alpaka
                 std::size_t... TIndices>
             struct SubVecFromIndices<
                 Vec<TDim, TVal>,
-                meta::IntegerSequence<std::size_t, TIndices...>,
+                std::integer_sequence<std::size_t, TIndices...>,
                 typename std::enable_if<
                     !std::is_same<
-                        meta::IntegerSequence<std::size_t, TIndices...>,
-                        meta::MakeIntegerSequence<std::size_t, TDim::value>
+                        std::integer_sequence<std::size_t, TIndices...>,
+                        std::make_integer_sequence<std::size_t, TDim::value>
                     >::value
                 >::type>
             {
@@ -896,10 +896,17 @@ namespace alpaka
             //! Specialization for selecting the whole vector.
             template<
                 typename TDim,
-                typename TVal>
+                typename TVal,
+                std::size_t... TIndices>
             struct SubVecFromIndices<
                 Vec<TDim, TVal>,
-                meta::MakeIntegerSequence<std::size_t, TDim::value>>
+                std::integer_sequence<std::size_t, TIndices...>,
+                typename std::enable_if<
+                    std::is_same<
+                        std::integer_sequence<std::size_t, TIndices...>,
+                        std::make_integer_sequence<std::size_t, TDim::value>
+                    >::value
+                >::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto subVecFromIndices(

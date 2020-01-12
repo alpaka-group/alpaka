@@ -94,7 +94,7 @@ namespace alpaka
 
             //! A sequence of integers from 0 to dim-1.
             using IdxSubSequence =
-                meta::MakeIntegerSequence<
+                std::make_integer_sequence<
                     std::size_t,
                     TSubDim::value>;
             return
