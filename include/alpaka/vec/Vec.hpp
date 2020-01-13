@@ -27,10 +27,11 @@
 
 #include <boost/config.hpp>
 
+#include <algorithm>
 #include <cstdint>
 #include <ostream>
 #include <type_traits>
-#include <algorithm>
+#include <utility>
 
 // Some compilers do not support the out of class versions:
 // - the nvcc CUDA compiler (at least 8.0)

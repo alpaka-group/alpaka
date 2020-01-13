@@ -18,6 +18,8 @@
 
 #include <boost/config.hpp>
 
+#include <utility>
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------

@@ -14,6 +14,8 @@
 
 #include <catch2/catch.hpp>
 
+#include <utility>
+
 //-----------------------------------------------------------------------------
 TEST_CASE("basicVecTraits", "[vec]")
 {
