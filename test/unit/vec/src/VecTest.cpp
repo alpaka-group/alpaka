@@ -14,6 +14,8 @@
 
 #include <catch2/catch.hpp>
 
+#include <utility>
+
 //-----------------------------------------------------------------------------
 TEST_CASE("basicVecTraits", "[vec]")
 {
@@ -39,7 +41,7 @@ TEST_CASE("basicVecTraits", "[vec]")
     // alpaka::vec::subVecFromIndices
     {
         using IdxSequence =
-            alpaka::meta::IntegerSequence<
+            std::integer_sequence<
                 std::size_t,
                 0u,
                 Dim::value -1u,

@@ -14,8 +14,11 @@
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/offset/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
+#include <alpaka/meta/IntegerSequence.hpp>
 
 #include <boost/config.hpp>
+
+#include <utility>
 
 namespace alpaka
 {
@@ -93,7 +96,7 @@ namespace alpaka
 
             //! A sequence of integers from 0 to dim-1.
             using IdxSubSequence =
-                meta::MakeIntegerSequence<
+                std::make_integer_sequence<
                     std::size_t,
                     TSubDim::value>;
             return

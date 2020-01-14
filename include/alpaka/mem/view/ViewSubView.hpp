@@ -23,6 +23,7 @@
 #include <alpaka/core/Common.hpp>
 
 #include <type_traits>
+#include <utility>
 
 namespace alpaka
 {
@@ -303,7 +304,7 @@ namespace alpaka
                     mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
                 {
                 private:
-                    using IdxSequence = meta::MakeIntegerSequence<std::size_t, TDim::value>;
+                    using IdxSequence = std::make_index_sequence<TDim::value>;
                 public:
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
@@ -341,7 +342,7 @@ namespace alpaka
                         std::size_t... TIndices>
                     ALPAKA_FN_HOST static auto pitchedOffsetBytes(
                         TView const & view,
-                        meta::IntegerSequence<std::size_t, TIndices...> const &)
+                        std::index_sequence<TIndices...> const &)
                     -> TIdx
                     {
                         return
