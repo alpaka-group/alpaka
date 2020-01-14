@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['execcpufibers',['ExecCpuFibers',['../classalpaka_1_1acc_1_1AccCpuFibers.html#a7d3093a91dd5191591cd7a63fbf09782',1,'alpaka::acc::AccCpuFibers']]],
-  ['execcpuomp2blocks',['ExecCpuOmp2Blocks',['../classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#a6f8ff7e7612d82536835bee26b0dddc5',1,'alpaka::acc::AccCpuOmp2Blocks']]],
-  ['execcpuomp2threads',['ExecCpuOmp2Threads',['../classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a3995a77df8fb7d6e9883bc46e7ffee59',1,'alpaka::acc::AccCpuOmp2Threads']]],
-  ['execcpuomp4',['ExecCpuOmp4',['../classalpaka_1_1acc_1_1AccCpuOmp4.html#ad56fa8c36b16c84354a8177dfb081e2f',1,'alpaka::acc::AccCpuOmp4']]],
-  ['execcpuserial',['ExecCpuSerial',['../classalpaka_1_1acc_1_1AccCpuSerial.html#a6367130acbfacc6460d8d285aed9c86a',1,'alpaka::acc::AccCpuSerial']]],
-  ['execcputhreads',['ExecCpuThreads',['../classalpaka_1_1acc_1_1AccCpuThreads.html#a4430b06383623c0fe234daba654cd968',1,'alpaka::acc::AccCpuThreads']]]
+  ['taskkernelcpufibers_0',['TaskKernelCpuFibers',['../classalpaka_1_1acc_1_1AccCpuFibers.html#aaf759e41bbf839b35dc0190afd304e38',1,'alpaka::acc::AccCpuFibers']]],
+  ['taskkernelcpuomp2blocks_1',['TaskKernelCpuOmp2Blocks',['../classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#aed9386699b7a9f3cdb741694ad2ea592',1,'alpaka::acc::AccCpuOmp2Blocks']]],
+  ['taskkernelcpuomp2threads_2',['TaskKernelCpuOmp2Threads',['../classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a35609e8f3114593dcf04fd168b2f62c9',1,'alpaka::acc::AccCpuOmp2Threads']]],
+  ['taskkernelcpuomp4_3',['TaskKernelCpuOmp4',['../classalpaka_1_1acc_1_1AccCpuOmp4.html#aadb8197c2a1b1a8b11c17cf8fa3bc1e0',1,'alpaka::acc::AccCpuOmp4']]],
+  ['taskkernelcpuserial_4',['TaskKernelCpuSerial',['../classalpaka_1_1acc_1_1AccCpuSerial.html#ad01f3bd77457883ca6fec9f493c61306',1,'alpaka::acc::AccCpuSerial']]],
+  ['taskkernelcputhreads_5',['TaskKernelCpuThreads',['../classalpaka_1_1acc_1_1AccCpuThreads.html#abf606adfbab23375e243ad5d5e2f3d8c',1,'alpaka::acc::AccCpuThreads']]]
 ];

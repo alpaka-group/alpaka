@@ -1,16 +1,15 @@
 var classalpaka_1_1workdiv_1_1WorkDivMembers =
 [
-    [ "WorkDivBase", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a6d859d3cdafaca826089e64fb43fefd0", null ],
-    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a85285d7c2997448f9bedd274e1359e52", null ],
-    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a8d4889ce0b063e88424b30465fc4c308", null ],
-    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a7728226a894f8fc525d182f30cf9ffc0", null ],
-    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a12381011b11ce43a733a04c8c69fa356", null ],
-    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a244aa4200933e7c18c2039d99d2c3a75", null ],
-    [ "~WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a65d1486b39c2fac9353a8b37e5950796", null ],
-    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a33abe5ddc34e6d7a2faadbc8d1263b69", null ],
-    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ab9c3b3727a4d16981dee81d648b0e377", null ],
-    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a1efb0d0e7b5af388f5fea911276dd039", null ],
-    [ "m_blockThreadExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a9745b83439d2bb3677e08669f4dd2e9c", null ],
-    [ "m_gridBlockExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a5344ffb0152bd9de2506f9acddb3df82", null ],
-    [ "m_threadElemExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#aec2915a7a2baa6a82e5a88b59adbf845", null ]
+    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a609348de104d30e822df3351bdb736b8", null ],
+    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a094ba9c578de4c5eaa5b23936018c8af", null ],
+    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#af7965b5b669b73d275b1cfcf0c4e4779", null ],
+    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a99f5f05a7b4694545d8b16bb974353a0", null ],
+    [ "WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a79f02d750b940f803654ab46f65c1902", null ],
+    [ "~WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a803878f9ad89a393ea2f3c11a9ce9155", null ],
+    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ab9f2a6541177b62f03ead63fd7b2314e", null ],
+    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a5a6852914f2abff3d24902765ce1e3e6", null ],
+    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a2a052b99c4b2c485daeabdd7dee081d2", null ],
+    [ "m_blockThreadExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ab1b3bd789d3a1f70eab155e7927ffa03", null ],
+    [ "m_gridBlockExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a4cbfc969cf394601fe59f4bd08ab8b1a", null ],
+    [ "m_threadElemExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a93ef236f9184524da7c7e2451b1edadc", null ]
 ];

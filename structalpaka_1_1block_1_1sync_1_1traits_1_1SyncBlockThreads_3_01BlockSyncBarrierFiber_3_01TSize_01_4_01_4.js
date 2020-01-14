@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1sync_1_1traits_1_1SyncBlockThreads_3_01BlockSyncBarrierFiber_3_01TSize_01_4_01_4 =
-[
-    [ "syncBlockThreads", "structalpaka_1_1block_1_1sync_1_1traits_1_1SyncBlockThreads_3_01BlockSyncBarrierFiber_3_01TSize_01_4_01_4.html#aceb9e013e861facacdb5f5ceb68204cd", null ]
-];

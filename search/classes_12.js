@@ -1,14 +1,13 @@
 var searchData=
 [
-  ['waiterwaitfor',['WaiterWaitFor',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20dev_3a_3adevcpu_2c_20event_3a_3aeventcpu_20_3e',['WaiterWaitFor&lt; dev::DevCpu, event::EventCpu &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01dev_1_1DevCpu_00_01event_1_1EventCpu_01_4.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20dev_3a_3adevcudart_2c_20event_3a_3aeventcudart_20_3e',['WaiterWaitFor&lt; dev::DevCudaRt, event::EventCudaRt &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01dev_1_1DevCudaRt_00_01event_1_1EventCudaRt_01_4.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20std_3a_3ashared_5fptr_3c_20stream_3a_3acpu_3a_3adetail_3a_3astreamcpuasyncimpl_20_3e_2c_20event_3a_3aeventcpu_20_3e',['WaiterWaitFor&lt; std::shared_ptr&lt; stream::cpu::detail::StreamCpuAsyncImpl &gt;, event::EventCpu &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1deta0c95d09ec2aeb29e3c25c815e4f73fc3.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20std_3a_3ashared_5fptr_3c_20stream_3a_3acpu_3a_3adetail_3a_3astreamcpusyncimpl_20_3e_2c_20event_3a_3aeventcpu_20_3e',['WaiterWaitFor&lt; std::shared_ptr&lt; stream::cpu::detail::StreamCpuSyncImpl &gt;, event::EventCpu &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1detab7f7f5ad005f0a7f60b9decc7b4c3413.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20stream_3a_3astreamcpuasync_2c_20event_3a_3aeventcpu_20_3e',['WaiterWaitFor&lt; stream::StreamCpuAsync, event::EventCpu &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCpuAsync_00_01event_1_1EventCpu_01_4.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20stream_3a_3astreamcpusync_2c_20event_3a_3aeventcpu_20_3e',['WaiterWaitFor&lt; stream::StreamCpuSync, event::EventCpu &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCpuSync_00_01event_1_1EventCpu_01_4.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20stream_3a_3astreamcudartasync_2c_20event_3a_3aeventcudart_20_3e',['WaiterWaitFor&lt; stream::StreamCudaRtAsync, event::EventCudaRt &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCudaRtAsync_00_01event_1_1EventCudaRt_01_4.html',1,'alpaka::wait::traits']]],
-  ['waiterwaitfor_3c_20stream_3a_3astreamcudartsync_2c_20event_3a_3aeventcudart_20_3e',['WaiterWaitFor&lt; stream::StreamCudaRtSync, event::EventCudaRt &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCudaRtSync_00_01event_1_1EventCudaRt_01_4.html',1,'alpaka::wait::traits']]],
-  ['workdivcudabuiltin',['WorkDivCudaBuiltIn',['../classalpaka_1_1workdiv_1_1WorkDivCudaBuiltIn.html',1,'alpaka::workdiv']]],
-  ['workdivmembers',['WorkDivMembers',['../classalpaka_1_1workdiv_1_1WorkDivMembers.html',1,'alpaka::workdiv']]]
+  ['vec_2566',['Vec',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['vec_3c_20dim_3a_3adimint_3c_201u_20_3e_2c_20dstsize_20_3e_2567',['Vec&lt; dim::DimInt&lt; 1u &gt;, DstSize &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['vec_3c_20dim_3a_3adimint_3c_201u_20_3e_2c_20extentsize_20_3e_2568',['Vec&lt; dim::DimInt&lt; 1u &gt;, ExtentSize &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['vec_3c_20dim_3a_3adimint_3c_201u_20_3e_2c_20srcsize_20_3e_2569',['Vec&lt; dim::DimInt&lt; 1u &gt;, SrcSize &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['vec_3c_20tdim_2c_20dstsize_20_3e_2570',['Vec&lt; TDim, DstSize &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['vec_3c_20tdim_2c_20extentsize_20_3e_2571',['Vec&lt; TDim, ExtentSize &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['vec_3c_20tdim_2c_20srcsize_20_3e_2572',['Vec&lt; TDim, SrcSize &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['vec_3c_20tdim_2c_20tidx_20_3e_2573',['Vec&lt; TDim, TIdx &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
+  ['viewplainptr_2574',['ViewPlainPtr',['../classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html',1,'alpaka::mem::view']]],
+  ['viewsubview_2575',['ViewSubView',['../classalpaka_1_1mem_1_1view_1_1ViewSubView.html',1,'alpaka::mem::view']]]
 ];

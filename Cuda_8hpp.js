@@ -14,6 +14,7 @@ var Cuda_8hpp =
     [ "type >", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type_01_4.html", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type_01_4" ],
     [ "type >", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type_01_4.html", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type_01_4" ],
     [ "type >", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type_01_4.html", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type_01_4" ],
+    [ "IdxType< TIdx, typename std::enable_if< cuda::traits::IsCudaBuiltInType< TIdx >::value >::type >", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01TIdx_00_01typename_01std_1_1enable__if_3_01cuda_1_1f6a8e35d14d7bd75b1e44253cd42ad49.html", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01TIdx_00_01typename_01std_1_1enable__if_3_01cuda_1_1f6a8e35d14d7bd75b1e44253cd42ad49" ],
     [ "type >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type_01_4.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type_01_4" ],
     [ "type >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type_01_4.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type_01_4" ],
     [ "type >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type_01_4.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type_01_4" ],
@@ -22,9 +23,11 @@ var Cuda_8hpp =
     [ "type >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type_01_4.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type_01_4" ],
     [ "type >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type_01_4.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type_01_4" ],
     [ "type >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type_01_4.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type_01_4" ],
-    [ "SizeType< TSize, typename std::enable_if< cuda::traits::IsCudaBuiltInType< TSize >::value >::type >", "structalpaka_1_1size_1_1traits_1_1SizeType_3_01TSize_00_01typename_01std_1_1enable__if_3_01cuda_d22e8f64acf6f3e4386570e81462b856.html", "structalpaka_1_1size_1_1traits_1_1SizeType_3_01TSize_00_01typename_01std_1_1enable__if_3_01cuda_d22e8f64acf6f3e4386570e81462b856" ],
+    [ "ALPAKA_CUDA_DRV_CHECK", "Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019", null ],
     [ "ALPAKA_CUDA_RT_CHECK", "Cuda_8hpp.html#a69aee482f007066dfdb79c831e8ba771", null ],
     [ "ALPAKA_CUDA_RT_CHECK_IGNORE", "Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c", null ],
-    [ "cudaRtCheckIgnore", "Cuda_8hpp.html#ac21c15754ac416403577c3d992a86cdc", null ],
-    [ "cudaRtCheckLastError", "Cuda_8hpp.html#aeaa9f710740ff84d7f7e313e231d5cf5", null ]
+    [ "cudaDrvCheck", "Cuda_8hpp.html#ab7c0d46c5c98d6af03dd9bf203c32e48", null ],
+    [ "cudaRtCheck", "Cuda_8hpp.html#a8b4311f2e2075b3b83c9253fd72bd7b8", null ],
+    [ "cudaRtCheckIgnore", "Cuda_8hpp.html#aabe0604e2084474436e356c0e311968e", null ],
+    [ "cudaRtCheckLastError", "Cuda_8hpp.html#afb31c104bf9d2b4a09fdd60d1c7134fb", null ]
 ];

@@ -1,9 +1,9 @@
 var classalpaka_1_1acc_1_1AccCpuFibers =
 [
-    [ "AccCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#af8d27cc470faeae2c31075b1c43668db", null ],
-    [ "AccCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#aab4438537a0d9fc76bea56e6718067a3", null ],
-    [ "~AccCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#a5db1396988f6b7403ab135756592cb82", null ],
-    [ "operator=", "classalpaka_1_1acc_1_1AccCpuFibers.html#af53ac55740630dd100fa1d8207ef14bd", null ],
-    [ "operator=", "classalpaka_1_1acc_1_1AccCpuFibers.html#af1f8c039a855af4e089083ac1549daec", null ],
-    [ "::alpaka::exec::ExecCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#a7d3093a91dd5191591cd7a63fbf09782", null ]
+    [ "AccCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#aafe07b57abe94e948628ef71f58b5106", null ],
+    [ "AccCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#aa3bdbeb4a94b2e8fd4f39d084c0065d2", null ],
+    [ "~AccCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#a466d49764f28765c7680850486b48b18", null ],
+    [ "operator=", "classalpaka_1_1acc_1_1AccCpuFibers.html#ac78c4e55103a2cc17e16c5c8edab8feb", null ],
+    [ "operator=", "classalpaka_1_1acc_1_1AccCpuFibers.html#acf92151747071a6f2d312bd4a9d07516", null ],
+    [ "::alpaka::kernel::TaskKernelCpuFibers", "classalpaka_1_1acc_1_1AccCpuFibers.html#aaf759e41bbf839b35dc0190afd304e38", null ]
 ];

@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStl_00_01TArg_00_01typename_01std_1_1enable__if_3_097f2b82c60819ee915a378d8179e1d05 =
-[
-    [ "abs", "structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStl_00_01TArg_00_01typename_01std_1_1enable__if_3_097f2b82c60819ee915a378d8179e1d05.html#a5db8cbea3c456fa581f5987d5eff8241", null ]
-];

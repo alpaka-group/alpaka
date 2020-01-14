@@ -1,0 +1,4 @@
+var structalpaka_1_1block_1_1sync_1_1traits_1_1detail_1_1AtomicOp_3_01block_1_1sync_1_1op_1_1LogicalAnd_01_4 =
+[
+    [ "operator()", "structalpaka_1_1block_1_1sync_1_1traits_1_1detail_1_1AtomicOp_3_01block_1_1sync_1_1op_1_1LogicalAnd_01_4.html#a32263f074c1b8ca69be649da81bc4829", null ]
+];

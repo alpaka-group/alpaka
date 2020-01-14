@@ -1,4 +1,4 @@
 var structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01ty797ccfeb0e872be5148f5213a99d46c4 =
 [
-    [ "getExtent", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01ty797ccfeb0e872be5148f5213a99d46c4.html#a5457061ee00bf44dc11239023f0e67da", null ]
+    [ "getExtent", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01ty797ccfeb0e872be5148f5213a99d46c4.html#a8996189e154d9310b2e6a9870b98f41c", null ]
 ];

@@ -1,10 +1,9 @@
 var classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn =
 [
-    [ "BlockSyncBase", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#a05b5988273c2a1db17a58159b58d7829", null ],
-    [ "BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#ad24b88f178ba2264cb69b0fb88c66164", null ],
-    [ "BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#a1c527b7aac143fa9b89a716c8c9a1dcb", null ],
-    [ "BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#aadf2e55911fb5ee193a97d57fb911619", null ],
-    [ "~BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#aa40c40381f2d9a956b39b8a4ccd83e0e", null ],
-    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#a1207e52c6b02c4c6a76203a03ca1a1e1", null ],
-    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#a7b83c1249c2ae388a1e7d0acdcdf1d7d", null ]
+    [ "BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#ae3f4fd331156332a05da9b0892f92ddd", null ],
+    [ "BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#aaaa18eefaeb395faa1758c0a72a835a0", null ],
+    [ "BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#a2d0b64b38f1191b2e3e1cddb4de27db9", null ],
+    [ "~BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#acd6b3c8ca0ce8c4f355cc02e70e673d5", null ],
+    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#a707c17fa472c0cb2e833d2890a1bfe8c", null ],
+    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html#a2686db8ca378d9756eb43df51910beac", null ]
 ];

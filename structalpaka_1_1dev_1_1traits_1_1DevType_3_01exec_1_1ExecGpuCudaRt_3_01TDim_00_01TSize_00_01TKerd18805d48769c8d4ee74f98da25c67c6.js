@@ -1,4 +1,0 @@
-var structalpaka_1_1dev_1_1traits_1_1DevType_3_01exec_1_1ExecGpuCudaRt_3_01TDim_00_01TSize_00_01TKerd18805d48769c8d4ee74f98da25c67c6 =
-[
-    [ "type", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01exec_1_1ExecGpuCudaRt_3_01TDim_00_01TSize_00_01TKerd18805d48769c8d4ee74f98da25c67c6.html#a90907d168570b0bbe98c9320c9d73f89", null ]
-];

@@ -1,12 +1,13 @@
 var classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread =
 [
-    [ "Barrier", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#aa6a6d4cb081c5e36e253110b4a8982c4", null ],
-    [ "BlockSyncBase", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#ad0aa345180f9b38f787dc4ca58535fe4", null ],
-    [ "BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a740646454c0a60ae5e540a5f5d217f3f", null ],
-    [ "BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a9c87867c10130aff8ca5663f4f39e503", null ],
-    [ "BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#ad4a287d9cd165f99d91e9bb9842725a5", null ],
-    [ "~BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a1fd0243f5f5be62ea67ff4737e861cee", null ],
-    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a8073a38cb3c7b070404d6aa51cd90cd0", null ],
-    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#aa4cbbf0f7e6f13d514956b543c982c0d", null ],
-    [ "m_barrier", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a807f3b12707e372cfba276d0429967b8", null ]
+    [ "Barrier", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a145a229ec788fd6555efe2ddc7ed99c4", null ],
+    [ "BarrierWithPredicate", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a39131586210c4bf850fbc13afc66c50b", null ],
+    [ "BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#afc71806c507cfc7e00b7ecf1f1dc104c", null ],
+    [ "BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#aa25cbee487ba69eee19e5325131dc944", null ],
+    [ "BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a2a4f112211d5a7e573990a8d0a29701d", null ],
+    [ "~BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#ace5f62fbd9573f8aafe3c26db76e88b1", null ],
+    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a2bc0c52f059af40f410b7a8037b958ed", null ],
+    [ "operator=", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a656c041d684e8f0fbe1bd5d5a3f76110", null ],
+    [ "m_barrier", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#aab023607b8ffc46a552fcd3c19244b20", null ],
+    [ "m_barrierWithPredicate", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html#a9fbff03406f8c06ac6bac4e6d47cf362", null ]
 ];

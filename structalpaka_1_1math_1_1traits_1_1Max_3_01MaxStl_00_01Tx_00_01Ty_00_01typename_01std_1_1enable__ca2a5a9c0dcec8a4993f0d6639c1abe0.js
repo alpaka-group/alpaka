@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStl_00_01Tx_00_01Ty_00_01typename_01std_1_1enable__ca2a5a9c0dcec8a4993f0d6639c1abe0 =
-[
-    [ "max", "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStl_00_01Tx_00_01Ty_00_01typename_01std_1_1enable__ca2a5a9c0dcec8a4993f0d6639c1abe0.html#a75c70e5b93d9b2a97da74b79acb92a6e", null ]
-];

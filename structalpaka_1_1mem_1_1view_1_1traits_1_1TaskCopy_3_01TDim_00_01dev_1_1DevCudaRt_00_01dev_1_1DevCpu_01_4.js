@@ -1,4 +1,0 @@
-var structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01TDim_00_01dev_1_1DevCudaRt_00_01dev_1_1DevCpu_01_4 =
-[
-    [ "taskCopy", "structalpaka_1_1mem_1_1view_1_1traits_1_1TaskCopy_3_01TDim_00_01dev_1_1DevCudaRt_00_01dev_1_1DevCpu_01_4.html#a82d4f079ed37a9dbbeb1278ecb459154", null ]
-];

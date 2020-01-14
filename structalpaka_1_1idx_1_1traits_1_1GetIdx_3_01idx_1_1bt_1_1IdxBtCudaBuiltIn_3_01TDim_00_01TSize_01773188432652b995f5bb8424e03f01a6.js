@@ -1,4 +1,0 @@
-var structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtCudaBuiltIn_3_01TDim_00_01TSize_01773188432652b995f5bb8424e03f01a6 =
-[
-    [ "getIdx", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtCudaBuiltIn_3_01TDim_00_01TSize_01773188432652b995f5bb8424e03f01a6.html#a2c59cbdf89c4d74cbb2bd57a2f0527e2", null ]
-];

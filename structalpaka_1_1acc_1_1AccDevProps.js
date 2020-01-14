@@ -1,11 +1,11 @@
 var structalpaka_1_1acc_1_1AccDevProps =
 [
-    [ "AccDevProps", "structalpaka_1_1acc_1_1AccDevProps.html#a3535d1d3e71beeaf3e376b550be93175", null ],
-    [ "m_blockThreadCountMax", "structalpaka_1_1acc_1_1AccDevProps.html#a3bf2e6d83bc7fe7835037a5e717a03ea", null ],
-    [ "m_blockThreadExtentMax", "structalpaka_1_1acc_1_1AccDevProps.html#a644a6b156c69172fcb45db67829a734f", null ],
-    [ "m_gridBlockCountMax", "structalpaka_1_1acc_1_1AccDevProps.html#a6ab70332fba8b46c136277f4beb9f56e", null ],
-    [ "m_gridBlockExtentMax", "structalpaka_1_1acc_1_1AccDevProps.html#ae6216a2ae6cfe48db64dd80a31582afd", null ],
-    [ "m_multiProcessorCount", "structalpaka_1_1acc_1_1AccDevProps.html#abf200391d0ea8e7d372ef3ea84f3381f", null ],
-    [ "m_threadElemCountMax", "structalpaka_1_1acc_1_1AccDevProps.html#ad3f3a8e2dcc48e784870d792ec9352db", null ],
-    [ "m_threadElemExtentMax", "structalpaka_1_1acc_1_1AccDevProps.html#a465dbadea600f7b2f3053feec43729ac", null ]
+    [ "AccDevProps", "structalpaka_1_1acc_1_1AccDevProps.html#a2e332e878cda8c0276624105f2d12b19", null ],
+    [ "m_blockThreadCountMax", "structalpaka_1_1acc_1_1AccDevProps.html#ac2caa69aadbabbc2d90661686901fba6", null ],
+    [ "m_blockThreadExtentMax", "structalpaka_1_1acc_1_1AccDevProps.html#a804368bf60cd2e5b3b12d1a5cafc9419", null ],
+    [ "m_gridBlockCountMax", "structalpaka_1_1acc_1_1AccDevProps.html#af80b1299b57cc33aa8e11b0d6d6339e9", null ],
+    [ "m_gridBlockExtentMax", "structalpaka_1_1acc_1_1AccDevProps.html#aed3c80dece6d9223ac905e0895c76340", null ],
+    [ "m_multiProcessorCount", "structalpaka_1_1acc_1_1AccDevProps.html#a70fbf7ca992a03cbdebb70caddec7cc5", null ],
+    [ "m_threadElemCountMax", "structalpaka_1_1acc_1_1AccDevProps.html#a945ad17c7290242566de25ce8bbed9c1", null ],
+    [ "m_threadElemExtentMax", "structalpaka_1_1acc_1_1AccDevProps.html#adf6f0caf3d5ee6b7157af67769b39c23", null ]
 ];

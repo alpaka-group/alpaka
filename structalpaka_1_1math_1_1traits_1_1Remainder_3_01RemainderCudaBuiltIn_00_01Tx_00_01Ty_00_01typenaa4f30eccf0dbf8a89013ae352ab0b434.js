@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderCudaBuiltIn_00_01Tx_00_01Ty_00_01typenaa4f30eccf0dbf8a89013ae352ab0b434 =
+[
+    [ "remainder", "structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderCudaBuiltIn_00_01Tx_00_01Ty_00_01typenaa4f30eccf0dbf8a89013ae352ab0b434.html#a39d67c0b08e63e294d1e712cd386040d", null ]
+];

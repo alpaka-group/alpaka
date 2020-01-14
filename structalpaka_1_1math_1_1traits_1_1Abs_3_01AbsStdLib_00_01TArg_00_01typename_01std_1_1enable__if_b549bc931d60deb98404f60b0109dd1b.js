@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStdLib_00_01TArg_00_01typename_01std_1_1enable__if_b549bc931d60deb98404f60b0109dd1b =
+[
+    [ "abs", "structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStdLib_00_01TArg_00_01typename_01std_1_1enable__if_b549bc931d60deb98404f60b0109dd1b.html#adde5e70f8a001850cda72dbba07a3718", null ]
+];

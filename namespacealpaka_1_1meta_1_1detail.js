@@ -41,10 +41,14 @@ var namespacealpaka_1_1meta_1_1detail =
     [ "MakeIntegerSequenceHelper< false, true, T, Tbegin, std::integral_constant< T, Tbegin >, IntegerSequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper_3_01false_00_01true_00_01T_00_01Tbeg7b965c1293aced57491f540b0a9368dd.html", null ],
     [ "NdLoop", "structalpaka_1_1meta_1_1detail_1_1NdLoop.html", null ],
     [ "NdLoop< meta::IndexSequence< Tdim > >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_01Tdim_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_01Tdim_01_4_01_4" ],
-    [ "NdLoop< meta::IndexSequence< Tdim, Tdims... > >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_01Tdim_00_01Tdims_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_01Tdim_00_01Tdims_8_8_8_01_4_01_4" ],
+    [ "NdLoop< meta::IndexSequence< Tdim0, Tdim1, Tdims... > >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_01Tdim0_00_01Tdim1_00_01Tdims_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_01Tdim0_00_01Tdim1_00_01Tdims_8_8_8_01_4_01_4" ],
     [ "NdLoop< meta::IndexSequence<> >", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01meta_1_1IndexSequence_3_4_01_4" ],
     [ "TransformImpl", "structalpaka_1_1meta_1_1detail_1_1TransformImpl.html", null ],
     [ "TransformImpl< TList< Ts... >, TOp >", "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4.html", "structalpaka_1_1meta_1_1detail_1_1TransformImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TOp_01_4" ],
     [ "TransformIntegerSequence", "structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence.html", null ],
-    [ "TransformIntegerSequence< TList, T, TOp, IntegerSequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence_3_01TList_00_01T_00_01TOp_00_01Integeb694a6371b0c049b842099d028765556.html", "structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence_3_01TList_00_01T_00_01TOp_00_01Integeb694a6371b0c049b842099d028765556" ]
+    [ "TransformIntegerSequence< TList, T, TOp, IntegerSequence< T, Tvals... > >", "structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence_3_01TList_00_01T_00_01TOp_00_01Integeb694a6371b0c049b842099d028765556.html", "structalpaka_1_1meta_1_1detail_1_1TransformIntegerSequence_3_01TList_00_01T_00_01TOp_00_01Integeb694a6371b0c049b842099d028765556" ],
+    [ "UniqueHelper", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper.html", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper" ],
+    [ "UniqueHelper< TList< Ts... >, U, Us... >", "structalpaka_1_1meta_1_1detail_1_1UniqueHelper_3_01TList_3_01Ts_8_8_8_01_4_00_01U_00_01Us_8_8_8_01_4.html", null ],
+    [ "UniqueImpl", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl.html", null ],
+    [ "UniqueImpl< TList< Ts... > >", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1detail_1_1UniqueImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4" ]
 ];

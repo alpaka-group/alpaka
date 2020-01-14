@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['logcudabuiltin_2ehpp',['LogCudaBuiltIn.hpp',['../LogCudaBuiltIn_8hpp.html',1,'']]],
-  ['logstl_2ehpp',['LogStl.hpp',['../LogStl_8hpp.html',1,'']]]
+  ['hip_2ehpp_2745',['Hip.hpp',['../Hip_8hpp.html',1,'']]]
 ];

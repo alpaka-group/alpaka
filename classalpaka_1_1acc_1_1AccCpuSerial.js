@@ -1,9 +1,9 @@
 var classalpaka_1_1acc_1_1AccCpuSerial =
 [
-    [ "AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#a9aef14a71d3681a435cc73ef54fcbfa2", null ],
-    [ "AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#a79201dd8f7f340fc721524ce5a26e624", null ],
-    [ "~AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#a27db9c04e6bb9bc767a1b591c00cb320", null ],
-    [ "operator=", "classalpaka_1_1acc_1_1AccCpuSerial.html#a93d900a2cd728800bcf8db91cfa56d0f", null ],
-    [ "operator=", "classalpaka_1_1acc_1_1AccCpuSerial.html#a6aa84ad26f37b9fddf1de35309fb998b", null ],
-    [ "::alpaka::exec::ExecCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#a6367130acbfacc6460d8d285aed9c86a", null ]
+    [ "AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#a81178f0dc451e201074c3fec33bb5489", null ],
+    [ "AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#a693c869cdb9fce9edc2bcf1ab8ad1452", null ],
+    [ "~AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#a4462a8469d07f9c83108a66d673ef43a", null ],
+    [ "operator=", "classalpaka_1_1acc_1_1AccCpuSerial.html#a7668a1e71f7c20d4fe82b15978491a20", null ],
+    [ "operator=", "classalpaka_1_1acc_1_1AccCpuSerial.html#a859da607072b46e5c6c4e8921561cf96", null ],
+    [ "::alpaka::kernel::TaskKernelCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html#ad01f3bd77457883ca6fec9f493c61306", null ]
 ];

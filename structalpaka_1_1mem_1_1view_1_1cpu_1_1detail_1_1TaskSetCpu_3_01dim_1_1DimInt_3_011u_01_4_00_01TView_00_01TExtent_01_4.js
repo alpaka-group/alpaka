@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4 =
+[
+    [ "operator()", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#aa1c8637d944d459b1cf6161a655460f1", null ]
+];

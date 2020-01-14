@@ -1,9 +1,9 @@
 var classalpaka_1_1acc_1_1AccCpuOmp4 =
 [
-    [ "AccCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#ac60a25d1c0aa573f61a95fb1a794f940", null ],
-    [ "AccCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#a0b9b63c60d0d62b16872fc060871d015", null ],
-    [ "~AccCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#a7e361c4b67ce3d88068c6eaf1176c13e", null ],
-    [ "operator=", "classalpaka_1_1acc_1_1AccCpuOmp4.html#a859ec6300eb5657708868e953ae929fc", null ],
-    [ "operator=", "classalpaka_1_1acc_1_1AccCpuOmp4.html#a4eca72b281b1429a476a68924a20f110", null ],
-    [ "::alpaka::exec::ExecCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#ad56fa8c36b16c84354a8177dfb081e2f", null ]
+    [ "AccCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#a66300046e9daf6916246cddc20e59a32", null ],
+    [ "AccCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#a8f5f51bfee87ec22e7b76a0e0f625c8b", null ],
+    [ "~AccCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#a88bde4fd2075d19a17f6e7779ebb1e74", null ],
+    [ "operator=", "classalpaka_1_1acc_1_1AccCpuOmp4.html#ab86a20368430e38572a3265ffd1706f1", null ],
+    [ "operator=", "classalpaka_1_1acc_1_1AccCpuOmp4.html#abff54328cb252788102611fae7d900cb", null ],
+    [ "::alpaka::kernel::TaskKernelCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html#aadb8197c2a1b1a8b11c17cf8fa3bc1e0", null ]
 ];

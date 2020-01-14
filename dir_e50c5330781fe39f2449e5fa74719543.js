@@ -20,13 +20,15 @@ var dir_e50c5330781fe39f2449e5fa74719543 =
     [ "round", "dir_97c0be6c4408e2e53475dcdb95885711.html", "dir_97c0be6c4408e2e53475dcdb95885711" ],
     [ "rsqrt", "dir_68dc4d94c880851626b6eba299f19349.html", "dir_68dc4d94c880851626b6eba299f19349" ],
     [ "sin", "dir_5c66db88250596543d60aac5cf05f0a0.html", "dir_5c66db88250596543d60aac5cf05f0a0" ],
+    [ "sincos", "dir_f1db257626b703cc8c5c9ac559a85b1a.html", "dir_f1db257626b703cc8c5c9ac559a85b1a" ],
     [ "sqrt", "dir_570084d6dc638e0a415be1d37eff4e4b.html", "dir_570084d6dc638e0a415be1d37eff4e4b" ],
     [ "tan", "dir_f4d2571511c2d8ce67abfc9ea3cb850a.html", "dir_f4d2571511c2d8ce67abfc9ea3cb850a" ],
     [ "trunc", "dir_3eb74e514d413767a2782056cfb3c129.html", "dir_3eb74e514d413767a2782056cfb3c129" ],
     [ "MathCudaBuiltIn.hpp", "MathCudaBuiltIn_8hpp.html", [
       [ "MathCudaBuiltIn", "classalpaka_1_1math_1_1MathCudaBuiltIn.html", null ]
     ] ],
-    [ "MathStl.hpp", "MathStl_8hpp.html", [
-      [ "MathStl", "classalpaka_1_1math_1_1MathStl.html", null ]
+    [ "MathHipBuiltIn.hpp", "MathHipBuiltIn_8hpp.html", null ],
+    [ "MathStdLib.hpp", "MathStdLib_8hpp.html", [
+      [ "MathStdLib", "classalpaka_1_1math_1_1MathStdLib.html", null ]
     ] ]
 ];

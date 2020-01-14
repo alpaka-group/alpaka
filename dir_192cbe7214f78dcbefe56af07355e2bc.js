@@ -1,5 +1,6 @@
 var dir_192cbe7214f78dcbefe56af07355e2bc =
 [
+    [ "TinyMT", "dir_141d118e57743bf276e96d2b8fa0c4d8.html", "dir_141d118e57743bf276e96d2b8fa0c4d8" ],
     [ "RandCuRand.hpp", "RandCuRand_8hpp.html", [
       [ "NormalReal", "classalpaka_1_1rand_1_1distribution_1_1cuda_1_1NormalReal.html", null ],
       [ "NormalReal< double >", "classalpaka_1_1rand_1_1distribution_1_1cuda_1_1NormalReal_3_01double_01_4.html", "classalpaka_1_1rand_1_1distribution_1_1cuda_1_1NormalReal_3_01double_01_4" ],
@@ -14,14 +15,9 @@ var dir_192cbe7214f78dcbefe56af07355e2bc =
       [ "CreateUniformUint< RandCuRand, T, typename std::enable_if< std::is_integral< T >::value >::type >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01RandCuRand_00_01T_00_01t8d98c54e0525bbc30d8459101797f2e8.html", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01RandCuRand_00_01T_00_01t8d98c54e0525bbc30d8459101797f2e8" ],
       [ "Xor", "classalpaka_1_1rand_1_1generator_1_1cuda_1_1Xor.html", "classalpaka_1_1rand_1_1generator_1_1cuda_1_1Xor" ],
       [ "CreateDefault< RandCuRand >", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandCuRand_01_4.html", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandCuRand_01_4" ],
-      [ "RandCuRand", "classalpaka_1_1rand_1_1RandCuRand.html", "classalpaka_1_1rand_1_1RandCuRand" ]
+      [ "RandCuRand", "classalpaka_1_1rand_1_1RandCuRand.html", null ]
     ] ],
-    [ "RandStl.hpp", "RandStl_8hpp.html", [
-      [ "CreateNormalReal< RandStl, T, typename std::enable_if< std::is_floating_point< T >::value >::type >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandStl_00_01T_00_01typen84dd3289fcb2be0aa4aff3a1a98d0c5a.html", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandStl_00_01T_00_01typen84dd3289fcb2be0aa4aff3a1a98d0c5a" ],
-      [ "CreateUniformReal< RandStl, T, typename std::enable_if< std::is_floating_point< T >::value >::type >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandStl_00_01T_00_01type18b8ce514c8e7a1c64c83275279ccee3.html", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01RandStl_00_01T_00_01type18b8ce514c8e7a1c64c83275279ccee3" ],
-      [ "CreateUniformUint< RandStl, T, typename std::enable_if< std::is_integral< T >::value >::type >", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01RandStl_00_01T_00_01type2a68fc8c30081dda20967171da608bd6.html", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01RandStl_00_01T_00_01type2a68fc8c30081dda20967171da608bd6" ],
-      [ "CreateDefault< RandStl >", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandStl_01_4.html", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandStl_01_4" ],
-      [ "RandStl", "classalpaka_1_1rand_1_1RandStl.html", "classalpaka_1_1rand_1_1RandStl" ]
-    ] ],
+    [ "RandHipRand.hpp", "RandHipRand_8hpp.html", null ],
+    [ "RandStdLib.hpp", "RandStdLib_8hpp.html", "RandStdLib_8hpp" ],
     [ "Traits.hpp", "rand_2Traits_8hpp.html", "rand_2Traits_8hpp" ]
 ];

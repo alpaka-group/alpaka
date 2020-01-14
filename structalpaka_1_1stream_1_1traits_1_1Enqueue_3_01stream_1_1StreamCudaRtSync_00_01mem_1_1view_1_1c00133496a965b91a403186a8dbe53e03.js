@@ -1,4 +1,0 @@
-var structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01stream_1_1StreamCudaRtSync_00_01mem_1_1view_1_1c00133496a965b91a403186a8dbe53e03 =
-[
-    [ "enqueue", "structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01stream_1_1StreamCudaRtSync_00_01mem_1_1view_1_1c00133496a965b91a403186a8dbe53e03.html#a00ccc4d03cfb86a953a406fc87c31f82", null ]
-];

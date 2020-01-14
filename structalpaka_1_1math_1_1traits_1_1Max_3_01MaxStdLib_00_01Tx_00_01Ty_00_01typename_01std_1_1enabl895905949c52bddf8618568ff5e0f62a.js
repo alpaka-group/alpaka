@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStdLib_00_01Tx_00_01Ty_00_01typename_01std_1_1enabl895905949c52bddf8618568ff5e0f62a =
+[
+    [ "max", "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStdLib_00_01Tx_00_01Ty_00_01typename_01std_1_1enabl895905949c52bddf8618568ff5e0f62a.html#a346cddd5b567ceb6e334aaca3d8a1667", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1queue_1_1traits_1_1QueueType_3_01TAcc_00_01TProperty_00_01typename_01std_1_1enab5488134ecc61abe56e571529c9024318 =
+[
+    [ "type", "structalpaka_1_1queue_1_1traits_1_1QueueType_3_01TAcc_00_01TProperty_00_01typename_01std_1_1enab5488134ecc61abe56e571529c9024318.html#a7923b1d934c7eb181df80a62f530923f", null ]
+];

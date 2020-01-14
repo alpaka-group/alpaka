@@ -1,0 +1,4 @@
+var structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1cpu_1_1detail_1_1QueueCpuBlockingImpl_00_01event_1_1EventCpu_01_4 =
+[
+    [ "enqueue", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1cpu_1_1detail_1_1QueueCpuBlockingImpl_00_01event_1_1EventCpu_01_4.html#aff6ac792f6b5552c96a640171fbc1abb", null ]
+];

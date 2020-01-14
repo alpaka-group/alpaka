@@ -1,10 +1,9 @@
 var classalpaka_1_1idx_1_1bt_1_1IdxBtZero =
 [
-    [ "IdxBtBase", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#a0ea50589330f0321cfc5b321a0af310e", null ],
-    [ "IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#acd9bb68c64c73b09c6ae160bfe217881", null ],
-    [ "IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#a415a4c8831f80d7480d3536ec6db77c9", null ],
-    [ "IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#abafc03d8187a2e36185716ae07c2caaf", null ],
-    [ "~IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#a9b587ad2c0c74da69ed7683f0ddd9313", null ],
-    [ "operator=", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#af69862d03c0c28ff4254df3fb408c473", null ],
-    [ "operator=", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#aa51c55dfd4b5658b412d57003b9967d0", null ]
+    [ "IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#a365c806a665c6a367cf6af4a2107af18", null ],
+    [ "IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#a863891b36187a89fdb85dac5bed5332e", null ],
+    [ "IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#a29eb196195de425789c4abdfa041e1f8", null ],
+    [ "~IdxBtZero", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#afd11347b2b65cace04840d7fa1bdd97a", null ],
+    [ "operator=", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#a136a2cff9dfeacc6845629c91dfdaeb3", null ],
+    [ "operator=", "classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#aa36f65ca5f8a014921337dafc721731a", null ]
 ];

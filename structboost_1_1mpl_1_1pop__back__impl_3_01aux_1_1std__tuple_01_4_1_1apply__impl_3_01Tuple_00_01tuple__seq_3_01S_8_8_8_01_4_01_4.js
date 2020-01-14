@@ -1,4 +1,0 @@
-var structboost_1_1mpl_1_1pop__back__impl_3_01aux_1_1std__tuple_01_4_1_1apply__impl_3_01Tuple_00_01tuple__seq_3_01S_8_8_8_01_4_01_4 =
-[
-    [ "type", "structboost_1_1mpl_1_1pop__back__impl_3_01aux_1_1std__tuple_01_4_1_1apply__impl_3_01Tuple_00_01tuple__seq_3_01S_8_8_8_01_4_01_4.html#a457d02333de8a0621373ca36c653efbc", null ]
-];

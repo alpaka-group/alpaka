@@ -1,4 +1,0 @@
-var structalpaka_1_1mem_1_1buf_1_1traits_1_1Map_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TS922f52e035234f07a1e27ceb505b2b60 =
-[
-    [ "map", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Map_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TS922f52e035234f07a1e27ceb505b2b60.html#aa0908f947c254a52b35532d74559dc77", null ]
-];

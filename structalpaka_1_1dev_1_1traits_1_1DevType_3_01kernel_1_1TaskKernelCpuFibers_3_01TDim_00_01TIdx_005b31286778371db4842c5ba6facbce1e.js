@@ -1,0 +1,4 @@
+var structalpaka_1_1dev_1_1traits_1_1DevType_3_01kernel_1_1TaskKernelCpuFibers_3_01TDim_00_01TIdx_005b31286778371db4842c5ba6facbce1e =
+[
+    [ "type", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01kernel_1_1TaskKernelCpuFibers_3_01TDim_00_01TIdx_005b31286778371db4842c5ba6facbce1e.html#a23217d4a81e84529da153fc30e984b78", null ]
+];

@@ -1,4 +1,0 @@
-var structalpaka_1_1vec_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TSize_01_4_00_01meta_1_b195ac6f6a39c1bc78776e1677451068 =
-[
-    [ "subVecFromIndices", "structalpaka_1_1vec_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TSize_01_4_00_01meta_1_b195ac6f6a39c1bc78776e1677451068.html#ac9adb905d8d8fa2b26106e790a6caef4", null ]
-];

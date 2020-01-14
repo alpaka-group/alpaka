@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtStdLib_00_01TArg_00_01typename_01std_1_1enable__i0f59ebd16b365a8c92ce8cd035d79079 =
+[
+    [ "cbrt", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtStdLib_00_01TArg_00_01typename_01std_1_1enable__i0f59ebd16b365a8c92ce8cd035d79079.html#aed7ed1e63465985b4ad083538b22296a", null ]
+];

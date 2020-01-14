@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en22f0cad6857759c184dd6c5e2b18da8f =
 [
-    [ "rsqrt", "structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en22f0cad6857759c184dd6c5e2b18da8f.html#a3cb8933d13cce655d7531558739cfdf6", null ]
+    [ "rsqrt", "structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en22f0cad6857759c184dd6c5e2b18da8f.html#ad6aacec2b3fb47009af6d501c6bca2c7", null ]
 ];

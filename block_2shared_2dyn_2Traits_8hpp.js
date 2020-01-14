@@ -1,6 +1,5 @@
 var block_2shared_2dyn_2Traits_8hpp =
 [
     [ "GetMem", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem.html", null ],
-    [ "GetMem< T, TBlockSharedMemDyn, typename std::enable_if< meta::IsStrictBase< typename TBlockSharedMemDyn::BlockSharedMemDynBase, TBlockSharedMemDyn >::value >::type >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01TBlockSharedMemDyn_00_01ty075e8c436229ef24b5f4d5ed336d2b40.html", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01TBlockSharedMemDyn_00_01ty075e8c436229ef24b5f4d5ed336d2b40" ],
-    [ "getMem", "block_2shared_2dyn_2Traits_8hpp.html#a390d4ea8f8c2ff639d410ad2d0a8630f", null ]
+    [ "getMem", "block_2shared_2dyn_2Traits_8hpp.html#a4b6a6bbd25cc340c245e5b66983ce3c1", null ]
 ];

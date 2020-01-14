@@ -1,16 +1,16 @@
 var classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl =
 [
-    [ "EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a0c04dc78f70bfade354915e8453ae511", null ],
-    [ "EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#ab597356417a6873aae69355d95342e92", null ],
-    [ "EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a8e83b95b0d009f317b63f449fc44f972", null ],
-    [ "~EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#aeb5769e3d04bb90cc34591dd298ab026", null ],
-    [ "operator=", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a0a6bb6cb8bbc7312b5b123002265d772", null ],
-    [ "operator=", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#ae97f2ea1aba0c31b492b9f2206287258", null ],
-    [ "m_bIsReady", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a0272a5da2ecb369f8442ec7b22af0077", null ],
-    [ "m_bIsWaitedFor", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a397116e80ec15373734084f365dce1ed", null ],
-    [ "m_canceledEnqueueCount", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#aeefaed93b494370917ec9c8f3822ab31", null ],
-    [ "m_ConditionVariable", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a23f9f296ce6ada50b2324f1f58d7065f", null ],
-    [ "m_dev", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#ad2eea176829db1d82514aa97ee6e10ad", null ],
-    [ "m_Mutex", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a589b9bdb5f1400f83b9199aa480ba437", null ],
-    [ "m_uuid", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a0ee15312c53fdc19d00ae4ac0e6b150c", null ]
+    [ "EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a58146153e56505b402d6d467973627a5", null ],
+    [ "EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a27e1ca89e7bb6b89d90802acf5cddf98", null ],
+    [ "EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a086d47acae2e2a1d4d939952aeb82bc6", null ],
+    [ "~EventCpuImpl", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#ab303d06433ca197ae181e72cf8c4f178", null ],
+    [ "isReady", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a5a34b9ea04c99303bcf9a0a7dd58d844", null ],
+    [ "operator=", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#ad79329b7566542c8f73d357888461f0d", null ],
+    [ "operator=", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a7c23c7db63c3166b79eb47da5d35e897", null ],
+    [ "wait", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a6e2f26c8975bfbf44e94187915c1ba11", null ],
+    [ "m_dev", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#af49fc1b0d477d79956372e5e96c7714a", null ],
+    [ "m_enqueueCount", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a93f7a668b26acbf6c0159eb90e81906b", null ],
+    [ "m_future", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a0a0ee8abcda5d6ade7fcb237e8d7a443", null ],
+    [ "m_LastReadyEnqueueCount", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#af80b1d81660a784b2bfc23e05c12d75a", null ],
+    [ "m_mutex", "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#a9feac7edc7eeebcbc7b07d3b9b4d4b6c", null ]
 ];

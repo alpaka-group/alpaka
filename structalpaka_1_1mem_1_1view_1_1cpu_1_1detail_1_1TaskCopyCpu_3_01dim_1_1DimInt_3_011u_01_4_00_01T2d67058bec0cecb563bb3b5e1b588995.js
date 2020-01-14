@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01T2d67058bec0cecb563bb3b5e1b588995 =
+[
+    [ "operator()", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01T2d67058bec0cecb563bb3b5e1b588995.html#ae1693f3c60c58a2e3c68b55473fe1762", null ]
+];

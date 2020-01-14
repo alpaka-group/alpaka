@@ -1,4 +1,0 @@
-var structboost_1_1mpl_1_1deref_3_01tuple__iter_3_01std_1_1tuple_3_01TFirst_00_01TArgs_8_8_8_01_4_01_4_01_4 =
-[
-    [ "type", "structboost_1_1mpl_1_1deref_3_01tuple__iter_3_01std_1_1tuple_3_01TFirst_00_01TArgs_8_8_8_01_4_01_4_01_4.html#adcb5ac1d50e1760face7bb415a3aa7d9", null ]
-];

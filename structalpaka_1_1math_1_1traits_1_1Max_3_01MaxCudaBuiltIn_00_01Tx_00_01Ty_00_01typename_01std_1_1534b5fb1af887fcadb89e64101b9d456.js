@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Max_3_01MaxCudaBuiltIn_00_01Tx_00_01Ty_00_01typename_01std_1_1534b5fb1af887fcadb89e64101b9d456 =
 [
-    [ "max", "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxCudaBuiltIn_00_01Tx_00_01Ty_00_01typename_01std_1_1534b5fb1af887fcadb89e64101b9d456.html#ab764337cb204948005a89fe8fda3c370", null ]
+    [ "max", "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxCudaBuiltIn_00_01Tx_00_01Ty_00_01typename_01std_1_1534b5fb1af887fcadb89e64101b9d456.html#a77f1862d990d45f08fb228b0d005e57e", null ]
 ];

@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Pow_3_01PowStdLib_00_01TBase_00_01TExp_00_01typename_01std_1_1fdc7d3b819be6529d7b3da5dc9585181 =
+[
+    [ "pow", "structalpaka_1_1math_1_1traits_1_1Pow_3_01PowStdLib_00_01TBase_00_01TExp_00_01typename_01std_1_1fdc7d3b819be6529d7b3da5dc9585181.html#a42acb9d620de3f51ebb76d64610a1a97", null ]
+];

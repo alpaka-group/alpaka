@@ -1,4 +1,4 @@
 var structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_01double_00_01THierarchy_01_4 =
 [
-    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_01double_00_01THierarchy_01_4.html#a6773bbea8d5576a3beca6461d01af522", null ]
+    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_01double_00_01THierarchy_01_4.html#af0b86ae86e950ab4975dbefe330997a8", null ]
 ];

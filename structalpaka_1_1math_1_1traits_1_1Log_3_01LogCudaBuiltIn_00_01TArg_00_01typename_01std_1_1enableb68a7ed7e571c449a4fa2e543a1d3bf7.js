@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Log_3_01LogCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enableb68a7ed7e571c449a4fa2e543a1d3bf7 =
 [
-    [ "log", "structalpaka_1_1math_1_1traits_1_1Log_3_01LogCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enableb68a7ed7e571c449a4fa2e543a1d3bf7.html#af1cf15843b789c5f218dcbc1b814bfcc", null ]
+    [ "log", "structalpaka_1_1math_1_1traits_1_1Log_3_01LogCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enableb68a7ed7e571c449a4fa2e543a1d3bf7.html#a7aaca27cc9ff48a0f9c5c86a06edcc84", null ]
 ];

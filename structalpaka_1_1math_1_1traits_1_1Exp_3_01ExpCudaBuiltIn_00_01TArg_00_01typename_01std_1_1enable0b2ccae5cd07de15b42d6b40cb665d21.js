@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enable0b2ccae5cd07de15b42d6b40cb665d21 =
 [
-    [ "exp", "structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enable0b2ccae5cd07de15b42d6b40cb665d21.html#ad6589ed84c3a570954d03ba149968eec", null ]
+    [ "exp", "structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enable0b2ccae5cd07de15b42d6b40cb665d21.html#abe6dbcc1b647c7562648cf5c58fb57f5", null ]
 ];

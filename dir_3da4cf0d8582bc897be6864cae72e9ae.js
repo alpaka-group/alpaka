@@ -12,5 +12,6 @@ var dir_3da4cf0d8582bc897be6864cae72e9ae =
       [ "GetDevByIdx< pltf::PltfCudaRt >", "structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx_3_01pltf_1_1PltfCudaRt_01_4.html", "structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx_3_01pltf_1_1PltfCudaRt_01_4" ],
       [ "GetDevCount< pltf::PltfCudaRt >", "structalpaka_1_1pltf_1_1traits_1_1GetDevCount_3_01pltf_1_1PltfCudaRt_01_4.html", "structalpaka_1_1pltf_1_1traits_1_1GetDevCount_3_01pltf_1_1PltfCudaRt_01_4" ]
     ] ],
+    [ "PltfHipRt.hpp", "PltfHipRt_8hpp.html", null ],
     [ "Traits.hpp", "pltf_2Traits_8hpp.html", "pltf_2Traits_8hpp" ]
 ];

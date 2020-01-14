@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enab8012160ce6c9b2d5e0ed85157ada3046 =
 [
-    [ "atan", "structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enab8012160ce6c9b2d5e0ed85157ada3046.html#a9893a84ae17100c71bcde7225b32f700", null ]
+    [ "atan", "structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enab8012160ce6c9b2d5e0ed85157ada3046.html#a13644404209eb0c3f74696ec78ca5524", null ]
 ];

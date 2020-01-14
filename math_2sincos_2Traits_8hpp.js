@@ -1,0 +1,5 @@
+var math_2sincos_2Traits_8hpp =
+[
+    [ "SinCos", "structalpaka_1_1math_1_1traits_1_1SinCos.html", null ],
+    [ "sincos", "math_2sincos_2Traits_8hpp.html#aadc2de727af26c295aeccdba85fa56c9", null ]
+];

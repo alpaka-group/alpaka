@@ -1,4 +1,0 @@
-var structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1detail_18fcd0b1c1b5148a52bed2e7876afcbc1 =
-[
-    [ "enqueue", "structalpaka_1_1stream_1_1traits_1_1Enqueue_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1detail_18fcd0b1c1b5148a52bed2e7876afcbc1.html#aa67f3057923c7bd0a946a4c52818a18e", null ]
-];

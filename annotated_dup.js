@@ -1,5 +1,5 @@
 var annotated_dup =
 [
     [ "alpaka", "namespacealpaka.html", "namespacealpaka" ],
-    [ "boost", "namespaceboost.html", "namespaceboost" ]
+    [ "TINYMT32_T", "structTINYMT32__T.html", "structTINYMT32__T" ]
 ];
