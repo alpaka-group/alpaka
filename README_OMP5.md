@@ -72,6 +72,8 @@ incorrect!` at the end.
 ||GGC 9.2 (RWTH Aachen)| Vec<> not mappable type|nvptx|--|
 ||AOMP 0.7-4|ok|x86|omp_target_alloc() returns 0|
 ||AOMP 0.7-4|linker: multiple def. of gpuHeap (1)|amdhsa|--|
+||AOMP 0.7-5|ok|x86|ok|
+||AOMP 0.7-5|ok	|amdhsa|ok|
 ||LLVM 9.0|omp tuple warning| x86|segfault loading shared libs before main()|
 ||LLVM 9.0 (RWTH Aachen)|omp tuple warning| x86|ok|
 ||LLVM 9.0 (RWTH Aachen)|ok (with -O2, else 2)| nvptx|ok|
@@ -125,6 +127,8 @@ Run `make` and upon success `ctest`.
 ||LLVM 9.0.0-1 (Summit)|fail [4]|nvptx|--|
 ||LLVM 9.0.0-2 (Summit)|ok|ppc64le|fail [3]|
 ||LLVM 9.0.0-2 (Summit)|fail [4]|nvptx|--|
+||AOMP 0.7-5|linker error with static lib (7)x86|--|
+||AOMP 0.7-5|linker error with static lib (8)|amdhsa|--|
 ||GCC 9.1.0 (Summit)|fail [5]|nvptx|--|
 ||XL 16.1.1-5 (Summit)|no-halt [6]|nvptx|--|
 ||XL 16.1.1-5 (Summit)|no-halt [6]|ppc64le|--|
@@ -162,3 +166,22 @@ Run `make` and upon success `ctest`.
    alpaka/test/unit/block/shared/src/BlockSharedMemDyn.cpp:92-94 yields finite
    compilation time for BlockSharedMemDyn.cpp.o . XL is extremely slow
    compiling code using the test framework catch2 used in Alpaka.
+7. aomp 0.7-5 x86:
+   ```
+   /usr/bin/ld: cannot find libcommon-openmp-x86_64-pc-linux-gnu-sm_20.o: No such file or directory
+   /usr/bin/ld: cannot find libcommon-host-x86_64-unknown-linux-gnu.o: No such file or directory
+   clang-9: error: linker command failed with exit code 1 (use -v to see invocation)
+   clang-9: error: linker command failed with exit code 1 (use -v to see invocation)
+   test/integ/matMul/CMakeFiles/matMul.dir/build.make:85: recipe for target 'test/integ/matMul/matMul' failed
+   ```
+8. aomp 0.7-5 HSA:
+   ```
+   /home/kelling/rocm/aomp_0.7-5/bin/clang-build-select-link: libcommon-openmp-amdgcn-amd-amdhsa-gfx900.o:1:2: error: expected integer
+   !<arch>
+    ^
+   /home/kelling/rocm/aomp_0.7-5/bin/clang-build-select-link: error:  loading file 'libcommon-openmp-amdgcn-amd-amdhsa-gfx900.o'
+   /usr/bin/ld: cannot find a.out-openmp-amdgcn-amd-amdhsa-gfx900
+   /usr/bin/ld: cannot find a.out-openmp-amdgcn-amd-amdhsa-gfx900
+   clang-9: error: amdgcn-link command failed with exit code 1 (use -v to see invocation)
+   clang-9: error: linker command failed with exit code 1 (use -v to see invocation)
+   ```
