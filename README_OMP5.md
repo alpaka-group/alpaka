@@ -145,6 +145,7 @@ Run `make` and upon success `ctest`.
 3. Libomptarget fatal error 1: failure of target construct while offloading is mandatory
    * Triggered by muteable member in acc/AccCpuOmp4.hpp:133, instanciation at kernel/TaskKernelCpuOmp4.hpp:282 .
    * Triggered by call to meta::apply(...) at kernel/TaskKernelCpuOmp4.hpp:335, even with empty lambda, no clojure, tuple<int,int> and no parameter pack.
+   * Fix: compile with --std=c++14 instead of 11
 4. nvlink error   : Undefined reference to '_ZNSt17integral_constantIbLb0EE5valueE' in '/tmp/vectorAdd-016d41.cubin'
    * this maybe because of libstd++, need LLVM with libc++
 5. g++:
