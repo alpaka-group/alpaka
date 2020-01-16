@@ -78,6 +78,7 @@ auto main()
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
     // - AccCpuOmp4
+    // - AccCpuTbbBlocks
     // - AccCpuSerial
     using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
 
