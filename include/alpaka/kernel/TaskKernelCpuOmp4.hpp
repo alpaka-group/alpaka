@@ -121,15 +121,20 @@ namespace alpaka
                 std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
+                // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
+                TIdx const maxOmpThreadCount(static_cast<TIdx>(::omp_get_max_threads()));
                 // The number of blocks in the grid.
                 TIdx const gridBlockCount(gridBlockExtent.prod());
                 // The number of threads in a block.
                 TIdx const blockThreadCount(blockThreadExtent.prod());
 
-                // We have to make sure, that the OpenMP runtime keeps enough threads for executing a block in parallel.
-                TIdx const maxOmpThreadCount(static_cast<TIdx>(::omp_get_max_threads()));
-                assert(blockThreadCount <= static_cast<TIdx>(maxOmpThreadCount));
-                TIdx const teamCount(std::min(static_cast<TIdx>(maxOmpThreadCount/blockThreadCount), gridBlockCount));
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                if(maxOmpThreadCount < blockThreadExtent.prod())
+                    std::cout << "Warning: TaskKernelCpuOmp4: maxOmpThreadCount smaller than blockThreadCount requested by caller:" <<
+                        maxOmpThreadCount << " < " << blockThreadExtent.prod() << std::endl;
+#endif
+                // make sure there is at least on team
+                TIdx const teamCount(std::max(std::min(static_cast<TIdx>(maxOmpThreadCount/blockThreadCount), gridBlockCount), static_cast<TIdx>(1u)));
                 std::cout << "threadElemCount=" << threadElemExtent[0u] << std::endl;
                 std::cout << "teamCount=" << teamCount << "\tgridBlockCount=" << gridBlockCount << std::endl;
 
