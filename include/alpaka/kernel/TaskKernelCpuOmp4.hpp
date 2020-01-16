@@ -144,7 +144,8 @@ namespace alpaka
 
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 auto argsD = m_args;
-                #pragma omp target map(to:argsD)
+                auto kernelFnObj = m_kernelFnObj;
+                #pragma omp target
                 {
                     #pragma omp teams num_teams(teamCount) thread_limit(blockThreadCount)
                     {
@@ -208,9 +209,9 @@ namespace alpaka
                                     }
 #endif
                                     meta::apply(
-                                        [&](typename std::decay<TArgs>::type const & ... args)
+                                        [kernelFnObj, &acc](typename std::decay<TArgs>::type const & ... args)
                                         {
-                                            m_kernelFnObj(
+                                            kernelFnObj(
                                                     acc,
                                                     args...);
                                         },
