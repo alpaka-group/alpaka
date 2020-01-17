@@ -111,6 +111,8 @@ Examples of how to utilize alpaka within CMake can be found in the `example` fol
 The whole alpaka library can be included with: `#include <alpaka/alpaka.hpp>`
 Code that is not intended to be utilized by the user is hidden in the `detail` namespace.
 
+Furthermore, for a CUDA-like experience when adopting alpaka we provide the library [*cupla*](https://github.com/ComputationalRadiationPhysics/cupla).
+It enables a simple and straightforward way of porting existing CUDA applications to alpaka and thus to a variety of accelerators.
 
 Introduction
 ------------
