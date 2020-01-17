@@ -35,8 +35,8 @@ namespace alpaka
             struct Round<
                 RoundStdLib,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 ALPAKA_FN_HOST static auto round(
                     RoundStdLib const & round_ctx,
@@ -53,8 +53,8 @@ namespace alpaka
             struct Lround<
                 RoundStdLib,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 ALPAKA_FN_HOST static auto lround(
                     RoundStdLib const & lround_ctx,
@@ -72,8 +72,8 @@ namespace alpaka
             struct Llround<
                 RoundStdLib,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 ALPAKA_FN_HOST static auto llround(
                     RoundStdLib const & llround_ctx,

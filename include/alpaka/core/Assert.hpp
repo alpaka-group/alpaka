@@ -66,7 +66,7 @@ namespace alpaka
                 typename TArg>
             struct AssertValueUnsigned<
                 TArg,
-                typename std::enable_if<!std::is_unsigned<TArg>::value>::type>
+                std::enable_if_t<!std::is_unsigned<TArg>::value>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
@@ -85,7 +85,7 @@ namespace alpaka
                 typename TArg>
             struct AssertValueUnsigned<
                 TArg,
-                typename std::enable_if<std::is_unsigned<TArg>::value>::type>
+                std::enable_if_t<std::is_unsigned<TArg>::value>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
@@ -128,7 +128,7 @@ namespace alpaka
             struct AssertGreaterThan<
                 TLhs,
                 TRhs,
-                typename std::enable_if<!std::is_unsigned<TRhs>::value || (TLhs::value != 0u)>::type>
+                std::enable_if_t<!std::is_unsigned<TRhs>::value || (TLhs::value != 0u)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertGreaterThan(
@@ -149,7 +149,7 @@ namespace alpaka
             struct AssertGreaterThan<
                 TLhs,
                 TRhs,
-                typename std::enable_if<std::is_unsigned<TRhs>::value && (TLhs::value == 0u)>::type>
+                std::enable_if_t<std::is_unsigned<TRhs>::value && (TLhs::value == 0u)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto assertGreaterThan(

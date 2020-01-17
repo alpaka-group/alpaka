@@ -52,8 +52,8 @@ namespace alpaka
             struct Rsqrt<
                 RsqrtHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 __device__ static auto rsqrt(
                     RsqrtHipBuiltIn const & rsqrt_ctx,

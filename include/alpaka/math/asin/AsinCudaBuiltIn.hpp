@@ -44,8 +44,8 @@ namespace alpaka
             struct Asin<
                 AsinCudaBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto asin(
                     AsinCudaBuiltIn const & asin_ctx,

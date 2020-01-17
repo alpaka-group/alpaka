@@ -52,8 +52,8 @@ namespace alpaka
             struct Sin<
                 SinHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto sin(
                     SinHipBuiltIn const & sin_ctx,

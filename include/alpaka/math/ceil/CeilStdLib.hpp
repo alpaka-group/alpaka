@@ -35,8 +35,8 @@ namespace alpaka
             struct Ceil<
                 CeilStdLib,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 ALPAKA_FN_HOST static auto ceil(
                     CeilStdLib const & ceil_ctx,

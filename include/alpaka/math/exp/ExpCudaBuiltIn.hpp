@@ -44,8 +44,8 @@ namespace alpaka
             struct Exp<
                 ExpCudaBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto exp(
                     ExpCudaBuiltIn const & exp_ctx,

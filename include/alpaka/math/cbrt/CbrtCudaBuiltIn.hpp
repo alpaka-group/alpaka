@@ -44,8 +44,8 @@ namespace alpaka
             struct Cbrt<
                 CbrtCudaBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 __device__ static auto cbrt(
                     CbrtCudaBuiltIn const & cbrt_ctx,

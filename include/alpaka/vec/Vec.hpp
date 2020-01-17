@@ -135,7 +135,7 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 bool B = (TDim::value == 0u),
-                typename = typename std::enable_if<B>::type>
+                typename = std::enable_if_t<B>>
             ALPAKA_FN_HOST_ACC Vec() :
                 m_data{static_cast<TVal>(0u)}
             {}
@@ -148,12 +148,12 @@ namespace alpaka
             template<
                 typename TArg0,
                 typename... TArgs,
-                typename = typename std::enable_if<
+                typename = std::enable_if_t<
                     // There have to be dim arguments.
                     (sizeof...(TArgs)+1 == TDim::value)
                     &&
-                    (std::is_same<TVal, typename std::decay<TArg0>::type>::value)
-                    >::type>
+                    (std::is_same<TVal, std::decay_t<TArg0>>::value)
+                    >>
             ALPAKA_FN_HOST_ACC Vec(
                 TArg0 && arg0,
                 TArgs && ... args) :
@@ -296,8 +296,8 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TIdx,
-                typename = typename std::enable_if<
-                    std::is_integral<TIdx>::value>::type>
+                typename = std::enable_if_t<
+                    std::is_integral<TIdx>::value>>
             ALPAKA_FN_HOST_ACC auto operator[](
                 TIdx const iIdx)
             -> TVal &
@@ -314,8 +314,8 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TIdx,
-                typename = typename std::enable_if<
-                    std::is_integral<TIdx>::value>::type>
+                typename = std::enable_if_t<
+                    std::is_integral<TIdx>::value>>
             ALPAKA_FN_HOST_ACC auto operator[](
                 TIdx const iIdx) const
             -> TVal
@@ -873,12 +873,12 @@ namespace alpaka
             struct SubVecFromIndices<
                 Vec<TDim, TVal>,
                 std::integer_sequence<std::size_t, TIndices...>,
-                typename std::enable_if<
+                std::enable_if_t<
                     !std::is_same<
                         std::integer_sequence<std::size_t, TIndices...>,
                         std::make_integer_sequence<std::size_t, TDim::value>
                     >::value
-                >::type>
+                >>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
@@ -902,12 +902,12 @@ namespace alpaka
             struct SubVecFromIndices<
                 Vec<TDim, TVal>,
                 std::integer_sequence<std::size_t, TIndices...>,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_same<
                         std::integer_sequence<std::size_t, TIndices...>,
                         std::make_integer_sequence<std::size_t, TDim::value>
                     >::value
-                >::type>
+                >>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
@@ -1242,7 +1242,7 @@ namespace alpaka
             struct GetExtent<
                 TIdxIntegralConst,
                 vec::Vec<TDim, TVal>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
@@ -1263,7 +1263,7 @@ namespace alpaka
                 TIdxIntegralConst,
                 vec::Vec<TDim, TVal>,
                 TExtentVal,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
@@ -1289,7 +1289,7 @@ namespace alpaka
             struct GetOffset<
                 TIdxIntegralConst,
                 vec::Vec<TDim, TVal>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
@@ -1310,7 +1310,7 @@ namespace alpaka
                 TIdxIntegralConst,
                 vec::Vec<TDim, TVal>,
                 TOffset,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(

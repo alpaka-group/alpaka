@@ -52,8 +52,8 @@ namespace alpaka
             struct Erf<
                 ErfHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto erf(
                     ErfHipBuiltIn const & erf_ctx,

@@ -271,7 +271,7 @@ namespace alpaka
             struct GetExtent<
                 TIdxIntegralConst,
                 mem::view::ViewSubView<TDev, TElem, TDim, TIdx>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
@@ -407,7 +407,7 @@ namespace alpaka
             struct GetOffset<
                 TIdxIntegralConst,
                 mem::view::ViewSubView<TDev, TElem, TDim, TIdx>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(

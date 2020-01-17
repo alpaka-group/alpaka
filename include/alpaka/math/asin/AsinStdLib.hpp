@@ -35,8 +35,8 @@ namespace alpaka
             struct Asin<
                 AsinStdLib,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 ALPAKA_FN_HOST static auto asin(
                     AsinStdLib const & asin_ctx,

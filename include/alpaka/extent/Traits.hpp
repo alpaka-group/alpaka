@@ -217,8 +217,8 @@ namespace alpaka
             struct GetExtent<
                 dim::DimInt<0u>,
                 TExtent,
-                typename std::enable_if<
-                    std::is_integral<TExtent>::value>::type>
+                std::enable_if_t<
+                    std::is_integral<TExtent>::value>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
@@ -237,8 +237,8 @@ namespace alpaka
                 dim::DimInt<0u>,
                 TExtent,
                 TExtentVal,
-                typename std::enable_if<
-                    std::is_integral<TExtent>::value>::type>
+                std::enable_if_t<
+                    std::is_integral<TExtent>::value>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(

@@ -52,8 +52,8 @@ namespace alpaka
             struct Exp<
                 ExpHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto exp(
                     ExpHipBuiltIn const & exp_ctx,

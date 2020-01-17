@@ -98,7 +98,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                     vec));
 
         /*using VecCastConst = decltype(vecCast);
-        using VecCast = typename std::decay<VecCastConst>::type;
+        using VecCast = std::decay_t<VecCastConst>;
         static_assert(
             std::is_same<
                 alpaka::idx::Idx<VecCast>,

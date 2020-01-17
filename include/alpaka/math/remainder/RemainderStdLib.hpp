@@ -37,9 +37,9 @@ namespace alpaka
                 RemainderStdLib,
                 Tx,
                 Ty,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_floating_point<Tx>::value
-                    && std::is_floating_point<Ty>::value>::type>
+                    && std::is_floating_point<Ty>::value>>
             {
                 ALPAKA_FN_HOST static auto remainder(
                     RemainderStdLib const & remainder_ctx,

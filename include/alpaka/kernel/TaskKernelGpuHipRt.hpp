@@ -171,7 +171,7 @@ namespace alpaka
                     m_args(std::forward<TArgs>(args)...)
             {
                 static_assert(
-                    dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
+                    dim::Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                     "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
@@ -191,7 +191,7 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC ~TaskKernelGpuHipRt() = default;
 
             TKernelFnObj m_kernelFnObj;
-            std::tuple<typename std::decay<TArgs>::type...> m_args;
+            std::tuple<std::decay_t<TArgs>...> m_args;
         };
     }
 
@@ -353,7 +353,7 @@ namespace alpaka
                             #if defined(BOOST_COMP_HCC) && BOOST_COMP_HCC
                             ALPAKA_FN_HOST_ACC
                             #endif
-                            [&](typename std::decay<TArgs>::type const & ... args)
+                            [&](std::decay_t<TArgs> const & ... args)
                             {
                                 return
                                     kernel::getBlockSharedMemDynSizeBytes<
@@ -374,7 +374,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the function attributes.
                     /*hipFuncAttributes funcAttrs;
-                    hipFuncGetAttributes(&funcAttrs, kernel::hip::detail::hipKernel<TDim, TIdx, TKernelFnObj, typename std::decay<TArgs>::type...>);
+                    hipFuncGetAttributes(&funcAttrs, kernel::hip::detail::hipKernel<TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>);
                     std::cout << __func__
                         << " binaryVersion: " << funcAttrs.binaryVersion
                         << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
@@ -392,10 +392,10 @@ namespace alpaka
                             queue.m_spQueueImpl->m_dev.m_iDevice));
 
                     meta::apply(
-                        [&](typename std::decay<TArgs>::type const & ... args)
+                        [&](std::decay_t<TArgs> const & ... args)
                         {
                             hipLaunchKernelGGL(
-                                HIP_KERNEL_NAME(kernel::hip::detail::hipKernel< TDim, TIdx, TKernelFnObj, typename std::decay<TArgs>::type... >),
+                                HIP_KERNEL_NAME(kernel::hip::detail::hipKernel< TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>... >),
                                 gridDim,
                                 blockDim,
                                 static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
@@ -475,7 +475,7 @@ namespace alpaka
                     // Get the size of the block shared dynamic memory.
                     auto const blockSharedMemDynSizeBytes(
                         meta::apply(
-                            [&](typename std::decay<TArgs>::type const & ... args)
+                            [&](std::decay_t<TArgs> const & ... args)
                             {
                                 return
                                     kernel::getBlockSharedMemDynSizeBytes<
@@ -497,7 +497,7 @@ namespace alpaka
                     // hipFuncAttributes not ported from HIP to HIP.
                     // Log the function attributes.
                     /*hipFuncAttributes funcAttrs;
-                    hipFuncGetAttributes(&funcAttrs, kernel::hip::detail::hipKernel<TDim, TIdx, TKernelFnObj, typename std::decay<TArgs>::type....>);
+                    hipFuncGetAttributes(&funcAttrs, kernel::hip::detail::hipKernel<TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>....>);
                     std::cout << __func__
                         << " binaryVersion: " << funcAttrs.binaryVersion
                         << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
@@ -515,10 +515,10 @@ namespace alpaka
                             queue.m_spQueueImpl->m_dev.m_iDevice));
 
                     meta::apply(
-                        [&](typename std::decay<TArgs>::type const & ... args)
+                        [&](std::decay_t<TArgs> const & ... args)
                         {
                             hipLaunchKernelGGL(
-                                HIP_KERNEL_NAME(kernel::hip::detail::hipKernel< TDim, TIdx, TKernelFnObj, typename std::decay<TArgs>::type... >),
+                                HIP_KERNEL_NAME(kernel::hip::detail::hipKernel< TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>... >),
                                 gridDim,
                                 blockDim,
                                 static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
