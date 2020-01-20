@@ -35,8 +35,8 @@ namespace alpaka
             struct Cos<
                 CosStdLib,
                 TArg,
-                typename std::enable_if<
-                    std::is_arithmetic<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_arithmetic<TArg>::value>>
             {
                 ALPAKA_FN_HOST static auto cos(
                     CosStdLib const & cos_ctx,

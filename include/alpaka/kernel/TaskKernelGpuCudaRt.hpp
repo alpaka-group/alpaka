@@ -79,8 +79,8 @@ namespace alpaka
 // with clang it is not possible to query std::result_of for a pure device lambda created on the host side
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
                     static_assert(
-                        std::is_same<typename std::result_of<
-                            TKernelFnObj(acc::AccGpuCudaRt<TDim, TIdx> const &, TArgs const & ...)>::type, void>::value,
+                        std::is_same<std::result_of_t<
+                            TKernelFnObj(acc::AccGpuCudaRt<TDim, TIdx> const &, TArgs const & ...)>, void>::value,
                         "The TKernelFnObj is required to return void!");
 #endif
                     acc::AccGpuCudaRt<TDim, TIdx> acc(threadElemExtent);
@@ -165,7 +165,7 @@ namespace alpaka
                     m_args(std::forward<TArgs>(args)...)
             {
                 static_assert(
-                    dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
+                    dim::Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                     "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
@@ -180,7 +180,7 @@ namespace alpaka
             ~TaskKernelGpuCudaRt() = default;
 
             TKernelFnObj m_kernelFnObj;
-            std::tuple<typename std::decay<TArgs>::type...> m_args;
+            std::tuple<std::decay_t<TArgs>...> m_args;
         };
     }
 
@@ -335,7 +335,7 @@ namespace alpaka
                     // Get the size of the block shared dynamic memory.
                     auto const blockSharedMemDynSizeBytes(
                         meta::apply(
-                            [&](typename std::decay<TArgs>::type const & ... args)
+                            [&](std::decay_t<TArgs> const & ... args)
                             {
                                 return
                                     kernel::getBlockSharedMemDynSizeBytes<
@@ -377,9 +377,9 @@ namespace alpaka
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                     // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
                     meta::apply(
-                        [&](typename std::decay<TArgs>::type const & ... args)
+                        [&](std::decay_t<TArgs> const & ... args)
                         {
-                            kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, typename std::decay<TArgs>::type...><<<
+                            kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...><<<
                                 gridDim,
                                 blockDim,
                                 static_cast<std::size_t>(blockSharedMemDynSizeBytes),
@@ -455,7 +455,7 @@ namespace alpaka
                     // Get the size of the block shared dynamic memory.
                     auto const blockSharedMemDynSizeBytes(
                         meta::apply(
-                            [&](typename std::decay<TArgs>::type const & ... args)
+                            [&](std::decay_t<TArgs> const & ... args)
                             {
                                 return
                                     kernel::getBlockSharedMemDynSizeBytes<
@@ -476,7 +476,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the function attributes.
                     cudaFuncAttributes funcAttrs;
-                    cudaFuncGetAttributes(&funcAttrs, kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, typename std::decay<TArgs>::type...>);
+                    cudaFuncGetAttributes(&funcAttrs, kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>);
                     std::cout << __func__
                         << " binaryVersion: " << funcAttrs.binaryVersion
                         << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
@@ -494,9 +494,9 @@ namespace alpaka
                             queue.m_spQueueImpl->m_dev.m_iDevice));
                     // Enqueue the kernel execution.
                     meta::apply(
-                        [&](typename std::decay<TArgs>::type const & ... args)
+                        [&](std::decay_t<TArgs> const & ... args)
                         {
-                            kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, typename std::decay<TArgs>::type...><<<
+                            kernel::cuda::detail::cudaKernel<TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...><<<
                                 gridDim,
                                 blockDim,
                                 static_cast<std::size_t>(blockSharedMemDynSizeBytes),

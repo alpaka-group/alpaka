@@ -28,6 +28,7 @@
 #include <atomic>
 #include <functional>
 #include <memory>
+#include <type_traits>
 
 namespace alpaka
 {
@@ -189,7 +190,7 @@ namespace alpaka
             private:
                 // NOTE: To avoid invalid memory accesses to memory of a different thread
                 // `std::remove_reference` enforces the function object to be copied.
-                typename std::remove_reference<TFnObj>::type m_FnObj;
+                std::remove_reference_t<TFnObj> m_FnObj;
             };
 
             //#############################################################################
@@ -239,14 +240,14 @@ namespace alpaka
             private:
                 // NOTE: To avoid invalid memory accesses to memory of a different thread
                 // `std::remove_reference` enforces the function object to be copied.
-                typename std::remove_reference<TFnObj>::type m_FnObj;
+                std::remove_reference_t<TFnObj> m_FnObj;
             };
 
             //-----------------------------------------------------------------------------
             template<
                 typename TFnObj0,
                 typename TFnObj1,
-                typename = typename std::enable_if<!std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>::type>
+                typename = std::enable_if_t<!std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>>
             auto invokeBothReturnFirst(
                     TFnObj0 && fn0,
                     TFnObj1 && fn1)
@@ -260,7 +261,7 @@ namespace alpaka
             template<
                 typename TFnObj0,
                 typename TFnObj1,
-                typename = typename std::enable_if<std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>::type>
+                typename = std::enable_if_t<std::is_same<void, decltype(std::declval<TFnObj0>()())>::value>>
             auto invokeBothReturnFirst(
                     TFnObj0 && fn0,
                     TFnObj1 && fn1)

@@ -46,9 +46,9 @@ namespace alpaka
                 MinCudaBuiltIn,
                 Tx,
                 Ty,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_integral<Tx>::value
-                    && std::is_integral<Ty>::value>::type>
+                    && std::is_integral<Ty>::value>>
             {
                 __device__ static auto min(
                     MinCudaBuiltIn const & min_ctx,
@@ -68,11 +68,11 @@ namespace alpaka
                 MinCudaBuiltIn,
                 Tx,
                 Ty,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_arithmetic<Tx>::value
                     && std::is_arithmetic<Ty>::value
                     && !(std::is_integral<Tx>::value
-                        && std::is_integral<Ty>::value)>::type>
+                        && std::is_integral<Ty>::value)>>
             {
                 __device__ static auto min(
                     MinCudaBuiltIn const & min_ctx,

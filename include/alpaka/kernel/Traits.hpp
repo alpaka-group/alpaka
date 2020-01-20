@@ -155,7 +155,7 @@ namespace alpaka
                     TArgs const & ...)
                 {
                     static_assert(
-                        std::is_same<typename std::result_of<TKernelFnObj(TAcc const &, TArgs const & ...)>::type, void>::value,
+                        std::is_same<std::result_of_t<TKernelFnObj(TAcc const &, TArgs const & ...)>, void>::value,
                         "The TKernelFnObj is required to return void!");
                 }
             };
@@ -185,10 +185,10 @@ namespace alpaka
             detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
 
             static_assert(
-                dim::Dim<typename std::decay<TWorkDiv>::type>::value == dim::Dim<TAcc>::value,
+                dim::Dim<std::decay_t<TWorkDiv>>::value == dim::Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");
             static_assert(
-                std::is_same<idx::Idx<typename std::decay<TWorkDiv>::type>, idx::Idx<TAcc>>::value,
+                std::is_same<idx::Idx<std::decay_t<TWorkDiv>>, idx::Idx<TAcc>>::value,
                 "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

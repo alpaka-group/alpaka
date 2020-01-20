@@ -36,9 +36,9 @@ namespace alpaka
             struct Abs<
                 AbsStdLib,
                 TArg,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_arithmetic<TArg>::value
-                    && std::is_signed<TArg>::value>::type>
+                    && std::is_signed<TArg>::value>>
             {
                 ALPAKA_FN_HOST static auto abs(
                     AbsStdLib const & abs_ctx,

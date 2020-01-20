@@ -44,8 +44,8 @@ namespace alpaka
             struct Acos<
                 AcosCudaBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto acos(
                     AcosCudaBuiltIn const & acos_ctx,

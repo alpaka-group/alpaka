@@ -54,9 +54,9 @@ namespace alpaka
                 FmodHipBuiltIn,
                 Tx,
                 Ty,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_floating_point<Tx>::value
-                    && std::is_floating_point<Ty>::value>::type>
+                    && std::is_floating_point<Ty>::value>>
             {
                 __device__ static auto fmod(
                     FmodHipBuiltIn const & fmod_ctx,

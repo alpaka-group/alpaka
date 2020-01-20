@@ -112,9 +112,9 @@ namespace alpaka
             struct QueueType<
                 TAcc,
                 TProperty,
-                typename std::enable_if<
+                std::enable_if_t<
                     concepts::ImplementsConcept<acc::ConceptAcc, TAcc>::value
-                >::type
+                >
             >
             {
                 using type = typename QueueType<

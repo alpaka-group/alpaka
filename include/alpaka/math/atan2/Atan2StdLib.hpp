@@ -37,9 +37,9 @@ namespace alpaka
                 Atan2StdLib,
                 Ty,
                 Tx,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_arithmetic<Ty>::value
-                    && std::is_arithmetic<Tx>::value>::type>
+                    && std::is_arithmetic<Tx>::value>>
             {
                 ALPAKA_FN_HOST static auto atan2(
                     Atan2StdLib const & abs,

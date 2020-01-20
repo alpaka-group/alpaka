@@ -37,9 +37,9 @@ namespace alpaka
                 FmodStdLib,
                 Tx,
                 Ty,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_arithmetic<Tx>::value
-                    && std::is_arithmetic<Ty>::value>::type>
+                    && std::is_arithmetic<Ty>::value>>
             {
                 ALPAKA_FN_HOST static auto fmod(
                     FmodStdLib const & fmod_ctx,

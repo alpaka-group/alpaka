@@ -52,8 +52,8 @@ namespace alpaka
             struct Cos<
                 CosHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto cos(
                     CosHipBuiltIn const & cos_ctx,

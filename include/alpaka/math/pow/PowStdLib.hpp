@@ -37,9 +37,9 @@ namespace alpaka
                 PowStdLib,
                 TBase,
                 TExp,
-                typename std::enable_if<
+                std::enable_if_t<
                     std::is_arithmetic<TBase>::value
-                    && std::is_arithmetic<TExp>::value>::type>
+                    && std::is_arithmetic<TExp>::value>>
             {
                 ALPAKA_FN_HOST static auto pow(
                     PowStdLib const & pow_ctx,

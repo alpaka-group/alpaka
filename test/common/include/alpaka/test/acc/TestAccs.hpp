@@ -241,8 +241,8 @@ namespace alpaka
                 {
                     using type =
                         EnabledAccs<
-                            typename std::tuple_element<0, TTestAccParamSet>::type,
-                            typename std::tuple_element<1, TTestAccParamSet>::type
+                            std::tuple_element_t<0, TTestAccParamSet>,
+                            std::tuple_element_t<1, TTestAccParamSet>
                         >;
                 };
 

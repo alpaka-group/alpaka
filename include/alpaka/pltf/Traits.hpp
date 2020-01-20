@@ -115,7 +115,7 @@ namespace alpaka
             struct QueueType<
                 TPltf,
                 TProperty,
-                typename std::enable_if<concepts::ImplementsConcept<pltf::ConceptPltf, TPltf>::value>::type
+                std::enable_if_t<concepts::ImplementsConcept<pltf::ConceptPltf, TPltf>::value>
             >
             {
                 using type = typename QueueType<

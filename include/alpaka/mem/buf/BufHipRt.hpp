@@ -28,6 +28,7 @@
 
 #include <functional>
 #include <memory>
+#include <type_traits>
 
 namespace alpaka
 {
@@ -206,7 +207,7 @@ namespace alpaka
             struct GetExtent<
                 TIdxIntegralConst,
                 mem::buf::BufHipRt<TElem, TDim, TIdx>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(

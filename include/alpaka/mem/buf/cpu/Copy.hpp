@@ -74,7 +74,7 @@ namespace alpaka
                             "The source view and the extent are required to have compatible idx type!");
 
                         static_assert(
-                            std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                            std::is_same<elem::Elem<TViewDst>, std::remove_const_t<elem::Elem<TViewSrc>>>::value,
                             "The source and the destination view are required to have the same element type!");
 
                         //-----------------------------------------------------------------------------

@@ -52,8 +52,8 @@ namespace alpaka
             struct Round<
                 RoundHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto round(
                     RoundHipBuiltIn const & round_ctx,
@@ -70,8 +70,8 @@ namespace alpaka
             struct Lround<
                 RoundHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto lround(
                     RoundHipBuiltIn const & lround_ctx,
@@ -89,8 +89,8 @@ namespace alpaka
             struct Llround<
                 RoundHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto llround(
                     RoundHipBuiltIn const & llround_ctx,

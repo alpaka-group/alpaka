@@ -15,6 +15,7 @@
 #include <catch2/catch.hpp>
 
 #include <climits>
+#include <type_traits>
 
 //-----------------------------------------------------------------------------
 ALPAKA_NO_HOST_ACC_WARNING
@@ -609,14 +610,14 @@ template<
 class AtomicTestKernel<
     alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
     T,
-    typename std::enable_if<
+    std::enable_if_t<
         !std::is_same<int, T>::value
         && !std::is_same<unsigned int, T>::value
         && !std::is_same<unsigned long int, T>::value
         && !std::is_same<unsigned long long int, T>::value
         && !std::is_same<float, T>::value
         && !std::is_same<double, T>::value
-    >::type>
+    >>
 {
 public:
     //-----------------------------------------------------------------------------
@@ -892,14 +893,14 @@ template<
 class AtomicTestKernel<
     alpaka::acc::AccGpuHipRt<TDim, TIdx>,
     T,
-    typename std::enable_if<
+    std::enable_if_t<
         !std::is_same<int, T>::value
         && !std::is_same<unsigned int, T>::value
         && !std::is_same<unsigned long int, T>::value
         && !std::is_same<unsigned long long int, T>::value
         && !std::is_same<float, T>::value
         && !std::is_same<double, T>::value
-    >::type>
+    >>
 {
 public:
     //-----------------------------------------------------------------------------

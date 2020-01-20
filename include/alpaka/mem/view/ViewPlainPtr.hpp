@@ -16,6 +16,8 @@
 #include <alpaka/dev/DevCudaRt.hpp>
 #include <alpaka/dev/DevHipRt.hpp>
 
+#include <type_traits>
+
 namespace alpaka
 {
     namespace mem
@@ -205,7 +207,7 @@ namespace alpaka
             struct GetExtent<
                 TIdxIntegralConst,
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>,
-                typename std::enable_if<(TDim::value > TIdxIntegralConst::value)>::type>
+                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC
@@ -259,7 +261,7 @@ namespace alpaka
                 struct GetPitchBytes<
                     TIdxIntegralConst,
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>,
-                    typename std::enable_if<TIdxIntegralConst::value < TDim::value>::type>
+                    std::enable_if_t<TIdxIntegralConst::value < TDim::value>>
                 {
                     ALPAKA_FN_HOST static auto getPitchBytes(
                         mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & view)

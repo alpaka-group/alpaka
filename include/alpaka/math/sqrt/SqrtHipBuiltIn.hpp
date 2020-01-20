@@ -52,8 +52,8 @@ namespace alpaka
             struct Sqrt<
                 SqrtHipBuiltIn,
                 TArg,
-                typename std::enable_if<
-                    std::is_floating_point<TArg>::value>::type>
+                std::enable_if_t<
+                    std::is_floating_point<TArg>::value>>
             {
                 __device__ static auto sqrt(
                     SqrtHipBuiltIn const & sqrt_ctx,
