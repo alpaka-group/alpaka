@@ -81,15 +81,7 @@ namespace alpaka
             //! CUDA runtime API error checking with log and exception, ignoring specific error values
             // NOTE: All ignored errors have to be convertible to cudaError_t.
             template<
-                typename... TErrors/*,
-                typename = std::enable_if_t<
-                    meta::Conjunction<
-                        std::true_type,
-                        std::is_convertible<
-                            TErrors,
-                            cudaError_t
-                        >...
-                    >::value> */>
+                typename... TErrors>
             ALPAKA_FN_HOST auto cudaRtCheckIgnore(
                 cudaError_t const & error,
                 char const * cmd,
