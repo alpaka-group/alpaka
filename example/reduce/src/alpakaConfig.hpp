@@ -165,23 +165,23 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuThreads<TArgs...>>
 //! CUDA defines
 //!
 //! Defines Host, Device, etc. for the CUDA accelerator.
-struct GpuCudaRt
+struct GpuCudaHiptRt
 {
     using Host = alpaka::acc::AccCpuSerial<Dim, Extent>;
-    using Acc = alpaka::acc::AccGpuCudaRt<Dim, Extent>;
+    using Acc = alpaka::acc::AccGpuCudaHiptRt<Dim, Extent>;
     using DevHost = alpaka::dev::Dev<Host>;
     using DevAcc = alpaka::dev::Dev<Acc>;
     using PltfHost = alpaka::pltf::Pltf<DevHost>;
     using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    using Stream = alpaka::queue::QueueCudaRtNonBlocking;
+    using Stream = alpaka::queue::QueueCudaHiptRtNonBlocking;
     using Event = alpaka::event::Event<Stream>;
     using MaxBlockSize = alpaka::dim::DimInt<1024u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::acc::AccGpuCudaRt<TArgs...>>
+struct GetIterator<T, TBuf, alpaka::acc::AccGpuCudaHiptRt<TArgs...>>
 {
-    using Iterator = IteratorGpu<alpaka::acc::AccGpuCudaRt<TArgs...>, T, TBuf>;
+    using Iterator = IteratorGpu<alpaka::acc::AccGpuCudaHiptRt<TArgs...>, T, TBuf>;
 };
 #endif
 #endif
