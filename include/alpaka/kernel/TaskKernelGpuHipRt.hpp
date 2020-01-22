@@ -145,19 +145,6 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         public:
-// gcc-4.9 libstdc++ does not support std::is_trivially_copyable.
-// MSVC std::is_trivially_copyable seems to be buggy (last tested at 15.7).
-#if (!__GLIBCXX__) && (!BOOST_COMP_MSVC)
-            static_assert(
-                meta::Conjunction<
-                    std::is_trivially_copyable<
-                        TKernelFnObj>,
-                    std::is_trivially_copyable<
-                        TArgs>...
-                    >::value,
-                "The given kernel function object and its arguments have to fulfill is_trivially_copyable!");
-#endif
-
             //-----------------------------------------------------------------------------
             //! Constructor.
             template<
