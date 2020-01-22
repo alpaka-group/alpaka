@@ -67,7 +67,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    return 1;
+                    return static_cast<std::size_t>(::omp_get_num_devices());
                 }
             };
 
