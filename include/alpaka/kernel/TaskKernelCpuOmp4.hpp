@@ -86,7 +86,10 @@ namespace alpaka
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
-            ALPAKA_FN_HOST auto operator()() const
+            ALPAKA_FN_HOST auto operator()(
+                    const
+                    dev::DevOmp4& dev
+                ) const
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -150,7 +153,8 @@ namespace alpaka
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 auto argsD = m_args;
                 auto kernelFnObj = m_kernelFnObj;
-                #pragma omp target
+                const auto iDevice = dev.iDevice();
+                #pragma omp target device(iDevice)
                 {
                     #pragma omp teams num_teams(teamCount) thread_limit(blockThreadCount)
                     {
@@ -331,6 +335,63 @@ namespace alpaka
                 kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TIdx;
+            };
+        }
+    }
+
+    namespace queue
+    {
+        namespace traits
+        {
+            template<
+                typename TDim,
+                typename TIdx,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct Enqueue<
+                queue::QueueOmp4Blocking,
+                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> >
+            {
+                ALPAKA_FN_HOST static auto enqueue(
+                    queue::QueueOmp4Blocking& queue,
+                    kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+                -> void
+                {
+                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
+
+                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = true;
+
+                    task(
+                            queue.m_spQueueImpl->m_dev
+                        );
+
+                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = false;
+                }
+            };
+
+            template<
+                typename TDim,
+                typename TIdx,
+                typename TKernelFnObj,
+                typename... TArgs>
+            struct Enqueue<
+                queue::QueueOmp4NonBlocking,
+                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> >
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto enqueue(
+                    queue::QueueOmp4NonBlocking& queue,
+                    kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+                -> void
+                {
+                    queue.m_spQueueImpl->m_workerThread.enqueueTask(
+                        [&queue, task]()
+                        {
+                            task(
+                                    queue.m_spQueueImpl->m_dev
+                                );
+                        });
+                }
             };
         }
     }

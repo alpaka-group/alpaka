@@ -151,6 +151,7 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             ~DevOmp4() = default;
+            int iDevice() const {return m_spDevOmp4Impl->iDevice();}
 
             ALPAKA_FN_HOST auto getAllQueues() const
             -> std::vector<std::shared_ptr<queue::IGenericThreadsQueue<DevOmp4>>>
