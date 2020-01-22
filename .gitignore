@@ -19,3 +19,5 @@
 
 # VIM project files
 .vimrc
+
+.idea/
