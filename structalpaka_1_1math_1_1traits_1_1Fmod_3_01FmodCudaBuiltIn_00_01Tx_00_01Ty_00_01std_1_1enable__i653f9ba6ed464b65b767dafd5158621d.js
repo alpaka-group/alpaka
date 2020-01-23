@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodCudaBuiltIn_00_01Tx_00_01Ty_00_01std_1_1enable__i653f9ba6ed464b65b767dafd5158621d =
+[
+    [ "fmod", "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodCudaBuiltIn_00_01Tx_00_01Ty_00_01std_1_1enable__i653f9ba6ed464b65b767dafd5158621d.html#a9fb0fee8a0e8aaaf0496e8fe0b604198", null ]
+];

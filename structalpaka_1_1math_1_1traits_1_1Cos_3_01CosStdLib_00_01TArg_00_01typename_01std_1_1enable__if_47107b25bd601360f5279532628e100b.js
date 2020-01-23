@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Cos_3_01CosStdLib_00_01TArg_00_01typename_01std_1_1enable__if_47107b25bd601360f5279532628e100b =
-[
-    [ "cos", "structalpaka_1_1math_1_1traits_1_1Cos_3_01CosStdLib_00_01TArg_00_01typename_01std_1_1enable__if_47107b25bd601360f5279532628e100b.html#abde20095968f0ecda1f0efe6c9ed83c6", null ]
-];

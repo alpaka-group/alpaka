@@ -10,6 +10,10 @@ var dir_9b06e2d5421d26ecb89f5fc8cf901459 =
     [ "Filter.hpp", "Filter_8hpp.html", "Filter_8hpp" ],
     [ "Fold.hpp", "Fold_8hpp.html", "Fold_8hpp" ],
     [ "ForEachType.hpp", "ForEachType_8hpp.html", "ForEachType_8hpp" ],
+    [ "Functional.hpp", "Functional_8hpp.html", [
+      [ "max", "structalpaka_1_1meta_1_1max.html", "structalpaka_1_1meta_1_1max" ],
+      [ "min", "structalpaka_1_1meta_1_1min.html", "structalpaka_1_1meta_1_1min" ]
+    ] ],
     [ "InheritFromList.hpp", "InheritFromList_8hpp.html", [
       [ "InheritFromList", "classalpaka_1_1meta_1_1InheritFromList.html", null ],
       [ "InheritFromList< TList< TBases... > >", "classalpaka_1_1meta_1_1InheritFromList_3_01TList_3_01TBases_8_8_8_01_4_01_4.html", null ]

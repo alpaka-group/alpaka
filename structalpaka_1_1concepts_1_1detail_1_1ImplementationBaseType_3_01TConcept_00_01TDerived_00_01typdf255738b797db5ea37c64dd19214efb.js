@@ -1,4 +1,0 @@
-var structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01typdf255738b797db5ea37c64dd19214efb =
-[
-    [ "type", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01typdf255738b797db5ea37c64dd19214efb.html#a40bdf782bf31d61ac335936237105995", null ]
-];

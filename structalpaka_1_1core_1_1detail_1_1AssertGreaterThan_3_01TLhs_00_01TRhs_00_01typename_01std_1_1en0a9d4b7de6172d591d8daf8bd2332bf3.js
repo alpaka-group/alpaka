@@ -1,4 +1,0 @@
-var structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01typename_01std_1_1en0a9d4b7de6172d591d8daf8bd2332bf3 =
-[
-    [ "assertGreaterThan", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01typename_01std_1_1en0a9d4b7de6172d591d8daf8bd2332bf3.html#a0047f5276de26a3f0cfb76dedfa3ca8e", null ]
-];

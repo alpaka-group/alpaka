@@ -18,7 +18,7 @@ var structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1Dim
     [ "m_iSrcDevice", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#ad7a602e79d88f7430fa24164ebbfc885", null ],
     [ "m_srcDepth", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#a724d1967a7ad626cb30f3059abbc0585", null ],
     [ "m_srcHeight", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#a3964c231fe128830a8ebba7ccfc06d54", null ],
-    [ "m_srcMemNative", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#ad523da1896e491ee7126caa09403cf9c", null ],
+    [ "m_srcMemNative", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#af667166204a79368258ca1bf49f0ec4f", null ],
     [ "m_srcpitchBytesX", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#aafd53167ea2034048ac4bb34db1de239", null ],
     [ "m_srcPitchBytesY", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#a13c7113844139c2ce2666904dd283c12", null ],
     [ "m_srcWidth", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_013_01_4_00_01e7859afa42dc1ba9d2c7c2d93f6cce8e.html#a7d0a42a03de44ea61048c144ed5d38b5", null ]

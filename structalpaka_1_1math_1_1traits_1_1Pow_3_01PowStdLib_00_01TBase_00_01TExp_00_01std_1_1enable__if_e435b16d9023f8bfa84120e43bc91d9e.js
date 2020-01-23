@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Pow_3_01PowStdLib_00_01TBase_00_01TExp_00_01std_1_1enable__if_e435b16d9023f8bfa84120e43bc91d9e =
+[
+    [ "pow", "structalpaka_1_1math_1_1traits_1_1Pow_3_01PowStdLib_00_01TBase_00_01TExp_00_01std_1_1enable__if_e435b16d9023f8bfa84120e43bc91d9e.html#ab0c196309181491a1a5c12e8ddd97359", null ]
+];

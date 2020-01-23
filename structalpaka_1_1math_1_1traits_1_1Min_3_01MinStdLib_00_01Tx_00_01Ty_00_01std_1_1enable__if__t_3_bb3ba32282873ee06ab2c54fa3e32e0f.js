@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Min_3_01MinStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_bb3ba32282873ee06ab2c54fa3e32e0f =
+[
+    [ "min", "structalpaka_1_1math_1_1traits_1_1Min_3_01MinStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_bb3ba32282873ee06ab2c54fa3e32e0f.html#aad1f7fd43c74e769980e837bc4168cc5", null ]
+];

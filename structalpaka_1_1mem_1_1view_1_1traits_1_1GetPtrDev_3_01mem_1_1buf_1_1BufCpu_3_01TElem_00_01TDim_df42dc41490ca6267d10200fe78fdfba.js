@@ -1,5 +1,5 @@
 var structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_df42dc41490ca6267d10200fe78fdfba =
 [
-    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_df42dc41490ca6267d10200fe78fdfba.html#a628e47884968108701d6c4b909e26b32", null ],
-    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_df42dc41490ca6267d10200fe78fdfba.html#ac6865b2bbc76d16925f8a3f5a4a1f6e3", null ]
+    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_df42dc41490ca6267d10200fe78fdfba.html#ac6865b2bbc76d16925f8a3f5a4a1f6e3", null ],
+    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_df42dc41490ca6267d10200fe78fdfba.html#a628e47884968108701d6c4b909e26b32", null ]
 ];

@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1SinCos_3_01SinCosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_9cac87ca7a4e0cc2f016fe619d7150cc =
+[
+    [ "sincos", "structalpaka_1_1math_1_1traits_1_1SinCos_3_01SinCosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_9cac87ca7a4e0cc2f016fe619d7150cc.html#aad3282bcf80a9d3392016cb527ec10fb", null ]
+];

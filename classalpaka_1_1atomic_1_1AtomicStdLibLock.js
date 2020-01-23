@@ -7,7 +7,7 @@ var classalpaka_1_1atomic_1_1AtomicStdLibLock =
     [ "getMutex", "classalpaka_1_1atomic_1_1AtomicStdLibLock.html#a3536073b161577ccb5f8fec7e8e354b8", null ],
     [ "hash", "classalpaka_1_1atomic_1_1AtomicStdLibLock.html#a4ffa190b7b9fe4f89ba36fc5885e7507", null ],
     [ "nextPowerOf2", "classalpaka_1_1atomic_1_1AtomicStdLibLock.html#a0725e7a2542fe1037103c28094fab7f5", null ],
-    [ "operator=", "classalpaka_1_1atomic_1_1AtomicStdLibLock.html#a3f7119b7952ef225d013e8f316c34ca0", null ],
     [ "operator=", "classalpaka_1_1atomic_1_1AtomicStdLibLock.html#a091703edcb77237ec715e6dcc31331e8", null ],
+    [ "operator=", "classalpaka_1_1atomic_1_1AtomicStdLibLock.html#a3f7119b7952ef225d013e8f316c34ca0", null ],
     [ "atomic::traits::AtomicOp", "classalpaka_1_1atomic_1_1AtomicStdLibLock.html#a09f3c5789bddbbcfdc52c0163b4b28a4", null ]
 ];

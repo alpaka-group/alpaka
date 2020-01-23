@@ -4,13 +4,14 @@ var namespacealpaka_1_1meta =
     [ "DependentFalseType", "structalpaka_1_1meta_1_1DependentFalseType.html", null ],
     [ "InheritFromList", "classalpaka_1_1meta_1_1InheritFromList.html", null ],
     [ "InheritFromList< TList< TBases... > >", "classalpaka_1_1meta_1_1InheritFromList_3_01TList_3_01TBases_8_8_8_01_4_01_4.html", null ],
-    [ "IntegerSequence", "structalpaka_1_1meta_1_1IntegerSequence.html", "structalpaka_1_1meta_1_1IntegerSequence" ],
     [ "IntegerSequenceValuesInRange", "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html", null ],
-    [ "IntegerSequenceValuesInRange< IntegerSequence< T, Tvals... >, T, Tmin, Tmax >", "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01IntegerSequence_3_01T_00_01Tvals_8_8_8_0115be3ea7f65b094dd5b5e89fda38c0.html", "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01IntegerSequence_3_01T_00_01Tvals_8_8_8_0115be3ea7f65b094dd5b5e89fda38c0" ],
+    [ "IntegerSequenceValuesInRange< std::integer_sequence< T, Tvals... >, T, Tmin, Tmax >", "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html", "structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be" ],
     [ "IntegerSequenceValuesUnique", "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique.html", null ],
-    [ "IntegerSequenceValuesUnique< IntegerSequence< T, Tvals... > >", "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01IntegerSequence_3_01T_00_01Tvals_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01IntegerSequence_3_01T_00_01Tvals_8_8_8_01_4_01_4" ],
+    [ "IntegerSequenceValuesUnique< std::integer_sequence< T, Tvals... > >", "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01std_1_1integer__sequence_3_01T_00_01Tvals_8_8_8_01_4_01_4.html", "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01std_1_1integer__sequence_3_01T_00_01Tvals_8_8_8_01_4_01_4" ],
     [ "IntegralValuesInRange", "structalpaka_1_1meta_1_1IntegralValuesInRange.html", null ],
     [ "IntegralValuesInRange< T, Tmin, Tmax >", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4.html", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_01_4" ],
     [ "IntegralValuesInRange< T, Tmin, Tmax, I, Tvals... >", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4" ],
-    [ "IntegralValuesUnique", "structalpaka_1_1meta_1_1IntegralValuesUnique.html", "structalpaka_1_1meta_1_1IntegralValuesUnique" ]
+    [ "IntegralValuesUnique", "structalpaka_1_1meta_1_1IntegralValuesUnique.html", "structalpaka_1_1meta_1_1IntegralValuesUnique" ],
+    [ "max", "structalpaka_1_1meta_1_1max.html", "structalpaka_1_1meta_1_1max" ],
+    [ "min", "structalpaka_1_1meta_1_1min.html", "structalpaka_1_1meta_1_1min" ]
 ];

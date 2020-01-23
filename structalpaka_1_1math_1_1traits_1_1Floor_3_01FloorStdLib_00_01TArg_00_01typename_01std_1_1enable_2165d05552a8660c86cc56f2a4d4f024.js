@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Floor_3_01FloorStdLib_00_01TArg_00_01typename_01std_1_1enable_2165d05552a8660c86cc56f2a4d4f024 =
-[
-    [ "floor", "structalpaka_1_1math_1_1traits_1_1Floor_3_01FloorStdLib_00_01TArg_00_01typename_01std_1_1enable_2165d05552a8660c86cc56f2a4d4f024.html#ab7f8e3014932418c5c8db93bc28a255c", null ]
-];

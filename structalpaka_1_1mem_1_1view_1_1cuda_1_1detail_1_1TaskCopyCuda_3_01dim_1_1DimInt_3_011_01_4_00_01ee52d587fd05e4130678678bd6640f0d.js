@@ -10,6 +10,6 @@ var structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1Dim
     [ "m_extentWidthBytes", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_011_01_4_00_01ee52d587fd05e4130678678bd6640f0d.html#a5d83e39dd018596a995432428fca9cb8", null ],
     [ "m_iDstDevice", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_011_01_4_00_01ee52d587fd05e4130678678bd6640f0d.html#af84e227725369941207958d979bdfc9b", null ],
     [ "m_iSrcDevice", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_011_01_4_00_01ee52d587fd05e4130678678bd6640f0d.html#af891ea67a424b848c1be456dc2b35b94", null ],
-    [ "m_srcMemNative", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_011_01_4_00_01ee52d587fd05e4130678678bd6640f0d.html#a6277975de9e29391b6fbf9412da5928d", null ],
+    [ "m_srcMemNative", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_011_01_4_00_01ee52d587fd05e4130678678bd6640f0d.html#a451aa4ac02036aa83f16dd5fe4890fd1", null ],
     [ "m_srcWidth", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1TaskCopyCuda_3_01dim_1_1DimInt_3_011_01_4_00_01ee52d587fd05e4130678678bd6640f0d.html#a1028645ed11e67facc63ffd103ed61dc", null ]
 ];

@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Ceil_3_01CeilCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enabd5e300e06460e64d950b3e69c025cbe9 =
-[
-    [ "ceil", "structalpaka_1_1math_1_1traits_1_1Ceil_3_01CeilCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enabd5e300e06460e64d950b3e69c025cbe9.html#a39c5238df5ae2e3f5c2efb900d833122", null ]
-];

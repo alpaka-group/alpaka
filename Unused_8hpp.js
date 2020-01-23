@@ -1,5 +1,5 @@
 var Unused_8hpp =
 [
-    [ "ignore_unused", "Unused_8hpp.html#a24cb3df82d57d0f72a60428dd32651fb", null ],
-    [ "ignore_unused", "Unused_8hpp.html#a7d6611c99646996fb7674bcb124c70e5", null ]
+    [ "ignore_unused", "Unused_8hpp.html#a4e7e1ce0cee6a5eb5b92bae30f9a560a", null ],
+    [ "ignore_unused", "Unused_8hpp.html#a4b49be7fefe893fefb1b6f506124695c", null ]
 ];
