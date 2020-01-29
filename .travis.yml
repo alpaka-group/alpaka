@@ -61,7 +61,7 @@ env:
         - ALPAKA_CI_CMAKE_DIR=${HOME}/CMake
         - ALPAKA_CI_CUDA_DIR=${HOME}/CUDA
         - ALPAKA_CI_HIP_ROOT_DIR=${HOME}/hip
-        - TBB_ROOT_DIR=${HOME}/tbb
+        - TBB_ROOT=${HOME}/tbb
         - ALPAKA_CI_SANITIZERS=
         - ALPAKA_CI_ANALYSIS=OFF
         - ALPAKA_CI_CLANG_LIBSTDCPP_VERSION=5

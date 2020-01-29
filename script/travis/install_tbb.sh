@@ -28,10 +28,10 @@ then
     TBB_DOWNLOAD_URL="https://github.com/intel/tbb/releases/download/4.4.5/${TBB_ARCHIVE_VER}_win.zip"
     TBB_DST_PATH="tbb.zip"
     powershell.exe -Command '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 ; Invoke-WebRequest "'${TBB_DOWNLOAD_URL}'" -OutFile "'${TBB_DST_PATH}'"'
-    mkdir "${TBB_ROOT_DIR}"
-    unzip -q "${TBB_DST_PATH}" -d "${TBB_ROOT_DIR}"
+    mkdir "${TBB_ROOT}"
+    unzip -q "${TBB_DST_PATH}" -d "${TBB_ROOT}"
     rm "${TBB_DST_PATH}"
-    TBB_UNZIP_DIR="${TBB_ROOT_DIR}/${TBB_ARCHIVE_VER}"
-    mv ${TBB_UNZIP_DIR}/* "${TBB_ROOT_DIR}/"
+    TBB_UNZIP_DIR="${TBB_ROOT}/${TBB_ARCHIVE_VER}"
+    mv ${TBB_UNZIP_DIR}/* "${TBB_ROOT}/"
     rmdir "${TBB_UNZIP_DIR}"
 fi
