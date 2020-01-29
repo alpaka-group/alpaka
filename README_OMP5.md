@@ -5,6 +5,7 @@ To make the build system enable the OpenMP5 backend (internally called
 version supported by the compiler. CMake does not determine it automatically.
 ```
 cmake -DOpenMP_CXX_VERSION=5 -DALPAKA_ACC_CPU_BT_OMP4_ENABLE=on \
+	-DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=on \
 	-DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=off \
 	-DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=off \
 	-DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=off \
