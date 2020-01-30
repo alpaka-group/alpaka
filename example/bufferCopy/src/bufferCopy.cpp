@@ -283,6 +283,10 @@ auto main()
     alpaka::mem::view::copy(devQueue, deviceBuffer1, hostViewPlainPtr, extents);
     alpaka::mem::view::copy(devQueue, deviceBuffer2, hostBuffer, extents);
 
+    // Depending on the accelerator, the allocation function may introduce
+    // padding between rows/planes of multidimensional memory allocations.
+    // Therefore the pitch (distance between consecutive rows/planes) may be
+    // greater than the space required for the data.
     Idx const deviceBuffer1Pitch(alpaka::mem::view::getPitchBytes<2u>(deviceBuffer1) / sizeof(Data));
     Idx const deviceBuffer2Pitch(alpaka::mem::view::getPitchBytes<2u>(deviceBuffer2) / sizeof(Data));
     Idx const hostBuffer1Pitch(alpaka::mem::view::getPitchBytes<2u>(hostBuffer) / sizeof(Data));
