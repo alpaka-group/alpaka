@@ -166,11 +166,18 @@ namespace alpaka
                     dev::DevOmp4 const & dev)
                 -> acc::AccDevProps<TDim, TIdx>
                 {
+                    alpaka::ignore_unused(dev);
+
+#if defined(ALPAKA_OFFLOAD_MAX_BLOCK_SIZE) && ALPAKA_OFFLOAD_MAX_BLOCK_SIZE>0
+                    auto const blockThreadCount = ALPAKA_OFFLOAD_MAX_BLOCK_SIZE;
+#else
+                    auto const blockThreadCount = ::omp_get_max_threads();
+#endif
 #ifdef ALPAKA_CI
-                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(std::min(4, ::omp_get_max_threads())));
+                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(std::min(4, blockThreadCount)));
                     auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(std::min(4, ::omp_get_max_threads())));
 #else
-                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(::omp_get_max_threads()));
+                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(blockThreadCount));
                     auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(::omp_get_max_threads())); //! \todo fix max block size for target
 #endif
                     return {
