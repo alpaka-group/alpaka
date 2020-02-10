@@ -174,9 +174,11 @@ namespace alpaka
             {
                 #pragma omp single nowait
                 {
-                    // The OpenMP runtime does not create a parallel region when only one thread is required in the num_threads clause.
+                    // The OpenMP runtime does not create a parallel region when either:
+                    // * only one thread is required in the num_threads clause
+                    // * or only one thread is available
                     // In all other cases we expect to be in a parallel region now.
-                    if((numBlocksInGrid > 1) && (::omp_in_parallel() == 0))
+                    if((numBlocksInGrid > 1) && (::omp_get_max_threads() > 1) && (::omp_in_parallel() == 0))
                     {
                         throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
                     }
