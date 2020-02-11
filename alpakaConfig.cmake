@@ -102,9 +102,7 @@ ENDIF()
 
 IF(ALPAKA_ACC_GPU_HIP_ENABLE AND (ALPAKA_HIP_PLATFORM MATCHES "hcc" OR ALPAKA_HIP_PLATFORM MATCHES "clang"))
     MESSAGE(WARNING
-        "The HIP back-end is currently experimental, especially for HCC. "
-        "In alpaka HIP(HCC) has a few workarounds and does not support 3D memory and constant memory. "
-        )
+        "The HIP back-end is currently experimental, especially for HCC.")
 ENDIF()
 
 OPTION(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
@@ -688,11 +686,11 @@ ENDIF()
 IF(ALPAKA_ACC_GPU_HIP_ENABLE)
 
     IF(NOT DEFINED ALPAKA_HIP_VERSION)
-        SET(ALPAKA_HIP_VERSION 1.5)
+        SET(ALPAKA_HIP_VERSION 3.0)
     ENDIF()
 
-    IF(ALPAKA_HIP_VERSION VERSION_LESS 1.5)
-        MESSAGE(WARNING "HIP < 1.5 is not supported!")
+    IF(ALPAKA_HIP_VERSION VERSION_LESS 3.0)
+        MESSAGE(WARNING "HIP < 3.0 is not supported!")
         SET(_ALPAKA_FOUND FALSE)
 
     ELSE()
@@ -707,9 +705,6 @@ IF(ALPAKA_ACC_GPU_HIP_ENABLE)
 
         ELSE()
             SET(ALPAKA_HIP_VERSION "${HIP_VERSION}")
-            IF(ALPAKA_HIP_VERSION VERSION_LESS 1.5.19211)
-                MESSAGE(STATUS "HIP < 1.5.19211 untested!")
-            ENDIF()
             SET(ALPAKA_HIP_COMPILER "hipcc" CACHE STRING "HIP compiler")
             SET_PROPERTY(CACHE ALPAKA_HIP_COMPILER PROPERTY STRINGS "hipcc")
 
