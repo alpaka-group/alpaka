@@ -22,7 +22,7 @@
 
 using TestQueues = alpaka::meta::Concatenate<
         alpaka::test::queue::TestQueues
- #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
+#ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
         ,
         std::tuple<std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuOmp2Collective>>
 #endif
@@ -37,8 +37,6 @@ TEMPLATE_LIST_TEST_CASE( "queueIsInitiallyEmpty", "[queue]", TestQueues)
 
     CHECK(alpaka::queue::empty(f.m_queue));
 }
-
-#if !BOOST_COMP_HIP // HIP-clang is currently not supporting callbacks
 
 //-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE( "queueCallbackIsWorking", "[queue]", TestQueues)
@@ -155,5 +153,3 @@ TEMPLATE_LIST_TEST_CASE( "queueShouldNotExecuteTasksInParallel", "[queue]", Test
     firstTaskFinishedFuture.get();
     secondTaskFinishedFuture.get();
 }
-
-#endif
