@@ -19,7 +19,7 @@
 ################################################################################
 # Required CMake version.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.11.4)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15.7)
 
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
