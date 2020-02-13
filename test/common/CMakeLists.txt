@@ -8,7 +8,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.15.5)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15)
 
 SET(_COMMON_TARGET_NAME "common")
 
