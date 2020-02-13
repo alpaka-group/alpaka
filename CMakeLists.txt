@@ -11,7 +11,8 @@
 ################################################################################
 # Required CMake version
 
-cmake_minimum_required(VERSION 3.15.7)
+# TODO: Bump to current patchlevel once Apple catches up
+cmake_minimum_required(VERSION 3.15.5)
 
 project("alpakaAll")
 
