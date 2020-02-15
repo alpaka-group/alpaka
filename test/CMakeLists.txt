@@ -10,49 +10,14 @@
 
 cmake_minimum_required(VERSION 3.15)
 
+add_subdirectory(catch_main)
+
 if(NOT TARGET alpaka::alpaka)
     list(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
     find_package(alpaka REQUIRED)
 endif()
 
-add_subdirectory("common/")
-
-option(ALPAKA_USE_INTERNAL_CATCH2 "Use internally shipped Catch2" ON)
-
-if(ALPAKA_USE_INTERNAL_CATCH2)
-    message(STATUS "Catch2: Using INTERNAL version 2.11.0")
-else()
-    find_package(Catch2 2.11.0 CONFIG REQUIRED)
-    set_target_properties(Catch2::Catch2 PROPERTIES IMPORTED_GLOBAL TRUE)
-    message(STATUS "Catch2: Found version ${Catch2_VERSION}")
-endif()
-
-add_library(CatchMain CatchMain.cpp)
-# target_compile_features(CatchMain PUBLIC cxx_std_14)  # min C++14
-set_target_properties(CatchMain PROPERTIES
-    FOLDER "test"
-    CXX_STANDARD 14  # exactly C++14
-    CXX_EXTENSIONS OFF
-    CXX_STANDARD_REQUIRED ON
-    POSITION_INDEPENDENT_CODE ON
-    WINDOWS_EXPORT_ALL_SYMBOLS ON
-)
-target_compile_definitions(CatchMain PUBLIC "CATCH_CONFIG_FAST_COMPILE")
-if(MSVC)
-    target_compile_definitions(CatchMain PUBLIC "CATCH_CONFIG_WINDOWS_CRTDBG")
-    target_compile_options(CatchMain PUBLIC "/bigobj")
-endif()
-
-if(ALPAKA_USE_INTERNAL_CATCH2)
-    target_include_directories(CatchMain SYSTEM PUBLIC
-        ${CMAKE_CURRENT_LIST_DIR}/../thirdParty/catch2/include)
-else()
-    target_include_directories(CatchMain SYSTEM PUBLIC
-        $<TARGET_PROPERTY:Catch2::Catch2,INTERFACE_INCLUDE_DIRECTORIES>)
-endif()
-set_target_properties(
-    CatchMain
-    PROPERTIES FOLDER "test")
+add_subdirectory(common)
 
 if(ALPAKA_ACC_GPU_CUDA_ENABLE AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
     # NVCC does not incorporate the COMPILE_OPTIONS of a target but only the CMAKE_CXX_FLAGS
@@ -71,6 +36,6 @@ endif()
 
 list(APPEND _ALPAKA_TEST_OPTIONS "--use-colour yes")
 
-add_subdirectory("analysis/")
-add_subdirectory("integ/")
-add_subdirectory("unit/")
+add_subdirectory(analysis)
+add_subdirectory(integ)
+add_subdirectory(unit)
