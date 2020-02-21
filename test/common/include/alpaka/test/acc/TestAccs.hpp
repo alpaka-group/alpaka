@@ -123,12 +123,12 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccGpuUniformedCudaHipRtIfAvailableElseInt = alpaka::acc::AccGpuUniformedCudaHipRt<TDim, TIdx>;
+                using AccGpuUniformCudaHipRtIfAvailableElseInt = alpaka::acc::AccGpuUniformCudaHipRt<TDim, TIdx>;
 #else
                 template<
                     typename TDim,
                     typename TIdx>
-                using AccGpuUniformedCudaHipRtIfAvailableElseInt = int;
+                using AccGpuUniformCudaHipRtIfAvailableElseInt = int;
 #endif
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
@@ -171,7 +171,7 @@ namespace alpaka
                         AccCpuOmp2BlocksIfAvailableElseInt<TDim, TIdx>,
                         AccCpuOmp2ThreadsIfAvailableElseInt<TDim, TIdx>,
                         AccCpuOmp4IfAvailableElseInt<TDim, TIdx>,
-                        AccGpuUniformedCudaHipRtIfAvailableElseInt<TDim, TIdx>,
+                        AccGpuUniformCudaHipRtIfAvailableElseInt<TDim, TIdx>,
                         AccGpuCudaRtIfAvailableElseInt<TDim, TIdx>,
                         AccGpuHipRtIfAvailableElseInt<TDim, TIdx>
                     >;

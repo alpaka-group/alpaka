@@ -29,7 +29,7 @@ namespace alpaka
     //! The accelerator specifics.
     namespace acc
     {
-        struct UnifiedAcc;
+        struct ConceptUniformCudaHip;
 
         struct ConceptAcc;
         //-----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace alpaka
             struct GetAccDevProps<
                 TAcc,
                 typename std::enable_if<
-                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
                 >::type>
             {
                 //-----------------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace alpaka
                     typename dev::traits::DevType<TAcc>::type const & dev)
                 -> AccDevProps<typename dim::traits::DimType<TAcc>::type, typename idx::traits::IdxType<TAcc>::type>
                 {
-                    using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
+                    using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
                     return GetAccDevProps<ImplementationBase>::getAccDevProps(dev);
                 }
             };
@@ -109,8 +109,6 @@ namespace alpaka
                     dev);
         }
 
-        
-
         //-----------------------------------------------------------------------------
         //! \return The accelerator name
         //!
@@ -135,7 +133,7 @@ namespace alpaka
             struct CheckFnReturnType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
                 >::type>
             {
                  template<
@@ -145,16 +143,16 @@ namespace alpaka
                     TKernelFnObj const & kernelFnObj,
                     TArgs const & ... args)
                 {
-                    using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
+                    using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
                     CheckFnReturnType<ImplementationBase>{}(
                         kernelFnObj,
                         args...);
                 }
             };
         }
-        
+
     }
-    
+
     namespace dev
     {
         namespace traits
@@ -165,10 +163,10 @@ namespace alpaka
             struct DevType<
                TAcc,
                 typename std::enable_if<
-                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
                 >::type>
             {
-                using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
+                using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
                 using type = typename DevType<ImplementationBase>::type;
             };
         }
@@ -183,14 +181,14 @@ namespace alpaka
             struct PltfType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
-                >::type>            
+                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
+                >::type>
                 {
-                    using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
+                    using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
                     using type = typename PltfType<ImplementationBase>::type;
                 };
         }
-        
+
     }
     namespace dim
     {
@@ -202,10 +200,10 @@ namespace alpaka
             struct DimType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
-                >::type>  
+                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
+                >::type>
             {
-                    using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
+                    using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
                     using type = typename DimType<ImplementationBase>::type;
             };
         }
@@ -220,10 +218,10 @@ namespace alpaka
             struct IdxType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
-                >::type>       
+                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
+                >::type>
             {
-                using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
+                using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
                 using type = typename IdxType<ImplementationBase>::type;
             };
         }

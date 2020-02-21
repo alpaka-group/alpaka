@@ -13,7 +13,7 @@
 
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/dev/DevUniformedCudaHipRt.hpp>
+#include <alpaka/dev/DevUniformCudaHipRt.hpp>
 
 #include <type_traits>
 
@@ -299,10 +299,10 @@ namespace alpaka
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 //#############################################################################
-                //! The CUDA-HIP RT device CreateStaticDevMemView trait specialization.
+                //! The CUDA/HIP RT device CreateStaticDevMemView trait specialization.
                 template<>
                 struct CreateStaticDevMemView<
-                    dev::DevUniformedCudaHipRt>
+                    dev::DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -310,7 +310,7 @@ namespace alpaka
                         typename TExtent>
                     static auto createStaticDevMemView(
                         TElem * pMem,
-                        dev::DevUniformedCudaHipRt const & dev,
+                        dev::DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
                     {
                         TElem* pMemAcc(nullptr);
@@ -336,7 +336,7 @@ namespace alpaka
 #endif
                         return
                             alpaka::mem::view::ViewPlainPtr<
-                                dev::DevUniformedCudaHipRt,
+                                dev::DevUniformCudaHipRt,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
                                 alpaka::idx::Idx<TExtent>>(

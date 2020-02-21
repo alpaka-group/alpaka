@@ -18,7 +18,7 @@
 #endif
 
 // Base classes.
-#include <alpaka/acc/AccGpuUniformedCudaHipRt.hpp>
+#include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
@@ -26,7 +26,7 @@
 // Implementation details.
 #include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/dev/DevUniformedCudaHipRt.hpp>
+#include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #include <alpaka/core/Hip.hpp>
 
 #include <typeinfo>
@@ -36,11 +36,12 @@ namespace alpaka
     namespace kernel
     {
         template<
+            typename TAcc,
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class TaskKernelGpuUniformedCudaHipRt;
+        class TaskKernelGpuUniformCudaHipRt;
     }
     namespace acc
     {
@@ -51,29 +52,29 @@ namespace alpaka
         template<
             typename TDim,
             typename TIdx>
-        class AccGpuUniformedCudaHipRt final :
-            public acc::AccGpuUniformedCudaHipRt<TDim,TIdx>,
-            public concepts::Implements<UnifiedAcc, AccGpuUniformedCudaHipRt<TDim, TIdx>>
+        class AccGpuHipRt final :
+            public acc::AccGpuUniformCudaHipRt<TDim,TIdx>,
+            public concepts::Implements<ConceptUniformCudaHip, AccGpuUniformCudaHipRt<TDim, TIdx>>,
             public concepts::Implements<ConceptAcc, AccGpuHipRt<TDim, TIdx>>
         {
         public:
             //-----------------------------------------------------------------------------
-            __device__ AccGpuUniformedCudaHipRt(
+            __device__ AccGpuHipRt(
                 vec::Vec<TDim, TIdx> const & threadElemExtent) :
-                    AccGpuUniformedCudaHipRt<TDim,TIdx>(threadElemExtent)
+                    AccGpuUniformCudaHipRt<TDim,TIdx>(threadElemExtent)
             {}
 
         public:
             //-----------------------------------------------------------------------------
-            __device__ AccGpuUniformedCudaHipRt(AccGpuUniformedCudaHipRt const &) = delete;
+            __device__ AccGpuHipRt(AccGpuHipRt const &) = delete;
             //-----------------------------------------------------------------------------
-            __device__ AccGpuUniformedCudaHipRt(AccGpuUniformedCudaHipRt &&) = delete;
+            __device__ AccGpuHipRt(AccGpuHipRt &&) = delete;
             //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuUniformedCudaHipRt const &) -> AccGpuUniformedCudaHipRt & = delete;
+            __device__ auto operator=(AccGpuHipRt const &) -> AccGpuHipRt & = delete;
             //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuUniformedCudaHipRt &&) -> AccGpuUniformedCudaHipRt & = delete;
+            __device__ auto operator=(AccGpuHipRt &&) -> AccGpuHipRt & = delete;
             //-----------------------------------------------------------------------------
-            ~AccGpuUniformedCudaHipRt() = default;
+            ~AccGpuHipRt() = default;
         };
     }
 
@@ -87,24 +88,24 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct AccType<
-                acc::AccGpuUniformedCudaHipRt<TDim, TIdx>>
+                acc::AccGpuHipRt<TDim, TIdx>>
             {
-                using type = acc::AccGpuUniformedCudaHipRt<TDim, TIdx>;
+                using type = acc::AccGpuHipRt<TDim, TIdx>;
             };
-            
+
             //#############################################################################
             //! The GPU Hip accelerator name trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct GetAccName<
-                acc::AccGpuUniformedCudaHipRt<TDim, TIdx>>
+                acc::AccGpuHipRt<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
-                    return "AccGpuUniformedCudaHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+                    return "AccGpuHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
                 }
             };
         }
@@ -114,7 +115,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The GPU CUDA accelerator execution task type trait specialization.
+            //! The GPU HIP accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -122,7 +123,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct CreateTaskKernel<
-                acc::AccGpuCudaRt<TDim, TIdx>,
+                acc::AccGpuHipRt<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
@@ -134,7 +135,8 @@ namespace alpaka
                     TArgs && ... args)
                 {
                     return
-                        kernel::TaskKernelGpuUniformedCudaHipRt<
+                        kernel::TaskKernelGpuUniformCudaHipRt<
+                            acc::AccGpuHipRt<TDim, TIdx>,
                             TDim,
                             TIdx,
                             TKernelFnObj,

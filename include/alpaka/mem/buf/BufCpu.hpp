@@ -18,9 +18,11 @@
 
 #include <alpaka/vec/Vec.hpp>
 
-// \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA
+// Backend specific includes.
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
     #include <alpaka/core/Cuda.hpp>
+#elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
+    #include <alpaka/core/Hip.hpp>
 #endif
 
 #include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
@@ -532,7 +534,7 @@ namespace alpaka
                                 cudaErrorHostMemoryNotRegistered);
 
                             bufImpl.m_bPinned = false;
-#elif (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#elif defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
                             ALPAKA_HIP_RT_CHECK_IGNORE(
                                 hipHostUnregister(
                                     const_cast<void *>(reinterpret_cast<void const *>(bufImpl.m_pMem))),

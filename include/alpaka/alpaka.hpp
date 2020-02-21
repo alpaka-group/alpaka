@@ -25,14 +25,14 @@
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #include <alpaka/acc/AccCpuOmp4.hpp>
-#include <alpaka/acc/AccGpuUniformedCudaHipRt.hpp>
+#include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/acc/AccGpuHipRt.hpp>
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/acc/Traits.hpp>
 //-----------------------------------------------------------------------------
 // atomic
-#include <alpaka/atomic/AtomicUniformedCudaHipBuiltIn.hpp>
+#include <alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp>
 #include <alpaka/atomic/AtomicNoOp.hpp>
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicStdLibLock.hpp>
@@ -44,12 +44,12 @@
     // shared
         //-----------------------------------------------------------------------------
         // dynamic
-        #include <alpaka/block/shared/dyn/BlockSharedMemDynUniformedCudaHipBuiltIn.hpp>
+        #include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
         #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
         #include <alpaka/block/shared/dyn/Traits.hpp>
         //-----------------------------------------------------------------------------
         // static
-        #include <alpaka/block/shared/st/BlockSharedMemStUniformedCudaHipBuiltIn.hpp>
+        #include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
         #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
         #include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
         #include <alpaka/block/shared/st/Traits.hpp>
@@ -58,7 +58,7 @@
     #include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
     #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
     #include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
-    #include <alpaka/block/sync/BlockSyncUniformedCudaHipBuiltIn.hpp>
+    #include <alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp>
     #include <alpaka/block/sync/BlockSyncNoOp.hpp>
     #include <alpaka/block/sync/Traits.hpp>
 //-----------------------------------------------------------------------------
@@ -82,7 +82,7 @@
 #include <alpaka/core/Vectorize.hpp>
 //-----------------------------------------------------------------------------
 // dev
-#include <alpaka/dev/DevUniformedCudaHipRt.hpp>
+#include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/dev/cpu/Wait.hpp>
 #include <alpaka/dev/Traits.hpp>
@@ -93,7 +93,7 @@
 #include <alpaka/dim/Traits.hpp>
 //-----------------------------------------------------------------------------
 // event
-#include <alpaka/event/EventUniformedCudaHipRt.hpp>
+#include <alpaka/event/EventUniformCudaHipRt.hpp>
 #include <alpaka/event/EventCpu.hpp>
 #include <alpaka/event/Traits.hpp>
 //-----------------------------------------------------------------------------
@@ -101,12 +101,12 @@
 #include <alpaka/extent/Traits.hpp>
 //-----------------------------------------------------------------------------
 // idx
-#include <alpaka/idx/bt/IdxBtUniformedCudaHipBuiltIn.hpp>
+#include <alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp>
 #include <alpaka/idx/bt/IdxBtOmp.hpp>
 #include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
 #include <alpaka/idx/bt/IdxBtZero.hpp>
-#include <alpaka/idx/gb/IdxGbUniformedCudaHipBuiltIn.hpp>
+#include <alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp>
 #include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/Accessors.hpp>
 #include <alpaka/idx/Traits.hpp>
@@ -120,11 +120,11 @@
 #include <alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp2Threads.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp4.hpp>
-#include <alpaka/kernel/TaskKernelGpuUniformedCudaHipRt.hpp>
+#include <alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp>
 #include <alpaka/kernel/Traits.hpp>
 //-----------------------------------------------------------------------------
 // math
-#include <alpaka/math/MathUniformedCudaHipBuiltIn.hpp>
+#include <alpaka/math/MathUniformCudaHipBuiltIn.hpp>
 #include <alpaka/math/MathStdLib.hpp>
 //-----------------------------------------------------------------------------
 // mem
@@ -133,7 +133,7 @@
 #include <alpaka/mem/alloc/Traits.hpp>
 
 #include <alpaka/mem/buf/BufCpu.hpp>
-#include <alpaka/mem/buf/BufUniformedCudaHipRt.hpp>
+#include <alpaka/mem/buf/BufUniformCudaHipRt.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 
 #include <alpaka/mem/view/ViewCompileTimeArray.hpp>
@@ -166,19 +166,19 @@
 //-----------------------------------------------------------------------------
 // platform
 #include <alpaka/pltf/PltfCpu.hpp>
-#include <alpaka/pltf/PltfUniformedCudaHipRt.hpp>
+#include <alpaka/pltf/PltfUniformCudaHipRt.hpp>
 #include <alpaka/pltf/Traits.hpp>
 //-----------------------------------------------------------------------------
 // rand
-#include <alpaka/rand/RandUniformedCudaHipRand.hpp>
+#include <alpaka/rand/RandUniformCudaHipRand.hpp>
 #include <alpaka/rand/Traits.hpp>
 //-----------------------------------------------------------------------------
 // idx
 #include <alpaka/idx/Traits.hpp>
 //-----------------------------------------------------------------------------
 // queue
-#include <alpaka/queue/QueueUniformedCudaHipRtNonBlocking.hpp>
-#include <alpaka/queue/QueueUniformedCudaHipRtBlocking.hpp>
+#include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
+#include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
 #include <alpaka/queue/QueueCpuNonBlocking.hpp>
 #include <alpaka/queue/QueueCpuBlocking.hpp>
 #include <alpaka/queue/Traits.hpp>

@@ -384,7 +384,7 @@ namespace alpaka
     {
         namespace event
         {
-            namespace uniformedCudaHip
+            namespace uniform_cuda_hip
             {
                 namespace detail
                 {
@@ -394,7 +394,7 @@ namespace alpaka
                     public:
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST EventHostManualTriggerCudaImpl(
-                            dev::DevUniformedCudaHipRt const & dev) :
+                            dev::DevUniformCudaHipRt const & dev) :
                                 m_dev(dev),
                                 m_mutex(),
                                 m_bIsReady(true)
@@ -457,7 +457,7 @@ namespace alpaka
                         }
 
                     public:
-                        dev::DevUniformedCudaHipRt const m_dev;     //!< The device this event is bound to.
+                        dev::DevUniformCudaHipRt const m_dev;     //!< The device this event is bound to.
 
                         mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
                         void * m_devMem;
@@ -473,8 +473,8 @@ namespace alpaka
             public:
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST EventHostManualTriggerCuda(
-                    dev::DevUniformedCudaHipRt const & dev) :
-                        m_spEventImpl(std::make_shared<uniformedCudaHip::detail::EventHostManualTriggerCudaImpl>(dev))
+                    dev::DevUniformCudaHipRt const & dev) :
+                        m_spEventImpl(std::make_shared<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl>(dev))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -508,7 +508,7 @@ namespace alpaka
                 }
 
             public:
-                std::shared_ptr<uniformedCudaHip::detail::EventHostManualTriggerCudaImpl> m_spEventImpl;
+                std::shared_ptr<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl> m_spEventImpl;
             };
 
             namespace traits
@@ -516,7 +516,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevUniformedCudaHipRt>
+                    alpaka::dev::DevUniformCudaHipRt>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCuda;
                 };
@@ -524,7 +524,7 @@ namespace alpaka
                 //! The CPU event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevUniformedCudaHipRt>
+                    alpaka::dev::DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
@@ -555,7 +555,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     test::event::EventHostManualTriggerCuda const & event)
-                -> dev::DevUniformedCudaHipRt
+                -> dev::DevUniformCudaHipRt
                 {
                     return event.m_spEventImpl->m_dev;
                 }
@@ -592,12 +592,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct Enqueue<
-                queue::QueueUniformedCudaHipRtNonBlocking,
+                queue::QueueUniformCudaHipRtNonBlocking,
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformedCudaHipRtNonBlocking & queue,
+                    queue::QueueUniformCudaHipRtNonBlocking & queue,
                     test::event::EventHostManualTriggerCuda & event)
                 -> void
                 {
@@ -623,7 +623,7 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformedCudaHipQueue),
+                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
                             reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
@@ -632,12 +632,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct Enqueue<
-                queue::QueueUniformedCudaHipRtBlocking,
+                queue::QueueUniformCudaHipRtBlocking,
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformedCudaHipRtBlocking & queue,
+                    queue::QueueUniformCudaHipRtBlocking & queue,
                     test::event::EventHostManualTriggerCuda & event)
                 -> void
                 {
@@ -663,7 +663,7 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformedCudaHipQueue),
+                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
                             reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
@@ -933,8 +933,8 @@ namespace alpaka
                       ALPAKA_HIP_RT_CHECK(hipMemcpyDtoHAsync(&hostMem,
                                                              reinterpret_cast<hipDeviceptr_t>(event.m_spEventImpl->m_devMem),
                                                              sizeof(int32_t),
-                                                             queue.m_spQueueImpl->m_HipQueue));
-                      ALPAKA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->m_HipQueue));
+                                                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                      ALPAKA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
                 }
             };
@@ -973,7 +973,7 @@ namespace alpaka
 #if BOOST_COMP_NVCC
                     ALPAKA_HIP_RT_CHECK(hipCUResultTohipError(
                         cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_HipQueue),
+                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
                             reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ)));
