@@ -1,4 +1,4 @@
 var structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType =
 [
-    [ "operator()", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html#a9739e3b61a61a4a179f74216282e2818", null ]
+    [ "operator()", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html#aec3025d8c5d4152bba2dbbda48f45b9e", null ]
 ];

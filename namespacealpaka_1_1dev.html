@@ -108,8 +108,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1dev_1_1DevCpu.html">DevCpu</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device handle.  <a href="classalpaka_1_1dev_1_1DevCpu.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1dev_1_1DevCudaRt.html">DevCudaRt</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT device handle.  <a href="classalpaka_1_1dev_1_1DevCudaRt.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1dev_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT device handle.  <a href="classalpaka_1_1dev_1_1DevUniformCudaHipRt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -118,6 +118,8 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a4eb2c43da2ccf0fe7feb3cc3ba5d97b8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">Dev</a> = typename <a class="el" href="structalpaka_1_1dev_1_1traits_1_1DevType.html">traits::DevType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a4eb2c43da2ccf0fe7feb3cc3ba5d97b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device type trait alias template to remove the ::type.  <a href="#a4eb2c43da2ccf0fe7feb3cc3ba5d97b8">More...</a><br /></td></tr>
 <tr class="separator:a4eb2c43da2ccf0fe7feb3cc3ba5d97b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2dc8a0bde8c9a7ae11e71d9fdbba4a9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#ac2dc8a0bde8c9a7ae11e71d9fdbba4a9">DevCudaRt</a> = <a class="el" href="classalpaka_1_1dev_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a></td></tr>
+<tr class="separator:ac2dc8a0bde8c9a7ae11e71d9fdbba4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -158,6 +160,22 @@ template&lt;typename T &gt; </div>
 <p>The device type trait alias template to remove the ::type. </p>
 
 <p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00073">73</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ac2dc8a0bde8c9a7ae11e71d9fdbba4a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2dc8a0bde8c9a7ae11e71d9fdbba4a9">&#9670;&nbsp;</a></span>DevCudaRt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1dev.html#ac2dc8a0bde8c9a7ae11e71d9fdbba4a9">alpaka::dev::DevCudaRt</a> = typedef <a class="el" href="classalpaka_1_1dev_1_1DevUniformCudaHipRt.html">DevUniformCudaHipRt</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00098">98</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -288,7 +306,7 @@ template&lt;typename TDev &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1dev.html">dev</a></li>
-    <li class="footer">Generated on Sun Feb 16 2020 22:13:00 for alpaka by
+    <li class="footer">Generated on Fri Feb 21 2020 16:49:54 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

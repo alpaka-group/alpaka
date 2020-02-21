@@ -7,6 +7,5 @@ var dir_9c737d14007cafba76b1e7c7800c2a61 =
     [ "CpuSerial.hpp", "CpuSerial_8hpp.html", null ],
     [ "CpuTbbBlocks.hpp", "CpuTbbBlocks_8hpp.html", "CpuTbbBlocks_8hpp" ],
     [ "CpuThreads.hpp", "CpuThreads_8hpp.html", null ],
-    [ "GpuCudaRt.hpp", "GpuCudaRt_8hpp.html", null ],
-    [ "GpuHipRt.hpp", "GpuHipRt_8hpp.html", "GpuHipRt_8hpp" ]
+    [ "GpuCudaHipRt.hpp", "GpuCudaHipRt_8hpp.html", "GpuCudaHipRt_8hpp" ]
 ];

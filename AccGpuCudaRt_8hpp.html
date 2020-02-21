@@ -89,26 +89,12 @@ $(document).ready(function(){initNavTree('AccGpuCudaRt_8hpp.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="WorkDivCudaBuiltIn_8hpp_source.html">alpaka/workdiv/WorkDivCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="IdxGbCudaBuiltIn_8hpp_source.html">alpaka/idx/gb/IdxGbCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="IdxBtCudaBuiltIn_8hpp_source.html">alpaka/idx/bt/IdxBtCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="AtomicCudaBuiltIn_8hpp_source.html">alpaka/atomic/AtomicCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="AtomicHierarchy_8hpp_source.html">alpaka/atomic/AtomicHierarchy.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="MathCudaBuiltIn_8hpp_source.html">alpaka/math/MathCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="BlockSharedMemDynCudaBuiltIn_8hpp_source.html">alpaka/block/shared/dyn/BlockSharedMemDynCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="BlockSharedMemStCudaBuiltIn_8hpp_source.html">alpaka/block/shared/st/BlockSharedMemStCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="BlockSyncCudaBuiltIn_8hpp_source.html">alpaka/block/sync/BlockSyncCudaBuiltIn.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="RandCuRand_8hpp_source.html">alpaka/rand/RandCuRand.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="TimeCudaBuiltIn_8hpp_source.html">alpaka/time/TimeCudaBuiltIn.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="AccGpuUniformCudaHipRt_8hpp_source.html">alpaka/acc/AccGpuUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="acc_2Traits_8hpp_source.html">alpaka/acc/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="kernel_2Traits_8hpp_source.html">alpaka/kernel/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="pltf_2Traits_8hpp_source.html">alpaka/pltf/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="idx_2Traits_8hpp_source.html">alpaka/idx/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ClipCast_8hpp_source.html">alpaka/core/ClipCast.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Concepts_8hpp_source.html">alpaka/core/Concepts.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Cuda_8hpp_source.html">alpaka/core/Cuda.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="DevCudaRt_8hpp_source.html">alpaka/dev/DevCudaRt.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="DevUniformCudaHipRt_8hpp_source.html">alpaka/dev/DevUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;typeinfo&gt;</code><br />
 </div>
 <p><a href="AccGpuCudaRt_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -121,32 +107,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::acc::traits::AccType&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator accelerator type trait specialization.  <a href="structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::acc::traits::GetAccDevProps&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator device properties get trait specialization.  <a href="structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::acc::traits::GetAccName&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator name trait specialization.  <a href="structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::dev::traits::DevType&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator device type trait specialization.  <a href="structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::dim::traits::DimType&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator dimension getter trait specialization.  <a href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1idx_1_1traits_1_1IdxType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::idx::traits::IdxType&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator idx type trait specialization.  <a href="structalpaka_1_1idx_1_1traits_1_1IdxType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::kernel::detail::CheckFnReturnType&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of the TKernelFnObj return type evaluation  <a href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1kernel_1_1TaskKernelGpuCudaRt.html">alpaka::kernel::TaskKernelGpuCudaRt&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator execution task.  <a href="classalpaka_1_1kernel_1_1TaskKernelGpuCudaRt.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html">alpaka::kernel::TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP accelerator execution task.  <a href="classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_61bbdc70556d73868cc3dec677a3e593.html">alpaka::kernel::traits::CreateTaskKernel&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt;, TWorkDiv, TKernelFnObj, TArgs... &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator execution task type trait specialization.  <a href="structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_61bbdc70556d73868cc3dec677a3e593.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html">alpaka::pltf::traits::PltfType&lt; acc::AccGpuCudaRt&lt; TDim, TIdx &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU CUDA execution task platform type trait specialization.  <a href="structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -160,37 +128,11 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1acc_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1acc_1_1traits.html">alpaka::acc::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1acc_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1dev"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html">alpaka::dev</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1dev"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1dev_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1traits.html">alpaka::dev::traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1dev_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device traits. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1dim"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html">alpaka::dim</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1dim"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1dim_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim_1_1traits.html">alpaka::dim::traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1dim_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension traits. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1idx"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html">alpaka::idx</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1idx"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1idx_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx_1_1traits.html">alpaka::idx::traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1idx_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The idx traits. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1kernel"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1kernel.html">alpaka::kernel</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1kernel"><td class="mdescLeft">&#160;</td><td class="mdescRight">The kernel specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1kernel_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1kernel_1_1detail.html">alpaka::kernel::detail</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1kernel_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1kernel_1_1traits.html">alpaka::kernel::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1kernel_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The kernel traits. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1pltf"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1pltf.html">alpaka::pltf</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1pltf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The platform specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1pltf_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1pltf_1_1traits.html">alpaka::pltf::traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1pltf_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The platform traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -199,7 +141,7 @@ Namespaces</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="AccGpuCudaRt_8hpp.html">AccGpuCudaRt.hpp</a></li>
-    <li class="footer">Generated on Sun Feb 16 2020 22:12:59 for alpaka by
+    <li class="footer">Generated on Fri Feb 21 2020 16:49:54 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

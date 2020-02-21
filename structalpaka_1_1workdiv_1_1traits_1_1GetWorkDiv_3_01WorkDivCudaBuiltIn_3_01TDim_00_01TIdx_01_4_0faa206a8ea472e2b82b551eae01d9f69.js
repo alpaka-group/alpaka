@@ -1,4 +1,0 @@
-var structalpaka_1_1workdiv_1_1traits_1_1GetWorkDiv_3_01WorkDivCudaBuiltIn_3_01TDim_00_01TIdx_01_4_0faa206a8ea472e2b82b551eae01d9f69 =
-[
-    [ "getWorkDiv", "structalpaka_1_1workdiv_1_1traits_1_1GetWorkDiv_3_01WorkDivCudaBuiltIn_3_01TDim_00_01TIdx_01_4_0faa206a8ea472e2b82b551eae01d9f69.html#aaec99e840fb271c3b1f1fde296c828a3", null ]
-];

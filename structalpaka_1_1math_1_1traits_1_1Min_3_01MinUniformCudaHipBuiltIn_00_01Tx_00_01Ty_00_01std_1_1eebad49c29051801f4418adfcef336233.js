@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eebad49c29051801f4418adfcef336233 =
+[
+    [ "min", "structalpaka_1_1math_1_1traits_1_1Min_3_01MinUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eebad49c29051801f4418adfcef336233.html#a6f84a1fa705c13e09ef06b2224da7cac", null ]
+];

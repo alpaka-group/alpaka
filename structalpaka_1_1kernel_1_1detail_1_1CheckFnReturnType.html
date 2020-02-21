@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::kernel::detail::CheckFnReturnType&lt; TAcc &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::kernel::detail::CheckFnReturnType&lt; TAcc, TSfinae &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('structalpaka_1_1kernel_1_1detail_1_1Ch
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::kernel::detail::CheckFnReturnType&lt; TAcc &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::kernel::detail::CheckFnReturnType&lt; TAcc, TSfinae &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -96,25 +96,25 @@ $(document).ready(function(){initNavTree('structalpaka_1_1kernel_1_1detail_1_1Ch
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9739e3b61a61a4a179f74216282e2818"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a9739e3b61a61a4a179f74216282e2818"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html#a9739e3b61a61a4a179f74216282e2818">operator()</a> (TKernelFnObj const &amp;, TArgs const &amp;...)</td></tr>
-<tr class="separator:a9739e3b61a61a4a179f74216282e2818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec3025d8c5d4152bba2dbbda48f45b9e"><td class="memTemplParams" colspan="2">template&lt;typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:aec3025d8c5d4152bba2dbbda48f45b9e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html#aec3025d8c5d4152bba2dbbda48f45b9e">operator()</a> (TKernelFnObj const &amp;, TArgs const &amp;...)</td></tr>
+<tr class="separator:aec3025d8c5d4152bba2dbbda48f45b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TAcc&gt;<br />
-struct alpaka::kernel::detail::CheckFnReturnType&lt; TAcc &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TAcc, typename TSfinae = void&gt;<br />
+struct alpaka::kernel::detail::CheckFnReturnType&lt; TAcc, TSfinae &gt;</h3>
 
 <p>Check that the return of TKernelFnObj is void. </p>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00148">148</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00150">150</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9739e3b61a61a4a179f74216282e2818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9739e3b61a61a4a179f74216282e2818">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="aec3025d8c5d4152bba2dbbda48f45b9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec3025d8c5d4152bba2dbbda48f45b9e">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc &gt; </div>
+template&lt;typename TAcc , typename TSfinae  = void&gt; </div>
 <div class="memtemplate">
 template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
 <table class="mlabels">
@@ -122,7 +122,7 @@ template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html">alpaka::kernel::detail::CheckFnReturnType</a>&lt; TAcc &gt;::operator() </td>
+          <td class="memname">void <a class="el" href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html">alpaka::kernel::detail::CheckFnReturnType</a>&lt; TAcc, TSfinae &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">TKernelFnObj const &amp;&#160;</td>
           <td class="paramname">, </td>
@@ -146,7 +146,7 @@ template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00153">153</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00155">155</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -159,7 +159,7 @@ template&lt;typename TKernelFnObj , typename... TArgs&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1kernel.html">kernel</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1kernel_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html">CheckFnReturnType</a></li>
-    <li class="footer">Generated on Sun Feb 16 2020 22:13:00 for alpaka by
+    <li class="footer">Generated on Fri Feb 21 2020 16:49:55 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1sync_1_1traits_1_1SyncBlockThreadsPredicate_3_01block_1_1sync_1_1op_1_1b550c3b39137dfee34b7c1a80a2a2ab7 =
-[
-    [ "syncBlockThreadsPredicate", "structalpaka_1_1block_1_1sync_1_1traits_1_1SyncBlockThreadsPredicate_3_01block_1_1sync_1_1op_1_1b550c3b39137dfee34b7c1a80a2a2ab7.html#aca54e811392707c9cb58d2c17444e97f", null ]
-];

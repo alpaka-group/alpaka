@@ -24,29 +24,7 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
       [ "Empty< queue::QueueCpuNonBlocking >", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueCpuNonBlocking_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueCpuNonBlocking_01_4" ],
       [ "Enqueue< queue::QueueCpuNonBlocking, TTask >", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCpuNonBlocking_00_01TTask_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCpuNonBlocking_00_01TTask_01_4" ]
     ] ],
-    [ "QueueCudaRtBlocking.hpp", "QueueCudaRtBlocking_8hpp.html", [
-      [ "DevType< queue::QueueCudaRtBlocking >", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01queue_1_1QueueCudaRtBlocking_01_4.html", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01queue_1_1QueueCudaRtBlocking_01_4" ],
-      [ "GetDev< queue::QueueCudaRtBlocking >", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01queue_1_1QueueCudaRtBlocking_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01queue_1_1QueueCudaRtBlocking_01_4" ],
-      [ "EventType< queue::QueueCudaRtBlocking >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01queue_1_1QueueCudaRtBlocking_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01queue_1_1QueueCudaRtBlocking_01_4" ],
-      [ "QueueCudaRtBlockingImpl", "classalpaka_1_1queue_1_1cuda_1_1detail_1_1QueueCudaRtBlockingImpl.html", "classalpaka_1_1queue_1_1cuda_1_1detail_1_1QueueCudaRtBlockingImpl" ],
-      [ "QueueCudaRtBlocking", "classalpaka_1_1queue_1_1QueueCudaRtBlocking.html", "classalpaka_1_1queue_1_1QueueCudaRtBlocking" ],
-      [ "Empty< queue::QueueCudaRtBlocking >", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueCudaRtBlocking_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueCudaRtBlocking_01_4" ],
-      [ "Enqueue< queue::QueueCudaRtBlocking, TTask >", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtBlocking_00_01TTask_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtBlocking_00_01TTask_01_4" ],
-      [ "CallbackSynchronizationData", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData" ],
-      [ "CurrentThreadWaitFor< queue::QueueCudaRtBlocking >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCudaRtBlocking_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCudaRtBlocking_01_4" ]
-    ] ],
-    [ "QueueCudaRtNonBlocking.hpp", "QueueCudaRtNonBlocking_8hpp.html", [
-      [ "DevType< queue::QueueCudaRtNonBlocking >", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01queue_1_1QueueCudaRtNonBlocking_01_4.html", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01queue_1_1QueueCudaRtNonBlocking_01_4" ],
-      [ "GetDev< queue::QueueCudaRtNonBlocking >", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01queue_1_1QueueCudaRtNonBlocking_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01queue_1_1QueueCudaRtNonBlocking_01_4" ],
-      [ "EventType< queue::QueueCudaRtNonBlocking >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01queue_1_1QueueCudaRtNonBlocking_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01queue_1_1QueueCudaRtNonBlocking_01_4" ],
-      [ "QueueCudaRtNonBlockingImpl", "classalpaka_1_1queue_1_1cuda_1_1detail_1_1QueueCudaRtNonBlockingImpl.html", "classalpaka_1_1queue_1_1cuda_1_1detail_1_1QueueCudaRtNonBlockingImpl" ],
-      [ "QueueCudaRtNonBlocking", "classalpaka_1_1queue_1_1QueueCudaRtNonBlocking.html", "classalpaka_1_1queue_1_1QueueCudaRtNonBlocking" ],
-      [ "Empty< queue::QueueCudaRtNonBlocking >", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueCudaRtNonBlocking_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueCudaRtNonBlocking_01_4" ],
-      [ "Enqueue< queue::QueueCudaRtNonBlocking, TTask >", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtNonBlocking_00_01TTask_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtNonBlocking_00_01TTask_01_4" ],
-      [ "CallbackSynchronizationData", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCudaRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData" ],
-      [ "CurrentThreadWaitFor< queue::QueueCudaRtNonBlocking >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCudaRtNonBlocking_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCudaRtNonBlocking_01_4" ]
-    ] ],
-    [ "QueueHipRtBlocking.hpp", "QueueHipRtBlocking_8hpp.html", null ],
-    [ "QueueHipRtNonBlocking.hpp", "QueueHipRtNonBlocking_8hpp.html", null ],
+    [ "QueueUniformCudaHipRtBlocking.hpp", "QueueUniformCudaHipRtBlocking_8hpp.html", "QueueUniformCudaHipRtBlocking_8hpp" ],
+    [ "QueueUniformCudaHipRtNonBlocking.hpp", "QueueUniformCudaHipRtNonBlocking_8hpp.html", "QueueUniformCudaHipRtNonBlocking_8hpp" ],
     [ "Traits.hpp", "queue_2Traits_8hpp.html", "queue_2Traits_8hpp" ]
 ];

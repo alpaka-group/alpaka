@@ -9,7 +9,7 @@ var namespacealpaka_1_1extent_1_1traits =
     [ "value >=3)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TExtent_01_4_0a48eed1e6a417b1d4c7553d9ec85f87.html", null ],
     [ "value >=4)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TExtent_01_4_f34d2fc7bf7c9bbcb5deca468e2b1cb3.html", null ],
     [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufCpu_3_e98543e2c77443e8f54dde8d20d6390d.html", null ],
-    [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufCudaRt6c31e31338423a8b81a8128d502da942.html", null ],
+    [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufUnifora9c08a7c4fce71249e6caf2e99de8600.html", null ],
     [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01mem_1_1view_1_1ViewPlai5ead2804b5ba03b13cd0fa2cf83e7974.html", null ],
     [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01mem_1_1view_1_1ViewSubV9c2e848d2f42e1c7a6d98434625ef1e7.html", null ],
     [ "value)> >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01TIdxIntegralConst_00_01vec_1_1Vec_3_01TDim_00_b2147a14e9113a5776b60d9b4fa37f39.html", null ],

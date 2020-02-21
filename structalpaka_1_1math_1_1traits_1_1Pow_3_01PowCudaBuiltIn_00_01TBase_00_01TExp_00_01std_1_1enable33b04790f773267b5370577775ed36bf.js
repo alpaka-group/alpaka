@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Pow_3_01PowCudaBuiltIn_00_01TBase_00_01TExp_00_01std_1_1enable33b04790f773267b5370577775ed36bf =
-[
-    [ "pow", "structalpaka_1_1math_1_1traits_1_1Pow_3_01PowCudaBuiltIn_00_01TBase_00_01TExp_00_01std_1_1enable33b04790f773267b5370577775ed36bf.html#aba620443e4b22e546f6753395d912177", null ]
-];

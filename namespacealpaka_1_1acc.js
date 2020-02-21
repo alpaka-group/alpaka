@@ -8,5 +8,6 @@ var namespacealpaka_1_1acc =
     [ "AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html", "classalpaka_1_1acc_1_1AccCpuSerial" ],
     [ "AccCpuThreads", "classalpaka_1_1acc_1_1AccCpuThreads.html", "classalpaka_1_1acc_1_1AccCpuThreads" ],
     [ "AccDevProps", "structalpaka_1_1acc_1_1AccDevProps.html", "structalpaka_1_1acc_1_1AccDevProps" ],
-    [ "AccGpuCudaRt", "classalpaka_1_1acc_1_1AccGpuCudaRt.html", "classalpaka_1_1acc_1_1AccGpuCudaRt" ]
+    [ "AccGpuCudaRt", "classalpaka_1_1acc_1_1AccGpuCudaRt.html", "classalpaka_1_1acc_1_1AccGpuCudaRt" ],
+    [ "AccGpuUniformCudaHipRt", "classalpaka_1_1acc_1_1AccGpuUniformCudaHipRt.html", "classalpaka_1_1acc_1_1AccGpuUniformCudaHipRt" ]
 ];

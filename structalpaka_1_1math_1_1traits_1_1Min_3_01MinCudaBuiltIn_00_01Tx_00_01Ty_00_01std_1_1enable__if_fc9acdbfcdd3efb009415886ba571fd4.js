@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Min_3_01MinCudaBuiltIn_00_01Tx_00_01Ty_00_01std_1_1enable__if_fc9acdbfcdd3efb009415886ba571fd4 =
-[
-    [ "min", "structalpaka_1_1math_1_1traits_1_1Min_3_01MinCudaBuiltIn_00_01Tx_00_01Ty_00_01std_1_1enable__if_fc9acdbfcdd3efb009415886ba571fd4.html#a20e47383f4fb2405ce1df787e2d4652a", null ]
-];

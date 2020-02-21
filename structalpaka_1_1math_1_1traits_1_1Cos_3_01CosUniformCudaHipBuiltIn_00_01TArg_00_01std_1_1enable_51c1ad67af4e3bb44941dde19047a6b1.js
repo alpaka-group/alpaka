@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_51c1ad67af4e3bb44941dde19047a6b1 =
+[
+    [ "cos", "structalpaka_1_1math_1_1traits_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_51c1ad67af4e3bb44941dde19047a6b1.html#adbfbd6263ddfa2587af07cfe651b5831", null ]
+];

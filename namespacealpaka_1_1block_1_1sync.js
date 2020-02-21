@@ -5,6 +5,6 @@ var namespacealpaka_1_1block_1_1sync =
     [ "BlockSyncBarrierFiber", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierFiber.html", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierFiber" ],
     [ "BlockSyncBarrierOmp", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierOmp.html", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierOmp" ],
     [ "BlockSyncBarrierThread", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread.html", "classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierThread" ],
-    [ "BlockSyncCudaBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn.html", "classalpaka_1_1block_1_1sync_1_1BlockSyncCudaBuiltIn" ],
-    [ "BlockSyncNoOp", "classalpaka_1_1block_1_1sync_1_1BlockSyncNoOp.html", "classalpaka_1_1block_1_1sync_1_1BlockSyncNoOp" ]
+    [ "BlockSyncNoOp", "classalpaka_1_1block_1_1sync_1_1BlockSyncNoOp.html", "classalpaka_1_1block_1_1sync_1_1BlockSyncNoOp" ],
+    [ "BlockSyncUniformCudaHipBuiltIn", "classalpaka_1_1block_1_1sync_1_1BlockSyncUniformCudaHipBuiltIn.html", "classalpaka_1_1block_1_1sync_1_1BlockSyncUniformCudaHipBuiltIn" ]
 ];

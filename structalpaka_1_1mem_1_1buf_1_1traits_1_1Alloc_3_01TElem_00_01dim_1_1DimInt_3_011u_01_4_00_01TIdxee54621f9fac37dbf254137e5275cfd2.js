@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01TElem_00_01dim_1_1DimInt_3_011u_01_4_00_01TIdxee54621f9fac37dbf254137e5275cfd2 =
+[
+    [ "alloc", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01TElem_00_01dim_1_1DimInt_3_011u_01_4_00_01TIdxee54621f9fac37dbf254137e5275cfd2.html#a1d52377ad542bb63db7ea22f3840ac5d", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01TBase_00_01TExp_00_01stde6e1a877c2a954bfdbd90e6b2d96dd37 =
+[
+    [ "pow", "structalpaka_1_1math_1_1traits_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01TBase_00_01TExp_00_01stde6e1a877c2a954bfdbd90e6b2d96dd37.html#a1746a5d5229abbe2d3000354bc8c490b", null ]
+];

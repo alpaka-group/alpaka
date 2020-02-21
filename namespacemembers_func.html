@@ -128,11 +128,11 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html','');});
 
 
 <h3><a id="index_b"></a>- b -</h3><ul>
-<li>buildCudaMemcpy3DParms()
-: <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1cuda_1_1detail.html#ad147b7194bf99805ad99686539cb59e4">alpaka::mem::view::cuda::detail</a>
-</li>
 <li>buildCudaMemcpy3DPeerParms()
-: <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1cuda_1_1detail.html#a4d01b2e66c6bfc631a1aa0e922f6bb03">alpaka::mem::view::cuda::detail</a>
+: <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a56fc98e8a17a34306d50f55ee7f25528">alpaka::mem::view::uniform_cuda_hip::detail</a>
+</li>
+<li>buildUniformCudaHipMemcpy3DParms()
+: <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aa4a5eda59bc1fc34230e55f7913d7d97">alpaka::mem::view::uniform_cuda_hip::detail</a>
 </li>
 </ul>
 
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html','');});
 : <a class="el" href="namespacealpaka_1_1math.html#aa0a98ac2a832e07982ac7edc92e74c6f">alpaka::math</a>
 </li>
 <li>checkVecOnly3Dim()
-: <a class="el" href="namespacealpaka_1_1kernel_1_1cuda_1_1detail.html#a941885c798ce128a7741868f0d304913">alpaka::kernel::cuda::detail</a>
+: <a class="el" href="namespacealpaka_1_1kernel_1_1uniform__cuda__hip_1_1detail.html#ad59ea870313619807dbbd6aca34f51ef">alpaka::kernel::uniform_cuda_hip::detail</a>
 </li>
 <li>clipCast()
 : <a class="el" href="namespacealpaka_1_1core.html#aba50ad750855be306239699abe49ba28">alpaka::core</a>
@@ -159,8 +159,8 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html','');});
 <li>concat()
 : <a class="el" href="namespacealpaka_1_1vec.html#a6f0489a5bc3aaf355099a2c1cdc0d084">alpaka::vec</a>
 </li>
-<li>convertVecToCudaDim()
-: <a class="el" href="namespacealpaka_1_1kernel_1_1cuda_1_1detail.html#aa71a3c7a460d21087df0d07cd00d2dc1">alpaka::kernel::cuda::detail</a>
+<li>convertVecToUniformCudaHipDim()
+: <a class="el" href="namespacealpaka_1_1kernel_1_1uniform__cuda__hip_1_1detail.html#a858a96dc4b1e85dcb24964531062c5c6">alpaka::kernel::uniform_cuda_hip::detail</a>
 </li>
 <li>copy()
 : <a class="el" href="namespacealpaka_1_1mem_1_1view.html#a23930925a7f873f173684c77eaa283b1">alpaka::mem::view</a>
@@ -201,9 +201,6 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html','');});
 <li>cudaDrvCheck()
 : <a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ab7c0d46c5c98d6af03dd9bf203c32e48">alpaka::cuda::detail</a>
 </li>
-<li>cudaKernel()
-: <a class="el" href="namespacealpaka_1_1kernel_1_1cuda_1_1detail.html#a22673e10ef7c26ca4ec2fa855b405b62">alpaka::kernel::cuda::detail</a>
-</li>
 <li>cudaRtCheck()
 : <a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#a8b4311f2e2075b3b83c9253fd72bd7b8">alpaka::cuda::detail</a>
 </li>
@@ -224,7 +221,7 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html','');});
 : <a class="el" href="namespacealpaka_1_1queue.html#ae4006918561995047e1d5159837751fd">alpaka::queue</a>
 </li>
 <li>enablePeerAccessIfPossible()
-: <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1cuda_1_1detail.html#a5e6b34f8eb921fb7c95c82d33b7bd561">alpaka::mem::view::cuda::detail</a>
+: <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a510ff69f3b44c1fb2509f80b421c0e16">alpaka::mem::view::uniform_cuda_hip::detail</a>
 </li>
 <li>enqueue()
 : <a class="el" href="namespacealpaka_1_1queue.html#add43e076d64ca901491be83f21cb6ef3">alpaka::queue</a>
@@ -581,6 +578,9 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html','');});
 
 
 <h3><a id="index_u"></a>- u -</h3><ul>
+<li>uniformCudaHipKernel()
+: <a class="el" href="namespacealpaka_1_1kernel_1_1uniform__cuda__hip_1_1detail.html#a1e0899aa59e13f0eac42adc7b3975645">alpaka::kernel::uniform_cuda_hip::detail</a>
+</li>
 <li>unmap()
 : <a class="el" href="namespacealpaka_1_1mem_1_1buf.html#a95128174b612fea49782cdff2a83feb2">alpaka::mem::buf</a>
 </li>
@@ -600,7 +600,7 @@ $(document).ready(function(){initNavTree('namespacemembers_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 16 2020 22:13:01 for alpaka by
+    <li class="footer">Generated on Fri Feb 21 2020 16:49:55 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

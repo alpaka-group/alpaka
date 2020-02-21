@@ -1,7 +1,7 @@
 var searchData=
 [
   ['alpaka_5facc_5fcpu_5fb_5ftbb_5ft_5fseq_5fenabled',['ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED',['../CpuTbbBlocks_8hpp.html#a8e980af207c9069aefb5cdcd1a6467e3',1,'CpuTbbBlocks.hpp']]],
-  ['alpaka_5facc_5fgpu_5fhip_5fenabled',['ALPAKA_ACC_GPU_HIP_ENABLED',['../GpuHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468',1,'GpuHipRt.hpp']]],
+  ['alpaka_5facc_5fgpu_5fhip_5fenabled',['ALPAKA_ACC_GPU_HIP_ENABLED',['../GpuCudaHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468',1,'GpuCudaHipRt.hpp']]],
   ['alpaka_5fassert',['ALPAKA_ASSERT',['../Assert_8hpp.html#a328f757c64444f381ff6575f5caa54e8',1,'Assert.hpp']]],
   ['alpaka_5fcreate_5fvec_5fin_5fclass',['ALPAKA_CREATE_VEC_IN_CLASS',['../Vec_8hpp.html#a0a3401bd236aadc633ba0850080dea25',1,'Vec.hpp']]],
   ['alpaka_5fcuda_5fdrv_5fcheck',['ALPAKA_CUDA_DRV_CHECK',['../Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019',1,'Cuda.hpp']]],

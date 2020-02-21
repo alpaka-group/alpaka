@@ -49,7 +49,6 @@ var dir_ddf4b6b668da48004ea34c8205023599 =
       [ "TaskKernelCpuThreads", "classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html", "classalpaka_1_1kernel_1_1TaskKernelCpuThreads" ],
       [ "PltfType< kernel::TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuThreads_3_01TDim_00_01TIdx74bac4ffdb9bd38da6e4f1a5140462bb.html", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuThreads_3_01TDim_00_01TIdx74bac4ffdb9bd38da6e4f1a5140462bb" ]
     ] ],
-    [ "TaskKernelGpuCudaRt.hpp", "TaskKernelGpuCudaRt_8hpp.html", "TaskKernelGpuCudaRt_8hpp" ],
-    [ "TaskKernelGpuHipRt.hpp", "TaskKernelGpuHipRt_8hpp.html", null ],
+    [ "TaskKernelGpuUniformCudaHipRt.hpp", "TaskKernelGpuUniformCudaHipRt_8hpp.html", "TaskKernelGpuUniformCudaHipRt_8hpp" ],
     [ "Traits.hpp", "kernel_2Traits_8hpp.html", "kernel_2Traits_8hpp" ]
 ];

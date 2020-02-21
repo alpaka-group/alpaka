@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2UniformCudaHipBuiltIn_00_01float_00_01float_01_4 =
+[
+    [ "atan2", "structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2UniformCudaHipBuiltIn_00_01float_00_01float_01_4.html#afc5cbb0a965d6837945a166a88d09083", null ]
+];
