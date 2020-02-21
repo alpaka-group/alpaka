@@ -18,7 +18,7 @@
 #endif
 
 // Base classes.
-#include <alpaka/acc/AccGpuCudaHipRt.hpp>
+#include <alpaka/acc/AccGpuUniformedCudaHipRt.hpp>
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
@@ -27,7 +27,7 @@
 #include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Cuda.hpp>
-#include <alpaka/dev/DevCudaHipRt.hpp>
+#include <alpaka/dev/DevUniformedCudaHipRt.hpp>
 #include <alpaka/core/Concepts.hpp>
 
 #include <typeinfo>
@@ -41,7 +41,7 @@ namespace alpaka
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class TaskKernelGpuCudaHipRt;
+        class TaskKernelGpuUniformedCudaHipRt;
     }
     namespace acc
     {
@@ -53,15 +53,15 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccGpuCudaRt final :
-            public acc::AccGpuCudaHipRt<TDim,TIdx>,
-            public concepts::Implements<UnifiedAcc, AccGpuCudaHipRt<TDim, TIdx>>
+            public acc::AccGpuUniformedCudaHipRt<TDim,TIdx>,
+            public concepts::Implements<UnifiedAcc, AccGpuUniformedCudaHipRt<TDim, TIdx>>,
             public concepts::Implements<ConceptAcc, AccGpuCudaRt<TDim, TIdx>>
         {
         public:
             //-----------------------------------------------------------------------------
             __device__ AccGpuCudaRt(
                 vec::Vec<TDim, TIdx> const & threadElemExtent) :
-                   AccGpuCudaHipRt<TDim,TIdx>(threadElemExtent)
+                   AccGpuUniformedCudaHipRt<TDim,TIdx>(threadElemExtent)
             {}
 
         public:
@@ -135,7 +135,7 @@ namespace alpaka
                     TArgs && ... args)
                 {
                     return
-                        kernel::TaskKernelGpuCudaHipRt<
+                        kernel::TaskKernelGpuUniformedCudaHipRt<
                             TDim,
                             TIdx,
                             TKernelFnObj,

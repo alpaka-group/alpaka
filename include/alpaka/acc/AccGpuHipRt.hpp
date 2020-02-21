@@ -17,10 +17,16 @@
     #error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #endif
 
+// Base classes.
+#include <alpaka/acc/AccGpuUniformedCudaHipRt.hpp>
+
+// Specialized traits.
+#include <alpaka/acc/Traits.hpp>
+
 // Implementation details.
 #include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/dev/DevHipRt.hpp>
+#include <alpaka/dev/DevUniformedCudaHipRt.hpp>
 #include <alpaka/core/Hip.hpp>
 
 #include <typeinfo>
@@ -34,7 +40,7 @@ namespace alpaka
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class TaskKernelGpuCudaHipRt;
+        class TaskKernelGpuUniformedCudaHipRt;
     }
     namespace acc
     {
@@ -45,29 +51,29 @@ namespace alpaka
         template<
             typename TDim,
             typename TIdx>
-        class AccGpuCudaHipRt final :
-            public acc::AccGpuCudaHipRt<TDim,TIdx>,
-            public concepts::Implements<UnifiedAcc, AccGpuCudaHipRt<TDim, TIdx>>
+        class AccGpuUniformedCudaHipRt final :
+            public acc::AccGpuUniformedCudaHipRt<TDim,TIdx>,
+            public concepts::Implements<UnifiedAcc, AccGpuUniformedCudaHipRt<TDim, TIdx>>
             public concepts::Implements<ConceptAcc, AccGpuHipRt<TDim, TIdx>>
         {
         public:
             //-----------------------------------------------------------------------------
-            __device__ AccGpuCudaHipRt(
+            __device__ AccGpuUniformedCudaHipRt(
                 vec::Vec<TDim, TIdx> const & threadElemExtent) :
-                    AccGpuCudaHipRt<TDim,TIdx>(threadElemExtent)
+                    AccGpuUniformedCudaHipRt<TDim,TIdx>(threadElemExtent)
             {}
 
         public:
             //-----------------------------------------------------------------------------
-            __device__ AccGpuCudaHipRt(AccGpuCudaHipRt const &) = delete;
+            __device__ AccGpuUniformedCudaHipRt(AccGpuUniformedCudaHipRt const &) = delete;
             //-----------------------------------------------------------------------------
-            __device__ AccGpuCudaHipRt(AccGpuCudaHipRt &&) = delete;
+            __device__ AccGpuUniformedCudaHipRt(AccGpuUniformedCudaHipRt &&) = delete;
             //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuCudaHipRt const &) -> AccGpuCudaHipRt & = delete;
+            __device__ auto operator=(AccGpuUniformedCudaHipRt const &) -> AccGpuUniformedCudaHipRt & = delete;
             //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuCudaHipRt &&) -> AccGpuCudaHipRt & = delete;
+            __device__ auto operator=(AccGpuUniformedCudaHipRt &&) -> AccGpuUniformedCudaHipRt & = delete;
             //-----------------------------------------------------------------------------
-            ~AccGpuCudaHipRt() = default;
+            ~AccGpuUniformedCudaHipRt() = default;
         };
     }
 
@@ -81,9 +87,9 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct AccType<
-                acc::AccGpuCudaHipRt<TDim, TIdx>>
+                acc::AccGpuUniformedCudaHipRt<TDim, TIdx>>
             {
-                using type = acc::AccGpuCudaHipRt<TDim, TIdx>;
+                using type = acc::AccGpuUniformedCudaHipRt<TDim, TIdx>;
             };
             
             //#############################################################################
@@ -92,13 +98,13 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct GetAccName<
-                acc::AccGpuCudaHipRt<TDim, TIdx>>
+                acc::AccGpuUniformedCudaHipRt<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
-                    return "AccGpuCudaHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+                    return "AccGpuUniformedCudaHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
                 }
             };
         }
@@ -128,7 +134,7 @@ namespace alpaka
                     TArgs && ... args)
                 {
                     return
-                        kernel::TaskKernelGpuCudaHipRt<
+                        kernel::TaskKernelGpuUniformedCudaHipRt<
                             TDim,
                             TIdx,
                             TKernelFnObj,

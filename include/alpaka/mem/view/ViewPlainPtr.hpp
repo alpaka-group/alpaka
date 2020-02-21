@@ -13,8 +13,7 @@
 
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/dev/DevCudaRt.hpp>
-#include <alpaka/dev/DevHipRt.hpp>
+#include <alpaka/dev/DevUniformedCudaHipRt.hpp>
 
 #include <type_traits>
 
@@ -298,12 +297,12 @@ namespace alpaka
                     }
                 };
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
                 //#############################################################################
-                //! The CUDA RT device CreateStaticDevMemView trait specialization.
+                //! The CUDA-HIP RT device CreateStaticDevMemView trait specialization.
                 template<>
                 struct CreateStaticDevMemView<
-                    dev::DevCudaRt>
+                    dev::DevUniformedCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -311,61 +310,33 @@ namespace alpaka
                         typename TExtent>
                     static auto createStaticDevMemView(
                         TElem * pMem,
-                        dev::DevCudaRt const & dev,
+                        dev::DevUniformedCudaHipRt const & dev,
                         TExtent const & extent)
                     {
                         TElem* pMemAcc(nullptr);
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         ALPAKA_CUDA_RT_CHECK(
                             cudaGetSymbolAddress(
                                 reinterpret_cast<void **>(&pMemAcc),
                                 *pMem));
-                        return
-                            alpaka::mem::view::ViewPlainPtr<
-                                dev::DevCudaRt,
-                                TElem,
-                                alpaka::dim::Dim<TExtent>,
-                                alpaka::idx::Idx<TExtent>>(
-                                    pMemAcc,
-                                    dev,
-                                    extent);
-                    }
-                };
-#endif
-
-#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-                //#############################################################################
-                //! The HIP RT device CreateStaticDevMemView trait specialization.
-                template<>
-                struct CreateStaticDevMemView<
-                    dev::DevHipRt>
-                {
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TElem,
-                        typename TExtent>
-                    static auto createStaticDevMemView(
-                        TElem * pMem,
-                        dev::DevHipRt const & dev,
-                        TExtent const & extent)
-                    {
-                        TElem* pMemAcc(nullptr);
-#ifdef __HIP_PLATFORM_NVCC__
+#else
+    #ifdef __HIP_PLATFORM_NVCC__
                         ALPAKA_HIP_RT_CHECK(hipCUDAErrorTohipError(
                             cudaGetSymbolAddress(
                                 reinterpret_cast<void **>(&pMemAcc),
                                 *pMem)));
-#else
+    #else
                         // FIXME: still does not work in HIP(HCC) (results in hipErrorNotFound)
                         // HIP_SYMBOL(X) not useful because it only does #X on HIP(HCC), while &X on HIP(NVCC)
                         ALPAKA_HIP_RT_CHECK(
                             hipGetSymbolAddress(
                                 reinterpret_cast<void **>(&pMemAcc),
                                 pMem));
+    #endif
 #endif
-
                         return
                             alpaka::mem::view::ViewPlainPtr<
-                                dev::DevHipRt,
+                                dev::DevUniformedCudaHipRt,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
                                 alpaka::idx::Idx<TExtent>>(
@@ -375,7 +346,6 @@ namespace alpaka
                     }
                 };
 #endif
-
             }
         }
     }

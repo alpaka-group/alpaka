@@ -144,7 +144,9 @@ namespace alpaka
         {
             //#############################################################################
             //! Check that the return of TKernelFnObj is void
-            template<typename TAcc>
+            template<
+                typename TAcc,
+                typename TSfinae = void>
             struct CheckFnReturnType
             {
                 template<
