@@ -17,10 +17,7 @@
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
-
-#include <alpaka/core/Concepts.hpp>
 #include <alpaka/queue/Traits.hpp>
-#include <alpaka/pltf/Traits.hpp>
 
 #include <string>
 #include <typeinfo>
@@ -76,7 +73,7 @@ namespace alpaka
             struct GetAccDevProps<
                 TAcc,
                 typename std::enable_if<
-                    concepts::detail::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
                 >::type>
             {
                 //-----------------------------------------------------------------------------
@@ -138,7 +135,7 @@ namespace alpaka
             struct CheckFnReturnType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::detail::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
                 >::type>
             {
                  template<
@@ -168,7 +165,7 @@ namespace alpaka
             struct DevType<
                TAcc,
                 typename std::enable_if<
-                    concepts::detail::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
                 >::type>
             {
                 using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
@@ -186,7 +183,7 @@ namespace alpaka
             struct PltfType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::detail::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
                 >::type>            
                 {
                     using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
@@ -205,7 +202,7 @@ namespace alpaka
             struct DimType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::detail::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
                 >::type>  
             {
                     using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;
@@ -223,7 +220,7 @@ namespace alpaka
             struct IdxType<
                 TAcc,
                 typename std::enable_if<
-                    concepts::detail::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
+                    concepts::ImplementsConcept<acc::UnifiedAcc, TAcc>::value
                 >::type>       
             {
                 using ImplementationBase = typename concepts::ImplementationBase<acc::UnifiedAcc, TAcc>;

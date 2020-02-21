@@ -384,7 +384,7 @@ namespace alpaka
     {
         namespace event
         {
-            namespace cudaHip
+            namespace uniformedCudaHip
             {
                 namespace detail
                 {
@@ -394,7 +394,7 @@ namespace alpaka
                     public:
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST EventHostManualTriggerCudaImpl(
-                            dev::DevCudaHipRt const & dev) :
+                            dev::DevUniformedCudaHipRt const & dev) :
                                 m_dev(dev),
                                 m_mutex(),
                                 m_bIsReady(true)
@@ -457,7 +457,7 @@ namespace alpaka
                         }
 
                     public:
-                        dev::DevCudaHipRt const m_dev;     //!< The device this event is bound to.
+                        dev::DevUniformedCudaHipRt const m_dev;     //!< The device this event is bound to.
 
                         mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
                         void * m_devMem;
@@ -473,8 +473,8 @@ namespace alpaka
             public:
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST EventHostManualTriggerCuda(
-                    dev::DevCudaHipRt const & dev) :
-                        m_spEventImpl(std::make_shared<cudaHip::detail::EventHostManualTriggerCudaImpl>(dev))
+                    dev::DevUniformedCudaHipRt const & dev) :
+                        m_spEventImpl(std::make_shared<uniformedCudaHip::detail::EventHostManualTriggerCudaImpl>(dev))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -508,7 +508,7 @@ namespace alpaka
                 }
 
             public:
-                std::shared_ptr<cudaHip::detail::EventHostManualTriggerCudaImpl> m_spEventImpl;
+                std::shared_ptr<uniformedCudaHip::detail::EventHostManualTriggerCudaImpl> m_spEventImpl;
             };
 
             namespace traits
@@ -516,7 +516,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevCudaHipRt>
+                    alpaka::dev::DevUniformedCudaHipRt>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCuda;
                 };
@@ -524,7 +524,7 @@ namespace alpaka
                 //! The CPU event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevCudaHipRt>
+                    alpaka::dev::DevUniformedCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
@@ -555,7 +555,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     test::event::EventHostManualTriggerCuda const & event)
-                -> dev::DevCudaHipRt
+                -> dev::DevUniformedCudaHipRt
                 {
                     return event.m_spEventImpl->m_dev;
                 }
@@ -592,12 +592,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct Enqueue<
-                queue::QueueCudaHipRtNonBlocking,
+                queue::QueueUniformedCudaHipRtNonBlocking,
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaHipRtNonBlocking & queue,
+                    queue::QueueUniformedCudaHipRtNonBlocking & queue,
                     test::event::EventHostManualTriggerCuda & event)
                 -> void
                 {
@@ -623,7 +623,7 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_CudaHipQueue),
+                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformedCudaHipQueue),
                             reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));
@@ -632,12 +632,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct Enqueue<
-                queue::QueueCudaHipRtBlocking,
+                queue::QueueUniformedCudaHipRtBlocking,
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCudaHipRtBlocking & queue,
+                    queue::QueueUniformedCudaHipRtBlocking & queue,
                     test::event::EventHostManualTriggerCuda & event)
                 -> void
                 {
@@ -663,7 +663,7 @@ namespace alpaka
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
                     ALPAKA_CUDA_DRV_CHECK(
                         cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_CudaHipQueue),
+                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformedCudaHipQueue),
                             reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ));

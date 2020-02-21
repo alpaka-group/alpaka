@@ -52,12 +52,12 @@ namespace alpaka
                 //! The default queue type trait specialization for the CUDA device.
                 template<>
                 struct DefaultQueueType<
-                    alpaka::dev::DevCudaHipRt>
+                    alpaka::dev::DevUniformedCudaHipRt>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    using type = alpaka::queue::QueueCudaHipRtBlocking;
+                    using type = alpaka::queue::QueueUniformedCudaHipRtBlocking;
 #else
-                    using type = alpaka::queue::QueueCudaHipRtNonBlocking;
+                    using type = alpaka::queue::QueueUniformedCudaHipRtNonBlocking;
 #endif
                 };
 #endif
@@ -124,7 +124,7 @@ namespace alpaka
                 //! The blocking queue trait specialization for a blocking CUDA RT queue.
                 template<>
                 struct IsBlockingQueue<
-                    alpaka::queue::QueueCudaHipRtBlocking>
+                    alpaka::queue::QueueUniformedCudaHipRtBlocking>
                 {
                     static constexpr bool value = true;
                 };
@@ -133,7 +133,7 @@ namespace alpaka
                 //! The blocking queue trait specialization for a non-blocking CUDA RT queue.
                 template<>
                 struct IsBlockingQueue<
-                    alpaka::queue::QueueCudaHipRtNonBlocking>
+                    alpaka::queue::QueueUniformedCudaHipRtNonBlocking>
                 {
                     static constexpr bool value = false;
                 };
@@ -177,8 +177,8 @@ namespace alpaka
                     std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuNonBlocking>
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     ,
-                    std::tuple<alpaka::dev::DevCudaHipRt, alpaka::queue::QueueCudaHipRtBlocking>,
-                    std::tuple<alpaka::dev::DevCudaHipRt, alpaka::queue::QueueCudaHipRtNonBlocking>
+                    std::tuple<alpaka::dev::DevUniformedCudaHipRt, alpaka::queue::QueueUniformedCudaHipRtBlocking>,
+                    std::tuple<alpaka::dev::DevUniformedCudaHipRt, alpaka::queue::QueueUniformedCudaHipRtNonBlocking>
 #endif
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
                     ,
