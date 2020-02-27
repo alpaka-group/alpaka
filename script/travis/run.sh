@@ -45,8 +45,8 @@ cmake --version
 #TBB
 if [ "$TRAVIS_OS_NAME" = "windows" ]
 then
-    #ALPAKA_TBB_BIN_DIR="${TBB_ROOT_DIR}/bin/ia32/vc14"
-    ALPAKA_TBB_BIN_DIR="${TBB_ROOT_DIR}/bin/intel64/vc14"
+    #ALPAKA_TBB_BIN_DIR="${TBB_ROOT}/bin/ia32/vc14"
+    ALPAKA_TBB_BIN_DIR="${TBB_ROOT}/bin/intel64/vc14"
     export PATH=${PATH}:"${ALPAKA_TBB_BIN_DIR}"
 fi
 
