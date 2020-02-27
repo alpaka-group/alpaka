@@ -82,7 +82,7 @@ append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/script" "${_ALPAKA_
 set_source_files_properties(${_ALPAKA_FILES_SCRIPT} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/cmake" "${_ALPAKA_ROOT_DIR}" "cmake" _ALPAKA_FILES_CMAKE)
-list(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake" "${_ALPAKA_ROOT_DIR}/cmake/alpakaConfig.cmake.in" "${_ALPAKA_ROOT_DIR}/CMakeLists.txt" "${_ALPAKA_ROOT_DIR}/cmake/dev.cmake" "${_ALPAKA_ROOT_DIR}/cmake/common.cmake" "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake" "${_ALPAKA_ROOT_DIR}/cmake/addLibrary.cmake")
+list(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake" "${_ALPAKA_ROOT_DIR}/cmake/alpakaConfig.cmake.in" "${_ALPAKA_ROOT_DIR}/CMakeLists.txt" "${_ALPAKA_ROOT_DIR}/cmake/common.cmake" "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake" "${_ALPAKA_ROOT_DIR}/cmake/addLibrary.cmake")
 set_source_files_properties(${_ALPAKA_FILES_CMAKE} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/doc/markdown" "${_ALPAKA_ROOT_DIR}" "md" _ALPAKA_FILES_DOC)
@@ -169,7 +169,6 @@ install(FILES "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake"
               "${_ALPAKA_ROOT_DIR}/cmake/addLibrary.cmake"
               "${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake"
               "${_ALPAKA_ROOT_DIR}/cmake/common.cmake"
-              "${_ALPAKA_ROOT_DIR}/cmake/dev.cmake"
         DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
 
 install(DIRECTORY "${_ALPAKA_ROOT_DIR}/cmake/modules"

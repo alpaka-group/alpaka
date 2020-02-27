@@ -20,7 +20,8 @@ append_recursive_files_add_to_src_group("${_COMMON_SOURCE_DIRECTORY}" "${_COMMON
 
 add_library(${_COMMON_TARGET_NAME} STATIC
             ${_COMMON_FILES_HEADER}
-            ${_COMMON_FILES_SOURCE})
+            ${_COMMON_FILES_SOURCE}
+            "devCompileOptions.cmake")
 
 target_link_libraries(${_COMMON_TARGET_NAME}
                       PUBLIC alpaka::alpaka)
@@ -28,7 +29,7 @@ target_link_libraries(${_COMMON_TARGET_NAME}
 target_include_directories(${_COMMON_TARGET_NAME}
                            PUBLIC ${_COMMON_INCLUDE_DIRECTORY})
 
-include("${_ALPAKA_ROOT_DIR}/cmake/dev.cmake")
+include("devCompileOptions.cmake")
 target_compile_options(${_COMMON_TARGET_NAME}
                        PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
 
