@@ -9,12 +9,8 @@
   - polls value each 10ms
 - device constant memory not supported yet
 - note, that `printf` in kernels is still not supported in HIP
-- 3D memory is currently disabled
-  - missing `hipMemcpy3DAsync` is replaced with `hipMemcpy3D` though
-  - exclude `hipMalloc3D` and `hipMallocPitch` when size is zero
-    - otherwise they throw an Unknown Error
-  - `TestAccs` excludes 3D specialization of Hip back-end for now
-  - ... because `verifyBytesSet` fails in `memView` for 3D specialization
+- exclude `hipMalloc3D` and `hipMallocPitch` when size is zero otherwise they throw an Unknown Error
+- `TestAccs` excludes 3D specialization of Hip back-end for now because `verifyBytesSet` fails in `memView` for 3D specialization
 - `dim3` structure is not available on device (use `alpaka::vec::Vec` instead)
 - Constructors' attributes unified with destructors'.
   - host/device signature must match in HIP(HCC)

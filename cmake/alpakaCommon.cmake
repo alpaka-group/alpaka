@@ -33,10 +33,16 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE AND (ALPAKA_HI
     set(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "" FORCE)
 endif()
 
-if(ALPAKA_ACC_GPU_HIP_ENABLE AND (ALPAKA_HIP_PLATFORM MATCHES "hcc" OR ALPAKA_HIP_PLATFORM MATCHES "clang"))
+if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "hcc")
     message(WARNING
-        "The HIP back-end is currently experimental, especially for HCC. "
-        "In alpaka HIP(HCC) has a few workarounds and does not support 3D memory and constant memory. "
+        "The HIP back-end is currently experimental."
+        "Alpaka HIP backend compiled with hcc has a few workarounds."
+        )
+endif()
+if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "clang")
+    message(WARNING
+        "The HIP back-end is currently experimental."
+        "Alpaka HIP backend compiled with clang does not support callback functions."
         )
 endif()
 
@@ -566,11 +572,11 @@ endif()
 if(ALPAKA_ACC_GPU_HIP_ENABLE)
 
     if(NOT DEFINED ALPAKA_HIP_VERSION)
-        set(ALPAKA_HIP_VERSION 1.5)
+        set(ALPAKA_HIP_VERSION 3.1)
     endif()
 
-    if(ALPAKA_HIP_VERSION VERSION_LESS 1.5)
-        message(WARNING "HIP < 1.5 is not supported!")
+    if(ALPAKA_HIP_VERSION VERSION_LESS 3.1)
+        message(WARNING "HIP < 3.1 is not supported!")
         set(_ALPAKA_FOUND FALSE)
     else()
         # must set this for HIP package (note that you also need certain env vars)
@@ -583,9 +589,6 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
             set(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "Enable the HIP GPU back-end" FORCE)
         else()
             set(ALPAKA_HIP_VERSION "${HIP_VERSION}")
-            if(ALPAKA_HIP_VERSION VERSION_LESS 1.5.19211)
-                message(STATUS "HIP < 1.5.19211 untested!")
-            endif()
             set(ALPAKA_HIP_COMPILER "hipcc" CACHE STRING "HIP compiler")
             set_property(CACHE ALPAKA_HIP_COMPILER PROPERTY STRINGS "hipcc")
 
