@@ -314,21 +314,22 @@ namespace alpaka
                         TExtent const & extent)
                     {
                         TElem* pMemAcc(nullptr);
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        ALPAKA_CUDA_RT_CHECK(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             cudaGetSymbolAddress(
                                 reinterpret_cast<void **>(&pMemAcc),
                                 *pMem));
 #else
     #ifdef __HIP_PLATFORM_NVCC__
-                        ALPAKA_HIP_RT_CHECK(hipCUDAErrorTohipError(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipCUDAErrorTohipError(
                             cudaGetSymbolAddress(
                                 reinterpret_cast<void **>(&pMemAcc),
                                 *pMem)));
     #else
                         // FIXME: still does not work in HIP(HCC) (results in hipErrorNotFound)
                         // HIP_SYMBOL(X) not useful because it only does #X on HIP(HCC), while &X on HIP(NVCC)
-                        ALPAKA_HIP_RT_CHECK(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             hipGetSymbolAddress(
                                 reinterpret_cast<void **>(&pMemAcc),
                                 pMem));

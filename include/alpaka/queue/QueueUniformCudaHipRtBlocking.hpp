@@ -72,33 +72,21 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                            ALPAKA_CUDA_RT_CHECK(
-                            cudaStreamCreateWithFlags(
-                                &m_UniformCudaHipQueue,
-                                cudaStreamNonBlocking));
-#else
-                            ALPAKA_HIP_RT_CHECK(
-                            hipSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 m_dev.m_iDevice));
-#endif
+
                         // - [cuda/hip]StreamDefault: Default queue creation flag.
                         // - [cuda/hip]StreamNonBlocking: Specifies that work running in the created queue may run concurrently with work in queue 0 (the NULL queue),
                         //   and that the created queue should perform no implicit synchronization with queue 0.
                         // Create the queue on the current device.
                         // NOTE: [cuda/hip]StreamNonBlocking is required to match the semantic implemented in the alpaka CPU queue.
                         // It would be too much work to implement implicit default queue synchronization on CPU.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                            ALPAKA_CUDA_RT_CHECK(
-                            cudaStreamCreateWithFlags(
+
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(StreamCreateWithFlags)(
                                 &m_UniformCudaHipQueue,
-                                cudaStreamNonBlocking));
-#else
-                            ALPAKA_HIP_RT_CHECK(
-                            hipStreamCreateWithFlags(
-                                &m_UniformCudaHipQueue,
-                                hipStreamNonBlocking));
-#endif
+                                ALPAKA_API_PREFIX(StreamNonBlocking)));
 
                     }
                     //-----------------------------------------------------------------------------
@@ -119,34 +107,23 @@ namespace alpaka
                         // In case the device is still doing work in the queue when [cuda/hip]StreamDestroy() is called, the function will return immediately
                         // and the resources associated with queue will be released automatically once the device has completed all work in queue.
                         // -> No need to synchronize here.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 m_dev.m_iDevice));
-                        // In case the device is still doing work in the queue when cudaStreamDestroy() is called, the function will return immediately
+                        // In case the device is still doing work in the queue when cuda/hip-StreamDestroy() is called, the function will return immediately
                         // and the resources associated with queue will be released automatically once the device has completed all work in queue.
                         // -> No need to synchronize here.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaStreamDestroy(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(StreamDestroy)(
                                 m_UniformCudaHipQueue));
-#else
-                        ALPAKA_HIP_RT_CHECK(
-                            hipSetDevice(
-                                m_dev.m_iDevice));
-                        ALPAKA_HIP_RT_CHECK(
-                            hipStreamDestroy(
-                                m_UniformCudaHipQueue));
-#endif
+
                     }
 
                 public:
                     dev::DevUniformCudaHipRt const m_dev;   //!< The device this queue is bound to.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    cudaStream_t m_UniformCudaHipQueue;
-#else
-                    hipStream_t m_UniformCudaHipQueue;
-#endif
+                    ALPAKA_API_PREFIX(Stream_t) m_UniformCudaHipQueue;
+
 #if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
                     int m_callees = 0;
                     std::mutex m_mutex;
@@ -271,10 +248,11 @@ namespace alpaka
 
                 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                static void CUDART_CB uniformCudaHipRtCallback(cudaStream_t /*queue*/, cudaError_t /*status*/, void *arg)
+                static void CUDART_CB
 #else
-                static void HIPRT_CB uniformCudaHipRtCallback(hipStream_t /*queue*/, hipError_t /*status*/, void *arg)
+                static void HIPRT_CB
 #endif
+                uniformCudaHipRtCallback(ALPAKA_API_PREFIX(Stream_t) /*queue*/, ALPAKA_API_PREFIX(Error_t) /*status*/, void *arg)
                 {
                     // explicitly copy the shared_ptr so that this method holds the state even when the executing thread has already finished.
                     const auto pCallbackSynchronizationData = reinterpret_cast<CallbackSynchronizationData*>(arg)->shared_from_this();
@@ -314,19 +292,12 @@ namespace alpaka
 #endif
                     auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(cudaStreamAddCallback(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
                         queue.m_spQueueImpl->m_UniformCudaHipQueue,
                         uniformCudaHipRtCallback,
                         pCallbackSynchronizationData.get(),
                         0u));
-#else
-                    ALPAKA_HIP_RT_CHECK(hipStreamAddCallback(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue,
-                        uniformCudaHipRtCallback,
-                        pCallbackSynchronizationData.get(),
-                        0u));
-#endif
+
                     // We start a new std::thread which stores the task to be executed.
                     // This circumvents the limitation that it is not possible to call CUDA/HIP methods within the CUDA/HIP callback thread.
                     // The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
@@ -386,22 +357,16 @@ namespace alpaka
                 -> bool
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    // Query is allowed even for queues on non current device.
-                    cudaError_t ret = cudaSuccess;
-                    ALPAKA_CUDA_RT_CHECK_IGNORE(
-                        ret = cudaStreamQuery(queue.m_spQueueImpl->m_UniformCudaHipQueue),
-                        cudaErrorNotReady);
-                    return (ret == cudaSuccess);
-#elif BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
+
+#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
                     return (queue.m_spQueueImpl->m_callees==0);
 #else
-                    hipError_t ret = hipSuccess;
-                    ALPAKA_HIP_RT_CHECK_IGNORE(
-                        ret = hipStreamQuery(
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue),
-                        hipErrorNotReady);
-                    return (ret == hipSuccess);
+                    // Query is allowed even for queues on non current device.
+                    ALPAKA_API_PREFIX(Error_t) ret = ALPAKA_API_PREFIX(Success);
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
+                        ret = ALPAKA_API_PREFIX(StreamQuery)(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                        ALPAKA_API_PREFIX(ErrorNotReady));
+                    return (ret == ALPAKA_API_PREFIX(Success));
 #endif
                 }
             };
@@ -426,18 +391,13 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    // Sync is allowed even for queues on non current device.
-                    ALPAKA_CUDA_RT_CHECK(cudaStreamSynchronize(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
-
-#elif BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
+#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
                     while(queue.m_spQueueImpl->m_callees>0) {
                         std::this_thread::sleep_for(std::chrono::milliseconds(10u));
                     }
 #else
                     // Sync is allowed even for queues on non current device.
-                    ALPAKA_HIP_RT_CHECK( hipStreamSynchronize(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK( ALPAKA_API_PREFIX(StreamSynchronize)(
                         queue.m_spQueueImpl->m_UniformCudaHipQueue));
 #endif
                 }

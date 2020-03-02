@@ -402,16 +402,16 @@ namespace alpaka
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                             // Set the current device.
-                            ALPAKA_CUDA_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 cudaSetDevice(
                                     m_dev.m_iDevice));
                             // Allocate the buffer on this device.
-                            ALPAKA_CUDA_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 cudaMalloc(
                                     &m_devMem,
                                     static_cast<size_t>(sizeof(int32_t))));
                             // Initiate the memory set.
-                            ALPAKA_CUDA_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 cudaMemset(
                                     m_devMem,
                                     static_cast<int>(0u),
@@ -431,11 +431,11 @@ namespace alpaka
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                             // Set the current device.
-                            ALPAKA_CUDA_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 cudaSetDevice(
                                     m_dev.m_iDevice));
                             // Free the buffer.
-                            ALPAKA_CUDA_RT_CHECK(cudaFree(m_devMem));
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaFree(m_devMem));
                         }
 
                         //-----------------------------------------------------------------------------
@@ -445,11 +445,11 @@ namespace alpaka
                             m_bIsReady = true;
 
                             // Set the current device.
-                            ALPAKA_CUDA_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 cudaSetDevice(
                                     m_dev.m_iDevice));
                             // Initiate the memory set.
-                            ALPAKA_CUDA_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 cudaMemset(
                                     m_devMem,
                                     static_cast<int>(1u),
@@ -709,16 +709,16 @@ namespace alpaka
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                             // Set the current device.
-                            ALPAKA_HIP_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 hipSetDevice(
                                     m_dev.m_iDevice));
                             // Allocate the buffer on this device.
-                            ALPAKA_HIP_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 hipMalloc(
                                     &m_devMem,
                                     static_cast<size_t>(sizeof(int32_t))));
                             // Initiate the memory set.
-                            ALPAKA_HIP_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 hipMemset(
                                     m_devMem,
                                     static_cast<int>(0u),
@@ -737,11 +737,11 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            ALPAKA_HIP_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 hipSetDevice(
                                     m_dev.m_iDevice));
                             // Free the buffer.
-                            ALPAKA_HIP_RT_CHECK(hipFree(m_devMem));
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipFree(m_devMem));
                         }
 
                         //-----------------------------------------------------------------------------
@@ -751,11 +751,11 @@ namespace alpaka
                             m_bIsReady = true;
 
                             // Set the current device.
-                            ALPAKA_HIP_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 hipSetDevice(
                                     m_dev.m_iDevice));
                             // Initiate the memory set.
-                            ALPAKA_HIP_RT_CHECK(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                 hipMemset(
                                     m_devMem,
                                     static_cast<int>(1u),
@@ -930,11 +930,11 @@ namespace alpaka
                     std::cerr << "[Workaround] polling of device-located value in stream, as hipStreamWaitValue32 is not available.\n";
 #endif
                     while(hostMem<0x01010101u) {
-                      ALPAKA_HIP_RT_CHECK(hipMemcpyDtoHAsync(&hostMem,
+                      ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMemcpyDtoHAsync(&hostMem,
                                                              reinterpret_cast<hipDeviceptr_t>(event.m_spEventImpl->m_devMem),
                                                              sizeof(int32_t),
                                                              queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                      ALPAKA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                      ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
                 }
             };
@@ -971,7 +971,7 @@ namespace alpaka
                     //   the device build upon value-based HIP queue synchronization APIs such as
                     //   cuStreamWaitValue32() and cuStreamWriteValue32().
 #if BOOST_COMP_NVCC
-                    ALPAKA_HIP_RT_CHECK(hipCUResultTohipError(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipCUResultTohipError(
                         cuStreamWaitValue32(
                             static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
                             reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
@@ -982,7 +982,7 @@ namespace alpaka
                     std::uint32_t hmem = 0;
                     do {
                         std::this_thread::sleep_for(std::chrono::milliseconds(10u));
-                        ALPAKA_HIP_RT_CHECK(hipMemcpy(&hmem, event.m_spEventImpl->m_devMem, sizeof(std::uint32_t), hipMemcpyDefault));
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMemcpy(&hmem, event.m_spEventImpl->m_devMem, sizeof(std::uint32_t), hipMemcpyDefault));
                     } while(hmem < 0x01010101u);
 
 #endif

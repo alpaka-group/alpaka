@@ -74,11 +74,8 @@ namespace alpaka
                         TViewSrc,
                         TExtent>
                     {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        using MemcpyKind = cudaMemcpyKind;
-#else
-                        using MemcpyKind = hipMemcpyKind;
-#endif
+                        using MemcpyKind = ALPAKA_API_PREFIX(MemcpyKind);
+
                         static_assert(
                             !std::is_const<TViewDst>::value,
                             "The destination view can not be const!");
@@ -164,11 +161,8 @@ namespace alpaka
                         TViewSrc,
                         TExtent>
                     {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        using MemcpyKind = cudaMemcpyKind;
-#else
-                        using MemcpyKind = hipMemcpyKind;
-#endif
+                        using MemcpyKind = ALPAKA_API_PREFIX(MemcpyKind);
+
                         static_assert(
                             !std::is_const<TViewDst>::value,
                             "The destination view can not be const!");
@@ -285,11 +279,8 @@ namespace alpaka
                         TViewSrc,
                         TExtent>
                     {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        using MemcpyKind = cudaMemcpyKind;
-#else
-                        using MemcpyKind = hipMemcpyKind;
-#endif
+                        using MemcpyKind = ALPAKA_API_PREFIX(MemcpyKind);
+
                         static_assert(
                             !std::is_const<TViewDst>::value,
                             "The destination view can not be const!");
@@ -431,11 +422,8 @@ namespace alpaka
                             alreadyCheckedPeerAccessDevices.insert(devicePair);
 
                             int canAccessPeer = 0;
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                            ALPAKA_CUDA_RT_CHECK(cudaDeviceCanAccessPeer(&canAccessPeer, devSrc, devDst));
-#else
-                            ALPAKA_HIP_RT_CHECK(hipDeviceCanAccessPeer(&canAccessPeer, devSrc, devDst));
-#endif
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceCanAccessPeer)(&canAccessPeer, devSrc, devDst));
+
                             if(!canAccessPeer) {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << __func__
@@ -446,19 +434,12 @@ namespace alpaka
 #endif
                                 return;
                             }
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                            ALPAKA_CUDA_RT_CHECK(cudaSetDevice(devSrc));
-#else
-                            ALPAKA_HIP_RT_CHECK(hipSetDevice(devSrc));
-#endif
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(devSrc));
+
                             // NOTE: "until access is explicitly disabled using cudaDeviceDisablePeerAccess() or either device is reset using cudaDeviceReset()."
                             // We do not remove a device from the enabled device pairs on cudaDeviceReset.
                             // Note that access granted by this call is unidirectional and that in order to access memory on the current device from peerDevice, a separate symmetric call to cudaDeviceEnablePeerAccess() is required.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                            ALPAKA_CUDA_RT_CHECK(cudaDeviceEnablePeerAccess(devDst, 0));
-#else
-                            ALPAKA_HIP_RT_CHECK(hipDeviceEnablePeerAccess(devDst, 0));
-#endif
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceEnablePeerAccess)(devDst, 0));
                         }
                     }
                 }
@@ -506,11 +487,7 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                                    cudaMemcpyDeviceToHost,
-#else
-                                    hipMemcpyDeviceToHost,
-#endif
+                                    ALPAKA_API_PREFIX(MemcpyDeviceToHost),
                                     iDevice,
                                     iDevice);
                     }
@@ -553,11 +530,7 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                                    cudaMemcpyHostToDevice,
-#else
-                                    hipMemcpyHostToDevice,
-#endif
+                                    ALPAKA_API_PREFIX(MemcpyHostToDevice),
                                     iDevice,
                                     iDevice);
                     }
@@ -597,11 +570,7 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                                    cudaMemcpyDeviceToDevice,
-#else
-                                    hipMemcpyDeviceToDevice,
-#endif
+                                    ALPAKA_API_PREFIX(MemcpyDeviceToDevice),
                                     dev::getDev(viewDst).m_iDevice,
                                     dev::getDev(viewSrc).m_iDevice);
                     }
@@ -618,11 +587,7 @@ namespace alpaka
                         typename TViewDst>
                     ALPAKA_FN_HOST auto buildUniformCudaHipMemcpy3DParms(
                         mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3>, TViewDst, TViewSrc, TExtent> const & task)
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    -> cudaMemcpy3DParms
-#else
-                    -> hipMemcpy3DParms
-#endif
+                    -> ALPAKA_API_PREFIX(Memcpy3DParms)
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -645,63 +610,34 @@ namespace alpaka
                         auto const & srcNativePtr(task.m_srcMemNative);
 
                         // Fill CUDA/HIP parameter structure.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        cudaMemcpy3DParms cudaMemCpy3DParms;
-                        cudaMemCpy3DParms.srcArray = nullptr;  // Either srcArray or srcPtr.
-                        cudaMemCpy3DParms.srcPos = make_cudaPos(0, 0, 0);  // Optional. Offset in bytes.
-                        cudaMemCpy3DParms.srcPtr =
-                            make_cudaPitchedPtr(
+                        ALPAKA_API_PREFIX(Memcpy3DParms) memCpy3DParms;
+                        memCpy3DParms.srcArray = nullptr;  // Either srcArray or srcPtr.
+                        memCpy3DParms.srcPos = ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(Pos))(0, 0, 0);  // Optional. Offset in bytes.
+                        memCpy3DParms.srcPtr =
+                            ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(PitchedPtr))(
                                 const_cast<void *>(srcNativePtr),
                                 static_cast<std::size_t>(srcPitchBytesX),
                                 static_cast<std::size_t>(srcWidth),
                                 static_cast<std::size_t>(srcPitchBytesY/srcPitchBytesX));
-                        cudaMemCpy3DParms.dstArray = nullptr;  // Either dstArray or dstPtr.
-                        cudaMemCpy3DParms.dstPos = make_cudaPos(0, 0, 0);  // Optional. Offset in bytes.
-                        cudaMemCpy3DParms.dstPtr =
-                            make_cudaPitchedPtr(
+                        memCpy3DParms.dstArray = nullptr;  // Either dstArray or dstPtr.
+                        memCpy3DParms.dstPos = ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(Pos))(0, 0, 0);  // Optional. Offset in bytes.
+                        memCpy3DParms.dstPtr =
+                            ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(PitchedPtr))(
                                 dstNativePtr,
                                 static_cast<std::size_t>(dstPitchBytesX),
                                 static_cast<std::size_t>(dstWidth),
                                 static_cast<std::size_t>(dstPitchBytesY / dstPitchBytesX));
-                        cudaMemCpy3DParms.extent =
-                            make_cudaExtent(
+                        memCpy3DParms.extent =
+                            ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(Extent))(
                                 static_cast<std::size_t>(extentWidthBytes),
                                 static_cast<std::size_t>(extentHeight),
                                 static_cast<std::size_t>(extentDepth));
-                        cudaMemCpy3DParms.kind = task.m_uniformMemCpyKind;
-                        return cudaMemCpy3DParms;
-
+#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && defined(__HIP_PLATFORM_NVCC__)
+                        memCpy3DParms.kind = hipMemcpyKindToCudaMemcpyKind(task.m_uniformMemCpyKind);
 #else
-                        hipMemcpy3DParms hipMemCpy3DParms;
-                        hipMemCpy3DParms.srcArray = nullptr;  // Either srcArray or srcPtr.
-                        hipMemCpy3DParms.srcPos = make_hipPos(0, 0, 0);  // Optional. Offset in bytes.
-                        hipMemCpy3DParms.srcPtr =
-                            make_hipPitchedPtr(
-                                const_cast<void *>(srcNativePtr),
-                                static_cast<std::size_t>(srcPitchBytesX),
-                                static_cast<std::size_t>(srcWidth),
-                                static_cast<std::size_t>(srcPitchBytesY/srcPitchBytesX));
-                        hipMemCpy3DParms.dstArray = nullptr;  // Either dstArray or dstPtr.
-                        hipMemCpy3DParms.dstPos = make_hipPos(0, 0, 0);  // Optional. Offset in bytes.
-                        hipMemCpy3DParms.dstPtr =
-                            make_hipPitchedPtr(
-                                dstNativePtr,
-                                static_cast<std::size_t>(dstPitchBytesX),
-                                static_cast<std::size_t>(dstWidth),
-                                static_cast<std::size_t>(dstPitchBytesY/dstPitchBytesX));
-                        hipMemCpy3DParms.extent =
-                            make_hipExtent(
-                                static_cast<std::size_t>(extentWidthBytes),
-                                static_cast<std::size_t>(extentHeight),
-                                static_cast<std::size_t>(extentDepth));
-    #ifdef __HIP_PLATFORM_NVCC__
-                        hipMemCpy3DParms.kind = hipMemcpyKindToCudaMemcpyKind(task.m_uniformMemCpyKind);
-    #else
-                        hipMemCpy3DParms.kind = task.m_uniformMemCpyKind;
-    #endif
-                        return hipMemCpy3DParms;
-
+                        memCpy3DParms.kind = task.m_uniformMemCpyKind;
 #endif
+                        return memCpy3DParms;
                     }
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     //-----------------------------------------------------------------------------
@@ -869,16 +805,15 @@ namespace alpaka
 
                     auto const & uniformCudaHipMemCpyKind(task.m_uniformMemCpyKind);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     if(iDstDev == iSrcDev)
                     {
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 iDstDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpyAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(MemcpyAsync)(
                                 dstNativePtr,
                                 srcNativePtr,
                                 static_cast<std::size_t>(extentWidthBytes),
@@ -890,8 +825,8 @@ namespace alpaka
                         alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpyPeerAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(MemcpyPeerAsync)(
                                 dstNativePtr,
                                 iDstDev,
                                 srcNativePtr,
@@ -899,35 +834,6 @@ namespace alpaka
                                 static_cast<std::size_t>(extentWidthBytes),
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
-#else
-                    if(iDstDev == iSrcDev)
-                    {
-                        // Set the current device.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipSetDevice(
-                                iDstDev));
-                        // Initiate the memory copy.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipMemcpyAsync(
-                                dstNativePtr,
-                                srcNativePtr,
-                                static_cast<std::size_t>(extentWidthBytes),
-                                uniformCudaHipMemCpyKind,
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-                    else
-                    {
-                        // Initiate the memory copy.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipMemcpyPeerAsync(
-                                dstNativePtr,
-                                iDstDev,
-                                srcNativePtr,
-                                iSrcDev,
-                                static_cast<std::size_t>(extentWidthBytes),
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-#endif
                 }
             };
             //#############################################################################
@@ -964,19 +870,17 @@ namespace alpaka
                     auto const & dstNativePtr(task.m_dstMemNative);
                     auto const & srcNativePtr(task.m_srcMemNative);
 
-
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     if(iDstDev == iSrcDev)
                     {
                         auto const & uniformCudaHipMemCpyKind(task.m_uniformMemCpyKind);
 
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 iDstDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpyAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(MemcpyAsync)(
                                 dstNativePtr,
                                 srcNativePtr,
                                 static_cast<std::size_t>(extentWidthBytes),
@@ -988,8 +892,8 @@ namespace alpaka
                         alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
 
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpyPeerAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(MemcpyPeerAsync)(
                                 dstNativePtr,
                                 iDstDev,
                                 srcNativePtr,
@@ -997,43 +901,9 @@ namespace alpaka
                                 static_cast<std::size_t>(extentWidthBytes),
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaStreamSynchronize(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(StreamSynchronize)(
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    if(iDstDev == iSrcDev)
-                    {
-                        auto const & uniformCudaHipMemCpyKind(task.m_uniformMemCpyKind);
-
-                        // Set the current device.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipSetDevice(
-                                iDstDev));
-                        // Initiate the memory copy.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipMemcpyAsync(
-                                dstNativePtr,
-                                srcNativePtr,
-                                static_cast<std::size_t>(extentWidthBytes),
-                                uniformCudaHipMemCpyKind,
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-                    else
-                    {
-                        // Initiate the memory copy.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipMemcpyPeerAsync(
-                                dstNativePtr,
-                                iDstDev,
-                                srcNativePtr,
-                                iSrcDev,
-                                static_cast<std::size_t>(extentWidthBytes),
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-
-                    ALPAKA_HIP_RT_CHECK( hipStreamSynchronize(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                 }
             };
             //#############################################################################
@@ -1076,71 +946,41 @@ namespace alpaka
 
                         auto const & dstNativePtr(task.m_dstMemNative);
                         auto const & srcNativePtr(task.m_srcMemNative);
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        auto const & cudaMemcpyKind(task.m_uniformMemCpyKind);
+
+                        auto const & memcpyKind(task.m_uniformMemCpyKind);
 
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 iDstDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpy2DAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(Memcpy2DAsync)(
                                 dstNativePtr,
                                 static_cast<std::size_t>(dstPitchBytesX),
                                 srcNativePtr,
                                 static_cast<std::size_t>(srcPitchBytesX),
                                 static_cast<std::size_t>(extentWidthBytes),
                                 static_cast<std::size_t>(extentHeight),
-                                cudaMemcpyKind,
+                                memcpyKind,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
                     else
                     {
                         alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         // There is no cudaMemcpy2DPeerAsync, therefore we use cudaMemcpy3DPeerAsync.
                         // Create the struct describing the copy.
-                        cudaMemcpy3DPeerParms const cudaMemCpy3DPeerParms(
+                        ALPAKA_API_PREFIX(Memcpy3DPeerParms) const memCpy3DPeerParms(
                             mem::view::uniform_cuda_hip::detail::buildCudaMemcpy3DPeerParms(
                                 task));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
-                                &cudaMemCpy3DPeerParms,
+                                &memCpy3DPeerParms,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-#else
-                        auto const & hipMemCpyKind(task.m_uniformMemCpyKind);
-
-                        // Set the current device.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipSetDevice(
-                                iDstDev));
-
-                        if(iDstDev != iSrcDev)
-                        {
-                            // HIP relies on unified memory, so memcpy commands automatically do device-to-device transfers.
-                            // P2P access has to be enabled to avoid host transfer.
-                            // Checks if devices are connected via PCIe switch and enable P2P access then.
-                            alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-                        }
-
-                        ALPAKA_HIP_RT_CHECK(
-                            hipMemcpy2DAsync(
-                                dstNativePtr,
-                                static_cast<std::size_t>(dstPitchBytesX),
-                                srcNativePtr,
-                                static_cast<std::size_t>(srcPitchBytesX),
-                                static_cast<std::size_t>(extentWidthBytes),
-                                static_cast<std::size_t>(extentHeight),
-                                hipMemCpyKind,
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue));
-
-                        ALPAKA_HIP_RT_CHECK( hipStreamSynchronize(
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
 #endif
+                    }
                 }
             };
             //#############################################################################
@@ -1172,7 +1012,7 @@ namespace alpaka
 
                     auto const & iDstDev(task.m_iDstDevice);
                     auto const & iSrcDev(task.m_iSrcDevice);
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+
                     if(iDstDev == iSrcDev)
                     {
                         auto const & extentWidthBytes(task.m_extentWidthBytes);
@@ -1183,80 +1023,43 @@ namespace alpaka
 
                         auto const & dstNativePtr(task.m_dstMemNative);
                         auto const & srcNativePtr(task.m_srcMemNative);
-                        auto const & cudaMemcpyKind(task.m_uniformMemCpyKind);
+                        auto const & memcpyKind(task.m_uniformMemCpyKind);
 
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 iDstDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpy2DAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(Memcpy2DAsync)(
                                 dstNativePtr,
                                 static_cast<std::size_t>(dstPitchBytesX),
                                 srcNativePtr,
                                 static_cast<std::size_t>(srcPitchBytesX),
                                 static_cast<std::size_t>(extentWidthBytes),
                                 static_cast<std::size_t>(extentHeight),
-                                cudaMemcpyKind,
+                                memcpyKind,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
                     else
                     {
                         alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         // There is no cudaMemcpy2DPeerAsync, therefore we use cudaMemcpy3DPeerAsync.
                         // Create the struct describing the copy.
-                        cudaMemcpy3DPeerParms const cudaMemCpy3DPeerParms(
+                        cudaMemcpy3DPeerParms const memCpy3DPeerParms(
                             mem::view::uniform_cuda_hip::detail::buildCudaMemcpy3DPeerParms(
                                 task));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
-                                &cudaMemCpy3DPeerParms,
+                                &memCpy3DPeerParms,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaStreamSynchronize(
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    auto const & extentWidthBytes(task.m_extentWidthBytes);
-                    auto const & extentHeight(task.m_extentHeight);
-
-                    auto const & dstPitchBytesX(task.m_dstpitchBytesX);
-                    auto const & srcPitchBytesX(task.m_srcpitchBytesX);
-
-                    auto const & dstNativePtr(task.m_dstMemNative);
-                    auto const & srcNativePtr(task.m_srcMemNative);
-                    auto const & hipMemCpyKind(task.m_uniformMemCpyKind);
-
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDstDev));
-
-                    if(iDstDev != iSrcDev)
-                    {
-                        // HIP relies on unified memory, so memcpy commands automatically do device-to-device transfers.
-                        // P2P access has to be enabled to avoid host transfer.
-                        // Checks if devices are connected via PCIe switch and enable P2P access then.
-                        alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-                    }
-
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemcpy2DAsync(
-                            dstNativePtr,
-                            static_cast<std::size_t>(dstPitchBytesX),
-                            srcNativePtr,
-                            static_cast<std::size_t>(srcPitchBytesX),
-                            static_cast<std::size_t>(extentWidthBytes),
-                            static_cast<std::size_t>(extentHeight),
-                            hipMemCpyKind,
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-
-                    ALPAKA_HIP_RT_CHECK( hipStreamSynchronize(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
 #endif
+                    }
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(StreamSynchronize)(
+                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
                 }
             };
             //#############################################################################
@@ -1288,61 +1091,37 @@ namespace alpaka
                     auto const & iDstDev(task.m_iDstDevice);
                     auto const & iSrcDev(task.m_iSrcDevice);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     if(iDstDev == iSrcDev)
                     {
                         // Create the struct describing the copy.
-                        cudaMemcpy3DParms const uniformCudaHipMemCpy3DParms(
+                        ALPAKA_API_PREFIX(Memcpy3DParms) const uniformCudaHipMemCpy3DParms(
                             mem::view::uniform_cuda_hip::detail::buildUniformCudaHipMemcpy3DParms(
                                 task));
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 iDstDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpy3DAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(Memcpy3DAsync)(
                                 &uniformCudaHipMemCpy3DParms,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
                     else
                     {
                         alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         // Create the struct describing the copy.
                         cudaMemcpy3DPeerParms const cudaMemCpy3DPeerParms(
                             mem::view::uniform_cuda_hip::detail::buildCudaMemcpy3DPeerParms(
                                 task));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &cudaMemCpy3DPeerParms,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-#else
-                    // Create the struct describing the copy.
-                    hipMemcpy3DParms const hipMemCpy3DParms(
-                        mem::view::uniform_cuda_hip::detail::buildUniformCudaHipMemcpy3DParms(
-                            task));
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDstDev));
-
-                    if(iDstDev != iSrcDev)
-                    {
-                        // HIP relies on unified memory, so memcpy commands automatically do device-to-device transfers.
-                        // P2P access has to be enabled to avoid host transfer.
-                        // Checks if devices are connected via PCIe switch and enable P2P access then.
-                        alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-                    }
-
-                    // Initiate the memory copy.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemcpy3DAsync(
-                            &hipMemCpy3DParms,
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
 #endif
+                    }
                 }
             };
             //#############################################################################
@@ -1374,66 +1153,40 @@ namespace alpaka
                     auto const & iDstDev(task.m_iDstDevice);
                     auto const & iSrcDev(task.m_iSrcDevice);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     if(iDstDev == iSrcDev)
                     {
                         // Create the struct describing the copy.
-                        cudaMemcpy3DParms const uniformCudaHipMemCpy3DParms(
+                        ALPAKA_API_PREFIX(Memcpy3DParms) const uniformCudaHipMemCpy3DParms(
                             mem::view::uniform_cuda_hip::detail::buildUniformCudaHipMemcpy3DParms(
                                 task));
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 iDstDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMemcpy3DAsync(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(Memcpy3DAsync)(
                                 &uniformCudaHipMemCpy3DParms,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
                     }
                     else
                     {
                         alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         // Create the struct describing the copy.
                         cudaMemcpy3DPeerParms const cudaMemCpy3DPeerParms(
                             mem::view::uniform_cuda_hip::detail::buildCudaMemcpy3DPeerParms(
                                 task));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_RT_CHECK(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &cudaMemCpy3DPeerParms,
                                 queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaStreamSynchronize(
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    hipMemcpy3DParms const hipMemCpy3DParms(
-                        mem::view::uniform_cuda_hip::detail::buildUniformCudaHipMemcpy3DParms(
-                            task));
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDstDev));
-
-                    if(iDstDev != iSrcDev)
-                    {
-                        // HIP relies on unified memory, so memcpy commands automatically do device-to-device transfers.
-                        // P2P access has to be enabled to avoid host transfer.
-                        // Checks if devices are connected via PCIe switch and enable P2P access then.
-                        alpaka::mem::view::uniform_cuda_hip::detail::enablePeerAccessIfPossible(iSrcDev, iDstDev);
-                    }
-
-                    // Initiate the memory copy.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemcpy3DAsync(
-                            &hipMemCpy3DParms,
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-
-                    ALPAKA_HIP_RT_CHECK( hipStreamSynchronize(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
 #endif
+                    }
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(StreamSynchronize)(
+                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
                 }
             };
         }
