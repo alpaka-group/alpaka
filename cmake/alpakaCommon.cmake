@@ -501,7 +501,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
                 set(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
 
-                if((${CMAKE_BUILD_TYPE} STREQUAL "Debug") OR (${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo"))
+                if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
                     list(APPEND CUDA_NVCC_FLAGS -g)
                     if(MSVC)
                         message(WARNING "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} does not support -G with CUDA! "
@@ -633,7 +633,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 list(APPEND HIP_NVCC_FLAGS -ccbin ${CMAKE_CXX_COMPILER})
                 list(APPEND HIP_NVCC_FLAGS -Xcompiler -g)
 
-                if((${CMAKE_BUILD_TYPE} STREQUAL "Debug") OR (${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo"))
+                if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
                     list(APPEND HIP_NVCC_FLAGS -G)
                 endif()
                 # propage host flags
