@@ -116,24 +116,18 @@ namespace alpaka
                     dev::DevUniformCudaHipRt const & dev)
                 -> std::string
                 {
+                    // There is cuda/hip-DeviceGetAttribute as faster alternative to cuda/hip-GetDeviceProperties to get a single device property but it has no option to get the name
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                    // There is cudaDeviceGetAttribute as faster alternative to cudaGetDeviceProperties to get a single device property but it has no option to get the name
-                    cudaDeviceProp cudaDevProp;
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaGetDeviceProperties(
-                            &cudaDevProp,
-                            dev.m_iDevice));
-
-                    return std::string(cudaDevProp.name);
+                    cudaDeviceProp devProp;
 #else
-                    hipDeviceProp_t hipDevProp;
-                    ALPAKA_HIP_RT_CHECK(
-                        hipGetDeviceProperties(
-                            &hipDevProp,
+                    hipDeviceProp_t devProp;
+#endif
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(GetDeviceProperties)(
+                            &devProp,
                             dev.m_iDevice));
 
-                    return std::string(hipDevProp.name);
-#endif
+                    return std::string(devProp.name);
                 }
             };
 
@@ -148,37 +142,20 @@ namespace alpaka
                     dev::DevUniformCudaHipRt const & dev)
                 -> std::size_t
                 {
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             dev.m_iDevice));
 
                     std::size_t freeInternal(0u);
                     std::size_t totalInternal(0u);
 
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemGetInfo(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(MemGetInfo)(
                             &freeInternal,
                             &totalInternal));
 
                     return totalInternal;
-#else
-                  // Set the current device to wait for.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            dev.m_iDevice));
-
-                    std::size_t freeInternal(0u);
-                    std::size_t totalInternal(0u);
-
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemGetInfo(
-                            &freeInternal,
-                            &totalInternal));
-
-                    return totalInternal;
-#endif
                 }
             };
 
@@ -193,37 +170,20 @@ namespace alpaka
                     dev::DevUniformCudaHipRt const & dev)
                 -> std::size_t
                 {
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             dev.m_iDevice));
 
                     std::size_t freeInternal(0u);
                     std::size_t totalInternal(0u);
 
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemGetInfo(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(MemGetInfo)(
                             &freeInternal,
                             &totalInternal));
 
                     return freeInternal;
-#else
-                    // Set the current device to wait for.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            dev.m_iDevice));
-
-                    std::size_t freeInternal(0u);
-                    std::size_t totalInternal(0u);
-
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemGetInfo(
-                            &freeInternal,
-                            &totalInternal));
-
-                    return freeInternal;
-#endif
                 }
             };
 
@@ -240,21 +200,12 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             dev.m_iDevice));
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaDeviceReset());
-#else
-                    // Set the current device to wait for.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            dev.m_iDevice));
-                    ALPAKA_HIP_RT_CHECK(
-                        hipDeviceReset());
-#endif
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(DeviceReset)());
                 }
             };
         }
@@ -321,17 +272,11 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(
                         dev.m_iDevice));
-                    ALPAKA_CUDA_RT_CHECK(cudaDeviceSynchronize());
-#else
-                    // Set the current device to wait for.
-                    ALPAKA_HIP_RT_CHECK(hipSetDevice(
-                        dev.m_iDevice));
-                    ALPAKA_HIP_RT_CHECK(hipDeviceSynchronize());
-#endif
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceSynchronize)());
                 }
             };
         }

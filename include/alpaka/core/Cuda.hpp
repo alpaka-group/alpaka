@@ -34,10 +34,8 @@
 #include <cuda_runtime.h>
 #include <cuda.h>
 
-#include <array>
 #include <type_traits>
 #include <utility>
-#include <iostream>
 #include <string>
 #include <stdexcept>
 #include <cstddef>
@@ -50,97 +48,10 @@
     #error "CUDA version 9.0 or greater required!"
 #endif
 
-namespace alpaka
-{
-    namespace cuda
-    {
-        namespace detail
-        {
-            //-----------------------------------------------------------------------------
-            //! CUDA runtime API error checking with log and exception, ignoring specific error values
-            ALPAKA_FN_HOST inline auto cudaRtCheck(
-                cudaError_t const & error,
-                char const * desc,
-                char const * file,
-                int const & line)
-            -> void
-            {
-                if(error != cudaSuccess)
-                {
-                    std::string const sError(std::string(file) + "(" + std::to_string(line) + ") " + std::string(desc) + " : '" + cudaGetErrorName(error) +  "': '" + std::string(cudaGetErrorString(error)) + "'!");
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    std::cerr << sError << std::endl;
-#endif
-                    ALPAKA_DEBUG_BREAK;
-                    // reset the last error to allow user side error handling
-                    cudaGetLastError();
-                    throw std::runtime_error(sError);
-                }
-            }
-            //-----------------------------------------------------------------------------
-            //! CUDA runtime API error checking with log and exception, ignoring specific error values
-            // NOTE: All ignored errors have to be convertible to cudaError_t.
-            template<
-                typename... TErrors>
-            ALPAKA_FN_HOST auto cudaRtCheckIgnore(
-                cudaError_t const & error,
-                char const * cmd,
-                char const * file,
-                int const & line,
-                TErrors && ... ignoredErrorCodes)
-            -> void
-            {
-                if(error != cudaSuccess)
-                {
-                    std::array<cudaError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{ignoredErrorCodes...};
-
-                    // If the error code is not one of the ignored ones.
-                    if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
-                    {
-                        cudaRtCheck(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
-                    }
-                }
-            }
-            //-----------------------------------------------------------------------------
-            //! CUDA runtime API last error checking with log and exception.
-            ALPAKA_FN_HOST inline auto cudaRtCheckLastError(
-                char const * desc,
-                char const * file,
-                int const & line)
-            -> void
-            {
-                cudaError_t const error(cudaGetLastError());
-                cudaRtCheck(error, desc, file, line);
-            }
-        }
-    }
-}
-
-#if BOOST_COMP_MSVC
-    //-----------------------------------------------------------------------------
-    //! CUDA runtime error checking with log and exception, ignoring specific error values
-    #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
-        ::alpaka::cuda::detail::cudaRtCheckLastError("'" #cmd "' A previous CUDA call (not this one) set the error ", __FILE__, __LINE__);\
-        ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
-#else
-    #if BOOST_COMP_CLANG
-        #pragma clang diagnostic push
-        #pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-    #endif
-    //-----------------------------------------------------------------------------
-    //! CUDA runtime error checking with log and exception, ignoring specific error values
-    #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
-        ::alpaka::cuda::detail::cudaRtCheckLastError("'" #cmd "' A previous CUDA call (not this one) set the error ", __FILE__, __LINE__);\
-        ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
-    #if BOOST_COMP_CLANG
-        #pragma clang diagnostic pop
-    #endif
-#endif
-
-//-----------------------------------------------------------------------------
-//! CUDA runtime error checking with log and exception.
-#define ALPAKA_CUDA_RT_CHECK(cmd)\
-    ALPAKA_CUDA_RT_CHECK_IGNORE(cmd)
+#define ALPAKA_PP_CONCAT_DO(X,Y) X##Y
+#define ALPAKA_PP_CONCAT(X,Y) ALPAKA_PP_CONCAT_DO(X,Y)
+//! prefix a name with `cuda`
+#define ALPAKA_API_PREFIX(name) ALPAKA_PP_CONCAT_DO(cuda,name)
 
 namespace alpaka
 {
@@ -746,5 +657,7 @@ namespace alpaka
         }
     }
 }
+
+#include <alpaka/core/UniformCudaHip.hpp>
 
 #endif

@@ -80,15 +80,10 @@ namespace alpaka
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     int iNumDevices(0);
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    cudaError_t error = cudaGetDeviceCount(&iNumDevices);
-                    if(error != cudaSuccess)
+                    ALPAKA_API_PREFIX(Error_t) error = ALPAKA_API_PREFIX(GetDeviceCount)(&iNumDevices);
+                    if(error != ALPAKA_API_PREFIX(Success))
                         iNumDevices = 0;
-#else
-                    hipError_t error = hipGetDeviceCount(&iNumDevices);
-                    if(error != hipSuccess)
-                        iNumDevices = 0;
-#endif
+
                     return static_cast<std::size_t>(iNumDevices);
                 }
             };
@@ -112,7 +107,7 @@ namespace alpaka
                     if(devIdx >= devCount)
                     {
                         std::stringstream ssErr;
-                        ssErr << "Unable to return device handle for device " << devIdx << ". There are only " << devCount << " CUDA devices!";
+                        ssErr << "Unable to return device handle for device " << devIdx << ". There are only " << devCount << " devices!";
                         throw std::runtime_error(ssErr.str());
                     }
 
@@ -124,11 +119,10 @@ namespace alpaka
     #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
         #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         cudaDeviceProp devProp;
-                        ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&devProp, dev.m_iDevice));
         #else
-                      hipDeviceProp_t devProp;
-                      ALPAKA_HIP_RT_CHECK(hipGetDeviceProperties(&devProp, dev.m_iDevice));
+                        hipDeviceProp_t devProp;
         #endif
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(GetDeviceProperties)(&devProp, dev.m_iDevice));
     #endif
     #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         printDeviceProperties(devProp);
@@ -155,77 +149,48 @@ namespace alpaka
                 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     cudaError rc(cudaSetDevice(static_cast<int>(iDevice)));
+#else
+                    hipError_t rc(hipSetDevice(static_cast<int>(iDevice)));
+#endif
 
-                    cudaStream_t queue = {};
+                    ALPAKA_API_PREFIX(Stream_t) queue = {};
                     // Create a dummy queue to check if the device is already used by an other process.
-                    // cudaSetDevice never returns an error if another process already uses the selected device and gpu compute mode is set "process exclusive".
+                    // cuda/hip-SetDevice never returns an error if another process already uses the selected device and gpu compute mode is set "process exclusive".
                     // \TODO: Check if this workaround is needed!
-                    if(rc == cudaSuccess)
+                    if(rc == ALPAKA_API_PREFIX(Success))
                     {
-                        rc = cudaStreamCreate(&queue);
+                        rc = ALPAKA_API_PREFIX(StreamCreate)(&queue);
                     }
 
-                    if(rc == cudaSuccess)
+                    if(rc == ALPAKA_API_PREFIX(Success))
                     {
                         // Destroy the dummy queue.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaStreamDestroy(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(StreamDestroy)(
                                 queue));
                         return true;
                     }
                     else
                     {
                         // Return the previous error from cudaStreamCreate.
-                        ALPAKA_CUDA_RT_CHECK(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             rc);
                         // Reset the Error state.
-                        cudaGetLastError();
+                        ALPAKA_API_PREFIX(GetLastError)();
                                return false;
                     }
                 }
-#else
-                    hipError_t rc(hipSetDevice(static_cast<int>(iDevice)));
-
-                    hipStream_t queue = {};
-                    // Create a dummy queue to check if the device is already used by an other process.
-                    // hipSetDevice never returns an error if another process already uses the selected device and gpu compute mode is set "process exclusive".
-                    // \TODO: Check if this workaround is needed!
-                    if(rc == hipSuccess)
-                    {
-                        rc = hipStreamCreate(&queue);
-                    }
-
-                    if(rc == hipSuccess)
-                    {
-                        // Destroy the dummy queue.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipStreamDestroy(
-                                queue));
-                        return true;
-                    }
-                    else
-                    {
-                        // Return the previous error from hipStreamCreate.
-                        ALPAKA_HIP_RT_CHECK(
-                            rc);
-                        // Reset the Error state.
-                        hipGetLastError();
-
-                        return false;
-                    }
-                }
-#endif
-
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 //-----------------------------------------------------------------------------
                 //! Prints all the device properties to std::cout.
                 ALPAKA_FN_HOST static auto printDeviceProperties(
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    cudaDeviceProp const & devProp)
+                    cudaDeviceProp const & devProp
 #else
-                    hipDeviceProp_t const & devProp)
+                    hipDeviceProp_t const & devProp
 #endif
+                )
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;

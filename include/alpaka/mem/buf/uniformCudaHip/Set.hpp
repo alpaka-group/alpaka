@@ -174,31 +174,17 @@ namespace alpaka
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     ALPAKA_ASSERT(extentWidth <= dstWidth);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemsetAsync(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(MemsetAsync)(
                             dstNativePtr,
                             static_cast<int>(byte),
                             static_cast<size_t>(extentWidthBytes),
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDevice));
-                    // Initiate the memory set.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemsetAsync(
-                            dstNativePtr,
-                            static_cast<int>(byte),
-                            static_cast<size_t>(extentWidthBytes),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                 }
             };
             //#############################################################################
@@ -246,31 +232,17 @@ namespace alpaka
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(view)));
                     ALPAKA_ASSERT(extentWidth <= dstWidth);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemsetAsync(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(MemsetAsync)(
                             dstNativePtr,
                             static_cast<int>(byte),
                             static_cast<size_t>(extentWidthBytes),
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDevice));
-                    // Initiate the memory set.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemsetAsync(
-                            dstNativePtr,
-                            static_cast<int>(byte),
-                            static_cast<size_t>(extentWidthBytes),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                     wait::wait(queue);
                 }
             };
@@ -324,35 +296,19 @@ namespace alpaka
                     ALPAKA_ASSERT(extentWidth <= dstWidth);
                     ALPAKA_ASSERT(extentHeight <= dstHeight);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemset2DAsync(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(Memset2DAsync)(
                             dstNativePtr,
                             static_cast<size_t>(dstPitchBytesX),
                             static_cast<int>(byte),
                             static_cast<size_t>(extentWidthBytes),
                             static_cast<size_t>(extentHeight),
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDevice));
-                    // Initiate the memory set.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemset2DAsync(
-                            dstNativePtr,
-                            static_cast<size_t>(dstPitchBytesX),
-                            static_cast<int>(byte),
-                            static_cast<size_t>(extentWidthBytes),
-                            static_cast<size_t>(extentHeight),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                 }
             };
             //#############################################################################
@@ -405,15 +361,14 @@ namespace alpaka
                     ALPAKA_ASSERT(extentWidth <= dstWidth);
                     ALPAKA_ASSERT(extentHeight <= dstHeight);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             iDevice));
 
                     // Initiate the memory set.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemset2DAsync(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(Memset2DAsync)(
                             dstNativePtr,
                             static_cast<size_t>(dstPitchBytesX),
                             static_cast<int>(byte),
@@ -421,22 +376,6 @@ namespace alpaka
                             static_cast<size_t>(extentHeight),
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
 
-#else
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDevice));
-
-                    // Initiate the memory set.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemset2DAsync(
-                            dstNativePtr,
-                            static_cast<size_t>(dstPitchBytesX),
-                            static_cast<int>(byte),
-                            static_cast<size_t>(extentWidthBytes),
-                            static_cast<size_t>(extentHeight),
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                     wait::wait(queue);
                 }
             };
@@ -494,59 +433,31 @@ namespace alpaka
                     ALPAKA_ASSERT(extentHeight <= dstHeight);
                     ALPAKA_ASSERT(extentDepth <= dstDepth);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Fill CUDA parameter structures.
-                    cudaPitchedPtr const cudaPitchedPtrVal(
-                        make_cudaPitchedPtr(
+                    ALPAKA_API_PREFIX(PitchedPtr) const pitchedPtrVal(
+                        ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(PitchedPtr))(
                             dstNativePtr,
                             static_cast<size_t>(dstPitchBytesX),
                             static_cast<size_t>(dstWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(dstPitchBytesY / dstPitchBytesX)));
 
-                    cudaExtent const cudaExtentVal(
-                        make_cudaExtent(
+                    ALPAKA_API_PREFIX(Extent) const extentVal(
+                        ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(Extent))(
                             static_cast<size_t>(extentWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(extentHeight),
                             static_cast<size_t>(extentDepth)));
 
                     // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemset3DAsync(
-                            cudaPitchedPtrVal,
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(Memset3DAsync)(
+                            pitchedPtrVal,
                             static_cast<int>(byte),
-                            cudaExtentVal,
+                            extentVal,
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    // Fill CUDA parameter structures.
-                    hipPitchedPtr const hipPitchedPtrVal(
-                        make_hipPitchedPtr(
-                            dstNativePtr,
-                            static_cast<size_t>(dstPitchBytesX),
-                            static_cast<size_t>(dstWidth * static_cast<Idx>(sizeof(Elem))),
-                            static_cast<size_t>(dstPitchBytesY / dstPitchBytesX)));
-
-                    hipExtent const hipExtentVal(
-                        make_hipExtent(
-                            static_cast<size_t>(extentWidth * static_cast<Idx>(sizeof(Elem))),
-                            static_cast<size_t>(extentHeight),
-                            static_cast<size_t>(extentDepth)));
-
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDevice));
-                    // Initiate the memory set.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemset3DAsync(
-                            hipPitchedPtrVal,
-                            static_cast<int>(byte),
-                            hipExtentVal,
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                 }
             };
             //#############################################################################
@@ -603,59 +514,32 @@ namespace alpaka
                     ALPAKA_ASSERT(extentHeight <= dstHeight);
                     ALPAKA_ASSERT(extentDepth <= dstDepth);
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Fill CUDA parameter structures.
-                    cudaPitchedPtr const cudaPitchedPtrVal(
-                        make_cudaPitchedPtr(
+                    ALPAKA_API_PREFIX(PitchedPtr) const pitchedPtrVal(
+                        ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(PitchedPtr))(
                             dstNativePtr,
                             static_cast<size_t>(dstPitchBytesX),
                             static_cast<size_t>(dstWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(dstPitchBytesY / dstPitchBytesX)));
 
-                    cudaExtent const cudaExtentVal(
-                        make_cudaExtent(
+                    ALPAKA_API_PREFIX(Extent) const extentVal(
+                        ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(Extent))(
                             static_cast<size_t>(extentWidth * static_cast<Idx>(sizeof(Elem))),
                             static_cast<size_t>(extentHeight),
                             static_cast<size_t>(extentDepth)));
 
                     // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaMemset3DAsync(
-                            cudaPitchedPtrVal,
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(Memset3DAsync)(
+                            pitchedPtrVal,
                             static_cast<int>(byte),
-                            cudaExtentVal,
+                            extentVal,
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    // Fill CUDA parameter structures.
-                    hipPitchedPtr const hipPitchedPtrVal(
-                        make_hipPitchedPtr(
-                            dstNativePtr,
-                            static_cast<size_t>(dstPitchBytesX),
-                            static_cast<size_t>(dstWidth * static_cast<Idx>(sizeof(Elem))),
-                            static_cast<size_t>(dstPitchBytesY / dstPitchBytesX)));
 
-                    hipExtent const hipExtentVal(
-                        make_hipExtent(
-                            static_cast<size_t>(extentWidth * static_cast<Idx>(sizeof(Elem))),
-                            static_cast<size_t>(extentHeight),
-                            static_cast<size_t>(extentDepth)));
-
-                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            iDevice));
-                    // Initiate the memory set.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipMemset3DAsync(
-                            hipPitchedPtrVal,
-                            static_cast<int>(byte),
-                            hipExtentVal,
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                     wait::wait(queue);
                 }
             };

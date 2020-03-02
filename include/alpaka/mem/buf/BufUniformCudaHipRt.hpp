@@ -117,23 +117,14 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                    // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
-                            dev.m_iDevice));
-                    // Free the buffer.
-                    ALPAKA_CUDA_RT_CHECK(
-                      cudaFree(reinterpret_cast<void *>(memPtr)));
-#else
+
                    // Set the current device.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             dev.m_iDevice));
                     // Free the buffer.
-                    ALPAKA_HIP_RT_CHECK(
-                        hipFree(reinterpret_cast<void *>(memPtr)));
-#endif
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(Free)(reinterpret_cast<void *>(memPtr)));
                 }
 
             public:
@@ -356,29 +347,17 @@ namespace alpaka
 
                         auto const width(extent::getWidth(extent));
                         auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 dev.m_iDevice));
                         // Allocate the buffer on this device.
                         void * memPtr;
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMalloc(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(Malloc)(
                                 &memPtr,
                                 static_cast<std::size_t>(widthBytes)));
-#else
-                        // Set the current device.
-                        ALPAKA_HIP_RT_CHECK(
-                            hipSetDevice(
-                                dev.m_iDevice));
-                        // Allocate the buffer on this device.
-                        void * memPtr;
-                        ALPAKA_HIP_RT_CHECK(
-                            hipMalloc(
-                                &memPtr,
-                                static_cast<std::size_t>(widthBytes)));
-#endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << __func__
@@ -420,44 +399,30 @@ namespace alpaka
                         auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
                         auto const height(extent::getHeight(extent));
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
-                                dev.m_iDevice));
-                        // Allocate the buffer on this device.
-                        void * memPtr;
-                        std::size_t pitchBytes;
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMallocPitch(
-                                &memPtr,
-                                &pitchBytes,
-                                static_cast<std::size_t>(widthBytes),
-                                static_cast<std::size_t>(height)));
-                        ALPAKA_ASSERT(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
-#else
+
                         void * memPtr = nullptr;
                         std::size_t pitchBytes = widthBytes;
-
+#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
                         //FIXME: hcc cannot handle zero-size input (throws Unknown Error)
-                        if(width!=0 && height!=0) {
+                        if(width!=0 && height!=0)
+#endif
+                        {
 
                             // Set the current device.
-                            ALPAKA_HIP_RT_CHECK(
-                                hipSetDevice(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                ALPAKA_API_PREFIX(SetDevice)(
                                     dev.m_iDevice));
 
 
                             // Allocate the buffer on this device.
-                            ALPAKA_HIP_RT_CHECK(
-                                hipMallocPitch(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                ALPAKA_API_PREFIX(MallocPitch)(
                                     &memPtr,
                                     &pitchBytes,
                                     static_cast<std::size_t>(widthBytes),
                                     static_cast<std::size_t>(height)));
                             ALPAKA_ASSERT(pitchBytes >= static_cast<std::size_t>(widthBytes) || (width * height) == 0);
                         }
-#endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << __func__
@@ -497,91 +462,52 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        cudaExtent const cudaExtentVal(
-                            make_cudaExtent(
+                        ALPAKA_API_PREFIX(Extent) const extentVal(
+                            ALPAKA_PP_CONCAT(make_,ALPAKA_API_PREFIX(Extent))(
                                 static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))),
                                 static_cast<std::size_t>(extent::getHeight(extent)),
                                 static_cast<std::size_t>(extent::getDepth(extent))));
 
-                        // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
-                                dev.m_iDevice));
-                        // Allocate the buffer on this device.
-                        cudaPitchedPtr cudaPitchedPtrVal;
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaMalloc3D(
-                                &cudaPitchedPtrVal,
-                                cudaExtentVal));
-#else
-                        hipExtent const hipExtentVal(
-                            make_hipExtent(
-                                static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))),
-                                static_cast<std::size_t>(extent::getHeight(extent)),
-                                static_cast<std::size_t>(extent::getDepth(extent))));
-
-                        hipPitchedPtr hipPitchedPtrVal = {0};
-
+                        ALPAKA_API_PREFIX(PitchedPtr) pitchedPtrVal;
+                        pitchedPtrVal.ptr = nullptr;
+#ifdef ALPAKA_ACC_GPU_HIP_ENABLED
                         //FIXME: hcc cannot handle zero-size input
-                        if(hipExtentVal.width!=0
-                           && hipExtentVal.height!=0
-                           && hipExtentVal.depth!=0) {
+                        if(extentVal.width!=0
+                           && extentVal.height!=0
+                           && extentVal.depth!=0)
+#endif
+                        {
 
                             // Set the current device.
-                            ALPAKA_HIP_RT_CHECK(
-                                hipSetDevice(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                ALPAKA_API_PREFIX(SetDevice)(
                                     dev.m_iDevice));
                             // Allocate the buffer on this device.
-                            ALPAKA_HIP_RT_CHECK(
-                                hipMalloc3D(
-                                    &hipPitchedPtrVal,
-                                    hipExtentVal));
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                ALPAKA_API_PREFIX(Malloc3D)(
+                                    &pitchedPtrVal,
+                                    extentVal));
                         }
 
-#endif
-
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-    #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         std::cout << __func__
                             << " ew: " << extent::getWidth(extent)
-                            << " eh: " << cudaExtentVal.height
-                            << " ed: " << cudaExtentVal.depth
-                            << " ewb: " << cudaExtentVal.width
-                            << " ptr: " << cudaPitchedPtrVal.ptr
-                            << " pitch: " << cudaPitchedPtrVal.pitch
-                            << " wb: " << cudaPitchedPtrVal.xsize
-                            << " h: " << cudaPitchedPtrVal.ysize
+                            << " eh: " << extentVal.height
+                            << " ed: " << extentVal.depth
+                            << " ewb: " << extentVal.width
+                            << " ptr: " << pitchedPtrVal.ptr
+                            << " pitch: " << pitchedPtrVal.pitch
+                            << " wb: " << pitchedPtrVal.xsize
+                            << " h: " << pitchedPtrVal.ysize
                             << std::endl;
-    #else
-                        std::cout << __func__
-                            << " ew: " << extent::getWidth(extent)
-                            << " eh: " << hipExtentVal.height
-                            << " ed: " << hipExtentVal.depth
-                            << " ewb: " << hipExtentVal.width
-                            << " ptr: " << hipPitchedPtrVal.ptr
-                            << " pitch: " << hipPitchedPtrVal.pitch
-                            << " wb: " << hipPitchedPtrVal.xsize
-                            << " h: " << hipPitchedPtrVal.ysize
-                            << std::endl;
-    #endif
 #endif
 
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                         return
                             mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<3u>, TIdx>(
                                 dev,
-                                reinterpret_cast<TElem *>(cudaPitchedPtrVal.ptr),
-                                static_cast<TIdx>(cudaPitchedPtrVal.pitch),
+                                reinterpret_cast<TElem *>(pitchedPtrVal.ptr),
+                                static_cast<TIdx>(pitchedPtrVal.pitch),
                                 extent);
-#else
-                        return
-                            mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<3u>, TIdx>(
-                                dev,
-                                reinterpret_cast<TElem *>(hipPitchedPtrVal.ptr),
-                                static_cast<TIdx>(hipPitchedPtrVal.pitch),
-                                extent);
-#endif
                     }
                 };
                 //#############################################################################
@@ -786,25 +712,14 @@ namespace alpaka
                         // If it is already the same device, nothing has to be mapped.
                         if(dev::getDev(buf) != dev)
                         {
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                            // cudaHostRegisterMapped:
+                            // cuda/hip-HostRegisterMapped:
                             //   Maps the allocation into the CUDA/HIP address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
                             //   This feature is available only on GPUs with compute capability greater than or equal to 1.1.
-                            ALPAKA_CUDA_RT_CHECK(
-                                cudaHostRegister(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                ALPAKA_API_PREFIX(HostRegister)(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
                                     extent::getExtentProduct(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TIdx>>),
-                                    cudaHostRegisterMapped));
-#else
-                            // hipHostRegisterMapped:
-                            //   Maps the allocation into the HIP address space.The device pointer to the memory may be obtained by calling hipHostGetDevicePointer().
-                            //   This feature is available only on GPUs with compute capability greater than or equal to 1.1.
-                            ALPAKA_HIP_RT_CHECK(
-                                hipHostRegister(
-                                    const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getExtentProduct(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TIdx>>),
-                                    hipHostRegisterMapped));
-#endif
+                                    ALPAKA_API_PREFIX(HostRegisterMapped)));
                         }
                     }
                 };
@@ -830,15 +745,9 @@ namespace alpaka
                         {
                             // Unmaps the memory range whose base address is specified by ptr, and makes it pageable again.
                             // \FIXME: If the memory has separately been pinned before we destroy the pinning state.
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                            ALPAKA_CUDA_RT_CHECK(
-                                cudaHostUnregister(
+                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                ALPAKA_API_PREFIX(HostUnregister)(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf)))));
-#else
-                            ALPAKA_HIP_RT_CHECK(
-                                hipHostUnregister(
-                                    const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf)))));
-#endif
                         }
                         // If it is already the same device, nothing has to be unmapped.
                     }
@@ -867,19 +776,13 @@ namespace alpaka
                     {
                         // TODO: Check if the memory is mapped at all!
                         TElem * pDev(nullptr);
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaHostGetDevicePointer(
+
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(HostGetDevicePointer)(
                                 &pDev,
                                 const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
                                 0));
-#else
-                        ALPAKA_HIP_RT_CHECK(
-                            hipHostGetDevicePointer(
-                                &pDev,
-                                const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                0));
-#endif
+
                         return pDev;
                     }
                     //-----------------------------------------------------------------------------
@@ -890,19 +793,13 @@ namespace alpaka
                     {
                         // TODO: Check if the memory is mapped at all!
                         TElem * pDev(nullptr);
-#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaHostGetDevicePointer(
+
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(HostGetDevicePointer)(
                                 &pDev,
                                 mem::view::getPtrNative(buf),
                                 0));
-#else
-                        ALPAKA_HIP_RT_CHECK(
-                            hipHostGetDevicePointer(
-                                &pDev,
-                                mem::view::getPtrNative(buf),
-                                0));
-#endif
+
                         return pDev;
                     }
                 };

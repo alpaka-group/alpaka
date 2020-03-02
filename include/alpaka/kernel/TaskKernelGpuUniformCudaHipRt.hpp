@@ -379,16 +379,10 @@ namespace alpaka
     #endif
 #endif
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             queue.m_spQueueImpl->m_dev.m_iDevice));
-#else
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            queue.m_spQueueImpl->m_dev.m_iDevice));
-#endif
                     // Enqueue the kernel execution.
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
@@ -421,19 +415,12 @@ namespace alpaka
                         task.m_args);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    // Wait for the kernel execution to finish but do not check error return of this call.
-                    // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
-                    cudaStreamSynchronize(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue);
-                    std::string const msg("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
-                    ::alpaka::cuda::detail::cudaRtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-    #else
-                    hipStreamSynchronize(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue);
-                    std::string const msg("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
-                    ::alpaka::hip::detail::hipRtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-    #endif
+                // Wait for the kernel execution to finish but do not check error return of this call.
+                // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
+                ALPAKA_API_PREFIX(StreamSynchronize)(
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue);
+                std::string const msg("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
+                ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
 #endif
                 }
             };
@@ -520,10 +507,13 @@ namespace alpaka
 
                     auto kernelName = kernel::uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    // hipFuncAttributes not ported from HIP to HIP.
+                    // TODO why this is currently not possible
+                    //
                     // Log the function attributes.
     #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    cudaFuncAttributes funcAttrs;
-                    cudaFuncGetAttributes(&funcAttrs, kernelName);
+                    ALPAKA_API_PREFIX(FuncAttributes) funcAttrs;
+                    ALPAKA_API_PREFIX(FuncGetAttributes)(&funcAttrs, kernelName);
                     std::cout << __func__
                         << " binaryVersion: " << funcAttrs.binaryVersion
                         << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
@@ -533,36 +523,14 @@ namespace alpaka
                         << " ptxVersion: " << funcAttrs.ptxVersion
                         << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
                         << std::endl;
-    #else
-                    // hipFuncAttributes not ported from HIP to HIP.
-                    // Log the function attributes.
-                    /* TODO why this is currently not possible
-                    hipFuncAttributes funcAttrs;
-                    hipFuncGetAttributes(&funcAttrs, kernelName);
-                    std::cout << __func__
-                        << " binaryVersion: " << funcAttrs.binaryVersion
-                        << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
-                        << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
-                        << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
-                        << " numRegs: " << funcAttrs.numRegs
-                        << " ptxVersion: " << funcAttrs.ptxVersion
-                        << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
-                        << std::endl;
-                     */
     #endif
-
 #endif
 
                     // Set the current device.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             queue.m_spQueueImpl->m_dev.m_iDevice));
-#else
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            queue.m_spQueueImpl->m_dev.m_iDevice));
-#endif
+
                     // Enqueue the kernel execution.
                     meta::apply(
                         [&](std::decay_t<TArgs> const & ... args)
@@ -593,20 +561,11 @@ namespace alpaka
 
                     // Wait for the kernel execution to finish but do not check error return of this call.
                     // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    cudaStreamSynchronize(
+                    ALPAKA_API_PREFIX(StreamSynchronize)(
                         queue.m_spQueueImpl->m_UniformCudaHipQueue);
-#else
-                    hipStreamSynchronize(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue);
-#endif
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     std::string const msg("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
-    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ::alpaka::cuda::detail::cudaRtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-    #else
-                    ::alpaka::hip::detail::hipRtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-    #endif
+                    ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
 #endif
                 }
             };

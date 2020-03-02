@@ -26,107 +26,18 @@
 
 #include <hip/hip_runtime.h>
 
-#include <array>
 #include <type_traits>
 #include <utility>
-#include <iostream>
-#include <string>
-#include <stdexcept>
 #include <cstddef>
 
 #ifdef __HIP_PLATFORM_HCC__
   #define HIPRT_CB
 #endif
 
-
-namespace alpaka
-{
-    namespace hip
-    {
-        namespace detail
-        {
-            //-----------------------------------------------------------------------------
-            //! HIP runtime API error checking with log and exception, ignoring specific error values
-            ALPAKA_FN_HOST inline auto hipRtCheck(
-                hipError_t const & error,
-                char const * desc,
-                char const * file,
-                int const & line)
-            -> void
-            {
-                if(error != hipSuccess)
-                {
-                    std::string const sError(std::string(file) + "(" + std::to_string(line) + ") " + std::string(desc) + " : '" + hipGetErrorName(error) +  "': '" + std::string(hipGetErrorString(error)) + "'!");
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    std::cerr << sError << std::endl;
-#endif
-                    ALPAKA_DEBUG_BREAK;
-                    throw std::runtime_error(sError);
-                }
-            }
-            //-----------------------------------------------------------------------------
-            //! HIP runtime API error checking with log and exception, ignoring specific error values
-            // NOTE: All ignored errors have to be convertible to hipError_t.
-            template<
-                typename... TErrors>
-            ALPAKA_FN_HOST auto hipRtCheckIgnore(
-                hipError_t const & error,
-                char const * cmd,
-                char const * file,
-                int const & line,
-                TErrors && ... ignoredErrorCodes)
-            -> void
-            {
-                if(error != hipSuccess)
-                {
-                    std::array<hipError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{ignoredErrorCodes...};
-                    // If the error code is not one of the ignored ones.
-                    if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
-                    {
-                        hipRtCheck(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
-                    }
-                }
-            }
-            //-----------------------------------------------------------------------------
-            //! HIP runtime API last error checking with log and exception.
-            ALPAKA_FN_HOST inline auto hipRtCheckLastError(
-                char const * desc,
-                char const * file,
-                int const & line)
-            -> void
-            {
-                hipError_t const error(hipGetLastError());
-                hipRtCheck(error, desc, file, line);
-            }
-        }
-    }
-}
-
-#if BOOST_COMP_MSVC
-    //-----------------------------------------------------------------------------
-    //! HIP runtime error checking with log and exception, ignoring specific error values
-    #define ALPAKA_HIP_RT_CHECK_IGNORE(cmd, ...)\
-        ::alpaka::hip::detail::hipRtCheckLastError("'" #cmd "' A previous HIP call (not this one) set the error ", __FILE__, __LINE__);\
-        ::alpaka::hip::detail::hipRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
-#else
-    #if BOOST_COMP_CLANG
-        #pragma clang diagnostic push
-        #pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-    #endif
-    //-----------------------------------------------------------------------------
-    //! HIP runtime error checking with log and exception, ignoring specific error values
-    #define ALPAKA_HIP_RT_CHECK_IGNORE(cmd, ...)\
-        ::alpaka::hip::detail::hipRtCheckLastError("'" #cmd "' A previous HIP call (not this one) set the error ", __FILE__, __LINE__);\
-        ::alpaka::hip::detail::hipRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
-    #if BOOST_COMP_CLANG
-        #pragma clang diagnostic pop
-    #endif
-#endif
-
-//-----------------------------------------------------------------------------
-//! HIP runtime error checking with log and exception.
-#define ALPAKA_HIP_RT_CHECK(cmd)\
-    ALPAKA_HIP_RT_CHECK_IGNORE(cmd)
+#define ALPAKA_PP_CONCAT_DO(X,Y) X##Y
+#define ALPAKA_PP_CONCAT(X,Y) ALPAKA_PP_CONCAT_DO(X,Y)
+//! prefix a name with `hip`
+#define ALPAKA_API_PREFIX(name) ALPAKA_PP_CONCAT_DO(hip,name)
 
 //-----------------------------------------------------------------------------
 // HIP vector_types.h trait specializations.
@@ -703,5 +614,7 @@ namespace alpaka
         }
     }
 }
+
+#include <alpaka/core/UniformCudaHip.hpp>
 
 #endif

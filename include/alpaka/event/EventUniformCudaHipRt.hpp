@@ -62,31 +62,21 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaSetDevice(
-                                m_dev.m_iDevice));
-                        // Create the event on the current device with the specified flags. Valid flags include:
-                        // - cudaEventDefault: Default event creation flag.
-                        // - cudaEventBlockingSync : Specifies that event should use blocking synchronization.
-                        //   A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
-                        // - cudaEventDisableTiming : Specifies that the created event does not need to record timing data.
-                        //   Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
-                        ALPAKA_CUDA_RT_CHECK(
-                            cudaEventCreateWithFlags(
-                                &m_UniformCudaHipEvent,
-                                (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
-#else
-                        ALPAKA_HIP_RT_CHECK(
-                            hipSetDevice(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(SetDevice)(
                                 m_dev.m_iDevice));
 
-                        ALPAKA_HIP_RT_CHECK(
-                            hipEventCreateWithFlags(
+                        // Create the event on the current device with the specified flags. Valid flags include:
+                        // - cuda/hip-EventDefault: Default event creation flag.
+                        // - cuda/hip-EventBlockingSync : Specifies that event should use blocking synchronization.
+                        //   A host thread that uses cuda/hip-EventSynchronize() to wait on an event created with this flag will block until the event actually completes.
+                        // - cuda/hip-EventDisableTiming : Specifies that the created event does not need to record timing data.
+                        //   Events created with this flag specified and the cuda/hip-EventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            ALPAKA_API_PREFIX(EventCreateWithFlags)(
                                 &m_UniformCudaHipEvent,
-                                (bBusyWait ? hipEventDefault : hipEventBlockingSync) | hipEventDisableTiming));
-#endif
+                                (bBusyWait ? ALPAKA_API_PREFIX(EventDefault) : ALPAKA_API_PREFIX(EventBlockingSync)) | ALPAKA_API_PREFIX(EventDisableTiming)));
                     }
                     //-----------------------------------------------------------------------------
                     EventUniformCudaHipImpl(EventUniformCudaHipImpl const &) = delete;
@@ -101,30 +91,21 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        // Set the current device. \TODO: Is setting the current device before cudaEventDestroy required?
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                        // Set the current device. \TODO: Is setting the current device before cuda/hip-EventDestroy required?
+
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(
                             m_dev.m_iDevice));
-                        // In case event has been recorded but has not yet been completed when cudaEventDestroy() is called, the function will return immediately
+                        // In case event has been recorded but has not yet been completed when cuda/hip-EventDestroy() is called, the function will return immediately
                         // and the resources associated with event will be released automatically once the device has completed event.
                         // -> No need to synchronize here.
-                        ALPAKA_CUDA_RT_CHECK(cudaEventDestroy(
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventDestroy)(
                             m_UniformCudaHipEvent));
-#else
-                        ALPAKA_HIP_RT_CHECK(hipSetDevice(
-                            m_dev.m_iDevice));
-                        ALPAKA_HIP_RT_CHECK(hipEventDestroy(
-                            m_UniformCudaHipEvent));
-#endif
                     }
 
                 public:
                     dev::DevUniformCudaHipRt const m_dev;   //!< The device this event is bound to.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    cudaEvent_t m_UniformCudaHipEvent;
-#else
-                    hipEvent_t m_UniformCudaHipEvent;
-#endif
+
+                    ALPAKA_API_PREFIX(Event_t) m_UniformCudaHipEvent;
                 };
             }
         }
@@ -208,21 +189,12 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Query is allowed even for events on non current device.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    cudaError_t ret = cudaSuccess;
-                    ALPAKA_CUDA_RT_CHECK_IGNORE(
-                        ret = cudaEventQuery(
+                    ALPAKA_API_PREFIX(Error_t) ret = ALPAKA_API_PREFIX(Success);
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
+                        ret = ALPAKA_API_PREFIX(EventQuery)(
                             event.m_spEventImpl->m_UniformCudaHipEvent),
-                        cudaErrorNotReady);
-                    return (ret == cudaSuccess);
-#else
-                    hipError_t ret = hipSuccess;
-                    ALPAKA_HIP_RT_CHECK_IGNORE(
-                        ret = hipEventQuery(
-                            event.m_spEventImpl->m_UniformCudaHipEvent),
-                        hipErrorNotReady);
-                    return (ret == hipSuccess);
-#endif
+                        ALPAKA_API_PREFIX(ErrorNotReady));
+                    return (ret == ALPAKA_API_PREFIX(Success));
                 }
             };
         }
@@ -245,15 +217,10 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
+
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
                         event.m_spEventImpl->m_UniformCudaHipEvent,
                         queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    ALPAKA_HIP_RT_CHECK(hipEventRecord(
-                         event.m_spEventImpl->m_UniformCudaHipEvent,
-                         queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                 }
             };
             //#############################################################################
@@ -270,15 +237,10 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
+
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
                         event.m_spEventImpl->m_UniformCudaHipEvent,
                         queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#else
-                    ALPAKA_HIP_RT_CHECK(hipEventRecord(
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                 }
             };
         }
@@ -304,13 +266,8 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Sync is allowed even for events on non current device.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(cudaEventSynchronize(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventSynchronize)(
                         event.m_spEventImpl->m_UniformCudaHipEvent));
-#else
-                    ALPAKA_HIP_RT_CHECK(hipEventSynchronize(
-                        event.m_spEventImpl->m_UniformCudaHipEvent));
-#endif
                 }
             };
             //#############################################################################
@@ -328,17 +285,10 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
                         queue.m_spQueueImpl->m_UniformCudaHipQueue,
                         event.m_spEventImpl->m_UniformCudaHipEvent,
                         0));
-#else
-                    ALPAKA_HIP_RT_CHECK(hipStreamWaitEvent(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue,
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        0));
-#endif
                 }
             };
             //#############################################################################
@@ -356,17 +306,10 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
                         queue.m_spQueueImpl->m_UniformCudaHipQueue,
                         event.m_spEventImpl->m_UniformCudaHipEvent,
                         0));
-#else
-                    ALPAKA_HIP_RT_CHECK(hipStreamWaitEvent(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue,
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        0));
-#endif
                 }
             };
             //#############################################################################
@@ -387,28 +330,14 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Set the current device.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(
-                        cudaSetDevice(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(SetDevice)(
                             dev.m_iDevice));
-#else
-                    ALPAKA_HIP_RT_CHECK(
-                        hipSetDevice(
-                            dev.m_iDevice));
-#endif
 
-
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
                         nullptr,
                         event.m_spEventImpl->m_UniformCudaHipEvent,
                         0));
-#else
-                    ALPAKA_HIP_RT_CHECK(hipStreamWaitEvent(
-                        nullptr,
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        0));
-#endif
                 }
             };
         }
