@@ -78,21 +78,26 @@ namespace alpaka
                 pltf::PltfOmp4>
             {
                 //-----------------------------------------------------------------------------
+                //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() if < 0
                 ALPAKA_FN_HOST static auto getDevByIdx(
-                    std::size_t const & devIdx)
+                    int devIdx)
                 -> dev::DevOmp4
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    std::size_t const devCount(pltf::getDevCount<pltf::PltfOmp4>());
+                    int const devCount(pltf::getDevCount<pltf::PltfOmp4>());
                     if(devIdx >= devCount)
                     {
                         std::stringstream ssErr;
                         ssErr << "Unable to return device handle for CPU device with index " << devIdx << " because there are only " << devCount << " devices!";
                         throw std::runtime_error(ssErr.str());
                     }
+                    else if(devIdx < 0)
+                    {
+                        devIdx = ::omp_get_initial_device();
+                    }
 
-                    return {};
+                    return {devIdx};
                 }
             };
         }
