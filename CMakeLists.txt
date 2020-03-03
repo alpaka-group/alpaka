@@ -38,6 +38,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Options and Variants
 
 option(alpaka_BUILD_EXAMPLES "Build the examples" ON)
+option(alpaka_INSTALL_ONLY "Install the headers without running CMake configuration for binary targets" OFF)
 
 include(CTest)
 # automatically defines: BUILD_TESTING, default is ON
@@ -72,7 +73,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 set(_ALPAKA_INCLUDE_DIRECTORY "${_ALPAKA_ROOT_DIR}/include")
 set(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
 
-include(${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake)
+if(NOT alpaka_INSTALL_ONLY)
+    include(${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake)
+endif()
 
 # Add all the source and include files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" _ALPAKA_FILES_HEADER)
@@ -129,11 +132,13 @@ endif()
 ################################################################################
 # Add subdirectories
 
-if(alpaka_BUILD_EXAMPLES)
-    add_subdirectory("example/")
-endif()
-if(BUILD_TESTING)
-    add_subdirectory("test/")
+if(NOT alpaka_INSTALL_ONLY)
+    if(alpaka_BUILD_EXAMPLES)
+        add_subdirectory("example/")
+    endif()
+    if(BUILD_TESTING)
+        add_subdirectory("test/")
+    endif()
 endif()
 
 ################################################################################
@@ -143,15 +148,10 @@ include(GNUInstallDirs)
 
 set(_ALPAKA_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/alpaka")
 
-install(TARGETS alpaka
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-        
 write_basic_package_version_file(
     "alpakaConfigVersion.cmake"
     VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion)
+    COMPATIBILITY SameMinorVersion)
 
 configure_package_config_file(
     "${_ALPAKA_ROOT_DIR}/cmake/alpakaConfig.cmake.in"
