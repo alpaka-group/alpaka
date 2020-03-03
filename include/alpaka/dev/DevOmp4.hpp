@@ -59,7 +59,7 @@ namespace alpaka
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    DevOmp4Impl() = default;
+                    DevOmp4Impl(int iDevice) : m_iDevice(iDevice) {}
                     //-----------------------------------------------------------------------------
                     DevOmp4Impl(DevOmp4Impl const &) = delete;
                     //-----------------------------------------------------------------------------
@@ -73,9 +73,9 @@ namespace alpaka
 
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST auto getAllExistingQueues() const
-                    -> std::vector<std::shared_ptr<queue::IGenericQueue<DevOmp4>>>
+                    -> std::vector<std::shared_ptr<queue::IGenericThreadsQueue<DevOmp4>>>
                     {
-                        std::vector<std::shared_ptr<queue::IGenericQueue<DevOmp4>>> vspQueues;
+                        std::vector<std::shared_ptr<queue::IGenericThreadsQueue<DevOmp4>>> vspQueues;
 
                         std::lock_guard<std::mutex> lk(m_Mutex);
                         vspQueues.reserve(m_queues.size());
@@ -125,8 +125,8 @@ namespace alpaka
 
         protected:
             //-----------------------------------------------------------------------------
-            DevOmp4() :
-                m_spDevOmp4Impl(std::make_shared<omp4::detail::DevOmp4Impl>())
+            DevOmp4(int iDevice) :
+                m_spDevOmp4Impl(std::make_shared<omp4::detail::DevOmp4Impl>(iDevice))
             {}
         public:
             //-----------------------------------------------------------------------------
@@ -291,8 +291,8 @@ namespace alpaka
     }
     namespace queue
     {
-        using QueueOmp4NonBlocking = QueueGenericNonBlocking<dev::DevOmp4>;
-        using QueueOmp4Blocking = QueueGenericBlocking<dev::DevOmp4>;
+        using QueueOmp4NonBlocking = QueueGenericThreadsNonBlocking<dev::DevOmp4>;
+        using QueueOmp4Blocking = QueueGenericThreadsBlocking<dev::DevOmp4>;
 
         namespace traits
         {
