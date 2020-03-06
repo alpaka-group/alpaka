@@ -403,7 +403,7 @@ namespace alpaka
                         void * memPtr = nullptr;
                         std::size_t pitchBytes = widthBytes;
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-                        //FIXME: hcc cannot handle zero-size input (throws Unknown Error)
+                        //FIXME: HIP cannot handle zero-size input (throws Unknown Error)
                         if(width!=0 && height!=0)
 #endif
                         {
@@ -471,7 +471,7 @@ namespace alpaka
                         ALPAKA_API_PREFIX(PitchedPtr) pitchedPtrVal;
                         pitchedPtrVal.ptr = nullptr;
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
-                        //FIXME: hcc cannot handle zero-size input
+                        //FIXME: HIP cannot handle zero-size input
                         if(extentVal.width!=0
                            && extentVal.height!=0
                            && extentVal.depth!=0)

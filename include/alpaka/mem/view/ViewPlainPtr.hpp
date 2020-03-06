@@ -327,8 +327,8 @@ namespace alpaka
                                 reinterpret_cast<void **>(&pMemAcc),
                                 *pMem)));
     #else
-                        // FIXME: still does not work in HIP(HCC) (results in hipErrorNotFound)
-                        // HIP_SYMBOL(X) not useful because it only does #X on HIP(HCC), while &X on HIP(NVCC)
+                        // FIXME: still does not work in HIP(clang) (results in hipErrorNotFound)
+                        // HIP_SYMBOL(X) not useful because it only does #X on HIP(clang), while &X on HIP(NVCC)
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             hipGetSymbolAddress(
                                 reinterpret_cast<void **>(&pMemAcc),

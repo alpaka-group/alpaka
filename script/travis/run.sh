@@ -98,7 +98,7 @@ then
     # TODO: rely on CI vars for platform and architecture
     export HIP_PLATFORM=nvcc
     export HIP_RUNTIME=nvcc
-    # calls nvcc or hcc
+    # calls nvcc or clang
     which hipcc
     hipcc -V
     which hipconfig

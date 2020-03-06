@@ -978,7 +978,7 @@ namespace alpaka
                             0x01010101u,
                             CU_STREAM_WAIT_VALUE_GEQ)));
 #else
-                    // workaround for missing cuStreamWaitValue32 in HIP(HCC)
+                    // workaround for missing cuStreamWaitValue32 in HIP
                     std::uint32_t hmem = 0;
                     do {
                         std::this_thread::sleep_for(std::chrono::milliseconds(10u));

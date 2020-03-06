@@ -48,7 +48,7 @@ namespace alpaka
         //#############################################################################
         //! The GPU HIP accelerator.
         //!
-        //! This accelerator allows parallel kernel execution on devices supporting HIP or HCC
+        //! This accelerator allows parallel kernel execution on devices supporting HIP
         template<
             typename TDim,
             typename TIdx>

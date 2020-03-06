@@ -154,7 +154,6 @@ namespace alpaka
                         ALPAKA_FN_HOST auto operator()() const
                         -> void
                         {
-#if defined(BOOST_COMP_HCC) && !defined(__HIP_DEVICE_COMPILE__)
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -178,7 +177,6 @@ namespace alpaka
                                             static_cast<std::size_t>(this->m_extentWidthBytes));
                                     });
                             }
-#endif
                         }
                     };
 

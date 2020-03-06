@@ -25,7 +25,7 @@
     #if BOOST_COMP_NVCC >= BOOST_VERSION_NUMBER(9, 0, 0)
         #include <cuda_runtime_api.h>
     #else
-    #if BOOST_COMP_HCC || BOOST_COMP_HIP
+    #if BOOST_COMP_HIP
             #include <hip/math_functions.h>
         #else
             #include <math_functions.hpp>

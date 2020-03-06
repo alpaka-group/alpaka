@@ -119,12 +119,7 @@ namespace alpaka
 
                 public:
                     dev::DevUniformCudaHipRt const m_dev;   //!< The device this queue is bound to.
-           ALPAKA_API_PREFIX(Stream_t) m_UniformCudaHipQueue;
-#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                    int m_callees = 0;
-                    std::mutex m_mutex;
-#endif
-
+                    ALPAKA_API_PREFIX(Stream_t) m_UniformCudaHipQueue;
                 };
             }
         }
@@ -160,16 +155,8 @@ namespace alpaka
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
             ~QueueUniformCudaHipRtNonBlocking() = default;
-#else
-            ~QueueUniformCudaHipRtNonBlocking() {
-#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                // we are a non-blocking queue, so we have to wait here with its destruction until all spawned tasks have been processed
-                alpaka::wait::wait(*this);
-#endif
-            }
-#endif
+
         public:
             std::shared_ptr<uniform_cuda_hip::detail::QueueUniformCudaHipRtNonBlockingImpl> m_spQueueImpl;
         };
@@ -290,20 +277,12 @@ namespace alpaka
                 {
 #if BOOST_COMP_HIP
                     // NOTE: hip callbacks are not blocking the stream.
-                    // The workaround used for HIP(hcc) would avoid the usage in a workflow with
-                    // many stream/event synchronizations (e.g. PIConGPU).
                     // @todo remove this assert when hipStreamAddCallback is fixed
                     static_assert(
                                 meta::DependentFalseType<TTask>::value,
                                 "Callbacks are not supported for HIP-clang");
 #endif
-#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                    {
-                        // thread-safe callee incrementing
-                        std::lock_guard<std::mutex> guard(queue.m_spQueueImpl->m_mutex);
-                        queue.m_spQueueImpl->m_callees += 1;
-                    }
-#endif
+
                     auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
                         queue.m_spQueueImpl->m_UniformCudaHipQueue,
@@ -317,18 +296,7 @@ namespace alpaka
                     // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
                     // before it executes the next task in the queue (CUDA/HIP stream).
                     std::thread t(
-                        [pCallbackSynchronizationData,
-                            task
-#if BOOST_COMP_HCC // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                         ,&queue // requires queue's destructor to wait for all tasks
-#endif
-                            ](){
-
-#if BOOST_COMP_HCC // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                            // thread-safe task execution and callee decrementing
-                            std::lock_guard<std::mutex> guard(queue.m_spQueueImpl->m_mutex);
-#endif
-
+                        [pCallbackSynchronizationData, task](){
                             // If the callback has not yet been called, we wait for it.
                             {
                                 std::unique_lock<std::mutex> lock(pCallbackSynchronizationData->m_mutex);
@@ -348,9 +316,6 @@ namespace alpaka
                                 pCallbackSynchronizationData->state = CallbackState::finished;
                             }
                             pCallbackSynchronizationData->m_event.notify_one();
-#if BOOST_COMP_HCC // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                            queue.m_spQueueImpl->m_callees -= 1;
-#endif
                         }
                     );
 
@@ -370,10 +335,6 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                    return (queue.m_spQueueImpl->m_callees==0);
-#else
-
                     // Query is allowed even for queues on non current device.
                     ALPAKA_API_PREFIX(Error_t) ret = ALPAKA_API_PREFIX(Success);
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
@@ -381,8 +342,6 @@ namespace alpaka
                             queue.m_spQueueImpl->m_UniformCudaHipQueue),
                             ALPAKA_API_PREFIX(ErrorNotReady));
                     return (ret == ALPAKA_API_PREFIX(Success));
-#endif
-
                 }
             };
         }
@@ -406,15 +365,9 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if BOOST_COMP_HCC  // NOTE: workaround for unwanted nonblocking hip streams for HCC (NVCC streams are blocking)
-                    while(queue.m_spQueueImpl->m_callees>0) {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(10u));
-                    }
-#else
                     // Sync is allowed even for queues on non current device.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK( ALPAKA_API_PREFIX(StreamSynchronize)(
                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-#endif
                 }
             };
         }

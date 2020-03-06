@@ -64,7 +64,7 @@ then
     # if platform is nvcc, CUDA part is already processed in this file.
     if [ "${ALPAKA_HIP_PLATFORM}" == "hcc" ]
     then
-        echo "HIP(hcc) not supported yet."
+        echo "HIP(hcc) is not supported."
         exit 1
     fi
 fi
