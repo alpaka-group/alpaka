@@ -23,11 +23,9 @@ var Cuda_8hpp =
     [ "value >=2)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_49727024b2fee9145d951d625fc413493.html", null ],
     [ "value >=3)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_4862a9cbf6cc0d1923baad371b4f72360.html", null ],
     [ "value >=4)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_446b82379640c1f8260eb9d10426bf42b.html", null ],
+    [ "ALPAKA_API_PREFIX", "Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b", null ],
     [ "ALPAKA_CUDA_DRV_CHECK", "Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019", null ],
-    [ "ALPAKA_CUDA_RT_CHECK", "Cuda_8hpp.html#a69aee482f007066dfdb79c831e8ba771", null ],
-    [ "ALPAKA_CUDA_RT_CHECK_IGNORE", "Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c", null ],
-    [ "cudaDrvCheck", "Cuda_8hpp.html#ab7c0d46c5c98d6af03dd9bf203c32e48", null ],
-    [ "cudaRtCheck", "Cuda_8hpp.html#a8b4311f2e2075b3b83c9253fd72bd7b8", null ],
-    [ "cudaRtCheckIgnore", "Cuda_8hpp.html#aabe0604e2084474436e356c0e311968e", null ],
-    [ "cudaRtCheckLastError", "Cuda_8hpp.html#afb31c104bf9d2b4a09fdd60d1c7134fb", null ]
+    [ "ALPAKA_PP_CONCAT", "Cuda_8hpp.html#a78d586f3481be4a74b086709cb9b0ea2", null ],
+    [ "ALPAKA_PP_CONCAT_DO", "Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05", null ],
+    [ "cudaDrvCheck", "Cuda_8hpp.html#ab7c0d46c5c98d6af03dd9bf203c32e48", null ]
 ];

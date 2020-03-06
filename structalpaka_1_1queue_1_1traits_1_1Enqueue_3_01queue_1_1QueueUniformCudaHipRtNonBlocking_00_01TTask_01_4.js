@@ -7,5 +7,5 @@ var structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipR
       [ "finished", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html#afa0a754ad0dc500efa2165de4eb142e7aa5d7ceb2c59b8cee46c2953fec9abc19", null ]
     ] ],
     [ "enqueue", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html#a78c2c523dc2037684ac01f385429d830", null ],
-    [ "uniformCudaHipRtCallback", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html#a762a62b588d11c67bb8a008a0a6be9da", null ]
+    [ "uniformCudaHipRtCallback", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html#a0345ffdc395751e146c9966596eeb815", null ]
 ];

@@ -174,13 +174,11 @@ var NAVTREEINDEX0 =
 "CpuThreads_8hpp.html":[3,0,0,0,18,6],
 "CpuThreads_8hpp_source.html":[3,0,0,0,18,6],
 "Cuda_8hpp.html":[3,0,0,0,3,8],
-"Cuda_8hpp.html#a69aee482f007066dfdb79c831e8ba771":[3,0,0,0,3,8,24],
-"Cuda_8hpp.html#a8b4311f2e2075b3b83c9253fd72bd7b8":[3,0,0,0,3,8,27],
-"Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c":[3,0,0,0,3,8,25],
-"Cuda_8hpp.html#aabe0604e2084474436e356c0e311968e":[3,0,0,0,3,8,28],
-"Cuda_8hpp.html#ab7c0d46c5c98d6af03dd9bf203c32e48":[3,0,0,0,3,8,26],
-"Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019":[3,0,0,0,3,8,23],
-"Cuda_8hpp.html#afb31c104bf9d2b4a09fdd60d1c7134fb":[3,0,0,0,3,8,29],
+"Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05":[3,0,0,0,3,8,26],
+"Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b":[3,0,0,0,3,8,23],
+"Cuda_8hpp.html#a78d586f3481be4a74b086709cb9b0ea2":[3,0,0,0,3,8,25],
+"Cuda_8hpp.html#ab7c0d46c5c98d6af03dd9bf203c32e48":[3,0,0,0,3,8,27],
+"Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019":[3,0,0,0,3,8,24],
 "Cuda_8hpp_source.html":[3,0,0,0,3,8],
 "Debug_8hpp.html":[3,0,0,0,3,9],
 "Debug_8hpp.html#a47f20425304365ddf7b5bd4426987a8e":[3,0,0,0,3,9,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX0 =
 "IdxBtOmp_8hpp.html":[3,0,0,0,9,0,0],
 "IdxBtOmp_8hpp_source.html":[3,0,0,0,9,0,0],
 "IdxBtRefFiberIdMap_8hpp.html":[3,0,0,0,9,0,1],
-"IdxBtRefFiberIdMap_8hpp_source.html":[3,0,0,0,9,0,1]
+"IdxBtRefFiberIdMap_8hpp_source.html":[3,0,0,0,9,0,1],
+"IdxBtRefThreadIdMap_8hpp.html":[3,0,0,0,9,0,2],
+"IdxBtRefThreadIdMap_8hpp_source.html":[3,0,0,0,9,0,2]
 };

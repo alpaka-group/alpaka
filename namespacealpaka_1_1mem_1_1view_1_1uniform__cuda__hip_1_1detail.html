@@ -115,9 +115,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a456090164a0ed1ac3552df02a868838e"><td class="memTemplParams" colspan="2">template&lt;typename TViewDst , typename TViewSrc , typename TExtent &gt; </td></tr>
 <tr class="memitem:a456090164a0ed1ac3552df02a868838e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a456090164a0ed1ac3552df02a868838e">buildCudaMemcpy3DPeerParms</a> (<a class="el" href="structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip.html">mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; 3 &gt;, TViewDst, TViewSrc, TExtent &gt; const &amp;task) -&gt; cudaMemcpy3DPeerParms</td></tr>
 <tr class="separator:a456090164a0ed1ac3552df02a868838e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4a5eda59bc1fc34230e55f7913d7d97"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TViewSrc , typename TViewDst &gt; </td></tr>
-<tr class="memitem:aa4a5eda59bc1fc34230e55f7913d7d97"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aa4a5eda59bc1fc34230e55f7913d7d97">buildUniformCudaHipMemcpy3DParms</a> (<a class="el" href="structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip.html">mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; 3 &gt;, TViewDst, TViewSrc, TExtent &gt; const &amp;task) -&gt; cudaMemcpy3DParms</td></tr>
-<tr class="separator:aa4a5eda59bc1fc34230e55f7913d7d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7841860227916d8fa7220f07b70d7ff7"><td class="memTemplParams" colspan="2">template&lt;typename TExtent , typename TViewSrc , typename TViewDst &gt; </td></tr>
+<tr class="memitem:a7841860227916d8fa7220f07b70d7ff7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a7841860227916d8fa7220f07b70d7ff7">buildUniformCudaHipMemcpy3DParms</a> (<a class="el" href="structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip.html">mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; 3 &gt;, TViewDst, TViewSrc, TExtent &gt; const &amp;task) -&gt; <a class="el" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(Memcpy3DParms)</td></tr>
+<tr class="separator:a7841860227916d8fa7220f07b70d7ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a510ff69f3b44c1fb2509f80b421c0e16"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a510ff69f3b44c1fb2509f80b421c0e16">enablePeerAccessIfPossible</a> (const int &amp;devSrc, const int &amp;devDst) -&gt; void</td></tr>
 <tr class="memdesc:a510ff69f3b44c1fb2509f80b421c0e16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not being able to enable peer access does not prevent such device to device memory copies. However, those copies may be slower because the memory is copied via the CPU.  <a href="#a510ff69f3b44c1fb2509f80b421c0e16">More...</a><br /></td></tr>
 <tr class="separator:a510ff69f3b44c1fb2509f80b421c0e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,7 +142,7 @@ template&lt;typename TViewDst , typename TViewSrc , typename TExtent &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00712">712</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00648">648</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 
 </div>
 </div>
@@ -165,12 +165,12 @@ template&lt;typename TViewDst , typename TViewSrc , typename TExtent &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00772">772</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00708">708</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aa4a5eda59bc1fc34230e55f7913d7d97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4a5eda59bc1fc34230e55f7913d7d97">&#9670;&nbsp;</a></span>buildUniformCudaHipMemcpy3DParms()</h2>
+<a id="a7841860227916d8fa7220f07b70d7ff7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7841860227916d8fa7220f07b70d7ff7">&#9670;&nbsp;</a></span>buildUniformCudaHipMemcpy3DParms()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,16 +182,13 @@ template&lt;typename TExtent , typename TViewSrc , typename TViewDst &gt; </div>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip.html">mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; 3 &gt;, TViewDst, TViewSrc, TExtent &gt; const &amp;&#160;</td>
           <td class="paramname"><em>task</em></td><td>)</td>
-          <td> -&gt; cudaMemcpy3DParms
-
-
-
+          <td> -&gt; <a class="el" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(Memcpy3DParms)
                     </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00619">619</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00588">588</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +229,7 @@ template&lt;typename TExtent , typename TViewSrc , typename TViewDst &gt; </div>
 
 <p>Not being able to enable peer access does not prevent such device to device memory copies. However, those copies may be slower because the memory is copied via the CPU. </p>
 
-<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00412">412</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html#l00403">403</a> of file <a class="el" href="uniformCudaHip_2Copy_8hpp_source.html">Copy.hpp</a>.</p>
 
 </div>
 </div>
@@ -242,7 +239,7 @@ template&lt;typename TExtent , typename TViewSrc , typename TViewDst &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view.html">view</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Mar 3 2020 16:22:24 for alpaka by
+    <li class="footer">Generated on Fri Mar 6 2020 10:02:07 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

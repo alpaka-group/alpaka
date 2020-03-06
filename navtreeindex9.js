@@ -1,5 +1,14 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,14],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a703f57db663347e4c04eb3ac381cbfd0":[2,0,0,7,0,14,0],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuFibers_3_01TDim_00_01TIdx_00b6f485232ba34f23f08d8336286c4a12.html":[2,0,0,7,0,15],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuFibers_3_01TDim_00_01TIdx_00b6f485232ba34f23f08d8336286c4a12.html#ad4656405ccaece885515071bd88c8b5b":[2,0,0,7,0,15,0],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuOmp2Blocks_3_01TDim_00_01TId3430b70df68fbbcdeb36c2b911d2a5c3.html":[2,0,0,7,0,16],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuOmp2Blocks_3_01TDim_00_01TId3430b70df68fbbcdeb36c2b911d2a5c3.html#abc7e7b5678d4850f80d00ec121cfa104":[2,0,0,7,0,16,0],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuOmp2Threads_3_01TDim_00_01TI9095ad047b126f234709e8790e05aca1.html":[2,0,0,7,0,17],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuOmp2Threads_3_01TDim_00_01TI9095ad047b126f234709e8790e05aca1.html#a7d57d84a32d1e0e0f86fb86d76b9f0d2":[2,0,0,7,0,17,0],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuOmp4_3_01TDim_00_01TIdx_00_02e291a14f1c3b37c6c6119d874706a55.html":[2,0,0,7,0,18],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuOmp4_3_01TDim_00_01TIdx_00_02e291a14f1c3b37c6c6119d874706a55.html#a1919f61731bbfe2a40c6ef2ce9519cf8":[2,0,0,7,0,18,0],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuSerial_3_01TDim_00_01TIdx_00c472aa3e96f3a533e49e7c0600bb7ceb.html":[2,0,0,7,0,19],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01kernel_1_1TaskKernelCpuSerial_3_01TDim_00_01TIdx_00c472aa3e96f3a533e49e7c0600bb7ceb.html#a1aa7d9167fcaf1e3865ba9127487d62d":[2,0,0,7,0,19,0],
@@ -240,14 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2UniformCudaHipBuiltIn_00_01Ty_00_01Tx_00_01std_73eeb758e8858d396a1d6779dc6e052a.html#a83b6ebe6da2adf556e388f66101d79c5":[2,0,0,14,0,17,0],
 "structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2UniformCudaHipBuiltIn_00_01float_00_01float_01_4.html":[2,0,0,14,0,16],
 "structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2UniformCudaHipBuiltIn_00_01float_00_01float_01_4.html#afc5cbb0a965d6837945a166a88d09083":[2,0,0,14,0,16,0],
-"structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01stf93fb6013c26d24f0337f1bfc1a12db5.html":[2,0,0,14,0,18],
-"structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01stf93fb6013c26d24f0337f1bfc1a12db5.html#a88a0153deb0f86b179b21cc6fdc89326":[2,0,0,14,0,18,0],
-"structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabl2a4baf55bd17c3b1cee4997be63b2cc3.html":[2,0,0,14,0,20],
-"structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabl2a4baf55bd17c3b1cee4997be63b2cc3.html#afe3e9768e9b75439c5b07622d134ee60":[2,0,0,14,0,20,0],
-"structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanUniformCudaHipBuiltIn_00_01float_01_4.html":[2,0,0,14,0,19],
-"structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanUniformCudaHipBuiltIn_00_01float_01_4.html#a3d74ab152e94fdea62be430a3aef5942":[2,0,0,14,0,19,0],
-"structalpaka_1_1math_1_1traits_1_1Cbrt.html":[2,0,0,14,0,21],
-"structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01stf65ff5f795fe278520863ac25bf00d52.html":[2,0,0,14,0,22],
-"structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01stf65ff5f795fe278520863ac25bf00d52.html#aca11a9536bf669e6cab36a07fa19e23b":[2,0,0,14,0,22,0],
-"structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enabl42fa53caf50255a036b2d344dc4e49e5.html":[2,0,0,14,0,24]
+"structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01stf93fb6013c26d24f0337f1bfc1a12db5.html":[2,0,0,14,0,18]
 };

@@ -105,6 +105,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7d730846b198bf6664c3cc0302bcd322"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa6b647fa596c478532122d4efd69b66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html#afa6b647fa596c478532122d4efd69b66">~QueueUniformCudaHipRtNonBlockingImpl</a> ()</td></tr>
 <tr class="separator:afa6b647fa596c478532122d4efd69b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a774989256a338270d3e650e560bc69ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html#a774989256a338270d3e650e560bc69ac">ALPAKA_API_PREFIX</a> (Stream_t) m_UniformCudaHipQueue</td></tr>
+<tr class="separator:a774989256a338270d3e650e560bc69ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eeb0a75d972b10adbc124531b1172ad"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html#a0eeb0a75d972b10adbc124531b1172ad">operator=</a> (<a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html">QueueUniformCudaHipRtNonBlockingImpl</a> const &amp;) -&gt; <a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html">QueueUniformCudaHipRtNonBlockingImpl</a> &amp;=delete</td></tr>
 <tr class="separator:a0eeb0a75d972b10adbc124531b1172ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48f16d895ececd15da9f1b66e2a2516a"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html#a48f16d895ececd15da9f1b66e2a2516a">operator=</a> (<a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html">QueueUniformCudaHipRtNonBlockingImpl</a> &amp;&amp;) -&gt; <a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html">QueueUniformCudaHipRtNonBlockingImpl</a> &amp;=delete</td></tr>
@@ -115,8 +117,6 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a465e822891aa5cc3c447b0683f25873b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1dev_1_1DevUniformCudaHipRt.html">dev::DevUniformCudaHipRt</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html#a465e822891aa5cc3c447b0683f25873b">m_dev</a></td></tr>
 <tr class="memdesc:a465e822891aa5cc3c447b0683f25873b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device this queue is bound to.  <a href="#a465e822891aa5cc3c447b0683f25873b">More...</a><br /></td></tr>
 <tr class="separator:a465e822891aa5cc3c447b0683f25873b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42913d7c6c963c91839f30cf7fb3c541"><td class="memItemLeft" align="right" valign="top">cudaStream_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html#a42913d7c6c963c91839f30cf7fb3c541">m_UniformCudaHipQueue</a></td></tr>
-<tr class="separator:a42913d7c6c963c91839f30cf7fb3c541"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The CUDA/HIP RT non-blocking queue implementation. </p>
@@ -226,11 +226,29 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00115">115</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00101">101</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a774989256a338270d3e650e560bc69ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a774989256a338270d3e650e560bc69ac">&#9670;&nbsp;</a></span>ALPAKA_API_PREFIX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">alpaka::queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtNonBlockingImpl::ALPAKA_API_PREFIX </td>
+          <td>(</td>
+          <td class="paramtype">Stream_t&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a0eeb0a75d972b10adbc124531b1172ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0eeb0a75d972b10adbc124531b1172ad">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
@@ -298,23 +316,7 @@ Public Attributes</h2></td></tr>
 
 <p>The device this queue is bound to. </p>
 
-<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00147">147</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a42913d7c6c963c91839f30cf7fb3c541"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42913d7c6c963c91839f30cf7fb3c541">&#9670;&nbsp;</a></span>m_UniformCudaHipQueue</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">cudaStream_t alpaka::queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtNonBlockingImpl::m_UniformCudaHipQueue</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00149">149</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00121">121</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
 
 </div>
 </div>
@@ -327,7 +329,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1queue.html">queue</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1queue_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1queue_1_1uniform__cuda__hip_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html">QueueUniformCudaHipRtNonBlockingImpl</a></li>
-    <li class="footer">Generated on Tue Mar 3 2020 16:22:24 for alpaka by
+    <li class="footer">Generated on Fri Mar 6 2020 10:02:08 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -1,5 +1,11 @@
 var NAVTREEINDEX2 =
 {
+"classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#a2bdd1e93e1a062697e91eae88ffda400":[2,0,0,0,2,3],
+"classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#a6c314a735aff7fcdf7101ca847022929":[2,0,0,0,2,2],
+"classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#ac99c93adf928d426b8114f5651d6622d":[2,0,0,0,2,1],
+"classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#ace5345de487d9dce81bcd8d7edb45ffe":[2,0,0,0,2,0],
+"classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#aed9386699b7a9f3cdb741694ad2ea592":[2,0,0,0,2,5],
+"classalpaka_1_1acc_1_1AccCpuOmp2Threads.html":[2,0,0,0,3],
 "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a35609e8f3114593dcf04fd168b2f62c9":[2,0,0,0,3,5],
 "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a62241c64bb61d0f26af0e522ade01a75":[2,0,0,0,3,3],
 "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a90683fab103bb5662d38980b2178da05":[2,0,0,0,3,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "classalpaka_1_1dev_1_1DevUniformCudaHipRt.html#aeb0b09d15e1575ae406e157352c021bb":[2,0,0,6,3,0],
 "classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html":[2,0,0,6,0,0,0],
 "classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a00246a8fce8ced5edc051d82fa2662c4":[2,0,0,6,0,0,0,2],
-"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a10ed100f6d4beb67e70acc31ad5d5754":[2,0,0,6,0,0,0,0],
-"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a24892eacbc128d447bbfb1f67971effb":[2,0,0,6,0,0,0,6],
-"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a2878c7c7bfa365c1b2a1a01a95cd8331":[2,0,0,6,0,0,0,3],
-"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a544df4d047584f08c3611ca437ab9280":[2,0,0,6,0,0,0,7],
-"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#aa551112e3431d43274e6711ed2f9e947":[2,0,0,6,0,0,0,5],
-"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#ab14886151d51845d24c7e862eff7e4ba":[2,0,0,6,0,0,0,4],
-"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#ae6855f2e141035cb85ef78c9ef033944":[2,0,0,6,0,0,0,1]
+"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a10ed100f6d4beb67e70acc31ad5d5754":[2,0,0,6,0,0,0,0]
 };

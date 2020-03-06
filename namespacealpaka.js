@@ -22,6 +22,7 @@ var namespacealpaka =
     [ "queue", "namespacealpaka_1_1queue.html", "namespacealpaka_1_1queue" ],
     [ "rand", "namespacealpaka_1_1rand.html", "namespacealpaka_1_1rand" ],
     [ "time", "namespacealpaka_1_1time.html", "namespacealpaka_1_1time" ],
+    [ "uniform_cuda_hip", "namespacealpaka_1_1uniform__cuda__hip.html", null ],
     [ "vec", "namespacealpaka_1_1vec.html", "namespacealpaka_1_1vec" ],
     [ "wait", "namespacealpaka_1_1wait.html", "namespacealpaka_1_1wait" ],
     [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ]

@@ -41,5 +41,8 @@ var searchData=
   ['rsqrtstdlib_2ehpp',['RsqrtStdLib.hpp',['../RsqrtStdLib_8hpp.html',1,'']]],
   ['rsqrtuniformcudahipbuiltin',['RsqrtUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1RsqrtUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
   ['rsqrtuniformcudahipbuiltin_2ehpp',['RsqrtUniformCudaHipBuiltIn.hpp',['../RsqrtUniformCudaHipBuiltIn_8hpp.html',1,'']]],
+  ['rtcheck',['rtCheck',['../namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a4036712750530f0a63110f5bff29bb65',1,'alpaka::uniform_cuda_hip::detail']]],
+  ['rtcheckignore',['rtCheckIgnore',['../namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac2be95af06dba4fccfa129ea2ac239cb',1,'alpaka::uniform_cuda_hip::detail']]],
+  ['rtchecklasterror',['rtCheckLastError',['../namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7',1,'alpaka::uniform_cuda_hip::detail']]],
   ['runtask',['runTask',['../classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a60e339b89dc58f8a79669ed3458cff9c',1,'alpaka::core::detail::ITaskPkg']]]
 ];

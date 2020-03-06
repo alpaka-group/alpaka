@@ -1,5 +1,11 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a24892eacbc128d447bbfb1f67971effb":[2,0,0,6,0,0,0,6],
+"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a2878c7c7bfa365c1b2a1a01a95cd8331":[2,0,0,6,0,0,0,3],
+"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a544df4d047584f08c3611ca437ab9280":[2,0,0,6,0,0,0,7],
+"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#aa551112e3431d43274e6711ed2f9e947":[2,0,0,6,0,0,0,5],
+"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#ab14886151d51845d24c7e862eff7e4ba":[2,0,0,6,0,0,0,4],
+"classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#ae6855f2e141035cb85ef78c9ef033944":[2,0,0,6,0,0,0,1],
 "classalpaka_1_1event_1_1EventCpu.html":[2,0,0,9,3],
 "classalpaka_1_1event_1_1EventCpu.html#a0312502934e03fb9486c763e765eab64":[2,0,0,9,3,1],
 "classalpaka_1_1event_1_1EventCpu.html#a2d51e0830856e2c09d9ee655692b890c":[2,0,0,9,3,2],
@@ -36,13 +42,13 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuImpl.html#af80b1d81660a784b2bfc23e05c12d75a":[2,0,0,9,0,0,0,11],
 "classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html":[2,0,0,9,2,0,0],
 "classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a1b196f44e46717a8e0a7ad24b4dbc557":[2,0,0,9,2,0,0,3],
-"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a2297f5a526aae1b46e941eb4a60ef645":[2,0,0,9,2,0,0,7],
-"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a34bc25fc8f586d1a625122671d335de6":[2,0,0,9,2,0,0,5],
+"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a34bc25fc8f586d1a625122671d335de6":[2,0,0,9,2,0,0,6],
 "classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a4c4e847663f66ebf29cf9d2a8404cfd6":[2,0,0,9,2,0,0,0],
 "classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#a692a4174a942ccb41ea1c60147066865":[2,0,0,9,2,0,0,1],
 "classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ab1460f7d439feb4b9b1a3961c9a86946":[2,0,0,9,2,0,0,2],
-"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ab97fb97ae1eed0bcbe30e02fb682a169":[2,0,0,9,2,0,0,4],
-"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ae45ea8b9a8b4767aa9a13560b12821eb":[2,0,0,9,2,0,0,6],
+"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ab97fb97ae1eed0bcbe30e02fb682a169":[2,0,0,9,2,0,0,5],
+"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ac66814791093515767fe71b1ffe10a88":[2,0,0,9,2,0,0,4],
+"classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ae45ea8b9a8b4767aa9a13560b12821eb":[2,0,0,9,2,0,0,7],
 "classalpaka_1_1idx_1_1bt_1_1IdxBtOmp.html":[2,0,0,12,0,0],
 "classalpaka_1_1idx_1_1bt_1_1IdxBtOmp.html#a394e712e854d0257682993cd28972cb7":[2,0,0,12,0,0,4],
 "classalpaka_1_1idx_1_1bt_1_1IdxBtOmp.html#a8cbc2172a26614e991bf433ab679667d":[2,0,0,12,0,0,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#adaa82eff6aef533e9d76b944c3cea687":[2,0,0,15,2,4,5],
 "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#ae533489c917b98db2276f472c0d410cd":[2,0,0,15,2,4,8],
 "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#afe8963cdcb2b6f20b15ef82c47f3dbb2":[2,0,0,15,2,4,0],
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html":[2,0,0,15,2,5],
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html#a1f2e07fb77492c3f268e51be6839a029":[2,0,0,15,2,5,0],
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html#a238418a21f32335211ce97d6c14c5500":[2,0,0,15,2,5,5],
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html#aa4671b1954146ac7cd191f95b21b5017":[2,0,0,15,2,5,3],
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html#aafd39d68dce067fcd9ca1e1f5088ab04":[2,0,0,15,2,5,2],
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html#abb2600020aebfd5dccdea8b203da6e0a":[2,0,0,15,2,5,4],
-"classalpaka_1_1mem_1_1view_1_1ViewSubView.html#ad0236843f98ac98f445de3eca353cfd7":[2,0,0,15,2,5,1]
+"classalpaka_1_1mem_1_1view_1_1ViewSubView.html":[2,0,0,15,2,5]
 };

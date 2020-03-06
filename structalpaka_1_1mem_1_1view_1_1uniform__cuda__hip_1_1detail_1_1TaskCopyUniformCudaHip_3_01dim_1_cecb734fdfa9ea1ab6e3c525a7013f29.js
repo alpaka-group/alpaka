@@ -1,7 +1,7 @@
 var structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29 =
 [
     [ "Idx", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29.html#a74855594d74a8c82f02610c7528099cb", null ],
-    [ "MemcpyKind", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29.html#a0309ab6ca5cf83b6280dde6793141455", null ],
+    [ "MemcpyKind", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29.html#ad2c90508f2250354ac06f8dc2b9938b0", null ],
     [ "TaskCopyUniformCudaHip", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29.html#a8b36d15ab4ee77df118f5ea0313acc2b", null ],
     [ "printDebug", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29.html#a541f9c0e97ffb018a97c8bac0987e26d", null ],
     [ "m_dstDepth", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29.html#a111d74b037c155e64a5fdae28c8fb31a", null ],

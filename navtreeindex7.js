@@ -1,5 +1,14 @@
 var NAVTREEINDEX7 =
 {
+"offset_2Traits_8hpp.html#a40471495621b836a67aa72d9afcad1ea":[3,0,0,0,14,0,8],
+"offset_2Traits_8hpp.html#a6cf0f10ef93b71e42b41d56bf8767724":[3,0,0,0,14,0,11],
+"offset_2Traits_8hpp.html#a913fc1aac4832da4c17c87757c1007b3":[3,0,0,0,14,0,9],
+"offset_2Traits_8hpp.html#aa4dbabd33ce144b2daf3894c582b1fa0":[3,0,0,0,14,0,5],
+"offset_2Traits_8hpp.html#ac610931b4adcbdc60b153f935f147aa7":[3,0,0,0,14,0,6],
+"offset_2Traits_8hpp.html#ad0062c11c487443af3007d74624f59a7":[3,0,0,0,14,0,10],
+"offset_2Traits_8hpp_source.html":[3,0,0,0,14,0],
+"pages.html":[],
+"pltf_2Traits_8hpp.html":[3,0,0,0,15,2],
 "pltf_2Traits_8hpp.html#a137035df4248f363653a6633fc94d39c":[3,0,0,0,15,2,4],
 "pltf_2Traits_8hpp.html#a54ac9089e8aeb368dba808131a60167c":[3,0,0,0,15,2,7],
 "pltf_2Traits_8hpp.html#a6e89f35426a77c132b0c955448aba0fe":[3,0,0,0,15,2,6],
@@ -240,14 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html":[2,0,0,2,0,0,0,2],
 "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html#aebf52b9d6a8d9f45f12725de37e67c36":[2,0,0,2,0,0,0,2,0],
 "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar.html":[2,0,0,2,0,1,0,0],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockShareb0524455d15574ffac8e4ee3023c264d.html":[2,0,0,2,0,1,0,3],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockShareb0524455d15574ffac8e4ee3023c264d.html#a1f1d24b5c036efb7d6b646389fbdcc77":[2,0,0,2,0,1,0,3,0],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html":[2,0,0,2,0,1,0,1],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html#a657f628c61375a0110797a70fe18285e":[2,0,0,2,0,1,0,1,0],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4.html":[2,0,0,2,0,1,0,2],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4.html#ae4f830c0f462800caaac85ea265fdae9":[2,0,0,2,0,1,0,2,0],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem.html":[2,0,0,2,0,1,0,4],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMasterSync_01_4.html":[2,0,0,2,0,1,0,5],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMasterSync_01_4.html#a8b8abf6faefba00b02e5ad333d05c552":[2,0,0,2,0,1,0,5,0],
-"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStNoSync_01_4.html":[2,0,0,2,0,1,0,6]
+"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockShareb0524455d15574ffac8e4ee3023c264d.html":[2,0,0,2,0,1,0,3]
 };

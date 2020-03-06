@@ -53,6 +53,7 @@ var searchData=
   ['erfstdlib_2ehpp',['ErfStdLib.hpp',['../ErfStdLib_8hpp.html',1,'']]],
   ['erfuniformcudahipbuiltin',['ErfUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1ErfUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
   ['erfuniformcudahipbuiltin_2ehpp',['ErfUniformCudaHipBuiltIn.hpp',['../ErfUniformCudaHipBuiltIn_8hpp.html',1,'']]],
+  ['error_5ft',['Error_t',['../namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958',1,'alpaka::uniform_cuda_hip::detail']]],
   ['event',['Event',['../namespacealpaka_1_1event.html#aa0db5bee69769f7c451b4b67f0bcedfa',1,'alpaka::event']]],
   ['eventcpu',['EventCpu',['../classalpaka_1_1event_1_1EventCpu.html',1,'alpaka::event::EventCpu'],['../classalpaka_1_1event_1_1EventCpu.html#a4229e10d22f0446f1918e2a3e32a527f',1,'alpaka::event::EventCpu::EventCpu(dev::DevCpu const &amp;dev, bool bBusyWaiting=true)'],['../classalpaka_1_1event_1_1EventCpu.html#a0312502934e03fb9486c763e765eab64',1,'alpaka::event::EventCpu::EventCpu(EventCpu const &amp;)=default'],['../classalpaka_1_1event_1_1EventCpu.html#a2d51e0830856e2c09d9ee655692b890c',1,'alpaka::event::EventCpu::EventCpu(EventCpu &amp;&amp;)=default']]],
   ['eventcpu_2ehpp',['EventCpu.hpp',['../EventCpu_8hpp.html',1,'']]],

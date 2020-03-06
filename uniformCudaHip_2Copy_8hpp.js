@@ -15,6 +15,6 @@ var uniformCudaHip_2Copy_8hpp =
     [ "Enqueue< queue::QueueUniformCudaHipRtNonBlocking, mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip< dim::DimInt< 3u >, TViewDst, TViewSrc, TExtent > >", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01me6e8109e658509f0340b8d344b1c684fe.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01me6e8109e658509f0340b8d344b1c684fe" ],
     [ "buildCudaMemcpy3DPeerParms", "uniformCudaHip_2Copy_8hpp.html#a56fc98e8a17a34306d50f55ee7f25528", null ],
     [ "buildCudaMemcpy3DPeerParms", "uniformCudaHip_2Copy_8hpp.html#a456090164a0ed1ac3552df02a868838e", null ],
-    [ "buildUniformCudaHipMemcpy3DParms", "uniformCudaHip_2Copy_8hpp.html#aa4a5eda59bc1fc34230e55f7913d7d97", null ],
+    [ "buildUniformCudaHipMemcpy3DParms", "uniformCudaHip_2Copy_8hpp.html#a7841860227916d8fa7220f07b70d7ff7", null ],
     [ "enablePeerAccessIfPossible", "uniformCudaHip_2Copy_8hpp.html#a510ff69f3b44c1fb2509f80b421c0e16", null ]
 ];
