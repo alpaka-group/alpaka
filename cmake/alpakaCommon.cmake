@@ -26,19 +26,13 @@ option(ALPAKA_ACC_GPU_HIP_ONLY_MODE "Only back-ends using HIP can be enabled in 
 
 # Drop-down combo box in cmake-gui for HIP platforms.
 set(ALPAKA_HIP_PLATFORM "nvcc" CACHE STRING "Specify HIP platform")
-set_property(CACHE ALPAKA_HIP_PLATFORM PROPERTY STRINGS "nvcc;hcc;clang")
+set_property(CACHE ALPAKA_HIP_PLATFORM PROPERTY STRINGS "nvcc;clang")
 
-if(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE AND (ALPAKA_HIP_PLATFORM MATCHES "hcc" OR ALPAKA_HIP_PLATFORM MATCHES "nvcc"))
+if(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE AND ALPAKA_HIP_PLATFORM MATCHES "nvcc")
     message(WARNING "HIP back-end must be used together with ALPAKA_ACC_GPU_HIP_ONLY_MODE")
     set(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "" FORCE)
 endif()
 
-if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "hcc")
-    message(WARNING
-        "The HIP back-end is currently experimental."
-        "Alpaka HIP backend compiled with hcc has a few workarounds."
-        )
-endif()
 if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "clang")
     message(WARNING
         "The HIP back-end is currently experimental."
@@ -687,53 +681,6 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 target_link_libraries(alpaka INTERFACE ${HIP_RAND_LIBRARY})
             endif() # nvcc
 
-            if(ALPAKA_HIP_PLATFORM MATCHES "hcc")
-
-                # random numbers library ( HIP(HCC) ) /rocrand
-                find_path(ROC_RAND_INC
-                    rocrand_kernel.h
-                    PATHS "${HIP_ROOT_DIR}/rocrand" "${HIP_ROOT_DIR}" "rocrand"
-                    PATHS "/opt/rocm/rocrand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "include")
-                find_library(ROC_RAND_LIBRARY
-                    rocrand-d
-                    rocrand
-                    PATHS "${HIP_ROOT_DIR}/rocrand" "${HIP_ROOT_DIR}" "rocrand"
-                    PATHS "/opt/rocm/rocrand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "lib" "lib64")
-
-                # random numbers library ( HIP(HCC) ) rocrand/hiprand
-                find_path(HIP_RAND_INC
-                    hiprand_kernel.h
-                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}" "hiprand"
-                    PATHS "/opt/rocm/hiprand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "include")
-                find_library(HIP_RAND_LIBRARY
-                    hiprand-d
-                    hiprand
-                    PATHS "${HIP_ROOT_DIR}/hiprand" "${HIP_ROOT_DIR}" "hiprand"
-                    PATHS "/opt/rocm/hiprand"
-                    ENV HIP_PATH
-                    PATH_SUFFIXES "lib" "lib64")
-                if(NOT HIP_RAND_INC OR NOT HIP_RAND_LIBRARY)
-                    message(FATAL_ERROR "Could not find hipRAND library")
-                endif()
-
-                target_include_directories(alpaka INTERFACE ${HIP_RAND_INC})
-                target_link_libraries(alpaka INTERFACE ${HIP_RAND_LIBRARY})
-
-                if(NOT ROC_RAND_INC OR NOT ROC_RAND_LIBRARY)
-                    message(FATAL_ERROR "Could not find rocRAND library")
-                endif()
-
-                target_include_directories(alpaka INTERFACE ${ROC_RAND_INC})
-                target_link_libraries(alpaka INTERFACE ${ROC_RAND_LIBRARY})
-            endif()
-
-
             list(APPEND HIP_HIPCC_FLAGS "-D__HIPCC__")
             list(APPEND HIP_HIPCC_FLAGS "-std=c++${ALPAKA_CXX_STANDARD}")
 
@@ -842,7 +789,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
         set_property(TARGET alpaka
                      PROPERTY INTERFACE_LINK_LIBRARIES ${_ALPAKA_LINK_LIBRARIES_PUBLIC})
     endif()
-    if(ALPAKA_HIP_PLATFORM MATCHES "hcc")
+    if(ALPAKA_HIP_PLATFORM MATCHES "clang")
         # GFX600, GFX601, GFX700, GFX701, GFX702, GFX703, GFX704, GFX801, GFX802, GFX803, GFX810, GFX900, GFX902
         target_link_options(alpaka INTERFACE "--amdgpu-target=gfx803 --amdgpu-target=gfx900 --amdgpu-target=gfx906")
     endif()

@@ -30,7 +30,7 @@
 #include <utility>
 #include <cstddef>
 
-#ifdef __HIP_PLATFORM_HCC__
+#if BOOST_COMP_HIP
   #define HIPRT_CB
 #endif
 
