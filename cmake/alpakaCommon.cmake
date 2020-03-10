@@ -791,7 +791,9 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
     endif()
     if(ALPAKA_HIP_PLATFORM MATCHES "clang")
         # GFX600, GFX601, GFX700, GFX701, GFX702, GFX703, GFX704, GFX801, GFX802, GFX803, GFX810, GFX900, GFX902
-        target_link_options(alpaka INTERFACE "--amdgpu-target=gfx803 --amdgpu-target=gfx900 --amdgpu-target=gfx906")
+        target_link_options(alpaka INTERFACE "--amdgpu-target=gfx803")
+        target_link_options(alpaka INTERFACE "--amdgpu-target=gfx900")
+        target_link_options(alpaka INTERFACE "--amdgpu-target=gfx906")
     endif()
 endif()
 
