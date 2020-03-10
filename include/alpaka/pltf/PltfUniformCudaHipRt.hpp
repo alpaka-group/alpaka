@@ -41,7 +41,8 @@ namespace alpaka
     {
         //#############################################################################
         //! The CUDA RT device manager.
-        class PltfUniformCudaHipRt
+        class PltfUniformCudaHipRt :
+            public concepts::Implements<ConceptPltf, PltfUniformCudaHipRt>
         {
         public:
             //-----------------------------------------------------------------------------
