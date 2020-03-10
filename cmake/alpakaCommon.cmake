@@ -679,7 +679,29 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 endif()
                 target_include_directories(alpaka INTERFACE ${HIP_RAND_INC})
                 target_link_libraries(alpaka INTERFACE ${HIP_RAND_LIBRARY})
-            endif() # nvcc
+            elseif(ALPAKA_HIP_PLATFORM MATCHES "clang")
+                # # hiprand requires ROCm implementation of random numbers by rocrand
+                FIND_PACKAGE(rocrand REQUIRED CONFIG                 
+                    HINTS "${HIP_ROOT_DIR}/rocrand"
+                    HINTS "/opt/rocm/rocrand")
+                IF(rocrand_FOUND)
+                    target_include_directories(alpaka INTERFACE ${rocrand_INCLUDE_DIRS})
+                    # ATTENTION: rocRand libraries are not required by alpaka
+                ELSE()
+                    MESSAGE(FATAL_ERROR "Could not find rocRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/rocrand).")
+                ENDIF()
+            endif() 
+
+            # # HIP random numbers
+            FIND_PACKAGE(hiprand REQUIRED CONFIG 
+                HINTS "${HIP_ROOT_DIR}/hiprand"
+                HINTS "/opt/rocm/hiprand")
+            IF(hiprand_FOUND)
+                target_include_directories(alpaka INTERFACE ${hiprand_INCLUDE_DIRS})
+                # ATTENTION: hipRand libraries are not required by alpaka
+            ELSE()
+                MESSAGE(FATAL_ERROR "Could not find hipRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/hiprand).")
+            ENDIF()
 
             list(APPEND HIP_HIPCC_FLAGS "-D__HIPCC__")
             list(APPEND HIP_HIPCC_FLAGS "-std=c++${ALPAKA_CXX_STANDARD}")
