@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['gpucudahiprt_2ehpp',['GpuCudaHipRt.hpp',['../GpuCudaHipRt_8hpp.html',1,'']]]
+  ['gpucudart_2ehpp',['GpuCudaRt.hpp',['../GpuCudaRt_8hpp.html',1,'']]],
+  ['gpuhiprt_2ehpp',['GpuHipRt.hpp',['../GpuHipRt_8hpp.html',1,'']]]
 ];

@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"IdxBtRefThreadIdMap_8hpp.html":[3,0,0,0,9,0,2],
+"IdxBtRefThreadIdMap_8hpp_source.html":[3,0,0,0,9,0,2],
 "IdxBtUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,9,0,3],
 "IdxBtUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,9,0,3],
 "IdxBtZero_8hpp.html":[3,0,0,0,9,0,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "classalpaka_1_1acc_1_1AccCpuFibers.html#aaf759e41bbf839b35dc0190afd304e38":[2,0,0,0,1,5],
 "classalpaka_1_1acc_1_1AccCpuFibers.html#aafe07b57abe94e948628ef71f58b5106":[2,0,0,0,1,0],
 "classalpaka_1_1acc_1_1AccCpuFibers.html#ac78c4e55103a2cc17e16c5c8edab8feb":[2,0,0,0,1,4],
-"classalpaka_1_1acc_1_1AccCpuFibers.html#acf92151747071a6f2d312bd4a9d07516":[2,0,0,0,1,3],
-"classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html":[2,0,0,0,2],
-"classalpaka_1_1acc_1_1AccCpuOmp2Blocks.html#a27c04ccb661d4b55da19b2b227757777":[2,0,0,0,2,4]
+"classalpaka_1_1acc_1_1AccCpuFibers.html#acf92151747071a6f2d312bd4a9d07516":[2,0,0,0,1,3]
 };

@@ -79,7 +79,7 @@ var searchData=
   ['alpaka',['alpaka',['../namespacealpaka.html',1,'']]],
   ['alpaka_2ehpp',['alpaka.hpp',['../alpaka_8hpp.html',1,'']]],
   ['alpaka_5facc_5fcpu_5fb_5ftbb_5ft_5fseq_5fenabled',['ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED',['../CpuTbbBlocks_8hpp.html#a8e980af207c9069aefb5cdcd1a6467e3',1,'CpuTbbBlocks.hpp']]],
-  ['alpaka_5facc_5fgpu_5fhip_5fenabled',['ALPAKA_ACC_GPU_HIP_ENABLED',['../GpuCudaHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468',1,'GpuCudaHipRt.hpp']]],
+  ['alpaka_5facc_5fgpu_5fhip_5fenabled',['ALPAKA_ACC_GPU_HIP_ENABLED',['../GpuHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468',1,'GpuHipRt.hpp']]],
   ['alpaka_5fapi_5fprefix',['ALPAKA_API_PREFIX',['../classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ac66814791093515767fe71b1ffe10a88',1,'alpaka::event::uniform_cuda_hip::detail::EventUniformCudaHipImpl::ALPAKA_API_PREFIX()'],['../classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBlockingImpl.html#a8fe2633517deaac34b133ac37bf93a78',1,'alpaka::queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtBlockingImpl::ALPAKA_API_PREFIX()'],['../classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html#a774989256a338270d3e650e560bc69ac',1,'alpaka::queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtNonBlockingImpl::ALPAKA_API_PREFIX()'],['../Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b',1,'ALPAKA_API_PREFIX():&#160;Cuda.hpp']]],
   ['alpaka_5fassert',['ALPAKA_ASSERT',['../Assert_8hpp.html#a328f757c64444f381ff6575f5caa54e8',1,'Assert.hpp']]],
   ['alpaka_5fcreate_5fvec_5fin_5fclass',['ALPAKA_CREATE_VEC_IN_CLASS',['../Vec_8hpp.html#a0a3401bd236aadc633ba0850080dea25',1,'Vec.hpp']]],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCpuBlocking_01_4.html":[2,0,0,24,0,6],
+"structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCpuBlocking_01_4.html#a2fdcc94419633c0ffcf16455307bd007":[2,0,0,24,0,6,0],
 "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCpuNonBlocking_01_4.html":[2,0,0,24,0,7],
 "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCpuNonBlocking_01_4.html#a428819811068f34c49cd847e50a67fa1":[2,0,0,24,0,7,0],
 "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueUniformCudaHipRtBlocking_01_4.html":[2,0,0,24,0,8],

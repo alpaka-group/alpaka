@@ -136,7 +136,8 @@ var searchData=
   ['getworkdiv_3c_20workdivuniformcudahipbuiltin_3c_20tdim_2c_20tidx_20_3e_2c_20origin_3a_3ablock_2c_20unit_3a_3athreads_20_3e',['GetWorkDiv&lt; WorkDivUniformCudaHipBuiltIn&lt; TDim, TIdx &gt;, origin::Block, unit::Threads &gt;',['../structalpaka_1_1workdiv_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01T98684519ba1a1022650c58287e69189e.html',1,'alpaka::workdiv::traits']]],
   ['getworkdiv_3c_20workdivuniformcudahipbuiltin_3c_20tdim_2c_20tidx_20_3e_2c_20origin_3a_3agrid_2c_20unit_3a_3ablocks_20_3e',['GetWorkDiv&lt; WorkDivUniformCudaHipBuiltIn&lt; TDim, TIdx &gt;, origin::Grid, unit::Blocks &gt;',['../structalpaka_1_1workdiv_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01Ta48fb6a230c38daca32b2e70ea1410e1.html',1,'alpaka::workdiv::traits']]],
   ['getworkdiv_3c_20workdivuniformcudahipbuiltin_3c_20tdim_2c_20tidx_20_3e_2c_20origin_3a_3athread_2c_20unit_3a_3aelems_20_3e',['GetWorkDiv&lt; WorkDivUniformCudaHipBuiltIn&lt; TDim, TIdx &gt;, origin::Thread, unit::Elems &gt;',['../structalpaka_1_1workdiv_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01T23ec9ce8104eec99ad780890307bfa3b.html',1,'alpaka::workdiv::traits']]],
-  ['gpucudahiprt_2ehpp',['GpuCudaHipRt.hpp',['../GpuCudaHipRt_8hpp.html',1,'']]],
+  ['gpucudart_2ehpp',['GpuCudaRt.hpp',['../GpuCudaRt_8hpp.html',1,'']]],
+  ['gpuhiprt_2ehpp',['GpuHipRt.hpp',['../GpuHipRt_8hpp.html',1,'']]],
   ['gridblockextentsubdivrestrictions',['GridBlockExtentSubDivRestrictions',['../namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010',1,'alpaka::workdiv']]],
   ['grids',['Grids',['../structalpaka_1_1hierarchy_1_1Grids.html',1,'alpaka::hierarchy']]]
 ];

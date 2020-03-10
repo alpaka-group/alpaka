@@ -237,9 +237,11 @@ var NAVTREEINDEX0 =
 "ForEachType_8hpp_source.html":[3,0,0,0,13,7],
 "Functional_8hpp.html":[3,0,0,0,13,8],
 "Functional_8hpp_source.html":[3,0,0,0,13,8],
-"GpuCudaHipRt_8hpp.html":[3,0,0,0,18,7],
-"GpuCudaHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468":[3,0,0,0,18,7,0],
-"GpuCudaHipRt_8hpp_source.html":[3,0,0,0,18,7],
+"GpuCudaRt_8hpp.html":[3,0,0,0,18,7],
+"GpuCudaRt_8hpp_source.html":[3,0,0,0,18,7],
+"GpuHipRt_8hpp.html":[3,0,0,0,18,8],
+"GpuHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468":[3,0,0,0,18,8,0],
+"GpuHipRt_8hpp_source.html":[3,0,0,0,18,8],
 "Hip_8hpp.html":[3,0,0,0,3,11],
 "Hip_8hpp_source.html":[3,0,0,0,3,11],
 "ICpuQueue_8hpp.html":[3,0,0,0,16,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "IdxBtOmp_8hpp.html":[3,0,0,0,9,0,0],
 "IdxBtOmp_8hpp_source.html":[3,0,0,0,9,0,0],
 "IdxBtRefFiberIdMap_8hpp.html":[3,0,0,0,9,0,1],
-"IdxBtRefFiberIdMap_8hpp_source.html":[3,0,0,0,9,0,1],
-"IdxBtRefThreadIdMap_8hpp.html":[3,0,0,0,9,0,2],
-"IdxBtRefThreadIdMap_8hpp_source.html":[3,0,0,0,9,0,2]
+"IdxBtRefFiberIdMap_8hpp_source.html":[3,0,0,0,9,0,1]
 };
