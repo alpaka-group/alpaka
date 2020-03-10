@@ -1,0 +1,38 @@
+name: Continuous Integration
+
+on: [push, pull_request]
+
+env:
+  ALPAKA_CI: GITHUB
+  TBB_ROOT: tbb
+  BOOST_ROOT: boost
+  ALPAKA_CI_BOOST_LIB_DIR: boost_libs
+  ALPAKA_CI_CLANG_DIR: llvm
+  ALPAKA_CI_CMAKE_DIR: CMake
+  ALPAKA_CI_CUDA_DIR: CUDA
+  ALPAKA_CI_HIP_ROOT_DIR: hip
+  ALPAKA_CI_SANITIZERS:
+  ALPAKA_CI_ANALYSIS: OFF
+  ALPAKA_ACC_GPU_CUDA_ENABLE: OFF
+  ALPAKA_ACC_GPU_HIP_ENABLE: OFF
+
+jobs:
+  windows_cl-2019_release:
+    name: Windows cl-2019 Release
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      shell: bash
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: windows, CXX: cl.exe, CC: cl.exe, ALPAKA_CI_CL_VER: 2019, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 4, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}
+
+  windows_cl-2019_debug:
+    name: Windows cl-2019 Debug
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      shell: bash
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: windows, CXX: cl.exe, CC: cl.exe, ALPAKA_CI_CL_VER: 2019, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 4, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF}

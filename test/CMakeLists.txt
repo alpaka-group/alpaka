@@ -34,7 +34,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
     endif()
 endif()
 
-list(APPEND _ALPAKA_TEST_OPTIONS "--use-colour yes")
+list(APPEND _ALPAKA_TEST_OPTIONS --use-colour yes)
 
 add_subdirectory(analysis)
 add_subdirectory(integ)
