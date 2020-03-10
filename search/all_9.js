@@ -134,6 +134,7 @@ var searchData=
   ['implements_3c_20conceptmemalloc_2c_20alloccpuboostaligned_3c_20talignment_20_3e_20_3e',['Implements&lt; ConceptMemAlloc, AllocCpuBoostAligned&lt; TAlignment &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptmemalloc_2c_20alloccpunew_20_3e',['Implements&lt; ConceptMemAlloc, AllocCpuNew &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptpltf_2c_20pltfcpu_20_3e',['Implements&lt; ConceptPltf, PltfCpu &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
+  ['implements_3c_20conceptpltf_2c_20pltfuniformcudahiprt_20_3e',['Implements&lt; ConceptPltf, PltfUniformCudaHipRt &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptrand_2c_20mersennetwister_20_3e',['Implements&lt; ConceptRand, MersenneTwister &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptrand_2c_20randomdevice_20_3e',['Implements&lt; ConceptRand, RandomDevice &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptrand_2c_20randuniformcudahiprand_20_3e',['Implements&lt; ConceptRand, RandUniformCudaHipRand &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],

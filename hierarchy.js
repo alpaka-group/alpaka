@@ -645,7 +645,6 @@ var hierarchy =
     [ "alpaka::offset::traits::value >=3)> >< TOffsets, TOffset >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_4862a9cbf6cc0d1923baad371b4f72360.html", null ],
     [ "alpaka::offset::traits::value >=4)> >< TOffsets, TOffset >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_446b82379640c1f8260eb9d10426bf42b.html", null ],
     [ "alpaka::offset::traits::value)> >< TIdxIntegralConst, TDim, TVal, TOffset >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01TIdxIntegralConst_00_01vec_1_1Vec_3_01TDim_00_db8f61f6cdc566497c978bbde0781e76.html", null ],
-    [ "alpaka::pltf::PltfUniformCudaHipRt", "classalpaka_1_1pltf_1_1PltfUniformCudaHipRt.html", null ],
     [ "alpaka::pltf::traits::GetDevByIdx< TPltf, TSfinae >", "structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx.html", null ],
     [ "alpaka::pltf::traits::GetDevByIdx< pltf::PltfCpu >", "structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx_3_01pltf_1_1PltfCpu_01_4.html", null ],
     [ "alpaka::pltf::traits::GetDevByIdx< pltf::PltfUniformCudaHipRt >", "structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx_3_01pltf_1_1PltfUniformCudaHipRt_01_4.html", null ],
@@ -1194,6 +1193,9 @@ var hierarchy =
     ] ],
     [ "alpaka::concepts::Implements< ConceptPltf, PltfCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::pltf::PltfCpu", "classalpaka_1_1pltf_1_1PltfCpu.html", null ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptPltf, PltfUniformCudaHipRt >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::pltf::PltfUniformCudaHipRt", "classalpaka_1_1pltf_1_1PltfUniformCudaHipRt.html", null ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptRand, MersenneTwister >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::rand::MersenneTwister", "classalpaka_1_1rand_1_1MersenneTwister.html", null ]
