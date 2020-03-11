@@ -83,7 +83,8 @@ then
     then
         if [ "$ALPAKA_CI" = "GITHUB" ]
         then
-            MSBUILD_EXECUTABLE=$(vswhere.exe -latest -requires Microsoft.Component.MSBuild -find "MSBuild\**\Bin\MSBuild.exe")
+            find "/C/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/"
+            MSBUILD_EXECUTABLE="/C/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/MSBuild/15.0/Bin/MSBuild.exe"
         elif [ "$ALPAKA_CI" = "TRAVIS" ]
         then
             MSBUILD_EXECUTABLE="/C/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe"
