@@ -20,7 +20,7 @@ namespace alpaka
 {
     namespace math
     {
-        struct ConceptMathCeil;
+        struct ConceptMathCeil{};
 
         namespace traits
         {

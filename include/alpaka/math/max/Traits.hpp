@@ -20,7 +20,7 @@ namespace alpaka
 {
     namespace math
     {
-        struct ConceptMathMax;
+        struct ConceptMathMax{};
 
         namespace traits
         {

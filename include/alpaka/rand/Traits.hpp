@@ -22,7 +22,7 @@ namespace alpaka
     //! The random number generation specifics.
     namespace rand
     {
-        struct ConceptRand;
+        struct ConceptRand{};
 
         //-----------------------------------------------------------------------------
         //! The random number generator distribution specifics.
