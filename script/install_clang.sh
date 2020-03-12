@@ -10,9 +10,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/travis_retry.sh
+source ./script/travis_retry.sh
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 : "${ALPAKA_CI_CLANG_DIR?'ALPAKA_CI_CLANG_DIR must be specified'}"
 : "${ALPAKA_CI_CLANG_VER?'ALPAKA_CI_CLANG_VER must be specified'}"

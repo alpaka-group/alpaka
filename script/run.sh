@@ -10,7 +10,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 : "${ALPAKA_CI_CMAKE_DIR?'ALPAKA_CI_CMAKE_DIR must be specified'}"
 echo "ALPAKA_CI_CMAKE_DIR: ${ALPAKA_CI_CMAKE_DIR}"
@@ -143,10 +143,10 @@ then
     which "${CXX}"
     ${CXX} -v
 
-    source ./script/travis/prepare_sanitizers.sh
-    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/run_analysis.sh ;fi
+    source ./script/prepare_sanitizers.sh
+    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/run_analysis.sh ;fi
 fi
 
-./script/travis/run_build.sh
+./script/run_build.sh
 
-if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/travis/run_tests.sh ;fi
+if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/run_tests.sh ;fi

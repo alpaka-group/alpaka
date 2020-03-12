@@ -10,8 +10,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/travis_retry.sh
+source ./script/travis_retry.sh
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 travis_retry sudo apt-get -y --quiet install --no-install-recommends doxygen graphviz

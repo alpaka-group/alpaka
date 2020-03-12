@@ -10,7 +10,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 : "${BOOST_ROOT?'BOOST_ROOT must be specified'}"
 : "${ALPAKA_CI_BOOST_LIB_DIR?'ALPAKA_CI_BOOST_LIB_DIR must be specified'}"

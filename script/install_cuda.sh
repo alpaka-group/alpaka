@@ -10,9 +10,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/travis_retry.sh
+source ./script/travis_retry.sh
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 : "${ALPAKA_CUDA_VERSION?'ALPAKA_CUDA_VERSION must be specified'}"
 

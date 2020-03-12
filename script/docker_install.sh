@@ -10,7 +10,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 ls "${ALPAKA_CI_DOCKER_CACHE_DIR}"
 
@@ -111,7 +111,7 @@ ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_INSTALL_FIBERS=${ALPAKA_CI_INSTALL_F
 
 if [ "${ALPAKA_DOCKER_BUILD_REQUIRED}" -eq 1 ]
 then
-  docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash ./script/travis/install.sh
+  docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash ./script/install.sh
 
   ALPAKA_DOCKER_CONTAINER_NAME=$(docker ps -l -q)
   docker commit "${ALPAKA_DOCKER_CONTAINER_NAME}" "${ALPAKA_CI_DOCKER_IMAGE_NAME}"

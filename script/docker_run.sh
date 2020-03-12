@@ -10,7 +10,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 # runtime and compile time options
 ALPAKA_DOCKER_ENV_LIST=()
@@ -155,4 +155,4 @@ if [[ "$(docker images -q ${ALPAKA_CI_DOCKER_IMAGE_NAME} 2> /dev/null)" == "" ]]
 fi
 
 # --cap-add SYS_PTRACE is required for LSAN to work
-docker run --cap-add SYS_PTRACE -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" --rm "${ALPAKA_CI_DOCKER_IMAGE_NAME}" /bin/bash ./script/travis/run.sh
+docker run --cap-add SYS_PTRACE -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" --rm "${ALPAKA_CI_DOCKER_IMAGE_NAME}" /bin/bash ./script/run.sh

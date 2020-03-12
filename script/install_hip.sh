@@ -10,7 +10,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 : "${ALPAKA_CI_HIP_ROOT_DIR?'ALPAKA_CI_HIP_ROOT_DIR must be specified'}"
 : "${ALPAKA_CI_HIP_BRANCH?'ALPAKA_CI_HIP_BRANCH must be specified'}"

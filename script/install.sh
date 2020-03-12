@@ -10,9 +10,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/travis_retry.sh
+source ./script/travis_retry.sh
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 : ${ALPAKA_CI_ANALYSIS?"ALPAKA_CI_ANALYSIS must be specified"}
 : ${ALPAKA_CI_INSTALL_CUDA?"ALPAKA_CI_INSTALL_CUDA must be specified"}
@@ -32,30 +32,30 @@ fi
 
 if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "windows" ]
 then
-    ./script/travis/install_cmake.sh
+    ./script/install_cmake.sh
 fi
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/travis/install_analysis.sh ;fi
+    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/install_analysis.sh ;fi
 fi
 
 # Install CUDA before installing gcc as it installs gcc-4.8 and overwrites our selected compiler
-if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/travis/install_cuda.sh ;fi
+if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/install_cuda.sh ;fi
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    if [ "${CXX}" == "g++" ] ;then ./script/travis/install_gcc.sh ;fi
-    if [ "${CXX}" == "clang++" ] ;then source ./script/travis/install_clang.sh ;fi
-    if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/travis/install_hip.sh ;fi
+    if [ "${CXX}" == "g++" ] ;then ./script/install_gcc.sh ;fi
+    if [ "${CXX}" == "clang++" ] ;then source ./script/install_clang.sh ;fi
+    if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/install_hip.sh ;fi
 fi
 
 if [ "${ALPAKA_CI_INSTALL_TBB}" = "ON" ]
 then
-    ./script/travis/install_tbb.sh
+    ./script/install_tbb.sh
 fi
 
-./script/travis/install_boost.sh
+./script/install_boost.sh
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then

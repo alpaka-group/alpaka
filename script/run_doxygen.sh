@@ -10,9 +10,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/travis_retry.sh
+source ./script/travis_retry.sh
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 #To deploy the doxygen documentation a copy of the repository is created inside the deployed folder.
 #This copy is always in the gh-pages branch consisting only of the containing files.
