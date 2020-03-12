@@ -27,7 +27,7 @@ namespace alpaka
     //! The platform specifics.
     namespace pltf
     {
-        struct ConceptPltf;
+        struct ConceptPltf{};
 
         //-----------------------------------------------------------------------------
         //! The platform traits.

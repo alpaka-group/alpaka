@@ -27,7 +27,7 @@ namespace alpaka
     //! The work division traits specifics.
     namespace workdiv
     {
-        struct ConceptWorkDiv;
+        struct ConceptWorkDiv{};
 
         //-----------------------------------------------------------------------------
         //! The work division traits.

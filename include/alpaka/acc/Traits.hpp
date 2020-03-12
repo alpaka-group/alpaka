@@ -29,9 +29,9 @@ namespace alpaka
     //! The accelerator specifics.
     namespace acc
     {
-        struct ConceptUniformCudaHip;
+        struct ConceptUniformCudaHip{};
 
-        struct ConceptAcc;
+        struct ConceptAcc{};
         //-----------------------------------------------------------------------------
         //! The accelerator traits.
         namespace traits

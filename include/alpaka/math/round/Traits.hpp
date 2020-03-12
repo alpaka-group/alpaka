@@ -21,7 +21,7 @@ namespace alpaka
 {
     namespace math
     {
-        struct ConceptMathRound;
+        struct ConceptMathRound{};
 
         namespace traits
         {
