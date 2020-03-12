@@ -10,12 +10,17 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/set.sh
+source ./script/set.sh
+
+./script/print_env.sh
+source ./script/before_install.sh
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-  sudo smem
-  sudo free -m -t
-  # show actions of the OOM killer
-  sudo dmesg
+  ./script/docker_install.sh
+  ./script/docker_run.sh
+elif [ "$TRAVIS_OS_NAME" = "windows" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
+then
+  ./script/install.sh
+  ./script/run.sh
 fi

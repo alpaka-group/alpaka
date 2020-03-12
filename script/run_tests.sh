@@ -10,7 +10,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-source ./script/travis/set.sh
+source ./script/set.sh
 
 : "${ALPAKA_ACC_GPU_CUDA_ENABLE?'ALPAKA_ACC_GPU_CUDA_ENABLE must be specified'}"
 : "${ALPAKA_ACC_GPU_HIP_ENABLE?'ALPAKA_ACC_GPU_HIP_ENABLE must be specified'}"

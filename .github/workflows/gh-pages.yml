@@ -14,12 +14,12 @@ jobs:
     - name: Install doxygen
       run: |
           cd ${GITHUB_WORKSPACE}
-          ./script/travis/install_doxygen.sh
+          ./script/install_doxygen.sh
     - name: Run doxygen
       run: |
           cd ${GITHUB_WORKSPACE}
-          ./script/travis/run_doxygen.sh ${{ github.repository }} ${{ secrets.github_token }}
+          ./script/run_doxygen.sh ${{ github.repository }} ${{ secrets.github_token }}
     - name: Publish documentation
       run: |
           cd ${GITHUB_WORKSPACE}
-          ./script/travis/push_doc.sh
+          ./script/push_doc.sh
