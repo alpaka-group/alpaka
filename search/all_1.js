@@ -109,7 +109,7 @@ var searchData=
   ['alpaka_5fversion_5fminor',['ALPAKA_VERSION_MINOR',['../version_8hpp.html#a709a81320b19f018a10150cc14812983',1,'version.hpp']]],
   ['alpaka_5fversion_5fpatch',['ALPAKA_VERSION_PATCH',['../version_8hpp.html#a35cc4276fce8540b45fa1f5db49fd86b',1,'version.hpp']]],
   ['and',['And',['../structalpaka_1_1atomic_1_1op_1_1And.html',1,'alpaka::atomic::op']]],
-  ['apply',['Apply',['../namespacealpaka_1_1meta.html#ad0cbe491078fbefb5d6c6908dd4d799e',1,'alpaka::meta::Apply()'],['../namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad',1,'alpaka::meta::apply(F &amp;&amp;f, Tuple &amp;&amp;t)']]],
+  ['apply',['apply',['../namespacealpaka_1_1meta.html#a56741b54d82b32923cb3f4a7cf83c8ad',1,'alpaka::meta::apply(F &amp;&amp;f, Tuple &amp;&amp;t)'],['../namespacealpaka_1_1meta.html#ad0cbe491078fbefb5d6c6908dd4d799e',1,'alpaka::meta::Apply()']]],
   ['apply_2ehpp',['Apply.hpp',['../Apply_8hpp.html',1,'']]],
   ['apply_5fimpl',['apply_impl',['../namespacealpaka_1_1meta_1_1detail.html#aebce11a4b79094b270c92c989ab45661',1,'alpaka::meta::detail']]],
   ['applyimpl',['ApplyImpl',['../structalpaka_1_1meta_1_1detail_1_1ApplyImpl.html',1,'alpaka::meta::detail']]],

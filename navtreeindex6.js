@@ -1,6 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"mem_2view_2Traits_8hpp.html#a87c5cc8e9f26074719bb90a2efefb830":[3,0,0,0,12,2,0,18],
 "mem_2view_2Traits_8hpp.html#a8edaea6418672a443fd579021f573d98":[3,0,0,0,12,2,0,22],
 "mem_2view_2Traits_8hpp.html#aa7d2306136fec9314025fbd7f9341a7b":[3,0,0,0,12,2,0,16],
 "mem_2view_2Traits_8hpp_source.html":[3,0,0,0,12,2,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX6 =
 "namespacemembers_vars.html":[1,1,2],
 "namespacemembers_w.html":[1,1,0,19],
 "namespaces.html":[1,0],
-"offset_2Traits_8hpp.html":[3,0,0,0,14,0]
+"offset_2Traits_8hpp.html":[3,0,0,0,14,0],
+"offset_2Traits_8hpp.html#a136599b44d193edcf917f4a36d8c073f":[3,0,0,0,14,0,4]
 };
