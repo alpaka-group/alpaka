@@ -1,5 +1,6 @@
 var wait_2Traits_8hpp =
 [
+    [ "ConceptCurrentThreadWaitFor", "structalpaka_1_1wait_1_1ConceptCurrentThreadWaitFor.html", null ],
     [ "CurrentThreadWaitFor", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor.html", null ],
     [ "WaiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor.html", null ],
     [ "wait", "wait_2Traits_8hpp.html#ae25cb34b78259b569c6af88afe8456ec", null ],

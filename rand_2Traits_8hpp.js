@@ -1,5 +1,6 @@
 var rand_2Traits_8hpp =
 [
+    [ "ConceptRand", "structalpaka_1_1rand_1_1ConceptRand.html", null ],
     [ "CreateNormalReal", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html", null ],
     [ "CreateUniformReal", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal.html", null ],
     [ "CreateUniformUint", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint.html", null ],

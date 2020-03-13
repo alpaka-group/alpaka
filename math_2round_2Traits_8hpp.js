@@ -1,5 +1,6 @@
 var math_2round_2Traits_8hpp =
 [
+    [ "ConceptMathRound", "structalpaka_1_1math_1_1ConceptMathRound.html", null ],
     [ "Llround", "structalpaka_1_1math_1_1traits_1_1Llround.html", null ],
     [ "Lround", "structalpaka_1_1math_1_1traits_1_1Lround.html", null ],
     [ "Round", "structalpaka_1_1math_1_1traits_1_1Round.html", null ],

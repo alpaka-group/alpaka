@@ -1,5 +1,12 @@
 var NAVTREEINDEX8 =
 {
+"structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem.html":[2,0,0,2,0,0,0,0],
+"structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynBoostAlignedAlloc_01_4.html":[2,0,0,2,0,0,0,1],
+"structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynBoostAlignedAlloc_01_4.html#ae0ab0538f6175ec841349173585ccc5d":[2,0,0,2,0,0,0,1,0],
+"structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html":[2,0,0,2,0,0,0,2],
+"structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html#aebf52b9d6a8d9f45f12725de37e67c36":[2,0,0,2,0,0,0,2,0],
+"structalpaka_1_1block_1_1shared_1_1st_1_1ConceptBlockSharedSt.html":[2,0,0,2,0,1,4],
+"structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar.html":[2,0,0,2,0,1,0,0],
 "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockShareb0524455d15574ffac8e4ee3023c264d.html":[2,0,0,2,0,1,0,3],
 "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockShareb0524455d15574ffac8e4ee3023c264d.html#a1f1d24b5c036efb7d6b646389fbdcc77":[2,0,0,2,0,1,0,3,0],
 "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html":[2,0,0,2,0,1,0,1],
@@ -13,6 +20,7 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStNoSync_01_4.html#a988b92f9f9b8f9432773b487c870cff1":[2,0,0,2,0,1,0,6,0],
 "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html":[2,0,0,2,0,1,0,7],
 "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#abf47404276a61fe7795b20f741ef7c09":[2,0,0,2,0,1,0,7,0],
+"structalpaka_1_1block_1_1sync_1_1ConceptBlockSync.html":[2,0,0,2,1,7],
 "structalpaka_1_1block_1_1sync_1_1op_1_1Count.html":[2,0,0,2,1,0,0],
 "structalpaka_1_1block_1_1sync_1_1op_1_1Count.html#a8ef6a93258592cc0103232dc694102e2af7b702b4d831b04cc3db653df74520dc":[2,0,0,2,1,0,0,0],
 "structalpaka_1_1block_1_1sync_1_1op_1_1Count.html#aca6f6523ad111bc8fc54f4230a967c4a":[2,0,0,2,1,0,0,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#a8323be711705de748ebbf7646f995a23":[2,0,0,7,0,7,0],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,8],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html#a1a9bd5d1d2a2f53848a86bf96b72c44f":[2,0,0,7,0,8,0],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,9],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html#a49409d66cb8c947902974c86085bbdaa":[2,0,0,7,0,9,0],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,10],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html#a740f54651fe5ae0c65024b61b0a9440a":[2,0,0,7,0,10,0],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,11],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#a57f0fe08bc088fa68eb9399103a90c1a":[2,0,0,7,0,11,0],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,12],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_01_4.html#af3f9e8ad5f96e84082ee5ffee40438e6":[2,0,0,7,0,12,0],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1gb_1_1IdxGbRef_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,13]
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,9]
 };

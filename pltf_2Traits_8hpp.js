@@ -1,5 +1,6 @@
 var pltf_2Traits_8hpp =
 [
+    [ "ConceptPltf", "structalpaka_1_1pltf_1_1ConceptPltf.html", null ],
     [ "GetDevByIdx", "structalpaka_1_1pltf_1_1traits_1_1GetDevByIdx.html", null ],
     [ "GetDevCount", "structalpaka_1_1pltf_1_1traits_1_1GetDevCount.html", null ],
     [ "PltfType", "structalpaka_1_1pltf_1_1traits_1_1PltfType.html", null ],

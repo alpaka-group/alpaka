@@ -1,5 +1,7 @@
 var acc_2Traits_8hpp =
 [
+    [ "ConceptAcc", "structalpaka_1_1acc_1_1ConceptAcc.html", null ],
+    [ "ConceptUniformCudaHip", "structalpaka_1_1acc_1_1ConceptUniformCudaHip.html", null ],
     [ "AccType", "structalpaka_1_1acc_1_1traits_1_1AccType.html", null ],
     [ "GetAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps.html", null ],
     [ "GetAccDevProps< TAcc, typename std::enable_if< concepts::ImplementsConcept< acc::ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01TAcc_00_01typename_01std_1_1enable__if_3_01cf97305e9c5770cf2681e9150bf4bb321.html", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01TAcc_00_01typename_01std_1_1enable__if_3_01cf97305e9c5770cf2681e9150bf4bb321" ],
