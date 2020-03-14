@@ -28,6 +28,106 @@ jobs:
       run: cd ${GITHUB_WORKSPACE} && ./script/ci.sh
       env: {TRAVIS_OS_NAME: windows, CXX: cl.exe, CC: cl.exe, ALPAKA_CI_CL_VER: 2019, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.16.4, ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2}
 
+  macos_xcode-11-3_debug_analysis:
+    name: MacOS XCode 11.3 Debug Analysis
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.3.1, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.65.1,                              ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2, ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+
+  ### macOS
+  macos_xcode-11_debug:
+    name: MacOS XCode 11 Debug
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11,     CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_CXX_STANDARD: 17}
+
+  macos_xcode-11_release:
+    name: MacOS XCode 11 Release
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11,     CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+
+  macos_xcode-11-1_debug:
+    name: MacOS XCode 11.1 Debug
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.1,     CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_CXX_STANDARD: 17}
+
+  macos_xcode-11-1_release:
+    name: MacOS XCode 11.1 Release
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.1,     CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+
+  macos_xcode-11-2_debug:
+    name: MacOS XCode 11.2 Debug
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.2.1, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_CXX_STANDARD: 17}
+
+  macos_xcode-11-2_release:
+    name: MacOS XCode 11.2 Release
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.2.1, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+
+  macos_xcode-11-3_debug:
+    name: MacOS XCode 11.3 Debug
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.3.1, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_CXX_STANDARD: 17}
+
+  macos_xcode-11-3_release:
+    name: MacOS XCode 11.3 Release
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.3.1, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+
+  macos_xcode-11-4_debug:
+    name: MacOS XCode 11.4 Debug
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++,    CC: clang, ALPAKA_CI_XCODE_VER: 11.4,   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_CXX_STANDARD: 17}
+
+  macos_xcode-11-4_release:
+    name: MacOS XCode 11.4 Release
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: build + test
+      run: cd ${GITHUB_WORKSPACE} && ./script/travis/script.sh
+      env: {TRAVIS_OS_NAME: osx,     CXX: clang++, CC: clang, ALPAKA_CI_XCODE_VER: 11.4,   CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0,                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF}
+
   ### Windows
   windows_cl-2017_release:
     name: Windows cl-2017 Release

@@ -48,6 +48,9 @@ then
     if [ "${CXX}" == "g++" ] ;then ./script/install_gcc.sh ;fi
     if [ "${CXX}" == "clang++" ] ;then source ./script/install_clang.sh ;fi
     if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/install_hip.sh ;fi
+elif [ "$TRAVIS_OS_NAME" = "osx" ]
+then
+    sudo xcode-select -s "/Applications/Xcode_${ALPAKA_CI_XCODE_VER}.app/Contents/Developer"
 fi
 
 if [ "${ALPAKA_CI_INSTALL_TBB}" = "ON" ]
