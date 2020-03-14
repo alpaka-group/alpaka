@@ -110,16 +110,19 @@ then
 fi
 
 # clang
-if [ "${CXX}" == "clang++" ]
+if [ "$TRAVIS_OS_NAME" = "linux" ]
 then
-    # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
-    export PATH=${ALPAKA_CI_CLANG_DIR}/bin:${PATH}
-    export LD_LIBRARY_PATH=${ALPAKA_CI_CLANG_DIR}/lib:${LD_LIBRARY_PATH}
-    if [ -z "${CPPFLAGS+x}" ]
+    if [ "${CXX}" == "clang++" ]
     then
-        CPPFLAGS=
+        # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
+        export PATH=${ALPAKA_CI_CLANG_DIR}/bin:${PATH}
+        export LD_LIBRARY_PATH=${ALPAKA_CI_CLANG_DIR}/lib:${LD_LIBRARY_PATH}
+        if [ -z "${CPPFLAGS+x}" ]
+        then
+            CPPFLAGS=
+        fi
+        export CPPFLAGS="-I ${ALPAKA_CI_CLANG_DIR}/include/c++/v1 ${CPPFLAGS}"
     fi
-    export CPPFLAGS="-I ${ALPAKA_CI_CLANG_DIR}/include/c++/v1 ${CPPFLAGS}"
 fi
 
 # stdlib
