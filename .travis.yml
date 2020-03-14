@@ -85,61 +85,6 @@ matrix:
       osx_image: xcode11.2
       env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
 
-    ### macOS
-    - name: macOS 10.14 Xcode 10.2.1 Debug
-      os: osx
-      osx_image: xcode10.2
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.67.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_CXX_STANDARD=17
-    - name: macOS 10.14 Xcode 10.2.1 Release
-      os: osx
-      osx_image: xcode10.2
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.71.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-
-    - name: macOS 10.14.4 Xcode 10.3 Debug
-      os: osx
-      osx_image: xcode10.3
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.67.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-    - name: macOS 10.14.4 Xcode 10.3 Release
-      os: osx
-      osx_image: xcode10.3
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.71.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_CXX_STANDARD=17
-
-    - name: macOS 10.14 Xcode 11.0 Debug
-      os: osx
-      osx_image: xcode11
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.67.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-    - name: macOS 10.14 Xcode 11.0 Release
-      os: osx
-      osx_image: xcode11
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.69.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_CXX_STANDARD=17
-
-    - name: macOS 10.14 Xcode 11.1 Debug
-      os: osx
-      osx_image: xcode11.1
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.70.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-    - name: macOS 10.14 Xcode 11.1 Release
-      os: osx
-      osx_image: xcode11.1
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.71.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_CXX_STANDARD=17
-
-    - name: macOS 10.14 Xcode 11.2 Debug
-      os: osx
-      osx_image: xcode11.2
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.69.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_CXX_STANDARD=17
-    - name: macOS 10.14 Xcode 11.2 Release
-      os: osx
-      osx_image: xcode11.2
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.70.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-
-    - name: macOS 10.14 Xcode 11.3 Debug
-      os: osx
-      osx_image: xcode11.3
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.68.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
-    - name: macOS 10.14 Xcode 11.3 Release
-      os: osx
-      osx_image: xcode11.3
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Release                            ALPAKA_CI_BOOST_BRANCH=boost-1.71.0                            ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF ALPAKA_CXX_STANDARD=17
-
     ### Ubuntu
     ## native
     # g++
@@ -301,8 +246,7 @@ script:
     - set -eovx pipefail
     - if [ "$TRAVIS_OS_NAME" = "linux" ] ;then sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install smem ;fi
     - if [ "$TRAVIS_OS_NAME" = "linux" ] ;then sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install moreutils ;fi
-    - if [ "$TRAVIS_OS_NAME" = "osx" ] ;then brew install moreutils ;fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ] ;then ./script/ci.sh | ts ;fi
+    - if [ "$TRAVIS_OS_NAME" = "linux" ] ;then ./script/ci.sh | ts ;fi
 
 after_failure:
     - ./script/after_failure.sh
