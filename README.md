@@ -1,6 +1,8 @@
 **alpaka** - Abstraction Library for Parallel Kernel Acceleration
 =================================================================
 
+
+[![Continuous Integration](https://github.com/BenjaminW3/alpaka/workflows/Continuous%20Integration/badge.svg)](https://github.com/ComputationalRadiationPhysics/alpaka/actions?query=workflow%3A%22Continuous+Integration%22)
 [![Travis CI Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 [![Language](https://img.shields.io/badge/language-C%2B%2B11-orange.svg)](https://isocpp.org/)
 [![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20mac-lightgrey.svg)](https://github.com/ComputationalRadiationPhysics/alpaka)
