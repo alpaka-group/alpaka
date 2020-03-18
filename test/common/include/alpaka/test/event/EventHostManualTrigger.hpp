@@ -196,6 +196,7 @@ namespace alpaka
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCpu<dev::DevCpu>;
                 };
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
                 //#############################################################################
                 //!
                 //#############################################################################
@@ -205,6 +206,7 @@ namespace alpaka
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::dev::DevOmp4>;
                 };
+#endif
                 //#############################################################################
                 //! The CPU event host manual trigger support get trait specialization.
                 template<>
@@ -219,6 +221,7 @@ namespace alpaka
                         return true;
                     }
                 };
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
                 //#############################################################################
                 //! The Omp4 event host manual trigger support get trait specialization.
                 template<>
@@ -233,6 +236,7 @@ namespace alpaka
                         return true;
                     }
                 };
+#endif
             }
         }
     }
