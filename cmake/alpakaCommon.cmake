@@ -276,7 +276,7 @@ if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
 
         # Clang versions starting from 3.9 support OpenMP 4.0 only when given the corresponding flag
         if(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
-            target_link_options(alpaka INTERFACE $<$<CXX_COMPILER_ID:AppleClang,Clang>:"-fopenmp-version=40">)
+            target_link_options(alpaka INTERFACE $<$<CXX_COMPILER_ID:AppleClang,Clang>:-fopenmp-version=40>)
         endif()
     else()
         message(STATUS "Optional alpaka dependency OpenMP could not be found! OpenMP back-ends disabled!")
