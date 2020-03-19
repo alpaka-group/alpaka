@@ -20,6 +20,7 @@
 
 #include <atomic>
 #include <mutex>
+#include <memory>
 
 namespace alpaka
 {
