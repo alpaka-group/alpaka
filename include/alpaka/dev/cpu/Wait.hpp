@@ -62,7 +62,7 @@ namespace alpaka
                     // Get all the queues on the device at the time of invocation.
                     // All queues added afterwards are ignored.
                     auto vspQueues(
-                        dev.m_spDevCpuImpl->GetAllQueues());
+                        dev.getAllQueues());
 
                     detail::currentThreadWaitForDevice(dev, vspQueues);
                 }

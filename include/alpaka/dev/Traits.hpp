@@ -64,20 +64,6 @@ namespace alpaka
                 typename T,
                 typename TSfinae = void>
             struct Reset;
-
-            //#############################################################################
-            //! The device register queue trait.
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct RegisterQueue;
-
-            //#############################################################################
-            //! The device get all queues trait.
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct GetAllQueues;
         }
 
         //#############################################################################
@@ -158,38 +144,6 @@ namespace alpaka
                 TDev>
             ::reset(
                 dev);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! Registers queue with device
-        //! What this method does is dependent on the accelerator.
-        template<
-            typename TDev,
-            typename TQueue>
-        ALPAKA_FN_HOST auto registerQueue(
-            TDev const & dev,
-            TQueue const & queue)
-        -> void
-        {
-            traits::RegisterQueue<
-                TDev>
-            ::registerQueue(
-                dev, queue);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return all queues associated with device
-        //! What this method does is dependent on the accelerator.
-        template<
-            typename TDev>
-        ALPAKA_FN_HOST auto registerQueue(
-            TDev const & dev)
-        {
-            return
-                traits::GetAllQueues<
-                TDev>
-                ::getAllQueues(
-                    dev);
         }
     }
 }

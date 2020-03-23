@@ -110,7 +110,7 @@ namespace alpaka
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuOmp2CollectiveImpl>(dev)),
                     m_spBlockingQueue(std::make_shared<QueueCpuBlocking>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
+                dev.registerQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
             QueueCpuOmp2Collective(QueueCpuOmp2Collective const &) = default;

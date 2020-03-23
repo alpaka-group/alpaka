@@ -68,31 +68,6 @@ namespace alpaka
                 {
                 private:
 
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto GetAllQueueImpls(
-                        std::vector<std::weak_ptr<queue::cpu::ICpuQueue>> & queues) const
-                    -> std::vector<std::shared_ptr<queue::cpu::ICpuQueue>>
-                    {
-                        std::vector<std::shared_ptr<queue::cpu::ICpuQueue>> vspQueues;
-
-                        std::lock_guard<std::mutex> lk(m_Mutex);
-
-                        for(auto it = queues.begin(); it != queues.end();)
-                        {
-                            auto spQueue(it->lock());
-                            if(spQueue)
-                            {
-                                vspQueues.emplace_back(std::move(spQueue));
-                                ++it;
-                            }
-                            else
-                            {
-                                it = queues.erase(it);
-                            }
-                        }
-                        return vspQueues;
-                    }
-
                 public:
                     //-----------------------------------------------------------------------------
                     DevCpuImpl() = default;
@@ -107,16 +82,35 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ~DevCpuImpl() = default;
 
-                    ALPAKA_FN_HOST auto GetAllQueues() const
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST auto getAllExistingQueues() const
                     -> std::vector<std::shared_ptr<queue::cpu::ICpuQueue>>
                     {
-                        return GetAllQueueImpls(m_queues);
+                        std::vector<std::shared_ptr<queue::cpu::ICpuQueue>> vspQueues;
+
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+                        vspQueues.reserve(m_queues.size());
+
+                        for(auto it = m_queues.begin(); it != m_queues.end();)
+                        {
+                            auto spQueue(it->lock());
+                            if(spQueue)
+                            {
+                                vspQueues.emplace_back(std::move(spQueue));
+                                ++it;
+                            }
+                            else
+                            {
+                                it = m_queues.erase(it);
+                            }
+                        }
+                        return vspQueues;
                     }
 
                     //-----------------------------------------------------------------------------
                     //! Registers the given queue on this device.
                     //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                    ALPAKA_FN_HOST auto RegisterQueue(std::shared_ptr<queue::cpu::ICpuQueue> spQueue)
+                    ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::cpu::ICpuQueue> spQueue) const
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -165,6 +159,21 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             ~DevCpu() = default;
+
+            ALPAKA_FN_HOST auto getAllQueues() const
+            -> std::vector<std::shared_ptr<queue::cpu::ICpuQueue>>
+            {
+                return m_spDevCpuImpl->getAllExistingQueues();
+            }
+
+            //-----------------------------------------------------------------------------
+            //! Registers the given queue on this device.
+            //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::cpu::ICpuQueue> spQueue) const
+            -> void
+            {
+                m_spDevCpuImpl->registerQueue(spQueue);
+            }
 
         public:
             std::shared_ptr<cpu::detail::DevCpuImpl> m_spDevCpuImpl;
@@ -242,40 +251,6 @@ namespace alpaka
                     alpaka::ignore_unused(dev);
 
                     // The CPU does nothing on reset.
-                }
-            };
-
-            //#############################################################################
-            //! The CPU device register queue trait specialization.
-            template<>
-            struct RegisterQueue<
-                dev::DevCpu>
-            {
-                //-----------------------------------------------------------------------------
-                template<
-                    template<typename TDev> class TQueue>
-                ALPAKA_FN_HOST static auto registerQueue(
-                    dev::DevCpu const & dev,
-                    TQueue<dev::DevCpu> const & queue)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    dev.m_spDevCpuImpl->RegisterQueue(queue.m_spQueueImpl);
-                }
-            };
-
-            //#############################################################################
-            //! The CPU device get all queues trait specialization.
-            template<>
-            struct GetAllQueues<
-                dev::DevCpu>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAllQueues(
-                    dev::DevCpu const & dev)
-                {
-                    return dev.m_spDevCpuImpl->GetAllQueues();
                 }
             };
         }
