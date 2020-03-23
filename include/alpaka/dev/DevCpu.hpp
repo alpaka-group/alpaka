@@ -66,8 +66,6 @@ namespace alpaka
                 //! The CPU device implementation.
                 class DevCpuImpl
                 {
-                private:
-
                 public:
                     //-----------------------------------------------------------------------------
                     DevCpuImpl() = default;
