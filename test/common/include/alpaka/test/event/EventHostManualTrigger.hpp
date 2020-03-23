@@ -201,6 +201,16 @@ namespace alpaka
             {
                 using type = alpaka::test::EventHostManualTriggerCpu<alpaka::DevOmp5>;
             };
+#elif defined ( ALPAKA_ACC_ANY_BT_OACC_ENABLED )
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<>
+            struct EventHostManualTriggerType<
+                alpaka::dev::DevOacc>
+            {
+                using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::dev::DevOacc>;
+            };
 #endif
             //#############################################################################
             //! The CPU event host manual trigger support get trait specialization.
@@ -226,6 +236,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto isSupported(
                     alpaka::DevOmp5 const &)
+                -> bool
+                {
+                    return true;
+                }
+            };
+#elif defined ( ALPAKA_ACC_ANY_BT_OACC_ENABLED )
+            //#############################################################################
+            //! The OpenACC event host manual trigger support get trait specialization.
+            template<>
+            struct IsEventHostManualTriggerSupported<
+                alpaka::dev::DevOacc>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto isSupported(
+                    alpaka::dev::DevOacc const &)
                 -> bool
                 {
                     return true;
