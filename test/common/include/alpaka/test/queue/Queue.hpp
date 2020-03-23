@@ -123,6 +123,16 @@ namespace alpaka
                 using type = alpaka::QueueOmp5Blocking;
 #endif
             };
+#elif defined ALPAKA_ACC_ANY_BT_OACC_ENABLED
+
+            //#############################################################################
+            //! The default queue type trait specialization for the OMP4 device.
+            template<>
+            struct DefaultQueueType<
+                alpaka::dev::DevOacc>
+            {
+                using type = alpaka::queue::QueueOaccBlocking;
+            };
 #endif
 
         }
@@ -152,6 +162,10 @@ namespace alpaka
                 ,
                 std::tuple<alpaka::DevOmp5, alpaka::QueueOmp5Blocking>,
                 std::tuple<alpaka::DevOmp5, alpaka::QueueOmp5NonBlocking>
+#elif defined ( ALPAKA_ACC_ANY_BT_OACC_ENABLED )
+                ,
+                std::tuple<alpaka::dev::DevOacc, alpaka::queue::QueueOaccBlocking>,
+                std::tuple<alpaka::dev::DevOacc, alpaka::queue::QueueOaccNonBlocking>
 #endif
             >;
     }
