@@ -10,7 +10,7 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/queue/QueueGenericNonBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -28,7 +28,7 @@ namespace alpaka
 {
     namespace queue
     {
-        using QueueCpuNonBlocking = QueueGenericNonBlocking<dev::DevCpu>;
+        using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<dev::DevCpu>;
     }
 }
 

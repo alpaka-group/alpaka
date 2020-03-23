@@ -11,7 +11,7 @@
 
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/queue/QueueGenericBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -25,7 +25,7 @@ namespace alpaka
 {
     namespace queue
     {
-        using QueueCpuBlocking = QueueGenericBlocking<dev::DevCpu>;
+        using QueueCpuBlocking = QueueGenericThreadsBlocking<dev::DevCpu>;
     }
 }
 

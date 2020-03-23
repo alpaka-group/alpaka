@@ -12,7 +12,7 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/event/EventGeneric.hpp>
+#include <alpaka/event/EventGenericThreads.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
@@ -30,6 +30,6 @@ namespace alpaka
 {
     namespace event
     {
-        using EventCpu = EventGeneric<dev::DevCpu>;
+        using EventCpu = EventGenericThreads<dev::DevCpu>;
     }
 }

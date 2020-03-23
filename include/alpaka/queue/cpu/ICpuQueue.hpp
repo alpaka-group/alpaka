@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <alpaka/queue/IGenericQueue.hpp>
+#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 
 namespace alpaka
@@ -20,7 +20,7 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU queue interface
-            using ICpuQueue = IGenericQueue<dev::DevCpu>;
+            using ICpuQueue = IGenericThreadsQueue<dev::DevCpu>;
         }
     }
 }

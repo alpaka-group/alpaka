@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2019 Benjamin Worpitz, Matthias Werner
  *
  * This file is part of Alpaka.
  *
@@ -9,25 +9,25 @@
 
 #pragma once
 
-#include <alpaka/core/Unused.hpp>
-
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/queue/IGenericQueue.hpp>
+#include <alpaka/core/ConcurrentExecPool.hpp>
+#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
 
-#include <atomic>
+#include <type_traits>
+#include <thread>
 #include <mutex>
-#include <memory>
+#include <future>
 
 namespace alpaka
 {
     namespace event
     {
         template<typename TDev>
-        class EventGeneric;
+        class EventGenericThreads;
     }
 }
 
@@ -49,43 +49,54 @@ namespace alpaka
                 //! The CPU device queue implementation.
                 template<
                     typename TDev>
-                class QueueGenericBlockingImpl final : public IGenericQueue<TDev>
+                class QueueGenericThreadsNonBlockingImpl final : public IGenericThreadsQueue<TDev>
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop
 #endif
                 {
+                private:
+                    //#############################################################################
+                    using ThreadPool = alpaka::core::detail::ConcurrentExecPool<
+                        std::size_t,
+                        std::thread,                // The concurrent execution type.
+                        std::promise,               // The promise type.
+                        void,                       // The type yielding the current concurrent execution.
+                        std::mutex,                 // The mutex type to use. Only required if TisYielding is true.
+                        std::condition_variable,    // The condition variable type to use. Only required if TisYielding is true.
+                        false>;                     // If the threads should yield.
+
                 public:
                     //-----------------------------------------------------------------------------
-                    QueueGenericBlockingImpl(
-                        TDev const & dev) noexcept :
+                    QueueGenericThreadsNonBlockingImpl(
+                        TDev const & dev) :
                             m_dev(dev),
-                            m_bCurrentlyExecutingTask(false)
+                            m_workerThread(1u)
                     {}
                     //-----------------------------------------------------------------------------
-                    QueueGenericBlockingImpl(QueueGenericBlockingImpl<TDev> const &) = delete;
+                    QueueGenericThreadsNonBlockingImpl(QueueGenericThreadsNonBlockingImpl<TDev> const &) = delete;
                     //-----------------------------------------------------------------------------
-                    QueueGenericBlockingImpl(QueueGenericBlockingImpl<TDev> &&) = delete;
+                    QueueGenericThreadsNonBlockingImpl(QueueGenericThreadsNonBlockingImpl<TDev> &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueGenericBlockingImpl<TDev> const &) -> QueueGenericBlockingImpl<TDev> & = delete;
+                    auto operator=(QueueGenericThreadsNonBlockingImpl<TDev> const &) -> QueueGenericThreadsNonBlockingImpl<TDev> & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(QueueGenericBlockingImpl<TDev> &&) -> QueueGenericBlockingImpl<TDev> & = delete;
+                    auto operator=(QueueGenericThreadsNonBlockingImpl<TDev> &&) -> QueueGenericThreadsNonBlockingImpl<TDev> & = delete;
 
                     //-----------------------------------------------------------------------------
-                    void enqueue(event::EventGeneric<TDev> & ev) final
+                    void enqueue(event::EventGenericThreads<TDev> & ev) final
                     {
                         queue::enqueue(*this, ev);
                     }
 
                     //-----------------------------------------------------------------------------
-                    void wait(event::EventGeneric<TDev> const & ev) final
+                    void wait(event::EventGenericThreads<TDev> const & ev) final
                     {
                         wait::wait(*this, ev);
                     }
 
                 public:
                     TDev const m_dev;            //!< The device this queue is bound to.
-                    std::mutex mutable m_mutex;
-                    std::atomic<bool> m_bCurrentlyExecutingTask;
+
+                    ThreadPool m_workerThread;
                 };
             }
         }
@@ -94,43 +105,43 @@ namespace alpaka
         //! The CPU device queue.
         template<
             typename TDev>
-        class QueueGenericBlocking final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericBlocking<TDev>>
+        class QueueGenericThreadsNonBlocking final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
         {
         public:
             //-----------------------------------------------------------------------------
-            QueueGenericBlocking(
+            QueueGenericThreadsNonBlocking(
                 TDev const & dev) :
-                    m_spQueueImpl(std::make_shared<generic::detail::QueueGenericBlockingImpl<TDev>>(dev))
+                    m_spQueueImpl(std::make_shared<generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>>(dev))
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 dev.registerQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            QueueGenericBlocking(QueueGenericBlocking<TDev> const &) = default;
+            QueueGenericThreadsNonBlocking(QueueGenericThreadsNonBlocking<TDev> const &) = default;
             //-----------------------------------------------------------------------------
-            QueueGenericBlocking(QueueGenericBlocking<TDev> &&) = default;
+            QueueGenericThreadsNonBlocking(QueueGenericThreadsNonBlocking<TDev> &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueGenericBlocking<TDev> const &) -> QueueGenericBlocking<TDev> & = default;
+            auto operator=(QueueGenericThreadsNonBlocking<TDev> const &) -> QueueGenericThreadsNonBlocking<TDev> & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(QueueGenericBlocking<TDev> &&) -> QueueGenericBlocking<TDev> & = default;
+            auto operator=(QueueGenericThreadsNonBlocking<TDev> &&) -> QueueGenericThreadsNonBlocking<TDev> & = default;
             //-----------------------------------------------------------------------------
-            auto operator==(QueueGenericBlocking<TDev> const & rhs) const
+            auto operator==(QueueGenericThreadsNonBlocking<TDev> const & rhs) const
             -> bool
             {
                 return (m_spQueueImpl == rhs.m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
-            auto operator!=(QueueGenericBlocking<TDev> const & rhs) const
+            auto operator!=(QueueGenericThreadsNonBlocking<TDev> const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ~QueueGenericBlocking() = default;
+            ~QueueGenericThreadsNonBlocking() = default;
 
         public:
-            std::shared_ptr<generic::detail::QueueGenericBlockingImpl<TDev>> m_spQueueImpl;
+            std::shared_ptr<generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>> m_spQueueImpl;
         };
     }
 
@@ -139,24 +150,24 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU blocking device queue device type trait specialization.
+            //! The CPU non-blocking device queue device type trait specialization.
             template<
                 typename TDev>
             struct DevType<
-                queue::QueueGenericBlocking<TDev>>
+                queue::QueueGenericThreadsNonBlocking<TDev>>
             {
                 using type = TDev;
             };
             //#############################################################################
-            //! The CPU blocking device queue device get trait specialization.
+            //! The CPU non-blocking device queue device get trait specialization.
             template<
                 typename TDev>
             struct GetDev<
-                queue::QueueGenericBlocking<TDev>>
+                queue::QueueGenericThreadsNonBlocking<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    queue::QueueGenericBlocking<TDev> const & queue)
+                    queue::QueueGenericThreadsNonBlocking<TDev> const & queue)
                 -> TDev
                 {
                     return queue.m_spQueueImpl->m_dev;
@@ -169,13 +180,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU blocking device queue event type trait specialization.
+            //! The CPU non-blocking device queue event type trait specialization.
             template<
                 typename TDev>
             struct EventType<
-                queue::QueueGenericBlocking<TDev>>
+                queue::QueueGenericThreadsNonBlocking<TDev>>
             {
-                using type = event::EventGeneric<TDev>;
+                using type = event::EventGenericThreads<TDev>;
             };
         }
     }
@@ -184,71 +195,48 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU blocking device queue enqueue trait specialization.
+            //! The CPU non-blocking device queue enqueue trait specialization.
             //! This default implementation for all tasks directly invokes the function call operator of the task.
             template<
                 typename TDev,
                 typename TTask>
             struct Enqueue<
-                queue::QueueGenericBlocking<TDev>,
+                queue::QueueGenericThreadsNonBlocking<TDev>,
                 TTask>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueGenericBlocking<TDev> & queue,
+                    queue::QueueGenericThreadsNonBlocking<TDev> & queue,
                     TTask const & task)
                 -> void
                 {
-                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
-
-                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = true;
-
-                    task();
-
-                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = false;
+// Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
+                    queue.m_spQueueImpl->m_workerThread.enqueueTask(
+                        task);
+#else
+                    alpaka::ignore_unused(queue);
+                    alpaka::ignore_unused(task);
+#endif
                 }
             };
             //#############################################################################
-            //! The CPU blocking device queue test trait specialization.
+            //! The CPU non-blocking device queue test trait specialization.
             template<
                 typename TDev>
             struct Empty<
-                queue::QueueGenericBlocking<TDev>>
+                queue::QueueGenericThreadsNonBlocking<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
-                    queue::QueueGenericBlocking<TDev> const & queue)
+                    queue::QueueGenericThreadsNonBlocking<TDev> const & queue)
                 -> bool
                 {
-                    return !queue.m_spQueueImpl->m_bCurrentlyExecutingTask;
-                }
-            };
-        }
-    }
-
-    namespace wait
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU blocking device queue thread wait trait specialization.
-            //!
-            //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
-            template<
-                typename TDev>
-            struct CurrentThreadWaitFor<
-                queue::QueueGenericBlocking<TDev>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    queue::QueueGenericBlocking<TDev> const & queue)
-                -> void
-                {
-                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
+                    return queue.m_spQueueImpl->m_workerThread.isIdle();
                 }
             };
         }
     }
 }
 
-#include <alpaka/event/EventGeneric.hpp>
+#include <alpaka/event/EventGenericThreads.hpp>

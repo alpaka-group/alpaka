@@ -16,7 +16,7 @@ namespace alpaka
     namespace event
     {
         template<typename TDev>
-        class EventGeneric;
+        class EventGenericThreads;
     }
 }
 
@@ -35,17 +35,17 @@ namespace alpaka
         //! The CPU queue interface
         template<
             typename TDev>
-        class IGenericQueue
+        class IGenericThreadsQueue
         {
         public:
             //-----------------------------------------------------------------------------
             //! enqueue the event
-            virtual void enqueue(event::EventGeneric<TDev> &) = 0;
+            virtual void enqueue(event::EventGenericThreads<TDev> &) = 0;
             //-----------------------------------------------------------------------------
             //! waiting for the event
-            virtual void wait(event::EventGeneric<TDev> const &) = 0;
+            virtual void wait(event::EventGenericThreads<TDev> const &) = 0;
             //-----------------------------------------------------------------------------
-            virtual ~IGenericQueue() = default;
+            virtual ~IGenericThreadsQueue() = default;
         };
 #if BOOST_COMP_CLANG
     #pragma clang diagnostic pop

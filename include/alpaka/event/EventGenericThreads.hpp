@@ -17,8 +17,8 @@
 #include <alpaka/wait/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
 
-#include <alpaka/queue/QueueGenericNonBlocking.hpp>
-#include <alpaka/queue/QueueGenericBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
 
 #include <mutex>
 #include <condition_variable>
@@ -39,11 +39,11 @@ namespace alpaka
                 //! The CPU device event implementation.
                 template<
                     typename TDev>
-                class EventGenericImpl final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventGenericImpl<TDev>>
+                class EventGenericThreadsImpl final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventGenericThreadsImpl<TDev>>
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    EventGenericImpl(
+                    EventGenericThreadsImpl(
                         TDev const & dev) noexcept :
                             m_dev(dev),
                             m_mutex(),
@@ -51,15 +51,15 @@ namespace alpaka
                             m_LastReadyEnqueueCount(0u)
                     {}
                     //-----------------------------------------------------------------------------
-                    EventGenericImpl(EventGenericImpl<TDev> const &) = delete;
+                    EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> const &) = delete;
                     //-----------------------------------------------------------------------------
-                    EventGenericImpl(EventGenericImpl<TDev> &&) = delete;
+                    EventGenericThreadsImpl(EventGenericThreadsImpl<TDev> &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(EventGenericImpl<TDev> const &) -> EventGenericImpl<TDev> & = delete;
+                    auto operator=(EventGenericThreadsImpl<TDev> const &) -> EventGenericThreadsImpl<TDev> & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(EventGenericImpl<TDev> &&) -> EventGenericImpl<TDev> & = delete;
+                    auto operator=(EventGenericThreadsImpl<TDev> &&) -> EventGenericThreadsImpl<TDev> & = delete;
                     //-----------------------------------------------------------------------------
-                    ~EventGenericImpl() noexcept = default;
+                    ~EventGenericThreadsImpl() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     auto isReady() noexcept -> bool
@@ -98,43 +98,43 @@ namespace alpaka
         //! The CPU device event.
         template<
             typename TDev>
-        class EventGeneric final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventGeneric<TDev>>
+        class EventGenericThreads final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
         {
         public:
             //-----------------------------------------------------------------------------
-            //! \param bBusyWaiting Unused. EventGeneric never does busy waiting.
-            EventGeneric(
+            //! \param bBusyWaiting Unused. EventGenericThreads never does busy waiting.
+            EventGenericThreads(
                 TDev const & dev,
                 bool bBusyWaiting = true) :
-                    m_spEventImpl(std::make_shared<generic::detail::EventGenericImpl<TDev>>(dev))
+                    m_spEventImpl(std::make_shared<generic::detail::EventGenericThreadsImpl<TDev>>(dev))
             { 
                 alpaka::ignore_unused(bBusyWaiting);
             }
             //-----------------------------------------------------------------------------
-            EventGeneric(EventGeneric<TDev> const &) = default;
+            EventGenericThreads(EventGenericThreads<TDev> const &) = default;
             //-----------------------------------------------------------------------------
-            EventGeneric(EventGeneric<TDev> &&) = default;
+            EventGenericThreads(EventGenericThreads<TDev> &&) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(EventGeneric<TDev> const &) -> EventGeneric<TDev> & = default;
+            auto operator=(EventGenericThreads<TDev> const &) -> EventGenericThreads<TDev> & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(EventGeneric<TDev> &&) -> EventGeneric<TDev> & = default;
+            auto operator=(EventGenericThreads<TDev> &&) -> EventGenericThreads<TDev> & = default;
             //-----------------------------------------------------------------------------
-            auto operator==(EventGeneric<TDev> const & rhs) const
+            auto operator==(EventGenericThreads<TDev> const & rhs) const
             -> bool
             {
                 return (m_spEventImpl == rhs.m_spEventImpl);
             }
             //-----------------------------------------------------------------------------
-            auto operator!=(EventGeneric<TDev> const & rhs) const
+            auto operator!=(EventGenericThreads<TDev> const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
             }
             //-----------------------------------------------------------------------------
-            ~EventGeneric() = default;
+            ~EventGenericThreads() = default;
 
         public:
-            std::shared_ptr<generic::detail::EventGenericImpl<TDev>> m_spEventImpl;
+            std::shared_ptr<generic::detail::EventGenericThreadsImpl<TDev>> m_spEventImpl;
         };
     }
 
@@ -146,11 +146,11 @@ namespace alpaka
             //! The CPU device event device get trait specialization.
             template<typename TDev>
             struct GetDev<
-                event::EventGeneric<TDev>>
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    event::EventGeneric<TDev> const & event)
+                    event::EventGenericThreads<TDev> const & event)
                 -> TDev
                 {
                     return event.m_spEventImpl->m_dev;
@@ -166,12 +166,12 @@ namespace alpaka
             //! The CPU device event test trait specialization.
             template<typename TDev>
             struct Test<
-                event::EventGeneric<TDev>>
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a queue (not enqueued or already handled).
                 ALPAKA_FN_HOST static auto test(
-                    event::EventGeneric<TDev> const & event)
+                    event::EventGenericThreads<TDev> const & event)
                 -> bool
                 {
                     std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
@@ -190,13 +190,13 @@ namespace alpaka
             template<
                 typename TDev>
             struct Enqueue<
-                queue::generic::detail::QueueGenericNonBlockingImpl<TDev>,
-                event::EventGeneric<TDev>>
+                queue::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> & queueImpl,
-                    event::EventGeneric<TDev> & event)
+                    queue::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev> & queueImpl,
+                    event::EventGenericThreads<TDev> & event)
                 -> void
                 {
 #if (BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
@@ -237,13 +237,13 @@ namespace alpaka
             template<
                 typename TDev>
             struct Enqueue<
-                queue::QueueGenericNonBlocking<TDev>,
-                event::EventGeneric<TDev>>
+                queue::QueueGenericThreadsNonBlocking<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueGenericNonBlocking<TDev> & queue,
-                    event::EventGeneric<TDev> & event)
+                    queue::QueueGenericThreadsNonBlocking<TDev> & queue,
+                    event::EventGenericThreads<TDev> & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -256,13 +256,13 @@ namespace alpaka
             template<
                 typename TDev>
             struct Enqueue<
-                queue::generic::detail::QueueGenericBlockingImpl<TDev>,
-                event::EventGeneric<TDev>>
+                queue::generic::detail::QueueGenericThreadsBlockingImpl<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::generic::detail::QueueGenericBlockingImpl<TDev> & queueImpl,
-                    event::EventGeneric<TDev> & event)
+                    queue::generic::detail::QueueGenericThreadsBlockingImpl<TDev> & queueImpl,
+                    event::EventGenericThreads<TDev> & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -296,13 +296,13 @@ namespace alpaka
             template<
                 typename TDev>
             struct Enqueue<
-                queue::QueueGenericBlocking<TDev>,
-                event::EventGeneric<TDev>>
+                queue::QueueGenericThreadsBlocking<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueGenericBlocking<TDev> & queue,
-                    event::EventGeneric<TDev> & event)
+                    queue::QueueGenericThreadsBlocking<TDev> & queue,
+                    event::EventGenericThreads<TDev> & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -323,11 +323,11 @@ namespace alpaka
             //! If the event is not enqueued to a queue the method returns immediately.
             template<typename TDev>
             struct CurrentThreadWaitFor<
-                event::EventGeneric<TDev>>
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    event::EventGeneric<TDev> const & event)
+                    event::EventGenericThreads<TDev> const & event)
                 -> void
                 {
                     wait::wait(*event.m_spEventImpl);
@@ -342,11 +342,11 @@ namespace alpaka
             //! NOTE: This method is for internal usage only.
             template<typename TDev>
             struct CurrentThreadWaitFor<
-                event::generic::detail::EventGenericImpl<TDev>>
+                event::generic::detail::EventGenericThreadsImpl<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    event::generic::detail::EventGenericImpl<TDev> const & eventImpl)
+                    event::generic::detail::EventGenericThreadsImpl<TDev> const & eventImpl)
                 -> void
                 {
                     std::unique_lock<std::mutex> lk(eventImpl.m_mutex);
@@ -360,17 +360,17 @@ namespace alpaka
             template<
                 typename TDev>
             struct WaiterWaitFor<
-                queue::generic::detail::QueueGenericNonBlockingImpl<TDev>,
-                event::EventGeneric<TDev>>
+                queue::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> & queueImpl,
+                    queue::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev> & queueImpl,
 #else
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> &,
+                    queue::generic::detail::QueueGenericThreadsNonBlockingImpl<TDev> &,
 #endif
-                    event::EventGeneric<TDev> const & event)
+                    event::EventGenericThreads<TDev> const & event)
                 -> void
                 {
                     // Copy the shared pointer of the event implementation.
@@ -401,13 +401,13 @@ namespace alpaka
             template<
                 typename TDev>
             struct WaiterWaitFor<
-                queue::QueueGenericNonBlocking<TDev>,
-                event::EventGeneric<TDev>>
+                queue::QueueGenericThreadsNonBlocking<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueGenericNonBlocking<TDev> & queue,
-                    event::EventGeneric<TDev> const & event)
+                    queue::QueueGenericThreadsNonBlocking<TDev> & queue,
+                    event::EventGenericThreads<TDev> const & event)
                 -> void
                 {
                     wait::wait(*queue.m_spQueueImpl, event);
@@ -418,13 +418,13 @@ namespace alpaka
             template<
                 typename TDev>
             struct WaiterWaitFor<
-                queue::generic::detail::QueueGenericBlockingImpl<TDev>,
-                event::EventGeneric<TDev>>
+                queue::generic::detail::QueueGenericThreadsBlockingImpl<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::generic::detail::QueueGenericBlockingImpl<TDev> & queueImpl,
-                    event::EventGeneric<TDev> const & event)
+                    queue::generic::detail::QueueGenericThreadsBlockingImpl<TDev> & queueImpl,
+                    event::EventGenericThreads<TDev> const & event)
                 -> void
                 {
                     alpaka::ignore_unused(queueImpl);
@@ -438,13 +438,13 @@ namespace alpaka
             template<
                 typename TDev>
             struct WaiterWaitFor<
-                queue::QueueGenericBlocking<TDev>,
-                event::EventGeneric<TDev>>
+                queue::QueueGenericThreadsBlocking<TDev>,
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueGenericBlocking<TDev> & queue,
-                    event::EventGeneric<TDev> const & event)
+                    queue::QueueGenericThreadsBlocking<TDev> & queue,
+                    event::EventGenericThreads<TDev> const & event)
                 -> void
                 {
                     wait::wait(*queue.m_spQueueImpl, event);
@@ -457,12 +457,12 @@ namespace alpaka
             template<typename TDev>
             struct WaiterWaitFor<
                 TDev,
-                event::EventGeneric<TDev>>
+                event::EventGenericThreads<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     TDev & dev,
-                    event::EventGeneric<TDev> const & event)
+                    event::EventGenericThreads<TDev> const & event)
                 -> void
                 {
                     // Get all the queues on the device at the time of invocation.
@@ -486,17 +486,17 @@ namespace alpaka
             template<
                 typename TDev>
             struct CurrentThreadWaitFor<
-                queue::QueueGenericNonBlocking<TDev>>
+                queue::QueueGenericThreadsNonBlocking<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    queue::QueueGenericNonBlocking<TDev> const & queue)
+                    queue::QueueGenericThreadsNonBlocking<TDev> const & queue)
                 -> void
                 {
-                    event::EventGeneric<TDev> event(
+                    event::EventGenericThreads<TDev> event(
                         dev::getDev(queue));
                     queue::enqueue(
-                        const_cast<queue::QueueGenericNonBlocking<TDev> &>(queue),
+                        const_cast<queue::QueueGenericThreadsNonBlocking<TDev> &>(queue),
                         event);
                     wait::wait(
                         event);
