@@ -206,19 +206,17 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     queue::QueueGenericNonBlocking<TDev> & queue,
                     TTask const & task)
-#else
-                    queue::QueueGenericNonBlocking<TDev> &,
-                    TTask const &)
-#endif
                 -> void
                 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     queue.m_spQueueImpl->m_workerThread.enqueueTask(
                         task);
+#else
+                    alpaka::ignore_unused(queue);
+                    alpaka::ignore_unused(task);
 #endif
                 }
             };

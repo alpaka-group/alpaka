@@ -274,9 +274,6 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAllQueues(
                     dev::DevCpu const & dev)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                -> decltype(dev.m_spDevCpuImpl->GetAllQueues())
-#endif
                 {
                     return dev.m_spDevCpuImpl->GetAllQueues();
                 }

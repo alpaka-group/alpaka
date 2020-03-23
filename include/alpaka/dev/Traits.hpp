@@ -184,9 +184,6 @@ namespace alpaka
             typename TDev>
         ALPAKA_FN_HOST auto registerQueue(
             TDev const & dev)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-        -> decltype(traits::GetAllQueues<TDev>::getAllQueues(dev))
-#endif
         {
             return
                 traits::GetAllQueues<

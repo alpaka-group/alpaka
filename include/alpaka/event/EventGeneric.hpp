@@ -195,14 +195,13 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                     queue::generic::detail::QueueGenericNonBlockingImpl<TDev> & queueImpl,
-#else
-                    queue::generic::detail::QueueGenericNonBlockingImpl<TDev> &,
-#endif
                     event::EventGeneric<TDev> & event)
                 -> void
                 {
+#if (BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
+                    alpaka::ignore_unused(queueImpl);
+#endif
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Copy the shared pointer of the event implementation.
