@@ -11,9 +11,6 @@
 
 #include <alpaka/core/BoostPredef.hpp>
 
-// #include <alpaka/event/EventGeneric.hpp>
-// #include <alpaka/dev/DevCpu.hpp>
-
 namespace alpaka
 {
     namespace event
