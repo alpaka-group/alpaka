@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2020 Jeffrey Kelling
  *
  * This file is part of Alpaka.
  *
@@ -9,20 +9,7 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
-
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/queue/Traits.hpp>
-#include <alpaka/wait/Traits.hpp>
-
-#include <alpaka/core/ConcurrentExecPool.hpp>
-
-#include <type_traits>
-#include <thread>
-#include <mutex>
-#include <future>
 
 namespace alpaka
 {

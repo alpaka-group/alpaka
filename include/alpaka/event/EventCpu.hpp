@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2020 Jeffrey Kelling
  *
  * This file is part of Alpaka.
  *
@@ -9,22 +9,7 @@
 
 #pragma once
 
-#include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Unused.hpp>
-#include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/event/EventGenericThreads.hpp>
-
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/wait/Traits.hpp>
-#include <alpaka/dev/Traits.hpp>
-
-#include <mutex>
-#include <condition_variable>
-#include <future>
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-    #include <iostream>
-#endif
 
 namespace alpaka
 {
