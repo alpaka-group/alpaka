@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
+#include <alpaka/event/EventCpu.hpp>
 
 namespace alpaka
 {
@@ -18,5 +19,3 @@ namespace alpaka
         using QueueCpuBlocking = QueueGenericThreadsBlocking<dev::DevCpu>;
     }
 }
-
-#include <alpaka/event/EventCpu.hpp>

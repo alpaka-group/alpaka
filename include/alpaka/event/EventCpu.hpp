@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/event/EventGenericThreads.hpp>
+#include <alpaka/dev/DevCpu.hpp>
 
 namespace alpaka
 {
