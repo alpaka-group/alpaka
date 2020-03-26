@@ -118,7 +118,7 @@ then
     make VERBOSE=1
 elif [ "$TRAVIS_OS_NAME" = "windows" ]
 then
-    "$MSBUILD_EXECUTABLE" "alpaka.sln" -p:Configuration=${CMAKE_BUILD_TYPE} -maxcpucount:2 -verbosity:minimal
+    "$MSBUILD_EXECUTABLE" "alpaka.sln" -p:Configuration=${CMAKE_BUILD_TYPE} -maxcpucount:1 -verbosity:minimal
 fi
 
 cd ..
