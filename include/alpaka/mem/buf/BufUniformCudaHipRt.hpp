@@ -471,6 +471,7 @@ namespace alpaka
                         ALPAKA_API_PREFIX(PitchedPtr) pitchedPtrVal;
                         pitchedPtrVal.ptr = nullptr;
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
+                        pitchedPtrVal.pitch = 0u;
                         //FIXME: HIP cannot handle zero-size input
                         if(extentVal.width!=0
                            && extentVal.height!=0
