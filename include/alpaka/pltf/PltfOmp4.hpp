@@ -21,6 +21,7 @@
 
 #include <sstream>
 #include <vector>
+#include <limits>
 
 namespace alpaka
 {
@@ -80,24 +81,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() if < 0
                 ALPAKA_FN_HOST static auto getDevByIdx(
-                    int devIdx)
+                    std::size_t devIdx)
                 -> dev::DevOmp4
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    int const devCount(pltf::getDevCount<pltf::PltfOmp4>());
+                    std::size_t const devCount(static_cast<std::size_t>(pltf::getDevCount<pltf::PltfOmp4>()));
+                    int devIdxOmp4 = static_cast<int>(devIdx);
                     if(devIdx >= devCount)
-                    {
-                        std::stringstream ssErr;
-                        ssErr << "Unable to return device handle for CPU device with index " << devIdx << " because there are only " << devCount << " devices!";
-                        throw std::runtime_error(ssErr.str());
-                    }
-                    else if(devIdx < 0)
-                    {
-                        devIdx = ::omp_get_initial_device();
+                    { // devIdx param must be unsigned, take take this case to use the initial device
+                        devIdxOmp4 = ::omp_get_initial_device();
                     }
 
-                    return {devIdx};
+                    return {devIdxOmp4};
                 }
             };
         }
