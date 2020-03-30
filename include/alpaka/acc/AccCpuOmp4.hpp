@@ -98,9 +98,9 @@ namespace alpaka
         private:
             //-----------------------------------------------------------------------------
             AccCpuOmp4(
-                vec::Vec<TDim, TIdx> const & gridBlockExtent,
-                vec::Vec<TDim, TIdx> const & blockThreadExtent,
                 vec::Vec<TDim, TIdx> const & threadElemExtent,
+                vec::Vec<TDim, TIdx> const & blockThreadExtent,
+                vec::Vec<TDim, TIdx> const & gridBlockExtent,
                 TIdx const & teamOffset,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>(threadElemExtent, blockThreadExtent, gridBlockExtent),
