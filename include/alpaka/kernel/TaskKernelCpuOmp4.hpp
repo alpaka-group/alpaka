@@ -25,7 +25,7 @@
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp4.hpp>
 #include <alpaka/core/Decay.hpp>
-#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/dev/DevOmp4.hpp>
 #include <alpaka/idx/MapIdx.hpp>
 #include <alpaka/kernel/Traits.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
@@ -280,7 +280,7 @@ namespace alpaka
             struct DevType<
                 kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = dev::DevCpu;
+                using type = dev::DevOmp4;
             };
         }
     }
@@ -316,7 +316,7 @@ namespace alpaka
             struct PltfType<
                 kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = pltf::PltfCpu;
+                using type = pltf::PltfOmp4;
             };
         }
     }
