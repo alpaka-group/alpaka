@@ -16,7 +16,7 @@
 #endif
 
 // Base classes.
-#include <alpaka/workdiv/WorkDivOmp4BuiltIn.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/idx/gb/IdxGbOmp4BuiltIn.hpp>
 #include <alpaka/idx/bt/IdxBtOmp4BuiltIn.hpp>
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
@@ -68,7 +68,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccCpuOmp4 final :
-            public workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>,
+            public workdiv::WorkDivMembers<TDim, TIdx>,
             public idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>,
             public idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -98,12 +98,12 @@ namespace alpaka
         private:
             //-----------------------------------------------------------------------------
             AccCpuOmp4(
-                vec::Vec<TDim, TIdx> const & threadElemExtent,
-                vec::Vec<TDim, TIdx> const & blockThreadExtent,
                 vec::Vec<TDim, TIdx> const & gridBlockExtent,
+                vec::Vec<TDim, TIdx> const & blockThreadExtent,
+                vec::Vec<TDim, TIdx> const & threadElemExtent,
                 TIdx const & teamOffset,
                 TIdx const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivOmp4BuiltIn<TDim, TIdx>(threadElemExtent, blockThreadExtent, gridBlockExtent),
+                    workdiv::WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
                     idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(teamOffset),
                     idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
