@@ -19,7 +19,7 @@
 
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Omp4.hpp>
-#include <alpaka/workdiv/WorkDivOmp4BuiltIn.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/idx/MapIdx.hpp>
