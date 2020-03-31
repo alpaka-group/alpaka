@@ -355,7 +355,8 @@ namespace alpaka
 
                             ALPAKA_OMP4_CHECK(
                                 omp_target_memcpy(
-                                    m_dstMemNative, const_cast<void*>(m_srcMemNative), m_extentWidthBytes,
+                                    m_dstMemNative, const_cast<void*>(m_srcMemNative),
+                                    static_cast<std::size_t>(m_extentWidthBytes),
                                     0,0, m_iDstDevice, m_iSrcDevice));
                         }
                     };
