@@ -376,7 +376,7 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-                                    dev::getDev(viewDst).m_iDevice,
+                                    dev::getDev(viewDst).m_spDevOmp4Impl->iDevice(),
                                     omp_get_initial_device()
                                     );
                     }
@@ -418,7 +418,7 @@ namespace alpaka
                                     viewSrc,
                                     extent,
                                     omp_get_initial_device(),
-                                    dev::getDev(viewSrc).m_iDevice
+                                    dev::getDev(viewSrc).m_spDevOmp4Impl->iDevice()
                                     );
                     }
                 };
@@ -458,8 +458,8 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-                                    dev::getDev(viewDst).m_iDevice,
-                                    dev::getDev(viewSrc).m_iDevice
+                                    dev::getDev(viewDst).m_spDevOmp4Impl->iDevice(),
+                                    dev::getDev(viewSrc).m_spDevOmp4Impl->iDevice()
                                     );
                     }
                 };
