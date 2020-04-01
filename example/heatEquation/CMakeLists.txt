@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2020 Benjamin Worpitz, Jan Stephan
+# Copyright 2014-2020 Benjamin Worpitz, Jan Stephan
 #
 # This file exemplifies usage of Alpaka.
 #
@@ -18,19 +18,38 @@
 
 ################################################################################
 # Required CMake version.
-################################################################################
 
 cmake_minimum_required(VERSION 3.15)
 
-project("alpakaExamples")
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ################################################################################
-# Add subdirectories.
-################################################################################
+# Project.
 
-add_subdirectory("bufferCopy/")
-add_subdirectory("heatEquation/")
-add_subdirectory("helloWorld/")
-add_subdirectory("helloWorldLambda/")
-add_subdirectory("reduce/")
-add_subdirectory("vectorAdd/")
+set(_TARGET_NAME heatEquation)
+
+project(${_TARGET_NAME})
+
+
+#-------------------------------------------------------------------------------
+# Find alpaka.
+
+if(NOT TARGET alpaka::alpaka)
+    set(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING "The location of the alpaka library")
+    list(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
+    find_package(alpaka REQUIRED)
+endif()
+
+#-------------------------------------------------------------------------------
+# Add executable.
+
+alpaka_add_executable(
+    ${_TARGET_NAME}
+    src/heatEquation.cpp)
+target_link_libraries(
+    ${_TARGET_NAME}
+    PUBLIC alpaka::alpaka)
+
+set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER example)
+
+add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME})
