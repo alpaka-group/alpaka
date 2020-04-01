@@ -123,7 +123,7 @@ namespace alpaka
                         BufOmp4Impl& operator=(BufOmp4Impl&&) = default;
                             ~BufOmp4Impl()
                         {
-                            omp_target_free(m_pMem, m_dev.m_iDevice);
+                            omp_target_free(m_pMem, m_dev.m_spDevOmp4Impl->iDevice());
                         }
                     };
                 }
@@ -375,8 +375,9 @@ namespace alpaka
                         auto const width(extent::getWidth(extent));
                         auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
 
-                        void * memPtr = omp_target_alloc(static_cast<std::size_t>(widthBytes), dev.m_iDevice);
-                        std::cerr << "alloc'd device ptr: " << memPtr << " on device " << dev.m_iDevice << " size " << widthBytes << '\n';
+                        void * memPtr = omp_target_alloc(static_cast<std::size_t>(widthBytes), dev.m_spDevOmp4Impl->iDevice());
+                        std::cerr << "alloc'd device ptr: " << memPtr << " on device "
+                            << dev.m_spDevOmp4Impl->iDevice() << " size " << widthBytes << '\n';
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << __func__
@@ -419,9 +420,10 @@ namespace alpaka
                         for (unsigned int a = 1u; a < static_cast<unsigned int>(TDim::value); ++a)
                             size *= static_cast<std::size_t>(extent[a]);
 
-                        void * memPtr = omp_target_alloc(size, dev.m_iDevice);
+                        void * memPtr = omp_target_alloc(size, dev.m_spDevOmp4Impl->iDevice());
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << __func__ << "alloc'd " << TDim::value << "D device ptr: " << memPtr << " on device " << dev.m_iDevice
+                        std::cout << __func__ << "alloc'd " << TDim::value
+                            << "D device ptr: " << memPtr << " on device " << dev.m_spDevOmp4Impl->iDevice()
                             << " size " << size << " = " << static_cast<std::size_t>(extent::getExtentVec(extent).prod())*sizeof(TElem) << '\n';
 #endif
                         return

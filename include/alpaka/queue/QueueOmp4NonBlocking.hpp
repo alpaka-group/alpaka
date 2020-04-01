@@ -23,7 +23,7 @@
 #include <alpaka/wait/Traits.hpp>
 
 #include <alpaka/core/Omp4.hpp>
-#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 
 #include <stdexcept>
 #include <memory>
@@ -36,7 +36,7 @@ namespace alpaka
 {
     namespace queue
     {
-        using QueueOmp4Blocking = QueueGenericThreadsBlocking<dev::DevOmp4>;
+        using QueueOmp4NonBlocking = QueueGenericThreadsNonBlocking<dev::DevOmp4>;
     }
 }
 

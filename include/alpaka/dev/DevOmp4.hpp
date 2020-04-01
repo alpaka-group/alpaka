@@ -19,13 +19,22 @@
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
+
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/queue/Properties.hpp>
 
 #include <alpaka/core/Omp4.hpp>
 
+#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
+#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
+
 namespace alpaka
 {
+    namespace dev
+    {
+        class DevOmp4;
+    }
     namespace pltf
     {
         namespace traits
@@ -40,15 +49,85 @@ namespace alpaka
 
     namespace dev
     {
+        namespace omp4
+        {
+            namespace detail
+            {
+                //#############################################################################
+                //! The Omp4 device implementation.
+                class DevOmp4Impl
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    DevOmp4Impl() = default;
+                    //-----------------------------------------------------------------------------
+                    DevOmp4Impl(DevOmp4Impl const &) = delete;
+                    //-----------------------------------------------------------------------------
+                    DevOmp4Impl(DevOmp4Impl &&) = delete;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(DevOmp4Impl const &) -> DevOmp4Impl & = delete;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(DevOmp4Impl &&) -> DevOmp4Impl & = delete;
+                    //-----------------------------------------------------------------------------
+                    ~DevOmp4Impl() = default;
+
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST auto getAllExistingQueues() const
+                    -> std::vector<std::shared_ptr<queue::IGenericQueue<DevOmp4>>>
+                    {
+                        std::vector<std::shared_ptr<queue::IGenericQueue<DevOmp4>>> vspQueues;
+
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+                        vspQueues.reserve(m_queues.size());
+
+                        for(auto it = m_queues.begin(); it != m_queues.end();)
+                        {
+                            auto spQueue(it->lock());
+                            if(spQueue)
+                            {
+                                vspQueues.emplace_back(std::move(spQueue));
+                                ++it;
+                            }
+                            else
+                            {
+                                it = m_queues.erase(it);
+                            }
+                        }
+                        return vspQueues;
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    //! Registers the given queue on this device.
+                    //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+                    ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::IGenericThreadsQueue<DevOmp4>> spQueue)
+                    -> void
+                    {
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+
+                        // Register this queue on the device.
+                        m_queues.push_back(spQueue);
+                    }
+
+                    int iDevice() const {return m_iDevice;}
+
+                private:
+                    std::mutex mutable m_Mutex;
+                    std::vector<std::weak_ptr<queue::IGenericThreadsQueue<DevOmp4>>> mutable m_queues;
+                    int m_iDevice = 0;
+                };
+            }
+        }
         //#############################################################################
-        //! The CUDA RT device handle.
+        //! The Omp4 device handle.
         class DevOmp4 : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevOmp4>
         {
             friend struct pltf::traits::GetDevByIdx<pltf::PltfOmp4>;
 
         protected:
             //-----------------------------------------------------------------------------
-            DevOmp4() = default;
+            DevOmp4() :
+                m_spDevOmp4Impl(std::make_shared<omp4::detail::DevOmp4Impl>())
+            {}
         public:
             //-----------------------------------------------------------------------------
             DevOmp4(DevOmp4 const &) = default;
@@ -62,7 +141,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(DevOmp4 const & rhs) const
             -> bool
             {
-                return m_iDevice == rhs.m_iDevice;
+                return m_spDevOmp4Impl->iDevice() == rhs.m_spDevOmp4Impl->iDevice();
             }
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST auto operator!=(DevOmp4 const & rhs) const
@@ -73,8 +152,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ~DevOmp4() = default;
 
+            ALPAKA_FN_HOST auto getAllQueues() const
+            -> std::vector<std::shared_ptr<queue::IGenericThreadsQueue<DevOmp4>>>
+            {
+                return m_spDevOmp4Impl->getAllExistingQueues();
+            }
+
+            //-----------------------------------------------------------------------------
+            //! Registers the given queue on this device.
+            //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
+            ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::IGenericThreadsQueue<DevOmp4>> spQueue) const
+            -> void
+            {
+                m_spDevOmp4Impl->registerQueue(spQueue);
+            }
+
         public:
-            int m_iDevice = 0;
+            std::shared_ptr<omp4::detail::DevOmp4Impl> m_spDevOmp4Impl;
         };
     }
 
@@ -196,8 +290,8 @@ namespace alpaka
     }
     namespace queue
     {
-        // class QueueOmp4NonBlocking;
-        class QueueOmp4Blocking;
+        using QueueOmp4NonBlocking = QueueGenericNonBlocking<dev::DevOmp4>;
+        using QueueOmp4Blocking = QueueGenericBlocking<dev::DevOmp4>;
 
         namespace traits
         {
@@ -216,19 +310,22 @@ namespace alpaka
                 queue::NonBlocking
             >
             {
-                using type = queue::QueueOmp4Blocking; //! \todo non-blocking
+                using type = queue::QueueOmp4NonBlocking;
             };
         }
     }
+#if 0
     namespace wait
     {
         namespace traits
         {
             //#############################################################################
-            //! The thread CUDA device wait specialization.
+            //! The thread Omp4 device wait specialization.
             //!
             //! Blocks until the device has completed all preceding requested tasks.
             //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
+            //!
+            //! This would only be required with a queue based on OpenMP tasks.
             template<>
             struct CurrentThreadWaitFor<
                 dev::DevOmp4>
@@ -244,6 +341,7 @@ namespace alpaka
             };
         }
     }
+#endif
 }
 
 #endif
