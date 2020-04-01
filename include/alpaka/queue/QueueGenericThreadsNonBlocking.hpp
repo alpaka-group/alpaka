@@ -13,6 +13,7 @@
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <alpaka/core/ConcurrentExecPool.hpp>
 #include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
