@@ -314,7 +314,6 @@ namespace alpaka
             };
         }
     }
-#if 0
     namespace wait
     {
         namespace traits
@@ -324,8 +323,6 @@ namespace alpaka
             //!
             //! Blocks until the device has completed all preceding requested tasks.
             //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
-            //!
-            //! This would only be required with a queue based on OpenMP tasks.
             template<>
             struct CurrentThreadWaitFor<
                 dev::DevOmp4>
@@ -335,13 +332,14 @@ namespace alpaka
                     dev::DevOmp4 const & dev)
                 -> void
                 {
-                    alpaka::ignore_unused(dev); //! \TODO
-#pragma omp taskwait
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                    generic::currentThreadWaitForDevice(dev);
+// #pragma omp taskwait
                 }
             };
         }
     }
-#endif
 }
 
 #endif
