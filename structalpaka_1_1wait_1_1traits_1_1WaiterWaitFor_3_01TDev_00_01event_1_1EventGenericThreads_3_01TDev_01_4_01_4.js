@@ -1,0 +1,4 @@
+var structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01TDev_00_01event_1_1EventGenericThreads_3_01TDev_01_4_01_4 =
+[
+    [ "waiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01TDev_00_01event_1_1EventGenericThreads_3_01TDev_01_4_01_4.html#a088ef8628292e08cd3d335fdc493fc85", null ]
+];

@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['queuecpublocking',['QueueCpuBlocking',['../classalpaka_1_1queue_1_1QueueCpuBlocking.html',1,'alpaka::queue']]],
-  ['queuecpublockingimpl',['QueueCpuBlockingImpl',['../classalpaka_1_1queue_1_1cpu_1_1detail_1_1QueueCpuBlockingImpl.html',1,'alpaka::queue::cpu::detail']]],
-  ['queuecpunonblocking',['QueueCpuNonBlocking',['../classalpaka_1_1queue_1_1QueueCpuNonBlocking.html',1,'alpaka::queue']]],
-  ['queuecpunonblockingimpl',['QueueCpuNonBlockingImpl',['../classalpaka_1_1queue_1_1cpu_1_1detail_1_1QueueCpuNonBlockingImpl.html',1,'alpaka::queue::cpu::detail']]],
+  ['queuegenericthreadsblocking',['QueueGenericThreadsBlocking',['../classalpaka_1_1queue_1_1QueueGenericThreadsBlocking.html',1,'alpaka::queue']]],
+  ['queuegenericthreadsblockingimpl',['QueueGenericThreadsBlockingImpl',['../classalpaka_1_1queue_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html',1,'alpaka::queue::generic::detail']]],
+  ['queuegenericthreadsnonblocking',['QueueGenericThreadsNonBlocking',['../classalpaka_1_1queue_1_1QueueGenericThreadsNonBlocking.html',1,'alpaka::queue']]],
+  ['queuegenericthreadsnonblockingimpl',['QueueGenericThreadsNonBlockingImpl',['../classalpaka_1_1queue_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html',1,'alpaka::queue::generic::detail']]],
   ['queuetype',['QueueType',['../structalpaka_1_1queue_1_1traits_1_1QueueType.html',1,'alpaka::queue::traits']]],
   ['queuetype_3c_20dev_3a_3adevcpu_2c_20queue_3a_3ablocking_20_3e',['QueueType&lt; dev::DevCpu, queue::Blocking &gt;',['../structalpaka_1_1queue_1_1traits_1_1QueueType_3_01dev_1_1DevCpu_00_01queue_1_1Blocking_01_4.html',1,'alpaka::queue::traits']]],
   ['queuetype_3c_20dev_3a_3adevcpu_2c_20queue_3a_3anonblocking_20_3e',['QueueType&lt; dev::DevCpu, queue::NonBlocking &gt;',['../structalpaka_1_1queue_1_1traits_1_1QueueType_3_01dev_1_1DevCpu_00_01queue_1_1NonBlocking_01_4.html',1,'alpaka::queue::traits']]],

@@ -1,0 +1,4 @@
+var structalpaka_1_1dev_1_1traits_1_1GetDev_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4 =
+[
+    [ "getDev", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html#ac5aed043f30c3942e367eaa3d2588ccf", null ]
+];

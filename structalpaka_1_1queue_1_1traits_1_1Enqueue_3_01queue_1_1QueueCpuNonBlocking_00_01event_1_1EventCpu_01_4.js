@@ -1,4 +1,0 @@
-var structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCpuNonBlocking_00_01event_1_1EventCpu_01_4 =
-[
-    [ "enqueue", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueCpuNonBlocking_00_01event_1_1EventCpu_01_4.html#a1bb53d2cc47d7c8fa2e7cbe47841bc3b", null ]
-];

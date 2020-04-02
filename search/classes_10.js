@@ -29,7 +29,7 @@ var searchData=
   ['tasksetcpubase_3c_20dim_3a_3adimint_3c_201u_20_3e_2c_20tview_2c_20textent_20_3e',['TaskSetCpuBase&lt; dim::DimInt&lt; 1u &gt;, TView, TExtent &gt;',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpuBase.html',1,'alpaka::mem::view::cpu::detail']]],
   ['tasksetuniformcudahip',['TaskSetUniformCudaHip',['../structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip.html',1,'alpaka::mem::view::uniform_cuda_hip::detail']]],
   ['test',['Test',['../structalpaka_1_1event_1_1traits_1_1Test.html',1,'alpaka::event::traits']]],
-  ['test_3c_20event_3a_3aeventcpu_20_3e',['Test&lt; event::EventCpu &gt;',['../structalpaka_1_1event_1_1traits_1_1Test_3_01event_1_1EventCpu_01_4.html',1,'alpaka::event::traits']]],
+  ['test_3c_20event_3a_3aeventgenericthreads_3c_20tdev_20_3e_20_3e',['Test&lt; event::EventGenericThreads&lt; TDev &gt; &gt;',['../structalpaka_1_1event_1_1traits_1_1Test_3_01event_1_1EventGenericThreads_3_01TDev_01_4_01_4.html',1,'alpaka::event::traits']]],
   ['test_3c_20event_3a_3aeventuniformcudahiprt_20_3e',['Test&lt; event::EventUniformCudaHipRt &gt;',['../structalpaka_1_1event_1_1traits_1_1Test_3_01event_1_1EventUniformCudaHipRt_01_4.html',1,'alpaka::event::traits']]],
   ['threads',['Threads',['../structalpaka_1_1hierarchy_1_1Threads.html',1,'alpaka::hierarchy']]],
   ['threadsafequeue',['ThreadSafeQueue',['../classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html',1,'alpaka::core::detail']]],

@@ -1,4 +1,0 @@
-var structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCpuNonBlocking_01_4 =
-[
-    [ "currentThreadWaitFor", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01queue_1_1QueueCpuNonBlocking_01_4.html#a428819811068f34c49cd847e50a67fa1", null ]
-];
