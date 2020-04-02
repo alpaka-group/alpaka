@@ -19,6 +19,7 @@
 
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/event/EventCpu.hpp>
 #include <alpaka/queue/cpu/ICpuQueue.hpp>
 #include <alpaka/queue/QueueCpuBlocking.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp>
@@ -32,14 +33,6 @@
 #include <atomic>
 #include <mutex>
 #include <omp.h>
-
-namespace alpaka
-{
-    namespace event
-    {
-        class EventCpu;
-    }
-}
 
 namespace alpaka
 {
@@ -117,7 +110,7 @@ namespace alpaka
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuOmp2CollectiveImpl>(dev)),
                     m_spBlockingQueue(std::make_shared<QueueCpuBlocking>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterQueue(m_spQueueImpl);
+                dev.registerQueue(m_spQueueImpl);
             }
             //-----------------------------------------------------------------------------
             QueueCpuOmp2Collective(QueueCpuOmp2Collective const &) = default;
