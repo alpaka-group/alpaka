@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">**alpaka** - Abstraction Library for Parallel Kernel Acceleration </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a href="https://github.com/ComputationalRadiationPhysics/alpaka/actions?query=workflow%3A%22Continuous+Integration%22"></a> <a href="https://travis-ci.org/ComputationalRadiationPhysics/alpaka"></a> <a href="https://isocpp.org/"></a> <a href="https://github.com/ComputationalRadiationPhysics/alpaka"></a> <a href="https://www.mozilla.org/en-US/MPL/2.0/"></a></p>
+<div class="textblock"><p><a href="https://github.com/ComputationalRadiationPhysics/alpaka/actions?query=workflow%3A%22Continuous+Integration%22"></a> <a href="https://travis-ci.org/alpaka-group/alpaka"></a> <a href="https://isocpp.org/"></a> <a href="https://github.com/alpaka-group/alpaka"></a> <a href="https://www.mozilla.org/en-US/MPL/2.0/"></a></p>
 <div class="image">
 <img src="doc/images/alpaka_401x135.png" alt="Alpaka"/>
 </div>
@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <h2>Software License </h2>
 <p><b>alpaka</b> is licensed under <b>MPL-2.0</b>.</p>
 <h2>Documentation </h2>
-<p>The general documentation is located within the <code>doc/markdown</code> subfolder of the repository. The <a href="http://computationalradiationphysics.github.io/alpaka/">source code documentation</a> is generated with <a href="http://www.doxygen.org">doxygen</a>.</p>
+<p>The general documentation is located within the <code>doc/markdown</code> subfolder of the repository. The <a href="http://alpaka-group.github.io/alpaka/">source code documentation</a> is generated with <a href="http://www.doxygen.org">doxygen</a>.</p>
 <h2>Accelerator Back-ends </h2>
 <table class="doxtable">
 <tr>
@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <h2>Usage </h2>
 <p>The library is header only so nothing has to be built. CMake 3.15+ is required to provide the correct defines and include paths. Just call <code>ALPAKA_ADD_EXECUTABLE</code> instead of <code>CUDA_ADD_EXECUTABLE</code> or <code>ADD_EXECUTABLE</code> and the difficulties of the CUDA nvcc compiler in handling <code>.cu</code> and <code>.cpp</code> files are automatically taken care of. Source files do not need any special file ending. Examples of how to utilize alpaka within CMake can be found in the <code>example</code> folder.</p>
 <p>The whole alpaka library can be included with: <code>#include &lt;<a class="el" href="alpaka_8hpp.html">alpaka/alpaka.hpp</a>&gt;</code> Code that is not intended to be utilized by the user is hidden in the <code>detail</code> namespace.</p>
-<p>Furthermore, for a CUDA-like experience when adopting alpaka we provide the library <a href="https://github.com/ComputationalRadiationPhysics/cupla"><em>cupla</em></a>. It enables a simple and straightforward way of porting existing CUDA applications to alpaka and thus to a variety of accelerators.</p>
+<p>Furthermore, for a CUDA-like experience when adopting alpaka we provide the library <a href="https://github.com/alpaka-group/cupla"><em>cupla</em></a>. It enables a simple and straightforward way of porting existing CUDA applications to alpaka and thus to a variety of accelerators.</p>
 <h2>Introduction </h2>
 <p>For a quick introduction, feel free to playback the recording of our presentation at <a href="http://mygtc.gputechconf.com/quicklink/858sI36">GTC 2016</a>:</p>
 <ul>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Apr 2 2020 11:12:24 for alpaka by
+    <li class="footer">Generated on Fri Apr 3 2020 17:50:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
