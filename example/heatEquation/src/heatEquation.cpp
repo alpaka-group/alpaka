@@ -20,40 +20,48 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
-#include <typeinfo>
 
 
 //#############################################################################
-//! CPU version of explicit finite-difference 1d heat equation solver
+//! Alpaka version of explicit finite-difference 1d heat equation solver
 //!
 //! Solving equation u_t(x, t) = u_xx(x, t) using a simple explicit scheme with
 //! forward difference in t and second-order central difference in x
-//! This function computes one time step (@Jacob: this function will become a kernel)
 //!
-//! \param uCurrent grid values of u for each x and the current value of t:
+//! \param uCurrBuf grid values of u for each x and the current value of t:
 //!                 u(x, t) | t = t_current
-//! \param numNodesX number of grid nodes in x
-//! \param dx step in x
-//! \param dt step in t
 //! \param uNext resulting grid values of u for each x and the next value of t:
 //!              u(x, t) | t = t_current + dt
-void heatEquationStep(
-    double const * uCurrent,
-    uint32_t const numNodesX,
-    double const dx,
-    double const dt,
-    double * uNext)
-{
-    // We assume boundary values are defined by Dirichlet boundary conditions
-    // and so do not need to be updated in the kernel
-    double const r = dt / ( dx * dx );
-    for( uint32_t i = 1u; i < numNodesX; i++ )
-    {
-        uNext[ i ] = uCurrent[ i ] * ( 1.0 - 2.0 * r ) + uCurrent[ i - 1 ] * r
-            + uCurrent[ i + 1 ] * r;
-    }
-}
+//! \param extent number of grid nodes in x (eq. to numNodesX)
+//! \param dx step in x
+//! \param dt step in t
 
+struct HeatEquationKernel
+{
+    template<
+        typename TAcc
+    >
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const & acc,
+        double const * const uCurrBuf,
+        double * const uNextBuf,
+        double const & extent,
+        double const & dx,
+        double const & dt
+
+    )const -> void
+    {
+        // Each kernel executes one element
+        double const r = dt / ( dx * dx );
+        int idx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
+        if(idx > 0 && idx < extent){
+            uNextBuf[idx] =
+                uCurrBuf[idx] * ( 1.0 - 2.0 * r ) +
+                uCurrBuf[idx - 1] * r +
+                uCurrBuf[idx + 1] * r;
+        }
+    }
+};
 
 //! Exact solution to the test problem
 //! u_t(x, t) = u_xx(x, t), x in [0, 1], t in [0, T]
@@ -66,20 +74,21 @@ double exactSolution(
     double const x,
     double const t)
 {
-    // @Jakob, this function is for testing correctness, does not need to be alpakafied
     constexpr double pi = 3.14159265358979323846;
     return exp( -pi * pi * t ) * sin( pi * x );
 }
 
-auto main()
--> int
+//! Each kernel computes the next step for one point.
+//! Therefore the number of threads should be equal to numNodesX.
+//! Every time step the kernel will be executed numNodesX-times
+//! After every step the curr-buffer will be set to the calculated values
+//! from the next-buffer.
+auto main() -> int
 {
-// Fallback for the CI with disabled sequential backend
 #if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
     return EXIT_SUCCESS;
 #else
-
-    // Parameters (a user is supposed to change numNodesX, numNodesT)
+    // Parameters (a user is supposed to change numNodesX, numTimeSteps)
     uint32_t const numNodesX = 1000;
     uint32_t const numTimeSteps = 10000;
     double const tMax = 0.001;
@@ -92,48 +101,110 @@ auto main()
     if( r > 0.5 )
     {
         std::cerr << "Stability condition check failed: dt/dx^2 = " << r
-            << ", it is required to be <= 0.5\n";
+                  << ", it is required to be <= 0.5\n";
         return EXIT_FAILURE;
     }
 
-    // Buffers for current and next time steps
-    double * uCurrent = new double[ numNodesX ];
-    double * uNext = new double[ numNodesX ];
+    // ALPAKA-SETUP
+
+    // Set Dim and Idx type
+    using Dim = alpaka::dim::DimInt<1u>;
+    using Idx = uint32_t ;
+
+    // Select accelerator-types for host and device
+    using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+
+    using DevAcc = alpaka::dev::Dev<Acc>;
+    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+
+    using DevHost = alpaka::dev::DevCpu;
+    using PltfHost = alpaka::pltf::Pltf< DevHost>;
+
+    // Select specific devices
+    DevAcc const devAcc{alpaka::pltf::getDevByIdx<PltfAcc>(0u)};
+    DevHost const devHost{alpaka::pltf::getDevByIdx<PltfHost>(0u)};
+
+    // Get valid workdiv for the given problem
+    uint32_t elemPerThread = 1;
+    alpaka::vec::Vec<Dim, Idx> const extent{numNodesX};
+    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
+    WorkDiv workdiv{alpaka::workdiv::getValidWorkDiv<Acc>(
+        devAcc,
+        extent,
+        elemPerThread,
+        false,
+        alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted
+        )};
+
+    // Select queue
+    using QueueProperty = alpaka::queue::Blocking;
+    using QueueAcc = alpaka::queue::Queue<Acc, QueueProperty>;
+    QueueAcc queue{devAcc};
+
+    // Initialize host-buffer
+    using BufHost = alpaka::mem::buf::Buf<DevHost, double, Dim, Idx>;
+    // This buffer holds the calculated values
+    BufHost uNextBufHost{alpaka::mem::buf::alloc<double, Idx>(devHost, extent)};
+    // This buffer will hold the current values (used for the next step)
+    BufHost uCurrBufHost{alpaka::mem::buf::alloc<double, Idx>(devHost, extent)};
+
+    double * const pCurrHost{alpaka::mem::view::getPtrNative(uCurrBufHost)};
+    double * const pNextHost{alpaka::mem::view::getPtrNative(uNextBufHost)};
+
+    // Accelerator buffer
+    using BufAcc = alpaka::mem::buf::Buf<DevAcc, double, Dim, Idx>;
+    BufAcc uNextBufAcc{alpaka::mem::buf::alloc<double, Idx>(devAcc, extent)};
+    BufAcc uCurrBufAcc{alpaka::mem::buf::alloc<double, Idx>(devAcc, extent)};
+
+    double * pCurrAcc{alpaka::mem::view::getPtrNative(uCurrBufAcc)};
+    double * pNextAcc{alpaka::mem::view::getPtrNative(uNextBufAcc)};
 
     // Apply initial conditions for the test problem
     for( uint32_t i = 0; i < numNodesX; i++ )
-        uCurrent[ i ] = exactSolution( i * dx, 0.0 );
-
-    // Iterate in time
-    for( uint32_t step = 0; step < numTimeSteps; step++ )
     {
-        // Apply boundary conditions (@Jakob i think for simplicity we may
-        // skip this part in alpaka version assuming that boundary conditions do not change in time)
-        uCurrent[ 0 ] = exactSolution( 0, step * dt );
-        uCurrent[ numNodesX - 1 ] = exactSolution( ( numNodesX - 1 ) * dx, step * dt );
-
-        // Compute next values
-        heatEquationStep( uCurrent, numNodesX, dx, dt, uNext );
-
-        // Swap buffers for the next step
-        // (@Jakob no deep copy here on purpose, just the values of uNext need to become
-        // values of uCurrent for the next time step)
-        std::swap( uCurrent, uNext );
+        pCurrHost[i] =
+            exactSolution(
+                i * dx,
+                0.0
+            );
     }
 
-    // Now uCurrent has values for t = tMax, compare to the exact solution
-    // TODO @Sergei: will think on automatically checking if maxError is okay for given
-    // number of nodes in x and t, for now it just needs to be << 1
+    HeatEquationKernel kernel;
+
+    // Copy host -> device
+    alpaka::mem::view::copy(queue, uCurrBufAcc, uCurrBufHost, extent);
+
+    // EXECUTION
+    for( uint32_t step = 0; step < numTimeSteps; step++ )
+    {
+        // Compute next values
+        alpaka::kernel::exec<Acc>(
+            queue,
+            workdiv,
+            kernel,
+            pCurrAcc,
+            pNextAcc,
+            numNodesX,
+            dx,
+            dt);
+
+        // Swap next to curr (shallow copy)
+        std::swap(pCurrAcc,pNextAcc);
+    }
+
+    // Copy device -> host
+    alpaka::mem::view::copy(queue, uNextBufHost, uNextBufAcc, extent);
+    alpaka::wait::wait(queue);
+
+    // Calculate error
     double maxError = 0.0;
     for( uint32_t i = 0; i < numNodesX; i++ )
     {
-        auto const error = abs( uCurrent[ i ] - exactSolution( i * dx, tMax ) );
+        auto const error = abs( pNextHost[ i ] - exactSolution( i * dx, tMax ) );
         maxError = std::max( maxError, error );
     }
     std::cout << "Max error to the exact solution at t = tMax: " << maxError << "\n";
 
-    delete [] uCurrent;
-    delete [] uNext;
     return EXIT_SUCCESS;
 #endif
 }
