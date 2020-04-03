@@ -31,7 +31,7 @@ set(PACKAGE_VERSION "${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VE
 
 project(alpaka VERSION      ${ALPAKA_VERSION_MAJOR}.${ALPAKA_VERSION_MINOR}.${ALPAKA_VERSION_PATCH}
                DESCRIPTION  "The alpaka library is a header-only C++14 abstraction library for accelerator development."
-               HOMEPAGE_URL "https://github.com/ComputationalRadiationPhysics/alpaka"
+               HOMEPAGE_URL "https://github.com/alpaka-group/alpaka"
                LANGUAGES    CXX)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)

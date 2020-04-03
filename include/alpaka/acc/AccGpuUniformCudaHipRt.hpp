@@ -307,7 +307,7 @@ namespace alpaka
             //! specialization of the TKernelFnObj return type evaluation
             //
             // It is not possible to determine the result type of a __device__ lambda for CUDA on the host side.
-            // https://github.com/ComputationalRadiationPhysics/alpaka/pull/695#issuecomment-446103194
+            // https://github.com/alpaka-group/alpaka/pull/695#issuecomment-446103194
             // The execution task TaskKernelGpuUniformCudaHipRt is therefore performing this check on device side.
             template<
                 typename TDim,
