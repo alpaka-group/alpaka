@@ -25,8 +25,6 @@
 #include <alpaka/meta/IntegerSequence.hpp>
 #include <alpaka/core/Unused.hpp>
 
-#include <boost/config.hpp>
-
 #include <algorithm>
 #include <cstdint>
 #include <ostream>

@@ -16,8 +16,6 @@
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
 
-#include <boost/config.hpp>
-
 #include <vector>
 #include <type_traits>
 

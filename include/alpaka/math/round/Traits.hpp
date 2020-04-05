@@ -11,9 +11,6 @@
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/Unused.hpp>
-
-#include <boost/config.hpp>
 
 #include <type_traits>
 

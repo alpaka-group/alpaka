@@ -11,8 +11,6 @@
 
 #include <alpaka/core/Common.hpp>
 
-#include <boost/config.hpp>
-
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
