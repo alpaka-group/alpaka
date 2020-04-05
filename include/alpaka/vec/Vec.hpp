@@ -33,13 +33,6 @@
 #include <type_traits>
 #include <utility>
 
-// Some compilers do not support the out of class versions:
-// - the nvcc CUDA compiler (at least 8.0)
-// - the intel compiler
-#if BOOST_COMP_HIP || BOOST_COMP_NVCC || BOOST_COMP_INTEL || (BOOST_COMP_CLANG_CUDA >= BOOST_VERSION_NUMBER(4, 0, 0)) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 0, 0))
-    #define ALPAKA_CREATE_VEC_IN_CLASS
-#endif
-
 namespace alpaka
 {
     namespace vec
@@ -49,7 +42,6 @@ namespace alpaka
             typename TVal>
         class Vec;
 
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
         //-----------------------------------------------------------------------------
         //! Single value constructor helper.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -108,7 +100,6 @@ namespace alpaka
                         IdxSubSequence(),
                         std::forward<TArgs>(args)...);
         }
-#endif
 
         //#############################################################################
         //! A n-dimensional vector.
@@ -160,64 +151,6 @@ namespace alpaka
                     m_data{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
             {}
 
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-            //-----------------------------------------------------------------------------
-            //! Creator using func<idx>(args...) to initialize all values of the vector.
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                template<std::size_t> class TTFnObj,
-                typename... TArgs,
-                typename TIdxSize,
-                TIdxSize... TIndices>
-            ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
-                std::integer_sequence<TIdxSize, TIndices...> const & indices,
-                TArgs && ... args)
-            -> Vec<TDim, TVal>
-            {
-                alpaka::ignore_unused(indices);
-
-                return Vec<TDim, TVal>(
-                    (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
-            }
-            //-----------------------------------------------------------------------------
-            //! Creator using func<idx>(args...) to initialize all values of the vector.
-            //! The idx is in the range [0, TDim].
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                template<std::size_t> class TTFnObj,
-                typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFn(
-                TArgs && ... args)
-            -> Vec<TDim, TVal>
-            {
-                return
-                    createVecFromIndexedFnArbitrary<
-                        TTFnObj>(
-                            IdxSequence(),
-                            std::forward<TArgs>(args)...);
-            }
-            //-----------------------------------------------------------------------------
-            //! Creator using func<idx>(args...) to initialize all values of the vector.
-            //! The idx is in the range [TIdxOffset, TIdxOffset + TDim].
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                template<std::size_t> class TTFnObj,
-                typename TIdxOffset,
-                typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnOffset(
-                TArgs && ... args)
-            -> Vec<TDim, TVal>
-            {
-                using IdxSubSequenceSigned = meta::MakeIntegerSequenceOffset<std::intmax_t, TIdxOffset::value, TDim::value>;
-                using IdxSubSequence = meta::ConvertIntegerSequence<typename TDim::value_type, IdxSubSequenceSigned>;
-                return
-                    createVecFromIndexedFnArbitrary<
-                        TTFnObj>(
-                            IdxSubSequence(),
-                            std::forward<TArgs>(args)...);
-            }
-#endif
-
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC
@@ -267,9 +200,7 @@ namespace alpaka
             {
                 return
                     createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
                         TDim,
-#endif
                         CreateSingleVal>(
                             val);
             }
@@ -449,60 +380,6 @@ namespace alpaka
             TVal m_data[TDim::value == 0u ? 1u : TDim::value];
         };
 
-        //-----------------------------------------------------------------------------
-        //! This is a conveniance method to have a out-of-class factory method even though the out-of-class version is not supported by all compilers.
-        //! Depending of the compiler conformance, the internal or external factory function is called.
-        //! This has the draw-back, that it requires the TVal parameter even though it should not be necessary.
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TDim,
-            typename TVal,
-            template<std::size_t> class TTFnObj,
-            typename... TArgs>
-        ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnWorkaround(
-            TArgs && ... args)
-        {
-            return
-                alpaka::vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, TVal>::template
-#endif
-                createVecFromIndexedFn<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-                    TDim,
-#endif
-                    TTFnObj>(
-                        std::forward<TArgs>(args)...);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! This is a conveniance method to have a out-of-class factory method even though the out-of-class version is not supported by all compilers.
-        //! Depending of the compiler conformance, the internal or external factory function is called.
-        //! This has the draw-back, that it requires the TVal parameter even though it should not be necessary.
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TDim,
-            typename TVal,
-            template<std::size_t> class TTFnObj,
-            typename TIdxOffset,
-            typename... TArgs>
-        ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnOffsetWorkaround(
-            TArgs && ... args)
-        {
-            return
-                alpaka::vec::
-#ifdef ALPAKA_CREATE_VEC_IN_CLASS
-                Vec<TDim, TVal>::template
-#endif
-                createVecFromIndexedFnOffset<
-#ifndef ALPAKA_CREATE_VEC_IN_CLASS
-                    TDim,
-#endif
-                    TTFnObj,
-                    TIdxOffset>(
-                        std::forward<TArgs>(args)...);
-        }
-
         namespace detail
         {
             //#############################################################################
@@ -537,9 +414,8 @@ namespace alpaka
         -> Vec<TDim, TVal>
         {
             return
-                createVecFromIndexedFnWorkaround<
+                createVecFromIndexedFn<
                     TDim,
-                    TVal,
                     detail::CreateAdd>(
                         p,
                         q);
@@ -580,9 +456,8 @@ namespace alpaka
         -> Vec<TDim, TVal>
         {
             return
-                createVecFromIndexedFnWorkaround<
+                createVecFromIndexedFn<
                     TDim,
-                    TVal,
                     detail::CreateSub>(
                         p,
                         q);
@@ -623,9 +498,8 @@ namespace alpaka
         -> Vec<TDim, TVal>
         {
             return
-                createVecFromIndexedFnWorkaround<
+                createVecFromIndexedFn<
                     TDim,
-                    TVal,
                     detail::CreateMul>(
                         p,
                         q);
@@ -666,9 +540,8 @@ namespace alpaka
         -> Vec<TDim, bool>
         {
             return
-                createVecFromIndexedFnWorkaround<
+                createVecFromIndexedFn<
                     TDim,
-                    bool,
                     detail::CreateLess>(
                         p,
                         q);
@@ -709,9 +582,8 @@ namespace alpaka
         -> Vec<TDim, bool>
         {
             return
-                createVecFromIndexedFnWorkaround<
+                createVecFromIndexedFn<
                     TDim,
-                    bool,
                     detail::CreateLessEqual>(
                         p,
                         q);
@@ -752,9 +624,8 @@ namespace alpaka
         -> Vec<TDim, bool>
         {
             return
-                createVecFromIndexedFnWorkaround<
+                createVecFromIndexedFn<
                     TDim,
-                    bool,
                     detail::CreateGreaterEqual>(
                         p,
                         q);
@@ -795,9 +666,8 @@ namespace alpaka
         -> Vec<TDim, bool>
         {
             return
-                createVecFromIndexedFnWorkaround<
+                createVecFromIndexedFn<
                     TDim,
-                    bool,
                     detail::CreateGreater>(
                         p,
                         q);
@@ -963,9 +833,8 @@ namespace alpaka
                 -> Vec<TDim, TSizeNew>
                 {
                     return
-                        createVecFromIndexedFnWorkaround<
+                        createVecFromIndexedFn<
                             TDim,
-                            TSizeNew,
                             vec::detail::CreateCast>(
                                 TSizeNew(),
                                 vec);
@@ -1030,9 +899,8 @@ namespace alpaka
                 -> Vec<TDim, TVal>
                 {
                     return
-                        createVecFromIndexedFnWorkaround<
+                        createVecFromIndexedFn<
                             TDim,
-                            TVal,
                             vec::detail::CreateReverse>(
                                 vec);
                 }
@@ -1097,9 +965,8 @@ namespace alpaka
                 -> Vec<dim::DimInt<TDimL::value + TDimR::value>, TVal>
                 {
                     return
-                        createVecFromIndexedFnWorkaround<
+                        createVecFromIndexedFn<
                             dim::DimInt<TDimL::value + TDimR::value>,
-                            TVal,
                             vec::detail::CreateConcat>(
                                 vecL,
                                 vecR);
@@ -1141,9 +1008,8 @@ namespace alpaka
         -> vec::Vec<dim::Dim<TExtent>, idx::Idx<TExtent>>
         {
             return
-                vec::createVecFromIndexedFnWorkaround<
+                vec::createVecFromIndexedFn<
                     dim::Dim<TExtent>,
-                    idx::Idx<TExtent>,
                     detail::CreateExtent>(
                         extent);
         }
@@ -1160,9 +1026,8 @@ namespace alpaka
         {
             using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
             return
-                vec::createVecFromIndexedFnOffsetWorkaround<
+                vec::createVecFromIndexedFnOffset<
                     TDim,
-                    idx::Idx<TExtent>,
                     detail::CreateExtent,
                     IdxOffset>(
                         extent);
@@ -1202,9 +1067,8 @@ namespace alpaka
         -> vec::Vec<dim::Dim<TOffsets>, idx::Idx<TOffsets>>
         {
             return
-                vec::createVecFromIndexedFnWorkaround<
+                vec::createVecFromIndexedFn<
                     dim::Dim<TOffsets>,
-                    idx::Idx<TOffsets>,
                     detail::CreateOffset>(
                         offsets);
         }
@@ -1221,9 +1085,8 @@ namespace alpaka
         {
             using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(dim::Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
             return
-                vec::createVecFromIndexedFnOffsetWorkaround<
+                vec::createVecFromIndexedFnOffset<
                     TDim,
-                    idx::Idx<TOffsets>,
                     detail::CreateOffset,
                     IdxOffset>(
                         offsets);

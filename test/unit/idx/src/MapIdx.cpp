@@ -42,7 +42,7 @@ TEMPLATE_LIST_TEST_CASE( "mapIdx", "[idx]", alpaka::test::dim::TestDims)
     using Idx = std::size_t;
     using Vec = alpaka::vec::Vec<Dim, Idx>;
 
-    auto const extentNd(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, CreateExtentVal>(Idx()));
+    auto const extentNd(alpaka::vec::createVecFromIndexedFn<Dim, CreateExtentVal>(Idx()));
     auto const idxNd(extentNd - Vec::all(4u));
 
     auto const idx1d(alpaka::idx::mapIdx<1u>(idxNd, extentNd));

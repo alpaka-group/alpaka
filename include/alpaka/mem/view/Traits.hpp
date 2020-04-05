@@ -531,9 +531,8 @@ namespace alpaka
             -> vec::Vec<dim::Dim<TPitch>, idx::Idx<TPitch>>
             {
                 return
-                    vec::createVecFromIndexedFnWorkaround<
+                    vec::createVecFromIndexedFn<
                         dim::Dim<TPitch>,
-                        idx::Idx<TPitch>,
                         detail::CreatePitchBytes>(
                             pitch);
             }
@@ -548,9 +547,8 @@ namespace alpaka
             {
                 using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TPitch>::value) - static_cast<std::intmax_t>(TDim::value)>;
                 return
-                    vec::createVecFromIndexedFnOffsetWorkaround<
+                    vec::createVecFromIndexedFnOffset<
                         TDim,
-                        idx::Idx<TPitch>,
                         detail::CreatePitchBytes,
                         IdxOffset>(
                             pitch);

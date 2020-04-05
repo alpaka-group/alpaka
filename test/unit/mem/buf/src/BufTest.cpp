@@ -64,7 +64,7 @@ TEMPLATE_LIST_TEST_CASE( "memBufBasicTest", "[memBuf]", alpaka::test::acc::TestA
     using Dim = alpaka::dim::Dim<Acc>;
     using Idx = alpaka::idx::Idx<Acc>;
 
-    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, alpaka::test::CreateExtentBufVal>(Idx()));
+    auto const extent(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateExtentBufVal>(Idx()));
 
     testBufferMutable<
         Acc>(
@@ -123,7 +123,7 @@ TEMPLATE_LIST_TEST_CASE( "memBufConstTest", "[memBuf]", alpaka::test::acc::TestA
     using Dim = alpaka::dim::Dim<Acc>;
     using Idx = alpaka::idx::Idx<Acc>;
 
-    auto const extent(alpaka::vec::createVecFromIndexedFnWorkaround<Dim, Idx, alpaka::test::CreateExtentBufVal>(Idx()));
+    auto const extent(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateExtentBufVal>(Idx()));
 
     testBufferImmutable<
         Acc>(
