@@ -18,23 +18,6 @@
 #endif
 
 //-----------------------------------------------------------------------------
-// Boost does not yet correctly identify clang when compiling CUDA code.
-// After explicitly including <boost/config.hpp> we can safely undefine some of the wrong settings.
-#if BOOST_COMP_CLANG_CUDA
-    #include <boost/config.hpp>
-    #undef BOOST_NO_CXX11_VARIADIC_TEMPLATES
-#endif
-
-//-----------------------------------------------------------------------------
-// Boost disables variadic templates for nvcc (in some cases because it was buggy).
-// However, we rely on it being enabled.
-// After explicitly including <boost/config.hpp> we can safely undefine the wrong setting.
-#if BOOST_COMP_NVCC
-    #include <boost/config.hpp>
-    #undef BOOST_NO_CXX11_VARIADIC_TEMPLATES
-#endif
-
-//-----------------------------------------------------------------------------
 //! All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC.
 //!
 //! Usage:

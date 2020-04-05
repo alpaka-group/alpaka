@@ -16,8 +16,6 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/meta/IntegerSequence.hpp>
 
-#include <boost/config.hpp>
-
 #include <utility>
 
 namespace alpaka

@@ -16,8 +16,7 @@
 // Therefore, we can not even parse those parts when compiling device code.
 //-----------------------------------------------------------------------------
 #include <alpaka/core/Common.hpp>
-
-#include <boost/config.hpp>
+#include <alpaka/core/BoostPredef.hpp>
 
 #include <queue>
 #include <mutex>

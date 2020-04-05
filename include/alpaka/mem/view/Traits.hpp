@@ -21,8 +21,6 @@
 #include <alpaka/meta/Fold.hpp>
 #include <alpaka/vec/Vec.hpp>
 
-#include <boost/config.hpp>
-
 #include <iosfwd>
 #include <type_traits>
 

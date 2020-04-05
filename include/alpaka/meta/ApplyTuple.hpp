@@ -12,8 +12,6 @@
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
 
-#include <boost/config.hpp>
-
 #include <utility>
 #include <tuple>
 #include <type_traits>

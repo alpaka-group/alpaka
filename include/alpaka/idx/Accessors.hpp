@@ -22,8 +22,6 @@
 
 #include <alpaka/core/Unused.hpp>
 
-#include <boost/config.hpp>
-
 #include <utility>
 
 namespace alpaka
