@@ -102,9 +102,10 @@ namespace alpaka
             TDev const & dev)
         -> AccDevProps<dim::Dim<TAcc>, idx::Idx<TAcc>>
         {
+            using ImplementationBase = concepts::ImplementationBase<ConceptAcc, TAcc>;
             return
                 traits::GetAccDevProps<
-                    TAcc>
+                    ImplementationBase>
                 ::getAccDevProps(
                     dev);
         }
