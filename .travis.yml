@@ -80,10 +80,6 @@ matrix:
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:16.04 CXX=clang++ CC=clang ALPAKA_CI_CLANG_VER=6.0.1 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_STDLIB=libc++    ALPAKA_CI_BOOST_BRANCH=boost-1.71.0 ALPAKA_CI_CMAKE_VER=3.15.7 ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=1 ALPAKA_ACC_GPU_CUDA_ENABLE=ON  ALPAKA_CUDA_VERSION=9.0 ALPAKA_CUDA_COMPILER=clang
     - name: clang-8 Debug Analysis
       env: ALPAKA_CI_DOCKER_BASE_IMAGE_NAME=ubuntu:18.04 CXX=clang++ CC=clang ALPAKA_CI_CLANG_VER=8.0.0 CMAKE_BUILD_TYPE=Debug   ALPAKA_CI_STDLIB=libc++    ALPAKA_CI_BOOST_BRANCH=boost-1.68.0 ALPAKA_CI_CMAKE_VER=3.16.4 ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2
-    - name: macOS 10.14 Xcode 11.2 Debug Analysis
-      os: osx
-      osx_image: xcode11.2
-      env:                                               CXX=g++     CC=gcc                             CMAKE_BUILD_TYPE=Debug                              ALPAKA_CI_BOOST_BRANCH=boost-1.65.1                            ALPAKA_CI_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=OFF
 
     ### Ubuntu
     ## native
