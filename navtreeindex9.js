@@ -1,8 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,2],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#afccf4fccaf0d0a441fdf20594d114ab5":[2,0,0,7,0,2,0],
-"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,3],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#abdc9508ec4d798a2a7d84bed6c372d59":[2,0,0,7,0,3,0],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,4],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html#a6815002f477488f6d1f26946f7d24d4b":[2,0,0,7,0,4,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1math_1_1ConceptMathAsin.html":[2,0,0,14,17],
 "structalpaka_1_1math_1_1ConceptMathAtan.html":[2,0,0,14,18],
 "structalpaka_1_1math_1_1ConceptMathAtan2.html":[2,0,0,14,19],
-"structalpaka_1_1math_1_1ConceptMathCbrt.html":[2,0,0,14,20]
+"structalpaka_1_1math_1_1ConceptMathCbrt.html":[2,0,0,14,20],
+"structalpaka_1_1math_1_1ConceptMathCeil.html":[2,0,0,14,21],
+"structalpaka_1_1math_1_1ConceptMathCos.html":[2,0,0,14,22],
+"structalpaka_1_1math_1_1ConceptMathErf.html":[2,0,0,14,23]
 };

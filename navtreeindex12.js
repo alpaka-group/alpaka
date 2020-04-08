@@ -1,8 +1,5 @@
 var NAVTREEINDEX12 =
 {
-"structalpaka_1_1meta_1_1detail_1_1FilterImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TPred_01_4.html":[2,0,0,16,0,24],
-"structalpaka_1_1meta_1_1detail_1_1FilterImpl_3_01TList_3_01Ts_8_8_8_01_4_00_01TPred_01_4.html#aad86525d0bb2ec5ca61c9fc27986b477":[2,0,0,16,0,24,0],
-"structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper.html":[2,0,0,16,0,28],
 "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_01T_00_01Ts_8_8_8_01_4_01_4.html":[2,0,0,16,0,29],
 "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_01T_00_01Ts_8_8_8_01_4_01_4.html#ae7d6d2c93bf8b86b1de5e6803f030ca1":[2,0,0,16,0,29,0],
 "structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_4_01_4.html":[2,0,0,16,0,30],
@@ -249,5 +246,8 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1time_1_1traits_1_1Clock.html":[2,0,0,21,0,0],
 "structalpaka_1_1time_1_1traits_1_1Clock_3_01TimeStdLib_01_4.html":[2,0,0,21,0,3],
 "structalpaka_1_1time_1_1traits_1_1Clock_3_01TimeStdLib_01_4.html#a0b506121bb81d35473b39a61c4b3eab4":[2,0,0,21,0,3,0],
-"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeOmp_01_4.html":[2,0,0,21,0,1]
+"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeOmp_01_4.html":[2,0,0,21,0,1],
+"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeOmp_01_4.html#a8054db9d02c428abcda3497ca2760a86":[2,0,0,21,0,1,0],
+"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeUniformCudaHipBuiltIn_01_4.html":[2,0,0,21,0,2],
+"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeUniformCudaHipBuiltIn_01_4.html#ac5cd92c87d24c48fd26110fe2bc0e660":[2,0,0,21,0,2,0]
 };

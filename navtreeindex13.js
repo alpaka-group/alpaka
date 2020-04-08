@@ -1,8 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeOmp_01_4.html#a8054db9d02c428abcda3497ca2760a86":[2,0,0,21,0,1,0],
-"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeUniformCudaHipBuiltIn_01_4.html":[2,0,0,21,0,2],
-"structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeUniformCudaHipBuiltIn_01_4.html#ac5cd92c87d24c48fd26110fe2bc0e660":[2,0,0,21,0,2,0],
 "structalpaka_1_1vec_1_1detail_1_1CreateAdd.html":[2,0,0,23,0,0],
 "structalpaka_1_1vec_1_1detail_1_1CreateAdd.html#a117ab6edd1a01195a5d2a9e8ccf6cd9e":[2,0,0,23,0,0,0],
 "structalpaka_1_1vec_1_1detail_1_1CreateCast.html":[2,0,0,23,0,1],

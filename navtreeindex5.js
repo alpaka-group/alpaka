@@ -1,8 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"dir_11fcbf1f6ee5e982cfbae7ccd35d875a.html":[3,0,0,0,11,1],
-"dir_141d118e57743bf276e96d2b8fa0c4d8.html":[3,0,0,0,17,0],
-"dir_16bba3a4b121cf64f0e5026f87f5174d.html":[3,0,0,0,16,0],
 "dir_192cbe7214f78dcbefe56af07355e2bc.html":[3,0,0,0,17],
 "dir_1c6593126abeaa5d6f4966b7e2772cf1.html":[3,0,0,0,11,5],
 "dir_1f935393e025ce141e1b01ab4d1e0aaf.html":[3,0,0,0,12,1,0],
@@ -90,8 +87,8 @@ var NAVTREEINDEX5 =
 "functions_enum.html":[2,2,4],
 "functions_eval.html":[2,2,5],
 "functions_f.html":[2,2,0,6],
-"functions_func.html":[2,2,1],
 "functions_func.html":[2,2,1,0],
+"functions_func.html":[2,2,1],
 "functions_func_0x7e.html":[2,2,1,23],
 "functions_func_b.html":[2,2,1,1],
 "functions_func_c.html":[2,2,1,2],
@@ -128,8 +125,8 @@ var NAVTREEINDEX5 =
 "functions_rela.html":[2,2,6],
 "functions_s.html":[2,2,0,17],
 "functions_t.html":[2,2,0,18],
-"functions_type.html":[2,2,3,0],
 "functions_type.html":[2,2,3],
+"functions_type.html":[2,2,3,0],
 "functions_type_d.html":[2,2,3,1],
 "functions_type_e.html":[2,2,3,2],
 "functions_type_f.html":[2,2,3,3],
@@ -249,5 +246,8 @@ var NAVTREEINDEX5 =
 "mem_2buf_2Traits_8hpp.html#aeee760f22d19f995bb88e5ccfd4666f2":[3,0,0,0,12,1,4,10],
 "mem_2buf_2Traits_8hpp_source.html":[3,0,0,0,12,1,4],
 "mem_2buf_2cpu_2Set_8hpp.html":[3,0,0,0,12,1,0,1],
-"mem_2buf_2cpu_2Set_8hpp_source.html":[3,0,0,0,12,1,0,1]
+"mem_2buf_2cpu_2Set_8hpp_source.html":[3,0,0,0,12,1,0,1],
+"mem_2buf_2uniformCudaHip_2Set_8hpp.html":[3,0,0,0,12,1,1,1],
+"mem_2buf_2uniformCudaHip_2Set_8hpp_source.html":[3,0,0,0,12,1,1,1],
+"mem_2view_2Traits_8hpp.html":[3,0,0,0,12,2,0]
 };

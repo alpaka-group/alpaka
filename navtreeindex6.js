@@ -1,8 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"mem_2buf_2uniformCudaHip_2Set_8hpp.html":[3,0,0,0,12,1,1,1],
-"mem_2buf_2uniformCudaHip_2Set_8hpp_source.html":[3,0,0,0,12,1,1,1],
-"mem_2view_2Traits_8hpp.html":[3,0,0,0,12,2,0],
 "mem_2view_2Traits_8hpp.html#a006aff95ead5c6ed938d20d59ee3ff5c":[3,0,0,0,12,2,0,19],
 "mem_2view_2Traits_8hpp.html#a00c164dcc0518a312bfea598354718da":[3,0,0,0,12,2,0,24],
 "mem_2view_2Traits_8hpp.html#a150b3750442a4b49b4dd07605758688a":[3,0,0,0,12,2,0,23],
@@ -27,8 +24,8 @@ var NAVTREEINDEX6 =
 "namespacealpaka_1_1acc.html":[1,0,0,0],
 "namespacealpaka_1_1acc_1_1traits.html":[2,0,0,0,0],
 "namespacealpaka_1_1acc_1_1traits.html":[1,0,0,0,0],
-"namespacealpaka_1_1atomic.html":[1,0,0,1],
 "namespacealpaka_1_1atomic.html":[2,0,0,1],
+"namespacealpaka_1_1atomic.html":[1,0,0,1],
 "namespacealpaka_1_1atomic_1_1detail.html":[2,0,0,1,0],
 "namespacealpaka_1_1atomic_1_1detail.html":[1,0,0,1,0],
 "namespacealpaka_1_1atomic_1_1op.html":[1,0,0,1,1],
@@ -215,8 +212,8 @@ var NAVTREEINDEX6 =
 "namespacealpaka_1_1rand_1_1generator_1_1uniform__cuda__hip.html":[1,0,0,21,1,2],
 "namespacealpaka_1_1time.html":[2,0,0,21],
 "namespacealpaka_1_1time.html":[1,0,0,22],
-"namespacealpaka_1_1time_1_1traits.html":[1,0,0,22,0],
 "namespacealpaka_1_1time_1_1traits.html":[2,0,0,21,0],
+"namespacealpaka_1_1time_1_1traits.html":[1,0,0,22,0],
 "namespacealpaka_1_1uniform__cuda__hip.html":[2,0,0,22],
 "namespacealpaka_1_1uniform__cuda__hip.html":[1,0,0,23],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[1,0,0,23,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX6 =
 "namespacemembers_g.html":[1,1,0,6],
 "namespacemembers_h.html":[1,1,0,7],
 "namespacemembers_i.html":[1,1,0,8],
-"namespacemembers_l.html":[1,1,0,9]
+"namespacemembers_l.html":[1,1,0,9],
+"namespacemembers_m.html":[1,1,0,10],
+"namespacemembers_n.html":[1,1,0,11],
+"namespacemembers_o.html":[1,1,0,12]
 };
