@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
 
@@ -63,14 +62,8 @@ namespace alpaka
                     TArgs && ... args)
                 -> void
                 {
-                    // Call the function object template call operator.
-#if BOOST_COMP_MSVC && !BOOST_COMP_NVCC
-                    f.operator()<T>(
-                        std::forward<TArgs>(args)...);
-#else
                     f.template operator()<T>(
                         std::forward<TArgs>(args)...);
-#endif
                     ForEachTypeHelper<
                         TList<Ts...>>
                     ::forEachTypeHelper(

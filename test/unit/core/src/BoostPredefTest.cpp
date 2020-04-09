@@ -43,6 +43,9 @@ TEST_CASE("printDefines", "[core]")
 #if BOOST_COMP_MSVC
     std::cout << "BOOST_COMP_MSVC:" << BOOST_COMP_MSVC << std::endl;
 #endif
+#if defined(BOOST_COMP_MSVC_EMULATED)
+    std::cout << "BOOST_COMP_MSVC_EMULATED:" << BOOST_COMP_MSVC_EMULATED << std::endl;
+#endif
 #if BOOST_COMP_CLANG_CUDA
     std::cout << "BOOST_COMP_CLANG_CUDA:" << BOOST_COMP_CLANG_CUDA << std::endl;
 #endif

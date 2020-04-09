@@ -11,13 +11,11 @@
 
 #include <alpaka/core/Common.hpp>
 
-#include <boost/config.hpp>
-
 namespace alpaka
 {
     ALPAKA_NO_HOST_ACC_WARNING
     template< typename... Ts >
-    BOOST_FORCEINLINE
+    ALPAKA_FN_INLINE
     constexpr
     ALPAKA_FN_HOST_ACC
     void
@@ -26,7 +24,7 @@ namespace alpaka
 
     ALPAKA_NO_HOST_ACC_WARNING
     template< typename... Ts >
-    BOOST_FORCEINLINE
+    ALPAKA_FN_INLINE
     constexpr
     ALPAKA_FN_HOST_ACC
     void
