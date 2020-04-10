@@ -63,7 +63,6 @@ then
     ALPAKA_CI_CMAKE_GENERATOR_PLATFORM="-A x64"
 fi
 
-
 mkdir -p build/
 cd build/
 

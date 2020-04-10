@@ -147,7 +147,6 @@ then
     ${CXX} -v
 
     source ./script/prepare_sanitizers.sh
-    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/run_analysis.sh ;fi
 fi
 
 if [ "$TRAVIS_OS_NAME" = "windows" ]
@@ -172,3 +171,4 @@ fi
 ./script/run_generate.sh
 ./script/run_build.sh
 if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/run_tests.sh ;fi
+if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/run_analysis.sh ;fi
