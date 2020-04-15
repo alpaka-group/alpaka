@@ -22,17 +22,18 @@ struct TestKernel
     //! @tparam TAcc Accelerator.
     //! @tparam TFunctor Functor defined in Functor.hpp.
     //! @param acc Accelerator given from alpaka.
-    //! @param functor Accesible with operator().
+    //! @param functor Accessible with operator().
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc,
              typename TResults,
              typename TFunctor,
              typename TArgs>
+
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         TResults const & results,
         TFunctor const & functor,
-        TArgs const & args) const
+        TArgs const & args) const noexcept
         -> void
     {
         for( size_t i = 0; i < TArgs::capacity; ++i )

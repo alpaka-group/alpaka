@@ -45,7 +45,6 @@ namespace math {
     auto execute(                                                               \
         TAcc const & acc,                                                       \
         TArgs const & ... args ) const                                          \
-    -> decltype( ALPAKA_OP(acc, args... ) )                                     \
     {                                                                           \
         return ALPAKA_OP(acc, args... );                                        \
     }                                                                           \
@@ -62,7 +61,6 @@ namespace math {
     auto execute(                                                               \
         TAcc const & acc,                                                       \
         TArgs const &... args ) const                                           \
-    -> decltype( STD_OP( args... ) )                                            \
     {                                                                           \
       alpaka::ignore_unused( acc );                                             \
       return STD_OP( args... );                                                 \
@@ -77,7 +75,6 @@ namespace math {
     auto operator()(                                                            \
         ArgsItem<T, Arity::Unary> const & args,                                 \
         TAcc const & acc = nullptr) const                                       \
-    -> decltype(execute(acc, args.arg[0]))                                      \
     {                                                                           \
         return execute(acc, args.arg[0]);                                       \
     }                                                                           \
@@ -91,7 +88,6 @@ namespace math {
     auto operator()(                                                            \
         ArgsItem<T, Arity::Binary> const & args,                                \
         TAcc const & acc = nullptr) const                                       \
-    -> decltype(execute(acc, args.arg[0], args.arg[1]))                         \
     {                                                                           \
         return execute(acc, args.arg[0], args.arg[1]);                          \
     }                                                                           \

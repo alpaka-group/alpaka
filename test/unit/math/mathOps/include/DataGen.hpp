@@ -56,13 +56,13 @@ namespace math {
             "Set of args must provide > 2 entries." );
         constexpr auto max = std::numeric_limits< TData >::max();
         constexpr auto low = std::numeric_limits< TData >::lowest();
-        std::default_random_engine eng{ seed };
+        std::default_random_engine eng{
+            static_cast< std::default_random_engine::result_type >( seed ) };
 
         // These pseudo-random numbers are implementation/platform specific!
-        std::uniform_real_distribution< TData > dist(0,1000);
-        std::uniform_real_distribution< TData > distOne(-1,1);
-
-        for(size_t k = 0; k < TFunctor::arity_nr; ++k)
+        std::uniform_real_distribution< TData > dist( 0, 1000 );
+        std::uniform_real_distribution< TData > distOne( -1, 1 );
+        for( size_t k = 0; k < TFunctor::arity_nr; ++k )
         {
             bool matchedSwitch = false;
             switch( functor.ranges[k] )
