@@ -147,9 +147,28 @@ then
     ${CXX} -v
 
     source ./script/prepare_sanitizers.sh
-    if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/run_analysis.sh ;fi
 fi
 
-./script/run_build.sh
+if [ "$TRAVIS_OS_NAME" = "windows" ]
+then
+    : ${ALPAKA_CI_CL_VER?"ALPAKA_CI_CL_VER must be specified"}
 
+    # Use the 64 bit compiler
+    # FIXME: Path not found but does not seem to be necessary anymore
+    #"./C/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat" amd64
+
+    # Add msbuild to the path
+    if [ "$ALPAKA_CI_CL_VER" = "2017" ]
+    then
+        export MSBUILD_EXECUTABLE="/C/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/MSBuild/15.0/Bin/MSBuild.exe"
+    elif [ "$ALPAKA_CI_CL_VER" = "2019" ]
+    then
+        export MSBUILD_EXECUTABLE=$(vswhere.exe -latest -requires Microsoft.Component.MSBuild -find "MSBuild\**\Bin\MSBuild.exe")
+    fi
+    "$MSBUILD_EXECUTABLE" -version
+fi
+
+./script/run_generate.sh
+./script/run_build.sh
 if [ "${ALPAKA_CI_ANALYSIS}" == "OFF" ] ;then ./script/run_tests.sh ;fi
+if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/run_analysis.sh ;fi

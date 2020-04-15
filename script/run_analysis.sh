@@ -12,16 +12,19 @@
 
 source ./script/set.sh
 
-#-------------------------------------------------------------------------------
-# sloc
-sloccount .
+if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
+then
+    #-------------------------------------------------------------------------------
+    # sloc
+    sloccount .
 
-#-------------------------------------------------------------------------------
-# TODO/FIXME/HACK
-grep -r HACK ./* || true
-grep -r FIXME ./* || true
-grep -r TODO ./* || true
+    #-------------------------------------------------------------------------------
+    # TODO/FIXME/HACK
+    grep -r HACK ./* || true
+    grep -r FIXME ./* || true
+    grep -r TODO ./* || true
 
-#-------------------------------------------------------------------------------
-# check shell script with shellcheck
-find . -type f -name "*.sh" -exec shellcheck {} \;
+    #-------------------------------------------------------------------------------
+    # check shell script with shellcheck
+    find . -type f -name "*.sh" -exec shellcheck {} \;
+fi
