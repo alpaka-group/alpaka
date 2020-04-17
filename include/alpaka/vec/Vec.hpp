@@ -381,10 +381,11 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! A function object that returns the sum of the two input vectors elements.
+            //! This is used to create a Vec by applying a binary operation onto the corresponding elements of two input vectors.
             template<
+                template<typename> class TFnObj,
                 std::size_t Tidx>
-            struct CreateAdd
+            struct CreateVecByApplyingBinaryFnToTwoIndexedVecs
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
@@ -394,12 +395,19 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto create(
                     Vec<TDim, TVal> const & p,
                     Vec<TDim, TVal> const & q)
-                -> TVal
                 {
-                    return p[Tidx] + q[Tidx];
+                    return TFnObj<TVal>()(p[Tidx], q[Tidx]);
                 }
             };
         }
+
+        namespace detail
+        {
+            template<
+                std::size_t Tidx>
+            using CreateVecFromTwoIndexedVecsPlus = CreateVecByApplyingBinaryFnToTwoIndexedVecs<std::plus, Tidx>;
+        }
+
         //-----------------------------------------------------------------------------
         //! \return The element-wise sum of two vectors.
         ALPAKA_NO_HOST_ACC_WARNING
@@ -414,32 +422,16 @@ namespace alpaka
             return
                 createVecFromIndexedFn<
                     TDim,
-                    detail::CreateAdd>(
+                    detail::CreateVecFromTwoIndexedVecsPlus>(
                         p,
                         q);
         }
 
         namespace detail
         {
-            //##################################################################################
-            //! A function object that returns the difference of the two input vectors elements.
             template<
                 std::size_t Tidx>
-            struct CreateSub
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TDim,
-                    typename TVal>
-                ALPAKA_FN_HOST_ACC static auto create(
-                    Vec<TDim, TVal> const & p,
-                    Vec<TDim, TVal> const & q)
-                -> TVal
-                {
-                    return p[Tidx] - q[Tidx];
-                }
-            };
+            using CreateVecFromTwoIndexedVecsMinus = CreateVecByApplyingBinaryFnToTwoIndexedVecs<std::minus, Tidx>;
         }
 
         //-----------------------------------------------------------------------------
@@ -456,32 +448,16 @@ namespace alpaka
             return
                 createVecFromIndexedFn<
                     TDim,
-                    detail::CreateSub>(
+                    detail::CreateVecFromTwoIndexedVecsMinus>(
                         p,
                         q);
         }
 
         namespace detail
         {
-            //#############################################################################
-            //! A function object that returns the product of the two input vectors elements.
             template<
                 std::size_t Tidx>
-            struct CreateMul
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TDim,
-                    typename TVal>
-                ALPAKA_FN_HOST_ACC static auto create(
-                    Vec<TDim, TVal> const & p,
-                    Vec<TDim, TVal> const & q)
-                -> TVal
-                {
-                    return p[Tidx] * q[Tidx];
-                }
-            };
+            using CreateVecFromTwoIndexedVecsMul = CreateVecByApplyingBinaryFnToTwoIndexedVecs<std::multiplies, Tidx>;
         }
 
         //-----------------------------------------------------------------------------
@@ -498,32 +474,16 @@ namespace alpaka
             return
                 createVecFromIndexedFn<
                     TDim,
-                    detail::CreateMul>(
+                    detail::CreateVecFromTwoIndexedVecsMul>(
                         p,
                         q);
         }
 
         namespace detail
         {
-            //#############################################################################
-            //! A function object that returns the element-wise less than relation of two vectors.
             template<
                 std::size_t Tidx>
-            struct CreateLess
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TDim,
-                    typename TVal>
-                ALPAKA_FN_HOST_ACC static auto create(
-                    Vec<TDim, TVal> const & p,
-                    Vec<TDim, TVal> const & q)
-                -> bool
-                {
-                    return p[Tidx] < q[Tidx];
-                }
-            };
+            using CreateVecFromTwoIndexedVecsLess = CreateVecByApplyingBinaryFnToTwoIndexedVecs<std::less, Tidx>;
         }
 
         //-----------------------------------------------------------------------------
@@ -540,32 +500,16 @@ namespace alpaka
             return
                 createVecFromIndexedFn<
                     TDim,
-                    detail::CreateLess>(
+                    detail::CreateVecFromTwoIndexedVecsLess>(
                         p,
                         q);
         }
 
         namespace detail
         {
-            //#############################################################################
-            //! A function object that returns the element-wise less than or equal relation of two vectors.
             template<
                 std::size_t Tidx>
-            struct CreateLessEqual
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TDim,
-                    typename TVal>
-                ALPAKA_FN_HOST_ACC static auto create(
-                    Vec<TDim, TVal> const & p,
-                    Vec<TDim, TVal> const & q)
-                -> bool
-                {
-                    return p[Tidx] <= q[Tidx];
-                }
-            };
+            using CreateVecFromTwoIndexedVecsLessEqual = CreateVecByApplyingBinaryFnToTwoIndexedVecs<std::less_equal, Tidx>;
         }
 
         //-----------------------------------------------------------------------------
@@ -582,32 +526,16 @@ namespace alpaka
             return
                 createVecFromIndexedFn<
                     TDim,
-                    detail::CreateLessEqual>(
+                    detail::CreateVecFromTwoIndexedVecsLessEqual>(
                         p,
                         q);
         }
 
         namespace detail
         {
-            //#############################################################################
-            //! A function object that returns the element-wise greater than or equal relation of two vectors.
             template<
                 std::size_t Tidx>
-            struct CreateGreaterEqual
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TDim,
-                    typename TVal>
-                ALPAKA_FN_HOST_ACC static auto create(
-                    Vec<TDim, TVal> const & p,
-                    Vec<TDim, TVal> const & q)
-                -> bool
-                {
-                    return p[Tidx] >= q[Tidx];
-                }
-            };
+            using CreateVecFromTwoIndexedVecsGreaterEqual = CreateVecByApplyingBinaryFnToTwoIndexedVecs<std::greater_equal, Tidx>;
         }
 
         //-----------------------------------------------------------------------------
@@ -624,32 +552,16 @@ namespace alpaka
             return
                 createVecFromIndexedFn<
                     TDim,
-                    detail::CreateGreaterEqual>(
+                    detail::CreateVecFromTwoIndexedVecsGreaterEqual>(
                         p,
                         q);
         }
 
         namespace detail
         {
-            //#############################################################################
-            //! A function object that returns the element-wise greater than relation of two vectors.
             template<
                 std::size_t Tidx>
-            struct CreateGreater
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TDim,
-                    typename TVal>
-                ALPAKA_FN_HOST_ACC static auto create(
-                    Vec<TDim, TVal> const & p,
-                    Vec<TDim, TVal> const & q)
-                -> bool
-                {
-                    return p[Tidx] > q[Tidx];
-                }
-            };
+            using CreateVecFromTwoIndexedVecsGreater = CreateVecByApplyingBinaryFnToTwoIndexedVecs<std::greater, Tidx>;
         }
 
         //-----------------------------------------------------------------------------
@@ -666,7 +578,7 @@ namespace alpaka
             return
                 createVecFromIndexedFn<
                     TDim,
-                    detail::CreateGreater>(
+                    detail::CreateVecFromTwoIndexedVecsGreater>(
                         p,
                         q);
         }
