@@ -1,5 +1,12 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1dev_1_1DevCpu.html#a67a19ef128e89d4216a85528554d3178":[2,0,0,6,2,3],
+"classalpaka_1_1dev_1_1DevCpu.html#a6ba04d73aa16ea90d6032fd5b2d6f20e":[2,0,0,6,2,8],
+"classalpaka_1_1dev_1_1DevCpu.html#a7eb2d526f16f708540ec6620ae4520aa":[2,0,0,6,2,10],
+"classalpaka_1_1dev_1_1DevCpu.html#a806ef566318d92b3005c81a301088915":[2,0,0,6,2,1],
+"classalpaka_1_1dev_1_1DevCpu.html#a892680150070ef598c93a670bb68c01e":[2,0,0,6,2,2],
+"classalpaka_1_1dev_1_1DevCpu.html#a895dbb09bcfc243b8c3721addc94b6c7":[2,0,0,6,2,4],
+"classalpaka_1_1dev_1_1DevCpu.html#ae0448b0f52e35a04339aa67df6703917":[2,0,0,6,2,6],
 "classalpaka_1_1dev_1_1DevCpu.html#af087c69caab818e3d1335dc250f90132":[2,0,0,6,2,9],
 "classalpaka_1_1dev_1_1DevUniformCudaHipRt.html":[2,0,0,6,3],
 "classalpaka_1_1dev_1_1DevUniformCudaHipRt.html#a065923fec0636f86cff20690719b2584":[2,0,0,6,3,4],
@@ -242,12 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html#ac7b239639e26b09ab31ef39769a9aceb":[2,0,0,15,1,3,1],
 "classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html#af0ae98200bd4acc9126d4e365d1364d7":[2,0,0,15,1,3,3],
 "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html":[2,0,0,15,1,0,0,0],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a000c58a2ee7e2c9fa56b619ee1a99748":[2,0,0,15,1,0,0,0,1],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a14d559ab3a9f55cbe082e02ddf0bdd05":[2,0,0,15,1,0,0,0,0],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a27a672d2dd3c975708851f1852953f9b":[2,0,0,15,1,0,0,0,7],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a30e5c7180f5e60dceb8f251f602b895e":[2,0,0,15,1,0,0,0,9],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a347fad9998e416e078b61e75fafcfbab":[2,0,0,15,1,0,0,0,4],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a6cef024cade2ca1d309319ec14d55cf1":[2,0,0,15,1,0,0,0,3],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a9c17cf4a6ac38a03b21808f4f0d6287d":[2,0,0,15,1,0,0,0,8],
-"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#ab92dae6b347d3f374b3dc7fdf2d14135":[2,0,0,15,1,0,0,0,6]
+"classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a000c58a2ee7e2c9fa56b619ee1a99748":[2,0,0,15,1,0,0,0,1]
 };

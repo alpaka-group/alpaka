@@ -1,5 +1,12 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1math_1_1ConceptMathAsin.html":[2,0,0,14,17],
+"structalpaka_1_1math_1_1ConceptMathAtan.html":[2,0,0,14,18],
+"structalpaka_1_1math_1_1ConceptMathAtan2.html":[2,0,0,14,19],
+"structalpaka_1_1math_1_1ConceptMathCbrt.html":[2,0,0,14,20],
+"structalpaka_1_1math_1_1ConceptMathCeil.html":[2,0,0,14,21],
+"structalpaka_1_1math_1_1ConceptMathCos.html":[2,0,0,14,22],
+"structalpaka_1_1math_1_1ConceptMathErf.html":[2,0,0,14,23],
 "structalpaka_1_1math_1_1ConceptMathExp.html":[2,0,0,14,24],
 "structalpaka_1_1math_1_1ConceptMathFloor.html":[2,0,0,14,25],
 "structalpaka_1_1math_1_1ConceptMathFmod.html":[2,0,0,14,26],
@@ -242,12 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,15,1,1,17],
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a221659402d906643b9045ba196786520":[2,0,0,15,1,1,17,0],
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,15,1,1,18],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a6ef5624365578e063cb4b2d66030d128":[2,0,0,15,1,1,18,0],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy.html":[2,0,0,15,1,1,19],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,15,1,1,20],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a2f443ae4f120ce43510d1dd12b47611a":[2,0,0,15,1,1,20,0],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufUniformCudaHipR50edb0c958c8c5064ad41ebbeeacc7d7.html":[2,0,0,15,1,1,21],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufUniformCudaHipR50edb0c958c8c5064ad41ebbeeacc7d7.html#a468adede14c28dc54868d6173030073d":[2,0,0,15,1,1,21,0],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1Unmap.html":[2,0,0,15,1,1,22],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1Unmap_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_010d0b684d464ee97f83816f6f334fad21.html":[2,0,0,15,1,1,23]
+"structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a6ef5624365578e063cb4b2d66030d128":[2,0,0,15,1,1,18,0]
 };

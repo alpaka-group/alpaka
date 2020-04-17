@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::vec::detail::CreateGreaterEqual&lt; Tidx &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::vec::detail::CreateVecByApplyingBinaryFnToTwoIndexedVecs&lt; TFnObj, Tidx &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('structalpaka_1_1vec_1_1detail_1_1CreateGreaterEqual.html','');});
+$(document).ready(function(){initNavTree('structalpaka_1_1vec_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -83,38 +83,38 @@ $(document).ready(function(){initNavTree('structalpaka_1_1vec_1_1detail_1_1Creat
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="structalpaka_1_1vec_1_1detail_1_1CreateGreaterEqual-members.html">List of all members</a>  </div>
+<a href="structalpaka_1_1vec_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::vec::detail::CreateGreaterEqual&lt; Tidx &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::vec::detail::CreateVecByApplyingBinaryFnToTwoIndexedVecs&lt; TFnObj, Tidx &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A function object that returns the element-wise greater than or equal relation of two vectors.  
- <a href="structalpaka_1_1vec_1_1detail_1_1CreateGreaterEqual.html#details">More...</a></p>
+<p>This is used to create a <a class="el" href="classalpaka_1_1vec_1_1Vec.html" title="A n-dimensional vector. ">Vec</a> by applying a binary operation onto the corresponding elements of two input vectors.  
+ <a href="structalpaka_1_1vec_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ada3f7a4bb7568c04664e43261f6b53e3"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
-<tr class="memitem:ada3f7a4bb7568c04664e43261f6b53e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1vec_1_1detail_1_1CreateGreaterEqual.html#ada3f7a4bb7568c04664e43261f6b53e3">create</a> (<a class="el" href="classalpaka_1_1vec_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; bool</td></tr>
-<tr class="separator:ada3f7a4bb7568c04664e43261f6b53e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0be2f28216824b6edcb8056052e1365a"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:a0be2f28216824b6edcb8056052e1365a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1vec_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html#a0be2f28216824b6edcb8056052e1365a">create</a> (<a class="el" href="classalpaka_1_1vec_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q)</td></tr>
+<tr class="separator:a0be2f28216824b6edcb8056052e1365a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;std::size_t Tidx&gt;<br />
-struct alpaka::vec::detail::CreateGreaterEqual&lt; Tidx &gt;</h3>
+<div class="textblock"><h3>template&lt;template&lt; typename &gt; class TFnObj, std::size_t Tidx&gt;<br />
+struct alpaka::vec::detail::CreateVecByApplyingBinaryFnToTwoIndexedVecs&lt; TFnObj, Tidx &gt;</h3>
 
-<p>A function object that returns the element-wise greater than or equal relation of two vectors. </p>
+<p>This is used to create a <a class="el" href="classalpaka_1_1vec_1_1Vec.html" title="A n-dimensional vector. ">Vec</a> by applying a binary operation onto the corresponding elements of two input vectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00596">596</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00388">388</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ada3f7a4bb7568c04664e43261f6b53e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada3f7a4bb7568c04664e43261f6b53e3">&#9670;&nbsp;</a></span>create()</h2>
+<a id="a0be2f28216824b6edcb8056052e1365a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0be2f28216824b6edcb8056052e1365a">&#9670;&nbsp;</a></span>create()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t Tidx&gt; </div>
+template&lt;template&lt; typename &gt; class TFnObj, std::size_t Tidx&gt; </div>
 <div class="memtemplate">
 template&lt;typename TDim , typename TVal &gt; </div>
 <table class="mlabels">
@@ -122,7 +122,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1vec_1_1detail_1_1CreateGreaterEqual.html">alpaka::vec::detail::CreateGreaterEqual</a>&lt; Tidx &gt;::create </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1vec_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">alpaka::vec::detail::CreateVecByApplyingBinaryFnToTwoIndexedVecs</a>&lt; TFnObj, Tidx &gt;::create </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1vec_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>
@@ -136,8 +136,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; bool
-                </td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -147,7 +146,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00603">603</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00395">395</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -159,8 +158,8 @@ template&lt;typename TDim , typename TVal &gt; </div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1vec.html">vec</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1vec_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1vec_1_1detail_1_1CreateGreaterEqual.html">CreateGreaterEqual</a></li>
-    <li class="footer">Generated on Wed Apr 15 2020 12:52:24 for alpaka by
+    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1vec.html">vec</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1vec_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1vec_1_1detail_1_1CreateVecByApplyingBinaryFnToTwoIndexedVecs.html">CreateVecByApplyingBinaryFnToTwoIndexedVecs</a></li>
+    <li class="footer">Generated on Fri Apr 17 2020 09:26:54 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -1,5 +1,12 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__same_3_0e550552ca0dd67edfa8d4ddb8e3ded85.html":[2,0,0,7,0,29],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__same_3_0e550552ca0dd67edfa8d4ddb8e3ded85.html#ad26a97df4b87500bbbf3f6d521ea430d":[2,0,0,7,0,29,0],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,1],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html#a7e5f5c92b3b65d2e7a326049b97b4e08":[2,0,0,7,0,1,0],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,2],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#afccf4fccaf0d0a441fdf20594d114ab5":[2,0,0,7,0,2,0],
+"structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,3],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#abdc9508ec4d798a2a7d84bed6c372d59":[2,0,0,7,0,3,0],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,7,0,4],
 "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html#a6815002f477488f6d1f26946f7d24d4b":[2,0,0,7,0,4,0],
@@ -242,12 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_356d0ef6f6e4595baa73f8858e84e0cf.html":[2,0,0,13,1,9],
 "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_356d0ef6f6e4595baa73f8858e84e0cf.html#a8dab23f808b582200d9384a0ce87906c":[2,0,0,13,1,9,0],
 "structalpaka_1_1math_1_1ConceptMathAbs.html":[2,0,0,14,15],
-"structalpaka_1_1math_1_1ConceptMathAcos.html":[2,0,0,14,16],
-"structalpaka_1_1math_1_1ConceptMathAsin.html":[2,0,0,14,17],
-"structalpaka_1_1math_1_1ConceptMathAtan.html":[2,0,0,14,18],
-"structalpaka_1_1math_1_1ConceptMathAtan2.html":[2,0,0,14,19],
-"structalpaka_1_1math_1_1ConceptMathCbrt.html":[2,0,0,14,20],
-"structalpaka_1_1math_1_1ConceptMathCeil.html":[2,0,0,14,21],
-"structalpaka_1_1math_1_1ConceptMathCos.html":[2,0,0,14,22],
-"structalpaka_1_1math_1_1ConceptMathErf.html":[2,0,0,14,23]
+"structalpaka_1_1math_1_1ConceptMathAcos.html":[2,0,0,14,16]
 };
