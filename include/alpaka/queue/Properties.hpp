@@ -19,11 +19,11 @@ namespace alpaka
         {
             //#############################################################################
             //! The caller is waiting until the enqueued task is finished
-            struct Blocking{};
+            struct Blocking;
 
             //#############################################################################
             //! The caller is NOT waiting until the enqueued task is finished
-            struct NonBlocking{};
+            struct NonBlocking;
         }
 
         using namespace property;

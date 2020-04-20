@@ -99,7 +99,9 @@ namespace alpaka
         //! The CPU device event.
         template<
             typename TDev>
-        class EventGenericThreads final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
+        class EventGenericThreads final
+            : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
+            , public concepts::Implements<dev::ConceptGetDev, EventGenericThreads<TDev>>
         {
         public:
             //-----------------------------------------------------------------------------

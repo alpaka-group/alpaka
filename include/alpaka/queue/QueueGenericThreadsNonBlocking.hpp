@@ -106,7 +106,10 @@ namespace alpaka
         //! The CPU device queue.
         template<
             typename TDev>
-        class QueueGenericThreadsNonBlocking final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
+        class QueueGenericThreadsNonBlocking final
+            : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
+            , public concepts::Implements<ConceptQueue, QueueGenericThreadsNonBlocking<TDev>>
+            , public concepts::Implements<dev::ConceptGetDev, QueueGenericThreadsNonBlocking<TDev>>
         {
         public:
             //-----------------------------------------------------------------------------
