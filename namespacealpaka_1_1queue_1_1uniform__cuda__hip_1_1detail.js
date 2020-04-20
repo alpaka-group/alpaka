@@ -1,5 +1,5 @@
 var namespacealpaka_1_1queue_1_1uniform__cuda__hip_1_1detail =
 [
-    [ "QueueUniformCudaHipRtBlockingImpl", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBlockingImpl.html", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBlockingImpl" ],
-    [ "QueueUniformCudaHipRtNonBlockingImpl", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl.html", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtNonBlockingImpl" ]
+    [ "QueueUniformCudaHipRtBase", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase" ],
+    [ "QueueUniformCudaHipRtImpl", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl" ]
 ];

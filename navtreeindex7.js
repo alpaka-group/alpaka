@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"namespacemembers_func.html":[1,1,1],
 "namespacemembers_g.html":[1,1,0,6],
 "namespacemembers_h.html":[1,1,0,7],
 "namespacemembers_i.html":[1,1,0,8],
@@ -34,11 +35,11 @@ var NAVTREEINDEX7 =
 "pltf_2Traits_8hpp.html#a6e89f35426a77c132b0c955448aba0fe":[3,0,0,0,15,2,7],
 "pltf_2Traits_8hpp.html#a71a4eae33881f08cf343e97b458381fd":[3,0,0,0,15,2,6],
 "pltf_2Traits_8hpp_source.html":[3,0,0,0,15,2],
-"queue_2Traits_8hpp.html":[3,0,0,0,16,8],
-"queue_2Traits_8hpp.html#add43e076d64ca901491be83f21cb6ef3":[3,0,0,0,16,8,5],
-"queue_2Traits_8hpp.html#ae4006918561995047e1d5159837751fd":[3,0,0,0,16,8,4],
-"queue_2Traits_8hpp.html#afe86b25f088e5aacbd303d2ad24d8303":[3,0,0,0,16,8,3],
-"queue_2Traits_8hpp_source.html":[3,0,0,0,16,8],
+"queue_2Traits_8hpp.html":[3,0,0,0,16,9],
+"queue_2Traits_8hpp.html#add43e076d64ca901491be83f21cb6ef3":[3,0,0,0,16,9,5],
+"queue_2Traits_8hpp.html#ae4006918561995047e1d5159837751fd":[3,0,0,0,16,9,4],
+"queue_2Traits_8hpp.html#afe86b25f088e5aacbd303d2ad24d8303":[3,0,0,0,16,9,3],
+"queue_2Traits_8hpp_source.html":[3,0,0,0,16,9],
 "rand_2Traits_8hpp.html":[3,0,0,0,17,3],
 "rand_2Traits_8hpp.html#a3d2a8e74bda83320942609c09c227f46":[3,0,0,0,17,3,6],
 "rand_2Traits_8hpp.html#a8cef848378b79fc7f8f522531198723f":[3,0,0,0,17,3,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicUniformCudaHipBui70da2e5f32868bbe1690f9d7e3cc3528.html#ac27809c348ccbe0e36c12a159242dd24":[2,0,0,1,2,38,0],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicUniformCudaHipBuidb6d4b847a7444e8ae05285ef02d851a.html":[2,0,0,1,2,36],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicUniformCudaHipBuidb6d4b847a7444e8ae05285ef02d851a.html#a76a90576135c8dd792aeccd0e5488398":[2,0,0,1,2,36,0],
-"structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicUniformCudaHipBuie34989ef52ddebd59abe753a971a6146.html":[2,0,0,1,2,39],
-"structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicUniformCudaHipBuie34989ef52ddebd59abe753a971a6146.html#a4836a8212b5964e369d89aefa2636c99":[2,0,0,1,2,39,0]
+"structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicUniformCudaHipBuie34989ef52ddebd59abe753a971a6146.html":[2,0,0,1,2,39]
 };

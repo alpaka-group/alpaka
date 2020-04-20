@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"dim_2Traits_8hpp_source.html":[3,0,0,0,5,2],
 "dir_0124df87ec65197e9bad4e88b9e857cd.html":[3,0,0,0,11,11],
 "dir_01df2167e5951d7c5dae43451e53787e.html":[3,0,0,0,11,2],
 "dir_0864fd1327d23bd6a262ac55462cb31e.html":[3,0,0,0,2],
@@ -10,6 +11,7 @@ var NAVTREEINDEX5 =
 "dir_192cbe7214f78dcbefe56af07355e2bc.html":[3,0,0,0,17],
 "dir_1c6593126abeaa5d6f4966b7e2772cf1.html":[3,0,0,0,11,5],
 "dir_1f935393e025ce141e1b01ab4d1e0aaf.html":[3,0,0,0,12,1,0],
+"dir_2176bdc4abbfee27816f3bddb372b87e.html":[3,0,0,0,16,1],
 "dir_24aa5f4abbdd95db8c5e3a230ceba98a.html":[3,0,0,0,11,6],
 "dir_2e39533c881d854da7842ea6a7d50d14.html":[3,0,0,0,11,8],
 "dir_2fd2a33bf37bb9d804931f787b573f1a.html":[3,0,0,0,14],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "mem_2buf_2Traits_8hpp.html#a5f5a5d72e4fd8ce4c730e6306b4b9fd4":[3,0,0,0,12,1,4,15],
 "mem_2buf_2Traits_8hpp.html#a66e2d458dbc953512782a2d6c49f2ecc":[3,0,0,0,12,1,4,12],
 "mem_2buf_2Traits_8hpp.html#a7fc8aea9a77046ffb8d8134929fc332a":[3,0,0,0,12,1,4,8],
-"mem_2buf_2Traits_8hpp.html#a905a1eae82f64b6ae29cb8b2c0560acd":[3,0,0,0,12,1,4,13],
-"mem_2buf_2Traits_8hpp.html#a95128174b612fea49782cdff2a83feb2":[3,0,0,0,12,1,4,14],
-"mem_2buf_2Traits_8hpp.html#aaaf594498e9fdb12fcc8c92b60b04044":[3,0,0,0,12,1,4,11]
+"mem_2buf_2Traits_8hpp.html#a905a1eae82f64b6ae29cb8b2c0560acd":[3,0,0,0,12,1,4,13]
 };

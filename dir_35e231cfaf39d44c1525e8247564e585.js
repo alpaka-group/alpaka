@@ -1,10 +1,8 @@
 var dir_35e231cfaf39d44c1525e8247564e585 =
 [
     [ "cpu", "dir_16bba3a4b121cf64f0e5026f87f5174d.html", "dir_16bba3a4b121cf64f0e5026f87f5174d" ],
-    [ "Properties.hpp", "Properties_8hpp.html", [
-      [ "Blocking", "structalpaka_1_1queue_1_1property_1_1Blocking.html", null ],
-      [ "NonBlocking", "structalpaka_1_1queue_1_1property_1_1NonBlocking.html", null ]
-    ] ],
+    [ "cuda_hip", "dir_2176bdc4abbfee27816f3bddb372b87e.html", "dir_2176bdc4abbfee27816f3bddb372b87e" ],
+    [ "Properties.hpp", "Properties_8hpp.html", null ],
     [ "QueueCpuBlocking.hpp", "QueueCpuBlocking_8hpp.html", null ],
     [ "QueueCpuNonBlocking.hpp", "QueueCpuNonBlocking_8hpp.html", null ],
     [ "QueueGenericThreadsBlocking.hpp", "QueueGenericThreadsBlocking_8hpp.html", [

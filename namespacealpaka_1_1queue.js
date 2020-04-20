@@ -1,7 +1,6 @@
 var namespacealpaka_1_1queue =
 [
     [ "generic", "namespacealpaka_1_1queue_1_1generic.html", "namespacealpaka_1_1queue_1_1generic" ],
-    [ "property", "namespacealpaka_1_1queue_1_1property.html", "namespacealpaka_1_1queue_1_1property" ],
     [ "traits", "namespacealpaka_1_1queue_1_1traits.html", "namespacealpaka_1_1queue_1_1traits" ],
     [ "uniform_cuda_hip", "namespacealpaka_1_1queue_1_1uniform__cuda__hip.html", "namespacealpaka_1_1queue_1_1uniform__cuda__hip" ],
     [ "IGenericThreadsQueue", "classalpaka_1_1queue_1_1IGenericThreadsQueue.html", "classalpaka_1_1queue_1_1IGenericThreadsQueue" ],

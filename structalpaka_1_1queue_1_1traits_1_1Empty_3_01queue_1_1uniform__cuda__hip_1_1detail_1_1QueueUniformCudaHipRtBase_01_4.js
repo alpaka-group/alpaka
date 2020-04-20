@@ -1,0 +1,4 @@
+var structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4 =
+[
+    [ "empty", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html#aaecb94630188b3b778388030c4c94a58", null ]
+];

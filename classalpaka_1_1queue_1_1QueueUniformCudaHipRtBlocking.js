@@ -7,6 +7,5 @@ var classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking =
     [ "operator!=", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a1a63d6c8b4810ac6fc30a7fbe7dc8614", null ],
     [ "operator=", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#ab02ae4bc14422671b0acfe779a78cb75", null ],
     [ "operator=", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a87c7dc343a20ae393406d9b9e5747aea", null ],
-    [ "operator==", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a0044467cc2c9330c0e49e0ac6fcc392a", null ],
-    [ "m_spQueueImpl", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a79d3da004a4e310c9373cf1b5b13b27c", null ]
+    [ "operator==", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a0044467cc2c9330c0e49e0ac6fcc392a", null ]
 ];
