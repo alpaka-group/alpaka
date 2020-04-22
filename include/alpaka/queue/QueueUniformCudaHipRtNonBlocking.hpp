@@ -28,6 +28,7 @@
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
+#include <alpaka/meta/DependentFalseType.hpp>
 
 // Backend specific includes.
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
