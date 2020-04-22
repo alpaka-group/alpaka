@@ -1,0 +1,5 @@
+var structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500 =
+[
+    [ "TaskSetUniformCudaHip", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500.html#aa41836107a69d186b331ce61029003bc", null ],
+    [ "enqueue", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500.html#a860de898061933ca4bcfdc9087fc1af0", null ]
+];

@@ -592,6 +592,7 @@ var hierarchy =
     [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip< dim::DimInt< 2 >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_9d73e3b202845db0f67633a9869cf0e0.html", null ],
     [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip< dim::DimInt< 3 >, TViewDst, TViewSrc, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_cecb734fdfa9ea1ab6e3c525a7013f29.html", null ],
     [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip< TDim, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip.html", null ],
+    [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHipBase< TDim, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHipBase.html", null ],
     [ "alpaka::mem::view::ViewPlainPtr< TDev, TElem, TDim, TIdx >", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html", null ],
     [ "alpaka::mem::view::ViewSubView< TDev, TElem, TDim, TIdx >", "classalpaka_1_1mem_1_1view_1_1ViewSubView.html", null ],
     [ "alpaka::meta::detail::ApplyImpl< TList, TApplicant >", "structalpaka_1_1meta_1_1detail_1_1ApplyImpl.html", null ],
@@ -1376,6 +1377,15 @@ var hierarchy =
     ] ],
     [ "alpaka::mem::view::cpu::detail::TaskSetCpuBase< dim::DimInt< 1u >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpuBase.html", [
       [ "alpaka::mem::view::cpu::detail::TaskSetCpu< dim::DimInt< 1u >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html", null ]
+    ] ],
+    [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHipBase< dim::DimInt< 1 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHipBase.html", [
+      [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip< dim::DimInt< 1 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_18c1306ad454a11ca1243cf2ab2c150d3.html", null ]
+    ] ],
+    [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHipBase< dim::DimInt< 2 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHipBase.html", [
+      [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip< dim::DimInt< 2 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500.html", null ]
+    ] ],
+    [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHipBase< dim::DimInt< 3 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHipBase.html", [
+      [ "alpaka::mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip< dim::DimInt< 3 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1208e004fee844e31eb1d98880e208482.html", null ]
     ] ],
     [ "TINYMT32_T", "structTINYMT32__T.html", null ],
     [ "alpaka::vec::Vec< dim::DimInt< 1u >, DstSize >", "classalpaka_1_1vec_1_1Vec.html", null ],
