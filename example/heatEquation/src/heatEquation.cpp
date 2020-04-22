@@ -75,7 +75,7 @@ double exactSolution(
     double const t)
 {
     constexpr double pi = 3.14159265358979323846;
-    return exp( -pi * pi * t ) * sin( pi * x );
+    return std::exp( -pi * pi * t ) * std::sin( pi * x );
 }
 
 //! Each kernel computes the next step for one point.
@@ -200,7 +200,7 @@ auto main() -> int
     double maxError = 0.0;
     for( uint32_t i = 0; i < numNodesX; i++ )
     {
-        auto const error = abs( pNextHost[ i ] - exactSolution( i * dx, tMax ) );
+        auto const error = std::abs( pNextHost[ i ] - exactSolution( i * dx, tMax ) );
         maxError = std::max( maxError, error );
     }
     std::cout << "Max error to the exact solution at t = tMax: " << maxError << "\n";
