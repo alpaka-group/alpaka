@@ -68,7 +68,9 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    return static_cast<std::size_t>(::omp_get_num_devices());
+                    const std::size_t count = static_cast<std::size_t>(::omp_get_num_devices());
+                    // runtime will report zero devices if the host is the target (or without offloading)
+                    return count > 0 ? count : 1;
                 }
             };
 
@@ -79,14 +81,14 @@ namespace alpaka
                 pltf::PltfOmp4>
             {
                 //-----------------------------------------------------------------------------
-                //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() if < 0
+                //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() otherwise
                 ALPAKA_FN_HOST static auto getDevByIdx(
                     std::size_t devIdx)
                 -> dev::DevOmp4
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    std::size_t const devCount(static_cast<std::size_t>(pltf::getDevCount<pltf::PltfOmp4>()));
+                    std::size_t const devCount(static_cast<std::size_t>(::omp_get_num_devices()));
                     int devIdxOmp4 = static_cast<int>(devIdx);
                     if(devIdx >= devCount)
                     { // devIdx param must be unsigned, take take this case to use the initial device
