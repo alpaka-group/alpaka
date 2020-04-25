@@ -10,7 +10,9 @@
 #pragma once
 
 #include "Defines.hpp"
+
 #include <alpaka/test/acc/TestAccs.hpp>
+
 #include <ostream>
 
 namespace alpaka {

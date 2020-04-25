@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Defines.hpp"
+
 #include <random>
 #include <limits>
 #include <cassert>

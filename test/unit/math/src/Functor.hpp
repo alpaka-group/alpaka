@@ -10,7 +10,9 @@
 #pragma once
 
 #include "Defines.hpp"
+
 #include <alpaka/alpaka.hpp>
+
 #include <type_traits>
 
 namespace alpaka {

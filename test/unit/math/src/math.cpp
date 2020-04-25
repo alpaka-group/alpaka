@@ -7,10 +7,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "../include/Defines.hpp"
-#include "../include/Buffer.hpp"
-#include "../include/Functor.hpp"
-#include "../include/DataGen.hpp"
+#include "Defines.hpp"
+#include "Buffer.hpp"
+#include "Functor.hpp"
+#include "DataGen.hpp"
 
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
@@ -28,7 +28,6 @@ struct TestKernel
              typename TResults,
              typename TFunctor,
              typename TArgs>
-
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         TResults const & results,

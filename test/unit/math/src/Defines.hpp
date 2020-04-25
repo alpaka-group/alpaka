@@ -14,7 +14,6 @@
 #include <iomanip>
 #include <limits>
 
-
 namespace alpaka {
 namespace test {
 namespace unit {

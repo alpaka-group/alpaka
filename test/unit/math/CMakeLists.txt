@@ -8,13 +8,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-set(_TARGET_NAME "mathOps")
-
+set(_TARGET_NAME "math")
 
 append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
+append_recursive_files_add_to_src_group("src/" "src/" "hpp" _FILES_HEADER)
 
-
-message(STATUS "Disabling fast math options for math operation tests only.")
 if(ALPAKA_ACC_GPU_CUDA_ENABLE)
     list(REMOVE_ITEM
             CUDA_NVCC_FLAGS "--ftz=true" "--prec-div=false" "--prec-sqrt=false" "--fmad=true" "--use_fast_math" "-use_fast_math")
@@ -25,10 +23,10 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
             HIP_NVCC_FLAGS "--ftz=true" "--prec-div=false" "--prec-sqrt=false" "--fmad=true" "--use_fast_math" "-use_fast_math")
 endif()
 
-
 alpaka_add_executable(
     ${_TARGET_NAME}
-    ${_FILES_SOURCE})
+    ${_FILES_SOURCE}
+    ${_FILES_HEADER})
 target_include_directories(
     ${_TARGET_NAME}
     PRIVATE ${Boost_INCLUDE_DIRS})
