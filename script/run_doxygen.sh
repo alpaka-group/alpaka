@@ -24,15 +24,15 @@ source ./script/set.sh
 #- Clean the branch: `git rm -rf .`
 #- Commit and push the branch: `git add --all`, `git commit -m"add gh-pages branch"`, `git push`
 
-# Clone the gh-pages branch into the doc/doxygen/html folder.
-git clone -b gh-pages https://x-access-token:${2}@github.com/${1}.git doc/doxygen/html
+# Clone the gh-pages branch into the docs/doxygen/html folder.
+git clone -b gh-pages https://x-access-token:${2}@github.com/${1}.git docs/doxygen/html
 
-cd doc/doxygen/html
+cd docs/
 
-rm -rf *
+rm -rf doxygen/*
 
-cd ..
-
+# enable HTML output in our Doxyfile
+sed -i -E 's/(GENERATE_HTML\s*=\s*)NO/\1YES/g' Doxyfile
 doxygen Doxyfile
 
-cd ../..
+cd ../
