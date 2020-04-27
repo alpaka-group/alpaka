@@ -488,8 +488,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 foreach(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
                     list(APPEND CUDA_NVCC_FLAGS
-                        --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM}
-                        --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}
+                        "--generate-code arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM} --generate-code arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}"
                     )
                 endforeach()
 
@@ -524,30 +523,30 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 endif()
 
                 # Always add warning/error numbers which can be used for suppressions
-                list(APPEND CUDA_NVCC_FLAGS -Xcudafe --display_error_number)
+                list(APPEND CUDA_NVCC_FLAGS "-Xcudafe --display_error_number")
 
                 # avoids warnings on host-device signatured, default constructors/destructors
-                list(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=esa_on_defaulted_function_ignored)
+                list(APPEND CUDA_NVCC_FLAGS "-Xcudafe --diag_suppress=esa_on_defaulted_function_ignored")
 
                 # avoids warnings on host-device signature of 'std::__shared_count<>'
                 if(CUDA_VERSION EQUAL 10.0)
-                    list(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=2905)
+                    list(APPEND CUDA_NVCC_FLAGS "-Xcudafe --diag_suppress=2905")
                 elseif(CUDA_VERSION EQUAL 10.1)
-                    list(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=2912)
+                    list(APPEND CUDA_NVCC_FLAGS "-Xcudafe --diag_suppress=2912")
                 elseif(CUDA_VERSION EQUAL 10.2)
-                    list(APPEND CUDA_NVCC_FLAGS -Xcudafe --diag_suppress=2976)
+                    list(APPEND CUDA_NVCC_FLAGS "-Xcudafe --diag_suppress=2976")
                 endif()
 
                 if(ALPAKA_CUDA_KEEP_FILES)
                     file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/nvcc_tmp")
-                    list(APPEND CUDA_NVCC_FLAGS --keep --keep-dir ${PROJECT_BINARY_DIR}/nvcc_tmp)
+                    list(APPEND CUDA_NVCC_FLAGS --keep "--keep-dir ${PROJECT_BINARY_DIR}/nvcc_tmp")
                 endif()
 
                 option(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
                 if(ALPAKA_CUDA_SHOW_CODELINES)
                     list(APPEND CUDA_NVCC_FLAGS --source-in-ptx -lineinfo)
                     if(NOT MSVC)
-                        list(APPEND CUDA_NVCC_FLAGS -Xcompiler -rdynamic)
+                        list(APPEND CUDA_NVCC_FLAGS "-Xcompiler -rdynamic")
                     endif()
                     set(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
                 endif()
@@ -621,15 +620,14 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 foreach(_HIP_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
                     list(APPEND CUDA_NVCC_FLAGS
-                        --generate-code arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM}
-                        --generate-code arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}
+                        "--generate-code arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM} --generate-code arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}"
                     )
                 endforeach()
                 # for CUDA cmake automatically adds compiler flags as nvcc does not do this,
                 # but for HIP we have to do this here
                 list(APPEND HIP_NVCC_FLAGS -D__CUDACC__)
                 list(APPEND HIP_NVCC_FLAGS -ccbin ${CMAKE_CXX_COMPILER})
-                list(APPEND HIP_NVCC_FLAGS -Xcompiler -g)
+                list(APPEND HIP_NVCC_FLAGS "-Xcompiler -g")
 
                 if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
                     list(APPEND HIP_NVCC_FLAGS -G)
@@ -638,7 +636,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 # SET(CUDA_PROPAGATE_HOST_FLAGS ON) # does not exist in HIP, so do it manually
                 string(TOUPPER "${CMAKE_BUILD_TYPE}" build_config)
                 foreach( _flag ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${build_config}})
-                    list(APPEND HIP_NVCC_FLAGS -Xcompiler ${_flag})
+                    list(APPEND HIP_NVCC_FLAGS "-Xcompiler ${_flag}")
                 endforeach()
 
                 if(ALPAKA_HIP_FAST_MATH)
@@ -656,7 +654,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 endif()
 
                 # avoids warnings on host-device signatured, default constructors/destructors
-                list(APPEND HIP_HIPCC_FLAGS -Xcudafe --diag_suppress=esa_on_defaulted_function_ignored)
+                list(APPEND HIP_HIPCC_FLAGS "-Xcudafe --diag_suppress=esa_on_defaulted_function_ignored")
 
                 # random numbers library ( HIP(NVCC) ) /hiprand
                 # HIP_ROOT_DIR is set by FindHIP.cmake
@@ -712,13 +710,13 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
 
             if(ALPAKA_HIP_KEEP_FILES)
                 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/hip_tmp")
-                list(APPEND HIP_HIPCC_FLAGS "--keep" "--keep-dir" "${PROJECT_BINARY_DIR}/hip_tmp")
+                list(APPEND HIP_HIPCC_FLAGS "--keep" "--keep-dir ${PROJECT_BINARY_DIR}/hip_tmp")
             endif()
 
             option(ALPAKA_HIP_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
             if(ALPAKA_HIP_SHOW_CODELINES)
                 list(APPEND HIP_HIPCC_FLAGS "--source-in-ptx" "-lineinfo")
-                list(APPEND HIP_HIPCC_FLAGS "-Xcompiler" "-rdynamic")
+                list(APPEND HIP_HIPCC_FLAGS "-Xcompiler -rdynamic")
                 set(ALPAKA_HIP_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
             endif()
             if(_ALPAKA_HIP_LIBRARIES)
