@@ -4,11 +4,13 @@
 
 [![Continuous Integration](https://github.com/BenjaminW3/alpaka/workflows/Continuous%20Integration/badge.svg)](https://github.com/ComputationalRadiationPhysics/alpaka/actions?query=workflow%3A%22Continuous+Integration%22)
 [![Travis CI Build Status](https://travis-ci.org/alpaka-group/alpaka.svg?branch=develop)](https://travis-ci.org/alpaka-group/alpaka)
+[![Documentation Status](https://readthedocs.org/projects/alpaka/badge/?version=latest)](https://alpaka.readthedocs.io)
+[![Doxygen](https://img.shields.io/badge/API-Doxygen-blue.svg)](https://alpaka-group.github.io/alpaka)
 [![Language](https://img.shields.io/badge/language-C%2B%2B11-orange.svg)](https://isocpp.org/)
 [![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20mac-lightgrey.svg)](https://github.com/alpaka-group/alpaka)
 [![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
 
-![Alpaka](doc/images/alpaka_401x135.png)
+![Alpaka](docs/logo/alpaka_401x135.png)
 
 The **alpaka** library is a header-only C++14 abstraction library for accelerator development.
 
@@ -40,8 +42,9 @@ Software License
 Documentation
 -------------
 
-The [general documentation](doc/markdown/Index.md) is located within the `doc/markdown` subfolder of the repository.
-The [source code documentation](http://alpaka-group.github.io/alpaka/) is generated with [doxygen](http://www.doxygen.org).
+The alpaka documentation can be found in the [online manual](https://alpaka.readthedocs.io).
+The documentation files in [`.rst` (reStructuredText)](https://www.sphinx-doc.org/en/stable/rest.html) format are located in the `docs` subfolder of this repository.
+The [source code documentation](https://alpaka-group.github.io/alpaka/) is generated with [doxygen](http://www.doxygen.org).
 
 
 Accelerator Back-ends
@@ -76,7 +79,7 @@ This library uses C++14 (or newer when available).
 |TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |CUDA (nvcc)|:white_check_mark: <br/> (CUDA 9.0-10.2)|:white_check_mark: <br/> (CUDA 9.2-10.2) |:white_check_mark: <br/> (CUDA 10.1-10.2) |:x:|:white_check_mark: <br/> (CUDA 9.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:x:|:x:|:x:|:white_check_mark: <br/> (CUDA 10.0-10.2)|
 |CUDA (clang) | - | - | - | - | - | - | :white_check_mark: <br/> (CUDA 9.0) | :white_check_mark: <br/> (CUDA 9.0-9.2) | :white_check_mark: <br/> (CUDA 9.0-10.0) | :white_check_mark: <br/> (CUDA 9.2-10.1) | :white_check_mark: <br/> (CUDA 9.2-10.1) | - | - |
-|[HIP](doc/markdown/user/implementation/mapping/HIP.md) (nvcc)|:white_check_mark: <br/> (nvcc 9.0+)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|
+|[HIP](https://alpaka.readthedocs.io/en/latest/install/HIP.html) (nvcc)|:white_check_mark: <br/> (nvcc 9.0+)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|
 
 
 Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.

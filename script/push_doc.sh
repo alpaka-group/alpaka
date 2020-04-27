@@ -14,7 +14,7 @@ source ./script/travis_retry.sh
 
 source ./script/set.sh
 
-cd doc/doxygen/html
+cd docs/doxygen/html
 
 git config --global user.email "action@github.com"
 git config --global user.name "GitHub Action"

@@ -87,7 +87,7 @@ append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/cmake" "${_ALPAKA_R
 list(APPEND _ALPAKA_FILES_CMAKE "${_ALPAKA_ROOT_DIR}/cmake/alpakaConfig.cmake.in" "${_ALPAKA_ROOT_DIR}/CMakeLists.txt")
 set_source_files_properties(${_ALPAKA_FILES_CMAKE} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/doc/markdown" "${_ALPAKA_ROOT_DIR}" "md" _ALPAKA_FILES_DOC)
+append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/docs/markdown" "${_ALPAKA_ROOT_DIR}" "md" _ALPAKA_FILES_DOC)
 set_source_files_properties(${_ALPAKA_FILES_DOC} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 append_recursive_files_add_to_src_group("${_ALPAKA_ROOT_DIR}/.github" "${_ALPAKA_ROOT_DIR}" "yml" _ALPAKA_FILES_OTHER)
