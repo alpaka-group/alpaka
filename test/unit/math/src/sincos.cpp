@@ -31,7 +31,6 @@ almost_equal(TAcc const & acc, FP x, FP y, int ulp)
         || alpaka::math::abs(acc, x-y) < std::numeric_limits<FP>::min();
 }
 
-
 class SinCosTestKernel
 {
 public:
