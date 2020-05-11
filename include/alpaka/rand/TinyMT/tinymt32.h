@@ -213,7 +213,7 @@ inline static uint32_t tinymt32_generate_uint32(tinymt32_t * random) {
  */
 inline static float tinymt32_generate_float(tinymt32_t * random) {
     tinymt32_next_state(random);
-    return (tinymt32_temper(random) >> 8) * TINYMT32_MUL;
+    return float(tinymt32_temper(random) >> 8) * TINYMT32_MUL;
 }
 
 /**
