@@ -22,8 +22,17 @@ source ./script/set.sh
 
 if [ -z "$(ls -A "${ALPAKA_CI_CLANG_DIR}")" ]
 then
-    ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CI_CLANG_VER}-x86_64-linux-gnu-ubuntu-16.04.tar.xz
-    travis_retry wget --no-verbose "http://llvm.org/releases/${ALPAKA_CI_CLANG_VER}/${ALPAKA_CLANG_PKG_FILE_NAME}"
+    ALPAKA_CI_CLANG_VER_SEMANTIC=( ${ALPAKA_CI_CLANG_VER//./ } )
+    ALPAKA_CI_CLANG_VER_MAJOR="${ALPAKA_CI_CLANG_VER_SEMANTIC[0]}"
+
+    if (( "${ALPAKA_CI_CLANG_VER_MAJOR}" >= 10 ))
+    then
+        ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CI_CLANG_VER}-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+        travis_retry wget --no-verbose "https://github.com/llvm/llvm-project/releases/download/llvmorg-${ALPAKA_CI_CLANG_VER}/${ALPAKA_CLANG_PKG_FILE_NAME}"
+    else
+        ALPAKA_CLANG_PKG_FILE_NAME=clang+llvm-${ALPAKA_CI_CLANG_VER}-x86_64-linux-gnu-ubuntu-16.04.tar.xz
+        travis_retry wget --no-verbose "http://llvm.org/releases/${ALPAKA_CI_CLANG_VER}/${ALPAKA_CLANG_PKG_FILE_NAME}"
+    fi
     mkdir -p "${ALPAKA_CI_CLANG_DIR}"
     xzcat "${ALPAKA_CLANG_PKG_FILE_NAME}" | tar -xf - --strip 1 -C "${ALPAKA_CI_CLANG_DIR}"
     sudo rm -rf "${ALPAKA_CLANG_PKG_FILE_NAME}"
