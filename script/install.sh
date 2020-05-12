@@ -24,6 +24,13 @@ then
     travis_retry apt-get -y --quiet update
     travis_retry apt-get -y install sudo
 
+    # tzdata is installed by software-properties-common but it requires some special handling
+    if [[ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == *"20.04"* ]]
+    then
+        export DEBIAN_FRONTEND=noninteractive
+        travis_retry sudo apt-get --quiet --allow-unauthenticated --no-install-recommends install tzdata
+    fi
+
     # software-properties-common: 'add-apt-repository' and certificates for wget https download
     # binutils: ld
     # xz-utils: xzcat
