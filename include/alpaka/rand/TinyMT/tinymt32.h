@@ -42,6 +42,10 @@
 #   pragma clang diagnostic push
 #   pragma clang diagnostic ignored "-Wold-style-cast"
 #endif
+#if BOOST_COMP_GNUC
+#   pragma GCC diagnostic push
+#   pragma GCC diagnostic ignored "-Wold-style-cast"
+#endif
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
     #pragma warning(push)
     #pragma warning(disable: 4100)  // tinymt32.h(60): warning C4100: 'random': unreferenced formal parameter
@@ -417,6 +421,9 @@ void tinymt32_init_by_array(tinymt32_t * random, uint32_t init_key[],
 
 #if BOOST_COMP_CLANG
 #   pragma clang diagnostic pop
+#endif
+#if BOOST_COMP_GNUC
+#   pragma GCC diagnostic pop
 #endif
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 #   pragma warning(pop)
