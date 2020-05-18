@@ -22,6 +22,7 @@
 #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
 #include <alpaka/block/sync/BlockSyncNoOp.hpp>
+#include <alpaka/intrinsic/IntrinsicCpu.hpp>
 #include <alpaka/rand/RandStdLib.hpp>
 #include <alpaka/time/TimeStdLib.hpp>
 
@@ -72,6 +73,7 @@ namespace alpaka
             public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
             public block::shared::st::BlockSharedMemStNoSync,
             public block::sync::BlockSyncNoOp,
+            public intrinsic::IntrinsicCpu,
             public rand::RandStdLib,
             public time::TimeStdLib,
             public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
