@@ -79,6 +79,30 @@ namespace alpaka
 #endif
                 }
             };
+
+            //#############################################################################
+            template<>
+            struct Ffs<
+                IntrinsicUniformCudaHipBuiltIn>
+            {
+                //-----------------------------------------------------------------------------
+                __device__ static auto ffs(
+                    intrinsic::IntrinsicUniformCudaHipBuiltIn const & /*intrinsic*/,
+                    std::int32_t value)
+                -> std::int32_t
+                {
+                    return __ffs(value);
+                }
+
+                //-----------------------------------------------------------------------------
+                __device__ static auto ffs(
+                    intrinsic::IntrinsicUniformCudaHipBuiltIn const & /*intrinsic*/,
+                    std::int64_t value)
+                -> std::int32_t
+                {
+                    return __ffsll(value);
+                }
+            };
         }
     }
 }

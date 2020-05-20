@@ -14,6 +14,10 @@
 
 #include <bitset>
 
+#if BOOST_COMP_MSVC
+#include <intrin.h>
+#endif
+
 namespace alpaka
 {
     namespace intrinsic
@@ -74,6 +78,72 @@ namespace alpaka
                     // Fallback to standard library
                     return static_cast<int>(std::bitset<64>(value).count());
 #endif
+                }
+            };
+
+            //#############################################################################
+            template<>
+            struct Ffs<
+                IntrinsicCpu>
+            {
+                //-----------------------------------------------------------------------------
+                static auto ffs(
+                    intrinsic::IntrinsicCpu const & /*intrinsic*/,
+                    std::int32_t value)
+                -> std::int32_t
+                {
+#if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+                    return __builtin_ffs(value);
+#elif BOOST_COMP_MSVC
+                    // Implementation based on
+                    // https://gitlab.freedesktop.org/cairo/cairo/commit/f5167dc2e1a13d8c4e5d66d7178a24b9b5e7ac7a
+                    unsigned long index = 0u;
+                    if (_BitScanForward(&index, value) != 0)
+                        return static_cast<std::int32_t>(index + 1u);
+                    else
+                        return 0;
+#else
+                    return ffsFallback(value);
+#endif
+                }
+
+                //-----------------------------------------------------------------------------
+                static auto ffs(
+                    intrinsic::IntrinsicCpu const & /*intrinsic*/,
+                    std::int64_t value)
+                -> std::int32_t
+                {
+#if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
+                    return __builtin_ffsll(value);
+#elif BOOST_COMP_MSVC
+                    // Implementation based on
+                    // https://gitlab.freedesktop.org/cairo/cairo/commit/f5167dc2e1a13d8c4e5d66d7178a24b9b5e7ac7a
+                    unsigned long index = 0u;
+                    if (_BitScanForward64(&index, value) != 0)
+                        return static_cast<std::int32_t>(index + 1u);
+                    else
+                        return 0;
+#else
+                    return ffsFallback(value);
+#endif
+                }
+            private:
+
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TValue>
+                static auto ffsFallback(TValue value)
+                -> std::int32_t
+                {
+                    if (value == 0)
+                        return 0;
+                    std::int32_t result = 1;
+                    while ((value & 1) == 0)
+                    {
+                        value >>= 1;
+                        result++;
+                    }
+                    return result;
                 }
             };
         }
