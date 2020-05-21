@@ -13,16 +13,6 @@
 
 #include <tuple>
 
-// When compiling the tests with CUDA enabled (nvcc or native clang) on the CI infrastructure
-// we have to dramatically reduce the number of tested combinations.
-// Else the log length would be exceeded.
-#if defined(ALPAKA_CI)
-  #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA \
-   || defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP
-    #define ALPAKA_CUDA_CI
-  #endif
-#endif
-
 namespace alpaka
 {
     namespace test
@@ -34,9 +24,7 @@ namespace alpaka
             using TestDims =
                 std::tuple<
                     alpaka::dim::DimInt<1u>
-#if !defined(ALPAKA_CUDA_CI)
                     ,alpaka::dim::DimInt<2u>
-#endif
                     ,alpaka::dim::DimInt<3u>
                     // The CUDA & HIP accelerators do not currently support 4D buffers and 4D acceleration.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
