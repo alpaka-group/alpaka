@@ -12,8 +12,6 @@
 
 source ./script/set.sh
 
-ls "${ALPAKA_CI_DOCKER_CACHE_DIR}"
-
 ALPAKA_DOCKER_BUILD_REQUIRED=1
 
 if [ -f "${ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH}" ]
