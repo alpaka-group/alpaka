@@ -2,8 +2,7 @@
 =================================================================
 
 
-[![Continuous Integration](https://github.com/BenjaminW3/alpaka/workflows/Continuous%20Integration/badge.svg)](https://github.com/ComputationalRadiationPhysics/alpaka/actions?query=workflow%3A%22Continuous+Integration%22)
-[![Travis CI Build Status](https://travis-ci.org/alpaka-group/alpaka.svg?branch=develop)](https://travis-ci.org/alpaka-group/alpaka)
+[![Continuous Integration](https://github.com/alpaka-group/alpaka/workflows/Continuous%20Integration/badge.svg)](https://github.com/alpaka-group/alpaka/actions?query=workflow%3A%22Continuous+Integration%22)
 [![Documentation Status](https://readthedocs.org/projects/alpaka/badge/?version=latest)](https://alpaka.readthedocs.io)
 [![Doxygen](https://img.shields.io/badge/API-Doxygen-blue.svg)](https://alpaka-group.github.io/alpaka)
 [![Language](https://img.shields.io/badge/language-C%2B%2B11-orange.svg)](https://isocpp.org/)
