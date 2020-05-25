@@ -57,7 +57,7 @@ Accelerator Back-ends
 | Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |TBB|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
 |CUDA|CUDA 9.0-10.2|NVIDIA GPUs|parallel (undefined)|parallel (lock-step within warps)|
-|HIP(nvcc)|[HIP 3.1+](https://github.com/ROCm-Developer-Tools/HIP)|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+|HIP(nvcc)|[HIP 3.3+](https://github.com/ROCm-Developer-Tools/HIP)|NVIDIA GPUs SM 3.0+|parallel (undefined)|parallel (lock-step within warps)|
 
 
 Supported Compilers
