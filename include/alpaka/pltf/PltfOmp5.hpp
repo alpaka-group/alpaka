@@ -9,14 +9,14 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
 #include <alpaka/pltf/Traits.hpp>
-#include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/core/Concepts.hpp>
 
 #include <sstream>
@@ -29,12 +29,12 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU device platform.
-        class PltfOmp4 :
-            public concepts::Implements<ConceptPltf, PltfOmp4>
+        class PltfOmp5 :
+            public concepts::Implements<ConceptPltf, PltfOmp5>
         {
         public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST PltfOmp4() = delete;
+            ALPAKA_FN_HOST PltfOmp5() = delete;
         };
     }
 
@@ -46,9 +46,9 @@ namespace alpaka
             //! The CPU device device type trait specialization.
             template<>
             struct DevType<
-                pltf::PltfOmp4>
+                pltf::PltfOmp5>
             {
-                using type = dev::DevOmp4;
+                using type = dev::DevOmp5;
             };
         }
     }
@@ -60,7 +60,7 @@ namespace alpaka
             //! The CPU platform device count get trait specialization.
             template<>
             struct GetDevCount<
-                pltf::PltfOmp4>
+                pltf::PltfOmp5>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDevCount()
@@ -78,24 +78,24 @@ namespace alpaka
             //! The CPU platform device get trait specialization.
             template<>
             struct GetDevByIdx<
-                pltf::PltfOmp4>
+                pltf::PltfOmp5>
             {
                 //-----------------------------------------------------------------------------
                 //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() otherwise
                 ALPAKA_FN_HOST static auto getDevByIdx(
                     std::size_t devIdx)
-                -> dev::DevOmp4
+                -> dev::DevOmp5
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     std::size_t const devCount(static_cast<std::size_t>(::omp_get_num_devices()));
-                    int devIdxOmp4 = static_cast<int>(devIdx);
+                    int devIdxOmp5 = static_cast<int>(devIdx);
                     if(devIdx >= devCount)
                     { // devIdx param must be unsigned, take take this case to use the initial device
-                        devIdxOmp4 = ::omp_get_initial_device();
+                        devIdxOmp5 = ::omp_get_initial_device();
                     }
 
-                    return {devIdxOmp4};
+                    return {devIdxOmp5};
                 }
             };
         }

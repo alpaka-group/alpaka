@@ -9,10 +9,10 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
 #include <alpaka/block/shared/dyn/Traits.hpp>
@@ -30,24 +30,24 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The GPU CUDA block shared memory allocator.
-                class BlockSharedMemDynOmp4 : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynOmp4>
+                class BlockSharedMemDynOmp5 : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynOmp5>
                 {
                     mutable std::array<char, 30<<10> m_mem; // ! static 30kB
                     std::size_t m_dynSize;
 
                 public:
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynOmp4(size_t sizeBytes) : m_dynSize(sizeBytes) {}
+                    BlockSharedMemDynOmp5(size_t sizeBytes) : m_dynSize(sizeBytes) {}
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynOmp4(BlockSharedMemDynOmp4 const &) = delete;
+                    BlockSharedMemDynOmp5(BlockSharedMemDynOmp5 const &) = delete;
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynOmp4(BlockSharedMemDynOmp4 &&) = delete;
+                    BlockSharedMemDynOmp5(BlockSharedMemDynOmp5 &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(BlockSharedMemDynOmp4 const &) -> BlockSharedMemDynOmp4 & = delete;
+                    auto operator=(BlockSharedMemDynOmp5 const &) -> BlockSharedMemDynOmp5 & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(BlockSharedMemDynOmp4 &&) -> BlockSharedMemDynOmp4 & = delete;
+                    auto operator=(BlockSharedMemDynOmp5 &&) -> BlockSharedMemDynOmp5 & = delete;
                     //-----------------------------------------------------------------------------
-                    /*virtual*/ ~BlockSharedMemDynOmp4() = default;
+                    /*virtual*/ ~BlockSharedMemDynOmp5() = default;
 
                     char* dynMemBegin() const {return m_mem.data();}
                     char* staticMemBegin() const {return m_mem.data()+m_dynSize;}
@@ -60,11 +60,11 @@ namespace alpaka
                         typename T>
                     struct GetMem<
                         T,
-                        BlockSharedMemDynOmp4>
+                        BlockSharedMemDynOmp5>
                     {
                         //-----------------------------------------------------------------------------
                         static auto getMem(
-                            block::shared::dyn::BlockSharedMemDynOmp4 const &mem)
+                            block::shared::dyn::BlockSharedMemDynOmp5 const &mem)
                         -> T *
                         {
                             return reinterpret_cast<T*>(mem.dynMemBegin());

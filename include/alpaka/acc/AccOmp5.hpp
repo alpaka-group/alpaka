@@ -9,21 +9,21 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>
-#include <alpaka/idx/gb/IdxGbOmp4BuiltIn.hpp>
-#include <alpaka/idx/bt/IdxBtOmp4BuiltIn.hpp>
+#include <alpaka/idx/gb/IdxGbOmp5BuiltIn.hpp>
+#include <alpaka/idx/bt/IdxBtOmp5BuiltIn.hpp>
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
 #include <alpaka/math/MathStdLib.hpp>
-#include <alpaka/block/shared/dyn/BlockSharedMemDynOmp4.hpp>
-#include <alpaka/block/shared/st/BlockSharedMemStOmp4.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynOmp5.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStOmp5.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
 #include <alpaka/intrinsic/IntrinsicCpu.hpp>
 #include <alpaka/rand/RandStdLib.hpp>
@@ -41,7 +41,7 @@
 #include <alpaka/core/ClipCast.hpp>
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Unused.hpp>
-#include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
 
 #include <limits>
 #include <typeinfo>
@@ -55,36 +55,35 @@ namespace alpaka
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class TaskKernelCpuOmp4;
+        class TaskKernelOmp5;
     }
     namespace acc
     {
         //#############################################################################
-        //! The CPU OpenMP 4.0 accelerator.
+        //! The CPU OpenMP 5.0 accelerator.
         //!
-        //! This accelerator allows parallel kernel execution on a CPU device.
-        //! It uses CPU OpenMP4 to implement the parallelism.
+        //! This accelerator allows parallel kernel execution on an OpenMP target device.
         template<
             typename TDim,
             typename TIdx>
-        class AccCpuOmp4 final :
+        class AccOmp5 final :
             public workdiv::WorkDivMembers<TDim, TIdx>,
-            public idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>,
-            public idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>,
+            public idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx>,
+            public idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicOmpBuiltIn,   // grid atomics
                 atomic::AtomicOmpBuiltIn,    // block atomics
                 atomic::AtomicOmpBuiltIn     // thread atomics
             >,
             public math::MathStdLib,
-            public block::shared::dyn::BlockSharedMemDynOmp4,
-            public block::shared::st::BlockSharedMemStOmp4,
+            public block::shared::dyn::BlockSharedMemDynOmp5,
+            public block::shared::st::BlockSharedMemStOmp5,
             public block::sync::BlockSyncBarrierOmp,
             public intrinsic::IntrinsicCpu,
             public rand::RandStdLib,
             public time::TimeOmp,
             public warp::WarpSingleThread,
-            public concepts::Implements<ConceptAcc, AccCpuOmp4<TDim, TIdx>>
+            public concepts::Implements<ConceptAcc, AccOmp5<TDim, TIdx>>
         {
         public:
             // Partial specialization with the correct TDim and TIdx is not allowed.
@@ -93,28 +92,28 @@ namespace alpaka
                 typename TIdx2,
                 typename TKernelFnObj,
                 typename... TArgs>
-            friend class ::alpaka::kernel::TaskKernelCpuOmp4;
+            friend class ::alpaka::kernel::TaskKernelOmp5;
 
         private:
             //-----------------------------------------------------------------------------
-            AccCpuOmp4(
+            AccOmp5(
                 vec::Vec<TDim, TIdx> const & gridBlockExtent,
                 vec::Vec<TDim, TIdx> const & blockThreadExtent,
                 vec::Vec<TDim, TIdx> const & threadElemExtent,
                 TIdx const & teamOffset,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
-                    idx::gb::IdxGbOmp4BuiltIn<TDim, TIdx>(teamOffset),
-                    idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>(),
+                    idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx>(teamOffset),
+                    idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicOmpBuiltIn,// atomics between grids
                         atomic::AtomicOmpBuiltIn, // atomics between blocks
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynOmp4(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynOmp5(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
-                    block::shared::st::BlockSharedMemStOmp4(staticMemBegin()),
+                    block::shared::st::BlockSharedMemStOmp5(staticMemBegin()),
                     block::sync::BlockSyncBarrierOmp(),
                     rand::RandStdLib(),
                     time::TimeOmp(),
@@ -123,15 +122,15 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            AccCpuOmp4(AccCpuOmp4 const &) = delete;
+            AccOmp5(AccOmp5 const &) = delete;
             //-----------------------------------------------------------------------------
-            AccCpuOmp4(AccCpuOmp4 &&) = delete;
+            AccOmp5(AccOmp5 &&) = delete;
             //-----------------------------------------------------------------------------
-            auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
+            auto operator=(AccOmp5 const &) -> AccOmp5 & = delete;
             //-----------------------------------------------------------------------------
-            auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
+            auto operator=(AccOmp5 &&) -> AccOmp5 & = delete;
             //-----------------------------------------------------------------------------
-            /*virtual*/ ~AccCpuOmp4() = default;
+            /*virtual*/ ~AccOmp5() = default;
 
         private:
             // getIdx
@@ -144,26 +143,26 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator accelerator type trait specialization.
+            //! The OpenMP 5.0 accelerator accelerator type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct AccType<
-                acc::AccCpuOmp4<TDim, TIdx>>
+                acc::AccOmp5<TDim, TIdx>>
             {
-                using type = acc::AccCpuOmp4<TDim, TIdx>;
+                using type = acc::AccOmp5<TDim, TIdx>;
             };
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator device properties get trait specialization.
+            //! The OpenMP 5.0 accelerator device properties get trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct GetAccDevProps<
-                acc::AccCpuOmp4<TDim, TIdx>>
+                acc::AccOmp5<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
-                    dev::DevOmp4 const & dev)
+                    dev::DevOmp5 const & dev)
                 -> acc::AccDevProps<TDim, TIdx>
                 {
                     alpaka::ignore_unused(dev);
@@ -200,18 +199,18 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator name trait specialization.
+            //! The OpenMP 5.0 accelerator name trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct GetAccName<
-                acc::AccCpuOmp4<TDim, TIdx>>
+                acc::AccOmp5<TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccName()
                 -> std::string
                 {
-                    return "AccCpuOmp4<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+                    return "AccOmp5<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
                 }
             };
         }
@@ -221,14 +220,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator device type trait specialization.
+            //! The OpenMP 5.0 accelerator device type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct DevType<
-                acc::AccCpuOmp4<TDim, TIdx>>
+                acc::AccOmp5<TDim, TIdx>>
             {
-                using type = dev::DevOmp4;
+                using type = dev::DevOmp5;
             };
         }
     }
@@ -237,12 +236,12 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator dimension getter trait specialization.
+            //! The OpenMP 5.0 accelerator dimension getter trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                acc::AccCpuOmp4<TDim, TIdx>>
+                acc::AccOmp5<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -253,7 +252,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator execution task type trait specialization.
+            //! The OpenMP 5.0 accelerator execution task type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
@@ -261,7 +260,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct CreateTaskKernel<
-                acc::AccCpuOmp4<TDim, TIdx>,
+                acc::AccOmp5<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
@@ -273,7 +272,7 @@ namespace alpaka
                     TArgs && ... args)
                 {
                     return
-                        kernel::TaskKernelCpuOmp4<
+                        kernel::TaskKernelOmp5<
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -290,14 +289,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 execution task platform type trait specialization.
+            //! The OpenMP 5.0 execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct PltfType<
-                acc::AccCpuOmp4<TDim, TIdx>>
+                acc::AccOmp5<TDim, TIdx>>
             {
-                using type = pltf::PltfOmp4;
+                using type = pltf::PltfOmp5;
             };
         }
     }
@@ -306,12 +305,12 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator idx type trait specialization.
+            //! The OpenMP 5.0 accelerator idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct IdxType<
-                acc::AccCpuOmp4<TDim, TIdx>>
+                acc::AccOmp5<TDim, TIdx>>
             {
                 using type = TIdx;
             };

@@ -9,15 +9,15 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
-#include <alpaka/dev/DevOmp4.hpp>
-#include <alpaka/kernel/TaskKernelCpuOmp4.hpp>
-#include <alpaka/queue/QueueOmp4Blocking.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
+#include <alpaka/kernel/TaskKernelOmp5.hpp>
+#include <alpaka/queue/QueueOmp5Blocking.hpp>
 #include <alpaka/mem/buf/SetKernel.hpp>
 
 #include <alpaka/core/Assert.hpp>
@@ -38,7 +38,7 @@ namespace alpaka
 {
     namespace dev
     {
-        class DevOmp4;
+        class DevOmp5;
     }
 }
 
@@ -51,12 +51,12 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The OMP4 device memory set trait specialization.
+                //! The OMP5 device memory set trait specialization.
                 template<
                     typename TDim>
                 struct CreateTaskSet<
                     TDim,
-                    dev::DevOmp4>
+                    dev::DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -68,7 +68,7 @@ namespace alpaka
                         TExtent const & extent)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
                     -> decltype(
-                            kernel::createTaskKernel<acc::AccCpuOmp4<TDim,typename idx::traits::IdxType<TExtent>::type>>(
+                            kernel::createTaskKernel<acc::AccOmp5<TDim,typename idx::traits::IdxType<TExtent>::type>>(
                                 workdiv::WorkDivMembers<TDim, typename idx::traits::IdxType<TExtent>::type>(
                                     vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones(),
                                     vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones(),
@@ -89,7 +89,7 @@ namespace alpaka
                         constexpr auto lastDim = TDim::value - 1;
 
                         if(pitch[0] <= 0)
-                            return kernel::createTaskKernel<acc::AccCpuOmp4<TDim,Idx>>(
+                            return kernel::createTaskKernel<acc::AccOmp5<TDim,Idx>>(
                                     workdiv::WorkDivMembers<TDim, Idx>(
                                         vec::Vec<TDim, Idx>::ones(),
                                         vec::Vec<TDim, Idx>::ones(),
@@ -106,14 +106,14 @@ namespace alpaka
                         elementsPerThread[lastDim] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
                         workdiv::WorkDivMembers<TDim, Idx> const workDiv(
-                            workdiv::getValidWorkDiv<acc::AccCpuOmp4<TDim,Idx>>(
+                            workdiv::getValidWorkDiv<acc::AccOmp5<TDim,Idx>>(
                                 dev::getDev(view),
                                 byteExtent,
                                 elementsPerThread,
                                 false,
                                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
                         return
-                            kernel::createTaskKernel<acc::AccCpuOmp4<TDim,Idx>>(
+                            kernel::createTaskKernel<acc::AccOmp5<TDim,Idx>>(
                                     workDiv,
                                     view::MemSetKernel(),
                                     byte,

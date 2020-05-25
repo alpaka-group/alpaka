@@ -196,15 +196,15 @@ namespace alpaka
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCpu<dev::DevCpu>;
                 };
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
                 //#############################################################################
                 //!
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevOmp4>
+                    alpaka::dev::DevOmp5>
                 {
-                    using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::dev::DevOmp4>;
+                    using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::dev::DevOmp5>;
                 };
 #endif
                 //#############################################################################
@@ -221,16 +221,16 @@ namespace alpaka
                         return true;
                     }
                 };
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
                 //#############################################################################
-                //! The Omp4 event host manual trigger support get trait specialization.
+                //! The Omp5 event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevOmp4>
+                    alpaka::dev::DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevOmp4 const &)
+                        alpaka::dev::DevOmp5 const &)
                     -> bool
                     {
                         return true;

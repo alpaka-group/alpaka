@@ -90,7 +90,7 @@ public:
 
 #if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && \
   !defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-#ifndef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifndef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
         // TODO: These ifdefs are wrong: They will reduce the test to the
         // smallest common denominator from all enabled backends
         // std::random_device

@@ -9,23 +9,23 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
-#include <alpaka/queue/QueueOmp4Blocking.hpp>
+#include <alpaka/queue/QueueOmp5Blocking.hpp>
 
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Omp4.hpp>
+#include <alpaka/core/Omp5.hpp>
 
 #include <set>
 #include <tuple>
@@ -37,7 +37,7 @@ namespace alpaka
     {
         namespace view
         {
-            namespace omp4
+            namespace omp5
             {
                 namespace detail
                 {
@@ -104,13 +104,13 @@ namespace alpaka
                     };
 
                     //#############################################################################
-                    //! The Omp4 memory copy trait.
+                    //! The Omp5 memory copy trait.
                     template<
                         typename TDim,
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopyOmp4
+                    struct TaskCopyOmp5
                     {
                         static_assert(
                             !std::is_const<TViewDst>::value,
@@ -133,7 +133,7 @@ namespace alpaka
                         using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST TaskCopyOmp4(
+                        ALPAKA_FN_HOST TaskCopyOmp5(
                             TViewDst & viewDst,
                             TViewSrc const & viewSrc,
                             TExtent const & extent,
@@ -170,7 +170,7 @@ namespace alpaka
                                 ALPAKA_ASSERT(m_extent[i] <= dstExtent[i]);
                                 ALPAKA_ASSERT(m_extent[i] <= srcExtent[i]);
                             }
-                            std::cout << "TaskCopyOmp4<" << TDim::value << ",...>::ctor\tdstExtent="
+                            std::cout << "TaskCopyOmp5<" << TDim::value << ",...>::ctor\tdstExtent="
                             << alpaka::extent::getExtentVec(viewDst) << ", m_dstExtent=" << dstExtent << std::endl;
 #endif
                         }
@@ -239,7 +239,7 @@ namespace alpaka
                                 //     << " )\tsrcExtentFull=" << srcExtentFull << " (p " << m_srcPitchBytes
                                 //     << " )\telementSize=" << elementSize << std::endl;
 
-                                ALPAKA_OMP4_CHECK(
+                                ALPAKA_OMP5_CHECK(
                                     omp_target_memcpy_rect(
                                         m_dstMemNative, const_cast<void*>(m_srcMemNative),
                                         sizeof(elem::Elem<TViewDst>),
@@ -255,12 +255,12 @@ namespace alpaka
                     };
 
                     //#############################################################################
-                    //! The Omp4 memory copy trait.
+                    //! The Omp5 memory copy trait.
                     template<
                         typename TViewDst,
                         typename TViewSrc,
                         typename TExtent>
-                    struct TaskCopyOmp4<
+                    struct TaskCopyOmp5<
                         dim::DimInt<1>,
                         TViewDst,
                         TViewSrc,
@@ -287,7 +287,7 @@ namespace alpaka
                         using Idx = idx::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST TaskCopyOmp4(
+                        ALPAKA_FN_HOST TaskCopyOmp5(
                             TViewDst & viewDst,
                             TViewSrc const & viewSrc,
                             TExtent const & extent,
@@ -353,7 +353,7 @@ namespace alpaka
                                 return;
                             }
 
-                            ALPAKA_OMP4_CHECK(
+                            ALPAKA_OMP5_CHECK(
                                 omp_target_memcpy(
                                     m_dstMemNative, const_cast<void*>(m_srcMemNative),
                                     static_cast<std::size_t>(m_extentWidthBytes),
@@ -367,12 +367,12 @@ namespace alpaka
             // Trait specializations for CreateTaskCopy.
             namespace traits
             {
-                namespace omp4
+                namespace omp5
                 {
                     namespace detail
                     {
                         //#############################################################################
-                        //! The Omp4 memory copy task creation trait detail.
+                        //! The Omp5 memory copy task creation trait detail.
                         template<
                             typename TDim,
                             typename TDevDst,
@@ -391,7 +391,7 @@ namespace alpaka
                                 int iDeviceDst = 0,
                                 int iDeviceSrc = 0
                                 )
-                            -> mem::view::omp4::detail::TaskCopyOmp4<
+                            -> mem::view::omp5::detail::TaskCopyOmp5<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,
@@ -400,7 +400,7 @@ namespace alpaka
                                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                                 return
-                                    mem::view::omp4::detail::TaskCopyOmp4<
+                                    mem::view::omp5::detail::TaskCopyOmp5<
                                         TDim,
                                         TViewDst,
                                         TViewSrc,
@@ -416,12 +416,12 @@ namespace alpaka
                 }
 
                 //#############################################################################
-                //! The CPU to Omp4 memory copy trait specialization.
+                //! The CPU to Omp5 memory copy trait specialization.
                 template<
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevOmp4,
+                    dev::DevOmp5,
                     dev::DevCpu>
                 {
                     //-----------------------------------------------------------------------------
@@ -433,7 +433,7 @@ namespace alpaka
                         TViewDst & viewDst,
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
-                    -> mem::view::omp4::detail::TaskCopyOmp4<
+                    -> mem::view::omp5::detail::TaskCopyOmp5<
                         TDim,
                         TViewDst,
                         TViewSrc,
@@ -442,7 +442,7 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         return
-                            mem::view::omp4::detail::TaskCopyOmp4<
+                            mem::view::omp5::detail::TaskCopyOmp5<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,
@@ -450,20 +450,20 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-                                    dev::getDev(viewDst).m_spDevOmp4Impl->iDevice(),
+                                    dev::getDev(viewDst).m_spDevOmp5Impl->iDevice(),
                                     omp_get_initial_device()
                                     );
                     }
                 };
 
                 //#############################################################################
-                //! The Omp4 to CPU memory copy trait specialization.
+                //! The Omp5 to CPU memory copy trait specialization.
                 template<
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
                     dev::DevCpu,
-                    dev::DevOmp4>
+                    dev::DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -474,7 +474,7 @@ namespace alpaka
                         TViewDst & viewDst,
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
-                    -> mem::view::omp4::detail::TaskCopyOmp4<
+                    -> mem::view::omp5::detail::TaskCopyOmp5<
                         TDim,
                         TViewDst,
                         TViewSrc,
@@ -483,7 +483,7 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         return
-                            mem::view::omp4::detail::TaskCopyOmp4<
+                            mem::view::omp5::detail::TaskCopyOmp5<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,
@@ -492,19 +492,19 @@ namespace alpaka
                                     viewSrc,
                                     extent,
                                     omp_get_initial_device(),
-                                    dev::getDev(viewSrc).m_spDevOmp4Impl->iDevice()
+                                    dev::getDev(viewSrc).m_spDevOmp5Impl->iDevice()
                                     );
                     }
                 };
 
                 //#############################################################################
-                //! The Omp4 to Omp4 memory copy trait specialization.
+                //! The Omp5 to Omp5 memory copy trait specialization.
                 template<
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevOmp4,
-                    dev::DevOmp4>
+                    dev::DevOmp5,
+                    dev::DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -515,7 +515,7 @@ namespace alpaka
                         TViewDst & viewDst,
                         TViewSrc const & viewSrc,
                         TExtent const & extent)
-                    -> mem::view::omp4::detail::TaskCopyOmp4<
+                    -> mem::view::omp5::detail::TaskCopyOmp5<
                         TDim,
                         TViewDst,
                         TViewSrc,
@@ -524,7 +524,7 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         return
-                            mem::view::omp4::detail::TaskCopyOmp4<
+                            mem::view::omp5::detail::TaskCopyOmp5<
                                 TDim,
                                 TViewDst,
                                 TViewSrc,
@@ -532,8 +532,8 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-                                    dev::getDev(viewDst).m_spDevOmp4Impl->iDevice(),
-                                    dev::getDev(viewSrc).m_spDevOmp4Impl->iDevice()
+                                    dev::getDev(viewDst).m_spDevOmp5Impl->iDevice(),
+                                    dev::getDev(viewSrc).m_spDevOmp5Impl->iDevice()
                                     );
                     }
                 };

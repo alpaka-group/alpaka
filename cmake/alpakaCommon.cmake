@@ -54,7 +54,7 @@ option(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread 
 option(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" OFF)
 option(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" OFF)
 option(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" OFF)
-option(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread back-end" OFF)
+option(ALPAKA_ACC_ANY_BT_OMP5_ENABLE "Enable the OpenMP 5.0 CPU block and block thread back-end" OFF)
 
 option(ALPAKA_EMU_MEMCPY3D "Emulate internal used hip/cuda-Memcpy3D(async) with a kernel" ${ALPAKA_EMU_MEMCPY3D_DEFAULT})
 
@@ -66,7 +66,7 @@ if((ALPAKA_ACC_GPU_CUDA_ONLY_MODE OR ALPAKA_ACC_GPU_HIP_ONLY_MODE)
     ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OR
     ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR
     ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
-    ALPAKA_ACC_CPU_BT_OMP4_ENABLE))
+    ALPAKA_ACC_ANY_BT_OMP5_ENABLE))
     if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
         message(FATAL_ERROR "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only back-ends using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA back-ends from being enabled.")
     endif()
@@ -234,24 +234,27 @@ endif()
 
 #-------------------------------------------------------------------------------
 # Find OpenMP.
-if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
+if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
     find_package(OpenMP)
 
     if(OpenMP_CXX_FOUND)
-        if(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
-            if(OpenMP_CXX_VERSION VERSION_LESS 4.0)
-                message(FATAL_ERROR "OpenMP 4.0 is required but not supported!")
+         if(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
+           if(OpenMP_CXX_VERSION VERSION_LESS 4.0)
+               set(ALPAKA_ACC_ANY_BT_OMP5_ENABLE OFF CACHE BOOL "Enable the OpenMP 5.0 CPU block and thread back-end" FORCE)
             endif()
         endif()
 
         target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
 
-        # Clang versions starting from 3.9 support OpenMP 4.0 only when given the corresponding flag
-        if(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
+        # Clang versions starting from 3.9 support OpenMP 5.0 only when given the corresponding flag
+        if(ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
             target_link_options(alpaka INTERFACE $<$<CXX_COMPILER_ID:AppleClang,Clang>:-fopenmp-version=40>)
         endif()
     else()
         message(FATAL_ERROR "Optional alpaka dependency OpenMP could not be found!")
+        set(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU grid block back-end" FORCE)
+        set(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU block thread back-end" FORCE)
+        set(ALPAKA_ACC_ANY_BT_OMP5_ENABLE OFF CACHE BOOL "Enable the OpenMP 5.0 CPU block and thread back-end" FORCE)
     endif()
 endif()
 
@@ -320,8 +323,8 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
                     message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
                 endif()
-                if(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
-                    message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 4!")
+                if(ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
+                    message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 5!")
                 endif()
 
                 foreach(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
@@ -755,9 +758,9 @@ if(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED")
     message(STATUS ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
 endif()
-if(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
-    target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_CPU_BT_OMP4_ENABLED")
-    message(STATUS ALPAKA_ACC_CPU_BT_OMP4_ENABLED)
+if(ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
+    target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_ANY_BT_OMP5_ENABLED")
+    message(STATUS ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
 endif()
 if(ALPAKA_ACC_GPU_CUDA_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_GPU_CUDA_ENABLED")

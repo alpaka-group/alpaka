@@ -14,7 +14,7 @@
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
 
 #include <type_traits>
 
@@ -351,13 +351,13 @@ namespace alpaka
                 };
 #endif
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
                 //#############################################################################
-                //! The Omp4 device CreateStaticDevMemView trait specialization.
-                //! \todo What ist this for? Does this exist in OMP4?
+                //! The Omp5 device CreateStaticDevMemView trait specialization.
+                //! \todo What ist this for? Does this exist in OMP5?
                 template<>
                 struct CreateStaticDevMemView<
-                    dev::DevOmp4>
+                    dev::DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -365,15 +365,15 @@ namespace alpaka
                         typename TExtent>
                     static auto createStaticDevMemView(
                         TElem * pMem,
-                        dev::DevOmp4 const & dev,
+                        dev::DevOmp5 const & dev,
                         TExtent const & extent)
 #ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                    -> alpaka::mem::view::ViewPlainPtr<dev::DevOmp4, TElem, alpaka::dim::Dim<TExtent>, alpaka::idx::Idx<TExtent>>
+                    -> alpaka::mem::view::ViewPlainPtr<dev::DevOmp5, TElem, alpaka::dim::Dim<TExtent>, alpaka::idx::Idx<TExtent>>
 #endif
                     {
                         return
                             alpaka::mem::view::ViewPlainPtr<
-                                dev::DevOmp4,
+                                dev::DevOmp5,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
                                 alpaka::idx::Idx<TExtent>>(

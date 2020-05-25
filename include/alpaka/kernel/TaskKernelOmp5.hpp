@@ -9,10 +9,10 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
 // Specialized traits.
@@ -23,9 +23,9 @@
 #include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
-#include <alpaka/acc/AccCpuOmp4.hpp>
+#include <alpaka/acc/AccOmp5.hpp>
 #include <alpaka/core/Decay.hpp>
-#include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/idx/MapIdx.hpp>
 #include <alpaka/kernel/Traits.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
@@ -48,20 +48,20 @@ namespace alpaka
     namespace kernel
     {
         //#############################################################################
-        //! The CPU OpenMP 4.0 accelerator execution task.
+        //! The OpenMP 5.0 accelerator execution task.
         template<
             typename TDim,
             typename TIdx,
             typename TKernelFnObj,
             typename... TArgs>
-        class TaskKernelCpuOmp4 final :
+        class TaskKernelOmp5 final :
             public workdiv::WorkDivMembers<TDim, TIdx>
         {
         public:
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST TaskKernelCpuOmp4(
+            ALPAKA_FN_HOST TaskKernelOmp5(
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs && ... args) :
@@ -74,21 +74,21 @@ namespace alpaka
                     "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
-            TaskKernelCpuOmp4(TaskKernelCpuOmp4 const & other) = default;
+            TaskKernelOmp5(TaskKernelOmp5 const & other) = default;
             //-----------------------------------------------------------------------------
-            TaskKernelCpuOmp4(TaskKernelCpuOmp4 && other) = default;
+            TaskKernelOmp5(TaskKernelOmp5 && other) = default;
             //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelCpuOmp4 const &) -> TaskKernelCpuOmp4 & = default;
+            auto operator=(TaskKernelOmp5 const &) -> TaskKernelOmp5 & = default;
             //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelCpuOmp4 &&) -> TaskKernelCpuOmp4 & = default;
+            auto operator=(TaskKernelOmp5 &&) -> TaskKernelOmp5 & = default;
             //-----------------------------------------------------------------------------
-            ~TaskKernelCpuOmp4() = default;
+            ~TaskKernelOmp5() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
             ALPAKA_FN_HOST auto operator()(
                     const
-                    dev::DevOmp4& dev
+                    dev::DevOmp5& dev
                 ) const
             -> void
             {
@@ -112,7 +112,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuOmp4<TDim, TIdx>>(
+                                    acc::AccOmp5<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -133,7 +133,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 if(maxOmpThreadCount < blockThreadExtent.prod())
-                    std::cout << "Warning: TaskKernelCpuOmp4: maxOmpThreadCount smaller than blockThreadCount requested by caller:" <<
+                    std::cout << "Warning: TaskKernelOmp5: maxOmpThreadCount smaller than blockThreadCount requested by caller:" <<
                         maxOmpThreadCount << " < " << blockThreadExtent.prod() << std::endl;
 #endif
                 // make sure there is at least on team
@@ -170,7 +170,7 @@ namespace alpaka
                         // iterate over groups of teams to stay withing thread limit
                         for(TIdx t = 0u; t < gridBlockCount; t+=teamCount)
                         {
-                            acc::AccCpuOmp4<TDim, TIdx> acc(
+                            acc::AccOmp5<TDim, TIdx> acc(
                                 gridBlockExtent,
                                 blockThreadExtent,
                                 threadElemExtent,
@@ -253,16 +253,16 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 execution task accelerator type trait specialization.
+            //! The OpenMP 5.0 execution task accelerator type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct AccType<
-                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = acc::AccCpuOmp4<TDim, TIdx>;
+                using type = acc::AccOmp5<TDim, TIdx>;
             };
         }
     }
@@ -271,16 +271,16 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 execution task device type trait specialization.
+            //! The OpenMP 5.0 execution task device type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DevType<
-                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = dev::DevOmp4;
+                using type = dev::DevOmp5;
             };
         }
     }
@@ -289,14 +289,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 execution task dimension getter trait specialization.
+            //! The OpenMP 5.0 execution task dimension getter trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct DimType<
-                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
             };
@@ -307,16 +307,16 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 execution task platform type trait specialization.
+            //! The OpenMP 5.0 execution task platform type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct PltfType<
-                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
-                using type = pltf::PltfOmp4;
+                using type = pltf::PltfOmp5;
             };
         }
     }
@@ -325,14 +325,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 execution task idx type trait specialization.
+            //! The OpenMP 5.0 execution task idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx,
                 typename TKernelFnObj,
                 typename... TArgs>
             struct IdxType<
-                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...>>
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
             {
                 using type = TIdx;
             };
@@ -349,12 +349,12 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                queue::QueueOmp4Blocking,
-                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> >
+                queue::QueueOmp5Blocking,
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> >
             {
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueOmp4Blocking& queue,
-                    kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+                    queue::QueueOmp5Blocking& queue,
+                    kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {
                     std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
@@ -375,13 +375,13 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct Enqueue<
-                queue::QueueOmp4NonBlocking,
-                kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> >
+                queue::QueueOmp5NonBlocking,
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> >
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueOmp4NonBlocking& queue,
-                    kernel::TaskKernelCpuOmp4<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+                    queue::QueueOmp5NonBlocking& queue,
+                    kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
                 -> void
                 {
                     queue.m_spQueueImpl->m_workerThread.enqueueTask(

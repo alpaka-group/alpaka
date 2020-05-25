@@ -31,7 +31,7 @@
 // - GpuCudaRt
 // - CpuThreads
 // - CpuOmp2Blocks
-// - CpuOmp4
+// - Omp5
 // - CpuSerial
 //
 using Accelerator = CpuSerial;

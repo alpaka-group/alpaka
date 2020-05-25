@@ -9,10 +9,10 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
 #include <alpaka/elem/Traits.hpp>
@@ -36,13 +36,13 @@
 
 namespace alpaka
 {
-    namespace omp4
+    namespace omp5
     {
         namespace detail
         {
             //-----------------------------------------------------------------------------
             //! CUDA runtime API error checking with log and exception, ignoring specific error values
-            ALPAKA_FN_HOST inline auto omp4Check(
+            ALPAKA_FN_HOST inline auto omp5Check(
                 int const & error,
                 char const * desc,
                 char const * file,
@@ -65,8 +65,8 @@ namespace alpaka
 }
 
 //-----------------------------------------------------------------------------
-//! OMP4 runtime error checking with log and exception.
-#define ALPAKA_OMP4_CHECK(cmd)\
-    ::alpaka::omp4::detail::omp4Check(cmd, #cmd, __FILE__, __LINE__)
+//! OMP5 runtime error checking with log and exception.
+#define ALPAKA_OMP5_CHECK(cmd)\
+    ::alpaka::omp5::detail::omp5Check(cmd, #cmd, __FILE__, __LINE__)
 
 #endif
