@@ -113,18 +113,18 @@ namespace alpaka
                 };
 #endif
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
                 //#############################################################################
-                //! The default queue type trait specialization for the OMP4 device.
+                //! The default queue type trait specialization for the Omp5 device.
                 template<>
                 struct DefaultQueueType<
-                    alpaka::dev::DevOmp4>
+                    alpaka::dev::DevOmp5>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    using type = alpaka::queue::QueueOmp4Blocking;
+                    using type = alpaka::queue::QueueOmp5Blocking;
 #else
-                    using type = alpaka::queue::QueueOmp4Blocking;
+                    using type = alpaka::queue::QueueOmp5Blocking;
 #endif
                 };
 #endif
@@ -152,10 +152,10 @@ namespace alpaka
                     std::tuple<alpaka::dev::DevHipRt, alpaka::queue::QueueHipRtBlocking>,
                     std::tuple<alpaka::dev::DevHipRt, alpaka::queue::QueueHipRtNonBlocking>
 #endif
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
                     ,
-                    std::tuple<alpaka::dev::DevOmp4, alpaka::queue::QueueOmp4Blocking>,
-                    std::tuple<alpaka::dev::DevOmp4, alpaka::queue::QueueOmp4NonBlocking>
+                    std::tuple<alpaka::dev::DevOmp5, alpaka::queue::QueueOmp5Blocking>,
+                    std::tuple<alpaka::dev::DevOmp5, alpaka::queue::QueueOmp5NonBlocking>
 #endif
                 >;
         }

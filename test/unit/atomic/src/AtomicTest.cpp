@@ -973,12 +973,12 @@ struct TestAtomicOperations
     }
 };
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 template<typename B>
-struct not_omp4 : public std::integral_constant<
+struct not_omp5 : public std::integral_constant<
     bool,
     !bool(std::is_same<
-        alpaka::acc::AccCpuOmp4<
+        alpaka::acc::AccOmp5<
             alpaka::dim::DimInt<1u>,
             std::size_t>,
         B>::value
@@ -989,7 +989,7 @@ using TestAccs = alpaka::meta::Filter<
     alpaka::test::acc::EnabledAccs<
         alpaka::dim::DimInt<1u>,
         std::size_t>,
-    not_omp4
+    not_omp5
     >;
 #else
 using TestAccs =  alpaka::test::acc::EnabledAccs<

@@ -9,16 +9,16 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
 #include <alpaka/idx/Traits.hpp>
 
 #include <alpaka/vec/Vec.hpp>
-#include <alpaka/core/Omp4.hpp>
+#include <alpaka/core/Omp5.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
@@ -35,21 +35,21 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TIdx>
-            class IdxBtOmp4BuiltIn : public concepts::Implements<ConceptIdxBt, IdxBtOmp4BuiltIn<TDim, TIdx>>
+            class IdxBtOmp5BuiltIn : public concepts::Implements<ConceptIdxBt, IdxBtOmp5BuiltIn<TDim, TIdx>>
             {
             public:
                 //-----------------------------------------------------------------------------
-                IdxBtOmp4BuiltIn() = default;
+                IdxBtOmp5BuiltIn() = default;
                 //-----------------------------------------------------------------------------
-                IdxBtOmp4BuiltIn(IdxBtOmp4BuiltIn const &) = delete;
+                IdxBtOmp5BuiltIn(IdxBtOmp5BuiltIn const &) = delete;
                 //-----------------------------------------------------------------------------
-                IdxBtOmp4BuiltIn(IdxBtOmp4BuiltIn &&) = delete;
+                IdxBtOmp5BuiltIn(IdxBtOmp5BuiltIn &&) = delete;
                 //-----------------------------------------------------------------------------
-                auto operator=(IdxBtOmp4BuiltIn const & ) -> IdxBtOmp4BuiltIn & = delete;
+                auto operator=(IdxBtOmp5BuiltIn const & ) -> IdxBtOmp5BuiltIn & = delete;
                 //-----------------------------------------------------------------------------
-                auto operator=(IdxBtOmp4BuiltIn &&) -> IdxBtOmp4BuiltIn & = delete;
+                auto operator=(IdxBtOmp5BuiltIn &&) -> IdxBtOmp5BuiltIn & = delete;
                 //-----------------------------------------------------------------------------
-                /*virtual*/ ~IdxBtOmp4BuiltIn() = default;
+                /*virtual*/ ~IdxBtOmp5BuiltIn() = default;
             };
         }
     }
@@ -64,7 +64,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>>
+                idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -80,7 +80,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct GetIdx<
-                idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>,
+                idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>,
                 origin::Block,
                 unit::Threads>
             {
@@ -89,7 +89,7 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 static auto getIdx(
-                    idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx> const &,
+                    idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx> const &,
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
@@ -105,7 +105,7 @@ namespace alpaka
             template<
                 typename TIdx>
             struct GetIdx<
-                idx::bt::IdxBtOmp4BuiltIn<dim::DimInt<1u>, TIdx>,
+                idx::bt::IdxBtOmp5BuiltIn<dim::DimInt<1u>, TIdx>,
                 origin::Block,
                 unit::Threads>
             {
@@ -114,7 +114,7 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 static auto getIdx(
-                    idx::bt::IdxBtOmp4BuiltIn<dim::DimInt<1u>, TIdx> const & idx,
+                    idx::bt::IdxBtOmp5BuiltIn<dim::DimInt<1u>, TIdx> const & idx,
                     TWorkDiv const &)
                 -> vec::Vec<dim::DimInt<1u>, TIdx>
                 {
@@ -134,7 +134,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct IdxType<
-                idx::bt::IdxBtOmp4BuiltIn<TDim, TIdx>>
+                idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>>
             {
                 using type = TIdx;
             };

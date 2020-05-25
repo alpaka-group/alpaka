@@ -9,20 +9,20 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
-#include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/event/EventGenericThreads.hpp>
 
 namespace alpaka
 {
     namespace event
     {
-        using EventOmp4 = EventGenericThreads<dev::DevOmp4>;
+        using EventOmp5 = EventGenericThreads<dev::DevOmp5>;
     }
 }
 

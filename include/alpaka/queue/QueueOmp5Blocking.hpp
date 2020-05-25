@@ -9,20 +9,20 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
-#include <alpaka/dev/DevOmp4.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
 
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/core/Omp4.hpp>
+#include <alpaka/core/Omp5.hpp>
 #include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
 
 #include <stdexcept>
@@ -36,7 +36,7 @@ namespace alpaka
 {
     namespace queue
     {
-        using QueueOmp4Blocking = QueueGenericThreadsBlocking<dev::DevOmp4>;
+        using QueueOmp5Blocking = QueueGenericThreadsBlocking<dev::DevOmp5>;
     }
 }
 

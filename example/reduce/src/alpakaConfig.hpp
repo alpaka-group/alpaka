@@ -76,23 +76,29 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuOmp2Blocks<TArgs...>>
 };
 #endif
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
 //#############################################################################
-//! OpenMP 4 defines
+//! OpenMP 5 defines
 //!
-//! Defines Host, Device, etc. for the OpenMP 4 accelerator.
-struct CpuOmp4
+//! Defines Host, Device, etc. for the OpenMP 5 accelerator.
+struct Omp5
 {
     using Host = alpaka::acc::AccCpuSerial<Dim, Extent>;
-    using Acc = alpaka::acc::AccCpuOmp4<Dim, Extent>;
+    using Acc = alpaka::acc::AccOmp5<Dim, Extent>;
+    using DevHost = alpaka::dev::Dev<Host>;
+    using DevAcc = alpaka::dev::Dev<Acc>;
+    using PltfHost = alpaka::pltf::Pltf<DevHost>;
+    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using Stream = alpaka::queue::QueueCpuBlocking;
+    using Event = alpaka::event::Event<Stream>;
     using MaxBlockSize = alpaka::dim::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::acc::AccCpuOmp4<TArgs...>>
+struct GetIterator<T, TBuf, alpaka::acc::AccOmp5<TArgs...>>
 {
-    using Iterator = IteratorCpu<alpaka::acc::AccCpuOmp4<TArgs...>, T, TBuf>;
+    using Iterator = IteratorCpu<alpaka::acc::AccOmp5<TArgs...>, T, TBuf>;
 };
 #endif
 #endif

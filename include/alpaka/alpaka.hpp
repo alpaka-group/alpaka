@@ -24,7 +24,7 @@
 #include <alpaka/acc/AccCpuTbbBlocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
-#include <alpaka/acc/AccCpuOmp4.hpp>
+#include <alpaka/acc/AccOmp5.hpp>
 #include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/acc/AccGpuHipRt.hpp>
@@ -98,7 +98,7 @@
 // event
 #include <alpaka/event/EventUniformCudaHipRt.hpp>
 #include <alpaka/event/EventCpu.hpp>
-#include <alpaka/event/EventOmp4.hpp>
+#include <alpaka/event/EventOmp5.hpp>
 #include <alpaka/event/Traits.hpp>
 //-----------------------------------------------------------------------------
 // extent
@@ -123,7 +123,7 @@
 #include <alpaka/kernel/TaskKernelCpuTbbBlocks.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp2Threads.hpp>
-#include <alpaka/kernel/TaskKernelCpuOmp4.hpp>
+#include <alpaka/kernel/TaskKernelOmp5.hpp>
 #include <alpaka/kernel/TaskKernelGpuUniformCudaHipRt.hpp>
 #include <alpaka/kernel/Traits.hpp>
 //-----------------------------------------------------------------------------
@@ -138,7 +138,7 @@
 
 #include <alpaka/mem/buf/BufCpu.hpp>
 #include <alpaka/mem/buf/BufUniformCudaHipRt.hpp>
-#include <alpaka/mem/buf/BufOmp4.hpp>
+#include <alpaka/mem/buf/BufOmp5.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 
 #include <alpaka/mem/view/ViewCompileTimeArray.hpp>
@@ -172,7 +172,7 @@
 // platform
 #include <alpaka/pltf/PltfCpu.hpp>
 #include <alpaka/pltf/PltfUniformCudaHipRt.hpp>
-#include <alpaka/pltf/PltfOmp4.hpp>
+#include <alpaka/pltf/PltfOmp5.hpp>
 #include <alpaka/pltf/Traits.hpp>
 //-----------------------------------------------------------------------------
 // rand
@@ -187,7 +187,7 @@
 #include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
 #include <alpaka/queue/QueueCpuNonBlocking.hpp>
 #include <alpaka/queue/QueueCpuBlocking.hpp>
-#include <alpaka/queue/QueueOmp4Blocking.hpp>
+#include <alpaka/queue/QueueOmp5Blocking.hpp>
 #include <alpaka/queue/Traits.hpp>
 #include <alpaka/queue/Properties.hpp>
 //-----------------------------------------------------------------------------

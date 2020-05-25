@@ -149,7 +149,7 @@ auto main()
     // - AccCpuFibers
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccCpuOmp4
+    // - AccOmp5
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     // using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
@@ -169,7 +169,7 @@ auto main()
     // - AccCpuFibers
     // - AccCpuOmp2Threads
     // - AccCpuOmp2Blocks
-    // - AccCpuOmp4
+    // - AccOmp5
     // - AccCpuSerial
     using Host = alpaka::acc::AccCpuSerial<Dim, Idx>;
     // Defines the synchronization behavior of a queue

@@ -9,10 +9,10 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
 #if _OPENMP < 201307
-    #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
 #include <alpaka/block/shared/st/Traits.hpp>
@@ -31,24 +31,24 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The GPU CUDA block shared memory allocator.
-                class BlockSharedMemStOmp4 : public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStOmp4>
+                class BlockSharedMemStOmp5 : public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStOmp5>
                 {
                     mutable unsigned int m_allocdBytes = 0;
                     mutable char* m_mem;
 
                 public:
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemStOmp4(char* mem) : m_mem(mem) {}
+                    BlockSharedMemStOmp5(char* mem) : m_mem(mem) {}
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemStOmp4(BlockSharedMemStOmp4 const &) = delete;
+                    BlockSharedMemStOmp5(BlockSharedMemStOmp5 const &) = delete;
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemStOmp4(BlockSharedMemStOmp4 &&) = delete;
+                    BlockSharedMemStOmp5(BlockSharedMemStOmp5 &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(BlockSharedMemStOmp4 const &) -> BlockSharedMemStOmp4 & = delete;
+                    auto operator=(BlockSharedMemStOmp5 const &) -> BlockSharedMemStOmp5 & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(BlockSharedMemStOmp4 &&) -> BlockSharedMemStOmp4 & = delete;
+                    auto operator=(BlockSharedMemStOmp5 &&) -> BlockSharedMemStOmp5 & = delete;
                     //-----------------------------------------------------------------------------
-                    /*virtual*/ ~BlockSharedMemStOmp4() = default;
+                    /*virtual*/ ~BlockSharedMemStOmp5() = default;
 
                     template<class T>
                     T& alloc() const
@@ -74,11 +74,11 @@ namespace alpaka
                     struct AllocVar<
                         T,
                         TuniqueId,
-                        BlockSharedMemStOmp4>
+                        BlockSharedMemStOmp5>
                     {
                         //-----------------------------------------------------------------------------
                         static auto allocVar(
-                            block::shared::st::BlockSharedMemStOmp4 const &smem)
+                            block::shared::st::BlockSharedMemStOmp5 const &smem)
                         -> T &
                         {
                             return smem.alloc<T>();
@@ -87,11 +87,11 @@ namespace alpaka
                     //#############################################################################
                     template<>
                     struct FreeMem<
-                        BlockSharedMemStOmp4>
+                        BlockSharedMemStOmp5>
                     {
                         //-----------------------------------------------------------------------------
                         static auto freeMem(
-                            block::shared::st::BlockSharedMemStOmp4 const &)
+                            block::shared::st::BlockSharedMemStOmp5 const &)
                         -> void
                         {
                             // Nothing to do. CUDA block shared memory is automatically freed when all threads left the block.
