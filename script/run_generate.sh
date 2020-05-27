@@ -83,6 +83,7 @@ cd build/
     "$(env2cmake ALPAKA_ACC_GPU_CUDA_ENABLE)" "$(env2cmake ALPAKA_CUDA_VERSION)" "$(env2cmake ALPAKA_ACC_GPU_CUDA_ONLY_MODE)" "$(env2cmake ALPAKA_CUDA_ARCH)" "$(env2cmake ALPAKA_CUDA_COMPILER)" \
     "$(env2cmake ALPAKA_CUDA_FAST_MATH)" "$(env2cmake ALPAKA_CUDA_FTZ)" "$(env2cmake ALPAKA_CUDA_SHOW_REGISTER)" "$(env2cmake ALPAKA_CUDA_KEEP_FILES)" "$(env2cmake ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA)" "$(env2cmake ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION)" \
     "$(env2cmake ALPAKA_ACC_GPU_HIP_ENABLE)" "$(env2cmake ALPAKA_ACC_GPU_HIP_ONLY_MODE)" "$(env2cmake ALPAKA_HIP_PLATFORM)" \
+    "$(env2cmake ALPAKA_EMU_MEMCPY3D)" \
     "$(env2cmake ALPAKA_DEBUG)" "$(env2cmake ALPAKA_CI)" "$(env2cmake ALPAKA_CI_ANALYSIS)" "$(env2cmake ALPAKA_CXX_STANDARD)" \
     ".."
 
