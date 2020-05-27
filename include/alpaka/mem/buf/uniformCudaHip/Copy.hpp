@@ -1,4 +1,5 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner
+/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Erik Zenker, Matthias Werner,
+ *                Rene Widera
  *
  * This file is part of Alpaka.
  *
@@ -41,7 +42,8 @@
 
 #include <set>
 #include <tuple>
-
+#include <cstdint>
+#include <type_traits>
 
 namespace alpaka
 {
@@ -53,6 +55,140 @@ namespace alpaka
             {
                 namespace detail
                 {
+                    using vec3D = alpaka::vec::Vec<alpaka::dim::DimInt<3u>, size_t>;
+                    using vec2D = alpaka::vec::Vec<alpaka::dim::DimInt<2u>, size_t>;
+
+                    ///! copy 3D memory
+                    ///
+                    /// It is required to start  `height * depth` HIP/CUDA blocks.
+                    /// The kernel loops over the memory rows.
+                    template<typename T>
+                    __global__ void hipMemcpy3DEmulatedKernelD2D(
+                        char * dstPtr, vec2D const dstPitch,
+                        char const * srcPtr, vec2D const srcPitch, vec3D const extent
+                    )
+                    {
+                        constexpr size_t X = 2;
+                        constexpr size_t Y = 1;
+                        constexpr size_t Z = 0;
+
+                        // blockDim.[y,z] is always 1 and is not needed for index calculations
+                        // gridDim and blockIdx is already in alpaka index order [z,y,x]
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                        alpaka::vec::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
+                            blockIdx.x,
+                            blockIdx.y,
+                            blockIdx.z * blockDim.x + threadIdx.x);
+
+                        size_t const bytePerBlock = sizeof(T) * blockDim.x;
+                        size_t const bytePerRow = gridDim.z * bytePerBlock;
+#else
+                        alpaka::vec::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
+                            hipBlockIdx_x,
+                            hipBlockIdx_y,
+                            hipBlockIdx_z * hipBlockDim_x + hipThreadIdx_x);
+
+                        size_t const bytePerBlock = sizeof(T) * hipBlockDim_x;
+                        size_t const bytePerRow = hipGridDim_z * bytePerBlock;
+#endif
+
+                        size_t const peelLoopSteps = extent[X] / bytePerRow;
+                        bool const needRemainder = (extent[X] % bytePerRow) != 0;
+
+                        dstPtr += tid[Z] * dstPitch[Z] + tid[Y] * dstPitch[Y];
+                        srcPtr += tid[Z] * srcPitch[Z] + tid[Y] * srcPitch[Y];
+
+                        for(size_t idx = 0; idx < peelLoopSteps; ++idx)
+                        {
+                            size_t const byteOffsetX = idx * bytePerRow + tid[X] * sizeof(T);
+                            auto dst = reinterpret_cast<T *>(dstPtr + byteOffsetX);
+                            auto src = reinterpret_cast<T const *>(srcPtr + byteOffsetX);
+                                *dst = *src;
+                        }
+                        if(needRemainder)
+                        {
+                            size_t const byteOffsetX = peelLoopSteps * bytePerRow + tid[X] * sizeof(T);
+                            if(byteOffsetX < extent[X])
+                            {
+                                auto dst = reinterpret_cast<T *>(dstPtr + byteOffsetX);
+                                auto src = reinterpret_cast<T const *>(srcPtr + byteOffsetX);
+                                *dst = *src;
+                            }
+                        }
+                    }
+
+                    inline size_t divUp(size_t const & x, size_t const & y)
+                    {
+                        return (x + y - 1u) / y;
+                    }
+
+                    inline auto memcpy3DEmulatedD2DAsync(ALPAKA_API_PREFIX(Memcpy3DParms) const * const p, ALPAKA_API_PREFIX(Stream_t) stream)
+                    {
+                        using dim3Value_t = std::remove_reference_t<decltype(std::declval<dim3>().x)>;
+                        // extent[2] is in byte
+                        vec3D const extent(p->extent.depth, p->extent.height, p->extent.width);
+                        // pitch in bytes
+                        vec2D const dstPitch(p->dstPtr.pitch * p->dstPtr.ysize,p->dstPtr.pitch);
+                        vec2D const srcPitch(p->srcPtr.pitch * p->srcPtr.ysize,p->srcPtr.pitch);
+                        // offset[2] is in byte
+                        vec3D const dstOffset(p->dstPos.z,p->dstPos.y,p->dstPos.x);
+                        vec3D const srcOffset(p->srcPos.z,p->srcPos.y,p->srcPos.x);
+
+                        char const * srcPtr =
+                             reinterpret_cast<char const *>(p->srcPtr.ptr) + srcOffset[0] * srcPitch[0] + srcOffset[1] * srcPitch[1] + srcOffset[2];
+                        char * dstPtr =
+                             reinterpret_cast<char *>(p->dstPtr.ptr) + dstOffset[0] * dstPitch[0] + dstOffset[1] * dstPitch[1] + dstOffset[2];
+
+                        bool const use4Byte = (reinterpret_cast<uintptr_t>(srcPtr) % 4u) == 0u && (reinterpret_cast<uintptr_t>(dstPtr) % 4u) == 0u && (extent[2] % 4u) == 0u;
+
+                        if(use4Byte)
+                        {
+                            dim3 block(static_cast<dim3Value_t>(std::min(divUp(extent[2], 4u), size_t(256u))));
+                            // use alpaka index order [z,y,x] because x is by default 1
+                            dim3 grid(static_cast<dim3Value_t>(extent[0]),  static_cast<dim3Value_t>(extent[1]), 1u);
+                            // for less than 100 blocks increase the number of blocks used to copy a row to
+                            // increase the utilization of the device
+                            if(grid.x * grid.y < 100)
+                            {
+                                grid.z = static_cast<dim3Value_t>(divUp(divUp(extent[2], 4u), block.x));
+                            }
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                            hipMemcpy3DEmulatedKernelD2D<int><<<
+                                grid, block, 0, stream>>>(
+                                    dstPtr, dstPitch, srcPtr, srcPitch, extent);
+#else
+                            hipLaunchKernelGGL(
+                                HIP_KERNEL_NAME(hipMemcpy3DEmulatedKernelD2D<int>),
+                                grid, block, 0, stream,
+                                dstPtr, dstPitch, srcPtr, srcPitch, extent);
+#endif
+                        }
+                        else
+                        {
+                            dim3 block(static_cast<dim3Value_t>(std::min(extent[2], size_t(256u))));
+                            // use alpaka index order [z,y,x] because x is by default 1
+                            dim3 grid(static_cast<dim3Value_t>(extent[0]), static_cast<dim3Value_t>(extent[1]), 1u);
+                            // for less than 100 blocks increase the number of blocks used to copy a row to
+                            // increase the utilization of the device
+                            if(grid.x * grid.y < 100)
+                            {
+                                grid.z = static_cast<dim3Value_t>(divUp(extent[2], block.x));
+                            }
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                            hipMemcpy3DEmulatedKernelD2D<char><<<
+                                grid, block, 0, stream>>>(
+                                    dstPtr, dstPitch, srcPtr, srcPitch, extent);
+#else
+                            hipLaunchKernelGGL(
+                                HIP_KERNEL_NAME(hipMemcpy3DEmulatedKernelD2D<char>),
+                                grid, block, 0, stream,
+                                dstPtr, dstPitch, srcPtr, srcPitch, extent);
+#endif
+                        }
+                        return ALPAKA_API_PREFIX(GetLastError)();
+                    };
+
                     //-----------------------------------------------------------------------------
                     //! Not being able to enable peer access does not prevent such device to device memory copies.
                     //! However, those copies may be slower because the memory is copied via the CPU.
@@ -553,11 +689,26 @@ namespace alpaka
                                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                                     ALPAKA_API_PREFIX(SetDevice)(
                                         m_iDstDevice));
-                                // Initiate the memory copy.
-                                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                    ALPAKA_API_PREFIX(Memcpy3DAsync)(
-                                        &uniformCudaHipMemCpy3DParms,
-                                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
+#if defined(ALPAKA_EMU_MEMCPY3D_ENABLED)
+                                auto isDevice2DeviceCopy = m_uniformMemCpyKind == ALPAKA_API_PREFIX(MemcpyDeviceToDevice);
+                                // contiguous memory can be copied by a single 1D memory copy
+                                auto isContiguousMemory = uniformCudaHipMemCpy3DParms.extent.width == uniformCudaHipMemCpy3DParms.dstPtr.pitch &&
+                                        uniformCudaHipMemCpy3DParms.extent.width == uniformCudaHipMemCpy3DParms.srcPtr.pitch;
+                                if(isDevice2DeviceCopy && !isContiguousMemory)
+                                {
+                                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                        uniform_cuda_hip::detail::memcpy3DEmulatedD2DAsync(
+                                            &uniformCudaHipMemCpy3DParms,
+                                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                                }
+                                else
+#endif
+                                {
+                                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                                        ALPAKA_API_PREFIX(Memcpy3DAsync)(
+                                            &uniformCudaHipMemCpy3DParms,
+                                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                                }
                             }
                             else
                             {
