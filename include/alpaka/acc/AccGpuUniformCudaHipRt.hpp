@@ -31,6 +31,7 @@
 #include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
 #include <alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp>
+#include <alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp>
 #include <alpaka/rand/RandUniformCudaHipRand.hpp>
 #include <alpaka/time/TimeUniformCudaHipBuiltIn.hpp>
 
@@ -82,6 +83,7 @@ namespace alpaka
             public block::shared::dyn::BlockSharedMemDynUniformCudaHipBuiltIn,
             public block::shared::st::BlockSharedMemStUniformCudaHipBuiltIn,
             public block::sync::BlockSyncUniformCudaHipBuiltIn,
+            public intrinsic::IntrinsicUniformCudaHipBuiltIn,
             public rand::RandUniformCudaHipRand,
             public time::TimeUniformCudaHipBuiltIn
         {
