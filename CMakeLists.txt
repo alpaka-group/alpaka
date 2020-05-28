@@ -39,10 +39,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Options and Variants
 
-option(alpaka_BUILD_EXAMPLES "Build the examples" ON)
+option(alpaka_BUILD_EXAMPLES "Build the examples" OFF)
 
+option(BUILD_TESTING "Build the testing tree." OFF)
 include(CTest)
-# automatically defines: BUILD_TESTING, default is ON
 
 ################################################################################
 # Internal variables.
