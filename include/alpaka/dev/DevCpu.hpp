@@ -126,7 +126,9 @@ namespace alpaka
 
         //#############################################################################
         //! The CPU device handle.
-        class DevCpu : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevCpu>
+        class DevCpu :
+            public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevCpu>,
+            public concepts::Implements<ConceptDev, DevCpu>
         {
             friend struct pltf::traits::GetDevByIdx<pltf::PltfCpu>;
         protected:

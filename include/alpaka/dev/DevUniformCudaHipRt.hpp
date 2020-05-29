@@ -59,7 +59,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The CUDA/HIP RT device handle.
-        class DevUniformCudaHipRt : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevUniformCudaHipRt>
+        class DevUniformCudaHipRt :
+            public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevUniformCudaHipRt>,
+            public concepts::Implements<ConceptDev, DevUniformCudaHipRt>
         {
             friend struct pltf::traits::GetDevByIdx<pltf::PltfUniformCudaHipRt>;
 

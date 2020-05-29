@@ -73,6 +73,9 @@ namespace alpaka
         using Dev = typename traits::DevType<T>::type;
 
         struct ConceptGetDev;
+
+        struct ConceptDev;
+
         //-----------------------------------------------------------------------------
         //! \return The device this object is bound to.
         template<
@@ -146,6 +149,22 @@ namespace alpaka
                 TDev>
             ::reset(
                 dev);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! Get device type
+            template<typename TDev>
+            struct DevType<
+                TDev,
+                typename std::enable_if<
+                    concepts::ImplementsConcept<dev::ConceptDev, TDev>::value
+                >::type>
+            {
+                using ImplementationBase = typename concepts::ImplementationBase<dev::ConceptDev, TDev>;
+                using type = ImplementationBase;
+            };
         }
     }
 }

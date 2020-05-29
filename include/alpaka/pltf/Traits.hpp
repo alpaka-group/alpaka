@@ -51,6 +51,50 @@ namespace alpaka
                 typename T,
                 typename TSfinae = void>
             struct GetDevByIdx;
+
+            //#############################################################################
+            //! Get the device associated with an index
+            //
+            // Call is redirected to the corresponding platform of the device.
+            template<typename TDev>
+            struct GetDevByIdx<
+                TDev,
+                typename std::enable_if<
+                    concepts::ImplementsConcept<alpaka::dev::ConceptDev, TDev>::value
+                >::type>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getDevByIdx(
+                    std::size_t const & devIdx)
+                {
+                    return traits::GetDevByIdx<
+                        typename pltf::traits::PltfType<TDev>::type>
+                            ::getDevByIdx(devIdx);
+                }
+            };
+
+            //#############################################################################
+            //! Get number of devices
+            //
+            // Call is redirected to the corresponding platform of the device.
+            template<typename TDev>
+            struct GetDevCount<
+                TDev,
+                typename std::enable_if<
+                    concepts::ImplementsConcept<alpaka::dev::ConceptDev, TDev>::value
+                >::type>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getDevCount()
+                -> std::size_t
+                {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                    return traits::GetDevCount<
+                        typename pltf::traits::PltfType<TDev>::type>
+                            ::getDevCount();
+                }
+            };
         }
 
         //#############################################################################

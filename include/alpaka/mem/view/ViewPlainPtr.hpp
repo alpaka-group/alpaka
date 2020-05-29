@@ -35,13 +35,15 @@ namespace alpaka
                 static_assert(
                     !std::is_const<TIdx>::value,
                     "The idx type of the view can not be const!");
+
+                using Dev = alpaka::dev::Dev<TDev>;
             public:
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtent>
                 ALPAKA_FN_HOST ViewPlainPtr(
                     TElem * pMem,
-                    TDev const & dev,
+                    Dev const & dev,
                     TExtent const & extent = TExtent()) :
                         m_pMem(pMem),
                         m_dev(dev),
@@ -55,7 +57,7 @@ namespace alpaka
                     typename TPitch>
                 ALPAKA_FN_HOST ViewPlainPtr(
                     TElem * pMem,
-                    TDev const dev,
+                    Dev const dev,
                     TExtent const & extent,
                     TPitch const & pitchBytes) :
                         m_pMem(pMem),
@@ -110,7 +112,7 @@ namespace alpaka
 
             public:
                 TElem * const m_pMem;
-                TDev const m_dev;
+                Dev const m_dev;
                 vec::Vec<TDim, TIdx> const m_extentElements;
                 vec::Vec<TDim, TIdx> const m_pitchBytes;
             };
@@ -133,7 +135,7 @@ namespace alpaka
             struct DevType<
                 mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
             {
-                using type = TDev;
+                using type = alpaka::dev::Dev<TDev>;
             };
 
             //#############################################################################
@@ -148,7 +150,7 @@ namespace alpaka
             {
                 static auto getDev(
                     mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & view)
-                    -> TDev
+                    -> alpaka::dev::Dev<TDev>
                 {
                     return view.m_dev;
                 }
