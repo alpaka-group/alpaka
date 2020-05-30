@@ -18,7 +18,6 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
-#include <alpaka/mem/buf/Traits.hpp>
 
 #include <string>
 #include <typeinfo>
@@ -189,50 +188,6 @@ namespace alpaka
                     using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
                     using type = typename PltfType<ImplementationBase>::type;
                 };
-
-            //#############################################################################
-            //! Get the device associated with an index
-            //
-            // Call is redirected to the corresponding platform of an accelerator.
-            template<typename TAcc>
-            struct GetDevByIdx<
-                TAcc,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<acc::ConceptAcc, TAcc>::value
-                >::type>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDevByIdx(
-                    std::size_t const & devIdx)
-                {
-                    return traits::GetDevByIdx<
-                        typename pltf::traits::PltfType<TAcc>::type>
-                            ::getDevByIdx(devIdx);
-                }
-            };
-
-            //#############################################################################
-            //! Get number of devices
-            //
-            // Call is redirected to the corresponding platform of an accelerator.
-            template<typename TAcc>
-            struct GetDevCount<
-                TAcc,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<acc::ConceptAcc, TAcc>::value
-                >::type>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDevCount()
-                -> std::size_t
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    return traits::GetDevCount<
-                        typename pltf::traits::PltfType<TAcc>::type>
-                            ::getDevCount();
-                }
-            };
         }
 
     }
@@ -293,34 +248,6 @@ namespace alpaka
                     TProperty
                 >::type;
             };
-        }
-    }
-
-    namespace mem
-    {
-        namespace buf
-        {
-            namespace traits
-            {
-                //#############################################################################
-                //! The CPU device memory buffer type trait specialization.
-                template<
-                    typename TAcc,
-                    typename TElem,
-                    typename TDim,
-                    typename TIdx
-                    >
-                struct BufType<
-                    TAcc,
-                    TElem,
-                    TDim,
-                    TIdx,
-                    std::enable_if_t<
-                        concepts::ImplementsConcept<acc::ConceptAcc, TAcc>::value>>
-                {
-                    using type = alpaka::mem::buf::Buf<alpaka::dev::Dev<TAcc>, TElem, TDim, TIdx>;
-                };
-            }
         }
     }
 }

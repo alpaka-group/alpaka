@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-#include <alpaka/dev/Traits.hpp>
 
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/queue/Traits.hpp>
@@ -38,6 +37,16 @@ namespace alpaka
                 typename TSfinae = void>
             struct PltfType;
 
+            template<
+                typename TPltf>
+            struct PltfType<
+                TPltf,
+                typename std::enable_if<concepts::ImplementsConcept<pltf::ConceptPltf, TPltf>::value>::type
+            >
+            {
+                using type = typename concepts::ImplementationBase<dev::ConceptDev, TPltf>;
+            };
+
             //#############################################################################
             //! The device count get trait.
             template<
@@ -51,50 +60,6 @@ namespace alpaka
                 typename T,
                 typename TSfinae = void>
             struct GetDevByIdx;
-
-            //#############################################################################
-            //! Get the device associated with an index
-            //
-            // Call is redirected to the corresponding platform of the device.
-            template<typename TDev>
-            struct GetDevByIdx<
-                TDev,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<alpaka::dev::ConceptDev, TDev>::value
-                >::type>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDevByIdx(
-                    std::size_t const & devIdx)
-                {
-                    return traits::GetDevByIdx<
-                        typename pltf::traits::PltfType<TDev>::type>
-                            ::getDevByIdx(devIdx);
-                }
-            };
-
-            //#############################################################################
-            //! Get number of devices
-            //
-            // Call is redirected to the corresponding platform of the device.
-            template<typename TDev>
-            struct GetDevCount<
-                TDev,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<alpaka::dev::ConceptDev, TDev>::value
-                >::type>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDevCount()
-                -> std::size_t
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    return traits::GetDevCount<
-                        typename pltf::traits::PltfType<TDev>::type>
-                            ::getDevCount();
-                }
-            };
         }
 
         //#############################################################################
@@ -111,7 +76,7 @@ namespace alpaka
         {
             return
                 traits::GetDevCount<
-                    TPltf>
+                    Pltf<TPltf>>
                 ::getDevCount();
         }
 
@@ -124,7 +89,7 @@ namespace alpaka
         {
             return
                 traits::GetDevByIdx<
-                    TPltf>
+                    Pltf<TPltf>>
                 ::getDevByIdx(
                     devIdx);
         }
@@ -134,19 +99,20 @@ namespace alpaka
         template<
             typename TPltf>
         ALPAKA_FN_HOST auto getDevs()
-        -> std::vector<dev::Dev<TPltf>>
+        -> std::vector<dev::Dev<Pltf<TPltf>>>
         {
-            std::vector<dev::Dev<TPltf>> devs;
+            std::vector<dev::Dev<Pltf<TPltf>>> devs;
 
-            std::size_t const devCount(getDevCount<TPltf>());
+            std::size_t const devCount(getDevCount<Pltf<TPltf>>());
             for(std::size_t devIdx(0); devIdx < devCount; ++devIdx)
             {
-                devs.push_back(getDevByIdx<TPltf>(devIdx));
+                devs.push_back(getDevByIdx<Pltf<TPltf>>(devIdx));
             }
 
             return devs;
         }
     }
+
     namespace queue
     {
         namespace traits
