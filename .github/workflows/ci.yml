@@ -16,7 +16,7 @@ on: [push, pull_request]
 # NOTE: Testing the full matrix is not practical.
 # Therefore we aim to have each value been set in at lest one job.
 # CXX                                           : {g++, clang++}
-#   [g++] ALPAKA_CI_GCC_VER                     : {5, 6, 7, 8, 9}
+#   [g++] ALPAKA_CI_GCC_VER                     : {5, 6, 7, 8, 9, 10}
 #   [clang++] ALPAKA_CI_CLANG_VER               : {4.0.0, 5.0.2, 6.0.1, 7.0.1, 8.0.0, 9.0.0, 10.0.0}
 #   [cl.exe] ALPAKA_CI_CL_VER                   : {2017, 2019}
 #   ALPAKA_CI_STDLIB                            : {libstdc++, [CXX==clang++]:libc++}
@@ -110,6 +110,7 @@ jobs:
           linux_gcc-7_release,
           linux_gcc-8_debug,
           linux_gcc-9_debug_c++17,
+          linux_gcc-10_release,
 
           linux_clang-4_debug_ubsan,
           linux_clang-5_debug_c++17,
@@ -289,6 +290,10 @@ jobs:
         - name: linux_gcc-9_debug_c++17
           os: ubuntu-latest
           env: {TRAVIS_OS_NAME: linux,   CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 9,        CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.68.0, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 3, ALPAKA_CI_STDLIB: libstdc++, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CXX_STANDARD: 17, ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF}
+        - name: linux_gcc-10_release
+          os: ubuntu-latest
+          env: {TRAVIS_OS_NAME: linux,   CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,       CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.66.0, ALPAKA_CI_CMAKE_VER: 3.17.1, OMP_NUM_THREADS: 2, ALPAKA_CI_STDLIB: libstdc++, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF}
+
 
         # clang++
         - name: linux_clang-4_debug_ubsan
