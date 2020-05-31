@@ -15,7 +15,31 @@
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
+
 #include <catch2/catch.hpp>
+
+using TestAccs = alpaka::test::acc::EnabledAccs<
+    alpaka::dim::DimInt< 1u >,
+    std::size_t
+>;
+
+using Functors =
+    alpaka::meta::Concatenate<
+        alpaka::test::unit::math::UnaryFunctors,
+        alpaka::test::unit::math::BinaryFunctors
+    >;
+
+using TestAccFunctorTuples =
+    alpaka::meta::CartesianProduct<
+        std::tuple,
+        TestAccs,
+        Functors
+    >;
+
+using DataTypes = std::tuple<
+    float,
+    double
+>;
 
 struct TestKernel
 {
@@ -42,19 +66,24 @@ struct TestKernel
     }
 };
 
-
 //#############################################################################
-// The TestTemplate runs the main code and the tests (Buffer,Functor,...).
-//! @tparam TAcc One of the possible accelerator types, that need to be tested.
-//! @tparam TData By now either double or float.
-template <
+template<
     typename TAcc,
-    typename TData>
+    typename TFunctor>
 struct TestTemplate
 {
-    template < typename TFunctor >
-    auto operator() ( unsigned long seed ) -> void
+    template<
+        typename TData>
+    auto operator()() -> void
     {
+        const unsigned long seed = 1337;
+        std::cout << "testing"
+            << " acc:" << typeid(TAcc).name()
+            << " data type:" << typeid(TData).name()
+            << " functor:" << typeid(TFunctor).name()
+            << " seed:" << seed
+            << std::endl;
+
         // SETUP (defines and initialising)
         // DevAcc and DevHost are defined in Buffer.hpp too.
         using DevAcc = alpaka::dev::Dev< TAcc >;
@@ -146,31 +175,7 @@ struct TestTemplate
     }
 };
 
-template< typename TData >
-struct ForEachFunctor
-{
-    template< typename TAcc >
-    auto operator()( unsigned long seed ) -> void
-    {
-        alpaka::meta::forEachType < alpaka::test::unit::math::UnaryFunctors >(
-            TestTemplate<
-                TAcc,
-                TData
-            >( ),
-            seed
-        );
-
-        alpaka::meta::forEachType< alpaka::test::unit::math::BinaryFunctors >(
-            TestTemplate<
-                TAcc,
-                TData
-            >( ),
-            seed
-        );
-    }
-};
-
-TEST_CASE("mathOps", "[math] [operator]")
+TEMPLATE_LIST_TEST_CASE("mathOps", "[math] [operator]", TestAccFunctorTuples)
 {
     /*
      * All alpaka::math:: functions are tested here except sincos.
@@ -198,11 +203,6 @@ TEST_CASE("mathOps", "[math] [operator]")
      * The arguments are generated in DataGen.hpp and can easily be modified.
      * The arguments depend on the Range:: enum-type specified for each functor.
      * ----------------------------------------------------------------------
-     * TEST_CASE        | sets seed          | specifies datatype & acc-list
-     * ForEachFunctor   |       -            | specifies functor
-     *                                         (from Functor.hpp)
-     * TestTemplate     | functor, device, host, queue, kernel, usw.
-     * - main execution:
      * - each functor has an arity and a array of ranges
      *     - there is one args Buffer and one results Buffer
      *         - each buffer encapsulated the host/device communication
@@ -224,30 +224,9 @@ TEST_CASE("mathOps", "[math] [operator]")
      *     - call alpaka::meta::forEachType with the tuple in ForEachFunctor
      */
 
-    using TestAccs = alpaka::test::acc::EnabledAccs<
-        alpaka::dim::DimInt< 1u >,
-        std::size_t
-    >;
-    const unsigned long seed = 1337;
-    std::cout << "using seed: " << seed << "\n\n";
-    std::cout << "testing:\n "
-        << std::tuple_size<TestAccs>::value
-        << " - accelerators !\n"
-        << std::tuple_size<alpaka::test::unit::math::UnaryFunctors>::value
-        << " - unary math operators\n"
-        << std::tuple_size<alpaka::test::unit::math::BinaryFunctors>::value
-        << " - binary math operators\n"
-        << "testing with two data types\n"
-        << "total 2 * accelerators * (unary + binary) * capacity\n\n";
+    using Acc = std::tuple_element_t<0u, TestType>;
+    using Functor = std::tuple_element_t<1u, TestType>;
 
-
-    alpaka::meta::forEachType< TestAccs >(
-        ForEachFunctor< double >( ),
-        seed
-    );
-
-    alpaka::meta::forEachType< TestAccs >(
-        ForEachFunctor< float >( ),
-        seed
-    );
+    alpaka::meta::forEachType< DataTypes >(
+        TestTemplate< Acc, Functor >());
 }

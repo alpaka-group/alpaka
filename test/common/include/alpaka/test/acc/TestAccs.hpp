@@ -244,24 +244,9 @@ namespace alpaka
                         idx::TestIdxs
                     >;
 
-                //#############################################################################
-                //! Transforms a std::tuple holding a dimension and a idx type to a fully instantiated accelerator.
-                //!
-                //! EnabledAccs<Dim,Idx> = tuple<Acc1<Dim,Idx>, ..., AccN<Dim,Idx>>
                 template<
-                    typename TTestAccParamSet>
-                struct InstantiateEnabledAccsWithTestParamSetImpl
-                {
-                    using type =
-                        EnabledAccs<
-                            std::tuple_element_t<0, TTestAccParamSet>,
-                            std::tuple_element_t<1, TTestAccParamSet>
-                        >;
-                };
-
-                template<
-                    typename TTestAccParamSet>
-                using InstantiateEnabledAccsWithTestParamSet = typename InstantiateEnabledAccsWithTestParamSetImpl<TTestAccParamSet>::type;
+                    typename TList>
+                using ApplyEnabledAccs = alpaka::meta::Apply<TList, EnabledAccs>;
 
                 //#############################################################################
                 //! A std::tuple containing std::tuple with fully instantiated accelerators.
@@ -275,7 +260,7 @@ namespace alpaka
                 using InstantiatedEnabledAccs =
                     alpaka::meta::Transform<
                         TestDimIdxTuples,
-                        InstantiateEnabledAccsWithTestParamSet
+                        ApplyEnabledAccs
                     >;
             }
 
