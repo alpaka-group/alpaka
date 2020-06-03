@@ -10,17 +10,14 @@ alpaka Installation
   git clone https://github.com/alpaka-group/alpaka
   cd alpaka
 
-* Install alpaka without tests and examples
+* Install alpaka
 
 .. code-block::
 
   # git clone https://github.com/alpaka-group/alpaka
   # cd alpaka
   mkdir build && cd build
-  cmake -DCMAKE_INSTALL_PREFIX=/install/ \
-        -Dalpaka_BUILD_EXAMPLES=OFF      \
-        -DBUILD_TESTING=OFF              \
-        ..
+  cmake -DCMAKE_INSTALL_PREFIX=/install/ ..
   make install
 
 * Configure Accelerators
@@ -30,7 +27,7 @@ alpaka Installation
   # ..
   cmake -DALPAKA_ACC_GPU_CUDA_ENABLE=ON ..
 
-* Just build an example
+* Build an example
 
 .. code-block::
 
@@ -38,3 +35,12 @@ alpaka Installation
   cmake -Dalpaka_BUILD_EXAMPLES=ON ..
   make vectorAdd
   ./example/vectorAdd/vectorAdd # execution
+
+* Build and run tests
+
+.. code-block::
+
+  # ..
+  cmake -DBUILD_TESTING=ON ..
+  make
+  ctest
