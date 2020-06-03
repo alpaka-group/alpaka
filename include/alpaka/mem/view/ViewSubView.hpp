@@ -43,6 +43,9 @@ namespace alpaka
                 static_assert(
                     !std::is_const<TIdx>::value,
                     "The idx type of the view can not be const!");
+
+                using Dev = alpaka::dev::Dev<TDev>;
+
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -68,8 +71,8 @@ namespace alpaka
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The dev type of TView and the TDev template parameter have to be identical!");
+                        std::is_same<Dev, dev::Dev<TView>>::value,
+                        "The dev type of TView and the Dev template parameter have to be identical!");
 
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TView>>::value,
@@ -117,8 +120,8 @@ namespace alpaka
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<TDev, dev::Dev<TView>>::value,
-                        "The dev type of TView and the TDev template parameter have to be identical!");
+                        std::is_same<Dev, dev::Dev<TView>>::value,
+                        "The dev type of TView and the Dev template parameter have to be identical!");
 
                     static_assert(
                         std::is_same<TIdx, idx::Idx<TView>>::value,
@@ -172,7 +175,7 @@ namespace alpaka
                 }
 
             public:
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> m_viewParentView; // This wraps the parent view.
+                mem::view::ViewPlainPtr<Dev, TElem, TDim, TIdx> m_viewParentView; // This wraps the parent view.
                 vec::Vec<TDim, TIdx> m_extentElements;     // The extent of this view.
                 vec::Vec<TDim, TIdx> m_offsetsElements;    // The offset relative to the parent view.
             };
@@ -195,7 +198,7 @@ namespace alpaka
             struct DevType<
                 mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
             {
-                using type = TDev;
+                using type = alpaka::dev::Dev<TDev>;
             };
 
             //#############################################################################
@@ -211,7 +214,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & view)
-                -> TDev
+                -> alpaka::dev::Dev<TDev>
                 {
                     return
                         dev::getDev(

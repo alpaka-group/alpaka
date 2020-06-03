@@ -96,8 +96,6 @@ auto main()
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
-    using DevAcc = alpaka::dev::Dev<Acc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
 
     // Defines the synchronization behavior of a queue
     //
@@ -106,7 +104,7 @@ auto main()
     using QueueAcc = alpaka::queue::Queue<Acc, QueueProperty>;
 
     // Select a device
-    DevAcc const devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    auto const devAcc = alpaka::pltf::getDevByIdx<Acc>(0u);
 
     // Create a queue on the device
     QueueAcc queue(devAcc);
@@ -130,8 +128,7 @@ auto main()
 
     // Get the host device for allocating memory on the host.
     using DevHost = alpaka::dev::DevCpu;
-    using PltfHost = alpaka::pltf::Pltf<DevHost>;
-    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+    auto const devHost = alpaka::pltf::getDevByIdx<DevHost>(0u);
 
     // Allocate 3 host memory buffers
     using BufHost = alpaka::mem::buf::Buf<DevHost, Data, Dim, Idx>;
@@ -157,7 +154,7 @@ auto main()
     }
 
     // Allocate 3 buffers on the accelerator
-    using BufAcc = alpaka::mem::buf::Buf<DevAcc, Data, Dim, Idx>;
+    using BufAcc = alpaka::mem::buf::Buf<Acc, Data, Dim, Idx>;
     BufAcc bufAccA(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extent));
     BufAcc bufAccB(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extent));
     BufAcc bufAccC(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extent));

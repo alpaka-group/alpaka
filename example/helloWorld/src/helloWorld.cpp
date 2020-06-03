@@ -109,9 +109,6 @@ auto main()
     // choose between Blocking and NonBlocking
     using QueueProperty = alpaka::queue::Blocking;
     using Queue = alpaka::queue::Queue<Acc, QueueProperty>;
-    using Dev = alpaka::dev::Dev<Acc>;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
-
 
     // Select a device
     //
@@ -121,7 +118,7 @@ auto main()
     // by id (0 to the number of devices minus 1) or you
     // can also retrieve all devices in a vector (getDevs()).
     // In this example the first devices is choosen.
-    Dev const devAcc(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    auto const devAcc = alpaka::pltf::getDevByIdx<Acc>(0u);
 
     // Create a queue on the device
     //

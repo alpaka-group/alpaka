@@ -125,15 +125,11 @@ auto main( ) -> int
         Idx
     >;
 
-    using DevAcc = alpaka::dev::Dev< Acc >;
-    using PltfAcc = alpaka::pltf::Pltf< DevAcc >;
-
     using DevHost = alpaka::dev::DevCpu;
-    using PltfHost = alpaka::pltf::Pltf< DevHost >;
 
     // Select specific devices
-    DevAcc const devAcc { alpaka::pltf::getDevByIdx< PltfAcc >( 0u ) };
-    DevHost const devHost { alpaka::pltf::getDevByIdx< PltfHost >( 0u ) };
+    auto const devAcc = alpaka::pltf::getDevByIdx< Acc >( 0u );
+    auto const devHost = alpaka::pltf::getDevByIdx< DevHost >( 0u );
 
     // Get valid workdiv for the given problem
     uint32_t elemPerThread = 1;
@@ -200,7 +196,7 @@ auto main( ) -> int
 
     // Accelerator buffer
     using BufAcc = alpaka::mem::buf::Buf<
-        DevAcc,
+        Acc,
         double,
         Dim,
         Idx
