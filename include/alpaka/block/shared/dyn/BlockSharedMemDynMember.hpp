@@ -44,7 +44,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     BlockSharedMemDynMember(unsigned int sizeBytes) : m_dynSize(sizeBytes)
                     {
+#if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
                         ALPAKA_ASSERT(sizeBytes <= staticAllocBytes);
+#endif
                     }
                     //-----------------------------------------------------------------------------
                     BlockSharedMemDynMember(BlockSharedMemDynMember const &) = delete;
