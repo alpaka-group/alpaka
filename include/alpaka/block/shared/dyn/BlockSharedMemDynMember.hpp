@@ -15,6 +15,10 @@
 #include <type_traits>
 #include <array>
 
+#ifndef ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB
+#define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB 30
+#endif
+
 namespace alpaka
 {
     namespace block
@@ -27,7 +31,7 @@ namespace alpaka
                 //! Dynamic block shared memory provider using fixed-size
                 //! member array to allocate memory on the stack or in shared
                 //! memory.
-                template<unsigned int TStaticAllocKB = 30>
+                template<unsigned int TStaticAllocKB = ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB>
                 class BlockSharedMemDynMember :
                     public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKB>>
                 {
