@@ -47,6 +47,7 @@ Individual chapters are based on the information of the chapters before.
    usage/intro
    usage/abstraction
    usage/implementation
+   usage/cmake_example
 
 .. toctree::
    :caption: DEVELOPMENT
