@@ -106,7 +106,8 @@ namespace alpaka
             //! Allocates memory on the given device.
             //!
             //! \tparam TElem The element type of the returned buffer.
-            //! \tparam TExtent The extent of the buffer.
+            //! \tparam TIdx The linear index type of the buffer.
+            //! \tparam TExtent The extent type of the buffer.
             //! \tparam TDev The type of device the buffer is allocated on.
             //! \param dev The device to allocate the buffer on.
             //! \param extent The extent of the buffer.
