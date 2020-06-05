@@ -97,6 +97,10 @@ namespace alpaka
                         T,
                         BlockSharedMemDynMember<TStaticAllocKB>>
                     {
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
+#endif
                         //-----------------------------------------------------------------------------
                         static auto getMem(
                             block::shared::dyn::BlockSharedMemDynMember<TStaticAllocKB> const &mem)
@@ -104,6 +108,9 @@ namespace alpaka
                         {
                             return reinterpret_cast<T*>(mem.dynMemBegin());
                         }
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
                     };
                 }
             }
