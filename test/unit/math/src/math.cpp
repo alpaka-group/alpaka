@@ -76,7 +76,8 @@ struct TestTemplate
         typename TData>
     auto operator()() -> void
     {
-        const unsigned long seed = 1337;
+        std::random_device rd{};
+        auto const seed = rd();
         std::cout << "testing"
             << " acc:" << typeid(TAcc).name()
             << " data type:" << typeid(TData).name()
