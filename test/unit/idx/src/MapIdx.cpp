@@ -12,28 +12,9 @@
 
 #include <alpaka/meta/ForEachType.hpp>
 #include <alpaka/test/dim/TestDims.hpp>
+#include <alpaka/test/Extent.hpp>
 
 #include <catch2/catch.hpp>
-
-//#############################################################################
-//! 1D: (17)
-//! 2D: (17, 14)
-//! 3D: (17, 14, 11)
-//! 4D: (17, 14, 11, 8)
-template<
-    std::size_t Tidx>
-struct CreateExtentVal
-{
-    //-----------------------------------------------------------------------------
-    template<
-        typename TIdx>
-    ALPAKA_FN_HOST_ACC static auto create(
-        TIdx)
-    -> TIdx
-    {
-        return  static_cast<TIdx>(17u - (Tidx*3u));
-    }
-};
 
 //-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE( "mapIdx", "[idx]", alpaka::test::dim::TestDims)
@@ -42,7 +23,7 @@ TEMPLATE_LIST_TEST_CASE( "mapIdx", "[idx]", alpaka::test::dim::TestDims)
     using Idx = std::size_t;
     using Vec = alpaka::vec::Vec<Dim, Idx>;
 
-    auto const extentNd(alpaka::vec::createVecFromIndexedFn<Dim, CreateExtentVal>(Idx()));
+    auto const extentNd(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
     auto const idxNd(extentNd - Vec::all(4u));
 
     auto const idx1d(alpaka::idx::mapIdx<1u>(idxNd, extentNd));
