@@ -38,7 +38,7 @@ namespace math {
     auto fillWithRndArgs(
         TArgs  & args,
         TFunctor functor,
-        unsigned long const & seed
+        unsigned int const & seed
     ) -> void
     {
         /*
