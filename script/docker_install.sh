@@ -12,14 +12,6 @@
 
 source ./script/set.sh
 
-ALPAKA_DOCKER_BUILD_REQUIRED=1
-
-if [ -f "${ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH}" ]
-then
-    # NOTE: The image being available is not the only precondition. If anything within any of the scripts has changed in comparison to the ones that created the docker image, we might have to rebuild the image.
-    ALPAKA_DOCKER_BUILD_REQUIRED=0
-fi
-
 # runtime and compile time options
 ALPAKA_DOCKER_ENV_LIST=()
 ALPAKA_DOCKER_ENV_LIST+=("--env" "CC=${CC}")
@@ -107,19 +99,14 @@ fi
 ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_INSTALL_TBB=${ALPAKA_CI_INSTALL_TBB}")
 ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_INSTALL_FIBERS=${ALPAKA_CI_INSTALL_FIBERS}")
 
-if [ "${ALPAKA_DOCKER_BUILD_REQUIRED}" -eq 1 ]
-then
-  docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash ./script/install.sh
+docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash ./script/install.sh
 
-  ALPAKA_DOCKER_CONTAINER_NAME=$(docker ps -l -q)
-  docker commit "${ALPAKA_DOCKER_CONTAINER_NAME}" "${ALPAKA_CI_DOCKER_IMAGE_NAME}"
+ALPAKA_DOCKER_CONTAINER_NAME=$(docker ps -l -q)
+docker commit "${ALPAKA_DOCKER_CONTAINER_NAME}" "${ALPAKA_CI_DOCKER_IMAGE_NAME}"
 
-  # delete the container and the base image to save disc space
-  docker stop "${ALPAKA_DOCKER_CONTAINER_NAME}"
-  docker rm "${ALPAKA_DOCKER_CONTAINER_NAME}"
-  docker rmi "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}"
+# delete the container and the base image to save disc space
+docker stop "${ALPAKA_DOCKER_CONTAINER_NAME}"
+docker rm "${ALPAKA_DOCKER_CONTAINER_NAME}"
+docker rmi "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}"
 
-  docker save "${ALPAKA_CI_DOCKER_IMAGE_NAME}" | gzip > "${ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH}"
-
-  docker images
-fi
+docker images

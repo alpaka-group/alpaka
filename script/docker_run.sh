@@ -146,13 +146,7 @@ then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION=${ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION}")
 fi
 
-docker images
 docker images -q ${ALPAKA_CI_DOCKER_IMAGE_NAME}
-
-# If we have created the image in the current run, we do not have to load it again, because it is already available.
-if [[ "$(docker images -q ${ALPAKA_CI_DOCKER_IMAGE_NAME} 2> /dev/null)" == "" ]]; then
-    gzip -dc "${ALPAKA_CI_DOCKER_CACHE_IMAGE_FILE_PATH}" | docker load
-fi
 
 # --cap-add SYS_PTRACE is required for LSAN to work
 docker run --cap-add SYS_PTRACE -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" --rm "${ALPAKA_CI_DOCKER_IMAGE_NAME}" /bin/bash ./script/run.sh
