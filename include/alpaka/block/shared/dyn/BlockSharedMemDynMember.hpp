@@ -11,6 +11,7 @@
 
 #include <alpaka/block/shared/dyn/Traits.hpp>
 #include <alpaka/core/Assert.hpp>
+#include <alpaka/core/Vectorize.hpp>
 
 #include <type_traits>
 #include <array>
@@ -35,11 +36,6 @@ namespace alpaka
                 class BlockSharedMemDynMember :
                     public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKB>>
                 {
-                    static constexpr unsigned int staticAllocBytes = TStaticAllocKB<<10;
-
-                    mutable std::array<uint8_t, staticAllocBytes> m_mem;
-                    unsigned int m_dynSize;
-
                 public:
                     //-----------------------------------------------------------------------------
                     BlockSharedMemDynMember(unsigned int sizeBytes) : m_dynSize(sizeBytes)
@@ -61,14 +57,14 @@ namespace alpaka
 
                     uint8_t* dynMemBegin() const {return m_mem.data();}
 
-                    /*! \return the pointer to the begin of data after protion allocated as dynamical shared memory.
+                    /*! \return the pointer to the begin of data after the portion allocated as dynamical shared memory.
                      *!
                      *! \tparam TDataAlignBytes Round-up offset to multiple of
                      *! this number of bytes to maintain alignment. This
                      *! alignment assumes, that the compiler places the instance
                      *! at architecture-appropriate boundaries.
                      */
-                    template<unsigned int TDataAlignBytes = 4>
+                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment*8>
                     uint8_t* staticMemBegin() const
                     {
                         return m_mem.data() +
@@ -85,6 +81,12 @@ namespace alpaka
                         return staticAllocBytes -
                             (m_dynSize/TDataAlignBytes + (m_dynSize%TDataAlignBytes>0)*TDataAlignBytes);
                     }
+
+                private:
+                    static constexpr unsigned int staticAllocBytes = TStaticAllocKB<<10;
+
+                    mutable std::array<uint8_t, staticAllocBytes> m_mem;
+                    unsigned int m_dynSize;
                 };
 
                 namespace traits
