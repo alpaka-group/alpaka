@@ -11,6 +11,7 @@
 
 #include <alpaka/block/shared/st/Traits.hpp>
 #include <alpaka/core/Assert.hpp>
+#include <alpaka/core/Vectorize.hpp>
 
 #include <type_traits>
 #include <cstdint>
@@ -27,21 +28,9 @@ namespace alpaka
                 {
                     //#############################################################################
                     //! Implementation of static block shared memory provider.
-                    template<unsigned int TDataAlignBytes = 4>
+                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment*8>
                     class BlockSharedMemStMemberImpl
                     {
-                        mutable unsigned int m_allocdBytes = 0;
-                        mutable uint8_t* m_mem;
-#ifndef NDEBUG
-                        const unsigned int m_capacity;
-#endif
-
-                        template<typename T>
-                        static constexpr size_t alignPitch()
-                        {
-                            return (sizeof(T)/TDataAlignBytes + (sizeof(T)%TDataAlignBytes>0))*TDataAlignBytes;
-                        }
-
                     public:
                         //-----------------------------------------------------------------------------
 #ifndef NDEBUG
@@ -89,13 +78,25 @@ namespace alpaka
                             m_allocdBytes = 0u;
                         }
 
+                    private:
+                        mutable unsigned int m_allocdBytes = 0;
+                        mutable uint8_t* m_mem;
+#ifndef NDEBUG
+                        const unsigned int m_capacity;
+#endif
+
+                        template<typename T>
+                        static constexpr size_t alignPitch()
+                        {
+                            return (sizeof(T)/TDataAlignBytes + (sizeof(T)%TDataAlignBytes>0))*TDataAlignBytes;
+                        }
                     };
                 }
                 //#############################################################################
                 //! Static block shared memory provider using a pointer to
                 //! externally allocated fixed-size memory, likely provided by
                 //! BlockSharedMemDynMember.
-                template<unsigned int TDataAlignBytes = 4>
+                template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment*8>
                 class BlockSharedMemStMember :
                     public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>,
                     public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
