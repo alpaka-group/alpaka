@@ -86,9 +86,10 @@ namespace alpaka
 #endif
 
                         template<typename T>
-                        static constexpr size_t alignPitch()
+                        static constexpr unsigned int alignPitch()
                         {
-                            return (sizeof(T)/TDataAlignBytes + (sizeof(T)%TDataAlignBytes>0))*TDataAlignBytes;
+                            return (static_cast<unsigned int>(sizeof(T))/TDataAlignBytes
+                                + static_cast<unsigned int>(sizeof(T))%TDataAlignBytes>0)*TDataAlignBytes;
                         }
                     };
                 }
