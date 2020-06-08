@@ -138,7 +138,7 @@ if(NOT TARGET alpaka)
 endif()
 
 option(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST "Allow host-only contructs like assert in offload code in debug mode." ON)
-set(ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB "30" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ)")
+set(ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "30" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ)")
 
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
@@ -797,7 +797,7 @@ target_compile_definitions(alpaka INTERFACE "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
 if(ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST)
    target_compile_definitions(alpaka INTERFACE "ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST")
 endif()
-target_compile_definitions(alpaka INTERFACE "ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB=${ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB}")
+target_compile_definitions(alpaka INTERFACE "ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB=${ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB}")
 
 if(ALPAKA_CI)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_CI")

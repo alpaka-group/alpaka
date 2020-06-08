@@ -16,8 +16,8 @@
 #include <type_traits>
 #include <array>
 
-#ifndef ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB
-#define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB 30
+#ifndef ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB
+#define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB 30
 #endif
 
 namespace alpaka
@@ -32,9 +32,9 @@ namespace alpaka
                 //! Dynamic block shared memory provider using fixed-size
                 //! member array to allocate memory on the stack or in shared
                 //! memory.
-                template<unsigned int TStaticAllocKB = ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KB>
+                template<unsigned int TStaticAllocKiB = ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB>
                 class BlockSharedMemDynMember :
-                    public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKB>>
+                    public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKiB>>
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -83,7 +83,7 @@ namespace alpaka
                     }
 
                 private:
-                    static constexpr unsigned int staticAllocBytes = TStaticAllocKB<<10;
+                    static constexpr unsigned int staticAllocBytes = TStaticAllocKiB<<10;
 
                     mutable std::array<uint8_t, staticAllocBytes> m_mem;
                     unsigned int m_dynSize;
@@ -94,10 +94,10 @@ namespace alpaka
                     //#############################################################################
                     template<
                         typename T,
-                        unsigned int TStaticAllocKB>
+                        unsigned int TStaticAllocKiB>
                     struct GetMem<
                         T,
-                        BlockSharedMemDynMember<TStaticAllocKB>>
+                        BlockSharedMemDynMember<TStaticAllocKiB>>
                     {
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic push
@@ -105,7 +105,7 @@ namespace alpaka
 #endif
                         //-----------------------------------------------------------------------------
                         static auto getMem(
-                            block::shared::dyn::BlockSharedMemDynMember<TStaticAllocKB> const &mem)
+                            block::shared::dyn::BlockSharedMemDynMember<TStaticAllocKiB> const &mem)
                         -> T *
                         {
                             return reinterpret_cast<T*>(mem.dynMemBegin());
