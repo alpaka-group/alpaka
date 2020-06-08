@@ -28,7 +28,7 @@ namespace alpaka
                 {
                     //#############################################################################
                     //! Implementation of static block shared memory provider.
-                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment*8>
+                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment>
                     class BlockSharedMemStMemberImpl
                     {
                     public:
@@ -96,7 +96,7 @@ namespace alpaka
                 //! Static block shared memory provider using a pointer to
                 //! externally allocated fixed-size memory, likely provided by
                 //! BlockSharedMemDynMember.
-                template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment*8>
+                template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment>
                 class BlockSharedMemStMember :
                     public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>,
                     public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
