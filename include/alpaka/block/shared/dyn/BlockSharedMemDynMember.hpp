@@ -33,7 +33,7 @@ namespace alpaka
                 //! member array to allocate memory on the stack or in shared
                 //! memory.
                 template<unsigned int TStaticAllocKiB = ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB>
-                class BlockSharedMemDynMember :
+                class alignas(core::vectorization::defaultAlignment) BlockSharedMemDynMember :
                     public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKiB>>
                 {
                 public:
@@ -64,7 +64,7 @@ namespace alpaka
                      *! alignment assumes, that the compiler places the instance
                      *! at architecture-appropriate boundaries.
                      */
-                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment*8>
+                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment>
                     uint8_t* staticMemBegin() const
                     {
                         return m_mem.data() +
