@@ -16,6 +16,7 @@
  */
 
 #include <alpaka/alpaka.hpp>
+#include <alpaka/example/ExampleDefaultAcc.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -120,10 +121,9 @@ auto main( ) -> int
     using Idx = uint32_t;
 
     // Select accelerator-types for host and device
-    using Acc = alpaka::acc::AccCpuSerial<
-        Dim,
-        Idx
-    >;
+    // using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
+    std::cout << "Using alpaka accelerator: " << alpaka::acc::getAccName<Acc>() << std::endl;
 
     using DevHost = alpaka::dev::DevCpu;
 
