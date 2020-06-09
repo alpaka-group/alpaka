@@ -15,6 +15,7 @@
 
 #include <type_traits>
 #include <cstdint>
+#include <algorithm>
 
 namespace alpaka
 {
@@ -52,9 +53,10 @@ namespace alpaka
                         template <typename T>
                         void alloc() const
                         {
+                            m_allocdBytes = allocPitch<T>();
                             uint8_t* buf = &m_mem[m_allocdBytes];
                             new (buf) T();
-                            m_allocdBytes += alignPitch<T>();
+                            m_allocdBytes += sizeof(T);
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
                             ALPAKA_ASSERT(m_allocdBytes < m_capacity);
 #endif
@@ -67,7 +69,7 @@ namespace alpaka
                         template <typename T>
                         T& getLatestVar() const
                         {
-                           return *reinterpret_cast<T*>(&m_mem[m_allocdBytes-alignPitch<T>()]);
+                           return *reinterpret_cast<T*>(&m_mem[m_allocdBytes-sizeof(T)]);
                         }
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic pop
@@ -86,10 +88,13 @@ namespace alpaka
 #endif
 
                         template<typename T>
-                        static constexpr unsigned int alignPitch()
+                        unsigned int allocPitch() const
                         {
-                            return (static_cast<unsigned int>(sizeof(T))/TDataAlignBytes
-                                + static_cast<unsigned int>(sizeof(T))%TDataAlignBytes>0)*TDataAlignBytes;
+                            static_assert(
+                                core::vectorization::defaultAlignment >= alignof(T),
+                                "Unable to get block shared static memory for types with alignment higher than defaultAlignment!");
+                            constexpr unsigned int align = std::max(TDataAlignBytes, static_cast<unsigned int>(alignof(T)));
+                            return (m_allocdBytes/align + (m_allocdBytes%align>0))*align;
                         }
                     };
                 }
