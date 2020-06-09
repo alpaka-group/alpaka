@@ -16,6 +16,7 @@
  */
 
 #include <alpaka/alpaka.hpp>
+#include <alpaka/example/ExampleDefaultAcc.hpp>
 
 #include <iostream>
 
@@ -87,6 +88,7 @@ auto main()
     // It is possible to choose from a set of accelerators
     // that are defined in the alpaka::acc namespace e.g.:
     // - AccGpuCudaRt
+    // - AccGpuHipRt
     // - AccCpuThreads
     // - AccCpuFibers
     // - AccCpuOmp2Threads
@@ -102,7 +104,9 @@ auto main()
     // automatically.
 
     // By exchanging the Acc and Queue types you can select where to execute the kernel.
-    using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    // using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
+    std::cout << "Using alpaka accelerator: " << alpaka::acc::getAccName<Acc>() << std::endl;
 
     // Defines the synchronization behavior of a queue
     //

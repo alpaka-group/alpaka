@@ -99,6 +99,7 @@ auto main()
     // - AccCpuOmp4
     // - AccCpuTbbBlocks
     // - AccCpuSerial
+    // using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
     using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
     std::cout << "Using alpaka accelerator: " << alpaka::acc::getAccName<Acc>() << std::endl;
 
