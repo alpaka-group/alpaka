@@ -28,6 +28,10 @@ namespace alpaka
         {
             namespace dyn
             {
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+    #pragma warning(push)
+    #pragma warning(disable: 4324)  // warning C4324: structure was padded due to alignment specifier
+#endif
                 //#############################################################################
                 //! Dynamic block shared memory provider using fixed-size
                 //! member array to allocate memory on the stack or in shared
@@ -88,6 +92,9 @@ namespace alpaka
                     mutable std::array<uint8_t, staticAllocBytes> m_mem;
                     unsigned int m_dynSize;
                 };
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+    #pragma warning(pop)
+#endif
 
                 namespace traits
                 {
