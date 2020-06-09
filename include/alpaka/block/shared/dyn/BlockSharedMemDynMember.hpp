@@ -42,7 +42,9 @@ namespace alpaka
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynMember(unsigned int sizeBytes) : m_dynSize(sizeBytes)
+                    BlockSharedMemDynMember(unsigned int sizeBytes)
+                        : m_dynPitch((sizeBytes/core::vectorization::defaultAlignment
+                             + (sizeBytes%core::vectorization::defaultAlignment>0))*core::vectorization::defaultAlignment)
                     {
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
                         ALPAKA_ASSERT(sizeBytes <= staticAllocBytes);
@@ -62,35 +64,24 @@ namespace alpaka
                     uint8_t* dynMemBegin() const {return m_mem.data();}
 
                     /*! \return the pointer to the begin of data after the portion allocated as dynamical shared memory.
-                     *!
-                     *! \tparam TDataAlignBytes Round-up offset to multiple of
-                     *! this number of bytes to maintain alignment. This
-                     *! alignment assumes, that the compiler places the instance
-                     *! at architecture-appropriate boundaries.
                      */
-                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment>
                     uint8_t* staticMemBegin() const
                     {
-                        return m_mem.data() +
-                            (m_dynSize/TDataAlignBytes + (m_dynSize%TDataAlignBytes>0)*TDataAlignBytes);
+                        return m_mem.data() + m_dynPitch;
                     }
 
                     /*! \return the remaining capacity for static block shared memory.
-                     *!
-                     *! \tparam TDataAlignBytes Multiple of bytes the static offset was rounded-up to
                      */
-                    template<unsigned int TDataAlignBytes = 4>
                     unsigned int staticMemCapacity() const
                     {
-                        return staticAllocBytes -
-                            (m_dynSize/TDataAlignBytes + (m_dynSize%TDataAlignBytes>0)*TDataAlignBytes);
+                        return staticAllocBytes - m_dynPitch;
                     }
 
                 private:
                     static constexpr unsigned int staticAllocBytes = TStaticAllocKiB<<10;
 
                     mutable std::array<uint8_t, staticAllocBytes> m_mem;
-                    unsigned int m_dynSize;
+                    unsigned int m_dynPitch;
                 };
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
     #pragma warning(pop)
@@ -115,6 +106,9 @@ namespace alpaka
                             block::shared::dyn::BlockSharedMemDynMember<TStaticAllocKiB> const &mem)
                         -> T *
                         {
+                            static_assert(
+                                core::vectorization::defaultAlignment >= alignof(T),
+                                "Unable to get block shared dynamic memory for types with alignment higher than defaultAlignment!");
                             return reinterpret_cast<T*>(mem.dynMemBegin());
                         }
 #if BOOST_COMP_GNUC
