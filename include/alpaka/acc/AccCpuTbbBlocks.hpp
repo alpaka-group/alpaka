@@ -25,6 +25,7 @@
 #include <alpaka/intrinsic/IntrinsicCpu.hpp>
 #include <alpaka/rand/RandStdLib.hpp>
 #include <alpaka/time/TimeStdLib.hpp>
+#include <alpaka/warp/WarpSingleThread.hpp>
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
@@ -76,6 +77,7 @@ namespace alpaka
             public intrinsic::IntrinsicCpu,
             public rand::RandStdLib,
             public time::TimeStdLib,
+            public warp::WarpSingleThread,
             public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
         {
         public:
