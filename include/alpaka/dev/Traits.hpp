@@ -59,6 +59,13 @@ namespace alpaka
             struct GetFreeMemBytes;
 
             //#############################################################################
+            //! The device warp size get trait.
+            template<
+                typename T,
+                typename TSfinae = void>
+            struct GetWarpSize;
+
+            //#############################################################################
             //! The device reset trait.
             template<
                 typename T,
@@ -133,6 +140,21 @@ namespace alpaka
                 traits::GetFreeMemBytes<
                     TDev>
                 ::getFreeMemBytes(
+                    dev);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The warp size on the device in number of threads.
+        template<
+            typename TDev>
+        ALPAKA_FN_HOST auto getWarpSize(
+            TDev const & dev)
+        -> std::size_t
+        {
+            return
+                traits::GetWarpSize<
+                    TDev>
+                ::getWarpSize(
                     dev);
         }
 
