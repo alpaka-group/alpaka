@@ -19,6 +19,6 @@ TEMPLATE_LIST_TEST_CASE( "getWarpSize", "[dev]", alpaka::test::acc::TestAccs)
     using Dev = alpaka::dev::Dev<TestType>;
     using Pltf = alpaka::pltf::Pltf<Dev>;
     Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
-    auto const warpSize = alpaka::dev::getWarpSize(dev);
-    REQUIRE(warpSize > 0);
+    auto const warpExtent = alpaka::dev::getWarpSize(dev);
+    REQUIRE(warpExtent > 0);
 }
