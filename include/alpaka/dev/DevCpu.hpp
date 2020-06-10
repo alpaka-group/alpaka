@@ -236,6 +236,23 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The CPU device warp size get trait specialization.
+            template<>
+            struct GetWarpSize<
+                dev::DevCpu>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getWarpSize(
+                    dev::DevCpu const & dev)
+                -> std::size_t
+                {
+                    alpaka::ignore_unused(dev);
+
+                    return 1u;
+                }
+            };
+
+            //#############################################################################
             //! The CPU device reset trait specialization.
             template<>
             struct Reset<

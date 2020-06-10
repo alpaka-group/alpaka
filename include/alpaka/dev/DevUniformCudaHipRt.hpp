@@ -190,6 +190,31 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The CUDA/HIP RT device warp size get trait specialization.
+            template<>
+            struct GetWarpSize<
+                dev::DevUniformCudaHipRt>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getWarpSize(
+                    dev::DevUniformCudaHipRt const & dev)
+                -> std::size_t
+                {
+#ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
+                    cudaDeviceProp devProp;
+#else
+                    hipDeviceProp_t devProp;
+#endif
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                        ALPAKA_API_PREFIX(GetDeviceProperties)(
+                            &devProp,
+                            dev.m_iDevice));
+
+                    return static_cast<std::size_t>(devProp.warpSize);
+                }
+            };
+
+            //#############################################################################
             //! The CUDA/HIP RT device reset trait specialization.
             template<>
             struct Reset<
