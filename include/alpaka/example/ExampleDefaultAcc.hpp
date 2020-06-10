@@ -34,7 +34,7 @@ namespace alpaka
 #elif defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
         using ExampleDefaultAcc = alpaka::acc::AccCpuOmp2Blocks<A,B>;
 #elif defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
-        using ExampleDefaultAcc = alpaka::acc::AccCpuOmp2Blocks<A,B>;
+        using ExampleDefaultAcc = alpaka::acc::AccCpuTbbBlocks<A,B>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
         using ExampleDefaultAcc = alpaka::acc::AccCpuFibers<A,B>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
