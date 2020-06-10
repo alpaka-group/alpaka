@@ -34,6 +34,7 @@
 #include <alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp>
 #include <alpaka/rand/RandUniformCudaHipRand.hpp>
 #include <alpaka/time/TimeUniformCudaHipBuiltIn.hpp>
+#include <alpaka/warp/WarpUniformCudaHipBuiltIn.hpp>
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>
@@ -86,6 +87,7 @@ namespace alpaka
             public intrinsic::IntrinsicUniformCudaHipBuiltIn,
             public rand::RandUniformCudaHipRand,
             public time::TimeUniformCudaHipBuiltIn,
+            public warp::WarpUniformCudaHipBuiltIn,
             public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
         public:
