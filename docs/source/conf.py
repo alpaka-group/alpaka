@@ -148,10 +148,21 @@ breathe_domain_by_extension = {
     "tpp":   "cpp"
 }
 
+# define Alpaka attributes
+# breath has problems to parse C++ attributes
+cpp_id_attributes = ["ALPAKA_FN_ACC",
+                     "ALPAKA_FN_HOST",
+                     "ALPAKA_FN_HOST_ACC",
+                     "ALPAKA_FN_INLINE",
+                     "ALPAKA_NO_HOST_ACC_WARNING",
+                     "ALPAKA_STATIC_ACC_MEM_CONSTANT",
+                     "ALPAKA_STATIC_ACC_MEM_GLOBAL",
+                     ]
+
 # -- processing --
 
 if on_rtd:
-    subprocess.call('cd ../doxygen; doxygen', shell=True)
+    subprocess.call('cd ..; doxygen', shell=True)
 else:
     import sphinx_rtd_theme
     html_theme = "sphinx_rtd_theme"
