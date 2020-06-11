@@ -234,11 +234,16 @@ There are two possible ways to tell the kernel about the accelerator type:
      This would require a copy from UserKernel<TDummyAcc> to UserKernel<TAcc> to be possible.
      The only way to allow this would be to require the user to implement a templated copy constructor for every kernel.
      This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.
+
    a) ... and inherits from the accelerator.
+
      * (-) The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.
+
      * (-) How do accelerator functions called from the kernel (and not within the kernel class itself) access the accelerator methods?
+
      Casting this to the accelerator type and giving it as parameter is too much to require from the user.
    b) ... and the ``operator()`` has a reference to the accelerator as parameter.
+
      * (+) This allows to use the accelerator in functions called from the kernel (and not within the kernel class itself) to access the accelerator methods in the same way the kernel entry point function can.
      * (-) This would require an additional object (the accelerator) in device memory taking up valuable CUDA registers (opposed to the inheritance solution). At least on CUDA all the accelerator functions could be inlined nevertheless.
 
