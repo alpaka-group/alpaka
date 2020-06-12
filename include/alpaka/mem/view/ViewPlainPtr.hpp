@@ -367,9 +367,6 @@ namespace alpaka
                         TElem * pMem,
                         dev::DevOmp5 const & dev,
                         TExtent const & extent)
-#ifdef BOOST_NO_CXX14_RETURN_TYPE_DEDUCTION
-                    -> alpaka::mem::view::ViewPlainPtr<dev::DevOmp5, TElem, alpaka::dim::Dim<TExtent>, alpaka::idx::Idx<TExtent>>
-#endif
                     {
                         return
                             alpaka::mem::view::ViewPlainPtr<
