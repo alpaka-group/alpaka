@@ -20,10 +20,10 @@ namespace alpaka
         struct CreateVecWithIdx
         {
             //#############################################################################
-            //! 1D: (16)
-            //! 2D: (16, 14)
-            //! 3D: (16, 14, 12)
-            //! 4D: (16, 14, 12, 10)
+            //! 1D: (11)
+            //! 2D: (11, 10)
+            //! 3D: (11, 10, 9)
+            //! 4D: (11, 10, 9, 8)
             template<
                 std::size_t Tidx>
             struct ForExtentBuf
@@ -31,15 +31,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC static auto create()
                 {
-                    return static_cast<TIdx>(16u - (Tidx*2u));
+                    return static_cast<TIdx>(11u - Tidx);
                 }
             };
 
             //#############################################################################
-            //! 1D: (11)
-            //! 2D: (11, 8)
-            //! 3D: (11, 8, 5)
-            //! 4D: (11, 8, 5, 2)
+            //! 1D: (8)
+            //! 2D: (8, 6)
+            //! 3D: (8, 6, 4)
+            //! 4D: (8, 6, 4, 2)
             template<
                 std::size_t Tidx>
             struct ForExtentSubView
@@ -47,7 +47,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC static auto create()
                 {
-                    return static_cast<TIdx>(11u - (Tidx*3u));
+                    return static_cast<TIdx>(8u - (Tidx * 2u));
                 }
             };
 
