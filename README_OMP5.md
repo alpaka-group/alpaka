@@ -4,15 +4,16 @@ To make the build system enable the OpenMP5 backend (internally called
 `CPU_BT_OMP4` for now), one has to tell CMake explicitly about the OpenMP
 version supported by the compiler. CMake does not determine it automatically.
 ```
-cmake -DOpenMP_CXX_VERSION=5 -DALPAKA_ACC_CPU_BT_OMP4_ENABLE=on \
-	-DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=on \
-	-DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=off \
-	-DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=off \
-	-DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=off \
-	-DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=off \
-	-DALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE=off \
-	-DALPAKA_ACC_GPU_CUDA_ENABLE=off \
-	-DALPAKA_ACC_GPU_HIP_ENABLE=off \
+cmake -DOpenMP_CXX_VERSION=5 \
+  -DALPAKA_ACC_ANY_BT_OMP5_ENABLE=on \
+  -DALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE=on \
+  -DALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE=off \
+  -DALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE=off \
+  -DALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE=off \
+  -DALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE=off \
+  -DALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE=off \
+  -DALPAKA_ACC_GPU_CUDA_ENABLE=off \
+  -DALPAKA_ACC_GPU_HIP_ENABLE=off \
 ```
 All other backends are disable for faster compilation/testing and reduced
 environment requirements. Add flags to set the required compiler and linker flags, e.g:
