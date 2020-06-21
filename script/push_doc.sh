@@ -19,7 +19,7 @@ cd docs/doxygen/html
 git config --global user.email "action@github.com"
 git config --global user.name "GitHub Action"
 
-git add --force .
+git add .
 
 git log -n 3
 
