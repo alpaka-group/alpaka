@@ -29,10 +29,9 @@ git clone -b gh-pages https://x-access-token:${2}@github.com/${1}.git docs/doxyg
 
 cd docs/
 
-rm -rf doxygen/*
+rm -rf doxygen/html/*
+rm -rf doxygen/xml/*
 
-# enable HTML output in our Doxyfile
-sed -i -E 's/(GENERATE_HTML\s*=\s*)NO/\1YES/g' Doxyfile
 doxygen Doxyfile
 
 cd ../
