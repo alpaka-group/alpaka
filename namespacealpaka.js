@@ -13,6 +13,7 @@ var namespacealpaka =
     [ "extent", "namespacealpaka_1_1extent.html", "namespacealpaka_1_1extent" ],
     [ "hierarchy", "namespacealpaka_1_1hierarchy.html", "namespacealpaka_1_1hierarchy" ],
     [ "idx", "namespacealpaka_1_1idx.html", "namespacealpaka_1_1idx" ],
+    [ "intrinsic", "namespacealpaka_1_1intrinsic.html", "namespacealpaka_1_1intrinsic" ],
     [ "kernel", "namespacealpaka_1_1kernel.html", "namespacealpaka_1_1kernel" ],
     [ "math", "namespacealpaka_1_1math.html", "namespacealpaka_1_1math" ],
     [ "mem", "namespacealpaka_1_1mem.html", "namespacealpaka_1_1mem" ],

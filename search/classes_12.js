@@ -14,5 +14,6 @@ var searchData=
   ['vec_3c_20tdim_2c_20srcsize_20_3e',['Vec&lt; TDim, SrcSize &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
   ['vec_3c_20tdim_2c_20tidx_20_3e',['Vec&lt; TDim, TIdx &gt;',['../classalpaka_1_1vec_1_1Vec.html',1,'alpaka::vec']]],
   ['viewplainptr',['ViewPlainPtr',['../classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html',1,'alpaka::mem::view']]],
+  ['viewplainptr_3c_20dev_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['ViewPlainPtr&lt; Dev, TElem, TDim, TIdx &gt;',['../classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html',1,'alpaka::mem::view']]],
   ['viewsubview',['ViewSubView',['../classalpaka_1_1mem_1_1view_1_1ViewSubView.html',1,'alpaka::mem::view']]]
 ];

@@ -5,6 +5,12 @@ var dir_7be937b0b17efdbd2f169f14f5c2db8e =
       [ "AllocVar< T, TuniqueId, BlockSharedMemStMasterSync >", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4" ],
       [ "FreeMem< BlockSharedMemStMasterSync >", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMasterSync_01_4.html", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMasterSync_01_4" ]
     ] ],
+    [ "BlockSharedMemStMember.hpp", "BlockSharedMemStMember_8hpp.html", [
+      [ "BlockSharedMemStMember", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMember.html", null ],
+      [ "BlockSharedMemStMemberImpl", "classalpaka_1_1block_1_1shared_1_1st_1_1detail_1_1BlockSharedMemStMemberImpl.html", "classalpaka_1_1block_1_1shared_1_1st_1_1detail_1_1BlockSharedMemStMemberImpl" ],
+      [ "AllocVar< T, TuniqueId, BlockSharedMemStMember< TDataAlignBytes > >", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockShare9d256329836806a53e99851406bbddf8.html", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockShare9d256329836806a53e99851406bbddf8" ],
+      [ "FreeMem< BlockSharedMemStMember< TDataAlignBytes > >", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4" ]
+    ] ],
     [ "BlockSharedMemStNoSync.hpp", "BlockSharedMemStNoSync_8hpp.html", [
       [ "BlockSharedMemStNoSync", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStNoSync.html", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStNoSync" ],
       [ "AllocVar< T, TuniqueId, BlockSharedMemStNoSync >", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4.html", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4" ],

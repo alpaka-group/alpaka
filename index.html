@@ -85,9 +85,9 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">**alpaka** - Abstraction Library for Parallel Kernel Acceleration </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a href="https://github.com/ComputationalRadiationPhysics/alpaka/actions?query=workflow%3A%22Continuous+Integration%22"></a> <a href="https://travis-ci.org/alpaka-group/alpaka"></a> <a href="https://isocpp.org/"></a> <a href="https://github.com/alpaka-group/alpaka"></a> <a href="https://www.mozilla.org/en-US/MPL/2.0/"></a></p>
+<div class="textblock"><p><a href="https://github.com/alpaka-group/alpaka/actions?query=workflow%3A%22Continuous+Integration%22"></a> <a href="https://alpaka.readthedocs.io"></a> <a href="https://alpaka-group.github.io/alpaka"></a> <a href="https://isocpp.org/"></a> <a href="https://github.com/alpaka-group/alpaka"></a> <a href="https://www.mozilla.org/en-US/MPL/2.0/"></a></p>
 <div class="image">
-<img src="doc/images/alpaka_401x135.png" alt="Alpaka"/>
+<img src="docs/logo/alpaka_401x135.png" alt="Alpaka"/>
 </div>
 <p>The <b>alpaka</b> library is a header-only C++14 abstraction library for accelerator development.</p>
 <p>Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.</p>
@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <h2>Software License </h2>
 <p><b>alpaka</b> is licensed under <b>MPL-2.0</b>.</p>
 <h2>Documentation </h2>
-<p>The general documentation is located within the <code>doc/markdown</code> subfolder of the repository. The <a href="http://alpaka-group.github.io/alpaka/">source code documentation</a> is generated with <a href="http://www.doxygen.org">doxygen</a>.</p>
+<p>The alpaka documentation can be found in the <a href="https://alpaka.readthedocs.io">online manual</a>. The documentation files in <a href="https://www.sphinx-doc.org/en/stable/rest.html"><code>.rst</code> (reStructuredText)</a> format are located in the <code>docs</code> subfolder of this repository. The <a href="https://alpaka-group.github.io/alpaka/">source code documentation</a> is generated with <a href="http://www.doxygen.org">doxygen</a>.</p>
 <h2>Accelerator Back-ends </h2>
 <table class="doxtable">
 <tr>
@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <tr>
 <td>CUDA</td><td>CUDA 9.0-10.2</td><td>NVIDIA GPUs</td><td>parallel (undefined)</td><td>parallel (lock-step within warps) </td></tr>
 <tr>
-<td>HIP(nvcc)</td><td><a href="https://github.com/ROCm-Developer-Tools/HIP">HIP 3.1+</a></td><td>NVIDIA GPUs SM 2.0+</td><td>parallel (undefined)</td><td>parallel (lock-step within warps) </td></tr>
+<td>HIP(nvcc)</td><td><a href="https://github.com/ROCm-Developer-Tools/HIP">HIP 3.3+</a></td><td>NVIDIA GPUs SM 3.0+</td><td>parallel (undefined)</td><td>parallel (lock-step within warps) </td></tr>
 </table>
 <h2>Supported Compilers </h2>
 <p>This library uses C++14 (or newer when available).</p>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <th>Accelerator Back-end</th><th>gcc 5.5 <br />
  (Linux)</th><th>gcc 6.4/7.3 <br />
  (Linux)</th><th>gcc 8.1 <br />
- (Linux)</th><th>gcc 9.1 <br />
+ (Linux)</th><th>gcc 9.1/10.1 <br />
  (Linux)</th><th>clang 4 <br />
  (Linux)</th><th>clang 5 <br />
  (Linux)</th><th>clang 6 <br />
@@ -171,13 +171,13 @@ $(document).ready(function(){initNavTree('index.html','');});
  (CUDA 9.2-10.1) </td><td>:white_check_mark: <br />
  (CUDA 9.2-10.1) </td><td>- </td><td>- </td></tr>
 <tr>
-<td>HIP (nvcc)</td><td>:white_check_mark: <br />
+<td><a href="https://alpaka.readthedocs.io/en/latest/install/HIP.html">HIP</a> (nvcc)</td><td>:white_check_mark: <br />
  (nvcc 9.0+)</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x:</td><td>:x: </td></tr>
 </table>
 <p>Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.</p>
 <h2>Dependencies </h2>
 <p><a href="https://boost.org/">Boost</a> 1.65.1+ is the only mandatory external dependency. The <b>alpaka</b> library itself just requires header-only libraries. However some of the accelerator back-end implementations require different boost libraries to be built.</p>
-<p>When an accelerator back-end using <em>Boost.Fiber</em> is enabled, <code>boost-fiber</code> and all of its dependencies are required to be built in C++11 mode <code>./b2 cxxflags="-std=c++11"</code>. When <em>Boost.Fiber</em> is enabled and alpaka is built in C++17 mode with clang and libstc++, Boost &gt;= 1.67.0 is required.</p>
+<p>When an accelerator back-end using <em>Boost.Fiber</em> is enabled, <code>boost-fiber</code> and all of its dependencies are required to be built in C++11 mode <code>./b2 cxxflags="-std=c++14"</code>. When <em>Boost.Fiber</em> is enabled and alpaka is built in C++17 mode with clang and libstc++, Boost &gt;= 1.67.0 is required.</p>
 <p>When an accelerator back-end using <em>CUDA</em> is enabled, version <em>9.0</em> of the <em>CUDA SDK</em> is the minimum requirement. <em>NOTE</em>: When using nvcc as <em>CUDA</em> compiler, the <em>CUDA accelerator back-end</em> can not be enabled together with the <em>Boost.Fiber accelerator back-end</em> due to bugs in the nvcc compiler. <em>NOTE</em>: When using clang as a native <em>CUDA</em> compiler, the <em>CUDA accelerator back-end</em> can not be enabled together with any <em>OpenMP accelerator back-end</em> because this combination is currently unsupported. <em>NOTE</em>: Separable compilation is only supported when using nvcc, not with clang as native <em>CUDA</em> compiler. It is disabled by default and can be enabled via the CMake flag <code>ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION</code>.</p>
 <p>When an accelerator back-end using <em>OpenMP</em> is enabled, the compiler and the platform have to support the corresponding minimum <em>OpenMP</em> version.</p>
 <p>When an accelerator back-end using <em>TBB</em> is enabled, the compiler and the platform have to support the corresponding minimum <em>TBB</em> version.</p>
@@ -209,7 +209,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 20 2020 19:20:04 for alpaka by
+    <li class="footer">Generated on Mon Jun 22 2020 07:50:39 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

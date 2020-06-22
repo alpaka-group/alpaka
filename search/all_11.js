@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['s_5fuidim',['s_uiDim',['../classalpaka_1_1vec_1_1Vec.html#a1fb6e24b032f430d287d30ba038fa39f',1,'alpaka::vec::Vec']]],
   ['scopelogstdout',['ScopeLogStdOut',['../classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html',1,'alpaka::core::detail::ScopeLogStdOut'],['../classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a687282bd2177434d00f10aa71a4b4b36',1,'alpaka::core::detail::ScopeLogStdOut::ScopeLogStdOut(std::string const &amp;sScope)'],['../classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#ac22379fd59ece45d58ea828bcd0a7fd1',1,'alpaka::core::detail::ScopeLogStdOut::ScopeLogStdOut(ScopeLogStdOut const &amp;)=delete'],['../classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1',1,'alpaka::core::detail::ScopeLogStdOut::ScopeLogStdOut(ScopeLogStdOut &amp;&amp;)=delete']]],
   ['seed',['seed',['../structalpaka_1_1rand_1_1generator_1_1cpu_1_1TinyMTengine.html#a8de370b103c0023df69f8b3249f7d523',1,'alpaka::rand::generator::cpu::TinyMTengine']]],
   ['set',['set',['../namespacealpaka_1_1mem_1_1view.html#a650dee68bcefd0f445ab855f7e7802a0',1,'alpaka::mem::view']]],
@@ -42,6 +41,8 @@ var searchData=
   ['sqrtuniformcudahipbuiltin_2ehpp',['SqrtUniformCudaHipBuiltIn.hpp',['../SqrtUniformCudaHipBuiltIn_8hpp.html',1,'']]],
   ['srcsize',['SrcSize',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html#a8fa28e5787731a80ba64c96b0f497b46',1,'alpaka::mem::view::cpu::detail::TaskCopyCpuBase']]],
   ['state',['state',['../structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01TTask5482395a4e10c3d0d2669ffabf30b032.html#a53b3faf2692419dab0b93e980d6b1aac',1,'alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtBlocking, TTask &gt;::CallbackSynchronizationData::state()'],['../structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TT8e1e26d5b93135d4b06a0de7c2f1351c.html#afaaeab02ea70091c05f4446d72555714',1,'alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtNonBlocking, TTask &gt;::CallbackSynchronizationData::state()']]],
+  ['staticmembegin',['staticMemBegin',['../classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynMember.html#ace09824f07dfda7f471eb69071151c56',1,'alpaka::block::shared::dyn::BlockSharedMemDynMember']]],
+  ['staticmemcapacity',['staticMemCapacity',['../classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynMember.html#a4bd6290509ec744f6125c222ee0e13f8',1,'alpaka::block::shared::dyn::BlockSharedMemDynMember']]],
   ['status',['status',['../structTINYMT32__T.html#a483a2a359c18dd5315396958bb694eb6',1,'TINYMT32_T']]],
   ['sub',['Sub',['../structalpaka_1_1atomic_1_1op_1_1Sub.html',1,'alpaka::atomic::op']]],
   ['subdividegridelems',['subDivideGridElems',['../namespacealpaka_1_1workdiv.html#ab52eee3cbb455f3799257d30917b7e3a',1,'alpaka::workdiv']]],

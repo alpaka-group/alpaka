@@ -1,4 +1,4 @@
 var structalpaka_1_1dev_1_1traits_1_1GetDev_3_01mem_1_1view_1_1ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
 [
-    [ "getDev", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01mem_1_1view_1_1ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#af59fae8eb05b1d3f0eced50e934b0d58", null ]
+    [ "getDev", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01mem_1_1view_1_1ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a5de41b927cda98daba668aa7d25db990", null ]
 ];

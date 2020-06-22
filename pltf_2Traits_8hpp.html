@@ -91,9 +91,9 @@ $(document).ready(function(){initNavTree('pltf_2Traits_8hpp.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Concepts_8hpp_source.html">alpaka/core/Concepts.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="queue_2Traits_8hpp_source.html">alpaka/queue/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div>
@@ -111,6 +111,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1pltf_1_1traits_1_1PltfType.html">alpaka::pltf::traits::PltfType&lt; T, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The platform type trait.  <a href="structalpaka_1_1pltf_1_1traits_1_1PltfType.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01TPltf_00_01typename_01std_1_1enable__if_3_01conce25d886e9e4cd1f12355b97680a2d74ae.html">alpaka::pltf::traits::PltfType&lt; TPltf, typename std::enable_if&lt; concepts::ImplementsConcept&lt; pltf::ConceptPltf, TPltf &gt;::value &gt;::type &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1queue_1_1traits_1_1QueueType_3_01TPltf_00_01TProperty_00_01std_1_1enable__if__t_4db354a66b40d06f495f49f9ab6cca41.html">alpaka::queue::traits::QueueType&lt; TPltf, TProperty, std::enable_if_t&lt; concepts::ImplementsConcept&lt; pltf::ConceptPltf, TPltf &gt;::value &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,9 +150,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e89f35426a77c132b0c955448aba0fe"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
 <tr class="memitem:a6e89f35426a77c132b0c955448aba0fe"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1pltf.html#a6e89f35426a77c132b0c955448aba0fe">alpaka::pltf::getDevCount</a> ()</td></tr>
 <tr class="separator:a6e89f35426a77c132b0c955448aba0fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54ac9089e8aeb368dba808131a60167c"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
-<tr class="memitem:a54ac9089e8aeb368dba808131a60167c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1pltf.html#a54ac9089e8aeb368dba808131a60167c">alpaka::pltf::getDevs</a> () -&gt; std::vector&lt; dev::Dev&lt; TPltf &gt;&gt;</td></tr>
-<tr class="separator:a54ac9089e8aeb368dba808131a60167c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6de0b29844c24f8245f47d6049bdc45a"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
+<tr class="memitem:a6de0b29844c24f8245f47d6049bdc45a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1pltf.html#a6de0b29844c24f8245f47d6049bdc45a">alpaka::pltf::getDevs</a> () -&gt; std::vector&lt; dev::Dev&lt; Pltf&lt; TPltf &gt;&gt;&gt;</td></tr>
+<tr class="separator:a6de0b29844c24f8245f47d6049bdc45a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -158,7 +160,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_3da4cf0d8582bc897be6864cae72e9ae.html">pltf</a></li><li class="navelem"><a class="el" href="pltf_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Wed May 20 2020 19:20:02 for alpaka by
+    <li class="footer">Generated on Mon Jun 22 2020 07:50:38 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
