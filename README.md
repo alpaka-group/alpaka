@@ -78,7 +78,7 @@ This library uses C++14 (or newer when available).
 |TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |CUDA (nvcc)|:white_check_mark: <br/> (CUDA 9.0-10.2)|:white_check_mark: <br/> (CUDA 9.2-10.2) |:white_check_mark: <br/> (CUDA 10.1-10.2) |:x:|:white_check_mark: <br/> (CUDA 9.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:white_check_mark: <br/> (CUDA 10.1-10.2)|:x:|:x:|:x:|:white_check_mark: <br/> (CUDA 10.0-10.2)|
 |CUDA (clang) | - | - | - | - | - | - | :white_check_mark: <br/> (CUDA 9.0) | :white_check_mark: <br/> (CUDA 9.0-9.2) | :white_check_mark: <br/> (CUDA 9.0-10.0) | :white_check_mark: <br/> (CUDA 9.2-10.1) | :white_check_mark: <br/> (CUDA 9.2-10.1) | - | - |
-|[HIP](https://alpaka.readthedocs.io/en/latest/install/HIP.html) (nvcc)|:white_check_mark: <br/> (nvcc 9.0+)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|
+|[HIP](https://alpaka.readthedocs.io/en/latest/install/HIP.html) (nvcc)|:white_check_mark: <br/> (nvcc 9.2+)|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|
 
 
 Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.
