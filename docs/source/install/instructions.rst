@@ -18,7 +18,7 @@ alpaka Installation
   # cd alpaka
   mkdir build && cd build
   cmake -DCMAKE_INSTALL_PREFIX=/install/ ..
-  make install
+  cmake --install .
 
 * Configure Accelerators
 
