@@ -9,3 +9,4 @@ pygments
 #matplotlib
 #scipy
 #numpy
+rst2pdf
