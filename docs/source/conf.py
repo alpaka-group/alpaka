@@ -163,6 +163,7 @@ cpp_id_attributes = ["ALPAKA_FN_ACC",
 
 if on_rtd:
     subprocess.call('cd ..; doxygen', shell=True)
+    subprocess.call('cd ../cheatsheet; rst2pdf -s cheatsheet.style ../source/usage/cheatsheet.rst -o cheatsheet.pdf', shell=True)
 else:
     import sphinx_rtd_theme
     html_theme = "sphinx_rtd_theme"

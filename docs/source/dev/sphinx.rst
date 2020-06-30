@@ -15,12 +15,13 @@ For intrusive changes, like structural changes to chapters, please open an issue
 Build Locally
 -------------
 
-This document is build based on free open-source software, namely `Sphinx`_, `Doxygen`_ (C++ APIs as XML) and `Breathe`_ (to include doxygen XML in Sphinx).
+This document is build based on free open-source software, namely `Sphinx`_, `Doxygen`_ (C++ APIs as XML), `Breathe`_ (to include doxygen XML in Sphinx) and `rst2pdf`_ (render the cheat sheet).
 A web-version is hosted on `ReadTheDocs`_.
 
 .. _Sphinx: https://github.com/sphinx-doc/sphinx
 .. _Doxygen: http://doxygen.org
 .. _Breathe: https://github.com/michaeljones/breathe
+.. _rst2pdf: https://rst2pdf.org/
 .. _ReadTheDocs: https://readthedocs.org/
 
 The following requirements need to be installed (once) to build our documentation successfully:
@@ -49,6 +50,9 @@ Please check your documentation build is successful and renders as you expected 
 
     # parse the C++ API documentation (default: xml format)
     doxygen Doxyfile
+
+    # render the cheatsheet.pdf
+    rst2pdf -s cheatsheet/cheatsheet.style source/usage/cheatsheet.rst -o cheatsheet/cheatsheet.pdf
 
     # render the '.rst' files with sphinx
     make html
