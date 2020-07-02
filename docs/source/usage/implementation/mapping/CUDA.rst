@@ -11,7 +11,7 @@ Porting CUDA to *alpaka*
 ------------------------
 
 Nearly all CUDA functionality can be directly mapped to alpaka function calls.
-A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order. Alpaka uses the mathematical C/C++ array indexing scheme [z][y][x]. In both cases x is the innermost / fast running index.
+A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order. alpaka uses the mathematical C/C++ array indexing scheme [z][y][x]. In both cases x is the innermost / fast running index.
 
 Furthermore alpaka does not require the indices and extents to be 3-dimensional.
 The accelerators are templatized on and support arbitrary dimensionality.

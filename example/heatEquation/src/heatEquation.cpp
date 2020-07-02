@@ -1,6 +1,6 @@
 /* Copyright 2019 Benjamin Worpitz, Matthias Werner
  *
- * This file exemplifies usage of Alpaka.
+ * This file exemplifies usage of alpaka.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -24,7 +24,7 @@
 
 
 //#############################################################################
-//! Alpaka version of explicit finite-difference 1d heat equation solver
+//! alpaka version of explicit finite-difference 1d heat equation solver
 //!
 //! Solving equation u_t(x, t) = u_xx(x, t) using a simple explicit scheme with
 //! forward difference in t and second-order central difference in x

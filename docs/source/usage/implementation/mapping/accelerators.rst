@@ -89,7 +89,7 @@ CUDA
 
 Nearly all CUDA functionality can be directly mapped to alpaka function calls.
 A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order.
-Alpaka uses the mathematical C/C++ array indexing scheme [z][y][x].
+alpaka uses the mathematical C/C++ array indexing scheme [z][y][x].
 Dimension 0 in this case is z, dimensions 2 is x.
 
 Furthermore alpaka does not require the indices and extents to be 3-dimensional.

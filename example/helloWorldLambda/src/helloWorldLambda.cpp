@@ -1,6 +1,6 @@
 /* Copyright 2019 Benjamin Worpitz, Erik Zenker
  *
- * This file exemplifies usage of Alpaka.
+ * This file exemplifies usage of alpaka.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -117,8 +117,8 @@ auto main()
 
     // Run "Hello World" kernel with a lambda function
     //
-    // Alpaka is able to execute lambda functions (anonymous functions).
-    // Alpaka forces the lambda function to accept
+    // alpaka is able to execute lambda functions (anonymous functions).
+    // alpaka forces the lambda function to accept
     // the utilized accelerator as first argument.
     // All following arguments can be provided after
     // the lambda function declaration or be captured.
