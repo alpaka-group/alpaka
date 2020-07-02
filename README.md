@@ -90,7 +90,7 @@ Dependencies
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
-When an accelerator back-end using *Boost.Fiber* is enabled, `boost-fiber` and all of its dependencies are required to be built in C++11 mode `./b2 cxxflags="-std=c++14"`.
+When an accelerator back-end using *Boost.Fiber* is enabled, `boost-fiber` and all of its dependencies are required to be built in C++14 mode `./b2 cxxflags="-std=c++14"`.
 When *Boost.Fiber* is enabled and alpaka is built in C++17 mode with clang and libstc++, Boost >= 1.67.0 is required.
 
 When an accelerator back-end using *CUDA* is enabled, version *9.0* of the *CUDA SDK* is the minimum requirement.

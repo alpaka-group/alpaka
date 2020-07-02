@@ -146,7 +146,7 @@ auto main()
     Data * const pBufHostB(alpaka::mem::view::getPtrNative(bufHostB));
     Data * const pBufHostC(alpaka::mem::view::getPtrNative(bufHostC));
 
-    // C++11 random generator for uniformly distributed numbers in {1,..,42}
+    // C++14 random generator for uniformly distributed numbers in {1,..,42}
     std::random_device rd{};
     std::default_random_engine eng{ rd() };
     std::uniform_int_distribution<Data> dist(1, 42);
