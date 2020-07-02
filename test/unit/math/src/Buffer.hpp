@@ -1,6 +1,6 @@
 /** Copyright 2019 Jakob Krude, Benjamin Worpitz
  *
- * This file is part of Alpaka.
+ * This file is part of alpaka.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -20,7 +20,7 @@ namespace test {
 namespace unit {
 namespace math {
 
-//! Provides Alpaka-style buffer with arguments' data.
+//! Provides alpaka-style buffer with arguments' data.
 //! TData can be a plain value or a complex data-structure.
 //! The operator() is overloaded and returns the value from the correct Buffer,
 //! either from the host (index) or device buffer (index, acc).

@@ -2,7 +2,7 @@
 # Copyright 2014-2020 Benjamin Worpitz, Erik Zenker, Axel Huebl, Jan Stephan
 #                     Rene Widera
 #
-# This file is part of Alpaka.
+# This file is part of alpaka.
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -39,7 +39,7 @@ endif()
 if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "clang")
     message(WARNING
         "The HIP back-end is currently experimental."
-        "Alpaka HIP backend compiled with clang does not support callback functions."
+        "alpaka HIP backend compiled with clang does not support callback functions."
         )
 endif()
 

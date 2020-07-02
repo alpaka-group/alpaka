@@ -93,7 +93,7 @@ As of now, the back-end has only been tested on the NVIDIA platform.
 * NVIDIA Platform
 
   * One issue in this branch of alpaka is that the host compiler flags don't propagate to the device compiler, as they do in CUDA. This is because a counterpart to the ``CUDA_PROPAGATE_HOST_FLAGS`` cmake variable has not been defined in the FindHIP.cmake file.
-    Alpaka forwards the host compiler flags in cmake to the ``HIP_NVCC_FLAGS`` cmake variable, which also takes user-given flags. To add flags to this variable, toggle the advanced mode in ``ccmake``.
+    alpaka forwards the host compiler flags in cmake to the ``HIP_NVCC_FLAGS`` cmake variable, which also takes user-given flags. To add flags to this variable, toggle the advanced mode in ``ccmake``.
 
 
 Random Number Generator Library rocRAND for HIP back-end

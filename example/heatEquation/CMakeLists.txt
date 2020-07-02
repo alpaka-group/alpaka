@@ -1,7 +1,7 @@
 #
 # Copyright 2014-2020 Benjamin Worpitz, Jan Stephan
 #
-# This file exemplifies usage of Alpaka.
+# This file exemplifies usage of alpaka.
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above

@@ -9,7 +9,7 @@
 [![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20mac-lightgrey.svg)](https://github.com/alpaka-group/alpaka)
 [![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
 
-![Alpaka](docs/logo/alpaka_401x135.png)
+![alpaka](docs/logo/alpaka_401x135.png)
 
 The **alpaka** library is a header-only C++14 abstraction library for accelerator development.
 
