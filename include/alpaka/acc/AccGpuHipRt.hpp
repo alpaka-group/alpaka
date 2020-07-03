@@ -54,8 +54,7 @@ namespace alpaka
             typename TIdx>
         class AccGpuHipRt final :
             public acc::AccGpuUniformCudaHipRt<TDim,TIdx>,
-            public concepts::Implements<ConceptUniformCudaHip, AccGpuUniformCudaHipRt<TDim, TIdx>>,
-            public concepts::Implements<ConceptAcc, AccGpuHipRt<TDim, TIdx>>
+            public concepts::Implements<ConceptUniformCudaHip, AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
         public:
             //-----------------------------------------------------------------------------
