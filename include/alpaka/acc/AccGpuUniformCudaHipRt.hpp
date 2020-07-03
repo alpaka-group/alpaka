@@ -85,7 +85,8 @@ namespace alpaka
             public block::sync::BlockSyncUniformCudaHipBuiltIn,
             public intrinsic::IntrinsicUniformCudaHipBuiltIn,
             public rand::RandUniformCudaHipRand,
-            public time::TimeUniformCudaHipBuiltIn
+            public time::TimeUniformCudaHipBuiltIn,
+            public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
         public:
             //-----------------------------------------------------------------------------
