@@ -875,8 +875,8 @@ var hierarchy =
     [ "alpaka::concepts::Implements< ConceptAcc, AccCpuThreads< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::acc::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1acc_1_1AccCpuThreads.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptAcc, AccGpuCudaRt< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::acc::AccGpuCudaRt< TDim, TIdx >", "classalpaka_1_1acc_1_1AccGpuCudaRt.html", null ]
+    [ "alpaka::concepts::Implements< ConceptAcc, AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::acc::AccGpuUniformCudaHipRt< TDim, TIdx >", "classalpaka_1_1acc_1_1AccGpuUniformCudaHipRt.html", null ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptBlockSharedDyn, BlockSharedMemDynBoostAlignedAlloc >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc", "classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynBoostAlignedAlloc.html", [
