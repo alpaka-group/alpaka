@@ -34,6 +34,9 @@ git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --d
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     (cd "${BOOST_ROOT}"; ./bootstrap.bat)
+elif [ "${CXX}" == "icpc" ]
+then
+    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux")
 else
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
 fi
