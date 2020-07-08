@@ -123,6 +123,13 @@ then
         CMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS} -lc++ -lc++abi"
     fi
 
+    if [ "${CXX}" == "icpc" ]
+    then
+        set +eu
+        which ${CXX} || source /opt/intel/oneapi/setvars.sh
+        set -eu
+    fi
+
     which "${CXX}"
     ${CXX} -v
 
