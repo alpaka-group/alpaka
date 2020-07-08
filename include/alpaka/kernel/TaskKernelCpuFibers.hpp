@@ -122,7 +122,7 @@ namespace alpaka
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
                     meta::apply(
-                        [&](std::decay_t<TArgs> const & ... args)
+                        [&](auto const & ... args)
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
@@ -152,7 +152,7 @@ namespace alpaka
 
                 auto const boundGridBlockExecHost(
                     meta::apply(
-                        [this, &acc, &blockThreadExtent, &fiberPool](std::decay_t<TArgs> const & ... args)
+                        [this, &acc, &blockThreadExtent, &fiberPool](auto const & ... args)
                         {
                             // Bind the kernel and its arguments to the grid block function.
                             return
