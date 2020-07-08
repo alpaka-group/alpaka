@@ -51,6 +51,7 @@ if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${CXX}" == "g++" ] ;then ./script/install_gcc.sh ;fi
     if [ "${CXX}" == "clang++" ] ;then source ./script/install_clang.sh ;fi
+    if [ "${CXX}" == "icpc" ] ;then source ./script/install_icpc.sh ;fi
 elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     echo "### list all applications ###"
