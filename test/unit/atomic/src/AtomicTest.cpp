@@ -29,7 +29,7 @@ ALPAKA_FN_ACC auto testAtomicAdd(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
@@ -54,7 +54,7 @@ ALPAKA_FN_ACC auto testAtomicSub(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
@@ -79,7 +79,7 @@ ALPAKA_FN_ACC auto testAtomicMin(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
@@ -104,7 +104,7 @@ ALPAKA_FN_ACC auto testAtomicMax(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
@@ -129,7 +129,7 @@ ALPAKA_FN_ACC auto testAtomicExch(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
@@ -155,7 +155,7 @@ ALPAKA_FN_ACC auto testAtomicInc(
 -> void
 {
     // \TODO: Check reset to 0 at 'value'.
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(42);
     T const ret =
@@ -181,7 +181,7 @@ ALPAKA_FN_ACC auto testAtomicDec(
 -> void
 {
     // \TODO: Check reset to 'value' at 0.
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(42);
     T const ret =
@@ -206,7 +206,7 @@ ALPAKA_FN_ACC auto testAtomicAnd(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
@@ -231,7 +231,7 @@ ALPAKA_FN_ACC auto testAtomicOr(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
@@ -256,7 +256,7 @@ ALPAKA_FN_ACC auto testAtomicXor(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
     operand = operandOrig;
     T const value = operandOrig + static_cast<T>(4);
     T const ret =
@@ -281,7 +281,7 @@ ALPAKA_FN_ACC auto testAtomicCas(
     T operandOrig)
 -> void
 {
-    auto && operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
+    auto & operand = alpaka::block::shared::st::allocVar<T, __COUNTER__>(acc);
 
     //-----------------------------------------------------------------------------
     // with match
