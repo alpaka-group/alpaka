@@ -20,6 +20,7 @@
 
 // Implementation details.
 #include <alpaka/acc/AccCpuThreads.hpp>
+#include <alpaka/core/Decay.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/kernel/Traits.hpp>
 #include <alpaka/workdiv/WorkDivMembers.hpp>
@@ -121,7 +122,7 @@ namespace alpaka
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
                     meta::apply(
-                        [&](std::decay_t<TArgs> const & ... args)
+                        [&](ALPAKA_DECAY_T(TArgs) const & ... args)
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
@@ -147,7 +148,7 @@ namespace alpaka
                 // Bind the kernel and its arguments to the grid block function.
                 auto const boundGridBlockExecHost(
                     meta::apply(
-                        [this, &acc, &blockThreadExtent, &threadPool](std::decay_t<TArgs> const & ... args)
+                        [this, &acc, &blockThreadExtent, &threadPool](ALPAKA_DECAY_T(TArgs) const & ... args)
                         {
                             return
                                 std::bind(

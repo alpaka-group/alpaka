@@ -20,6 +20,7 @@
 
 // Implementation details.
 #include <alpaka/acc/AccCpuSerial.hpp>
+#include <alpaka/core/Decay.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/kernel/Traits.hpp>
@@ -92,7 +93,7 @@ namespace alpaka
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
                     meta::apply(
-                        [&](std::decay_t<TArgs> const & ... args)
+                        [&](ALPAKA_DECAY_T(TArgs) const & ... args)
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
@@ -112,7 +113,7 @@ namespace alpaka
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
                 auto const boundKernelFnObj(
                     meta::apply(
-                        [this](std::decay_t<TArgs> const & ... args)
+                        [this](ALPAKA_DECAY_T(TArgs) const & ... args)
                         {
                             return
                                 std::bind(
