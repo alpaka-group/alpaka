@@ -141,38 +141,42 @@ endif()
 
 ################################################################################
 # Installation.
-include(CMakePackageConfigHelpers)
-include(GNUInstallDirs)
 
-set(_ALPAKA_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/alpaka")
+# Do not install if alpaka is used as a CMake subdirectory
+if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
+    include(CMakePackageConfigHelpers)
+    include(GNUInstallDirs)
 
-install(TARGETS alpaka
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-        
-write_basic_package_version_file(
-    "alpakaConfigVersion.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion)
+    set(_ALPAKA_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/alpaka")
 
-configure_package_config_file(
-    "${_ALPAKA_ROOT_DIR}/cmake/alpakaConfig.cmake.in"
-    "${PROJECT_BINARY_DIR}/alpakaConfig.cmake" 
-    INSTALL_DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
+    install(TARGETS alpaka
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-install(FILES "${PROJECT_BINARY_DIR}/alpakaConfig.cmake"
-              "${PROJECT_BINARY_DIR}/alpakaConfigVersion.cmake"
-        DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
+    write_basic_package_version_file(
+        "alpakaConfigVersion.cmake"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion)
 
-install(DIRECTORY "${_ALPAKA_SUFFIXED_INCLUDE_DIR}"
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+    configure_package_config_file(
+        "${_ALPAKA_ROOT_DIR}/cmake/alpakaConfig.cmake.in"
+        "${PROJECT_BINARY_DIR}/alpakaConfig.cmake" 
+        INSTALL_DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
 
-install(FILES "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake"
-              "${_ALPAKA_ROOT_DIR}/cmake/addLibrary.cmake"
-              "${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake"
-              "${_ALPAKA_ROOT_DIR}/cmake/common.cmake"
-        DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
+    install(FILES "${PROJECT_BINARY_DIR}/alpakaConfig.cmake"
+                  "${PROJECT_BINARY_DIR}/alpakaConfigVersion.cmake"
+            DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
 
-install(DIRECTORY "${_ALPAKA_ROOT_DIR}/cmake/modules"
-        DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
+    install(DIRECTORY "${_ALPAKA_SUFFIXED_INCLUDE_DIR}"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+    install(FILES "${_ALPAKA_ROOT_DIR}/cmake/addExecutable.cmake"
+                  "${_ALPAKA_ROOT_DIR}/cmake/addLibrary.cmake"
+                  "${_ALPAKA_ROOT_DIR}/cmake/alpakaCommon.cmake"
+                  "${_ALPAKA_ROOT_DIR}/cmake/common.cmake"
+            DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
+
+    install(DIRECTORY "${_ALPAKA_ROOT_DIR}/cmake/modules"
+            DESTINATION "${_ALPAKA_INSTALL_CMAKEDIR}")
+endif()
