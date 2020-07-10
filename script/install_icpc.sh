@@ -35,3 +35,5 @@ set -eu
 
 which "${CXX}"
 ${CXX} -v
+which "${CC}"
+${CC} -v
