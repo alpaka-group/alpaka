@@ -36,7 +36,7 @@ then
     (cd "${BOOST_ROOT}"; ./bootstrap.bat)
 elif [ "${CXX}" == "icpc" ]
 then
-    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux")
+    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux" || cat bootstrap.log)
 else
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
 fi
