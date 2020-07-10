@@ -119,3 +119,11 @@
 #else
     #define BOOST_COMP_CLANG_CUDA BOOST_VERSION_NUMBER_NOT_AVAILABLE
 #endif
+
+//-----------------------------------------------------------------------------
+// Intel compiler detection
+// BOOST_COMP_INTEL_EMULATED is defined by boost instead of BOOST_COMP_INTEL
+#if defined(BOOST_COMP_INTEL) && defined(BOOST_COMP_INTEL_EMULATED)
+    #undef BOOST_COMP_INTEL
+    #define BOOST_COMP_INTEL BOOST_COMP_INTEL_EMULATED
+#endif
