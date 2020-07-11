@@ -109,22 +109,6 @@ then
 
 fi
 
-# clang
-if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
-then
-    if [ "${CXX}" == "clang++" ]
-    then
-        # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
-        export PATH=${ALPAKA_CI_CLANG_DIR}/bin:${PATH}
-        export LD_LIBRARY_PATH=${ALPAKA_CI_CLANG_DIR}/lib:${LD_LIBRARY_PATH}
-        if [ -z "${CPPFLAGS+x}" ]
-        then
-            CPPFLAGS=
-        fi
-        export CPPFLAGS="-I ${ALPAKA_CI_CLANG_DIR}/include/c++/v1 ${CPPFLAGS}"
-    fi
-fi
-
 # stdlib
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then

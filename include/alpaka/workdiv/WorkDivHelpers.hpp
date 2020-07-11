@@ -235,7 +235,7 @@ namespace alpaka
                 // For equal block thread extent this is easily the nth root of blockThreadCountMax.
                 if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
                 {
-                    double const fNthRoot(std::pow(blockThreadCountMax, 1.0/static_cast<double>(TDim::value)));
+                    double const fNthRoot(std::pow(static_cast<double>(blockThreadCountMax), 1.0/static_cast<double>(TDim::value)));
                     TIdx const nthRoot(static_cast<TIdx>(fNthRoot));
                     for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
