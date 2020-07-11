@@ -20,7 +20,7 @@ then
     export ALPAKA_CI_GCC_VER_MAJOR="${ALPAKA_CI_GCC_VER_SEMANTIC[0]}"
     echo ALPAKA_CI_GCC_VER_MAJOR: "${ALPAKA_CI_GCC_VER_MAJOR}"
 
-    if [[ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == *"20.04"* ]]
+    if [[ "$(cat /etc/os-release)" == *"20.04"* ]]
     then
         if (( "${ALPAKA_CI_GCC_VER_MAJOR}" <= 6 ))
         then
