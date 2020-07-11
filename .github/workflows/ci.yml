@@ -69,7 +69,6 @@ env:
   ALPAKA_ACC_GPU_CUDA_ONLY_MODE: OFF
   ALPAKA_ACC_GPU_HIP_ENABLE: OFF
   ALPAKA_ACC_GPU_HIP_ONLY_MODE: OFF
-  ALPAKA_CI_DOCKER_IMAGE_NAME: alpaka_ubuntu
 
 jobs:
   ci:
@@ -96,8 +95,7 @@ jobs:
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 9,      ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.69.0, ALPAKA_CI_CMAKE_VER: 3.17.3, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 1, ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "9.2", ALPAKA_CUDA_COMPILER: clang,       ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF}
         - name: windows_cl-2019_debug_analysis
           os: windows-2019
-          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.16.5,                     ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2,                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF,
-                ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF}
+          env: {CXX: cl.exe,  CC: cl.exe, ALPAKA_CI_CL_VER: 2019,                                   CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.16.5,                     ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2,                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF}
         - name: macos_xcode-11.3_debug_analysis
           os: macos-10.15
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_XCODE_VER: 11.3.1,                              CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.65.1,                                                  ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2,                                                                                                                                                  ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF}
