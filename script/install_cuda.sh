@@ -18,16 +18,15 @@ source ./script/set.sh
 
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
-    : "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME?'ALPAKA_CI_DOCKER_BASE_IMAGE_NAME must be specified'}"
     : "${ALPAKA_CI_CUDA_DIR?'ALPAKA_CI_CUDA_DIR must be specified'}"
     : "${ALPAKA_CUDA_COMPILER?'ALPAKA_CUDA_COMPILER must be specified'}"
 
     # Ubuntu 18.04 requires some extra keys for verification
-    if [[ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == *"18.04"* ]]
+    if [[ "$(cat /etc/os-release)" == *"18.04"* ]]
     then
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install dirmngr gpg-agent
         travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
-    elif [[ "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" == *"20.04"* ]]
+    elif [[ "$(cat /etc/os-release)" == *"20.04"* ]]
     then
         travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install dirmngr gpg-agent
         travis_retry sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F60F4B3D7FA2AF80
