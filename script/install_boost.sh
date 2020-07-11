@@ -115,6 +115,13 @@ then
         fi
         ALPAKA_BOOST_B2+=" --with-fiber --with-context --with-thread --with-atomic --with-system --with-chrono --with-date_time"
     fi
+    if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
+    then
+        if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
+        then
+            ALPAKA_BOOST_B2_CXXFLAGS+=" -stdlib=libc++"
+        fi
+    fi
     if [ "${ALPAKA_BOOST_B2_CFLAGS}" != "" ]
     then
         ALPAKA_BOOST_B2+=' cflags="'
@@ -125,13 +132,6 @@ then
     then
         ALPAKA_BOOST_B2+=' cxxflags="'
         ALPAKA_BOOST_B2+="${ALPAKA_BOOST_B2_CXXFLAGS}"
-        if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
-        then
-            if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
-            then
-                ALPAKA_BOOST_B2+=" -stdlib=libc++"
-            fi
-        fi
         ALPAKA_BOOST_B2+='"'
     fi
 
