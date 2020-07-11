@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1math_1_1traits_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01float_01_4.html#a547178816f24da33d8effa012adfa7d1":[2,0,0,15,0,79,0],
+"structalpaka_1_1math_1_1traits_1_1Rsqrt.html":[2,0,0,15,0,81],
+"structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_019f28fdd56d9d420b26155357183db309.html":[2,0,0,15,0,82],
 "structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_019f28fdd56d9d420b26155357183db309.html#adcd60b556e598e56bfe9bb4175500c67":[2,0,0,15,0,82,0],
 "structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1ena044d32a240b80fe33a5e57d8f9e7efc9.html":[2,0,0,15,0,84],
 "structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1ena044d32a240b80fe33a5e57d8f9e7efc9.html#aa8930a6c07dc7a68d0db90197442ad93":[2,0,0,15,0,84,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500.html":[2,0,0,16,2,3,0,6],
 "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500.html#a860de898061933ca4bcfdc9087fc1af0":[2,0,0,16,2,3,0,6,1],
 "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500.html#aa41836107a69d186b331ce61029003bc":[2,0,0,16,2,3,0,6,0],
-"structalpaka_1_1meta_1_1DependentFalseType.html":[2,0,0,17,1],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[2,0,0,17,4],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html":[2,0,0,17,5],
-"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html#a2ac817ce7793e9f788fd2e0b01a285b4":[2,0,0,17,5,0]
+"structalpaka_1_1meta_1_1DependentFalseType.html":[2,0,0,17,1]
 };

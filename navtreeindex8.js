@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicUniformCudaHipBubda3a0ca37af55b9dd1e55dac843a73a.html":[2,0,0,1,2,2],
+"structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicUniformCudaHipBubda3a0ca37af55b9dd1e55dac843a73a.html#a3190c7d4aa4535328d88f799dc149c69":[2,0,0,1,2,2,0],
+"structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1And_00_01atomic_1_1AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html":[2,0,0,1,2,8],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1And_00_01atomic_1_1AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#a9a374deb3f2143063a822671c0cf0b8f":[2,0,0,1,2,8,0],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1And_00_01atomic_1_1AtomicUniformCudaHipBu7593cf86a107395fe460bbab2ea07050.html":[2,0,0,1,2,9],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1And_00_01atomic_1_1AtomicUniformCudaHipBu7593cf86a107395fe460bbab2ea07050.html#a2d6b4a78e4b99744074af565dac8f1f0":[2,0,0,1,2,9,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a61759276a58115a2fda6d33f500ed9d7":[2,0,0,6,1,16,0],
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1view_1_1ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,17],
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1view_1_1ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a638dc034f2380cb5955d3031f45b7fa4":[2,0,0,6,1,17,0],
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1view_1_1ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,18],
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1view_1_1ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#ab79fd1b599c46b86c7fb635df2c338e2":[2,0,0,6,1,18,0],
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01pltf_1_1PltfCpu_01_4.html":[2,0,0,6,1,19],
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01pltf_1_1PltfCpu_01_4.html#a463190cbb79fdd6fbafb0e283c753caa":[2,0,0,6,1,19,0]
+"structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1view_1_1ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,18]
 };

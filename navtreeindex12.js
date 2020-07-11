@@ -1,5 +1,8 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange.html":[2,0,0,17,4],
+"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html":[2,0,0,17,5],
+"structalpaka_1_1meta_1_1IntegerSequenceValuesInRange_3_01std_1_1integer__sequence_3_01T_00_01Tva6fcbf8e2bf818be858aa347bee2107be.html#a2ac817ce7793e9f788fd2e0b01a285b4":[2,0,0,17,5,0],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique.html":[2,0,0,17,6],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01std_1_1integer__sequence_3_01T_00_01Tvals_8_8_8_01_4_01_4.html":[2,0,0,17,7],
 "structalpaka_1_1meta_1_1IntegerSequenceValuesUnique_3_01std_1_1integer__sequence_3_01T_00_01Tvals_8_8_8_01_4_01_4.html#a5c260701014e2734e9574ca9480db7df":[2,0,0,17,7,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01med081d82d8c557ba3484433a312e27d33.html#abc0556ff4558f980a9ce0e725344f46c":[2,0,0,20,1,23,0],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1generic_1_1detail_1_1QueueGenericThreads7c17c31a26a12ad1eee8a94771b04f17.html":[2,0,0,20,1,6],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1generic_1_1detail_1_1QueueGenericThreads7c17c31a26a12ad1eee8a94771b04f17.html#a7ef80f83fe9483106d62285025a9a397":[2,0,0,20,1,6,0],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1generic_1_1detail_1_1QueueGenericThreadse0e3d23c13fe8a775a5412daf434aa72.html":[2,0,0,20,1,5],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1generic_1_1detail_1_1QueueGenericThreadse0e3d23c13fe8a775a5412daf434aa72.html#a6fefba8ce8b7d8811147ee45e1d8be48":[2,0,0,20,1,5,0],
-"structalpaka_1_1queue_1_1traits_1_1QueueType.html":[2,0,0,20,1,29],
-"structalpaka_1_1queue_1_1traits_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_353976cb9af98f7dafe7650db232bc891.html":[2,0,0,20,1,34]
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1generic_1_1detail_1_1QueueGenericThreadse0e3d23c13fe8a775a5412daf434aa72.html":[2,0,0,20,1,5]
 };

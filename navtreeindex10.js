@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html#a0bfe98e3766a6e17141f443bdddb097d":[2,0,0,12,3,19,0],
+"structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,12,3,20],
+"structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html#a8b373afa7d2d9e0a80e6a7849661b211":[2,0,0,12,3,20,0],
 "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,12,3,21],
 "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html#ab8c52c96a3355c9c007f0d937023cf5a":[2,0,0,12,3,21,0],
 "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,12,3,22],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1traits_1_1Round_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_015fef148c9e496a2a3697af35a7e839e2.html#a45a65635a5694e268f4e22caa9658ebe":[2,0,0,15,0,78,0],
 "structalpaka_1_1math_1_1traits_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1ena456ff81a2cc4fa70cc68e524990c646d.html":[2,0,0,15,0,80],
 "structalpaka_1_1math_1_1traits_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1ena456ff81a2cc4fa70cc68e524990c646d.html#adb24378be956b9f931079c38e541d449":[2,0,0,15,0,80,0],
-"structalpaka_1_1math_1_1traits_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01float_01_4.html":[2,0,0,15,0,79],
-"structalpaka_1_1math_1_1traits_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01float_01_4.html#a547178816f24da33d8effa012adfa7d1":[2,0,0,15,0,79,0],
-"structalpaka_1_1math_1_1traits_1_1Rsqrt.html":[2,0,0,15,0,81],
-"structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_019f28fdd56d9d420b26155357183db309.html":[2,0,0,15,0,82]
+"structalpaka_1_1math_1_1traits_1_1Round_3_01RoundUniformCudaHipBuiltIn_00_01float_01_4.html":[2,0,0,15,0,79]
 };
