@@ -36,11 +36,9 @@ then
     (cd "${BOOST_ROOT}"; ./bootstrap.bat)
 elif [ "${CXX}" == "icpc" ]
 then
-    which "${CXX}"
-    ${CXX} -v
-    which "${CC}"
-    ${CC} -v
-    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="cxx" || cat bootstrap.log)
+    # outdated icpc/icc flags: https://github.com/boostorg/build/pull/635
+    sed -i 's/-xc++/-std=c++11/g' ${BOOST_ROOT}/tools/build/src/engine/build.sh
+    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux" || cat bootstrap.log)
 else
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
 fi
