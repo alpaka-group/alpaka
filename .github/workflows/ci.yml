@@ -491,10 +491,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      if: (!contains(github.event.head_commit.message, 'ci_filter') || contains(github.event.head_commit.message, matrix.name ))
     - name: build + test
-      if: runner.os == 'Windows'
+      if: (!contains(github.event.head_commit.message, 'ci_filter') || contains(github.event.head_commit.message, matrix.name )) && (runner.os == 'Windows')
       shell: bash
       run: cd ${GITHUB_WORKSPACE} && ./script/ci.sh
     - name: build + test
-      if: runner.os == 'Linux' || runner.os == 'macOS'
+      if: (!contains(github.event.head_commit.message, 'ci_filter') || contains(github.event.head_commit.message, matrix.name )) && (runner.os == 'Linux' || runner.os == 'macOS')
       run: cd ${GITHUB_WORKSPACE} && ./script/ci.sh
