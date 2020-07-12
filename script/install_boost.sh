@@ -40,8 +40,6 @@ then
     ${CXX} -v
     which "${CC}"
     ${CC} -v
-    export CXXFLAGS="-std=c++14"
-    export CXX="$(which ${CXX}) -std=c++14"
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="cxx" || cat bootstrap.log)
 else
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
