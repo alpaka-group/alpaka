@@ -36,9 +36,13 @@ then
     (cd "${BOOST_ROOT}"; ./bootstrap.bat)
 elif [ "${CXX}" == "icpc" ]
 then
-    # outdated icpc/icc flags: https://github.com/boostorg/build/pull/635
-    sed -i 's/-xc++/-std=c++11/g' ${BOOST_ROOT}/tools/build/src/engine/build.sh
-    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux" || cat bootstrap.log)
+    cd $(mktemp -d)
+    BOOST_BUILD_DIR=$PWD
+    cmake ${BOOST_ROOT} -DCMAKE_INSTALL_PREFIX=${ALPAKA_CI_BOOST_LIB_DIR}
+    make -j 2
+    make install
+    cd -
+    rm -rf ${BOOST_BUILD_DIR}
 else
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
 fi
