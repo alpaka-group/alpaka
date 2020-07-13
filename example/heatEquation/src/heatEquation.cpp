@@ -1,4 +1,5 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2020 Benjamin Worpitz, Matthias Werner, Jakob Krude,
+ *                Sergei Bastrakov
  *
  * This file exemplifies usage of alpaka.
  *
@@ -21,6 +22,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <utility>
 
 
 //#############################################################################
@@ -40,17 +42,15 @@
 struct HeatEquationKernel
 {
     template<
-        typename TAcc
-    >
+        typename TAcc>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         double const * const uCurrBuf,
         double * const uNextBuf,
-        double const & extent,
-        double const & dx,
-        double const & dt
-
-    ) const -> void
+        uint32_t const extent,
+        double const dx,
+        double const dt) const
+    -> void
     {
         // Each kernel executes one element
         double const r = dt / ( dx * dx );
@@ -114,8 +114,6 @@ auto main( ) -> int
         return EXIT_FAILURE;
     }
 
-    // ALPAKA-SETUP
-
     // Set Dim and Idx type
     using Dim = alpaka::dim::DimInt< 1u >;
     using Idx = uint32_t;
@@ -141,7 +139,7 @@ auto main( ) -> int
         Dim,
         Idx
     >;
-    WorkDiv workdiv {
+    auto workdiv = WorkDiv{
         alpaka::workdiv::getValidWorkDiv< Acc >(
             devAcc,
             extent,
@@ -167,32 +165,28 @@ auto main( ) -> int
         Idx
     >;
     // This buffer holds the calculated values
-    BufHost uNextBufHost
-        {
-            alpaka::mem::buf::alloc<
-                double,
-                Idx
-            >(
-                devHost,
-                extent
-            )
-        };
+    auto uNextBufHost = BufHost{
+        alpaka::mem::buf::alloc<
+            double,
+            Idx
+        >(
+            devHost,
+            extent
+        )
+    };
     // This buffer will hold the current values (used for the next step)
-    BufHost uCurrBufHost
-        {
-            alpaka::mem::buf::alloc<
-                double,
-                Idx
-            >(
-                devHost,
-                extent
-            )
-        };
+    auto uCurrBufHost = BufHost{
+        alpaka::mem::buf::alloc<
+            double,
+            Idx
+        >(
+            devHost,
+            extent
+        )
+    };
 
-    double
-        * const pCurrHost { alpaka::mem::view::getPtrNative( uCurrBufHost ) };
-    double
-        * const pNextHost { alpaka::mem::view::getPtrNative( uNextBufHost ) };
+    double * const pCurrHost = alpaka::mem::view::getPtrNative( uCurrBufHost );
+    double * const pNextHost = alpaka::mem::view::getPtrNative( uNextBufHost );
 
     // Accelerator buffer
     using BufAcc = alpaka::mem::buf::Buf<
@@ -201,29 +195,27 @@ auto main( ) -> int
         Dim,
         Idx
     >;
-    BufAcc uNextBufAcc
-        {
-            alpaka::mem::buf::alloc<
-                double,
-                Idx
-            >(
-                devAcc,
-                extent
-            )
-        };
-    BufAcc uCurrBufAcc
-        {
-            alpaka::mem::buf::alloc<
-                double,
-                Idx
-            >(
-                devAcc,
-                extent
-            )
-        };
+    auto uNextBufAcc = BufAcc{
+        alpaka::mem::buf::alloc<
+            double,
+            Idx
+        >(
+            devAcc,
+            extent
+        )
+    };
+    auto uCurrBufAcc = BufAcc{
+        alpaka::mem::buf::alloc<
+            double,
+            Idx
+        >(
+            devAcc,
+            extent
+        )
+    };
 
-    double * pCurrAcc { alpaka::mem::view::getPtrNative( uCurrBufAcc ) };
-    double * pNextAcc { alpaka::mem::view::getPtrNative( uNextBufAcc ) };
+    double * pCurrAcc = alpaka::mem::view::getPtrNative( uCurrBufAcc );
+    double * pNextAcc = alpaka::mem::view::getPtrNative( uNextBufAcc );
 
     // Apply initial conditions for the test problem
     for( uint32_t i = 0; i < numNodesX; i++ )
@@ -243,8 +235,15 @@ auto main( ) -> int
         uCurrBufHost,
         extent
     );
+    // Copy to the buffer for next as well to have boundary values set
+    alpaka::mem::view::copy(
+        queue,
+        uNextBufAcc,
+        uCurrBufAcc,
+        extent
+    );
+    alpaka::wait::wait( queue );
 
-    // EXECUTION
     for( uint32_t step = 0; step < numTimeSteps; step++ )
     {
         // Compute next values
@@ -259,7 +258,9 @@ auto main( ) -> int
             dt
         );
 
-        // Swap next to curr (shallow copy)
+        // We assume the boundary conditions are constant and so these values
+        // do not need to be updated.
+        // So we just swap next to curr (shallow copy)
         std::swap(
             pCurrAcc,
             pNextAcc
@@ -279,23 +280,24 @@ auto main( ) -> int
     double maxError = 0.0;
     for( uint32_t i = 0; i < numNodesX; i++ )
     {
-        auto const error =
-            std::abs(
-                pNextHost[i] -
-                exactSolution(
-                    i * dx,
-                    tMax
-                )
-            );
-        maxError =
-            std::max(
-                maxError,
-                error
-            );
+        auto const error = std::abs(
+            pNextHost[i] - exactSolution( i * dx, tMax )
+        );
+        maxError = std::max( maxError, error );
     }
-    std::cout << "Max error to the exact solution at t = tMax: " << maxError
-              << "\n";
 
-    return EXIT_SUCCESS;
+    double const errorThreshold = 1e-5;
+    bool resultCorrect = ( maxError < errorThreshold );
+    if( resultCorrect )
+    {
+        std::cout << "Execution results correct!" << std::endl;
+        return EXIT_SUCCESS;
+    }
+    else
+    {
+        std::cout << "Execution results incorrect: error = " << maxError
+            << " (the grid resolution may be too low)" << std::endl;
+        return EXIT_FAILURE;
+    }
 #endif
 }
