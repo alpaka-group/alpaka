@@ -30,19 +30,31 @@ fi
 
 git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
 
+if [ "${CXX}" == "icpc" ]
+then
+    # https://github.com/boostorg/build/pull/639
+    cd ${BOOST_ROOT}
+    git config --file=.gitmodules submodule.build.url https://github.com/aminiussi/build.git
+    git config --file=.gitmodules submodule.build.branch bugfix/634-intel-linux-icpc
+    git submodule sync
+    cd -
+    cd ${BOOST_ROOT}/tools/build
+    git fetch --all
+    git checkout bugfix/634-intel-linux-icpc
+    cd -
+fi
+
+
+
 # Bootstrap boost.
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     (cd "${BOOST_ROOT}"; ./bootstrap.bat)
 elif [ "${CXX}" == "icpc" ]
 then
-    cd $(mktemp -d)
-    BOOST_BUILD_DIR=$PWD
-    cmake ${BOOST_ROOT} -DCMAKE_INSTALL_PREFIX=${ALPAKA_CI_BOOST_LIB_DIR}
-    make -j 2
-    make install
-    cd -
-    rm -rf ${BOOST_BUILD_DIR}
+    export CC=$(which icc)
+    export CXX=$(which icpc)
+    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux" || cat bootstrap.log)
 else
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
 fi
