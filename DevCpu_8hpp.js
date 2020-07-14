@@ -5,6 +5,7 @@ var DevCpu_8hpp =
     [ "GetFreeMemBytes< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1GetFreeMemBytes_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetFreeMemBytes_3_01dev_1_1DevCpu_01_4" ],
     [ "GetMemBytes< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1GetMemBytes_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetMemBytes_3_01dev_1_1DevCpu_01_4" ],
     [ "GetName< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1GetName_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetName_3_01dev_1_1DevCpu_01_4" ],
+    [ "GetWarpSize< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1GetWarpSize_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetWarpSize_3_01dev_1_1DevCpu_01_4" ],
     [ "Reset< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevCpu_01_4" ],
     [ "BufCpu", "classalpaka_1_1mem_1_1buf_1_1BufCpu.html", "classalpaka_1_1mem_1_1buf_1_1BufCpu" ],
     [ "BufType< dev::DevCpu, TElem, TDim, TIdx >", "structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4" ],

@@ -1,16 +1,20 @@
 var NAVTREEINDEX2 =
 {
-"WorkDivMembers_8hpp.html#a5125180f779736f24fdcfee693a5b071":[3,0,0,0,24,2,6],
-"WorkDivMembers_8hpp_source.html":[3,0,0,0,24,2],
-"WorkDivUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,24,3],
-"WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,24,3],
+"WorkDivHelpers_8hpp.html#aba5c202eb52a626944b0d52323537289":[3,0,0,0,25,1,3],
+"WorkDivHelpers_8hpp.html#ad8a3f6a58910f715e46a8348da258e9f":[3,0,0,0,25,1,5],
+"WorkDivHelpers_8hpp_source.html":[3,0,0,0,25,1],
+"WorkDivMembers_8hpp.html":[3,0,0,0,25,2],
+"WorkDivMembers_8hpp.html#a5125180f779736f24fdcfee693a5b071":[3,0,0,0,25,2,6],
+"WorkDivMembers_8hpp_source.html":[3,0,0,0,25,2],
+"WorkDivUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,25,3],
+"WorkDivUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,25,3],
 "acc_2Traits_8hpp.html":[3,0,0,0,0,11],
 "acc_2Traits_8hpp.html#a7b905023ee74aad8eb3b3c23f26e022f":[3,0,0,0,0,11,14],
 "acc_2Traits_8hpp.html#a88e7a1247514e5ae9a5e22d8ffefb8b6":[3,0,0,0,0,11,13],
 "acc_2Traits_8hpp.html#a9c1f52fe72bb5b7b0b9124ddda895d50":[3,0,0,0,0,11,12],
 "acc_2Traits_8hpp_source.html":[3,0,0,0,0,11],
-"alpaka_8hpp.html":[3,0,0,0,25],
-"alpaka_8hpp_source.html":[3,0,0,0,25],
+"alpaka_8hpp.html":[3,0,0,0,26],
+"alpaka_8hpp_source.html":[3,0,0,0,26],
 "annotated.html":[2,0],
 "atomic_2Traits_8hpp.html":[3,0,0,0,1,6],
 "atomic_2Traits_8hpp.html#a546055c9a8844ab7ccbb4a6d690383cc":[3,0,0,0,1,6,9],
@@ -245,9 +249,5 @@ var NAVTREEINDEX2 =
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963":[2,0,0,4,1,7,6],
 "classalpaka_1_1core_1_1detail_1_1ITaskPkg.html":[2,0,0,4,1,8],
 "classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a42025baac7befc45bf4a0c6362f5e050":[2,0,0,4,1,8,0],
-"classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a60e339b89dc58f8a79669ed3458cff9c":[2,0,0,4,1,8,1],
-"classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#afba4bb23cab652a79d1b0f4e2120cd29":[2,0,0,4,1,8,2],
-"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html":[2,0,0,4,1,11],
-"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1":[2,0,0,4,1,11,2],
-"classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4d0ef25dcb48661ecfe10ed5ac695b3d":[2,0,0,4,1,11,3]
+"classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a60e339b89dc58f8a79669ed3458cff9c":[2,0,0,4,1,8,1]
 };

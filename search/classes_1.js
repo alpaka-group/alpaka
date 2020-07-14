@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['ballot',['Ballot',['../structalpaka_1_1warp_1_1traits_1_1Ballot.html',1,'alpaka::warp::traits']]],
+  ['ballot_3c_20warpsinglethread_20_3e',['Ballot&lt; WarpSingleThread &gt;',['../structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpSingleThread_01_4.html',1,'alpaka::warp::traits']]],
+  ['ballot_3c_20warpuniformcudahipbuiltin_20_3e',['Ballot&lt; WarpUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html',1,'alpaka::warp::traits']]],
   ['barrierthread',['BarrierThread',['../classalpaka_1_1core_1_1threads_1_1BarrierThread.html',1,'alpaka::core::threads']]],
   ['barrierthreadwithpredicate',['BarrierThreadWithPredicate',['../classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html',1,'alpaka::core::threads']]],
   ['blocks',['Blocks',['../structalpaka_1_1hierarchy_1_1Blocks.html',1,'alpaka::hierarchy']]],

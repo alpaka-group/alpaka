@@ -78,6 +78,7 @@ var searchData=
   ['conceptrand',['ConceptRand',['../structalpaka_1_1rand_1_1ConceptRand.html',1,'alpaka::rand']]],
   ['concepttime',['ConceptTime',['../structalpaka_1_1time_1_1ConceptTime.html',1,'alpaka::time']]],
   ['conceptuniformcudahip',['ConceptUniformCudaHip',['../structalpaka_1_1acc_1_1ConceptUniformCudaHip.html',1,'alpaka::acc']]],
+  ['conceptwarp',['ConceptWarp',['../structalpaka_1_1warp_1_1ConceptWarp.html',1,'alpaka::warp']]],
   ['conceptworkdiv',['ConceptWorkDiv',['../structalpaka_1_1workdiv_1_1ConceptWorkDiv.html',1,'alpaka::workdiv']]],
   ['concurrentexecpool',['ConcurrentExecPool',['../classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html',1,'alpaka::core::detail']]],
   ['concurrentexecpool_3c_20std_3a_3asize_5ft_2c_20std_3a_3athread_2c_20std_3a_3apromise_2c_20void_2c_20std_3a_3amutex_2c_20std_3a_3acondition_5fvariable_2c_20false_20_3e',['ConcurrentExecPool&lt; std::size_t, std::thread, std::promise, void, std::mutex, std::condition_variable, false &gt;',['../classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html',1,'alpaka::core::detail']]],

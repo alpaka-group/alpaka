@@ -135,6 +135,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a544f4f17c37407999a2a41da1279802b"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a544f4f17c37407999a2a41da1279802b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a544f4f17c37407999a2a41da1279802b">getName</a> (TDev const &amp;dev) -&gt; std::string</td></tr>
 <tr class="separator:a544f4f17c37407999a2a41da1279802b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada1f36684decb83df8b4eb644c18e6d4"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:ada1f36684decb83df8b4eb644c18e6d4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#ada1f36684decb83df8b4eb644c18e6d4">getWarpSize</a> (TDev const &amp;dev) -&gt; std::size_t</td></tr>
+<tr class="separator:ada1f36684decb83df8b4eb644c18e6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9525b6a978b6e07598b88d708cd97f84"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a9525b6a978b6e07598b88d708cd97f84"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a9525b6a978b6e07598b88d708cd97f84">reset</a> (TDev const &amp;dev) -&gt; void</td></tr>
 <tr class="memdesc:a9525b6a978b6e07598b88d708cd97f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the device. What this method does is dependent on the accelerator.  <a href="#a9525b6a978b6e07598b88d708cd97f84">More...</a><br /></td></tr>
@@ -159,7 +162,7 @@ template&lt;typename T &gt; </div>
 
 <p>The device type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00073">73</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00080">80</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -199,7 +202,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device this object is bound to. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00083">83</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00090">90</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -223,7 +226,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The free memory on the device in Bytes. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00128">128</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00135">135</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +250,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The memory on the device in Bytes. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00113">113</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00120">120</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -271,7 +274,31 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00098">98</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00105">105</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ada1f36684decb83df8b4eb644c18e6d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada1f36684decb83df8b4eb644c18e6d4">&#9670;&nbsp;</a></span>getWarpSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDev &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::dev::getWarpSize </td>
+          <td>(</td>
+          <td class="paramtype">TDev const &amp;&#160;</td>
+          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td> -&gt; std::size_t
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The warp size on the device in number of threads. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00150">150</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -296,7 +323,7 @@ template&lt;typename TDev &gt; </div>
 
 <p>Resets the device. What this method does is dependent on the accelerator. </p>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00144">144</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00166">166</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -306,7 +333,7 @@ template&lt;typename TDev &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1dev.html">dev</a></li>
-    <li class="footer">Generated on Mon Jul 13 2020 11:32:47 for alpaka by
+    <li class="footer">Generated on Tue Jul 14 2020 07:56:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

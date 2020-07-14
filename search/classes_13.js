@@ -9,6 +9,8 @@ var searchData=
   ['waiterwaitfor_3c_20queue_3a_3aqueueuniformcudahiprtblocking_2c_20event_3a_3aeventuniformcudahiprt_20_3e',['WaiterWaitFor&lt; queue::QueueUniformCudaHipRtBlocking, event::EventUniformCudaHipRt &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_0149f07b864967ba850eab8a1ae41f5ef8.html',1,'alpaka::wait::traits']]],
   ['waiterwaitfor_3c_20queue_3a_3aqueueuniformcudahiprtnonblocking_2c_20event_3a_3aeventuniformcudahiprt_20_3e',['WaiterWaitFor&lt; queue::QueueUniformCudaHipRtNonBlocking, event::EventUniformCudaHipRt &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_0070b6e22ac38e8448bbf4c0eb39ab3778.html',1,'alpaka::wait::traits']]],
   ['waiterwaitfor_3c_20tdev_2c_20event_3a_3aeventgenericthreads_3c_20tdev_20_3e_20_3e',['WaiterWaitFor&lt; TDev, event::EventGenericThreads&lt; TDev &gt; &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01TDev_00_01event_1_1EventGenericThreads_3_01TDev_01_4_01_4.html',1,'alpaka::wait::traits']]],
+  ['warpsinglethread',['WarpSingleThread',['../classalpaka_1_1warp_1_1WarpSingleThread.html',1,'alpaka::warp']]],
+  ['warpuniformcudahipbuiltin',['WarpUniformCudaHipBuiltIn',['../classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html',1,'alpaka::warp']]],
   ['workdivmembers',['WorkDivMembers',['../classalpaka_1_1workdiv_1_1WorkDivMembers.html',1,'alpaka::workdiv']]],
   ['workdivuniformcudahipbuiltin',['WorkDivUniformCudaHipBuiltIn',['../classalpaka_1_1workdiv_1_1WorkDivUniformCudaHipBuiltIn.html',1,'alpaka::workdiv']]]
 ];

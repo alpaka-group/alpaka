@@ -26,5 +26,6 @@ var namespacealpaka =
     [ "uniform_cuda_hip", "namespacealpaka_1_1uniform__cuda__hip.html", null ],
     [ "vec", "namespacealpaka_1_1vec.html", "namespacealpaka_1_1vec" ],
     [ "wait", "namespacealpaka_1_1wait.html", "namespacealpaka_1_1wait" ],
+    [ "warp", "namespacealpaka_1_1warp.html", "namespacealpaka_1_1warp" ],
     [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ]
 ];

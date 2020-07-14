@@ -50,6 +50,9 @@ var namespacealpaka_1_1dev_1_1traits =
     [ "GetName", "structalpaka_1_1dev_1_1traits_1_1GetName.html", null ],
     [ "GetName< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1GetName_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetName_3_01dev_1_1DevCpu_01_4" ],
     [ "GetName< dev::DevUniformCudaHipRt >", "structalpaka_1_1dev_1_1traits_1_1GetName_3_01dev_1_1DevUniformCudaHipRt_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetName_3_01dev_1_1DevUniformCudaHipRt_01_4" ],
+    [ "GetWarpSize", "structalpaka_1_1dev_1_1traits_1_1GetWarpSize.html", null ],
+    [ "GetWarpSize< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1GetWarpSize_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetWarpSize_3_01dev_1_1DevCpu_01_4" ],
+    [ "GetWarpSize< dev::DevUniformCudaHipRt >", "structalpaka_1_1dev_1_1traits_1_1GetWarpSize_3_01dev_1_1DevUniformCudaHipRt_01_4.html", "structalpaka_1_1dev_1_1traits_1_1GetWarpSize_3_01dev_1_1DevUniformCudaHipRt_01_4" ],
     [ "Reset", "structalpaka_1_1dev_1_1traits_1_1Reset.html", null ],
     [ "Reset< dev::DevCpu >", "structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevCpu_01_4" ],
     [ "Reset< dev::DevUniformCudaHipRt >", "structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevUniformCudaHipRt_01_4.html", "structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevUniformCudaHipRt_01_4" ]
