@@ -231,6 +231,23 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The OpenMP 5 device warp size get trait specialization.
+            template<>
+            struct GetWarpSize<
+                dev::DevOmp5>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getWarpSize(
+                    dev::DevOmp5 const & dev)
+                -> std::size_t
+                {
+                    alpaka::ignore_unused(dev);
+
+                    return 1u;
+                }
+            };
+
+            //#############################################################################
             //! The CUDA RT device reset trait specialization.
             template<>
             struct Reset<
