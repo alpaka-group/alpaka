@@ -30,21 +30,19 @@ fi
 
 git clone -b "${ALPAKA_CI_BOOST_BRANCH}" --quiet --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git "${BOOST_ROOT}"
 
-if [ "${CXX}" == "icpc" ]
-then
-    # https://github.com/boostorg/build/pull/639
-    cd ${BOOST_ROOT}
-    git config --file=.gitmodules submodule.build.url https://github.com/aminiussi/build.git
-    git config --file=.gitmodules submodule.build.branch bugfix/634-intel-linux-icpc
-    git submodule sync
-    cd -
-    cd ${BOOST_ROOT}/tools/build
-    git fetch --all
-    git checkout bugfix/634-intel-linux-icpc
-    cd -
-fi
-
-
+#if [ "${CXX}" == "icpc" ]
+#then
+#    # https://github.com/boostorg/build/pull/639
+#    cd ${BOOST_ROOT}
+#    git config --file=.gitmodules submodule.build.url https://github.com/aminiussi/build.git
+#    git config --file=.gitmodules submodule.build.branch bugfix/634-intel-linux-icpc
+#    git submodule sync
+#    cd -
+#    cd ${BOOST_ROOT}/tools/build
+#    git fetch --all
+#    git checkout bugfix/634-intel-linux-icpc
+#    cd -
+#fi
 
 # Bootstrap boost.
 if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
@@ -52,9 +50,12 @@ then
     (cd "${BOOST_ROOT}"; ./bootstrap.bat)
 elif [ "${CXX}" == "icpc" ]
 then
-    export CC=$(which icc)
-    export CXX=$(which icpc)
-    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux" || cat bootstrap.log)
+    # export CC=$(which icc)
+    # export CXX=$(which icpc)
+    # (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="intel-linux" || cat bootstrap.log)
+
+    # use GCC for install, totally fine if we use header-only libs
+    (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="gcc" )
 else
     (cd "${BOOST_ROOT}"; sudo ./bootstrap.sh --with-toolset="${CC}")
 fi
@@ -65,7 +66,12 @@ if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     (cd "${BOOST_ROOT}"; ./b2 headers)
 else
-    (cd "${BOOST_ROOT}"; sudo ./b2 headers)
+    if [ "${CXX}" == "icpc" ]
+    then
+        (cd "${BOOST_ROOT}"; unset CC; unset CXX; sudo ./b2 headers)
+    else
+        (cd "${BOOST_ROOT}"; sudo ./b2 headers)
+    fi
 fi
 
 # Only build boost if we need some of the non-header-only libraries
@@ -168,7 +174,13 @@ then
 
     # Build boost.
     #echo "ALPAKA_BOOST_B2=${ALPAKA_BOOST_B2}"
-    (cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
+
+    if [ "${CXX}" == "icpc" ]
+    then
+        (cd "${BOOST_ROOT}"; unset CC; unset CXX; eval "${ALPAKA_BOOST_B2}")
+    else
+        (cd "${BOOST_ROOT}"; eval "${ALPAKA_BOOST_B2}")
+    fi
 
     # Clean the intermediate build files.
     if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]

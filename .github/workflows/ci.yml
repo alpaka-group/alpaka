@@ -217,7 +217,7 @@ jobs:
         # icpc
         - name: linux_icpc_release
           os: ubuntu-latest
-          env: {TRAVIS_OS_NAME: linux,   CXX: icpc,    CC: icc, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 2, ALPAKA_CI_STDLIB: libstdc++, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04"}
+          env: {TRAVIS_OS_NAME: linux,   CXX: icpc,    CC: icc, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 2, ALPAKA_CI_STDLIB: libstdc++, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04"}
 
         ## CUDA 9.0
         # nvcc + g++
