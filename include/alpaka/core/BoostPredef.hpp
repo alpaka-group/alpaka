@@ -127,3 +127,11 @@
     #undef BOOST_COMP_INTEL
     #define BOOST_COMP_INTEL BOOST_COMP_INTEL_EMULATED
 #endif
+
+//-----------------------------------------------------------------------------
+// PGI and NV HPC SDK compiler detection
+// BOOST_COMP_PGI_EMULATED is defined by boost instead of BOOST_COMP_PGI
+#if defined(BOOST_COMP_PGI) && defined(BOOST_COMP_PGI_EMULATED)
+    #undef BOOST_COMP_PGI
+    #define BOOST_COMP_PGI BOOST_COMP_PGI_EMULATED
+#endif
