@@ -169,8 +169,6 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> acc::AccDevProps<TDim, TIdx>
                 {
-                    alpaka::ignore_unused(dev);
-
 #ifdef ALPAKA_CI
                     auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(std::min(4, ::omp_get_max_threads())));
 #else
@@ -190,7 +188,9 @@ namespace alpaka
                         // m_threadElemExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max()};
+                        std::numeric_limits<TIdx>::max(),
+                        // m_sharedMemSizeBytes
+                        dev::getMemBytes( dev )};
                 }
             };
             //#############################################################################

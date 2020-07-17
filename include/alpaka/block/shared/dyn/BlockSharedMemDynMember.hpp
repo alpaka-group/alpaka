@@ -77,9 +77,10 @@ namespace alpaka
                         return staticAllocBytes - m_dynPitch;
                     }
 
-                private:
+                    //! Storage size in bytes
                     static constexpr unsigned int staticAllocBytes = TStaticAllocKiB<<10;
 
+                private:
                     mutable std::array<uint8_t, staticAllocBytes> m_mem;
                     unsigned int m_dynPitch;
                 };
