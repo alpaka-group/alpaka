@@ -197,6 +197,12 @@ namespace alpaka
                         cudaDevAttrMaxThreadsPerBlock,
                         dev.m_iDevice));
 
+                    int sharedMemSizeBytes = {};
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                        &sharedMemSizeBytes,
+                        cudaDevAttrMaxSharedMemoryPerBlock,
+                        dev.m_iDevice));
+
                     return {
                         // m_multiProcessorCount
                         alpaka::core::clipCast<TIdx>(multiProcessorCount),
@@ -219,7 +225,9 @@ namespace alpaka
                         // m_threadElemExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max()
+                        std::numeric_limits<TIdx>::max(),
+                        // m_sharedMemSizeBytes
+                        static_cast<size_t>(sharedMemSizeBytes)
                     };
 
 #else
@@ -250,7 +258,9 @@ namespace alpaka
                         // m_threadElemExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max()
+                        std::numeric_limits<TIdx>::max(),
+                        // m_sharedMemSizeBytes
+                        static_cast<size_t>(hipDevProp.sharedMemPerBlock)
                     };
 #endif
                 }

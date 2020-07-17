@@ -174,7 +174,9 @@ namespace alpaka
                         // m_threadElemExtentMax
                         vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max()};
+                        std::numeric_limits<TIdx>::max(),
+                        // m_sharedMemSizeBytes
+                        static_cast< size_t >( acc::AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes )};
                 }
 
             };
