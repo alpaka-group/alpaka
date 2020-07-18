@@ -113,12 +113,16 @@ then
     then
         ALPAKA_CUDA_PKG_FILE_NAME=cuda_10.2.89_441.22_win10.exe
         ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
+    elif [ "${ALPAKA_CUDA_VERSION}" == "11.0" ]
+    then
+        ALPAKA_CUDA_PKG_FILE_NAME=cuda_11.0.2_451.48_win10.exe
+        ALPAKA_CUDA_PKG_FILE_PATH=http://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers/${ALPAKA_CUDA_PKG_FILE_NAME}
     else
-        echo CUDA versions other than 10.0, 10.1 and 10.2 are not currently supported on Windows!
+        echo CUDA versions other than 10.0, 10.1, 10.2 and 11.0 are not currently supported on Windows!
     fi
 
     curl -L -o cuda_installer.exe ${ALPAKA_CUDA_PKG_FILE_PATH}
-    ./cuda_installer.exe -s "nvcc_${ALPAKA_CUDA_VERSION}" "curand_dev_${ALPAKA_CUDA_VERSION}"
+    ./cuda_installer.exe -s "nvcc_${ALPAKA_CUDA_VERSION}" "curand_dev_${ALPAKA_CUDA_VERSION}" "cudart_${ALPAKA_CUDA_VERSION}"
     # Deleting the installer worked until 08/2019 but something changed and this line now takes up to 25 minutes.
     #rm -f cuda_installer.exe
 fi
