@@ -12,7 +12,7 @@
 
 source ./script/set.sh
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
   sudo smem
   sudo free -m -t

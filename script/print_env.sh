@@ -20,7 +20,7 @@ then
     echo GITHUB_WORKSPACE: "${GITHUB_WORKSPACE}"
 fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     # Show all running services
     sudo service --status-all

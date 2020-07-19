@@ -19,7 +19,7 @@ source ./script/set.sh
 : ${ALPAKA_CI_INSTALL_HIP?"ALPAKA_CI_INSTALL_HIP must be specified"}
 : ${ALPAKA_CI_INSTALL_TBB?"ALPAKA_CI_INSTALL_TBB must be specified"}
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     travis_retry apt-get -y --quiet update
     travis_retry apt-get -y install sudo
@@ -37,7 +37,7 @@ then
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils xz-utils
 fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "windows" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     ./script/install_cmake.sh
 fi
@@ -47,12 +47,12 @@ if [ "${ALPAKA_CI_ANALYSIS}" == "ON" ] ;then ./script/install_analysis.sh ;fi
 # Install CUDA before installing gcc as it installs gcc-4.8 and overwrites our selected compiler
 if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ] ;then ./script/install_cuda.sh ;fi
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${CXX}" == "g++" ] ;then ./script/install_gcc.sh ;fi
     if [ "${CXX}" == "clang++" ] ;then source ./script/install_clang.sh ;fi
     if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ] ;then ./script/install_hip.sh ;fi
-elif [ "$TRAVIS_OS_NAME" = "osx" ]
+elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     sudo xcode-select -s "/Applications/Xcode_${ALPAKA_CI_XCODE_VER}.app/Contents/Developer"
 fi
@@ -64,7 +64,7 @@ fi
 
 ./script/install_boost.sh
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     # Minimize docker image size
     sudo apt-get --quiet --purge autoremove

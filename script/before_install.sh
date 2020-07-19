@@ -117,7 +117,7 @@ then
 fi
 
 #-------------------------------------------------------------------------------
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
     then

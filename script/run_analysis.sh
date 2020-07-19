@@ -12,7 +12,7 @@
 
 source ./script/set.sh
 
-if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     #-------------------------------------------------------------------------------
     # sloc
