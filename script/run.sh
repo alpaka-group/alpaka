@@ -18,7 +18,7 @@ echo "ALPAKA_CI_CMAKE_DIR: ${ALPAKA_CI_CMAKE_DIR}"
 echo "ALPAKA_CI_ANALYSIS: ${ALPAKA_CI_ANALYSIS}"
 : "${ALPAKA_CI_INSTALL_CUDA?'ALPAKA_CI_INSTALL_CUDA must be specified'}"
 : "${ALPAKA_CI_INSTALL_HIP?'ALPAKA_CI_INSTALL_HIP must be specified'}"
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     : "${ALPAKA_CI_STDLIB?'ALPAKA_CI_STDLIB must be specified'}"
     echo "ALPAKA_CI_STDLIB: ${ALPAKA_CI_STDLIB}"
@@ -27,7 +27,7 @@ fi
 echo "CXX: ${CXX}"
 
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ -z "${LD_LIBRARY_PATH+x}" ]
     then
@@ -36,14 +36,14 @@ then
 fi
 
 # CMake
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     export PATH=${ALPAKA_CI_CMAKE_DIR}/bin:${PATH}
 fi
 cmake --version
 
 #TBB
-if [ "$TRAVIS_OS_NAME" = "windows" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     #ALPAKA_TBB_BIN_DIR="${TBB_ROOT}/bin/ia32/vc14"
     ALPAKA_TBB_BIN_DIR="${TBB_ROOT}/bin/intel64/vc14"
@@ -55,7 +55,7 @@ if [ "${ALPAKA_CI_INSTALL_CUDA}" == "ON" ]
 then
     : "${ALPAKA_CUDA_VERSION?'ALPAKA_CUDA_VERSION must be specified'}"
 
-    if [ "$TRAVIS_OS_NAME" = "linux" ]
+    if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
     then
         # CUDA
         export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
@@ -68,7 +68,7 @@ then
             which nvcc
             nvcc -V
         fi
-    elif [ "$TRAVIS_OS_NAME" = "windows" ]
+    elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
     then
         export PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v${ALPAKA_CUDA_VERSION}\bin":$PATH
         export CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v${ALPAKA_CUDA_VERSION}"
@@ -110,7 +110,7 @@ then
 fi
 
 # clang
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${CXX}" == "clang++" ]
     then
@@ -126,7 +126,7 @@ then
 fi
 
 # stdlib
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
     then
@@ -149,7 +149,7 @@ then
     source ./script/prepare_sanitizers.sh
 fi
 
-if [ "$TRAVIS_OS_NAME" = "windows" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     : ${ALPAKA_CI_CL_VER?"ALPAKA_CI_CL_VER must be specified"}
 

@@ -15,14 +15,14 @@ source ./script/travis_retry.sh
 source ./script/set.sh
 
 # Install TBB
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libtbb-dev
-elif [ "$TRAVIS_OS_NAME" = "osx" ]
+elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     brew unlink python@2
     brew install tbb
-elif [ "$TRAVIS_OS_NAME" = "windows" ]
+elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     TBB_ARCHIVE_VER="tbb44_20160526oss"
     TBB_DOWNLOAD_URL="https://github.com/intel/tbb/releases/download/4.4.5/${TBB_ARCHIVE_VER}_win.zip"

@@ -16,7 +16,7 @@ source ./script/set.sh
 
 : "${ALPAKA_CUDA_VERSION?'ALPAKA_CUDA_VERSION must be specified'}"
 
-if [ "$TRAVIS_OS_NAME" = "linux" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
 then
     : "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME?'ALPAKA_CI_DOCKER_BASE_IMAGE_NAME must be specified'}"
     : "${ALPAKA_CI_CUDA_DIR?'ALPAKA_CI_CUDA_DIR must be specified'}"
@@ -100,7 +100,7 @@ then
     # clean up
     sudo rm -rf "${ALPAKA_CI_CUDA_DIR}"/"${ALPAKA_CUDA_PKG_FILE_NAME}"
     sudo dpkg --purge "${ALPAKA_CUDA_PKG_DEB_NAME}"
-elif [ "$TRAVIS_OS_NAME" = "windows" ]
+elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     if [ "${ALPAKA_CUDA_VERSION}" == "10.0" ]
     then

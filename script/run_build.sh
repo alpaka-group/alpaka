@@ -14,10 +14,10 @@ source ./script/set.sh
 
 cd build/
 
-if [ "$TRAVIS_OS_NAME" = "linux" ] || [ "$TRAVIS_OS_NAME" = "osx" ]
+if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
     make VERBOSE=1
-elif [ "$TRAVIS_OS_NAME" = "windows" ]
+elif [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
 then
     "$MSBUILD_EXECUTABLE" "alpaka.sln" -p:Configuration=${CMAKE_BUILD_TYPE} -maxcpucount:1 -verbosity:minimal
 fi
