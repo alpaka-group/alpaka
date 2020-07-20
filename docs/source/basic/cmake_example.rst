@@ -4,7 +4,7 @@ CMake Example
 =============
 
 You can integrate alpaka into your project via ``find_package()`` in your ``CMakeLists.txt``.
-This requires, that you :doc:`install </install/instructions>` alpaka.
+This requires, that you :doc:`install </basic/install>` alpaka.
 If you do not install alpaka in a default path such as ``/usr/local/`` you have to set the ``CMake`` argument ``-Dalpaka_ROOT=/path/to/alpaka/install``.
 
 .. code-block:: cmake

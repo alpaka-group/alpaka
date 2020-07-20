@@ -34,22 +34,31 @@ Individual chapters are based on the information of the chapters before.
 
 
 .. toctree::
-   :caption: INSTALLATION
+   :caption: BASIC
    :maxdepth: 1
 
-   install/instructions
-   install/HIP
-
+   basic/intro.rst
+   basic/install.rst
+   basic/abstraction.rst
+   basic/library.rst
+   basic/cmake_example.rst
+   basic/cheatsheet.rst
+	      
 .. toctree::
-   :caption: USAGE
+   :caption: ADVANCED
    :maxdepth: 1
 
-   usage/intro
-   usage/abstraction
-   usage/implementation
-   usage/cmake_example
-   usage/cheatsheet
+   advanced/rationale.rst
+   advanced/mapping.rst
+   advanced/backends.rst
+   advanced/details.rst
+      
+.. toctree::
+   :caption: EXTRA INFO
+   :maxdepth: 1
 
+   info/similar_projects.rst
+	      
 .. toctree::
    :caption: DEVELOPMENT
    :maxdepth: 1
