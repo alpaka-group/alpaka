@@ -195,14 +195,7 @@ find_package(Boost ${_ALPAKA_BOOST_MIN_VER} REQUIRED
 
 target_link_libraries(alpaka INTERFACE Boost::headers)
 
-if(Boost_FIBER_FOUND)
-    if(MSVC AND (${CMAKE_SIZEOF_VOID_P} EQUAL 4))
-        # On Win32 boost context triggers:
-        # libboost_context-vc141-mt-gd-1_64.lib(jump_i386_ms_pe_masm.obj) : error LNK2026: module unsafe for SAFESEH image.
-        target_link_options(Boost::fiber INTERFACE "/SAFESEH:NO")
-    endif()
-    target_link_libraries(alpaka INTERFACE Boost::fiber)
-else()
+if(NOT Boost_FIBER_FOUND)
     message(STATUS "Optional alpaka dependency Boost.Fiber could not be found! Fiber back-end disabled!")
     set(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Boost.Fiber CPU back-end" FORCE)
 endif()
@@ -762,6 +755,14 @@ if(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE)
 endif()
 if(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED")
+
+    if(MSVC AND (${CMAKE_SIZEOF_VOID_P} EQUAL 4))
+        # On Win32 boost context triggers:
+        # libboost_context-vc141-mt-gd-1_64.lib(jump_i386_ms_pe_masm.obj) : error LNK2026: module unsafe for SAFESEH image.
+        target_link_options(Boost::fiber INTERFACE "/SAFESEH:NO")
+    endif()
+    target_link_libraries(alpaka INTERFACE Boost::fiber)
+
     message(STATUS ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
 endif()
 if(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
