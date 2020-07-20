@@ -59,6 +59,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 __device__ static auto getSize(
                     warp::WarpUniformCudaHipBuiltIn const & /*warp*/)
+                    -> std::int32_t
                 {
                     return warpSize;
                 }
@@ -72,6 +73,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 __device__ static auto activemask(
                     warp::WarpUniformCudaHipBuiltIn const & /*warp*/)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                    -> unsigned
+#else
+                    -> uint64_t
+#endif
                 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     // Workaround for clang + CUDA 9.2 which uses the wrong PTX ISA,
@@ -100,6 +106,7 @@ namespace alpaka
                 __device__ static auto all(
                     warp::WarpUniformCudaHipBuiltIn const & warp,
                     std::int32_t predicate)
+                    -> std::int32_t
                 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __all_sync(
@@ -121,6 +128,7 @@ namespace alpaka
                 __device__ static auto any(
                     warp::WarpUniformCudaHipBuiltIn const & warp,
                     std::int32_t predicate)
+                    -> std::int32_t
                 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __any_sync(
@@ -142,6 +150,12 @@ namespace alpaka
                 __device__ static auto ballot(
                     warp::WarpUniformCudaHipBuiltIn const & warp,
                     std::int32_t predicate)
+                    // return type is required by the compiler
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                    -> unsigned
+#else
+                    -> uint64_t
+#endif
                 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     return __ballot_sync(
