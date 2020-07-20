@@ -22,4 +22,4 @@ Furthermore, being restricted to less resources automatically improves the local
 
    mapping/CUDA
    mapping/x86
-   mapping/accelerators
+
