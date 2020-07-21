@@ -12,9 +12,8 @@
 #include <alpaka/core/Vectorize.hpp>
 #include <alpaka/block/shared/dyn/Traits.hpp>
 
+#include <alpaka/core/AlignedAlloc.hpp>
 #include <alpaka/core/Common.hpp>
-
-#include <boost/align.hpp>
 
 #include <vector>
 #include <memory>
@@ -29,35 +28,35 @@ namespace alpaka
             {
                 //#############################################################################
                 //! The block shared dynamic memory allocator without synchronization.
-                class BlockSharedMemDynBoostAlignedAlloc : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynBoostAlignedAlloc>
+                class BlockSharedMemDynAlignedAlloc : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynAlignedAlloc>
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynBoostAlignedAlloc(
+                    BlockSharedMemDynAlignedAlloc(
                         std::size_t const & blockSharedMemDynSizeBytes)
                     {
                         if(blockSharedMemDynSizeBytes > 0u)
                         {
                             m_blockSharedMemDyn.reset(
                                 reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(core::vectorization::defaultAlignment, blockSharedMemDynSizeBytes)));
+                                    core::alignedAlloc(core::vectorization::defaultAlignment, blockSharedMemDynSizeBytes)));
                         }
                     }
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc const &) = delete;
+                    BlockSharedMemDynAlignedAlloc(BlockSharedMemDynAlignedAlloc const &) = delete;
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynBoostAlignedAlloc(BlockSharedMemDynBoostAlignedAlloc &&) = delete;
+                    BlockSharedMemDynAlignedAlloc(BlockSharedMemDynAlignedAlloc &&) = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(BlockSharedMemDynBoostAlignedAlloc const &) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
+                    auto operator=(BlockSharedMemDynAlignedAlloc const &) -> BlockSharedMemDynAlignedAlloc & = delete;
                     //-----------------------------------------------------------------------------
-                    auto operator=(BlockSharedMemDynBoostAlignedAlloc &&) -> BlockSharedMemDynBoostAlignedAlloc & = delete;
+                    auto operator=(BlockSharedMemDynAlignedAlloc &&) -> BlockSharedMemDynAlignedAlloc & = delete;
                     //-----------------------------------------------------------------------------
-                    /*virtual*/ ~BlockSharedMemDynBoostAlignedAlloc() = default;
+                    /*virtual*/ ~BlockSharedMemDynAlignedAlloc() = default;
 
                 public:
                     std::unique_ptr<
                         uint8_t,
-                        boost::alignment::aligned_delete> mutable
+                        core::AlignedDelete> mutable
                             m_blockSharedMemDyn;  //!< Block shared dynamic memory.
                 };
 
@@ -72,11 +71,11 @@ namespace alpaka
                         typename T>
                     struct GetMem<
                         T,
-                        BlockSharedMemDynBoostAlignedAlloc>
+                        BlockSharedMemDynAlignedAlloc>
                     {
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto getMem(
-                            block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc const & blockSharedMemDyn)
+                            block::shared::dyn::BlockSharedMemDynAlignedAlloc const & blockSharedMemDyn)
                         -> T *
                         {
                             static_assert(

@@ -45,7 +45,7 @@
         //-----------------------------------------------------------------------------
         // dynamic
         #include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
-        #include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
+        #include <alpaka/block/shared/dyn/BlockSharedMemDynAlignedAlloc.hpp>
         #include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
         #include <alpaka/block/shared/dyn/Traits.hpp>
         //-----------------------------------------------------------------------------
@@ -67,6 +67,7 @@
 // core
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Align.hpp>
+#include <alpaka/core/AlignedAlloc.hpp>
 #include <alpaka/core/BarrierThread.hpp>
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/ClipCast.hpp>
@@ -130,7 +131,7 @@
 #include <alpaka/math/MathStdLib.hpp>
 //-----------------------------------------------------------------------------
 // mem
-#include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
+#include <alpaka/mem/alloc/AllocCpuAligned.hpp>
 #include <alpaka/mem/alloc/AllocCpuNew.hpp>
 #include <alpaka/mem/alloc/Traits.hpp>
 

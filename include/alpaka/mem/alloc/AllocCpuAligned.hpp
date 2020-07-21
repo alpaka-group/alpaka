@@ -11,10 +11,9 @@
 
 #include <alpaka/mem/alloc/Traits.hpp>
 
+#include <alpaka/core/AlignedAlloc.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
-
-#include <boost/align.hpp>
 
 #include <algorithm>
 
@@ -32,7 +31,7 @@ namespace alpaka
             //! \tparam TAlignment An integral constant containing the alignment.
             template<
                 typename TAlignment>
-            class AllocCpuBoostAligned : public concepts::Implements<ConceptMemAlloc, AllocCpuBoostAligned<TAlignment>>
+            class AllocCpuAligned : public concepts::Implements<ConceptMemAlloc, AllocCpuAligned<TAlignment>>
             {
             };
 
@@ -45,11 +44,11 @@ namespace alpaka
                     typename TAlignment>
                 struct Alloc<
                     T,
-                    AllocCpuBoostAligned<TAlignment>>
+                    AllocCpuAligned<TAlignment>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto alloc(
-                        AllocCpuBoostAligned<TAlignment> const & alloc,
+                        AllocCpuAligned<TAlignment> const & alloc,
                         std::size_t const & sizeElems)
                     -> T *
                     {
@@ -70,7 +69,7 @@ namespace alpaka
                         alpaka::ignore_unused(alloc);
                         return
                             reinterpret_cast<T *>(
-                                boost::alignment::aligned_alloc(std::max(TAlignment::value, minAlignement), sizeElems * sizeof(T)));
+                                core::alignedAlloc(std::max(TAlignment::value, minAlignement), sizeElems * sizeof(T)));
                     }
                 };
 
@@ -81,16 +80,16 @@ namespace alpaka
                     typename TAlignment>
                 struct Free<
                     T,
-                    AllocCpuBoostAligned<TAlignment>>
+                    AllocCpuAligned<TAlignment>>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto free(
-                        AllocCpuBoostAligned<TAlignment> const & alloc,
+                        AllocCpuAligned<TAlignment> const & alloc,
                         T const * const ptr)
                     -> void
                     {
                         alpaka::ignore_unused(alloc);
-                            boost::alignment::aligned_free(
+                            core::alignedFree(
                                 const_cast<void *>(
                                     reinterpret_cast<void const *>(ptr)));
                     }

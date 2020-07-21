@@ -23,7 +23,7 @@
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
 #include <alpaka/math/MathStdLib.hpp>
-#include <alpaka/block/shared/dyn/BlockSharedMemDynBoostAlignedAlloc.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynAlignedAlloc.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
 #include <alpaka/intrinsic/IntrinsicCpu.hpp>
@@ -80,7 +80,7 @@ namespace alpaka
                 atomic::AtomicOmpBuiltIn     // thread atomics
             >,
             public math::MathStdLib,
-            public block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc,
+            public block::shared::dyn::BlockSharedMemDynAlignedAlloc,
             public block::shared::st::BlockSharedMemStMasterSync,
             public block::sync::BlockSyncBarrierOmp,
             public intrinsic::IntrinsicCpu,
@@ -114,7 +114,7 @@ namespace alpaka
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),
