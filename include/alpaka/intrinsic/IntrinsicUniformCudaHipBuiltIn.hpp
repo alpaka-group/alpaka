@@ -56,26 +56,26 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 __device__ static auto popcount(
                     intrinsic::IntrinsicUniformCudaHipBuiltIn const & /*intrinsic*/,
-                    unsigned int value)
-                -> int
+                    std::uint32_t value)
+                -> std::int32_t
                 {
-#if BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG && BOOST_LANG_CUDA
                     return __popc(static_cast<int>(value));
 #else
-                    return __popc(value);
+                    return __popc(static_cast<unsigned int>(value));
 #endif
                 }
 
                 //-----------------------------------------------------------------------------
                 __device__ static auto popcount(
                     intrinsic::IntrinsicUniformCudaHipBuiltIn const & /*intrinsic*/,
-                    unsigned long long value)
-                -> int
+                    std::uint64_t value)
+                -> std::int32_t
                 {
-#if BOOST_COMP_CLANG
+#if BOOST_COMP_CLANG && BOOST_LANG_CUDA
                     return __popcll(static_cast<long long>(value));
 #else
-                    return __popcll(value);
+                    return __popcll(static_cast<unsigned long long>(value));
 #endif
                 }
             };

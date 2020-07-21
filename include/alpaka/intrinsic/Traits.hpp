@@ -53,8 +53,8 @@ namespace alpaka
             typename TIntrinsic>
         ALPAKA_FN_ACC auto popcount(
             TIntrinsic const & intrinsic,
-            unsigned int value)
-        -> int
+            std::uint32_t value)
+        -> std::int32_t
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
             return traits::Popcount<
@@ -75,8 +75,8 @@ namespace alpaka
             typename TIntrinsic>
         ALPAKA_FN_ACC auto popcount(
             TIntrinsic const & intrinsic,
-            unsigned long long value)
-        -> int
+            std::uint64_t value)
+        -> std::int32_t
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptIntrinsic, TIntrinsic>;
             return traits::Popcount<

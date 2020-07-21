@@ -51,8 +51,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 static auto popcount(
                     intrinsic::IntrinsicCpu const & /*intrinsic*/,
-                    unsigned int value)
-                -> int
+                    std::uint32_t value)
+                -> std::int32_t
                 {
 #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                     return __builtin_popcount(value);
@@ -60,23 +60,23 @@ namespace alpaka
                     return __popcnt(value);
 #else
                     // Fallback to standard library
-                    return static_cast<int>(std::bitset<32>(value).count());
+                    return static_cast<std::int32_t>(std::bitset<32>(value).count());
 #endif
                 }
 
                 //-----------------------------------------------------------------------------
                 static auto popcount(
                     intrinsic::IntrinsicCpu const & /*intrinsic*/,
-                    unsigned long long value)
-                -> int
+                    std::uint64_t value)
+                -> std::int32_t
                 {
 #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                     return __builtin_popcountll(value);
 #elif BOOST_COMP_MSVC
-                    return static_cast<int>(__popcnt64(value));
+                    return static_cast<std::int32_t>(__popcnt64(value));
 #else
                     // Fallback to standard library
-                    return static_cast<int>(std::bitset<64>(value).count());
+                    return static_cast<std::int32_t>(std::bitset<64>(value).count());
 #endif
                 }
             };
