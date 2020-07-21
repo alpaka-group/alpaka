@@ -65,12 +65,12 @@ TEMPLATE_LIST_TEST_CASE( "popcount", "[intrinsic]", alpaka::test::acc::TestAccs)
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::vec::Vec<Dim, Idx>::ones());
 
-    PopcountTestKernel<unsigned int> kernel32bit;
+    PopcountTestKernel<std::uint32_t> kernel32bit;
     REQUIRE(
         fixture(
             kernel32bit));
 
-    PopcountTestKernel<unsigned long long> kernel64bit;
+    PopcountTestKernel<std::uint64_t> kernel64bit;
     REQUIRE(
         fixture(
             kernel64bit));

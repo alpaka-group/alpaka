@@ -74,9 +74,9 @@ namespace alpaka
                 __device__ static auto activemask(
                     warp::WarpUniformCudaHipBuiltIn const & /*warp*/)
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    -> unsigned
+                    -> std::uint32_t
 #else
-                    -> uint64_t
+                    -> std::uint64_t
 #endif
                 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
@@ -152,9 +152,9 @@ namespace alpaka
                     std::int32_t predicate)
                     // return type is required by the compiler
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    -> unsigned
+                    -> std::uint32_t
 #else
-                    -> uint64_t
+                    -> std::uint64_t
 #endif
                 {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
