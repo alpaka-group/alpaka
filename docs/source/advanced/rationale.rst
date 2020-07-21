@@ -104,7 +104,7 @@ This is especially useful on current *NVIDIA* GPUs.
 Even though they support 64-bit integral operations, they are emulated with multiple 32-bit operations.
 This can be a huge performance penalty when the sizes of buffers, offsets, indices and other integral variables holding sizes are known to be limited.
 
-No synchronous (blocking) and asynchronous (non-blocking) function versions:
+No Synchronous (Blocking) and Asynchronous (Non-Blocking) Function Versions:
 ----------------------------------------------------------------------------
 
 *CUDA* provides two versions of many of the runtime functions, for example, `cudaMemcpyAsync` and `cudaMemcpy`.
@@ -272,7 +272,7 @@ The constant memory is a fast, cached, read-only memory that is beneficial when 
 In this case it is as fast as a read from a register.
 
 
-Access to accelerator dependent functionality
+Access to Accelerator-Dependent Functionality
 +++++++++++++++++++++++++++++++++++++++++++++
 
 There are two possible ways to implement access to accelerator dependent functionality inside a kernel:

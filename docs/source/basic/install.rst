@@ -1,7 +1,7 @@
 .. highlight:: bash
 
-alpaka Installation
-===================
+Installation
+============
 
 * Clone alpaka from github.com
 

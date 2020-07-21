@@ -1,7 +1,7 @@
 Library Interface
 =================
 
-As described in the chapter about the Abstraction, the general design of the library is very similar to *CUDA* and *OpenCL* but extends both by some points, while not requiring any language extensions.
+As described in the chapter about the :doc:`Abstraction </basic/abstraction>`, the general design of the library is very similar to *CUDA* and *OpenCL* but extends both by some points, while not requiring any language extensions.
 General interface design as well as interface implementation decisions differentiating *alpaka* from those libraries are described in the Rationale section.
 It uses C++ because it is one of the most performant languages available on nearly all systems.
 Furthermore, C++14 allows to describe the concepts in a very abstract way that is not possible with many other languages.
@@ -52,8 +52,8 @@ The ``Accelerator`` provides the ``Kernel`` with its current index in the block 
 Interface Usage
 ---------------
 
-Accelerator Executable Functions
-````````````````````````````````
+Accelerator Functions
+`````````````````````
 
 Functions that should be executable on an accelerator have to be annotated with the execution domain (one of ``ALPAKA_FN_HOST``, ``ALPAKA_FN_ACC`` and ``ALPAKA_FN_HOST_ACC``).
 They most probably also require access to the accelerator data and methods, such as indices and extents as well as functions to allocate shared memory and to synchronize all threads within a block.
@@ -81,7 +81,7 @@ A kernel is a special function object which has to conform to the following requ
 * the ``operator()`` is the kernel entry point
   * it has to be an accelerator executable function
   * it has to return ``void``.
-  * its first argument has to be the accelerator (templated for arbitrary accelerator backends).
+  * its first argument has to be the accelerator (templated for arbitrary accelerator back-ends).
 
 The following code snippet shows a basic example of a kernel function object.
 
@@ -160,4 +160,3 @@ For the accelerator this has to be done indirectly by enumerating the required d
 To execute the kernel, an instance of the kernel function object has to be constructed.
 Following this, an execution task combining the work division (grid and block sizes) with the kernel function object and the bound invocation arguments has to be created.
 After that this task can be enqueued into a queue for immediate or later execution (depending on the queue used).
-

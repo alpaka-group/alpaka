@@ -5,11 +5,11 @@ Abstraction
 
    Objective of the abstraction is to separate the parallelization strategy from the algorithm itself.
    Algorithm code written by users should not depend on any parallelization library or specific strategy.
-   This would allow to exchange the parallelization back-end without any changes to the algorithm itself.
+   This would enable exchanging the parallelization back-end without any changes to the algorithm itself.
    Besides allowing to test different parallelization strategies this also makes it possible to port algorithms to new, yet unsupported, platforms.
 
 Parallelism and memory hierarchies at all levels need to be exploited in order to achieve performance portability across various types of accelerators.
-Within this chapter an abstraction will be derivated that tries to provide a maximum of parallelism while simultaneously considering implementability and applicability in hardware.
+Within this chapter an abstraction will be derive that tries to provide a maximum of parallelism while simultaneously considering implementability and applicability in hardware.
 
 Looking at the current HPC hardware landscape, we often see nodes with multiple sockets/processors extended by accelerators like GPUs or Intel Xeon Phi, each with their own processing units.
 Within a CPU or a Intel Xeon Phi there are cores with hyper-threads, vector units and a large caching infrastructure.
