@@ -22,7 +22,7 @@
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
 #include <alpaka/math/MathStdLib.hpp>
-#include <alpaka/block/shared/dyn/BlockSharedMemDynOmp5.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStOmp5.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
 #include <alpaka/intrinsic/IntrinsicCpu.hpp>
@@ -76,7 +76,7 @@ namespace alpaka
                 atomic::AtomicOmpBuiltIn     // thread atomics
             >,
             public math::MathStdLib,
-            public block::shared::dyn::BlockSharedMemDynOmp5,
+            public block::shared::dyn::BlockSharedMemDynMember<>,
             public block::shared::st::BlockSharedMemStOmp5,
             public block::sync::BlockSyncBarrierOmp,
             public intrinsic::IntrinsicCpu,
@@ -111,9 +111,9 @@ namespace alpaka
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynOmp5(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynMember<>(static_cast<unsigned int>(blockSharedMemDynSizeBytes)),
                     //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
-                    block::shared::st::BlockSharedMemStOmp5(staticMemBegin()),
+                    block::shared::st::BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity()),
                     block::sync::BlockSyncBarrierOmp(),
                     rand::RandStdLib(),
                     time::TimeOmp(),
