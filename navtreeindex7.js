@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"namespacealpaka_1_1mem_1_1view_1_1traits_1_1detail.html":[1,0,0,17,2,2,0],
 "namespacealpaka_1_1mem_1_1view_1_1traits_1_1detail.html":[2,0,0,16,2,2,0],
 "namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip.html":[1,0,0,17,2,3],
 "namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip.html":[2,0,0,16,2,3],
@@ -141,12 +142,13 @@ var NAVTREEINDEX7 =
 "structTINYMT32__T.html#a61fa5c5281f06dded617a3b6c5f1d082":[2,0,1,1],
 "structTINYMT32__T.html#acf77c595614bef9df4c285b8682dd304":[2,0,1,0],
 "structalpaka_1_1acc_1_1AccDevProps.html":[2,0,0,0,7],
-"structalpaka_1_1acc_1_1AccDevProps.html#a2e332e878cda8c0276624105f2d12b19":[2,0,0,0,7,0],
 "structalpaka_1_1acc_1_1AccDevProps.html#a70fbf7ca992a03cbdebb70caddec7cc5":[2,0,0,0,7,5],
 "structalpaka_1_1acc_1_1AccDevProps.html#a804368bf60cd2e5b3b12d1a5cafc9419":[2,0,0,0,7,2],
-"structalpaka_1_1acc_1_1AccDevProps.html#a945ad17c7290242566de25ce8bbed9c1":[2,0,0,0,7,6],
+"structalpaka_1_1acc_1_1AccDevProps.html#a8bf69d9f0a7cc3d40600c5503debf9d5":[2,0,0,0,7,0],
+"structalpaka_1_1acc_1_1AccDevProps.html#a945ad17c7290242566de25ce8bbed9c1":[2,0,0,0,7,7],
 "structalpaka_1_1acc_1_1AccDevProps.html#ac2caa69aadbabbc2d90661686901fba6":[2,0,0,0,7,1],
-"structalpaka_1_1acc_1_1AccDevProps.html#adf6f0caf3d5ee6b7157af67769b39c23":[2,0,0,0,7,7],
+"structalpaka_1_1acc_1_1AccDevProps.html#adf6f0caf3d5ee6b7157af67769b39c23":[2,0,0,0,7,8],
+"structalpaka_1_1acc_1_1AccDevProps.html#aea5777ed1965951139647d32077bece0":[2,0,0,0,7,6],
 "structalpaka_1_1acc_1_1AccDevProps.html#aed3c80dece6d9223ac905e0895c76340":[2,0,0,0,7,4],
 "structalpaka_1_1acc_1_1AccDevProps.html#af80b1299b57cc33aa8e11b0d6d6339e9":[2,0,0,0,7,3],
 "structalpaka_1_1acc_1_1ConceptAcc.html":[2,0,0,0,10],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1atomic_1_1op_1_1Or.html#a87e7debe157760e71e97ca4af1bed5a2":[2,0,0,1,1,8,0],
 "structalpaka_1_1atomic_1_1op_1_1Sub.html":[2,0,0,1,1,9],
 "structalpaka_1_1atomic_1_1op_1_1Sub.html#a044ee6d5e31ae0437999a25ac6331cc5":[2,0,0,1,1,9,0],
-"structalpaka_1_1atomic_1_1op_1_1Xor.html":[2,0,0,1,1,10],
-"structalpaka_1_1atomic_1_1op_1_1Xor.html#ac61a364f15e0206a077904e26daf82a4":[2,0,0,1,1,10,0],
-"structalpaka_1_1atomic_1_1traits_1_1AtomicOp.html":[2,0,0,1,2,0]
+"structalpaka_1_1atomic_1_1op_1_1Xor.html":[2,0,0,1,1,10]
 };

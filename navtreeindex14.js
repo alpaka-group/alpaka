@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"version_8hpp_source.html":[3,0,0,0,27],
+"wait_2Traits_8hpp.html":[3,0,0,0,23,0],
 "wait_2Traits_8hpp.html#a7e154839968489e62ac5ca552b4c9f3c":[3,0,0,0,23,0,4],
 "wait_2Traits_8hpp.html#ae25cb34b78259b569c6af88afe8456ec":[3,0,0,0,23,0,3],
 "wait_2Traits_8hpp_source.html":[3,0,0,0,23,0],

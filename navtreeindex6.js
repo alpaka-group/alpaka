@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"math_2asin_2Traits_8hpp.html":[3,0,0,0,13,2,2],
 "math_2asin_2Traits_8hpp.html#a32a005a4c29788b7c85a6796676a9cb6":[3,0,0,0,13,2,2,2],
 "math_2asin_2Traits_8hpp_source.html":[3,0,0,0,13,2,2],
 "math_2atan2_2Traits_8hpp.html":[3,0,0,0,13,4,2],
@@ -150,8 +151,8 @@ var NAVTREEINDEX6 =
 "namespacealpaka_1_1core_1_1align.html":[1,0,0,4,0],
 "namespacealpaka_1_1core_1_1detail.html":[2,0,0,4,1],
 "namespacealpaka_1_1core_1_1detail.html":[1,0,0,4,1],
-"namespacealpaka_1_1core_1_1threads.html":[1,0,0,4,2],
 "namespacealpaka_1_1core_1_1threads.html":[2,0,0,4,2],
+"namespacealpaka_1_1core_1_1threads.html":[1,0,0,4,2],
 "namespacealpaka_1_1core_1_1threads_1_1detail.html":[2,0,0,4,2,0],
 "namespacealpaka_1_1core_1_1threads_1_1detail.html":[1,0,0,4,2,0],
 "namespacealpaka_1_1core_1_1vectorization.html":[2,0,0,4,3],
@@ -235,19 +236,18 @@ var NAVTREEINDEX6 =
 "namespacealpaka_1_1mem_1_1buf.html":[2,0,0,16,1],
 "namespacealpaka_1_1mem_1_1buf_1_1cpu.html":[1,0,0,17,1,0],
 "namespacealpaka_1_1mem_1_1buf_1_1cpu.html":[2,0,0,16,1,0],
-"namespacealpaka_1_1mem_1_1buf_1_1cpu_1_1detail.html":[2,0,0,16,1,0,0],
 "namespacealpaka_1_1mem_1_1buf_1_1cpu_1_1detail.html":[1,0,0,17,1,0,0],
+"namespacealpaka_1_1mem_1_1buf_1_1cpu_1_1detail.html":[2,0,0,16,1,0,0],
 "namespacealpaka_1_1mem_1_1buf_1_1traits.html":[1,0,0,17,1,1],
 "namespacealpaka_1_1mem_1_1buf_1_1traits.html":[2,0,0,16,1,1],
 "namespacealpaka_1_1mem_1_1view.html":[1,0,0,17,2],
 "namespacealpaka_1_1mem_1_1view.html":[2,0,0,16,2],
-"namespacealpaka_1_1mem_1_1view_1_1cpu.html":[1,0,0,17,2,0],
 "namespacealpaka_1_1mem_1_1view_1_1cpu.html":[2,0,0,16,2,0],
+"namespacealpaka_1_1mem_1_1view_1_1cpu.html":[1,0,0,17,2,0],
 "namespacealpaka_1_1mem_1_1view_1_1cpu_1_1detail.html":[2,0,0,16,2,0,0],
 "namespacealpaka_1_1mem_1_1view_1_1cpu_1_1detail.html":[1,0,0,17,2,0,0],
 "namespacealpaka_1_1mem_1_1view_1_1detail.html":[1,0,0,17,2,1],
 "namespacealpaka_1_1mem_1_1view_1_1detail.html":[2,0,0,16,2,1],
 "namespacealpaka_1_1mem_1_1view_1_1traits.html":[1,0,0,17,2,2],
-"namespacealpaka_1_1mem_1_1view_1_1traits.html":[2,0,0,16,2,2],
-"namespacealpaka_1_1mem_1_1view_1_1traits_1_1detail.html":[1,0,0,17,2,2,0]
+"namespacealpaka_1_1mem_1_1view_1_1traits.html":[2,0,0,16,2,2]
 };

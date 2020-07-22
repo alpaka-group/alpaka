@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtUniformCudaHipBuiltIn_3_01TDim_00_7955b12235245a78444a51912fba9274.html":[2,0,0,12,3,4],
+"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtUniformCudaHipBuiltIn_3_01TDim_00_7955b12235245a78444a51912fba9274.html#ac9624a57579a89e7423cfc23385bc9d7":[2,0,0,12,3,4,0],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_00_017c5f38ba33409c07e583c31b49db4a5b.html":[2,0,0,12,3,5],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtZero_3_01TDim_00_01TIdx_01_4_00_017c5f38ba33409c07e583c31b49db4a5b.html#a303ac960cd819f537bfe8bd2dcd0b920":[2,0,0,12,3,5,0],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1gb_1_1IdxGbRef_3_01TDim_00_01TIdx_01_4_00_01o65b68587382dbffb601786fd34e13dc6.html":[2,0,0,12,3,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_a59fbedb26179c33847571511b383730.html":[2,0,0,15,0,60],
 "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_a59fbedb26179c33847571511b383730.html#adb58771b0aaeaf06a5235dc3fc1c51cb":[2,0,0,15,0,60,0],
 "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1ea1ef33ac8a008ce4d3965b781d4dd43d.html":[2,0,0,15,0,62],
-"structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1ea1ef33ac8a008ce4d3965b781d4dd43d.html#a5cfec6beb384887cb8379c0ce857f3d3":[2,0,0,15,0,62,0],
-"structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eb9e2652c8be34e74fa79706d46758abf.html":[2,0,0,15,0,63],
-"structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eb9e2652c8be34e74fa79706d46758abf.html#af2ca9656f257db366b929edf8820e89d":[2,0,0,15,0,63,0]
+"structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1ea1ef33ac8a008ce4d3965b781d4dd43d.html#a5cfec6beb384887cb8379c0ce857f3d3":[2,0,0,15,0,62,0]
 };

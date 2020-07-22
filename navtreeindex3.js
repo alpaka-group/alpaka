@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a60e339b89dc58f8a79669ed3458cff9c":[2,0,0,4,1,8,1],
 "classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#afba4bb23cab652a79d1b0f4e2120cd29":[2,0,0,4,1,8,2],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html":[2,0,0,4,1,11],
 "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html#a4a56bfe414a77d0f840f6da1c49736f1":[2,0,0,4,1,11,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1math_1_1Atan2UniformCudaHipBuiltIn.html":[2,0,0,15,8],
 "classalpaka_1_1math_1_1AtanStdLib.html":[2,0,0,15,9],
 "classalpaka_1_1math_1_1AtanUniformCudaHipBuiltIn.html":[2,0,0,15,10],
-"classalpaka_1_1math_1_1CbrtStdLib.html":[2,0,0,15,11],
-"classalpaka_1_1math_1_1CbrtUniformCudaHipBuiltIn.html":[2,0,0,15,12]
+"classalpaka_1_1math_1_1CbrtStdLib.html":[2,0,0,15,11]
 };

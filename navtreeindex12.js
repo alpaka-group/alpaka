@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a1eb70d14edc76743c04756059c5e94f6":[2,0,0,16,2,3,0,1,0],
+"structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a3079c72e64cd4e5b237aeb9942c3a0c3":[2,0,0,16,2,3,0,1,2],
 "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a380080ef7fddae13e8f03298342e9041":[2,0,0,16,2,3,0,1,1],
 "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#ad0dbf857597de91f92af043c5cfe9115":[2,0,0,16,2,3,0,1,3],
 "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_9d73e3b202845db0f67633a9869cf0e0.html":[2,0,0,16,2,3,0,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_14edca2d46eebb6ca32e3b2f2bffad2e7.html#a62fff2313884b1188e87bb366e73c517":[2,0,0,20,1,16,0],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_17d84ac178b568f1969c2b9f477e465d3.html":[2,0,0,20,1,14],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_17d84ac178b568f1969c2b9f477e465d3.html#a5b8453aaf5d7b056ec6c70036ffd4f95":[2,0,0,20,1,14,0],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_1e3ef7610d8b77693579148eb8b04ec49.html":[2,0,0,20,1,15],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_1e3ef7610d8b77693579148eb8b04ec49.html#a1ef009c15b63401c15f1e06cc609dd1c":[2,0,0,20,1,15,0],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TT8e1e26d5b93135d4b06a0de7c2f1351c.html":[2,0,0,20,1,28,0]
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_1e3ef7610d8b77693579148eb8b04ec49.html":[2,0,0,20,1,15]
 };

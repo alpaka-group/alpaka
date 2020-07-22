@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"structalpaka_1_1atomic_1_1op_1_1Xor.html#ac61a364f15e0206a077904e26daf82a4":[2,0,0,1,1,10,0],
+"structalpaka_1_1atomic_1_1traits_1_1AtomicOp.html":[2,0,0,1,2,0],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicNoOp_00_01T_00_01THierarchy_01_4.html":[2,0,0,1,2,49],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicNoOp_00_01T_00_01THierarchy_01_4.html#a6ac2e5b85758884c63f61920e370c2f5":[2,0,0,1,2,49,0],
 "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicNoOp_00_01T_00_01THierarchy_01_4.html#af4a6377662da33f8b1ecbb1d2907a7b9":[2,0,0,1,2,49,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#a704c01b9fc2c481c3427abddb745447d":[2,0,0,6,1,3,0],
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,4],
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html#a6351d2676c7a677fc3c8af56fb43cfb0":[2,0,0,6,1,4,0],
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,5],
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html#a9d7721a79ac59a541b8cbfcafce8af62":[2,0,0,6,1,5,0],
-"structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,6]
+"structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,5]
 };

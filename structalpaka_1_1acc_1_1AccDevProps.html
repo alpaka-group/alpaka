@@ -97,8 +97,8 @@ $(document).ready(function(){initNavTree('structalpaka_1_1acc_1_1AccDevProps.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2e332e878cda8c0276624105f2d12b19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a2e332e878cda8c0276624105f2d12b19">AccDevProps</a> (TIdx const &amp;multiProcessorCount, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;gridBlockExtentMax, TIdx const &amp;gridBlockCountMax, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;blockThreadExtentMax, TIdx const &amp;blockThreadCountMax, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;threadElemExtentMax, TIdx const &amp;threadElemCountMax)</td></tr>
-<tr class="separator:a2e332e878cda8c0276624105f2d12b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bf69d9f0a7cc3d40600c5503debf9d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a8bf69d9f0a7cc3d40600c5503debf9d5">AccDevProps</a> (TIdx const &amp;multiProcessorCount, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;gridBlockExtentMax, TIdx const &amp;gridBlockCountMax, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;blockThreadExtentMax, TIdx const &amp;blockThreadCountMax, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;threadElemExtentMax, TIdx const &amp;threadElemCountMax, size_t const &amp;sharedMemSizeBytes)</td></tr>
+<tr class="separator:a8bf69d9f0a7cc3d40600c5503debf9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -117,6 +117,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a70fbf7ca992a03cbdebb70caddec7cc5"><td class="memItemLeft" align="right" valign="top">TIdx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a70fbf7ca992a03cbdebb70caddec7cc5">m_multiProcessorCount</a></td></tr>
 <tr class="memdesc:a70fbf7ca992a03cbdebb70caddec7cc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of multiprocessors.  <a href="#a70fbf7ca992a03cbdebb70caddec7cc5">More...</a><br /></td></tr>
 <tr class="separator:a70fbf7ca992a03cbdebb70caddec7cc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5777ed1965951139647d32077bece0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#aea5777ed1965951139647d32077bece0">m_sharedMemSizeBytes</a></td></tr>
+<tr class="memdesc:aea5777ed1965951139647d32077bece0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of shared memory per block.  <a href="#aea5777ed1965951139647d32077bece0">More...</a><br /></td></tr>
+<tr class="separator:aea5777ed1965951139647d32077bece0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a945ad17c7290242566de25ce8bbed9c1"><td class="memItemLeft" align="right" valign="top">TIdx&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a945ad17c7290242566de25ce8bbed9c1">m_threadElemCountMax</a></td></tr>
 <tr class="memdesc:a945ad17c7290242566de25ce8bbed9c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of elements in a threads.  <a href="#a945ad17c7290242566de25ce8bbed9c1">More...</a><br /></td></tr>
 <tr class="separator:a945ad17c7290242566de25ce8bbed9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,10 +133,10 @@ struct alpaka::acc::AccDevProps&lt; TDim, TIdx &gt;</h3>
 
 <p>The acceleration properties on a device. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00031">31</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00030">30</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2e332e878cda8c0276624105f2d12b19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e332e878cda8c0276624105f2d12b19">&#9670;&nbsp;</a></span>AccDevProps()</h2>
+<a id="a8bf69d9f0a7cc3d40600c5503debf9d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bf69d9f0a7cc3d40600c5503debf9d5">&#9670;&nbsp;</a></span>AccDevProps()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -183,7 +186,13 @@ template&lt;typename TDim, typename TIdx&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">TIdx const &amp;&#160;</td>
-          <td class="paramname"><em>threadElemCountMax</em>&#160;</td>
+          <td class="paramname"><em>threadElemCountMax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t const &amp;&#160;</td>
+          <td class="paramname"><em>sharedMemSizeBytes</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -198,7 +207,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00034">34</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00033">33</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -219,7 +228,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 
 <p>The maximum number of threads in a block. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00057">57</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00058">58</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -239,7 +248,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 
 <p>The maximum number of threads in each dimension of a block. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00053">53</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00054">54</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -259,7 +268,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 
 <p>The maximum number of blocks in a grid. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00056">56</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00057">57</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -279,7 +288,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 
 <p>The maximum number of blocks in each dimension of the grid. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00052">52</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00053">53</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -299,7 +308,27 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 
 <p>The number of multiprocessors. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00060">60</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00061">61</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aea5777ed1965951139647d32077bece0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea5777ed1965951139647d32077bece0">&#9670;&nbsp;</a></span>m_sharedMemSizeBytes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim, typename TIdx&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim, TIdx &gt;::m_sharedMemSizeBytes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The size of shared memory per block. </p>
+
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00062">62</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -319,7 +348,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 
 <p>The maximum number of elements in a threads. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00058">58</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00059">59</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -339,7 +368,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 
 <p>The maximum number of elements in each dimension of a thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00054">54</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00055">55</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
@@ -352,7 +381,7 @@ template&lt;typename TDim, typename TIdx&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1acc.html">acc</a></li><li class="navelem"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">AccDevProps</a></li>
-    <li class="footer">Generated on Tue Jul 21 2020 17:17:37 for alpaka by
+    <li class="footer">Generated on Wed Jul 22 2020 11:21:38 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
