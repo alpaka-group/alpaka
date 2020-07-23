@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::block::shared::dyn::traits::GetMem&lt; T, BlockSharedMemDynBoostAlignedAlloc &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::mem::alloc::traits::Free&lt; T, AllocCpuAligned&lt; TAlignment &gt; &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){initNavTree('structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynBoostAlignedAlloc_01_4.html','');});
+$(document).ready(function(){initNavTree('structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html','');});
 </script>
 <div id="doc-content">
 <!-- window showing the filter options -->
@@ -83,44 +83,58 @@ $(document).ready(function(){initNavTree('structalpaka_1_1block_1_1shared_1_1dyn
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynBoostAlignedAlloc_01_4-members.html">List of all members</a>  </div>
+<a href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::block::shared::dyn::traits::GetMem&lt; T, BlockSharedMemDynBoostAlignedAlloc &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::mem::alloc::traits::Free&lt; T, AllocCpuAligned&lt; TAlignment &gt; &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="BlockSharedMemDynBoostAlignedAlloc_8hpp_source.html">BlockSharedMemDynBoostAlignedAlloc.hpp</a>&gt;</code></p>
+<p>The CPU boost aligned allocator memory free trait specialization.  
+ <a href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="AllocCpuAligned_8hpp_source.html">AllocCpuAligned.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae0ab0538f6175ec841349173585ccc5d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynBoostAlignedAlloc_01_4.html#ae0ab0538f6175ec841349173585ccc5d">getMem</a> (<a class="el" href="classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynBoostAlignedAlloc.html">block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc</a> const &amp;blockSharedMemDyn) -&gt; T *</td></tr>
-<tr class="separator:ae0ab0538f6175ec841349173585ccc5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a045f9ee44da6e815093863d7b107e891"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html#a045f9ee44da6e815093863d7b107e891">free</a> (<a class="el" href="classalpaka_1_1mem_1_1alloc_1_1AllocCpuAligned.html">AllocCpuAligned</a>&lt; TAlignment &gt; const &amp;<a class="el" href="namespacealpaka_1_1mem_1_1alloc.html#a6ea9e857324433cc368e3e7175cc7fe8">alloc</a>, T const *const ptr) -&gt; void</td></tr>
+<tr class="separator:a045f9ee44da6e815093863d7b107e891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename T&gt;<br />
-struct alpaka::block::shared::dyn::traits::GetMem&lt; T, BlockSharedMemDynBoostAlignedAlloc &gt;</h3>
+<div class="textblock"><h3>template&lt;typename T, typename TAlignment&gt;<br />
+struct alpaka::mem::alloc::traits::Free&lt; T, AllocCpuAligned&lt; TAlignment &gt; &gt;</h3>
 
+<p>The CPU boost aligned allocator memory free trait specialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynBoostAlignedAlloc_8hpp_source.html#l00073">73</a> of file <a class="el" href="BlockSharedMemDynBoostAlignedAlloc_8hpp_source.html">BlockSharedMemDynBoostAlignedAlloc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AllocCpuAligned_8hpp_source.html#l00081">81</a> of file <a class="el" href="AllocCpuAligned_8hpp_source.html">AllocCpuAligned.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae0ab0538f6175ec841349173585ccc5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0ab0538f6175ec841349173585ccc5d">&#9670;&nbsp;</a></span>getMem()</h2>
+<a id="a045f9ee44da6e815093863d7b107e891"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a045f9ee44da6e815093863d7b107e891">&#9670;&nbsp;</a></span>free()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , typename TAlignment &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem.html">alpaka::block::shared::dyn::traits::GetMem</a>&lt; T, <a class="el" href="classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynBoostAlignedAlloc.html">BlockSharedMemDynBoostAlignedAlloc</a> &gt;::getMem </td>
+          <td class="memname">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free.html">alpaka::mem::alloc::traits::Free</a>&lt; T, <a class="el" href="classalpaka_1_1mem_1_1alloc_1_1AllocCpuAligned.html">AllocCpuAligned</a>&lt; TAlignment &gt; &gt;::free </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynBoostAlignedAlloc.html">block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc</a> const &amp;&#160;</td>
-          <td class="paramname"><em>blockSharedMemDyn</em></td><td>)</td>
-          <td> -&gt; T *
-                        </td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1mem_1_1alloc_1_1AllocCpuAligned.html">AllocCpuAligned</a>&lt; TAlignment &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>alloc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const *const&#160;</td>
+          <td class="paramname"><em>ptr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; void
+                    </td>
         </tr>
       </table>
   </td>
@@ -130,20 +144,20 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynBoostAlignedAlloc_8hpp_source.html#l00078">78</a> of file <a class="el" href="BlockSharedMemDynBoostAlignedAlloc_8hpp_source.html">BlockSharedMemDynBoostAlignedAlloc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AllocCpuAligned_8hpp_source.html#l00086">86</a> of file <a class="el" href="AllocCpuAligned_8hpp_source.html">AllocCpuAligned.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/runner/work/alpaka/alpaka/include/alpaka/block/shared/dyn/<a class="el" href="BlockSharedMemDynBoostAlignedAlloc_8hpp_source.html">BlockSharedMemDynBoostAlignedAlloc.hpp</a></li>
+<li>/home/runner/work/alpaka/alpaka/include/alpaka/mem/alloc/<a class="el" href="AllocCpuAligned_8hpp_source.html">AllocCpuAligned.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block.html">block</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block_1_1shared.html">shared</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block_1_1shared_1_1dyn.html">dyn</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1block_1_1shared_1_1dyn_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynBoostAlignedAlloc_01_4.html">GetMem&lt; T, BlockSharedMemDynBoostAlignedAlloc &gt;</a></li>
-    <li class="footer">Generated on Thu Jul 23 2020 12:30:58 for alpaka by
+    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1alloc.html">alloc</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1alloc_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html">Free&lt; T, AllocCpuAligned&lt; TAlignment &gt; &gt;</a></li>
+    <li class="footer">Generated on Thu Jul 23 2020 19:47:32 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

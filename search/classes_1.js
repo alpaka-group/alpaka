@@ -6,7 +6,7 @@ var searchData=
   ['barrierthread',['BarrierThread',['../classalpaka_1_1core_1_1threads_1_1BarrierThread.html',1,'alpaka::core::threads']]],
   ['barrierthreadwithpredicate',['BarrierThreadWithPredicate',['../classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html',1,'alpaka::core::threads']]],
   ['blocks',['Blocks',['../structalpaka_1_1hierarchy_1_1Blocks.html',1,'alpaka::hierarchy']]],
-  ['blocksharedmemdynboostalignedalloc',['BlockSharedMemDynBoostAlignedAlloc',['../classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynBoostAlignedAlloc.html',1,'alpaka::block::shared::dyn']]],
+  ['blocksharedmemdynalignedalloc',['BlockSharedMemDynAlignedAlloc',['../classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynAlignedAlloc.html',1,'alpaka::block::shared::dyn']]],
   ['blocksharedmemdynmember',['BlockSharedMemDynMember',['../classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynMember.html',1,'alpaka::block::shared::dyn']]],
   ['blocksharedmemdynmember_3c_3e',['BlockSharedMemDynMember&lt;&gt;',['../classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynMember.html',1,'alpaka::block::shared::dyn']]],
   ['blocksharedmemdynsizebytes',['BlockSharedMemDynSizeBytes',['../structalpaka_1_1kernel_1_1traits_1_1BlockSharedMemDynSizeBytes.html',1,'alpaka::kernel::traits']]],

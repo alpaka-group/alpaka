@@ -1,7 +1,7 @@
 var searchData=
 [
   ['barrierthread_2ehpp',['BarrierThread.hpp',['../BarrierThread_8hpp.html',1,'']]],
-  ['blocksharedmemdynboostalignedalloc_2ehpp',['BlockSharedMemDynBoostAlignedAlloc.hpp',['../BlockSharedMemDynBoostAlignedAlloc_8hpp.html',1,'']]],
+  ['blocksharedmemdynalignedalloc_2ehpp',['BlockSharedMemDynAlignedAlloc.hpp',['../BlockSharedMemDynAlignedAlloc_8hpp.html',1,'']]],
   ['blocksharedmemdynmember_2ehpp',['BlockSharedMemDynMember.hpp',['../BlockSharedMemDynMember_8hpp.html',1,'']]],
   ['blocksharedmemdynuniformcudahipbuiltin_2ehpp',['BlockSharedMemDynUniformCudaHipBuiltIn.hpp',['../BlockSharedMemDynUniformCudaHipBuiltIn_8hpp.html',1,'']]],
   ['blocksharedmemstmastersync_2ehpp',['BlockSharedMemStMasterSync.hpp',['../BlockSharedMemStMasterSync_8hpp.html',1,'']]],

@@ -1,5 +1,12 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_14ecfd78d2e3cfe97940938444f48a685.html":[2,0,0,20,1,13],
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_14ecfd78d2e3cfe97940938444f48a685.html#a862289386eb6e09598c5758af7f86efb":[2,0,0,20,1,13,0],
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_14edca2d46eebb6ca32e3b2f2bffad2e7.html":[2,0,0,20,1,16],
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_14edca2d46eebb6ca32e3b2f2bffad2e7.html#a62fff2313884b1188e87bb366e73c517":[2,0,0,20,1,16,0],
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_17d84ac178b568f1969c2b9f477e465d3.html":[2,0,0,20,1,14],
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_17d84ac178b568f1969c2b9f477e465d3.html#a5b8453aaf5d7b056ec6c70036ffd4f95":[2,0,0,20,1,14,0],
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_1e3ef7610d8b77693579148eb8b04ec49.html":[2,0,0,20,1,15],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_1e3ef7610d8b77693579148eb8b04ec49.html#a1ef009c15b63401c15f1e06cc609dd1c":[2,0,0,20,1,15,0],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TT8e1e26d5b93135d4b06a0de7c2f1351c.html":[2,0,0,20,1,28,0],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TT8e1e26d5b93135d4b06a0de7c2f1351c.html#a53d592a9ef7fe24994dd2e2a96cf5682":[2,0,0,20,1,28,0,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX13 =
 "vec_2Traits_8hpp.html#a414df9a22d1285d28c9e737f10e053be":[3,0,0,0,22,0,9],
 "vec_2Traits_8hpp.html#a6f0489a5bc3aaf355099a2c1cdc0d084":[3,0,0,0,22,0,5],
 "vec_2Traits_8hpp.html#ab54c29eb06733eb7c62b3507d25db358":[3,0,0,0,22,0,6],
-"vec_2Traits_8hpp.html#ac25c13a054b10186cc505ed0b0d4c1c4":[3,0,0,0,22,0,4],
-"vec_2Traits_8hpp.html#afd2e94bcc86152faaf65214f8d8224cc":[3,0,0,0,22,0,7],
-"vec_2Traits_8hpp_source.html":[3,0,0,0,22,0],
-"version_8hpp.html":[3,0,0,0,27],
-"version_8hpp.html#a35cc4276fce8540b45fa1f5db49fd86b":[3,0,0,0,27,3],
-"version_8hpp.html#a709a81320b19f018a10150cc14812983":[3,0,0,0,27,2],
-"version_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0":[3,0,0,0,27,0],
-"version_8hpp.html#ad47b381d8d19dc91eba7c6063ffe1b0d":[3,0,0,0,27,1]
+"vec_2Traits_8hpp.html#ac25c13a054b10186cc505ed0b0d4c1c4":[3,0,0,0,22,0,4]
 };

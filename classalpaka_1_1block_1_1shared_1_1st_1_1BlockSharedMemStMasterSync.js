@@ -7,6 +7,6 @@ var classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMasterSync =
     [ "operator=", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMasterSync.html#a5b906fb0230ebd22e01e457ddf380e69", null ],
     [ "operator=", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMasterSync.html#ace2929c34a768d07db230d323e3c027f", null ],
     [ "m_isMasterThreadFn", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMasterSync.html#ae45850f96de41160df2db1f1ceb93a53", null ],
-    [ "m_sharedAllocs", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMasterSync.html#ab90aaf7f204228f1577b3acc9ee6eb77", null ],
+    [ "m_sharedAllocs", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMasterSync.html#aa76cd12056668c1df3c0d0f0a3282f04", null ],
     [ "m_syncFn", "classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMasterSync.html#a006fdb8d81e32b23f092c1a8ec303759", null ]
 ];

@@ -114,7 +114,7 @@ var hierarchy =
     [ "alpaka::atomic::traits::AtomicOp< TOp, atomic::AtomicUniformCudaHipBuiltIn, T, THierarchy >", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicUniformCudaHipBuiltIn_00_01T_00_01THierarchy_01_4.html", null ],
     [ "alpaka::block::shared::dyn::ConceptBlockSharedDyn", "structalpaka_1_1block_1_1shared_1_1dyn_1_1ConceptBlockSharedDyn.html", null ],
     [ "alpaka::block::shared::dyn::traits::GetMem< T, TBlockSharedMemDyn, TSfinae >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem.html", null ],
-    [ "alpaka::block::shared::dyn::traits::GetMem< T, BlockSharedMemDynBoostAlignedAlloc >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynBoostAlignedAlloc_01_4.html", null ],
+    [ "alpaka::block::shared::dyn::traits::GetMem< T, BlockSharedMemDynAlignedAlloc >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4.html", null ],
     [ "alpaka::block::shared::dyn::traits::GetMem< T, BlockSharedMemDynMember< TStaticAllocKiB > >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynMember_3_01TStaticAllocKiB_01_4_01_4.html", null ],
     [ "alpaka::block::shared::dyn::traits::GetMem< T, BlockSharedMemDynUniformCudaHipBuiltIn >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::block::shared::st::ConceptBlockSharedSt", "structalpaka_1_1block_1_1shared_1_1st_1_1ConceptBlockSharedSt.html", null ],
@@ -158,6 +158,7 @@ var hierarchy =
     [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, std::enable_if_t<!ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std4d6cb00252914bb9a01c7d9b43bde14a.html", null ],
     [ "alpaka::concepts::Implements< TConcept, TBase >", "structalpaka_1_1concepts_1_1Implements.html", null ],
     [ "alpaka::concepts::ImplementsConcept< TConcept, TDerived >", "structalpaka_1_1concepts_1_1ImplementsConcept.html", null ],
+    [ "alpaka::core::AlignedDelete", "structalpaka_1_1core_1_1AlignedDelete.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs, TSfinae >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs, std::enable_if_t< std::is_unsigned< TRhs >::value &&(TLhs::value==0u)> >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__tddc690a88a2b617130a20e981b24a9c4.html", null ],
     [ "alpaka::core::detail::AssertGreaterThan< TLhs, TRhs, std::enable_if_t<!std::is_unsigned< TRhs >::value||(TLhs::value !=0u)> >", "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t7ba4f846da63b89c623621cca4a0ff0e.html", null ],
@@ -526,10 +527,10 @@ var hierarchy =
     [ "alpaka::math::traits::Trunc< TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t< std::is_floating_point< TArg >::value > >", "structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enaab84821241abd21bc8d0f2710f16f996.html", null ],
     [ "alpaka::mem::alloc::ConceptMemAlloc", "structalpaka_1_1mem_1_1alloc_1_1ConceptMemAlloc.html", null ],
     [ "alpaka::mem::alloc::traits::Alloc< T, TAlloc, TSfinae >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc.html", null ],
-    [ "alpaka::mem::alloc::traits::Alloc< T, AllocCpuBoostAligned< TAlignment > >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01AllocCpuBoostAligned_3_01TAlignment_01_4_01_4.html", null ],
+    [ "alpaka::mem::alloc::traits::Alloc< T, AllocCpuAligned< TAlignment > >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html", null ],
     [ "alpaka::mem::alloc::traits::Alloc< T, AllocCpuNew >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01AllocCpuNew_01_4.html", null ],
     [ "alpaka::mem::alloc::traits::Free< T, TAlloc, TSfinae >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free.html", null ],
-    [ "alpaka::mem::alloc::traits::Free< T, AllocCpuBoostAligned< TAlignment > >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuBoostAligned_3_01TAlignment_01_4_01_4.html", null ],
+    [ "alpaka::mem::alloc::traits::Free< T, AllocCpuAligned< TAlignment > >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html", null ],
     [ "alpaka::mem::alloc::traits::Free< T, AllocCpuNew >", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuNew_01_4.html", null ],
     [ "alpaka::mem::buf::BufCpu< TElem, TDim, TIdx >", "classalpaka_1_1mem_1_1buf_1_1BufCpu.html", null ],
     [ "alpaka::mem::buf::BufUniformCudaHipRt< TElem, TDim, TIdx >", "classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html", null ],
@@ -897,8 +898,8 @@ var hierarchy =
     [ "alpaka::concepts::Implements< ConceptAcc, AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::acc::AccGpuUniformCudaHipRt< TDim, TIdx >", "classalpaka_1_1acc_1_1AccGpuUniformCudaHipRt.html", null ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSharedDyn, BlockSharedMemDynBoostAlignedAlloc >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::block::shared::dyn::BlockSharedMemDynBoostAlignedAlloc", "classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynBoostAlignedAlloc.html", [
+    [ "alpaka::concepts::Implements< ConceptBlockSharedDyn, BlockSharedMemDynAlignedAlloc >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::block::shared::dyn::BlockSharedMemDynAlignedAlloc", "classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynAlignedAlloc.html", [
         [ "alpaka::acc::AccCpuFibers< TDim, TIdx >", "classalpaka_1_1acc_1_1AccCpuFibers.html", null ],
         [ "alpaka::acc::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1acc_1_1AccCpuOmp2Threads.html", null ],
         [ "alpaka::acc::AccCpuOmp4< TDim, TIdx >", "classalpaka_1_1acc_1_1AccCpuOmp4.html", null ],
@@ -1280,13 +1281,13 @@ var hierarchy =
         [ "alpaka::math::MathUniformCudaHipBuiltIn", "classalpaka_1_1math_1_1MathUniformCudaHipBuiltIn.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuBoostAligned< std::integral_constant< std::size_t, core::vectorization::defaultAlignment > > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::mem::alloc::AllocCpuBoostAligned< std::integral_constant< std::size_t, core::vectorization::defaultAlignment > >", "classalpaka_1_1mem_1_1alloc_1_1AllocCpuBoostAligned.html", [
+    [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuAligned< std::integral_constant< std::size_t, core::vectorization::defaultAlignment > > >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::mem::alloc::AllocCpuAligned< std::integral_constant< std::size_t, core::vectorization::defaultAlignment > >", "classalpaka_1_1mem_1_1alloc_1_1AllocCpuAligned.html", [
         [ "alpaka::mem::buf::cpu::detail::BufCpuImpl< TElem, TDim, TIdx >", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuBoostAligned< TAlignment > >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::mem::alloc::AllocCpuBoostAligned< TAlignment >", "classalpaka_1_1mem_1_1alloc_1_1AllocCpuBoostAligned.html", null ]
+    [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuAligned< TAlignment > >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::mem::alloc::AllocCpuAligned< TAlignment >", "classalpaka_1_1mem_1_1alloc_1_1AllocCpuAligned.html", null ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptMemAlloc, AllocCpuNew >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::mem::alloc::AllocCpuNew", "classalpaka_1_1mem_1_1alloc_1_1AllocCpuNew.html", null ]

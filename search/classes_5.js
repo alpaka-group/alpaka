@@ -24,7 +24,7 @@ var searchData=
   ['foreachtypehelper_3c_20tlist_3c_20t_2c_20ts_2e_2e_2e_20_3e_20_3e',['ForEachTypeHelper&lt; TList&lt; T, Ts... &gt; &gt;',['../structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_01T_00_01Ts_8_8_8_01_4_01_4.html',1,'alpaka::meta::detail']]],
   ['foreachtypehelper_3c_20tlist_3c_3e_20_3e',['ForEachTypeHelper&lt; TList&lt;&gt; &gt;',['../structalpaka_1_1meta_1_1detail_1_1ForEachTypeHelper_3_01TList_3_4_01_4.html',1,'alpaka::meta::detail']]],
   ['free',['Free',['../structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free.html',1,'alpaka::mem::alloc::traits']]],
-  ['free_3c_20t_2c_20alloccpuboostaligned_3c_20talignment_20_3e_20_3e',['Free&lt; T, AllocCpuBoostAligned&lt; TAlignment &gt; &gt;',['../structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuBoostAligned_3_01TAlignment_01_4_01_4.html',1,'alpaka::mem::alloc::traits']]],
+  ['free_3c_20t_2c_20alloccpualigned_3c_20talignment_20_3e_20_3e',['Free&lt; T, AllocCpuAligned&lt; TAlignment &gt; &gt;',['../structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html',1,'alpaka::mem::alloc::traits']]],
   ['free_3c_20t_2c_20alloccpunew_20_3e',['Free&lt; T, AllocCpuNew &gt;',['../structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuNew_01_4.html',1,'alpaka::mem::alloc::traits']]],
   ['freemem',['FreeMem',['../structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem.html',1,'alpaka::block::shared::st::traits']]],
   ['freemem_3c_20blocksharedmemstmastersync_20_3e',['FreeMem&lt; BlockSharedMemStMasterSync &gt;',['../structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMasterSync_01_4.html',1,'alpaka::block::shared::st::traits']]],

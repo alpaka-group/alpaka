@@ -1,6 +1,7 @@
 var dir_cfa240ccb1fbe815dea98e3774bff08a =
 [
     [ "Align.hpp", "Align_8hpp.html", "Align_8hpp" ],
+    [ "AlignedAlloc.hpp", "AlignedAlloc_8hpp.html", "AlignedAlloc_8hpp" ],
     [ "Assert.hpp", "Assert_8hpp.html", "Assert_8hpp" ],
     [ "BarrierThread.hpp", "BarrierThread_8hpp.html", [
       [ "BarrierThread", "classalpaka_1_1core_1_1threads_1_1BarrierThread.html", "classalpaka_1_1core_1_1threads_1_1BarrierThread" ],

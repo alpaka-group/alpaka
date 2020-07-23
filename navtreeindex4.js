@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1math_1_1Atan2UniformCudaHipBuiltIn.html":[2,0,0,15,8],
+"classalpaka_1_1math_1_1AtanStdLib.html":[2,0,0,15,9],
+"classalpaka_1_1math_1_1AtanUniformCudaHipBuiltIn.html":[2,0,0,15,10],
+"classalpaka_1_1math_1_1CbrtStdLib.html":[2,0,0,15,11],
 "classalpaka_1_1math_1_1CbrtUniformCudaHipBuiltIn.html":[2,0,0,15,12],
 "classalpaka_1_1math_1_1CeilStdLib.html":[2,0,0,15,13],
 "classalpaka_1_1math_1_1CeilUniformCudaHipBuiltIn.html":[2,0,0,15,14],
@@ -39,7 +43,7 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1math_1_1TanUniformCudaHipBuiltIn.html":[2,0,0,15,72],
 "classalpaka_1_1math_1_1TruncStdLib.html":[2,0,0,15,73],
 "classalpaka_1_1math_1_1TruncUniformCudaHipBuiltIn.html":[2,0,0,15,74],
-"classalpaka_1_1mem_1_1alloc_1_1AllocCpuBoostAligned.html":[2,0,0,16,0,1],
+"classalpaka_1_1mem_1_1alloc_1_1AllocCpuAligned.html":[2,0,0,16,0,1],
 "classalpaka_1_1mem_1_1alloc_1_1AllocCpuNew.html":[2,0,0,16,0,2],
 "classalpaka_1_1mem_1_1buf_1_1BufCpu.html":[2,0,0,16,1,2],
 "classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a0e594ee6b70dc19c64cdefca7ba23e84":[2,0,0,16,1,2,5],
@@ -245,9 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#a991f7e24d09b021ed3b9b53ed12f0322":[2,0,0,22,4,0],
 "classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#ab264140737fe956eefd2ccd8ef4d03ed":[2,0,0,22,4,5],
 "classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#adf766675c17612cf440e9c213d42994e":[2,0,0,22,4,2],
-"classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#ae091bdac65da3933165ab638bc86f49d":[2,0,0,22,4,3],
-"classalpaka_1_1vec_1_1Vec.html":[2,0,0,24,2],
-"classalpaka_1_1vec_1_1Vec.html#a094a6fc62bf799d59f9deba56cf52574":[2,0,0,24,2,11],
-"classalpaka_1_1vec_1_1Vec.html#a0dc56ea0d36deecf8151d0184ccb6e4b":[2,0,0,24,2,15],
-"classalpaka_1_1vec_1_1Vec.html#a1620ffb03e0609da491084aef9c82a50":[2,0,0,24,2,23]
+"classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#ae091bdac65da3933165ab638bc86f49d":[2,0,0,22,4,3]
 };
