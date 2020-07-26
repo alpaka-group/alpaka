@@ -12,6 +12,10 @@
 #include <alpaka/test/Extent.hpp>
 #include <catch2/catch.hpp>
 
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+    #pragma warning(push)
+    #pragma warning(disable: 4127) // suppress warning for c++17 conditional expression is constant
+#endif
 
 template<
     typename TDim,
@@ -207,7 +211,6 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
         TestType
     >;
     using Dim = alpaka::dim::Dim<Acc>;
-
     // fourth-dimension is not supposed to be tested currently
     if(Dim::value == 4)
     {
@@ -305,3 +308,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
         extentsSubView
     );
 }
+
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+    #pragma warning(pop)
+#endif
