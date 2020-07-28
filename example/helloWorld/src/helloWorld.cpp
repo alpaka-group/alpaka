@@ -166,18 +166,14 @@ auto main()
     // vector processing unit.
     using Vec = alpaka::vec::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
-    Vec const blocksPerGrid(
-        static_cast<Idx>(4),
-        static_cast<Idx>(8),
-        static_cast<Idx>(16));
-
+    Vec const threadsPerGrid(Vec::all(static_cast<Idx>(8)));
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv(
-        blocksPerGrid,
-        threadsPerBlock,
-        elementsPerThread);
-
+    WorkDiv const workDiv = alpaka::workdiv::getValidWorkDiv<Acc>(
+        devAcc,
+        threadsPerGrid,
+        elementsPerThread,
+        false,
+        alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Instantiate the kernel function object
     //
