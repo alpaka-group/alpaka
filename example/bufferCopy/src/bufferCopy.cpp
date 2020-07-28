@@ -186,22 +186,23 @@ auto main()
     DevQueue devQueue(devAcc);
     HostQueue hostQueue(devHost);
 
-    // Define the work division
+    // Define the work division for kernels to be run on devAcc and devHost
     using Vec = alpaka::vec::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
-    Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
-
-    Vec const blocksPerGrid(
-        static_cast<Idx>(4),
-        static_cast<Idx>(8),
-        static_cast<Idx>(16));
-
+    Vec const threadsPerGrid(Vec::all(static_cast<Idx>(10)));
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workdiv(
-        blocksPerGrid,
-        threadsPerBlock,
-        elementsPerThread);
-
+    WorkDiv const devWorkDiv = alpaka::workdiv::getValidWorkDiv<Acc>(
+        devAcc,
+        threadsPerGrid,
+        elementsPerThread,
+        false,
+        alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted);
+    WorkDiv const hostWorkDiv = alpaka::workdiv::getValidWorkDiv<Host>(
+        devHost,
+        threadsPerGrid,
+        elementsPerThread,
+        false,
+        alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Create host and device buffers
     //
@@ -263,7 +264,7 @@ auto main()
 
     alpaka::kernel::exec<Host>(
         hostQueue,
-        workdiv,
+        hostWorkDiv,
         fillBufferKernel,
         pHostViewPlainPtr, // 1st kernel argument
         extents);          // 2nd kernel argument
@@ -303,7 +304,7 @@ auto main()
     TestBufferKernel testBufferKernel;
     alpaka::kernel::exec<Acc>(
         devQueue,
-        workdiv,
+        devWorkDiv,
         testBufferKernel,
         pDeviceBuffer1,                                 // 1st kernel argument
         extents,                                        // 2nd kernel argument
@@ -311,7 +312,7 @@ auto main()
 
     alpaka::kernel::exec<Acc>(
         devQueue,
-        workdiv,
+        devWorkDiv,
         testBufferKernel,
         pDeviceBuffer2,                                 // 1st kernel argument
         extents,                                        // 2nd kernel argument
@@ -331,7 +332,7 @@ auto main()
     PrintBufferKernel printBufferKernel;
     alpaka::kernel::exec<Acc>(
         devQueue,
-        workdiv,
+        devWorkDiv,
         printBufferKernel,
         pDeviceBuffer1,                                 // 1st kernel argument
         extents,                                        // 2nd kernel argument
@@ -341,7 +342,7 @@ auto main()
 
     alpaka::kernel::exec<Acc>(
         devQueue,
-        workdiv,
+        devWorkDiv,
         printBufferKernel,
         pDeviceBuffer2,                                 // 1st kernel argument
         extents,                                        // 2nd kernel argument
@@ -351,7 +352,7 @@ auto main()
 
     alpaka::kernel::exec<Host>(
         hostQueue,
-        workdiv,
+        hostWorkDiv,
         printBufferKernel,
         pHostBuffer,                                    // 1st kernel argument
         extents,                                        // 2nd kernel argument
@@ -361,7 +362,7 @@ auto main()
 
     alpaka::kernel::exec<Host>(
         hostQueue,
-        workdiv,
+        hostWorkDiv,
         printBufferKernel,
         pHostViewPlainPtr,                              // 1st kernel argument
         extents,                                        // 2nd kernel argument
