@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2020 Benjamin Worpitz, Sergei Bastrakov, Jakob Krude
  *
  * This file exemplifies usage of alpaka.
  *
@@ -18,52 +18,197 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/example/ExampleDefaultAcc.hpp>
 
-#include <random>
+#include <cstdint>
+#include <cstdlib>
 #include <iostream>
-#include <typeinfo>
 
-// Function we are integrating on x in [0, 1]
-// for alpaka version will be ALPAKA_FN_ACC
-float f(float x)
+//#############################################################################
+//! This functor defines the function for which the integral is to be computed.
+struct Function
 {
-    // Note: in alpaka it's alpaka::math::sqrt(acc, x);
-    return sqrt(1.0f - x * x);
-}
-
-// Integrate using numPoints points, we assume x and f(x) belong to [0, 1]
-// Will become alpaka kernel
-float integrate(uint32_t numPoints)
-{
-    uint32_t count = 0;
-    // In alpaka this loop will be parallelized with threads
-    // I think for this type of application it's best to write a kernel so that
-    // it works for any work division.
-    // So not assume one point per thread, but have a loop in kernel in form of
-    // for (i = global_thread_idx; i < numPoints; i += global_num_threads)
-    for (uint32_t i = 0u; i < numPoints; i++)
+    //-----------------------------------------------------------------------------
+    //! \tparam TAcc The accelerator environment to be executed on.
+    //! \param acc The accelerator to be executed on.
+    //! \param x The argument.
+    template<typename TAcc>
+    ALPAKA_FN_ACC
+    auto operator ()(
+        TAcc const & acc,
+        float const x) -> float
     {
-        // Generate a random point (x, y) in our area, [0, 1] x [0, 1]
-        // in kernel will use alpaka's random generator
-        // we need to take care the seeds for different threads are chosen properly (see the docs or I can help)
-        float x = (float)rand() / (float)RAND_MAX;
-        float y = (float)rand() / (float)RAND_MAX;
-        if (y <= f(x))
-            ++count;
+        return alpaka::math::sqrt(
+            acc,
+            (1.0f - x * x));
     }
-    // In alpaka here we will reduce local variables count into the shared and then global one
-    // using atomic operations
+};
 
-    // This ratio is the integral value divided by the area square, the latter is 1 with out assumptions
-    // So the ratio is just the integral value
-    return (float)count / (float)numPoints;
-}
-
-
-auto main()
--> int
+//#############################################################################
+//! The kernel executing the parallel logic.
+//! Each Thread generates X pseudo random numbers and compares them with the given function.
+//! The local result will be added to a global result.
+struct Kernel
 {
-    uint32_t numPoints = 10000u;
-    auto result = integrate(numPoints);
-    std::cout << "result = " << result << ", expected = " << 3.14f / 4.0f << "\n";
-    return 0;
+    //-----------------------------------------------------------------------------
+    //! The kernel entry point.
+    //! \tparam TAcc The accelerator environment to be executed on.
+    //! \tparam TFunctor A wrapper for a function.
+    //! \param acc The accelerator to be executed on.
+    //! \param numPoints The total number of points to be calculated.
+    //! \param globalCounter The sum of all local results.
+    //! \param functor The function for which the integral is to be computed.
+    template<
+        typename TAcc,
+        typename TFunctor>
+    ALPAKA_FN_ACC
+    auto operator ()(
+        TAcc const & acc,
+        size_t const numPoints,
+        uint32_t *const globalCounter,
+        TFunctor functor) const -> void
+    {
+        // Get the global linearized thread idx.
+        auto const globalThreadIdx = alpaka::idx::getIdx<
+            alpaka::Grid,
+            alpaka::Threads>(acc);
+        auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<
+            alpaka::Grid,
+            alpaka::Threads>(acc);
+
+        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
+            globalThreadIdx,
+            globalThreadExtent)[0];
+        // Setup generator and distribution.
+        auto generator = alpaka::rand::generator::createDefault(
+            acc,
+            linearizedGlobalThreadIdx,
+            0); // No specific subsequence start.
+        // For simplicity the interval is fixed to [0.0,1.0].
+        auto dist(alpaka::rand::distribution::createUniformReal<float>(acc));
+
+        uint32_t localCount = 0;
+        for(size_t i = linearizedGlobalThreadIdx;
+            i < numPoints;
+            i += globalThreadExtent.prod())
+        {
+            // Generate a point in the 2D interval.
+            float x = dist(generator);
+            float y = dist(generator);
+            // Count every time where the point is "below" the given function.
+            if(y <= functor(
+                acc,
+                x))
+            {
+                ++localCount;
+            }
+        }
+
+        // Add the local result to the sum of the other results.
+        alpaka::atomic::atomicOp<
+            alpaka::atomic::op::Add>(
+            acc,
+            globalCounter,
+            localCount,
+            alpaka::hierarchy::Blocks{});
+    }
+};
+
+
+auto main() -> int
+{
+    // Defines and setup.
+    using Dim = alpaka::dim::DimInt<1>;
+    using Idx = std::size_t;
+    using Vec = alpaka::vec::Vec<
+        Dim,
+        Idx>;
+    using Acc = alpaka::example::ExampleDefaultAcc<
+        Dim,
+        Idx>;
+    using Host = alpaka::dev::DevCpu;
+    auto const devAcc = alpaka::pltf::getDevByIdx<Acc>(0u);
+    auto const devHost = alpaka::pltf::getDevByIdx<Host>(0u);
+    using QueueProperty = alpaka::queue::Blocking;
+    using QueueAcc = alpaka::queue::Queue<
+        Acc,
+        QueueProperty>;
+    QueueAcc queue{devAcc};
+
+    using BufHost = alpaka::mem::buf::Buf<
+        Host,
+        uint32_t,
+        Dim,
+        Idx>;
+    using BufAcc = alpaka::mem::buf::Buf<
+        Acc,
+        uint32_t,
+        Dim,
+        Idx>;
+    using WorkDiv = alpaka::workdiv::WorkDivMembers<
+        Dim,
+        Idx>;
+    // Problem parameter.
+    constexpr size_t numPoints = 100000000u;
+    constexpr size_t extent = 1u;
+    constexpr size_t numThreads = 100u; // Kernel will decide numCalcPerThread.
+    constexpr size_t numAlpakaElementsPerThread = 1;
+    WorkDiv workdiv{
+        alpaka::workdiv::getValidWorkDiv<Acc>(
+            devAcc,
+            Vec(numThreads),
+            Vec(numAlpakaElementsPerThread),
+            false,
+            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted)};
+
+    // Setup buffer.
+    BufHost bufHost{
+        alpaka::mem::buf::alloc<
+            uint32_t,
+            Idx>(
+            devHost,
+            extent)};
+    uint32_t *const ptrBufHost{alpaka::mem::view::getPtrNative(bufHost)};
+    BufAcc bufAcc{
+        alpaka::mem::buf::alloc<
+            uint32_t,
+            Idx>(
+            devAcc,
+            extent)};
+    uint32_t *const ptrBufAcc{alpaka::mem::view::getPtrNative(bufAcc)};
+
+    // Initialize the global count to 0.
+    ptrBufHost[0] = 0.0f;
+    alpaka::mem::view::copy(
+        queue,
+        bufAcc,
+        bufHost,
+        extent);
+
+    Kernel kernel;
+    alpaka::kernel::exec<Acc>(
+        queue,
+        workdiv,
+        kernel,
+        numPoints,
+        ptrBufAcc,
+        Function{});
+    alpaka::mem::view::copy(
+        queue,
+        bufHost,
+        bufAcc,
+        extent);
+    alpaka::wait::wait(queue);
+
+    // Check the result.
+    uint32_t globalCount = *ptrBufHost;
+
+    // Final result.
+    float finalResult = globalCount / static_cast<float>(numPoints);
+    constexpr double pi = 3.14159265358979323846;
+    constexpr double exactResult = pi / 4.0;
+    auto const error = std::abs(finalResult - exactResult);
+
+    std::cout << "exact result (pi / 4): " << pi / 4.0 << "\n";
+    std::cout << "final result: " << finalResult << "\n";
+    std::cout << "error: " << error << "\n";
+    return error > 0.001 ? EXIT_FAILURE : EXIT_SUCCESS;
 }
