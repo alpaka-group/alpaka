@@ -127,6 +127,14 @@ then
         CMAKE_EXE_LINKER_FLAGS="${CMAKE_EXE_LINKER_FLAGS} -lc++ -lc++abi"
     fi
 
+    # too hard to forward all Intel oneAPI env vars to docker
+    if [ "${CXX}" == "icpc" ]
+    then
+        set +eu
+        which ${CXX} || source /opt/intel/oneapi/setvars.sh
+        set -eu
+    fi
+
     which "${CXX}"
     ${CXX} -v
 

@@ -30,7 +30,7 @@ travis_retry sudo apt-get update
 travis_retry sudo apt-get install -y intel-oneapi-icc
 
 set +eu
-source /opt/intel/inteloneapi/setvars.sh
+source /opt/intel/oneapi/setvars.sh
 set -eu
 
 which "${CXX}"
