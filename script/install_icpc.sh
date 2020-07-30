@@ -27,7 +27,7 @@ sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
 echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
 
 travis_retry sudo apt-get update
-travis_retry sudo apt-get install -y intel-oneapi-icc
+travis_retry sudo apt-get install -y intel-oneapi-icc intel-oneapi-mkl-devel intel-oneapi-openmp intel-oneapi-tbb-devel
 
 set +eu
 source /opt/intel/oneapi/setvars.sh
