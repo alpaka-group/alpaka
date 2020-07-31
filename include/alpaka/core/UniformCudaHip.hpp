@@ -90,6 +90,11 @@ namespace alpaka
                     {
                         rtCheck(error, ("'" + std::string(cmd) + "' returned error ").c_str(), file, line);
                     }
+                    else
+                    {
+                        // reset the last error to avoid propagation to the next CUDA/HIP API call
+                        ALPAKA_API_PREFIX(GetLastError)();
+                    }
                 }
             }
             //-----------------------------------------------------------------------------
