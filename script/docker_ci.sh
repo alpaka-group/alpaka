@@ -91,8 +91,11 @@ ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_INSTALL_HIP=${ALPAKA_CI_INSTALL_HIP}
 if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ]
 then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_HIP_ROOT_DIR=${ALPAKA_CI_HIP_ROOT_DIR}")
+    ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_HIP_BRANCH=${ALPAKA_CI_HIP_BRANCH}")
     ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_HIP_PLATFORM=${ALPAKA_HIP_PLATFORM}")
 fi
+ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_INSTALL_TBB=${ALPAKA_CI_INSTALL_TBB}")
+ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI_INSTALL_FIBERS=${ALPAKA_CI_INSTALL_FIBERS}")
 
 # runtime only options
 ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CI=${ALPAKA_CI}")
@@ -141,7 +144,4 @@ then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION=${ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION}")
 fi
 
-docker images -q ${ALPAKA_CI_DOCKER_IMAGE_NAME}
-
-# --cap-add SYS_PTRACE is required for LSAN to work
-docker run --cap-add SYS_PTRACE -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" --rm "${ALPAKA_CI_DOCKER_IMAGE_NAME}" /bin/bash ./script/run.sh
+docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash -c "./script/install.sh && ./script/run.sh"
