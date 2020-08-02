@@ -26,6 +26,12 @@ then
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++-dev
     travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libc++abi-dev
 fi
+
+if [ "${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE}" = "ON" ] || [ "${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE}" = "ON" ] || [ "${ALPAKA_ACC_CPU_BT_OMP4_ENABLE}" = "ON" ]
+then
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install libomp-dev
+fi
+
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-"${ALPAKA_CI_CLANG_VER}" 50
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-"${ALPAKA_CI_CLANG_VER}" 50
 sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-"${ALPAKA_CI_CLANG_VER}" 50
