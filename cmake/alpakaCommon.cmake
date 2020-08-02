@@ -13,14 +13,6 @@ include(CMakePrintHelpers) # for easier printing of variables and properties
 
 #-------------------------------------------------------------------------------
 # Options.
-set(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE_DEFAULT ON)
-set(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE_DEFAULT ON)
-set(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT ON)
-set(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE_DEFAULT ON)
-set(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT ON)
-set(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT ON)
-set(ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT ON)
-
 set(ALPAKA_EMU_MEMCPY3D_DEFAULT OFF)
 
 # HIP and platform selection and warning about unsupported features
@@ -32,8 +24,7 @@ set(ALPAKA_HIP_PLATFORM "nvcc" CACHE STRING "Specify HIP platform")
 set_property(CACHE ALPAKA_HIP_PLATFORM PROPERTY STRINGS "nvcc;clang")
 
 if(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE AND ALPAKA_HIP_PLATFORM MATCHES "nvcc")
-    message(WARNING "HIP back-end must be used together with ALPAKA_ACC_GPU_HIP_ONLY_MODE")
-    set(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "" FORCE)
+    message(FATAL_ERROR "HIP back-end must be used together with ALPAKA_ACC_GPU_HIP_ONLY_MODE")
 endif()
 
 if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "clang")
@@ -43,53 +34,27 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "clang")
         )
 endif()
 
+option(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU back-end" OFF)
 option(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
-# If CUDA-only mode is enabled, we set the defaults for all CPU back-ends to OFF.
-# If they are explicitly set via the command line, the user will get an error later on.
-if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE OR ALPAKA_ACC_GPU_HIP_ONLY_MODE) # CUDA-only or HIP-only
-    set(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE_DEFAULT OFF)
-    set(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE_DEFAULT OFF)
-    set(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT OFF)
-    set(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE_DEFAULT OFF)
-    set(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT OFF)
-    set(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT OFF)
-    set(ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT OFF)
-endif()
-
-option(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU back-end" ON)
-
-# If CUDA is enabled, we set the defaults for some unsupported back-ends to OFF.
-# If they are explicitly set via the command line, the user will get an error later on.
-if(ALPAKA_ACC_GPU_CUDA_ENABLE)
-    set(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT OFF)
-    if(ALPAKA_CUDA_COMPILER MATCHES "clang")
-        set(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT OFF)
-        set(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT OFF)
-        set(ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT OFF)
-    endif()
-endif()
 
 if(ALPAKA_ACC_GPU_HIP_ENABLE)
-    set(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT OFF)
     set(ALPAKA_EMU_MEMCPY3D_DEFAULT ON)
 endif()
 
 if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE AND NOT ALPAKA_ACC_GPU_CUDA_ENABLE)
-    message(WARNING "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, ALPAKA_ACC_GPU_CUDA_ENABLE has to be enabled as well.")
-    set(_ALPAKA_FOUND FALSE)
+    message(FATAL_ERROR "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, ALPAKA_ACC_GPU_CUDA_ENABLE has to be enabled as well.")
 endif()
 if(ALPAKA_ACC_GPU_HIP_ONLY_MODE AND NOT ALPAKA_ACC_GPU_HIP_ENABLE)
-    message(WARNING "If ALPAKA_ACC_GPU_HIP_ONLY_MODE is enabled, ALPAKA_ACC_GPU_HIP_ENABLE has to be enabled as well.")
-    set(_ALPAKA_FOUND FALSE)
+    message(FATAL_ERROR "If ALPAKA_ACC_GPU_HIP_ONLY_MODE is enabled, ALPAKA_ACC_GPU_HIP_ENABLE has to be enabled as well.")
 endif()
 
-option(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE_DEFAULT})
-option(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block thread back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE_DEFAULT})
-option(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE_DEFAULT})
-option(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" ${ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE_DEFAULT})
-option(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" ${ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE_DEFAULT})
-option(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" ${ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE_DEFAULT})
-option(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread back-end" ${ALPAKA_ACC_CPU_BT_OMP4_ENABLE_DEFAULT})
+option(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE "Enable the serial CPU back-end" OFF)
+option(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE "Enable the threads CPU block thread back-end" OFF)
+option(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE "Enable the fibers CPU block thread back-end" OFF)
+option(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end" OFF)
+option(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" OFF)
+option(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" OFF)
+option(ALPAKA_ACC_CPU_BT_OMP4_ENABLE "Enable the OpenMP 4.0 CPU block and block thread back-end" OFF)
 
 option(ALPAKA_EMU_MEMCPY3D "Emulate internal used hip/cuda-Memcpy3D(async) with a kernel" ${ALPAKA_EMU_MEMCPY3D_DEFAULT})
 
@@ -103,12 +68,11 @@ if((ALPAKA_ACC_GPU_CUDA_ONLY_MODE OR ALPAKA_ACC_GPU_HIP_ONLY_MODE)
     ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR
     ALPAKA_ACC_CPU_BT_OMP4_ENABLE))
     if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
-        message(WARNING "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only back-ends using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA back-ends from being enabled.")
+        message(FATAL_ERROR "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, only back-ends using CUDA can be enabled! This allows to mix alpaka code with native CUDA code. However, this prevents any non-CUDA back-ends from being enabled.")
     endif()
     if(ALPAKA_ACC_GPU_HIP_ONLY_MODE)
-        message(WARNING "If ALPAKA_ACC_GPU_HIP_ONLY_MODE is enabled, only back-ends using HIP can be enabled!")
+        message(FATAL_ERROR "If ALPAKA_ACC_GPU_HIP_ONLY_MODE is enabled, only back-ends using HIP can be enabled!")
     endif()
-    set(_ALPAKA_FOUND FALSE)
 endif()
 
 # avoids CUDA+HIP conflict
@@ -118,8 +82,7 @@ endif()
 
 # HIP is only supported on Linux
 if(ALPAKA_ACC_GPU_HIP_ENABLE AND (MSVC OR WIN32))
-    message(WARNING "Optional alpaka dependency HIP can not be built on Windows! HIP back-end disabled!")
-    set(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "Enable the HIP GPU back-end" FORCE)
+    message(FATAL_ERROR "Optional alpaka dependency HIP can not be built on Windows!")
 endif()
 
 # Drop-down combo box in cmake-gui.
@@ -195,9 +158,10 @@ find_package(Boost ${_ALPAKA_BOOST_MIN_VER} REQUIRED
 
 target_link_libraries(alpaka INTERFACE Boost::headers)
 
-if(NOT Boost_FIBER_FOUND)
-    message(STATUS "Optional alpaka dependency Boost.Fiber could not be found! Fiber back-end disabled!")
-    set(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Boost.Fiber CPU back-end" FORCE)
+if(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
+    if(NOT Boost_FIBER_FOUND)
+        message(FATAL_ERROR "Optional alpaka dependency Boost.Fiber could not be found!")
+    endif()
 endif()
 
 if(${ALPAKA_DEBUG} GREATER 1)
@@ -259,8 +223,7 @@ if(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE)
     if(TBB_FOUND)
         target_link_libraries(alpaka INTERFACE TBB::tbb)
     else()
-        message(STATUS "Optional alpaka dependency TBB could not be found! TBB grid block back-end disabled!")
-        set(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE OFF CACHE BOOL "Enable the TBB grid block back-end" FORCE)
+        message(FATAL_ERROR "Optional alpaka dependency TBB could not be found!")
     endif()
 endif()
 
@@ -270,8 +233,10 @@ if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
     find_package(OpenMP)
 
     if(OpenMP_CXX_FOUND)
-        if(OpenMP_CXX_VERSION VERSION_LESS 4.0)
-            set(ALPAKA_ACC_CPU_BT_OMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU block and thread back-end" FORCE)
+        if(ALPAKA_ACC_CPU_BT_OMP4_ENABLE)
+            if(OpenMP_CXX_VERSION VERSION_LESS 4.0)
+                message(FATAL_ERROR "OpenMP 4.0 is required but not supported!")
+            endif()
         endif()
 
         target_link_libraries(alpaka INTERFACE OpenMP::OpenMP_CXX)
@@ -281,10 +246,7 @@ if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
             target_link_options(alpaka INTERFACE $<$<CXX_COMPILER_ID:AppleClang,Clang>:-fopenmp-version=40>)
         endif()
     else()
-        message(STATUS "Optional alpaka dependency OpenMP could not be found! OpenMP back-ends disabled!")
-        set(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU grid block back-end" FORCE)
-        set(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU block thread back-end" FORCE)
-        set(ALPAKA_ACC_CPU_BT_OMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU block and thread back-end" FORCE)
+        message(FATAL_ERROR "Optional alpaka dependency OpenMP could not be found!")
     endif()
 endif()
 
@@ -297,14 +259,12 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
     endif()
 
     if(ALPAKA_CUDA_VERSION VERSION_LESS 9.0)
-        message(WARNING "CUDA Toolkit < 9.0 is not supported!")
-        set(_ALPAKA_FOUND FALSE)
+        message(FATAL_ERROR "CUDA Toolkit < 9.0 is not supported!")
 
     else()
         find_package(CUDA "${ALPAKA_CUDA_VERSION}")
         if(NOT CUDA_FOUND)
-            message(STATUS "Optional alpaka dependency CUDA could not be found! CUDA back-end disabled!")
-            set(ALPAKA_ACC_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU back-end" FORCE)
+            message(FATAL_ERROR "Optional alpaka dependency CUDA could not be found!")
         else()
             set(ALPAKA_CUDA_VERSION "${CUDA_VERSION}")
             if(CUDA_VERSION VERSION_LESS 10.3)
@@ -577,8 +537,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
     endif()
 
     if(ALPAKA_HIP_VERSION VERSION_LESS 3.5)
-        message(WARNING "HIP < 3.5 is not supported!")
-        set(_ALPAKA_FOUND FALSE)
+        message(FATAL_ERROR "HIP < 3.5 is not supported!")
     else()
         # must set this for HIP package (note that you also need certain env vars)
         set(HIP_PLATFORM "${ALPAKA_HIP_PLATFORM}" CACHE STRING "")
@@ -586,8 +545,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
 
         find_package(HIP "${ALPAKA_HIP_VERSION}")
         if(NOT HIP_FOUND)
-            message(WARNING "Optional alpaka dependency HIP could not be found! HIP back-end disabled!")
-            set(ALPAKA_ACC_GPU_HIP_ENABLE OFF CACHE BOOL "Enable the HIP GPU back-end" FORCE)
+            message(FATAL_ERROR "Optional alpaka dependency HIP could not be found!")
         else()
             set(ALPAKA_HIP_VERSION "${HIP_VERSION}")
             set(ALPAKA_HIP_COMPILER "hipcc" CACHE STRING "HIP compiler")
@@ -609,8 +567,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 set(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
 
                 if(CUDA_VERSION VERSION_LESS 9.0)
-                    message(WARNING "CUDA Toolkit < 9.0 is not supported!")
-                    set(_ALPAKA_FOUND FALSE)
+                    message(FATAL_ERROR "CUDA Toolkit < 9.0 is not supported!")
                 endif()
 
                 if(${ALPAKA_DEBUG} GREATER 1)
