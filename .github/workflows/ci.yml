@@ -417,10 +417,10 @@ jobs:
         ## HIP
         - name: linux_hip_nvcc-9.2_gcc-5_debug_hip_only
           os: ubuntu-latest
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 5,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0, ALPAKA_CI_CMAKE_VER: 3.15.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:16.04", ALPAKA_ACC_GPU_HIP_ENABLE: ON, ALPAKA_ACC_GPU_HIP_ONLY_MODE: ON, ALPAKA_CI_HIP_BRANCH: "rocm-3.5.0", ALPAKA_CUDA_VERSION: "9.2", ALPAKA_HIP_PLATFORM: nvcc, ALPAKA_CUDA_COMPILER: nvcc, ALPAKA_CUDA_ARCH: "30;35"}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 5,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.67.0, ALPAKA_CI_CMAKE_VER: 3.15.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "rrawther/rocm3.5_ubuntu16.04_py3.6_pytorch-ssd", ALPAKA_ACC_GPU_HIP_ENABLE: ON, ALPAKA_ACC_GPU_HIP_ONLY_MODE: ON, ALPAKA_HIP_PLATFORM: clang, ALPAKA_CUDA_COMPILER: clang}
         - name: linux_hip_nvcc-9.2_gcc-5_release_hip_only
           os: ubuntu-latest
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 5,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.71.0, ALPAKA_CI_CMAKE_VER: 3.18.0,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:16.04", ALPAKA_ACC_GPU_HIP_ENABLE: ON, ALPAKA_ACC_GPU_HIP_ONLY_MODE: ON, ALPAKA_CI_HIP_BRANCH: "rocm-3.5.0", ALPAKA_CUDA_VERSION: "9.2", ALPAKA_HIP_PLATFORM: nvcc, ALPAKA_CUDA_COMPILER: nvcc, ALPAKA_CUDA_ARCH: "30;35", ALPAKA_EMU_MEMCPY3D: ON}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 5,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.71.0, ALPAKA_CI_CMAKE_VER: 3.18.0,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "rrawther/rocm3.5_ubuntu16.04_py3.6_pytorch-ssd", ALPAKA_ACC_GPU_HIP_ENABLE: ON, ALPAKA_ACC_GPU_HIP_ONLY_MODE: ON, ALPAKA_HIP_PLATFORM: clang, ALPAKA_CUDA_COMPILER: clang, ALPAKA_EMU_MEMCPY3D: ON}
 
     steps:
     - uses: actions/checkout@v1
