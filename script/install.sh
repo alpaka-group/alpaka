@@ -63,10 +63,3 @@ fi
 
 ./script/install_boost.sh
 
-if [ "$ALPAKA_CI_OS_NAME" = "Linux" ]
-then
-    # Minimize docker image size
-    sudo apt-get --quiet --purge autoremove
-    sudo apt-get clean
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-fi
