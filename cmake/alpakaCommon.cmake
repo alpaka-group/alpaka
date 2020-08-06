@@ -94,7 +94,7 @@ set_property(CACHE ALPAKA_CXX_STANDARD PROPERTY STRINGS "14;17;20")
 
 if(NOT TARGET alpaka)
     add_library(alpaka INTERFACE)
-    
+
     target_compile_features(alpaka INTERFACE cxx_std_${ALPAKA_CXX_STANDARD})
 
     add_library(alpaka::alpaka ALIAS alpaka)
@@ -564,7 +564,11 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                     message(WARNING "Could not find CUDA while HIP platform is set to nvcc. Compilation might fail.")
                 endif()
 
-                set(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
+                if(CUDA_VERSION VERSION_LESS 10.3)
+                    set(ALPAKA_HIP_ARCH "30" CACHE STRING "GPU architecture")
+                else()
+                    set(ALPAKA_HIP_ARCH "35" CACHE STRING "GPU architecture")
+                endif()
 
                 if(CUDA_VERSION VERSION_LESS 9.0)
                     message(FATAL_ERROR "CUDA Toolkit < 9.0 is not supported!")
@@ -578,7 +582,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 list(APPEND HIP_NVCC_FLAGS --expt-relaxed-constexpr)
                 list(APPEND _ALPAKA_HIP_LIBRARIES "cudart")
 
-                foreach(_HIP_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
+                foreach(_HIP_ARCH_ELEM ${ALPAKA_HIP_ARCH})
                     # set flags to create device code for the given architecture
                     list(APPEND CUDA_NVCC_FLAGS
                         --generate-code=arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM}
@@ -641,27 +645,39 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 target_link_libraries(alpaka INTERFACE ${HIP_RAND_LIBRARY})
             elseif(ALPAKA_HIP_PLATFORM MATCHES "clang")
                 # # hiprand requires ROCm implementation of random numbers by rocrand
-                FIND_PACKAGE(rocrand REQUIRED CONFIG                 
+                find_package(rocrand REQUIRED CONFIG
                     HINTS "${HIP_ROOT_DIR}/rocrand"
                     HINTS "/opt/rocm/rocrand")
-                IF(rocrand_FOUND)
+                if(rocrand_FOUND)
                     target_include_directories(alpaka INTERFACE ${rocrand_INCLUDE_DIRS})
                     # ATTENTION: rocRand libraries are not required by alpaka
-                ELSE()
+                else()
                     MESSAGE(FATAL_ERROR "Could not find rocRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/rocrand).")
-                ENDIF()
-            endif() 
+                endif()
+
+                # possible architectures can be found https://github.com/llvm/llvm-project/blob/master/clang/lib/Basic/Cuda.cpp#L65
+                # 900 -> AMD Vega64
+                # 902 -> AMD Vega 10
+                # 906 -> AMD Radeon VII, MI50/MI60
+                # 908 -> AMD MI100
+                set(ALPAKA_HIP_ARCH "906;908" CACHE STRING "AMD GPU architecture e.g. 906 for MI50/Radeon VII")
+
+                foreach(_HIP_ARCH_ELEM ${ALPAKA_HIP_ARCH})
+                    # set flags to create device code for the given architecture
+                    list(APPEND HIP_HIPCC_FLAGS --amdgpu-target=gfx${_HIP_ARCH_ELEM})
+                endforeach()
+            endif()
 
             # # HIP random numbers
-            FIND_PACKAGE(hiprand REQUIRED CONFIG 
+            FIND_PACKAGE(hiprand REQUIRED CONFIG
                 HINTS "${HIP_ROOT_DIR}/hiprand"
                 HINTS "/opt/rocm/hiprand")
-            IF(hiprand_FOUND)
+            if(hiprand_FOUND)
                 target_include_directories(alpaka INTERFACE ${hiprand_INCLUDE_DIRS})
                 # ATTENTION: hipRand libraries are not required by alpaka
-            ELSE()
+            else()
                 MESSAGE(FATAL_ERROR "Could not find hipRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/hiprand).")
-            ENDIF()
+            endif()
 
             list(APPEND HIP_HIPCC_FLAGS -D__HIPCC__)
             list(APPEND HIP_HIPCC_FLAGS -std=c++${ALPAKA_CXX_STANDARD})
@@ -787,12 +803,6 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
         target_link_options(alpaka INTERFACE "-Xcompiler ${OpenMP_CXX_FLAGS}")
         set_property(TARGET alpaka
                      PROPERTY INTERFACE_LINK_LIBRARIES ${_ALPAKA_LINK_LIBRARIES_PUBLIC})
-    endif()
-    if(ALPAKA_HIP_PLATFORM MATCHES "clang")
-        # GFX600, GFX601, GFX700, GFX701, GFX702, GFX703, GFX704, GFX801, GFX802, GFX803, GFX810, GFX900, GFX902
-        target_link_options(alpaka INTERFACE "--amdgpu-target=gfx803")
-        target_link_options(alpaka INTERFACE "--amdgpu-target=gfx900")
-        target_link_options(alpaka INTERFACE "--amdgpu-target=gfx906")
     endif()
 endif()
 
