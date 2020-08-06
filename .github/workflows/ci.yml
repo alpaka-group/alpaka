@@ -433,16 +433,18 @@ jobs:
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 5,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.71.0, ALPAKA_CI_CMAKE_VER: 3.18.0,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "rrawther/rocm3.5_ubuntu16.04_py3.6_pytorch-ssd", ALPAKA_ACC_GPU_HIP_ENABLE: ON, ALPAKA_ACC_GPU_HIP_ONLY_MODE: ON, ALPAKA_HIP_PLATFORM: clang, ALPAKA_CUDA_COMPILER: clang, ALPAKA_EMU_MEMCPY3D: ON, ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLE: OFF, ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF, ALPAKA_ACC_CPU_BT_OMP4_ENABLE: OFF, ALPAKA_ACC_GPU_CUDA_ENABLE: OFF}
 
     steps:
+    - name: check filter
+      if: (contains(github.event.head_commit.message, 'ci_filter') && !contains(github.event.head_commit.message, matrix.name ))
+      run: exit 1
     - uses: actions/checkout@v1
-      if: (!contains(github.event.head_commit.message, 'ci_filter') || contains(github.event.head_commit.message, matrix.name ))
     - name: build + test
-      if: (!contains(github.event.head_commit.message, 'ci_filter') || contains(github.event.head_commit.message, matrix.name )) && (runner.os == 'Windows')
+      if: (runner.os == 'Windows')
       env:
         ALPAKA_CI_OS_NAME: ${{runner.os}}
       shell: bash
       run: cd ${GITHUB_WORKSPACE} && ./script/ci.sh
     - name: build + test
-      if: (!contains(github.event.head_commit.message, 'ci_filter') || contains(github.event.head_commit.message, matrix.name )) && (runner.os == 'Linux' || runner.os == 'macOS')
+      if: (runner.os == 'Linux' || runner.os == 'macOS')
       env:
         ALPAKA_CI_OS_NAME: ${{runner.os}}
       run: cd ${GITHUB_WORKSPACE} && ./script/ci.sh
