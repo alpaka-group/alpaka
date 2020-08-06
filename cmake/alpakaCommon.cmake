@@ -20,7 +20,7 @@ option(ALPAKA_ACC_GPU_HIP_ENABLE "Enable the HIP back-end (all other back-ends m
 option(ALPAKA_ACC_GPU_HIP_ONLY_MODE "Only back-ends using HIP can be enabled in this mode." OFF) # HIP only runs without other back-ends
 
 # Drop-down combo box in cmake-gui for HIP platforms.
-set(ALPAKA_HIP_PLATFORM "nvcc" CACHE STRING "Specify HIP platform")
+set(ALPAKA_HIP_PLATFORM "clang" CACHE STRING "Specify HIP platform")
 set_property(CACHE ALPAKA_HIP_PLATFORM PROPERTY STRINGS "nvcc;clang")
 
 if(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE AND ALPAKA_HIP_PLATFORM MATCHES "nvcc")
