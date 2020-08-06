@@ -30,6 +30,10 @@ void operator()()
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
         alpaka::vec::Vec<Dim, Idx>::ones());
 
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+    #pragma warning(push)
+    #pragma warning(disable: 4702)  // warning C4702: unreachable code
+#endif
     auto kernel =
         [] ALPAKA_FN_ACC (
             TAcc const & acc,
@@ -40,6 +44,9 @@ void operator()()
                 *success,
                 static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
         };
+#if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
+    #pragma warning(pop)
+#endif
 
     REQUIRE(fixture(kernel));
 }
