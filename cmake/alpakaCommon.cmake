@@ -96,6 +96,11 @@ if(NOT TARGET alpaka)
     add_library(alpaka INTERFACE)
 
     target_compile_features(alpaka INTERFACE cxx_std_${ALPAKA_CXX_STANDARD})
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "PGI")
+        # Workaround for STL atomic issue: https://forums.developer.nvidia.com/t/support-for-atomic-in-libstdc-missing/135403/2
+        # still appears in NVHPC 20.7
+        target_compile_definitions(alpaka INTERFACE "__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1")
+    endif()
 
     add_library(alpaka::alpaka ALIAS alpaka)
 endif()
