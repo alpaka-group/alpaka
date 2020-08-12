@@ -119,34 +119,41 @@ namespace alpaka
                         const auto slot = (acc.m_generation&1)<<1;
                         const int workerNum = static_cast<int>(workdiv::getWorkDiv<Block, Threads>(acc).prod());
                         int sum;
+// Workaround to use an array in an atomic capture rather than
+// using the data member m_syncCounter array directly.
+// The change is sematically equivlent.
+// However, this should work per the OpenACC standard, but appears to be compiler
+// issue causing a runtime error.  The error was seen the 20.7 release
+// of the NVIDIA HPC Compiler but may be corrected in future releases.
+		        int * m_syncCounter = acc.m_syncCounter;
                         #pragma acc atomic capture
                         {
-                            ++acc.m_syncCounter[slot];
-                            sum = acc.m_syncCounter[slot];
+                            ++m_syncCounter[slot];
+                            sum = m_syncCounter[slot];
                         }
                         if(sum == workerNum)
                         {
                             ++acc.m_generation;
                             const int nextSlot = (acc.m_generation&1)<<1;
-                            acc.m_syncCounter[nextSlot] = 0;
-                            acc.m_syncCounter[nextSlot+1] = 0;
+                            m_syncCounter[nextSlot] = 0;
+                            m_syncCounter[nextSlot+1] = 0;
                             op();
                         }
                         while(sum < workerNum)
                         {
                             #pragma acc atomic read
-                            sum = acc.m_syncCounter[slot];
+                            sum = m_syncCounter[slot];
                         }
                         #pragma acc atomic capture
                         {
-                            ++acc.m_syncCounter[slot];
-                            sum = acc.m_syncCounter[slot];
+                            ++m_syncCounter[slot];
+                            sum = m_syncCounter[slot];
                         }
                         while(sum < workerNum)
                         {
                             #pragma acc atomic read
-                            sum = acc.m_syncCounter[slot+1];
-                        }
+                            sum = m_syncCounter[slot+1];
+	                }
                     }
 
                     //-----------------------------------------------------------------------------
