@@ -195,7 +195,7 @@ namespace alpaka
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
-                        dev::getMemBytes( dev )};
+                        acc::AccOmp5<TDim, TIdx>::staticAllocBytes()};
                 }
             };
             //#############################################################################
