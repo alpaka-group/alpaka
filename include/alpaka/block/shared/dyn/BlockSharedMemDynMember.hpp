@@ -28,6 +28,20 @@ namespace alpaka
         {
             namespace dyn
             {
+                namespace detail
+                {
+                    //#############################################################################
+                    //! "namespace" for static constexpr members that should be in BlockSharedMemDynMember
+                    //! but cannot be because having a static const member breaks GCC 10
+                    //! OpenMP target and OpenACC: type not mappable.
+                    template<unsigned int TStaticAllocKiB>
+                    struct BlockSharedMemDynMemberStatic
+                    {
+                        //! Storage size in bytes
+                        static constexpr unsigned int staticAllocBytes = TStaticAllocKiB<<10;
+                    };
+                }
+
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
     #pragma warning(push)
     #pragma warning(disable: 4324)  // warning C4324: structure was padded due to alignment specifier
@@ -47,7 +61,7 @@ namespace alpaka
                              + (sizeBytes%core::vectorization::defaultAlignment>0))*core::vectorization::defaultAlignment)
                     {
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
-                        ALPAKA_ASSERT(sizeBytes <= staticAllocBytes);
+                        ALPAKA_ASSERT(sizeBytes <= staticAllocBytes());
 #endif
                     }
                     //-----------------------------------------------------------------------------
@@ -74,14 +88,15 @@ namespace alpaka
                      */
                     unsigned int staticMemCapacity() const
                     {
-                        return staticAllocBytes - m_dynPitch;
+                        return staticAllocBytes() - m_dynPitch;
                     }
 
                     //! Storage size in bytes
-                    static constexpr unsigned int staticAllocBytes = TStaticAllocKiB<<10;
+                    static constexpr unsigned int staticAllocBytes() {return detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes;}
 
                 private:
-                    mutable std::array<uint8_t, staticAllocBytes> m_mem;
+
+                    mutable std::array<uint8_t, detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes> m_mem;
                     unsigned int m_dynPitch;
                 };
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
