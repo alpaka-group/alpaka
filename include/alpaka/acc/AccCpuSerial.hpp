@@ -178,7 +178,7 @@ namespace alpaka
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
-                        static_cast< size_t >( acc::AccCpuSerial<TDim, TIdx>::staticAllocBytes )};
+                        static_cast< size_t >( acc::AccCpuSerial<TDim, TIdx>::staticAllocBytes() )};
                 }
             };
             //#############################################################################
