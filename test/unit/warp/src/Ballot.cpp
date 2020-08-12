@@ -113,7 +113,7 @@ TEMPLATE_LIST_TEST_CASE( "ballot", "[warp]", alpaka::test::acc::TestAccs)
     else
     {
         // Work around gcc 7.5 trying and failing to offload for OpenMP 4.0
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 5, 0)) && defined ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 5, 0)) && defined ALPAKA_ACC_ANY_BT_OMP5_ENABLED
         return;
 #else
         using ExecutionFixture = alpaka::test::KernelExecutionFixture<Acc>;
