@@ -973,7 +973,7 @@ struct TestAtomicOperations
     }
 };
 
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
+#if defined ALPAKA_ACC_ANY_BT_OMP5_ENABLED && ! ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
 template<typename B>
 struct not_omp5 : public std::integral_constant<
     bool,
