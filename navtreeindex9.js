@@ -1,5 +1,9 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1dev_1_1traits_1_1DevType_3_01TDev_00_01typename_01std_1_1enable__if_3_01concepts45bd26853ee9bac4535d481db18946d8.html":[2,0,0,6,1,28],
+"structalpaka_1_1dev_1_1traits_1_1DevType_3_01TDev_00_01typename_01std_1_1enable__if_3_01concepts45bd26853ee9bac4535d481db18946d8.html#a6482bacf3837cceb76bd26934be449b3":[2,0,0,6,1,28,0],
+"structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,1],
+"structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html#a346fd395a872eef42b5575c449ea7470":[2,0,0,6,1,1,0],
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,2],
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html#ab74300c5b672b79289534e521b124758":[2,0,0,6,1,2,0],
 "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,6,1,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1idx_1_1traits_1_1GetIdx.html":[2,0,0,12,3,0],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxBt_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html":[2,0,0,12,3,9],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxBt_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#a3160a1d05ee60c34814fbacbe6e3701b":[2,0,0,12,3,9,1],
-"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxBt_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#a9eb50c823592ed410f51f3f3a59d31f2":[2,0,0,12,3,9,0],
-"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html":[2,0,0,12,3,10],
-"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html#a39bf7627ea176b37a5b2a1610e91deb2":[2,0,0,12,3,10,1],
-"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html#a4f46020f94623efe278fd396aea3bf55":[2,0,0,12,3,10,0],
-"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html":[2,0,0,12,3,8]
+"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxBt_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#a9eb50c823592ed410f51f3f3a59d31f2":[2,0,0,12,3,9,0]
 };

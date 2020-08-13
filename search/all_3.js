@@ -118,6 +118,7 @@ var searchData=
   ['cosuniformcudahipbuiltin_2ehpp',['CosUniformCudaHipBuiltIn.hpp',['../CosUniformCudaHipBuiltIn_8hpp.html',1,'']]],
   ['count',['Count',['../structalpaka_1_1block_1_1sync_1_1op_1_1Count.html',1,'alpaka::block::sync::op']]],
   ['cpufibers_2ehpp',['CpuFibers.hpp',['../CpuFibers_8hpp.html',1,'']]],
+  ['cpuid',['cpuid',['../namespacealpaka_1_1dev_1_1cpu_1_1detail.html#abd5122925c6d15a34b44a5e6f35eff01',1,'alpaka::dev::cpu::detail']]],
   ['cpuomp2blocks_2ehpp',['CpuOmp2Blocks.hpp',['../CpuOmp2Blocks_8hpp.html',1,'']]],
   ['cpuomp2threads_2ehpp',['CpuOmp2Threads.hpp',['../CpuOmp2Threads_8hpp.html',1,'']]],
   ['cpuomp4_2ehpp',['CpuOmp4.hpp',['../CpuOmp4_8hpp.html',1,'']]],

@@ -1,5 +1,9 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a3470a44a6170fd888376b75c6a0ff70b":[2,0,0,4,1,7,8],
+"classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a4f0b154f3691e2be7c2579a9c33289d4":[2,0,0,4,1,7,2],
+"classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a82498382f020ac76a709ef3facfc0047":[2,0,0,4,1,7,5],
+"classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#aaac41c49f885aa725c922da24f537f86":[2,0,0,4,1,7,0],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9":[2,0,0,4,1,7,3],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#ac58d49b2614e9067ab2dd8cfa28c8963":[2,0,0,4,1,7,6],
 "classalpaka_1_1core_1_1detail_1_1ITaskPkg.html":[2,0,0,4,1,8],
@@ -245,9 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html#acf40a820b306f548772a19a4a8a24dcd":[2,0,0,14,9,5],
 "classalpaka_1_1math_1_1AbsStdLib.html":[2,0,0,15,1],
 "classalpaka_1_1math_1_1AbsUniformCudaHipBuiltIn.html":[2,0,0,15,2],
-"classalpaka_1_1math_1_1AcosStdLib.html":[2,0,0,15,3],
-"classalpaka_1_1math_1_1AcosUniformCudaHipBuiltIn.html":[2,0,0,15,4],
-"classalpaka_1_1math_1_1AsinStdLib.html":[2,0,0,15,5],
-"classalpaka_1_1math_1_1AsinUniformCudaHipBuiltIn.html":[2,0,0,15,6],
-"classalpaka_1_1math_1_1Atan2StdLib.html":[2,0,0,15,7]
+"classalpaka_1_1math_1_1AcosStdLib.html":[2,0,0,15,3]
 };

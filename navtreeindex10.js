@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html":[2,0,0,12,3,10],
+"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html#a39bf7627ea176b37a5b2a1610e91deb2":[2,0,0,12,3,10,1],
+"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdxGb_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html#a4f46020f94623efe278fd396aea3bf55":[2,0,0,12,3,10,0],
+"structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html":[2,0,0,12,3,8],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#ad92d9f9e3f093fd2311ec8123a9de321":[2,0,0,12,3,8,0],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01odc7a853f737c2ab05d14a493e0db7a5a.html":[2,0,0,12,3,1],
 "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01odc7a853f737c2ab05d14a493e0db7a5a.html#a738b07fb8aa096f305e0b3ede3eb3c47":[2,0,0,12,3,1,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1math_1_1traits_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_2c78bed3ed49a88138bd6a34c4249e8c.html#a5a1fe8dc297ba20e85ec35e27770ed55":[2,0,0,15,0,55,0],
 "structalpaka_1_1math_1_1traits_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01float_01_4.html":[2,0,0,15,0,54],
 "structalpaka_1_1math_1_1traits_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01float_01_4.html#a5df5e952c2a82056df3d21edb3960868":[2,0,0,15,0,54,0],
-"structalpaka_1_1math_1_1traits_1_1Lround.html":[2,0,0,15,0,56],
-"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0c9f451bd6954d8ba0740000e0804db0b.html":[2,0,0,15,0,57],
-"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0c9f451bd6954d8ba0740000e0804db0b.html#ae7c31754e7cd6d22cae85fec5b262ea9":[2,0,0,15,0,57,0],
-"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1end0a577ce2ca111a4d68c346d25d7721a.html":[2,0,0,15,0,58],
-"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1end0a577ce2ca111a4d68c346d25d7721a.html#a0cf7222eebb7bde594dda526c650084f":[2,0,0,15,0,58,0]
+"structalpaka_1_1math_1_1traits_1_1Lround.html":[2,0,0,15,0,56]
 };

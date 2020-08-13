@@ -1,5 +1,9 @@
 var NAVTREEINDEX11 =
 {
+"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0c9f451bd6954d8ba0740000e0804db0b.html":[2,0,0,15,0,57],
+"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_0c9f451bd6954d8ba0740000e0804db0b.html#ae7c31754e7cd6d22cae85fec5b262ea9":[2,0,0,15,0,57,0],
+"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1end0a577ce2ca111a4d68c346d25d7721a.html":[2,0,0,15,0,58],
+"structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1end0a577ce2ca111a4d68c346d25d7721a.html#a0cf7222eebb7bde594dda526c650084f":[2,0,0,15,0,58,0],
 "structalpaka_1_1math_1_1traits_1_1Max.html":[2,0,0,15,0,59],
 "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_7d6e6b32100736233c78f89bc7c772a6.html":[2,0,0,15,0,61],
 "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_3_7d6e6b32100736233c78f89bc7c772a6.html#aa52acb054771ffa60270e7c9f0587d13":[2,0,0,15,0,61,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html#a0efd9eab16094e26c9c39cfa22563075":[2,0,0,16,2,2,27,1],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1array_3_01TElem_00_01Tsize_01_4_01_4.html#a6266d3209b1e87d4e4e967e9ac065d49":[2,0,0,16,2,2,27,0],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html":[2,0,0,16,2,2,28],
-"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a555739bbbb78c6d4d02c1a3ac1722fdd":[2,0,0,16,2,2,28,0],
-"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#ad71d045e7d1b0338fdf8139cfe86fe2c":[2,0,0,16,2,2,28,1],
-"structalpaka_1_1mem_1_1view_1_1traits_1_1TIdx.html":[2,0,0,16,2,2,29],
-"structalpaka_1_1mem_1_1view_1_1traits_1_1TIdx.html#a1470d1af4d26376527eec4d8ed2f914e":[2,0,0,16,2,2,29,0],
-"structalpaka_1_1mem_1_1view_1_1traits_1_1detail_1_1GetPitchBytesDefault.html":[2,0,0,16,2,2,0,0]
+"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a555739bbbb78c6d4d02c1a3ac1722fdd":[2,0,0,16,2,2,28,0]
 };

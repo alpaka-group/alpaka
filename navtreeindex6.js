@@ -1,5 +1,9 @@
 var NAVTREEINDEX6 =
 {
+"kernel_2Traits_8hpp.html#afbb5e5eb95e5a2a0db73b218d639c7e6":[3,0,0,0,12,8,3],
+"kernel_2Traits_8hpp_source.html":[3,0,0,0,12,8],
+"math_2abs_2Traits_8hpp.html":[3,0,0,0,13,0,2],
+"math_2abs_2Traits_8hpp.html#aecff9cdf0ee64bb21206e49ec084e8d8":[3,0,0,0,13,0,2,2],
 "math_2abs_2Traits_8hpp_source.html":[3,0,0,0,13,0,2],
 "math_2acos_2Traits_8hpp.html":[3,0,0,0,13,1,2],
 "math_2acos_2Traits_8hpp.html#a469b3c9f385a10cc3ab9085a7b438582":[3,0,0,0,13,1,2,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "namespacealpaka_1_1mem_1_1buf_1_1traits.html":[1,0,0,17,1,1],
 "namespacealpaka_1_1mem_1_1buf_1_1traits.html":[2,0,0,16,1,1],
 "namespacealpaka_1_1mem_1_1view.html":[1,0,0,17,2],
-"namespacealpaka_1_1mem_1_1view.html":[2,0,0,16,2],
-"namespacealpaka_1_1mem_1_1view_1_1cpu.html":[1,0,0,17,2,0],
-"namespacealpaka_1_1mem_1_1view_1_1cpu.html":[2,0,0,16,2,0],
-"namespacealpaka_1_1mem_1_1view_1_1cpu_1_1detail.html":[1,0,0,17,2,0,0],
-"namespacealpaka_1_1mem_1_1view_1_1cpu_1_1detail.html":[2,0,0,16,2,0,0]
+"namespacealpaka_1_1mem_1_1view.html":[2,0,0,16,2]
 };

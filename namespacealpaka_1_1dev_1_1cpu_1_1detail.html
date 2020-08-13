@@ -83,7 +83,8 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1dev_1_1cpu_1_1detai
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::dev::cpu::detail Namespace Reference</div>  </div>
 </div><!--header-->
@@ -97,14 +98,70 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:abd5122925c6d15a34b44a5e6f35eff01"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html#abd5122925c6d15a34b44a5e6f35eff01">cpuid</a> (std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4]) -&gt; void</td></tr>
+<tr class="separator:abd5122925c6d15a34b44a5e6f35eff01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aead152a5f10bd29c4b81ce853255f2e1"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html#aead152a5f10bd29c4b81ce853255f2e1">getCpuName</a> () -&gt; std::string</td></tr>
 <tr class="separator:aead152a5f10bd29c4b81ce853255f2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dc61ba38fca31397525cbb8e8ba71c9"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html#a2dc61ba38fca31397525cbb8e8ba71c9">getFreeGlobalMemSizeBytes</a> () -&gt; std::size_t</td></tr>
 <tr class="separator:a2dc61ba38fca31397525cbb8e8ba71c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf5affd3dd593d68ea2213d75305bfcb"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html#aaf5affd3dd593d68ea2213d75305bfcb">getTotalGlobalMemSizeBytes</a> () -&gt; std::size_t</td></tr>
 <tr class="separator:aaf5affd3dd593d68ea2213d75305bfcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a04694b20419052aedac258d70c28fd34"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html#a04694b20419052aedac258d70c28fd34">NO_CPUID</a> = 0</td></tr>
+<tr class="separator:a04694b20419052aedac258d70c28fd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa002a4e8261d742a2f83d79934c3efc0"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html#aa002a4e8261d742a2f83d79934c3efc0">UNKNOWN_COMPILER</a> = 1</td></tr>
+<tr class="separator:aa002a4e8261d742a2f83d79934c3efc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2418571699d1fb57e38eb6aebf9f910c"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html#a2418571699d1fb57e38eb6aebf9f910c">UNKNOWN_CPU</a> = 0</td></tr>
+<tr class="separator:a2418571699d1fb57e38eb6aebf9f910c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="abd5122925c6d15a34b44a5e6f35eff01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd5122925c6d15a34b44a5e6f35eff01">&#9670;&nbsp;</a></span>cpuid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto alpaka::dev::cpu::detail::cpuid </td>
+          <td>(</td>
+          <td class="paramtype">std::uint32_t const&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint32_t const&#160;</td>
+          <td class="paramname"><em>subfunction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint32_t&#160;</td>
+          <td class="paramname"><em>ex</em>[4]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; void
+                </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00080">80</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+
+</div>
+</div>
 <a id="aead152a5f10bd29c4b81ce853255f2e1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aead152a5f10bd29c4b81ce853255f2e1">&#9670;&nbsp;</a></span>getCpuName()</h2>
 
@@ -130,7 +187,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The name of the CPU the code is running on. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00071">71</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00089">89</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
 
 </div>
 </div>
@@ -165,7 +222,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00175">175</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00205">205</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
 
 </div>
 </div>
@@ -194,7 +251,56 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The total number of bytes of global memory. Adapted from David Robert Nadeau: <a href="http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system">http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00108">108</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00138">138</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a04694b20419052aedac258d70c28fd34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04694b20419052aedac258d70c28fd34">&#9670;&nbsp;</a></span>NO_CPUID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int alpaka::dev::cpu::detail::NO_CPUID = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00049">49</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa002a4e8261d742a2f83d79934c3efc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa002a4e8261d742a2f83d79934c3efc0">&#9670;&nbsp;</a></span>UNKNOWN_COMPILER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int alpaka::dev::cpu::detail::UNKNOWN_COMPILER = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00051">51</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a2418571699d1fb57e38eb6aebf9f910c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2418571699d1fb57e38eb6aebf9f910c">&#9670;&nbsp;</a></span>UNKNOWN_CPU</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int alpaka::dev::cpu::detail::UNKNOWN_CPU = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00050">50</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
 
 </div>
 </div>
@@ -204,7 +310,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1dev.html">dev</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1dev_1_1cpu.html">cpu</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1dev_1_1cpu_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Wed Aug 12 2020 17:39:55 for alpaka by
+    <li class="footer">Generated on Thu Aug 13 2020 11:15:58 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
