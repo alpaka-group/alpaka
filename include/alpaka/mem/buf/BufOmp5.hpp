@@ -376,14 +376,13 @@ namespace alpaka
                         auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
 
                         void * memPtr = omp_target_alloc(static_cast<std::size_t>(widthBytes), dev.m_spDevOmp5Impl->iDevice());
-                        std::cout << "alloc'd device ptr: " << memPtr << " on device "
-                            << dev.m_spDevOmp5Impl->iDevice() << " size " << widthBytes << std::endl;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << __func__
                             << " ew: " << width
                             << " ewb: " << widthBytes
                             << " ptr: " << memPtr
+                            << " device: " << dev.m_spDevOmp5Impl->iDevice()
                             << std::endl;
 #endif
                         return
@@ -422,9 +421,13 @@ namespace alpaka
 
                         void * memPtr = omp_target_alloc(size, dev.m_spDevOmp5Impl->iDevice());
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << __func__ << "alloc'd " << TDim::value
-                            << "D device ptr: " << memPtr << " on device " << dev.m_spDevOmp5Impl->iDevice()
-                            << " size " << size << " = " << static_cast<std::size_t>(extent::getExtentVec(extent).prod())*sizeof(TElem) << '\n';
+                        std::cout << __func__
+                            << " dim: " << TDim::value
+                            << " extent: " << static_cast<std::size_t>(extent::getExtentVec(extent).prod())*sizeof(TElem)
+                            << " ewb: " << size
+                            << " ptr: " << memPtr
+                            << " device: " << dev.m_spDevOmp5Impl->iDevice()
+                            << std::endl;
 #endif
                         return
                             mem::buf::BufOmp5<TElem, TDim, TIdx>(
