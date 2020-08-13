@@ -46,8 +46,11 @@ namespace alpaka
         {
             namespace detail
             {
+                constexpr int NO_CPUID = 0;
+                constexpr int UNKNOWN_CPU = 0;
+                constexpr int UNKNOWN_COMPILER = 1;
 #if BOOST_ARCH_X86
-    #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || (!BOOST_COMP_MSVC_EMULATED && defined(__INTEL_COMPILER))
+    #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || (!BOOST_COMP_MSVC_EMULATED && defined(__INTEL_COMPILER)) || BOOST_COMP_PGI
         #include <cpuid.h>
                 //-----------------------------------------------------------------------------
                 inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
@@ -64,19 +67,46 @@ namespace alpaka
                 {
                     __cpuidex(reinterpret_cast<int*>(ex), level, subfunction);
                 }
+    #else
+                //-----------------------------------------------------------------------------
+                inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+                -> void
+                {
+                    ex[0] = ex[2] = ex[3] = NO_CPUID;
+                    ex[1] = UNKNOWN_COMPILER;
+                }
     #endif
+#else
+                inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+                -> void
+                {
+                    ex[0] = ex[2] = ex[3] = NO_CPUID;
+                    ex[1] = UNKNOWN_CPU;
+                }
 #endif
                 //-----------------------------------------------------------------------------
                 //! \return The name of the CPU the code is running on.
                 inline auto getCpuName()
                 -> std::string
                 {
-#if BOOST_ARCH_X86
                     // Get extended ids.
                     std::uint32_t ex[4] = {0};
                     cpuid(0x80000000, 0, ex);
                     std::uint32_t const nExIds(ex[0]);
 
+                    if(!nExIds)
+                    {
+                        switch(ex[1])
+                        {
+                            case UNKNOWN_COMPILER:
+                                return "<unknown: compiler>";
+                            case UNKNOWN_CPU:
+                                return "<unknown: CPU>";
+                            default:
+                                return "<unknown>";
+                        }
+                    }
+#if BOOST_ARCH_X86
                     // Get the information associated with each extended ID.
                     char cpuBrandString[0x40] = {0};
                     for(std::uint32_t i(0x80000000); i<=nExIds; ++i)
@@ -99,7 +129,7 @@ namespace alpaka
                     }
                     return std::string(cpuBrandString);
 #else
-                    return "<unknown>";
+                    assert(false); // if we got here there is a bug in the cpuid() function
 #endif
                 }
                 //-----------------------------------------------------------------------------
