@@ -101,9 +101,11 @@ namespace alpaka
                 auto const threadElemExtent(
                     workdiv::getWorkDiv<Thread, Elems>(*this));
 
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 std::cout << "m_gridBlockExtent=" << this->m_gridBlockExtent << "\tgridBlockExtent=" << gridBlockExtent << std::endl;
                 std::cout << "m_blockThreadExtent=" << this->m_blockThreadExtent << "\tblockThreadExtent=" << blockThreadExtent << std::endl;
                 std::cout << "m_threadElemExtent=" << this->m_threadElemExtent << "\tthreadElemExtent=" << threadElemExtent << std::endl;
+#endif
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
@@ -138,12 +140,14 @@ namespace alpaka
 #endif
                 // make sure there is at least on team
                 TIdx const teamCount(std::max(std::min(static_cast<TIdx>(maxOmpThreadCount/blockThreadCount), gridBlockCount), static_cast<TIdx>(1u)));
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << "threadElemCount=" << threadElemExtent[0u] << std::endl;
                 std::cout << "teamCount=" << teamCount << "\tgridBlockCount=" << gridBlockCount << std::endl;
+#endif
 
                 if(::omp_in_parallel() != 0)
                 {
-                    throw std::runtime_error("The OpenMP 4.0 backend can not be used within an existing parallel region!");
+                    throw std::runtime_error("The OpenMP 5.0 backend can not be used within an existing parallel region!");
                 }
 
                 // Force the environment to use the given number of threads.
@@ -165,8 +169,8 @@ namespace alpaka
                             int const iNumTeams(::omp_get_num_teams());
                             printf("%s omp_get_num_teams: %d\n", __func__, iNumTeams);
                         }
-#endif
                         printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
+#endif
                         // iterate over groups of teams to stay withing thread limit
                         for(TIdx t = 0u; t < gridBlockCount; t+=teamCount)
                         {
