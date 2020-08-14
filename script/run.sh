@@ -33,6 +33,13 @@ then
     then
         LD_LIBRARY_PATH=
     fi
+    if [ "${CXX}" = "clang++" ]
+    then
+        if [ "${ALPAKA_CI_CLANG_VER}" -ge "10" ]
+        then
+            export LD_LIBRARY_PATH="/usr/lib/llvm-${ALPAKA_CI_CLANG_VER}/lib/:${LD_LIBRARY_PATH}"
+        fi
+    fi
 fi
 
 # CMake
