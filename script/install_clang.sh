@@ -18,7 +18,13 @@ source ./script/set.sh
 : "${ALPAKA_CI_STDLIB?'ALPAKA_CI_STDLIB must be specified'}"
 : "${CXX?'CXX must be specified'}"
 
-travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install clang-${ALPAKA_CI_CLANG_VER}
+if [ "$( echo "${ALPAKA_CI_CLANG_VER} < 10" | bc )" == 1 ]
+then
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install clang-${ALPAKA_CI_CLANG_VER}
+else
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install \
+        clang-tools-${ALPAKA_CI_CLANG_VER} llvm-${ALPAKA_CI_CLANG_VER} libomp-${ALPAKA_CI_CLANG_VER}-dev
+fi
 
 if [ "${ALPAKA_CI_STDLIB}" == "libc++" ]
 then
