@@ -25,7 +25,7 @@
 #include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStOmp5.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
-#include <alpaka/intrinsic/IntrinsicCpu.hpp>
+#include <alpaka/intrinsic/IntrinsicFallback.hpp>
 #include <alpaka/rand/RandStdLib.hpp>
 #include <alpaka/time/TimeOmp.hpp>
 #include <alpaka/warp/WarpSingleThread.hpp>
@@ -79,7 +79,8 @@ namespace alpaka
             public block::shared::dyn::BlockSharedMemDynMember<>,
             public block::shared::st::BlockSharedMemStOmp5,
             public block::sync::BlockSyncBarrierOmp,
-            public intrinsic::IntrinsicCpu,
+            // cannot determine which intrinsics are save to use (depends on target), using fallback
+            public intrinsic::IntrinsicFallback,
             public rand::RandStdLib,
             public time::TimeOmp,
             public warp::WarpSingleThread,
