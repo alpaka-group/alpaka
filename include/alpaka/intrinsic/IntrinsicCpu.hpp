@@ -11,6 +11,7 @@
 
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/intrinsic/Traits.hpp>
+#include <alpaka/intrinsic/IntrinsicFallback.hpp>
 
 #include <bitset>
 
@@ -103,7 +104,7 @@ namespace alpaka
                     else
                         return 0;
 #else
-                    return ffsFallback(value);
+                    return intrinsic::detail::ffsFallback(value);
 #endif
                 }
 
@@ -124,26 +125,8 @@ namespace alpaka
                     else
                         return 0;
 #else
-                    return ffsFallback(value);
+                    return intrinsic::detail::ffsFallback(value);
 #endif
-                }
-            private:
-
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TValue>
-                static auto ffsFallback(TValue value)
-                -> std::int32_t
-                {
-                    if (value == 0)
-                        return 0;
-                    std::int32_t result = 1;
-                    while ((value & 1) == 0)
-                    {
-                        value >>= 1;
-                        result++;
-                    }
-                    return result;
                 }
             };
         }
