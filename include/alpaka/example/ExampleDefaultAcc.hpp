@@ -41,8 +41,8 @@ namespace alpaka
         using ExampleDefaultAcc = alpaka::acc::AccCpuOmp2Threads<TDim,TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)
         using ExampleDefaultAcc = alpaka::acc::AccCpuThreads<TDim,TIdx>;
-#elif defined(ALPAKA_ACC_CPU_BT_OMP4_ENABLED)
-        using ExampleDefaultAcc = alpaka::acc::AccCpuOmp4<TDim,TIdx>;
+#elif defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
+        using ExampleDefaultAcc = alpaka::acc::AccOmp5<TDim,TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
         using ExampleDefaultAcc = alpaka::acc::AccCpuSerial<TDim,TIdx>;
 #else
