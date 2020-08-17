@@ -118,6 +118,9 @@ namespace alpaka
                 || defined(TEST_UNIT_KERNEL) \
                 || defined(TEST_UNIT_MEM_VIEW) \
                 || defined(TEST_UNIT_MATH) /* because of static const members */ \
+            )) \
+        && !( ! ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST && ( \
+                defined(TEST_UNIT_ATOMIC) /* clang nvptx atomic ICEs */ \
             ))
                 template<
                     typename TDim,
