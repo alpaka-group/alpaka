@@ -379,9 +379,11 @@ var hierarchy =
     [ "alpaka::intrinsic::ConceptIntrinsic", "structalpaka_1_1intrinsic_1_1ConceptIntrinsic.html", null ],
     [ "alpaka::intrinsic::traits::Ffs< TWarp, TSfinae >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs.html", null ],
     [ "alpaka::intrinsic::traits::Ffs< IntrinsicCpu >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicCpu_01_4.html", null ],
+    [ "alpaka::intrinsic::traits::Ffs< IntrinsicFallback >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicFallback_01_4.html", null ],
     [ "alpaka::intrinsic::traits::Ffs< IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::intrinsic::traits::Popcount< TWarp, TSfinae >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount.html", null ],
     [ "alpaka::intrinsic::traits::Popcount< IntrinsicCpu >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicCpu_01_4.html", null ],
+    [ "alpaka::intrinsic::traits::Popcount< IntrinsicFallback >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicFallback_01_4.html", null ],
     [ "alpaka::intrinsic::traits::Popcount< IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::kernel::detail::CheckFnReturnType< TAcc, TSfinae >", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType.html", null ],
     [ "alpaka::kernel::detail::CheckFnReturnType< acc::AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
@@ -1026,6 +1028,9 @@ var hierarchy =
         [ "alpaka::acc::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1acc_1_1AccCpuSerial.html", null ],
         [ "alpaka::acc::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1acc_1_1AccCpuThreads.html", null ]
       ] ]
+    ] ],
+    [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicFallback >", "structalpaka_1_1concepts_1_1Implements.html", [
+      [ "alpaka::intrinsic::IntrinsicFallback", "classalpaka_1_1intrinsic_1_1IntrinsicFallback.html", null ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::intrinsic::IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1intrinsic_1_1IntrinsicUniformCudaHipBuiltIn.html", [

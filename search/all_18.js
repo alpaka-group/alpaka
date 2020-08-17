@@ -45,6 +45,7 @@ var searchData=
   ['_7eidxgbuniformcudahipbuiltin',['~IdxGbUniformCudaHipBuiltIn',['../classalpaka_1_1idx_1_1gb_1_1IdxGbUniformCudaHipBuiltIn.html#a5d1f63ac35d0609c41cf39a78206f61b',1,'alpaka::idx::gb::IdxGbUniformCudaHipBuiltIn']]],
   ['_7eigenericthreadsqueue',['~IGenericThreadsQueue',['../classalpaka_1_1queue_1_1IGenericThreadsQueue.html#a5ccae77992e518129bf40e53a6410eb9',1,'alpaka::queue::IGenericThreadsQueue']]],
   ['_7eintrinsiccpu',['~IntrinsicCpu',['../classalpaka_1_1intrinsic_1_1IntrinsicCpu.html#aeb62a79144a31d84967554e5dd8a67e6',1,'alpaka::intrinsic::IntrinsicCpu']]],
+  ['_7eintrinsicfallback',['~IntrinsicFallback',['../classalpaka_1_1intrinsic_1_1IntrinsicFallback.html#a267014bf8480b6149acd4ef57acf79a7',1,'alpaka::intrinsic::IntrinsicFallback']]],
   ['_7eintrinsicuniformcudahipbuiltin',['~IntrinsicUniformCudaHipBuiltIn',['../classalpaka_1_1intrinsic_1_1IntrinsicUniformCudaHipBuiltIn.html#af5c0c856801757a37120c859d9f3e211',1,'alpaka::intrinsic::IntrinsicUniformCudaHipBuiltIn']]],
   ['_7eitaskpkg',['~ITaskPkg',['../classalpaka_1_1core_1_1detail_1_1ITaskPkg.html#a42025baac7befc45bf4a0c6362f5e050',1,'alpaka::core::detail::ITaskPkg']]],
   ['_7equeuegenericthreadsblocking',['~QueueGenericThreadsBlocking',['../classalpaka_1_1queue_1_1QueueGenericThreadsBlocking.html#a5c338b9f0d940fb46a879260e4a67042',1,'alpaka::queue::QueueGenericThreadsBlocking']]],

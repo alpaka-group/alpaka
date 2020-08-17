@@ -48,8 +48,12 @@ var NAVTREEINDEX1 =
 "Integral_8hpp_source.html":[3,0,0,0,15,11],
 "IntrinsicCpu_8hpp.html":[3,0,0,0,11,0],
 "IntrinsicCpu_8hpp_source.html":[3,0,0,0,11,0],
-"IntrinsicUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,11,1],
-"IntrinsicUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,11,1],
+"IntrinsicFallback_8hpp.html":[3,0,0,0,11,1],
+"IntrinsicFallback_8hpp.html#abf94455a460aff8ec537ed3e97b2f9a6":[3,0,0,0,11,1,4],
+"IntrinsicFallback_8hpp.html#ae350834103fb5a8c61e99475361666e1":[3,0,0,0,11,1,3],
+"IntrinsicFallback_8hpp_source.html":[3,0,0,0,11,1],
+"IntrinsicUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,11,2],
+"IntrinsicUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,11,2],
 "IsStrictBase_8hpp.html":[3,0,0,0,15,12],
 "IsStrictBase_8hpp.html#a12ee018b5a56427ce8552b7442006d34":[3,0,0,0,15,12,0],
 "IsStrictBase_8hpp_source.html":[3,0,0,0,15,12],
@@ -245,9 +249,5 @@ var NAVTREEINDEX1 =
 "Wait_8hpp.html":[3,0,0,0,4,0,1],
 "Wait_8hpp_source.html":[3,0,0,0,4,0,1],
 "WarpSingleThread_8hpp.html":[3,0,0,0,24,1],
-"WarpSingleThread_8hpp_source.html":[3,0,0,0,24,1],
-"WarpUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,24,2],
-"WarpUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,24,2],
-"WorkDivHelpers_8hpp.html":[3,0,0,0,25,1],
-"WorkDivHelpers_8hpp.html#a2c1867744ccffdf8be1e07a50d9c0010":[3,0,0,0,25,1,0]
+"WarpSingleThread_8hpp_source.html":[3,0,0,0,24,1]
 };

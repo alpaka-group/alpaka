@@ -26,6 +26,7 @@ var searchData=
   ['pltfuniformcudahiprt',['PltfUniformCudaHipRt',['../classalpaka_1_1pltf_1_1PltfUniformCudaHipRt.html',1,'alpaka::pltf']]],
   ['popcount',['Popcount',['../structalpaka_1_1intrinsic_1_1traits_1_1Popcount.html',1,'alpaka::intrinsic::traits']]],
   ['popcount_3c_20intrinsiccpu_20_3e',['Popcount&lt; IntrinsicCpu &gt;',['../structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicCpu_01_4.html',1,'alpaka::intrinsic::traits']]],
+  ['popcount_3c_20intrinsicfallback_20_3e',['Popcount&lt; IntrinsicFallback &gt;',['../structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicFallback_01_4.html',1,'alpaka::intrinsic::traits']]],
   ['popcount_3c_20intrinsicuniformcudahipbuiltin_20_3e',['Popcount&lt; IntrinsicUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html',1,'alpaka::intrinsic::traits']]],
   ['pow',['Pow',['../structalpaka_1_1math_1_1traits_1_1Pow.html',1,'alpaka::math::traits']]],
   ['pow_3c_20powstdlib_2c_20tbase_2c_20texp_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5farithmetic_3c_20tbase_20_3e_3a_3avalue_20_26_26std_3a_3ais_5farithmetic_3c_20texp_20_3e_3a_3avalue_20_3e_20_3e',['Pow&lt; PowStdLib, TBase, TExp, std::enable_if_t&lt; std::is_arithmetic&lt; TBase &gt;::value &amp;&amp;std::is_arithmetic&lt; TExp &gt;::value &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Pow_3_01PowStdLib_00_01TBase_00_01TExp_00_01std_1_1enable__if_e435b16d9023f8bfa84120e43bc91d9e.html',1,'alpaka::math::traits']]],
