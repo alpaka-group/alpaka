@@ -113,6 +113,7 @@ var hierarchy =
     [ "alpaka::atomic::traits::AtomicOp< TOp, atomic::AtomicStdLibLock< THashTableSize >, T, THierarchy >", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicStdLibLock_3_01THashTa54714c2bc19d6948d8002fd3e8032575.html", null ],
     [ "alpaka::atomic::traits::AtomicOp< TOp, atomic::AtomicUniformCudaHipBuiltIn, T, THierarchy >", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicUniformCudaHipBuiltIn_00_01T_00_01THierarchy_01_4.html", null ],
     [ "alpaka::block::shared::dyn::ConceptBlockSharedDyn", "structalpaka_1_1block_1_1shared_1_1dyn_1_1ConceptBlockSharedDyn.html", null ],
+    [ "alpaka::block::shared::dyn::detail::BlockSharedMemDynMemberStatic< TStaticAllocKiB >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1detail_1_1BlockSharedMemDynMemberStatic.html", null ],
     [ "alpaka::block::shared::dyn::traits::GetMem< T, TBlockSharedMemDyn, TSfinae >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem.html", null ],
     [ "alpaka::block::shared::dyn::traits::GetMem< T, BlockSharedMemDynAlignedAlloc >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4.html", null ],
     [ "alpaka::block::shared::dyn::traits::GetMem< T, BlockSharedMemDynMember< TStaticAllocKiB > >", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynMember_3_01TStaticAllocKiB_01_4_01_4.html", null ],

@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_d0ceb72129e8a8cb79e29becd1d96835.html#a9b80c7981459053843bf40946e6c3193":[2,0,0,16,2,2,19,0],
+"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElbcdaefb1364c316946579166e490d02b.html":[2,0,0,16,2,2,21],
+"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElbcdaefb1364c316946579166e490d02b.html#a153ccf32637a8909661eeb08523a19a0":[2,0,0,16,2,2,21,0],
+"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElbcdaefb1364c316946579166e490d02b.html#a504703eb39011d07c061517c83d33498":[2,0,0,16,2,2,21,1],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative.html":[2,0,0,16,2,2,22],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[2,0,0,16,2,2,23],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a468010cc2f63954b2d08c17b7bbc41fe":[2,0,0,16,2,2,23,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html":[2,0,0,20,1,3],
 "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html#aaecb94630188b3b778388030c4c94a58":[2,0,0,20,1,3,0],
 "structalpaka_1_1queue_1_1traits_1_1Enqueue.html":[2,0,0,20,1,4],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDev_01_4_00_01TTask_01_4.html":[2,0,0,20,1,8],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDev_01_4_00_01TTask_01_4.html#aa65e9649aaeda6f13cc35cef45251af9":[2,0,0,20,1,8,0],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDev_01_7e2122b52fe5c67c9c4f748f8333b43d.html":[2,0,0,20,1,7],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDev_01_7e2122b52fe5c67c9c4f748f8333b43d.html#affd12e58f9eabb742a28172b9f3a8671":[2,0,0,20,1,7,0],
-"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01TTask_01_4.html":[2,0,0,20,1,10]
+"structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDev_01_4_00_01TTask_01_4.html":[2,0,0,20,1,8]
 };
