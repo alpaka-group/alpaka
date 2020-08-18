@@ -162,7 +162,7 @@ namespace alpaka
                 {
                     #pragma omp teams num_teams(teamCount) //thread_limit(blockThreadCount)
                     {
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL || defined ALPAKA_CI
                         // The first team does some checks ...
                         if((::omp_get_team_num() == 0))
                         {
@@ -210,7 +210,7 @@ namespace alpaka
                                 #pragma omp parallel
 #endif
                                 {
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL || defined ALPAKA_CI
                                     // The first thread does some checks in the first block executed.
                                     if((::omp_get_thread_num() == 0) && (b == 0))
                                     {
