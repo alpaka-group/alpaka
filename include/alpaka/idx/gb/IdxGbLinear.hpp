@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2020 Jeffrey Kelling
  *
  * This file is part of Alpaka.
  *
@@ -9,17 +9,11 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-
-#if _OPENMP < 201307
-    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
-#endif
-
 #include <alpaka/idx/Traits.hpp>
+#include <alpaka/workdiv/Traits.hpp>
 
+#include <alpaka/core/Concepts.hpp>
 #include <alpaka/vec/Vec.hpp>
-#include <alpaka/core/Omp5.hpp>
-#include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/idx/MapIdx.hpp>
@@ -31,27 +25,27 @@ namespace alpaka
         namespace gb
         {
             //#############################################################################
-            //! The CUDA accelerator ND index provider.
+            //! General ND index provider based on a linear index.
             template<
                 typename TDim,
                 typename TIdx>
-            class IdxGbOmp5BuiltIn : public concepts::Implements<ConceptIdxGb, IdxGbOmp5BuiltIn<TDim, TIdx>>
+            class IdxGbLinear : public concepts::Implements<ConceptIdxGb, IdxGbLinear<TDim, TIdx>>
             {
             public:
                 //-----------------------------------------------------------------------------
-                IdxGbOmp5BuiltIn(const TIdx &teamOffset = static_cast<TIdx>(0u)) : m_teamOffset(teamOffset) {}
+                IdxGbLinear(const TIdx &teamOffset = static_cast<TIdx>(0u)) : m_gridBlockIdx(teamOffset) {}
                 //-----------------------------------------------------------------------------
-                IdxGbOmp5BuiltIn(IdxGbOmp5BuiltIn const &) = delete;
+                IdxGbLinear(IdxGbLinear const &) = delete;
                 //-----------------------------------------------------------------------------
-                IdxGbOmp5BuiltIn(IdxGbOmp5BuiltIn &&) = delete;
+                IdxGbLinear(IdxGbLinear &&) = delete;
                 //-----------------------------------------------------------------------------
-                auto operator=(IdxGbOmp5BuiltIn const & ) -> IdxGbOmp5BuiltIn & = delete;
+                auto operator=(IdxGbLinear const & ) -> IdxGbLinear & = delete;
                 //-----------------------------------------------------------------------------
-                auto operator=(IdxGbOmp5BuiltIn &&) -> IdxGbOmp5BuiltIn & = delete;
+                auto operator=(IdxGbLinear &&) -> IdxGbLinear & = delete;
                 //-----------------------------------------------------------------------------
-                /*virtual*/ ~IdxGbOmp5BuiltIn() = default;
+                /*virtual*/ ~IdxGbLinear() = default;
 
-                TIdx const m_teamOffset; //! \todo what is this for?
+                TIdx const m_gridBlockIdx;
             };
         }
     }
@@ -61,12 +55,12 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The GPU CUDA accelerator index dimension get trait specialization.
+            //! The IdxGbLinear index dimension get trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx>>
+                idx::gb::IdxGbLinear<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -77,12 +71,12 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The GPU CUDA accelerator grid block index get trait specialization.
+            //! The IdxGbLinear grid block index get trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct GetIdx<
-                idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx>,
+                idx::gb::IdxGbLinear<TDim, TIdx>,
                 origin::Grid,
                 unit::Blocks>
             {
@@ -91,15 +85,13 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 static auto getIdx(
-                    idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx> const & idx,
+                    idx::gb::IdxGbLinear<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
                 {
-                    // We assume that the thread id is positive.
-                    ALPAKA_ASSERT(::omp_get_team_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return idx::mapIdx<TDim::value>(
-                        vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(idx.m_teamOffset + static_cast<TIdx>(::omp_get_team_num()))),
+                        vec::Vec<dim::DimInt<1u>, TIdx>(idx.m_gridBlockIdx),
                         workdiv::getWorkDiv<Grid, Blocks>(workDiv));
                 }
             };
@@ -107,7 +99,7 @@ namespace alpaka
             template<
                 typename TIdx>
             struct GetIdx<
-                idx::gb::IdxGbOmp5BuiltIn<dim::DimInt<1u>, TIdx>,
+                idx::gb::IdxGbLinear<dim::DimInt<1u>, TIdx>,
                 origin::Grid,
                 unit::Blocks>
             {
@@ -116,11 +108,11 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 static auto getIdx(
-                    idx::gb::IdxGbOmp5BuiltIn<dim::DimInt<1u>, TIdx> const & idx,
+                    idx::gb::IdxGbLinear<dim::DimInt<1u>, TIdx> const & idx,
                     TWorkDiv const &)
                 -> vec::Vec<dim::DimInt<1u>, TIdx>
                 {
-                    return static_cast<TIdx>(idx.m_teamOffset + static_cast<TIdx>(omp_get_team_num()));
+                    return idx.m_gridBlockIdx;
                 }
             };
         }
@@ -130,17 +122,15 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The GPU CUDA accelerator grid block index idx type trait specialization.
+            //! The IdxGbLinear grid block index idx type trait specialization.
             template<
                 typename TDim,
                 typename TIdx>
             struct IdxType<
-                idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx>>
+                idx::gb::IdxGbLinear<TDim, TIdx>>
             {
                 using type = TIdx;
             };
         }
     }
 }
-
-#endif

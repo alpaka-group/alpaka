@@ -17,7 +17,7 @@
 
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>
-#include <alpaka/idx/gb/IdxGbOmp5BuiltIn.hpp>
+#include <alpaka/idx/gb/IdxGbLinear.hpp>
 #include <alpaka/idx/bt/IdxBtOmp5BuiltIn.hpp>
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
@@ -68,7 +68,7 @@ namespace alpaka
             typename TIdx>
         class AccOmp5 final :
             public workdiv::WorkDivMembers<TDim, TIdx>,
-            public idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx>,
+            public idx::gb::IdxGbLinear<TDim, TIdx>,
             public idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicOmpBuiltIn,   // grid atomics
@@ -101,10 +101,10 @@ namespace alpaka
                 vec::Vec<TDim, TIdx> const & gridBlockExtent,
                 vec::Vec<TDim, TIdx> const & blockThreadExtent,
                 vec::Vec<TDim, TIdx> const & threadElemExtent,
-                TIdx const & teamOffset,
+                TIdx const & gridBlockIdx,
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
-                    idx::gb::IdxGbOmp5BuiltIn<TDim, TIdx>(teamOffset),
+                    idx::gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
                     idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicOmpBuiltIn,// atomics between grids
@@ -117,8 +117,7 @@ namespace alpaka
                     block::shared::st::BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity()),
                     block::sync::BlockSyncBarrierOmp(),
                     rand::RandStdLib(),
-                    time::TimeOmp(),
-                    m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
+                    time::TimeOmp()
             {}
 
         public:
@@ -132,10 +131,6 @@ namespace alpaka
             auto operator=(AccOmp5 &&) -> AccOmp5 & = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~AccOmp5() = default;
-
-        private:
-            // getIdx
-            vec::Vec<TDim, TIdx> m_gridBlockIdx;    //!< The index of the currently executed block.
         };
     }
 
