@@ -58,7 +58,7 @@ namespace alpaka
                             new (buf) T();
                             m_allocdBytes += sizeof(T);
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
-                            ALPAKA_ASSERT(m_allocdBytes < m_capacity);
+                            ALPAKA_ASSERT(m_allocdBytes <= m_capacity);
 #endif
                         }
 
