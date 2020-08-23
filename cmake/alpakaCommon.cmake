@@ -448,7 +448,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     )
                 endforeach()
 
-                if(NOT MSVC)
+                if(NOT MSVC OR MSVC_VERSION GREATER_EQUAL 1920)
                     list(APPEND CUDA_NVCC_FLAGS -std=c++${ALPAKA_CXX_STANDARD})
                 endif()
 
