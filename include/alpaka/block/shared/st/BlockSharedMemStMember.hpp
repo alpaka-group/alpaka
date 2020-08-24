@@ -59,8 +59,6 @@ namespace alpaka
                         void alloc() const
                         {
                             m_allocdBytes = allocPitch<T>();
-                            uint8_t* buf = &m_mem[m_allocdBytes];
-                            new (buf) T();
                             m_allocdBytes += sizeof(T);
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
                             ALPAKA_ASSERT(m_allocdBytes <= m_capacity);
