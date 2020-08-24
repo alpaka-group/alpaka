@@ -239,9 +239,11 @@ if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
     find_package(OpenMP)
 
     if(OpenMP_CXX_FOUND)
-         if(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
-           if(OpenMP_CXX_VERSION VERSION_LESS 4.0)
-               set(ALPAKA_ACC_ANY_BT_OMP5_ENABLE OFF CACHE BOOL "Enable the OpenMP 5.0 CPU block and thread back-end" FORCE)
+        if(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
+            if(OpenMP_CXX_VERSION VERSION_LESS 4.0)
+                message(FATAL_ERROR "ALPAKA_ACC_ANY_BT_OMP5_ENABLE requires compiler support for OpenMP at lease 4.0, 5.0 is recommended.")
+            elseif(OpenMP_CXX_VERSION VERSION_LESS 5.0)
+                message(WARNING "OpenMP < 5.0, for ALPAKA_ACC_ANY_BT_OMP5_ENABLE 5.0 is recommended.")
             endif()
         endif()
 
@@ -253,9 +255,6 @@ if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR A
         endif()
     else()
         message(FATAL_ERROR "Optional alpaka dependency OpenMP could not be found!")
-        set(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU grid block back-end" FORCE)
-        set(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU block thread back-end" FORCE)
-        set(ALPAKA_ACC_ANY_BT_OMP5_ENABLE OFF CACHE BOOL "Enable the OpenMP 5.0 CPU block and thread back-end" FORCE)
     endif()
 endif()
 
