@@ -296,7 +296,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
 
     if(CMAKE_CUDA_COMPILER)
         enable_language(CUDA)
-        find_package(CUDAToolkit VERSION 9.0 REQUIRED)
+        find_package(CUDAToolkit 9.0 REQUIRED)
 
         set_target_properties(alpaka PROPERTIES
                               CUDA_STANDARD ${ALPAKA_CXX_STANDARD}
@@ -765,4 +765,3 @@ if((ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE) AND ALPAKA_CUDA_COM
     string(TOUPPER "${CMAKE_BUILD_TYPE}" build_config)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${build_config}}")
 endif()
-
