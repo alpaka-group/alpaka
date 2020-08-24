@@ -8,6 +8,9 @@
  */
 
 #define TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
+// clang thinks a macro is unused when only used as the second operand of an &&
+// where the first operand evaluates to false, so we use it here:
+TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
 
 #include <alpaka/kernel/Traits.hpp>
 
@@ -88,3 +91,5 @@ TEMPLATE_LIST_TEST_CASE( "nvstdFunctionKernelIsWorking", "[kernel]", alpaka::tes
 
 #endif
 #endif
+
+#undef TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
