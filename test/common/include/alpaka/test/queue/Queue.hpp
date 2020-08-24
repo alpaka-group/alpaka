@@ -152,6 +152,11 @@ namespace alpaka
                     std::tuple<alpaka::dev::DevHipRt, alpaka::queue::QueueHipRtBlocking>,
                     std::tuple<alpaka::dev::DevHipRt, alpaka::queue::QueueHipRtNonBlocking>
 #endif
+#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
+                    ,
+                    std::tuple<alpaka::dev::DevOmp4, alpaka::queue::QueueOmp4Blocking>,
+                    std::tuple<alpaka::dev::DevOmp4, alpaka::queue::QueueOmp4NonBlocking>
+#endif
                 >;
         }
     }
