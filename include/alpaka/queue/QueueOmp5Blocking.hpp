@@ -17,20 +17,7 @@
 
 #include <alpaka/dev/DevOmp5.hpp>
 
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/queue/Traits.hpp>
-#include <alpaka/wait/Traits.hpp>
-
-#include <alpaka/core/Omp5.hpp>
 #include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
-
-#include <stdexcept>
-#include <memory>
-#include <functional>
-#include <mutex>
-#include <condition_variable>
-#include <thread>
 
 namespace alpaka
 {
