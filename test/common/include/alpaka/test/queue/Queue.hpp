@@ -76,18 +76,18 @@ namespace alpaka
 
                 //#############################################################################
                 //! The blocking queue trait specialization for a blocking CPU queue.
-                template<>
+                template<typename TDev>
                 struct IsBlockingQueue<
-                    alpaka::queue::QueueCpuBlocking>
+                    alpaka::queue::QueueGenericThreadsBlocking<TDev>>
                 {
                     static constexpr bool value = true;
                 };
 
                 //#############################################################################
                 //! The blocking queue trait specialization for a non-blocking CPU queue.
-                template<>
+                template<typename TDev>
                 struct IsBlockingQueue<
-                    alpaka::queue::QueueCpuNonBlocking>
+                    alpaka::queue::QueueGenericThreadsNonBlocking<TDev>>
                 {
                     static constexpr bool value = false;
                 };
