@@ -35,7 +35,12 @@ namespace alpaka
                     public:
                         //-----------------------------------------------------------------------------
 #ifndef NDEBUG
-                        BlockSharedMemStMemberImpl(uint8_t* mem, unsigned int capacity) : m_mem(mem), m_capacity(capacity) {}
+                        BlockSharedMemStMemberImpl(uint8_t* mem, unsigned int capacity) : m_mem(mem), m_capacity(capacity)
+                        {
+#ifdef ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
+                            ALPAKA_ASSERT( ( m_mem == nullptr ) == ( m_capacity == 0u ) );
+#endif
+                        }
 #else
                         BlockSharedMemStMemberImpl(uint8_t* mem, unsigned int) : m_mem(mem) {}
 #endif
