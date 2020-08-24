@@ -34,7 +34,7 @@ then
     # software-properties-common: 'add-apt-repository' and certificates for wget https download
     # binutils: ld
     # xz-utils: xzcat
-    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils xz-utils bc
+    travis_retry sudo apt-get -y --quiet --allow-unauthenticated --no-install-recommends install software-properties-common wget git make binutils xz-utils
 fi
 
 if [ "$ALPAKA_CI_OS_NAME" = "Linux" ] || [ "$ALPAKA_CI_OS_NAME" = "Windows" ]
