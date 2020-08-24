@@ -18,6 +18,7 @@
 #include <alpaka/dev/DevOmp4.hpp>
 #include <alpaka/kernel/TaskKernelCpuOmp4.hpp>
 #include <alpaka/queue/QueueOmp4Blocking.hpp>
+#include <alpaka/mem/buf/SetKernel.hpp>
 
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Utility.hpp>
@@ -47,81 +48,6 @@ namespace alpaka
     {
         namespace view
         {
-            namespace omp4
-            {
-                namespace detail
-                {
-
-                    template<
-                        typename TDim,
-                        typename TIdx>
-                    ALPAKA_FN_HOST_ACC auto pitchVecToExtentVec(
-                        vec::Vec<TDim, TIdx> pitch)
-                    -> vec::Vec<TDim, TIdx>
-                    {
-                        for(unsigned int i = 0; i < static_cast<unsigned int>(TDim::value) - 1u; ++i)
-                        {
-                            pitch[i] /= pitch[i+1u];
-                        }
-                        return pitch;
-                    }
-
-                    //#############################################################################
-                    //! The OMP4 device ND memory set kernel.
-                    class MemSetKernel
-                    {
-                    public:
-                        //-----------------------------------------------------------------------------
-                        //! The kernel entry point.
-                        //!
-                        //! \tparam TAcc The accelerator environment to be executed on.
-                        //! \tparam TElem element type.
-                        //! \tparam TExtent extent type.
-                        //! \param acc The accelerator to be executed on.
-                        //! \param val value to set.
-                        //! \param dst target mem ptr.
-                        //! \param extent area to set.
-                        ALPAKA_NO_HOST_ACC_WARNING
-                        template<
-                            typename TAcc,
-                            typename TElem,
-                            typename TExtent,
-                            typename TPitch>
-                        ALPAKA_FN_ACC auto operator()(
-                            TAcc const & acc,
-                            TElem const val,
-                            TElem * dst,
-                            TExtent extent,
-                            TPitch pitch) const
-                        -> void
-                        {
-                            using Idx = typename idx::traits::IdxType<TExtent>::type;
-                            auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
-                            auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
-                            auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
-                            auto idx = idx::mapIdxPitch<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
-                            constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
-                            const auto lastIdx = idx +
-                                std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim]-idxThreadFirstElem[lastDim]));
-
-                            if ([&idxThreadFirstElem, &extent](){
-                                    for(auto i = 0u; i < dim::Dim<TAcc>::value; ++i)
-                                        if(idxThreadFirstElem[i] >= extent[i])
-                                            return false;
-                                    return true;
-                                }())
-                            {
-                                // assuming elements = {1,1,...,1,n}
-                                for(; idx<lastIdx; ++idx)
-                                {
-                                    dst[idx] = val;
-                                }
-                            }
-                        }
-                    };
-                }
-            }
-
             namespace traits
             {
                 //#############################################################################
@@ -147,7 +73,7 @@ namespace alpaka
                                     vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones(),
                                     vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones(),
                                     vec::Vec<TDim, typename idx::traits::IdxType<TExtent>::type>::ones()),
-                                view::omp4::detail::MemSetKernel(),
+                                view::MemSetKernel(),
                                 byte,
                                 reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
                                 alpaka::core::declval<decltype(extent::getExtentVec(extent))&>(),
@@ -168,7 +94,7 @@ namespace alpaka
                                         vec::Vec<TDim, Idx>::ones(),
                                         vec::Vec<TDim, Idx>::ones(),
                                         vec::Vec<TDim, Idx>::ones()),
-                                    view::omp4::detail::MemSetKernel(),
+                                    view::MemSetKernel(),
                                     byte,
                                     reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
                                     byteExtent,
@@ -189,7 +115,7 @@ namespace alpaka
                         return
                             kernel::createTaskKernel<acc::AccCpuOmp4<TDim,Idx>>(
                                     workDiv,
-                                    view::omp4::detail::MemSetKernel(),
+                                    view::MemSetKernel(),
                                     byte,
                                     reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
                                     byteExtent,
