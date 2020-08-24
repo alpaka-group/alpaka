@@ -70,6 +70,7 @@ namespace alpaka
                     //#############################################################################
                     //! Event that can be enqueued into a queue and can be triggered by the Host.
                     //#############################################################################
+                    template<class TDev = dev::DevCpu>
                     class EventHostManualTriggerCpuImpl
                     {
                     public:
@@ -77,7 +78,7 @@ namespace alpaka
                         //! Constructor.
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(
-                            dev::DevCpu const & dev) noexcept :
+                            TDev const & dev) noexcept :
                                 m_dev(dev),
                                 m_mutex(),
                                 m_enqueueCount(0u),
@@ -113,7 +114,7 @@ namespace alpaka
                         }
 
                     public:
-                        dev::DevCpu const m_dev;                                //!< The device this event is bound to.
+                        TDev const m_dev;                                //!< The device this event is bound to.
 
                         mutable std::mutex m_mutex;                             //!< The mutex used to synchronize access to the event.
 
@@ -128,6 +129,7 @@ namespace alpaka
             //#############################################################################
             //! Event that can be enqueued into a queue and can be triggered by the Host.
             //#############################################################################
+            template<class TDev = dev::DevCpu>
             class EventHostManualTriggerCpu
             {
             public:
@@ -135,8 +137,8 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST EventHostManualTriggerCpu(
-                    dev::DevCpu const & dev) :
-                        m_spEventImpl(std::make_shared<cpu::detail::EventHostManualTriggerCpuImpl>(dev))
+                    TDev const & dev) :
+                        m_spEventImpl(std::make_shared<cpu::detail::EventHostManualTriggerCpuImpl<TDev>>(dev))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -180,7 +182,7 @@ namespace alpaka
                 }
 
             public:
-                std::shared_ptr<cpu::detail::EventHostManualTriggerCpuImpl> m_spEventImpl;
+                std::shared_ptr<cpu::detail::EventHostManualTriggerCpuImpl<TDev>> m_spEventImpl;
             };
 
             namespace traits
@@ -192,7 +194,7 @@ namespace alpaka
                 struct EventHostManualTriggerType<
                     alpaka::dev::DevCpu>
                 {
-                    using type = alpaka::test::event::EventHostManualTriggerCpu;
+                    using type = alpaka::test::event::EventHostManualTriggerCpu<dev::DevCpu>;
                 };
                 //#############################################################################
                 //! The CPU event host manual trigger support get trait specialization.
@@ -218,16 +220,16 @@ namespace alpaka
             //#############################################################################
             //! The CPU device event device get trait specialization.
             //#############################################################################
-            template<>
+            template<typename TDev>
             struct GetDev<
-                test::event::EventHostManualTriggerCpu>
+                test::event::EventHostManualTriggerCpu<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    test::event::EventHostManualTriggerCpu const & event)
-                -> dev::DevCpu
+                    test::event::EventHostManualTriggerCpu<TDev> const & event)
+                -> TDev
                 {
                     return event.m_spEventImpl->m_dev;
                 }
@@ -241,15 +243,15 @@ namespace alpaka
             //#############################################################################
             //! The CPU device event test trait specialization.
             //#############################################################################
-            template<>
+            template<typename TDev>
             struct Test<
-                test::event::EventHostManualTriggerCpu>
+                test::event::EventHostManualTriggerCpu<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a queue (not enqueued or already handled).
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto test(
-                    test::event::EventHostManualTriggerCpu const & event)
+                    test::event::EventHostManualTriggerCpu<TDev> const & event)
                 -> bool
                 {
                     std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
@@ -266,21 +268,21 @@ namespace alpaka
             //#############################################################################
             //!
             //#############################################################################
-            template<>
+            template<typename TDev>
             struct Enqueue<
-                queue::QueueCpuNonBlocking,
-                test::event::EventHostManualTriggerCpu>
+                queue::QueueGenericThreadsNonBlocking<TDev>,
+                test::event::EventHostManualTriggerCpu<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    queue::QueueCpuNonBlocking & queue,
+                    queue::QueueGenericThreadsNonBlocking<TDev> & queue,
 #else
-                    queue::QueueCpuNonBlocking &,
+                    queue::QueueGenericThreadsNonBlocking<TDev> &,
 #endif
-                    test::event::EventHostManualTriggerCpu & event)
+                    test::event::EventHostManualTriggerCpu<TDev> & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -322,17 +324,17 @@ namespace alpaka
             //#############################################################################
             //!
             //#############################################################################
-            template<>
+            template<typename TDev>
             struct Enqueue<
-                queue::QueueCpuBlocking,
-                test::event::EventHostManualTriggerCpu>
+                queue::QueueGenericThreadsBlocking<TDev>,
+                test::event::EventHostManualTriggerCpu<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueCpuBlocking &,
-                    test::event::EventHostManualTriggerCpu & event)
+                    queue::QueueGenericThreadsBlocking<TDev> &,
+                    test::event::EventHostManualTriggerCpu<TDev> & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

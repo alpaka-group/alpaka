@@ -337,14 +337,14 @@ namespace alpaka
             template<>
             struct Enqueue<
                 queue::QueueCpuOmp2Collective,
-                test::event::EventHostManualTriggerCpu>
+                test::event::EventHostManualTriggerCpu<>>
             {
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     queue::QueueCpuOmp2Collective & ,
-                    test::event::EventHostManualTriggerCpu & )
+                    test::event::EventHostManualTriggerCpu<> & )
                 -> void
                 {
                     // EventHostManualTriggerCpu are not supported for together with the queue QueueCpuOmp2Collective
