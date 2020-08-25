@@ -161,17 +161,17 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! Maps a linear index to a N dimensional index.
+            //! Maps a linear index to a N dimensional index assuming a buffer wihtout padding.
             template<
                 std::size_t TidxDimOut,
                 std::size_t TidxDimIn,
                 typename TSfinae = void>
-            struct MapIdxPitch;
+            struct MapIdxPitchBytes;
             //#############################################################################
-            //! Maps a N dimensional index to the same N dimensional index.
+            //! Maps a N dimensional index to the same N dimensional index assuming a buffer wihtout padding.
             template<
                 std::size_t TidxDim>
-            struct MapIdxPitch<
+            struct MapIdxPitchBytes<
                 TidxDim,
                 TidxDim>
             {
@@ -179,11 +179,11 @@ namespace alpaka
                 // \tparam TElem Type of the index values.
                 // \param idx Idx to be mapped.
                 // \param pitch Spatial pitch (in elems) to map the index to
-                // \return A N dimensional vector.
+                // \return N dimensional vector.
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TElem>
-                ALPAKA_FN_HOST_ACC static auto mapIdxPitch(
+                ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
                     vec::Vec<dim::DimInt<TidxDim>, TElem> const & idx,
                     vec::Vec<dim::DimInt<TidxDim>, TElem> const & pitch)
                 -> vec::Vec<dim::DimInt<TidxDim>, TElem>
@@ -194,10 +194,10 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! Maps a 1 dimensional index to a N dimensional index.
+            //! Maps a 1 dimensional index to a N dimensional index assuming a buffer wihtout padding.
             template<
                 std::size_t TidxDimOut>
-            struct MapIdxPitch<
+            struct MapIdxPitchBytes<
                 TidxDimOut,
                 1u,
                 typename std::enable_if<TidxDimOut != 1u>::type>
@@ -206,11 +206,11 @@ namespace alpaka
                 // \tparam TElem Type of the index values.
                 // \param idx Idx to be mapped.
                 // \param pitch Spatial pitch (in elems) to map the index to
-                // \return A N dimensional vector.
+                // \return N dimensional vector.
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TElem>
-                ALPAKA_FN_HOST_ACC static auto mapIdxPitch(
+                ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
                     vec::Vec<dim::DimInt<1u>, TElem> const & idx,
                     vec::Vec<dim::DimInt<TidxDimOut>, TElem> const & pitch)
                 -> vec::Vec<dim::DimInt<TidxDimOut>, TElem>
@@ -231,10 +231,10 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! Maps a N dimensional index to a 1 dimensional index.
+            //! Maps a N dimensional index to a 1 dimensional index assuming a buffer wihtout padding.
             template<
                 std::size_t TidxDimIn>
-            struct MapIdxPitch<
+            struct MapIdxPitchBytes<
                 1u,
                 TidxDimIn,
                 typename std::enable_if<TidxDimIn != 1u>::type>
@@ -247,7 +247,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TElem>
-                ALPAKA_FN_HOST_ACC static auto mapIdxPitch(
+                ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
                     vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
                     vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & pitch)
                 -> vec::Vec<dim::DimInt<1u>, TElem>
@@ -264,7 +264,8 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! Maps a N dimensional index to a N dimensional position.
+        //! Maps a N dimensional index to a N dimensional position based on
+        //! pitch in a buffer without padding or a byte buffer.
         //!
         //! \tparam TidxDimOut Dimension of the index vector to map to.
         //! \tparam TidxDimIn Dimension of the index vector to map from.
@@ -274,7 +275,7 @@ namespace alpaka
             std::size_t TidxDimOut,
             std::size_t TidxDimIn,
             typename TElem>
-        ALPAKA_FN_HOST_ACC auto mapIdxPitch(
+        ALPAKA_FN_HOST_ACC auto mapIdxPitchBytes(
             vec::Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
             vec::Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & pitch)
         -> vec::Vec<dim::DimInt<TidxDimOut>, TElem>
@@ -283,10 +284,10 @@ namespace alpaka
             static_assert(TidxDimIn > 0u, "The dimension of the input vector has to be greater than zero!");
 
             return
-                detail::MapIdxPitch<
+                detail::MapIdxPitchBytes<
                     TidxDimOut,
                     TidxDimIn>
-                ::mapIdxPitch(
+                ::mapIdxPitchBytes(
                     idx,
                     pitch);
         }

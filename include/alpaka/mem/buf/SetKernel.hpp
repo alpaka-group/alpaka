@@ -13,6 +13,7 @@
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/idx/Accessors.hpp>
 #include <alpaka/idx/MapIdx.hpp>
+#include <alpaka/meta/Fold.hpp>
 
 namespace alpaka
 {
@@ -31,7 +32,6 @@ namespace alpaka
                 //! All but the last element of threadElemExtent must be one.
                 //!
                 //! \tparam TAcc The accelerator environment to be executed on.
-                //! \tparam TElem element type.
                 //! \tparam TExtent extent type.
                 //! \param acc The accelerator to be executed on.
                 //! \param val value to set.
@@ -40,13 +40,12 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TAcc,
-                    typename TElem,
                     typename TExtent,
                     typename TPitch>
                 ALPAKA_FN_ACC auto operator()(
                     TAcc const & acc,
-                    TElem const val,
-                    TElem * dst,
+                    std::uint8_t const val,
+                    std::uint8_t * dst,
                     TExtent extent,
                     TPitch pitch) const
                 -> void
@@ -55,19 +54,13 @@ namespace alpaka
                     auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
                     auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
                     auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
-                    auto idx = idx::mapIdxPitch<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
+                    auto idx = idx::mapIdxPitchBytes<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
                     constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
                     const auto lastIdx = idx +
                         std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim]-idxThreadFirstElem[lastDim]));
 
-                    if ([&idxThreadFirstElem, &extent](){
-                            for(auto i = 0u; i < dim::Dim<TAcc>::value; ++i)
-                                if(idxThreadFirstElem[i] >= extent[i])
-                                    return false;
-                            return true;
-                        }())
+                    if( (idxThreadFirstElem < extent).foldrAll(std::logical_and<bool>()) )
                     {
-                        // assuming elements = {1,1,...,1,n}
                         for(; idx<lastIdx; ++idx)
                         {
                             *(dst + idx) = val;
