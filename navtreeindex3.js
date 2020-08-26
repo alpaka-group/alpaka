@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5":[2,0,0,4,1,6,4],
+"classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0":[2,0,0,4,1,6,3],
+"classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ad8bdb3800365bc7d98e151f748e4680e":[2,0,0,4,1,6,8],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html":[2,0,0,4,1,7],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a266dadb37620326063fefe50f417ed1f":[2,0,0,4,1,7,1],
 "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#a29842d9a59ee0a98e7f2cd99427784dc":[2,0,0,4,1,7,4],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html#a526635e8bed409f1fd91df3b0ce6d221":[2,0,0,14,8,5],
 "classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html#a6f09c64562aadb7a550b404d66d9abfd":[2,0,0,14,8,2],
 "classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html#aa963951003cfb8481e76e64ddae2e091":[2,0,0,14,8,3],
-"classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html#aad9d78b360b8442f2ae08d839762e37e":[2,0,0,14,8,0],
-"classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html#ac6b2eab662a99b96d62508adbc714ce3":[2,0,0,14,8,6],
-"classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html#ade8038f6c2893a0144f451b39c5b0268":[2,0,0,14,8,1],
-"classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html":[2,0,0,14,9]
+"classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html#aad9d78b360b8442f2ae08d839762e37e":[2,0,0,14,8,0]
 };

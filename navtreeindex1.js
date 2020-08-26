@@ -62,7 +62,8 @@ var NAVTREEINDEX1 =
 "LogUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,13,12,1],
 "LogUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,13,12,1],
 "MapIdx_8hpp.html":[3,0,0,0,10,3],
-"MapIdx_8hpp.html#ac131ec100c727e3e04383b7c530150ed":[3,0,0,0,10,3,4],
+"MapIdx_8hpp.html#a11cafb310de344f3690fea7bced5a3af":[3,0,0,0,10,3,9],
+"MapIdx_8hpp.html#ac131ec100c727e3e04383b7c530150ed":[3,0,0,0,10,3,8],
 "MapIdx_8hpp_source.html":[3,0,0,0,10,3],
 "MathStdLib_8hpp.html":[3,0,0,0,13,24],
 "MathStdLib_8hpp_source.html":[3,0,0,0,13,24],
@@ -132,6 +133,8 @@ var NAVTREEINDEX1 =
 "RsqrtStdLib_8hpp_source.html":[3,0,0,0,13,18,0],
 "RsqrtUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,13,18,1],
 "RsqrtUniformCudaHipBuiltIn_8hpp_source.html":[3,0,0,0,13,18,1],
+"SetKernel_8hpp.html":[3,0,0,0,14,1,4],
+"SetKernel_8hpp_source.html":[3,0,0,0,14,1,4],
 "SinCosStdLib_8hpp.html":[3,0,0,0,13,20,0],
 "SinCosStdLib_8hpp_source.html":[3,0,0,0,13,20,0],
 "SinCosUniformCudaHipBuiltIn_8hpp.html":[3,0,0,0,13,20,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "ViewStdVector_8hpp_source.html":[3,0,0,0,14,2,4],
 "ViewSubView_8hpp.html":[3,0,0,0,14,2,5],
 "ViewSubView_8hpp_source.html":[3,0,0,0,14,2,5],
-"Wait_8hpp.html":[3,0,0,0,4,0,1],
-"Wait_8hpp_source.html":[3,0,0,0,4,0,1],
-"WarpSingleThread_8hpp.html":[3,0,0,0,24,1],
-"WarpSingleThread_8hpp_source.html":[3,0,0,0,24,1]
+"Wait_8hpp.html":[3,0,0,0,4,0,1]
 };

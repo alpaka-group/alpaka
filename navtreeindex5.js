@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"classalpaka_1_1time_1_1TimeOmp.html#a8be105b8f1d424a40c1da088c959b926":[2,0,0,22,2,2],
+"classalpaka_1_1time_1_1TimeOmp.html#ab440dcf5f650735e1586e70066b3970f":[2,0,0,22,2,1],
+"classalpaka_1_1time_1_1TimeOmp.html#abc3b305633d6c4296f8860dd2ceceba5":[2,0,0,22,2,3],
+"classalpaka_1_1time_1_1TimeOmp.html#abc4cf80daec594227447f745c5e63395":[2,0,0,22,2,0],
+"classalpaka_1_1time_1_1TimeOmp.html#acde45c065179450a98db8f02bddfb8ff":[2,0,0,22,2,4],
 "classalpaka_1_1time_1_1TimeOmp.html#ae997390dc44113e624d78e0ba7cd567b":[2,0,0,22,2,5],
 "classalpaka_1_1time_1_1TimeStdLib.html":[2,0,0,22,3],
 "classalpaka_1_1time_1_1TimeStdLib.html#a396ef7e60768822b8e3b8019cccfdd95":[2,0,0,22,3,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX5 =
 "functions_z.html":[2,2,0,23],
 "globals.html":[3,1,0],
 "globals_defs.html":[3,1,3],
-"globals_func.html":[3,1,1],
-"globals_type.html":[3,1,2],
-"hierarchy.html":[2,1],
-"idx_2Traits_8hpp.html":[3,0,0,0,10,4],
-"idx_2Traits_8hpp.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348":[3,0,0,0,10,4,5],
-"idx_2Traits_8hpp_source.html":[3,0,0,0,10,4]
+"globals_func.html":[3,1,1]
 };

@@ -1,5 +1,10 @@
 var NAVTREEINDEX9 =
 {
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int16__t_01_4.html":[2,0,0,4,3,3],
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int16__t_01_4.html#a70fa1eccd7165fca6bdb105f93c9c765":[2,0,0,4,3,3,0],
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int32__t_01_4.html":[2,0,0,4,3,4],
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int32__t_01_4.html#af11ef19d11fae42787223bd041ecbc71":[2,0,0,4,3,4,0],
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int64__t_01_4.html":[2,0,0,4,3,5],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int64__t_01_4.html#a4e609a8654bcd30dc7f9f70511df2caf":[2,0,0,4,3,5,0],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int8__t_01_4.html":[2,0,0,4,3,6],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int8__t_01_4.html#af74303c1a55d9985335b15d48c3d03f2":[2,0,0,4,3,6,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TExtent_01_4_f34d2fc7bf7c9bbcb5deca468e2b1cb3.html":[2,0,0,10,1,7],
 "structalpaka_1_1extent_1_1traits_1_1SetExtent.html":[2,0,0,10,1,13],
 "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01TIdxIntegralConst_00_01vec_1_1Vec_3_01TDim_00_934410724a1bc11a25d3dc545633e14c.html":[2,0,0,10,1,19],
-"structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01TE95a83a96ef5ab9ec7e4c9fc9ddae9f0d.html":[2,0,0,10,1,14],
-"structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01TE95a83a96ef5ab9ec7e4c9fc9ddae9f0d.html#a396ffb15040e65f963535675e11b218a":[2,0,0,10,1,14,0],
-"structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TExtent_01_4_40c0c485ab3840d6a9e481572fcb0d22.html":[2,0,0,10,1,16],
-"structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TExtent_01_4_643e144cc55c6edc90c5328a40bbadaf.html":[2,0,0,10,1,18],
-"structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TExtent_01_4_9114b6ad2438b15e7f422372cd4d9ab4.html":[2,0,0,10,1,17],
-"structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TExtent_01_4_a9e5331a3e76a7d40a9999ed5dc10fa0.html":[2,0,0,10,1,15]
+"structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01TE95a83a96ef5ab9ec7e4c9fc9ddae9f0d.html":[2,0,0,10,1,14]
 };

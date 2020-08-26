@@ -51,5 +51,8 @@ var dir_e9c63de0e8709741f56550be53020686 =
       [ "GetPtrNative< mem::buf::BufUniformCudaHipRt< TElem, TDim, TIdx > >", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01c6befca1b06c78016f2ba755edc28312.html", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01c6befca1b06c78016f2ba755edc28312" ],
       [ "GetOffset< TIdxIntegralConst, mem::buf::BufUniformCudaHipRt< TElem, TDim, TIdx > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufUnifor3a06fee17e8111b78dbddb5db6593fac.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufUnifor3a06fee17e8111b78dbddb5db6593fac" ]
     ] ],
+    [ "SetKernel.hpp", "SetKernel_8hpp.html", [
+      [ "MemSetKernel", "classalpaka_1_1mem_1_1view_1_1MemSetKernel.html", "classalpaka_1_1mem_1_1view_1_1MemSetKernel" ]
+    ] ],
     [ "Traits.hpp", "mem_2buf_2Traits_8hpp.html", "mem_2buf_2Traits_8hpp" ]
 ];

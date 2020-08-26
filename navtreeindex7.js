@@ -1,5 +1,10 @@
 var NAVTREEINDEX7 =
 {
+"namespacealpaka_1_1math.html":[2,0,0,15],
+"namespacealpaka_1_1math_1_1traits.html":[1,0,0,16,0],
+"namespacealpaka_1_1math_1_1traits.html":[2,0,0,15,0],
+"namespacealpaka_1_1mem.html":[1,0,0,17],
+"namespacealpaka_1_1mem.html":[2,0,0,16],
 "namespacealpaka_1_1mem_1_1alloc.html":[1,0,0,17,0],
 "namespacealpaka_1_1mem_1_1alloc.html":[2,0,0,16,0],
 "namespacealpaka_1_1mem_1_1alloc_1_1traits.html":[1,0,0,17,0,0],
@@ -32,12 +37,12 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1meta.html":[2,0,0,17],
 "namespacealpaka_1_1meta_1_1detail.html":[1,0,0,18,0],
 "namespacealpaka_1_1meta_1_1detail.html":[2,0,0,17,0],
-"namespacealpaka_1_1offset.html":[1,0,0,19],
 "namespacealpaka_1_1offset.html":[2,0,0,18],
-"namespacealpaka_1_1offset_1_1detail.html":[1,0,0,19,0],
+"namespacealpaka_1_1offset.html":[1,0,0,19],
 "namespacealpaka_1_1offset_1_1detail.html":[2,0,0,18,0],
-"namespacealpaka_1_1offset_1_1traits.html":[1,0,0,19,1],
+"namespacealpaka_1_1offset_1_1detail.html":[1,0,0,19,0],
 "namespacealpaka_1_1offset_1_1traits.html":[2,0,0,18,1],
+"namespacealpaka_1_1offset_1_1traits.html":[1,0,0,19,1],
 "namespacealpaka_1_1origin.html":[1,0,0,20],
 "namespacealpaka_1_1pltf.html":[2,0,0,19],
 "namespacealpaka_1_1pltf.html":[1,0,0,21],
@@ -244,10 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1atomic_1_1ConceptAtomicBlocks.html":[2,0,0,1,7],
 "structalpaka_1_1atomic_1_1ConceptAtomicGrids.html":[2,0,0,1,8],
 "structalpaka_1_1atomic_1_1ConceptAtomicThreads.html":[2,0,0,1,9],
-"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType.html":[2,0,0,1,0,0],
-"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html":[2,0,0,1,0,1],
-"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html#ad599dadce3eefceb7df218d280dfb2f8":[2,0,0,1,0,1,0],
-"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html":[2,0,0,1,0,2],
-"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html#af4b61e2c16ce21d8e68eddc21162ca35":[2,0,0,1,0,2,0],
-"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4.html":[2,0,0,1,0,3]
+"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType.html":[2,0,0,1,0,0]
 };

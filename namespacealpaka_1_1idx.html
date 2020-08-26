@@ -145,6 +145,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ac131ec100c727e3e04383b7c530150ed"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#ac131ec100c727e3e04383b7c530150ed">mapIdx</a> (<a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;(TidxDimOut&lt; TidxDimIn) ? TidxDimIn :TidxDimOut &gt;, TElem &gt; const &amp;extent) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
 <tr class="memdesc:ac131ec100c727e3e04383b7c530150ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="#ac131ec100c727e3e04383b7c530150ed">More...</a><br /></td></tr>
 <tr class="separator:ac131ec100c727e3e04383b7c530150ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11cafb310de344f3690fea7bced5a3af"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; </td></tr>
+<tr class="memitem:a11cafb310de344f3690fea7bced5a3af"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a11cafb310de344f3690fea7bced5a3af">mapIdxPitchBytes</a> (<a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;(TidxDimOut&lt; TidxDimIn) ? TidxDimIn :TidxDimOut &gt;, TElem &gt; const &amp;pitch) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
+<tr class="memdesc:a11cafb310de344f3690fea7bced5a3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position based on pitch in a buffer without padding or a byte buffer.  <a href="#a11cafb310de344f3690fea7bced5a3af">More...</a><br /></td></tr>
+<tr class="separator:a11cafb310de344f3690fea7bced5a3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The index specifics. </p>
@@ -362,13 +366,46 @@ template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; <
 
 </div>
 </div>
+<a id="a11cafb310de344f3690fea7bced5a3af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11cafb310de344f3690fea7bced5a3af">&#9670;&nbsp;</a></span>mapIdxPitchBytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::idx::mapIdxPitchBytes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;TidxDimOut&gt;, TElem&gt;
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Maps a N dimensional index to a N dimensional position based on pitch in a buffer without padding or a byte buffer. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TidxDimOut</td><td>Dimension of the index vector to map to. </td></tr>
+    <tr><td class="paramname">TidxDimIn</td><td>Dimension of the index vector to map from. </td></tr>
+    <tr><td class="paramname">TElem</td><td>Type of the elements of the index vector to map from. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00278">278</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1idx.html">idx</a></li>
-    <li class="footer">Generated on Wed Aug 26 2020 07:11:50 for alpaka by
+    <li class="footer">Generated on Wed Aug 26 2020 14:24:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

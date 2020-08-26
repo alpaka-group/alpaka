@@ -1,5 +1,10 @@
 var NAVTREEINDEX8 =
 {
+"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html":[2,0,0,1,0,1],
+"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html#ad599dadce3eefceb7df218d280dfb2f8":[2,0,0,1,0,1,0],
+"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html":[2,0,0,1,0,2],
+"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html#af4b61e2c16ce21d8e68eddc21162ca35":[2,0,0,1,0,2,0],
+"structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4.html":[2,0,0,1,0,3],
 "structalpaka_1_1atomic_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4.html#a9f3e20a47424e43656cd7c646292df32":[2,0,0,1,0,3,0],
 "structalpaka_1_1atomic_1_1op_1_1Add.html":[2,0,0,1,1,0],
 "structalpaka_1_1atomic_1_1op_1_1Add.html#a01a82f6cced3e8aefe2d05a34856dcb1":[2,0,0,1,1,0,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01double_01_4.html":[2,0,0,4,3,1],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01double_01_4.html#acd7b25ddd257c466bc352cca889acbd8":[2,0,0,4,3,1,0],
 "structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01float_01_4.html":[2,0,0,4,3,2],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01float_01_4.html#ad7168f9c1ea9680b5a43341c6fa2aea9":[2,0,0,4,3,2,0],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int16__t_01_4.html":[2,0,0,4,3,3],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int16__t_01_4.html#a70fa1eccd7165fca6bdb105f93c9c765":[2,0,0,4,3,3,0],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int32__t_01_4.html":[2,0,0,4,3,4],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int32__t_01_4.html#af11ef19d11fae42787223bd041ecbc71":[2,0,0,4,3,4,0],
-"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01std_1_1int64__t_01_4.html":[2,0,0,4,3,5]
+"structalpaka_1_1core_1_1vectorization_1_1GetVectorizationSizeElems_3_01float_01_4.html#ad7168f9c1ea9680b5a43341c6fa2aea9":[2,0,0,4,3,2,0]
 };
