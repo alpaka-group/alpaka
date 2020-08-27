@@ -18,7 +18,7 @@
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/idx/gb/IdxGbLinear.hpp>
-#include <alpaka/idx/bt/IdxBtOmp5BuiltIn.hpp>
+#include <alpaka/idx/bt/IdxBtOmp.hpp>
 #include <alpaka/atomic/AtomicOmpBuiltIn.hpp>
 #include <alpaka/atomic/AtomicHierarchy.hpp>
 #include <alpaka/math/MathStdLib.hpp>
@@ -69,7 +69,7 @@ namespace alpaka
         class AccOmp5 final :
             public workdiv::WorkDivMembers<TDim, TIdx>,
             public idx::gb::IdxGbLinear<TDim, TIdx>,
-            public idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>,
+            public idx::bt::IdxBtOmp<TDim, TIdx>,
             public atomic::AtomicHierarchy<
                 atomic::AtomicOmpBuiltIn,   // grid atomics
                 atomic::AtomicOmpBuiltIn,    // block atomics
@@ -105,7 +105,7 @@ namespace alpaka
                 TIdx const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
                     idx::gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
-                    idx::bt::IdxBtOmp5BuiltIn<TDim, TIdx>(),
+                    idx::bt::IdxBtOmp<TDim, TIdx>(),
                     atomic::AtomicHierarchy<
                         atomic::AtomicOmpBuiltIn,// atomics between grids
                         atomic::AtomicOmpBuiltIn, // atomics between blocks
