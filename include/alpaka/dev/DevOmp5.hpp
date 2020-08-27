@@ -59,7 +59,7 @@ namespace alpaka
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    DevOmp5Impl(int iDevice) : m_iDevice(iDevice) {}
+                    DevOmp5Impl(int iDevice) noexcept : m_iDevice(iDevice) {}
                     //-----------------------------------------------------------------------------
                     DevOmp5Impl(DevOmp5Impl const &) = delete;
                     //-----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ namespace alpaka
                 private:
                     std::mutex mutable m_Mutex;
                     std::vector<std::weak_ptr<queue::IGenericThreadsQueue<DevOmp5>>> mutable m_queues;
-                    int m_iDevice = 0;
+                    const int m_iDevice;
                 };
             }
         }
@@ -125,7 +125,6 @@ namespace alpaka
         {
             friend struct pltf::traits::GetDevByIdx<pltf::PltfOmp5>;
 
-        protected:
             //-----------------------------------------------------------------------------
             DevOmp5(int iDevice) :
                 m_spDevOmp5Impl(std::make_shared<omp5::detail::DevOmp5Impl>(iDevice))
@@ -180,7 +179,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT device name get trait specialization.
+            //! The OpenMP 5.0 device name get trait specialization.
             template<>
             struct GetName<
                 dev::DevOmp5>
@@ -195,7 +194,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA RT device available memory get trait specialization.
+            //! The OpenMP 5.0 device available memory get trait specialization.
             template<>
             struct GetMemBytes<
                 dev::DevOmp5>
@@ -205,16 +204,14 @@ namespace alpaka
                     dev::DevOmp5 const & dev)
                 -> std::size_t
                 {
-                    alpaka::ignore_unused(dev); //! \TODO
-                    // std::size_t freeInternal(0u);
-                    std::size_t totalInternal(6ull<<30); //! \TODO
+                    alpaka::ignore_unused(dev); //! \todo query device .. somehow
 
-                    return totalInternal;
+                    return 0u;
                 }
             };
 
             //#############################################################################
-            //! The CUDA RT device free memory get trait specialization.
+            //! The OpenMP 5.0 device free memory get trait specialization.
             template<>
             struct GetFreeMemBytes<
                 dev::DevOmp5>
@@ -224,16 +221,14 @@ namespace alpaka
                     dev::DevOmp5 const & dev)
                 -> std::size_t
                 {
-                    alpaka::ignore_unused(dev); //! \todo query device
-                    std::size_t freeInternal((6ull<<30));
-                    // std::size_t totalInternal(0u);
+                    alpaka::ignore_unused(dev); //! \todo query device .. somehow
 
-                    return freeInternal;
+                    return 0u;
                 }
             };
 
             //#############################################################################
-            //! The OpenMP 5 device warp size get trait specialization.
+            //! The OpenMP 5.0 device warp size get trait specialization.
             template<>
             struct GetWarpSize<
                 dev::DevOmp5>
@@ -250,7 +245,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA RT device reset trait specialization.
+            //! The OpenMP 5.0 device reset trait specialization.
             template<>
             struct Reset<
                 dev::DevOmp5>
@@ -278,7 +273,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The CUDA RT device memory buffer type trait specialization.
+                //! The OpenMP 5.0 device memory buffer type trait specialization.
                 template<
                     typename TElem,
                     typename TDim,
@@ -299,7 +294,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA RT device platform type trait specialization.
+            //! The OpenMP 5.0 device platform type trait specialization.
             template<>
             struct PltfType<
                 dev::DevOmp5>
@@ -355,7 +350,6 @@ namespace alpaka
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     generic::currentThreadWaitForDevice(dev);
-// #pragma omp taskwait
                 }
             };
         }

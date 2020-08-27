@@ -28,7 +28,7 @@ namespace alpaka
     namespace pltf
     {
         //#############################################################################
-        //! The CPU device platform.
+        //! The OpenMP 5 device platform.
         class PltfOmp5 :
             public concepts::Implements<ConceptPltf, PltfOmp5>
         {
@@ -43,7 +43,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU device device type trait specialization.
+            //! The OpenMP 5 device device type trait specialization.
             template<>
             struct DevType<
                 pltf::PltfOmp5>
@@ -57,7 +57,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU platform device count get trait specialization.
+            //! The OpenMP 5 platform device count get trait specialization.
             template<>
             struct GetDevCount<
                 pltf::PltfOmp5>
@@ -75,7 +75,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CPU platform device get trait specialization.
+            //! The OpenMP 5 platform device get trait specialization.
             template<>
             struct GetDevByIdx<
                 pltf::PltfOmp5>

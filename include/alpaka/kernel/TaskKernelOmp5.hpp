@@ -135,8 +135,10 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 if(maxOmpThreadCount < blockThreadExtent.prod())
+                {
                     std::cout << "Warning: TaskKernelOmp5: maxOmpThreadCount smaller than blockThreadCount requested by caller:" <<
                         maxOmpThreadCount << " < " << blockThreadExtent.prod() << std::endl;
+                }
 #endif
                 // make sure there is at least on team
                 TIdx const teamCount(std::max(std::min(static_cast<TIdx>(maxOmpThreadCount/blockThreadCount), gridBlockCount), static_cast<TIdx>(1u)));
