@@ -79,7 +79,7 @@ namespace alpaka
             public block::shared::dyn::BlockSharedMemDynMember<>,
             public block::shared::st::BlockSharedMemStOmp5,
             public block::sync::BlockSyncBarrierOmp,
-            // cannot determine which intrinsics are save to use (depends on target), using fallback
+            // cannot determine which intrinsics are safe to use (depends on target), using fallback
             public intrinsic::IntrinsicFallback,
             public rand::RandStdLib,
             public time::TimeOmp,
