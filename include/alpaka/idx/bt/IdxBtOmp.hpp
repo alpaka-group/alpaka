@@ -16,12 +16,12 @@
 
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Concepts.hpp>
+#include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/idx/MapIdx.hpp>
 
 #include <omp.h>
-
 
 namespace alpaka
 {
@@ -40,13 +40,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 IdxBtOmp() = default;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxBtOmp(IdxBtOmp const &) = delete;
+                IdxBtOmp(IdxBtOmp const &) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxBtOmp(IdxBtOmp &&) = delete;
+                IdxBtOmp(IdxBtOmp &&) = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
+                auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
+                auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
                 /*virtual*/ ~IdxBtOmp() = default;
             };
@@ -87,7 +87,7 @@ namespace alpaka
                 //! \return The index of the current thread in the block.
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_HOST static auto getIdx(
+                static auto getIdx(
                     idx::bt::IdxBtOmp<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
                 -> vec::Vec<TDim, TIdx>
@@ -99,6 +99,27 @@ namespace alpaka
                     return idx::mapIdx<TDim::value>(
                         vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
                         workdiv::getWorkDiv<Block, Threads>(workDiv));
+                }
+            };
+
+            template<
+                typename TIdx>
+            struct GetIdx<
+                idx::bt::IdxBtOmp<dim::DimInt<1u>, TIdx>,
+                origin::Block,
+                unit::Threads>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The index of the current thread in the block.
+                template<
+                    typename TWorkDiv>
+                static auto getIdx(
+                    idx::bt::IdxBtOmp<dim::DimInt<1u>, TIdx> const & idx,
+                    TWorkDiv const &)
+                -> vec::Vec<dim::DimInt<1u>, TIdx>
+                {
+                    alpaka::ignore_unused(idx);
+                    return vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
                 }
             };
         }
