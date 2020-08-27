@@ -81,6 +81,9 @@ jobs:
       matrix:
         include:
         ### Analysis builds
+        - name: linux_gcc-10_debug_analysis_omp5
+          os: ubuntu-latest
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 10,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.66.0, ALPAKA_CI_CMAKE_VER: 3.18.0, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2, ALPAKA_ACC_ANY_BT_OMP5_ENABLE: ON, CMAKE_CXX_FLAGS: "-foffload=disable"}
         - name: linux_gcc-8_debug_analysis
           os: ubuntu-latest
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 8,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.66.0, ALPAKA_CI_CMAKE_VER: 3.18.0, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CI_ANALYSIS: ON, ALPAKA_DEBUG: 2}
@@ -244,7 +247,7 @@ jobs:
         - name: linux_clang-9_debug
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 9,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.71.0, ALPAKA_CI_CMAKE_VER: 3.16.5, OMP_NUM_THREADS: 1, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04"}
-        - name: linux_clang-10_release-omp5
+        - name: linux_clang-10_release_omp5
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 10,     ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.73.0, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", CMAKE_CXX_FLAGS: "-fopenmp=libomp -fopenmp-targets=x86_64-pc-linux-gnu -Wno-openmp-mapping", ALPAKA_ACC_ANY_BT_OMP5_ENABLE: ON, ALPAKA_OFFLOAD_MAX_BLOCK_SIZE: 1, CMAKE_EXE_LINKER_FLAGS: "-fopenmp"}
 
