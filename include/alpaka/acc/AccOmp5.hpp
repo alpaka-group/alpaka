@@ -173,7 +173,21 @@ namespace alpaka
                     auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(std::min(4, ::omp_get_max_threads())));
 #else
                     auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(blockThreadCount));
-                    auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(::omp_get_max_threads())); //! \todo fix max block size for target
+                    //! \todo for a later OpenMP (or when compilers work with a GPU target): fix max block size for target
+                    //!  On CPU we would want
+                    //!  gridBlockCountMax = ::omp_get_max_threads() / blockThreadCountMax
+                    //!  but this would lead to only one block running on GPU, or too small blocks (see ALPAKA_OFFLOAD_MAX_BLOCK_SIZE).
+                    //!  OpenMP 5.0 may actually mandate, that
+                    //!  ::omp_get_max_threads() == max_teams * threads_per_team ,
+                    //!  however with the maximum grid size (i.e. max_teams) being INT_MAX this may not work.
+                    //!  We actually want to set
+                    //!  gridBlockCountMax = ::omp_get_max_teams()
+                    //!  but there is no function ::omp_get_max_teams().
+                    //!  Instead we set ::omp_get_max_threads() again, to have a
+                    //!  number which does not kill CPUs and is reasonable
+                    //!  (::omp_get_max_threads() seems to return the block size)
+                    //!  for GPUs.
+                    auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(::omp_get_max_threads()));
 #endif
                     return {
                         // m_multiProcessorCount
