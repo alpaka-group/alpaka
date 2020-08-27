@@ -69,7 +69,7 @@ namespace alpaka
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     const std::size_t count = static_cast<std::size_t>(::omp_get_num_devices());
-                    // runtime will report zero devices if the host is the target (or without offloading)
+                    // runtime will report zero devices if not target device is available or if offloading is disabled
                     return count > 0 ? count : 1;
                 }
             };
@@ -81,7 +81,7 @@ namespace alpaka
                 pltf::PltfOmp5>
             {
                 //-----------------------------------------------------------------------------
-                //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() otherwise
+                //! \param devIdx device id, less than GetDevCount or equal, yielding omp_get_initial_device()
                 ALPAKA_FN_HOST static auto getDevByIdx(
                     std::size_t devIdx)
                 -> dev::DevOmp5
@@ -90,9 +90,17 @@ namespace alpaka
 
                     std::size_t const devCount(static_cast<std::size_t>(::omp_get_num_devices()));
                     int devIdxOmp5 = static_cast<int>(devIdx);
-                    if(devIdx >= devCount)
-                    { // devIdx param must be unsigned, take take this case to use the initial device
+                    if( devIdx == devCount || ( devCount == 0 && devIdx == 1 /* getDevCount */ ) )
+                    { // take this case to use the initial device
                         devIdxOmp5 = ::omp_get_initial_device();
+                    }
+                    else if(devIdx > devCount)
+                    {
+                        std::stringstream ssErr;
+                        ssErr << "Unable to return device handle for device " << devIdx
+                            << ". There are only " << devCount << " target devices"
+                            "and the initial device with index " << devCount;
+                        throw std::runtime_error(ssErr.str());
                     }
 
                     return {devIdxOmp5};
