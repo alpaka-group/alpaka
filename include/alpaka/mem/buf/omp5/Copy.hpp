@@ -41,68 +41,6 @@ namespace alpaka
             {
                 namespace detail
                 {
-                    template<
-                        typename TDim,
-                        typename TVal,
-                        typename TView,
-                        template<std::size_t> class Fn,
-                        std::size_t DIM = TDim::value
-                        >
-                    struct VecFromDimTrait
-                    {
-                        static_assert(DIM > 0, "DIM !> 0");
-                        template<typename... TArgs>
-                        static auto vecFromDimTrait(TView const &view, TArgs... args)
-                            -> vec::Vec<TDim, TVal>
-                        {
-                            return VecFromDimTrait<TDim, TVal, TView, Fn, DIM-1>
-                                ::vecFromDimTrait(view,
-                                        static_cast<TVal>(Fn<DIM-1>::get(view)),
-                                        std::forward<TArgs>(args)...);
-                        }
-                    };
-
-                    template<
-                        typename TDim,
-                        typename TVal,
-                        typename TView,
-                        template<std::size_t> class Fn
-                        >
-                    struct VecFromDimTrait<
-                        TDim,
-                        TVal,
-                        TView,
-                        Fn,
-                        0u
-                        >
-                    {
-                        template<typename... TArgs>
-                        static auto vecFromDimTrait(TView const &, TArgs... args)
-                            -> vec::Vec<TDim, TVal>
-                        {
-                            return vec::Vec<TDim, TVal>(std::forward<TArgs>(args)...);
-                        }
-                    };
-
-                    template<std::size_t TIdx>
-                    struct MyGetExtent
-                    {
-                        template<typename TExtent>
-                        static inline size_t get (TExtent const & extent)
-                        {
-                            return static_cast<size_t>(extent::getExtent<TIdx>(extent));
-                        }
-                    };
-                    template<std::size_t TIdx>
-                    struct MyGetPitch
-                    {
-                        template<typename TPitch>
-                        static inline size_t get (TPitch const & pitch)
-                        {
-                            return static_cast<size_t>(view::getPitchBytes<TIdx>(pitch));
-                        }
-                    };
-
                     //#############################################################################
                     //! The Omp5 memory copy trait.
                     template<
@@ -141,37 +79,22 @@ namespace alpaka
                             int const & iSrcDevice) :
                                 m_iDstDevice(iDstDevice),
                                 m_iSrcDevice(iSrcDevice),
-                                m_extent(VecFromDimTrait<
-                                        TDim, size_t, TExtent,
-                                        MyGetExtent>::vecFromDimTrait(extent)),
-                                m_dstPitchBytes(VecFromDimTrait<
-                                        TDim, size_t, TViewDst,
-                                        MyGetPitch>::vecFromDimTrait(viewDst)),
-                                m_srcPitchBytes(VecFromDimTrait<
-                                        TDim, size_t, TViewSrc,
-                                        MyGetPitch>::vecFromDimTrait(viewSrc)),
-#if 0
-                                m_extent(alpaka::extent::getExtentVec(extent)),
-                                m_dstExtent(alpaka::extent::getExtentVec(viewDst)),
-                                m_srcExtent(alpaka::extent::getExtentVec(viewSrc)),
-#endif
+                                m_extent(vec::cast<size_t>(extent::getExtentVec(extent))),
+                                m_dstPitchBytes(vec::cast<size_t>(mem::view::getPitchBytesVec(viewDst))),
+                                m_srcPitchBytes(vec::cast<size_t>(mem::view::getPitchBytesVec(viewSrc))),
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            const auto dstExtent(VecFromDimTrait<
-                                    TDim, size_t, TViewDst,
-                                    MyGetExtent>::vecFromDimTrait(viewDst));
-                            const auto srcExtent(VecFromDimTrait<
-                                    TDim, size_t, TViewSrc,
-                                    MyGetExtent>::vecFromDimTrait(viewSrc));
+                            const auto dstExtent(vec::cast<size_t>(extent::getExtentVec(viewDst)));
+                            const auto srcExtent(vec::cast<size_t>(extent::getExtentVec(viewSrc)));
                             for(auto i = static_cast<decltype(TDim::value)>(0u); i < TDim::value; ++i)
                             {
                                 ALPAKA_ASSERT(m_extent[i] <= dstExtent[i]);
                                 ALPAKA_ASSERT(m_extent[i] <= srcExtent[i]);
                             }
-                            std::cout << "TaskCopyOmp5<" << TDim::value << ",...>::ctor\tdstExtent="
-                            << alpaka::extent::getExtentVec(viewDst) << ", m_dstExtent=" << dstExtent << std::endl;
+                            std::cout << "TaskCopyOmp5<" << TDim::value << ",...>::ctor\tsrcExtent="
+                                << srcExtent << ", dstExtent=" << dstExtent << std::endl;
 #endif
                         }
 
@@ -183,10 +106,8 @@ namespace alpaka
                             std::cout << __func__
                                 << " ddev: " << m_iDstDevice
                                 << " ew: " << m_extent
-                                // << " dw: " << m_dstExtent
                                 << " dptr: " << m_dstMemNative
                                 << " sdev: " << m_iSrcDevice
-                                // << " sw: " << m_srcExtent
                                 << " sptr: " << m_srcMemNative
                                 << std::endl;
                         }
@@ -194,8 +115,6 @@ namespace alpaka
                         int m_iDstDevice;
                         int m_iSrcDevice;
                         vec::Vec<TDim, size_t> m_extent;
-                        // vec::Vec<TDim, size_t> m_dstExtent;
-                        // vec::Vec<TDim, size_t> m_srcExtent;
                         vec::Vec<TDim, size_t> m_dstPitchBytes;
                         vec::Vec<TDim, size_t> m_srcPitchBytes;
                         void * m_dstMemNative;
@@ -233,11 +152,6 @@ namespace alpaka
                                     dstExtentFull[i] = m_dstPitchBytes[i]/m_dstPitchBytes[i+1];
                                     srcExtentFull[i] = m_srcPitchBytes[i]/m_srcPitchBytes[i+1];
                                 }
-
-                                // std::cout << "copy " << TDim::value << "d\textent=" << m_extent
-                                //     << "\tdstExtentFull=" << dstExtentFull << " (p " << m_dstPitchBytes
-                                //     << " )\tsrcExtentFull=" << srcExtentFull << " (p " << m_srcPitchBytes
-                                //     << " )\telementSize=" << elementSize << std::endl;
 
                                 ALPAKA_OMP5_CHECK(
                                     omp_target_memcpy_rect(

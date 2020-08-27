@@ -164,7 +164,7 @@ namespace alpaka
                     alpaka::ignore_unused(dev);
 
 #if defined(ALPAKA_OFFLOAD_MAX_BLOCK_SIZE) && ALPAKA_OFFLOAD_MAX_BLOCK_SIZE>0
-                    auto const blockThreadCount = ALPAKA_OFFLOAD_MAX_BLOCK_SIZE;
+                    auto const blockThreadCount = std::min(::omp_get_max_threads(), ALPAKA_OFFLOAD_MAX_BLOCK_SIZE);
 #else
                     auto const blockThreadCount = ::omp_get_max_threads();
 #endif

@@ -15,17 +15,10 @@
     #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #endif
 
-#include <alpaka/elem/Traits.hpp>
-#include <alpaka/offset/Traits.hpp>
-#include <alpaka/extent/Traits.hpp>
-#include <alpaka/idx/Traits.hpp>
-#include <alpaka/vec/Vec.hpp>
-#include <alpaka/meta/IntegerSequence.hpp>
-#include <alpaka/meta/Metafunctions.hpp>
+#include <alpaka/core/Common.hpp>
 
 #include <omp.h>
 
-#include <array>
 #include <type_traits>
 #include <utility>
 #include <iostream>

@@ -117,11 +117,11 @@ namespace alpaka
                         vec::Vec<TDim, TIdx> m_pitchBytes;
                         TElem* m_pMem;
 
-                            BufOmp5Impl(const BufOmp5Impl&) = delete;
-                            BufOmp5Impl(BufOmp5Impl &&) = default;
+                        BufOmp5Impl(const BufOmp5Impl&) = delete;
+                        BufOmp5Impl(BufOmp5Impl &&) = default;
                         BufOmp5Impl& operator=(const BufOmp5Impl&) = delete;
                         BufOmp5Impl& operator=(BufOmp5Impl&&) = default;
-                            ~BufOmp5Impl()
+                        ~BufOmp5Impl()
                         {
                             omp_target_free(m_pMem, m_dev.m_spDevOmp5Impl->iDevice());
                         }

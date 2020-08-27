@@ -70,10 +70,11 @@ namespace alpaka
                         using Idx = typename idx::traits::IdxType<TExtent>::type;
                         auto pitch = view::getPitchBytesVec(view);
                         auto byteExtent = extent::getExtentVec(extent);
-                        byteExtent[TDim::value-1] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
                         constexpr auto lastDim = TDim::value - 1;
+                        byteExtent[lastDim] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
 
-                        if(pitch[0] <= 0)
+                        if(pitch[0] == 0)
+                        {
                             return kernel::createTaskKernel<acc::AccOmp5<TDim,Idx>>(
                                     workdiv::WorkDivMembers<TDim, Idx>(
                                         vec::Vec<TDim, Idx>::ones(),
@@ -85,8 +86,11 @@ namespace alpaka
                                     byteExtent,
                                     pitch
                                 ); // NOP if size is zero
+                        }
 
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
+#endif
                         auto elementsPerThread = vec::Vec<TDim, Idx>::all(static_cast<Idx>(1u));
                         elementsPerThread[lastDim] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
