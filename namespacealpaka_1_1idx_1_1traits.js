@@ -1,6 +1,7 @@
 var namespacealpaka_1_1idx_1_1traits =
 [
     [ "GetIdx", "structalpaka_1_1idx_1_1traits_1_1GetIdx.html", null ],
+    [ "GetIdx< idx::bt::IdxBtOmp< dim::DimInt< 1u >, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01dim_1_1DimInt_3_011u_01_4_6ea1746a15688d579246f4f030eee1d6.html", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01dim_1_1DimInt_3_011u_01_4_6ea1746a15688d579246f4f030eee1d6" ],
     [ "GetIdx< idx::bt::IdxBtOmp< TDim, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01odc7a853f737c2ab05d14a493e0db7a5a.html", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01odc7a853f737c2ab05d14a493e0db7a5a" ],
     [ "GetIdx< idx::bt::IdxBtRefFiberIdMap< TDim, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_0a51e97ca9521a243cfc08d56a4240b78.html", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_0a51e97ca9521a243cfc08d56a4240b78" ],
     [ "GetIdx< idx::bt::IdxBtRefThreadIdMap< TDim, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_02f6c6b30353e4dd6af791f96f447b07.html", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_02f6c6b30353e4dd6af791f96f447b07" ],

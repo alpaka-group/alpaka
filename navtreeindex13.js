@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuSerial_3_01TDim_00_01TIdx_298ed7dab9b671ca5c3e974a3d7a1f5f.html#ad5cd90842aaab27c677198c9171f7e05":[2,0,0,19,0,20,0],
+"structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuThreads_3_01TDim_00_01TIdx74bac4ffdb9bd38da6e4f1a5140462bb.html":[2,0,0,19,0,21],
 "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuThreads_3_01TDim_00_01TIdx74bac4ffdb9bd38da6e4f1a5140462bb.html#af6774949e54733de94e63d8871632a52":[2,0,0,19,0,21,0],
 "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_0d27254c84b8e3712637ab89d91a60ad.html":[2,0,0,19,0,22],
 "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_0d27254c84b8e3712637ab89d91a60ad.html#a8b062866d3e01be9153104265192a80e":[2,0,0,19,0,22,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "tinymt32_8h.html":[3,0,0,0,19,0,1],
 "tinymt32_8h.html#a04862c981ffac8f9ff6b8eb142a99da5":[3,0,0,0,19,0,1,23],
 "tinymt32_8h.html#a0560ff3e36b30d2867fcd02ad8948b11":[3,0,0,0,19,0,1,24],
-"tinymt32_8h.html#a1c04f9dcc0fe7f3513de13644783463c":[3,0,0,0,19,0,1,6],
-"tinymt32_8h.html#a1f351da820dbfe5c5e1d01b7496303cd":[3,0,0,0,19,0,1,26],
-"tinymt32_8h.html#a1fb73633dcae08b2a209674d7579c6de":[3,0,0,0,19,0,1,15]
+"tinymt32_8h.html#a1c04f9dcc0fe7f3513de13644783463c":[3,0,0,0,19,0,1,6]
 };

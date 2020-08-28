@@ -3,6 +3,7 @@ var dir_d09a687214752b73c59e5dd5576fcca9 =
     [ "IdxBtOmp.hpp", "IdxBtOmp_8hpp.html", [
       [ "DimType< idx::bt::IdxBtOmp< TDim, TIdx > >", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4" ],
       [ "IdxBtOmp", "classalpaka_1_1idx_1_1bt_1_1IdxBtOmp.html", "classalpaka_1_1idx_1_1bt_1_1IdxBtOmp" ],
+      [ "GetIdx< idx::bt::IdxBtOmp< dim::DimInt< 1u >, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01dim_1_1DimInt_3_011u_01_4_6ea1746a15688d579246f4f030eee1d6.html", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01dim_1_1DimInt_3_011u_01_4_6ea1746a15688d579246f4f030eee1d6" ],
       [ "GetIdx< idx::bt::IdxBtOmp< TDim, TIdx >, origin::Block, unit::Threads >", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01odc7a853f737c2ab05d14a493e0db7a5a.html", "structalpaka_1_1idx_1_1traits_1_1GetIdx_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_00_01odc7a853f737c2ab05d14a493e0db7a5a" ],
       [ "IdxType< idx::bt::IdxBtOmp< TDim, TIdx > >", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],

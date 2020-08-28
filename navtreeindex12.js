@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01dim_1_1DimInt_3_010u_01_4_00_01std_1_2a865f0e496c914984d447d2283dcc87.html":[2,0,0,16,2,2,14],
+"structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01dim_1_1DimInt_3_010u_01_4_00_01std_1_2a865f0e496c914984d447d2283dcc87.html#a0a7903bcf60582a443469d02c21600b8":[2,0,0,16,2,2,14,0],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01dim_1_1DimInt_3_010u_01_4_00_01std_1_79f12a99cc012f7071a296205793e67a.html":[2,0,0,16,2,2,13],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01dim_1_1DimInt_3_010u_01_4_00_01std_1_79f12a99cc012f7071a296205793e67a.html#aeb66602f4cf6c69cbea9a79e2dba0605":[2,0,0,16,2,2,13,0],
 "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01dim_1_1DimInt_3_01TDim_1_1value_01-_0505d34b85f6099eef6f5432177de69d5.html":[2,0,0,16,2,2,16],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuOmp2Threads_3_01TDim_00_014b97ab0acfbb35faefbe926bdcf2e19c.html#a1bacc8172c7924aa0268dc3998a21656":[2,0,0,19,0,18,0],
 "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuOmp4_3_01TDim_00_01TIdx_006fb6dd627dec0683fe4b9cdc47791a33.html":[2,0,0,19,0,19],
 "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuOmp4_3_01TDim_00_01TIdx_006fb6dd627dec0683fe4b9cdc47791a33.html#a56dae365052284c8306925e186b33929":[2,0,0,19,0,19,0],
-"structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuSerial_3_01TDim_00_01TIdx_298ed7dab9b671ca5c3e974a3d7a1f5f.html":[2,0,0,19,0,20],
-"structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuSerial_3_01TDim_00_01TIdx_298ed7dab9b671ca5c3e974a3d7a1f5f.html#ad5cd90842aaab27c677198c9171f7e05":[2,0,0,19,0,20,0],
-"structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuThreads_3_01TDim_00_01TIdx74bac4ffdb9bd38da6e4f1a5140462bb.html":[2,0,0,19,0,21]
+"structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelCpuSerial_3_01TDim_00_01TIdx_298ed7dab9b671ca5c3e974a3d7a1f5f.html":[2,0,0,19,0,20]
 };
