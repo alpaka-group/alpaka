@@ -77,9 +77,9 @@ namespace alpaka
                         {
                             return kernel::createTaskKernel<acc::AccOmp5<TDim,Idx>>(
                                     workdiv::WorkDivMembers<TDim, Idx>(
-                                        vec::Vec<TDim, Idx>::ones(),
-                                        vec::Vec<TDim, Idx>::ones(),
-                                        vec::Vec<TDim, Idx>::ones()),
+                                        vec::Vec<TDim, Idx>::zeros(),
+                                        vec::Vec<TDim, Idx>::zeros(),
+                                        vec::Vec<TDim, Idx>::zeros()),
                                     view::MemSetKernel(),
                                     byte,
                                     reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
