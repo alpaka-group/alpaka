@@ -133,6 +133,11 @@ namespace alpaka
                 // The number of threads in a block.
                 TIdx const blockThreadCount(blockThreadExtent.prod());
 
+                if(gridBlockCount == 0 || blockThreadCount == 0)
+                { //! empty grid is a NOP
+                    return;
+                }
+
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 if(maxOmpThreadCount < blockThreadExtent.prod())
                 {
