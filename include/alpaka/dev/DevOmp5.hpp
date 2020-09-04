@@ -195,6 +195,8 @@ namespace alpaka
 
             //#############################################################################
             //! The OpenMP 5.0 device available memory get trait specialization.
+            //!
+            //! Returns 0, because querying target mem is not supported by OpenMP
             template<>
             struct GetMemBytes<
                 dev::DevOmp5>
@@ -212,6 +214,8 @@ namespace alpaka
 
             //#############################################################################
             //! The OpenMP 5.0 device free memory get trait specialization.
+            //!
+            //! Returns 0, because querying free target mem is not supported by OpenMP
             template<>
             struct GetFreeMemBytes<
                 dev::DevOmp5>
@@ -221,7 +225,7 @@ namespace alpaka
                     dev::DevOmp5 const & dev)
                 -> std::size_t
                 {
-                    alpaka::ignore_unused(dev); //! \todo query device .. somehow
+                    alpaka::ignore_unused(dev);
 
                     return 0u;
                 }

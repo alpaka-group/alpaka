@@ -114,7 +114,8 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The memory on the device in Bytes.
+        //! \return The memory on the device in Bytes. Returns 0 if querying memory
+        //!  is not supported.
         template<
             typename TDev>
         ALPAKA_FN_HOST auto getMemBytes(
@@ -130,6 +131,8 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return The free memory on the device in Bytes.
+        //
+        //! \note Do not use this query if getMemBytes returned 0.
         template<
             typename TDev>
         ALPAKA_FN_HOST auto getFreeMemBytes(
