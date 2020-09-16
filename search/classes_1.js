@@ -16,8 +16,10 @@ var searchData=
   ['blocksharedmemstmember',['BlockSharedMemStMember',['../classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMember.html',1,'alpaka::block::shared::st']]],
   ['blocksharedmemstmember_3c_3e',['BlockSharedMemStMember&lt;&gt;',['../classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStMember.html',1,'alpaka::block::shared::st']]],
   ['blocksharedmemstmemberimpl',['BlockSharedMemStMemberImpl',['../classalpaka_1_1block_1_1shared_1_1st_1_1detail_1_1BlockSharedMemStMemberImpl.html',1,'alpaka::block::shared::st::detail']]],
+  ['blocksharedmemstmemberimpl_3c_204_20_3e',['BlockSharedMemStMemberImpl&lt; 4 &gt;',['../classalpaka_1_1block_1_1shared_1_1st_1_1detail_1_1BlockSharedMemStMemberImpl.html',1,'alpaka::block::shared::st::detail']]],
   ['blocksharedmemstmemberimpl_3c_20core_3a_3avectorization_3a_3adefaultalignment_20_3e',['BlockSharedMemStMemberImpl&lt; core::vectorization::defaultAlignment &gt;',['../classalpaka_1_1block_1_1shared_1_1st_1_1detail_1_1BlockSharedMemStMemberImpl.html',1,'alpaka::block::shared::st::detail']]],
   ['blocksharedmemstnosync',['BlockSharedMemStNoSync',['../classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStNoSync.html',1,'alpaka::block::shared::st']]],
+  ['blocksharedmemstomp5',['BlockSharedMemStOmp5',['../classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStOmp5.html',1,'alpaka::block::shared::st']]],
   ['blocksharedmemstuniformcudahipbuiltin',['BlockSharedMemStUniformCudaHipBuiltIn',['../classalpaka_1_1block_1_1shared_1_1st_1_1BlockSharedMemStUniformCudaHipBuiltIn.html',1,'alpaka::block::shared::st']]],
   ['blocksyncbarrierfiber',['BlockSyncBarrierFiber',['../classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierFiber.html',1,'alpaka::block::sync']]],
   ['blocksyncbarrieromp',['BlockSyncBarrierOmp',['../classalpaka_1_1block_1_1sync_1_1BlockSyncBarrierOmp.html',1,'alpaka::block::sync']]],
@@ -26,8 +28,11 @@ var searchData=
   ['blocksyncuniformcudahipbuiltin',['BlockSyncUniformCudaHipBuiltIn',['../classalpaka_1_1block_1_1sync_1_1BlockSyncUniformCudaHipBuiltIn.html',1,'alpaka::block::sync']]],
   ['bufcpu',['BufCpu',['../classalpaka_1_1mem_1_1buf_1_1BufCpu.html',1,'alpaka::mem::buf']]],
   ['bufcpuimpl',['BufCpuImpl',['../classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html',1,'alpaka::mem::buf::cpu::detail']]],
+  ['bufomp5',['BufOmp5',['../classalpaka_1_1mem_1_1buf_1_1BufOmp5.html',1,'alpaka::mem::buf']]],
+  ['bufomp5impl',['BufOmp5Impl',['../classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html',1,'alpaka::mem::buf::omp5::detail']]],
   ['buftype',['BufType',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType.html',1,'alpaka::mem::buf::traits']]],
   ['buftype_3c_20dev_3a_3adevcpu_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; dev::DevCpu, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
+  ['buftype_3c_20dev_3a_3adevomp5_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; dev::DevOmp5, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
   ['buftype_3c_20dev_3a_3adevuniformcudahiprt_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; dev::DevUniformCudaHipRt, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevUniformCudaHipRt_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
   ['bufuniformcudahiprt',['BufUniformCudaHipRt',['../classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html',1,'alpaka::mem::buf']]]
 ];

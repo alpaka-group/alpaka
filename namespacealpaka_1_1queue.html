@@ -141,6 +141,10 @@ Typedefs</h2></td></tr>
 <tr class="separator:a97eebab3e3880b3b1cd5e24599648a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62678d66a0e8e30f4f3c1cdb91c7b372"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1queue.html#a62678d66a0e8e30f4f3c1cdb91c7b372">QueueCudaRtNonBlocking</a> = <a class="el" href="classalpaka_1_1queue_1_1QueueUniformCudaHipRtNonBlocking.html">QueueUniformCudaHipRtNonBlocking</a></td></tr>
 <tr class="separator:a62678d66a0e8e30f4f3c1cdb91c7b372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82f28dbd27007fd4c861a7342e224880"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1queue.html#a82f28dbd27007fd4c861a7342e224880">QueueOmp5Blocking</a> = <a class="el" href="classalpaka_1_1queue_1_1QueueGenericThreadsBlocking.html">QueueGenericThreadsBlocking</a>&lt; <a class="el" href="classalpaka_1_1dev_1_1DevOmp5.html">dev::DevOmp5</a> &gt;</td></tr>
+<tr class="separator:a82f28dbd27007fd4c861a7342e224880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4eb19977d85a0431bed655eff96ddb6b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1queue.html#a4eb19977d85a0431bed655eff96ddb6b">QueueOmp5NonBlocking</a> = <a class="el" href="classalpaka_1_1queue_1_1QueueGenericThreadsNonBlocking.html">QueueGenericThreadsNonBlocking</a>&lt; <a class="el" href="classalpaka_1_1dev_1_1DevOmp5.html">dev::DevOmp5</a> &gt;</td></tr>
+<tr class="separator:a4eb19977d85a0431bed655eff96ddb6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -247,6 +251,38 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
 
 </div>
 </div>
+<a id="a82f28dbd27007fd4c861a7342e224880"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f28dbd27007fd4c861a7342e224880">&#9670;&nbsp;</a></span>QueueOmp5Blocking</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="classalpaka_1_1queue_1_1QueueGenericThreadsBlocking.html">QueueGenericThreadsBlocking</a>&lt; <a class="el" href="classalpaka_1_1dev_1_1DevOmp5.html">dev::DevOmp5</a> &gt; <a class="el" href="namespacealpaka_1_1queue.html#a82f28dbd27007fd4c861a7342e224880">alpaka::queue::QueueOmp5Blocking</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00313">313</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a4eb19977d85a0431bed655eff96ddb6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4eb19977d85a0431bed655eff96ddb6b">&#9670;&nbsp;</a></span>QueueOmp5NonBlocking</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="classalpaka_1_1queue_1_1QueueGenericThreadsNonBlocking.html">QueueGenericThreadsNonBlocking</a>&lt; <a class="el" href="classalpaka_1_1dev_1_1DevOmp5.html">dev::DevOmp5</a> &gt; <a class="el" href="namespacealpaka_1_1queue.html#a4eb19977d85a0431bed655eff96ddb6b">alpaka::queue::QueueOmp5NonBlocking</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00312">312</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ae4006918561995047e1d5159837751fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae4006918561995047e1d5159837751fd">&#9670;&nbsp;</a></span>empty()</h2>
@@ -315,7 +351,7 @@ template&lt;typename TQueue , typename TTask &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1queue.html">queue</a></li>
-    <li class="footer">Generated on Thu Sep 3 2020 14:14:10 for alpaka by
+    <li class="footer">Generated on Wed Sep 16 2020 14:53:43 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

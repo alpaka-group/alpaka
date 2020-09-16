@@ -2,6 +2,7 @@ var namespacealpaka_1_1wait_1_1traits =
 [
     [ "CurrentThreadWaitFor", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor.html", null ],
     [ "CurrentThreadWaitFor< dev::DevCpu >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevCpu_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevCpu_01_4" ],
+    [ "CurrentThreadWaitFor< dev::DevOmp5 >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevOmp5_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevOmp5_01_4" ],
     [ "CurrentThreadWaitFor< dev::DevUniformCudaHipRt >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevUniformCudaHipRt_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevUniformCudaHipRt_01_4" ],
     [ "CurrentThreadWaitFor< event::EventGenericThreads< TDev > >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01event_1_1EventGenericThreads_3_01TDev_01_4_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01event_1_1EventGenericThreads_3_01TDev_01_4_01_4" ],
     [ "CurrentThreadWaitFor< event::EventUniformCudaHipRt >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01event_1_1EventUniformCudaHipRt_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01event_1_1EventUniformCudaHipRt_01_4" ],

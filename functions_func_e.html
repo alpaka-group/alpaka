@@ -106,6 +106,8 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 , <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDev_01_4_00_01TTask_01_4.html#aa65e9649aaeda6f13cc35cef45251af9">alpaka::queue::traits::Enqueue&lt; queue::QueueGenericThreadsBlocking&lt; TDev &gt;, TTask &gt;</a>
 , <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_1969b6f658aef43ea98b125ee4b5d212.html#a818e05f03ab423d5312759b5e5fcbb12">alpaka::queue::traits::Enqueue&lt; queue::QueueGenericThreadsNonBlocking&lt; TDev &gt;, event::EventGenericThreads&lt; TDev &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01TTask_01_4.html#a325bd66633fa53a40a241c35acf9602f">alpaka::queue::traits::Enqueue&lt; queue::QueueGenericThreadsNonBlocking&lt; TDev &gt;, TTask &gt;</a>
+, <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueOmp5Blocking_00_01kernel_1_1TaskKer4170f8e406fbc149c380e13ec1025f9e.html#a0bf5cd85593b914cd4de0f863e9c400c">alpaka::queue::traits::Enqueue&lt; queue::QueueOmp5Blocking, kernel::TaskKernelOmp5&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueOmp5NonBlocking_00_01kernel_1_1Taskaabaa206b508eb21f9b82c1213a2bbf0.html#af1a041701c83a1dfeeaa8227c6242389">alpaka::queue::traits::Enqueue&lt; queue::QueueOmp5NonBlocking, kernel::TaskKernelOmp5&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01event_1_1EventUniformCudaHipRt_01_4.html#a944bc25694a799ba584afe9925e5c584">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtBlocking, event::EventUniformCudaHipRt &gt;</a>
 , <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01kerne2026d428c3379e41ad16abfd0c583de6.html#a9c1bc1034dbb73753cab75f5a7d20f3b">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtBlocking, kernel::TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01mem_14ecfd78d2e3cfe97940938444f48a685.html#a862289386eb6e09598c5758af7f86efb">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtBlocking, mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip&lt; dim::DimInt&lt; 1u &gt;, TViewDst, TViewSrc, TExtent &gt; &gt;</a>
@@ -135,7 +137,7 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 , <a class="el" href="structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_23ca83b350a09aa1663439a053c1894c.html#a9ab01d8a784cb2739817e3a883ce993a">alpaka::math::traits::Erf&lt; ErfUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point&lt; TArg &gt;::value &gt; &gt;</a>
 </li>
 <li>EventGenericThreads()
-: <a class="el" href="classalpaka_1_1event_1_1EventGenericThreads.html#a2ca9c99c09134d9e374b58f9a1058eb3">alpaka::event::EventGenericThreads&lt; TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1event_1_1EventGenericThreads.html#a1cd5abebae85f5ba18de1177884dd7e3">alpaka::event::EventGenericThreads&lt; TDev &gt;</a>
 </li>
 <li>EventGenericThreadsImpl()
 : <a class="el" href="classalpaka_1_1event_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#ae2034e560b02b9e8b1c4549780683c47">alpaka::event::generic::detail::EventGenericThreadsImpl&lt; TDev &gt;</a>
@@ -144,12 +146,15 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 : <a class="el" href="classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#ab1460f7d439feb4b9b1a3961c9a86946">alpaka::event::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>
 </li>
 <li>EventUniformCudaHipRt()
-: <a class="el" href="classalpaka_1_1event_1_1EventUniformCudaHipRt.html#aae48554ab365ed31f3e3b17db0182e34">alpaka::event::EventUniformCudaHipRt</a>
+: <a class="el" href="classalpaka_1_1event_1_1EventUniformCudaHipRt.html#a6302dac5da76d09e88185b7cc3feff99">alpaka::event::EventUniformCudaHipRt</a>
 </li>
 <li>exp()
 : <a class="el" href="structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_b591fc53013493bf13a82cfd79a1cfeb.html#a3def44c6880ff1da27eb8104139854f4">alpaka::math::traits::Exp&lt; ExpStdLib, TArg, std::enable_if_t&lt; std::is_arithmetic&lt; TArg &gt;::value &gt; &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01float_01_4.html#a952d75e0f928fbc0010a295cdd708db6">alpaka::math::traits::Exp&lt; ExpUniformCudaHipBuiltIn, float &gt;</a>
 , <a class="el" href="structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_3a4c28c6e6400dac22ac825f8de463fe.html#a93bf990f5cc832f5940e29f9c698dd0f">alpaka::math::traits::Exp&lt; ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point&lt; TArg &gt;::value &gt; &gt;</a>
+</li>
+<li>extentElements()
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufOmp5.html#a1d9ad7beca3638da80f32d3c36f8cfa1">alpaka::mem::buf::BufOmp5&lt; TElem, TDim, TIdx &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -157,7 +162,7 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 3 2020 14:14:11 for alpaka by
+    <li class="footer">Generated on Wed Sep 16 2020 14:53:44 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

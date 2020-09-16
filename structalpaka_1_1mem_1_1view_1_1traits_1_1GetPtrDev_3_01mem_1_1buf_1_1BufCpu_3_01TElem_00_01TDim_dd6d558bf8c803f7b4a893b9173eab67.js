@@ -1,0 +1,5 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_dd6d558bf8c803f7b4a893b9173eab67 =
+[
+    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_dd6d558bf8c803f7b4a893b9173eab67.html#a2f274f629b6cd39ba5170083c345dbff", null ],
+    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_dd6d558bf8c803f7b4a893b9173eab67.html#aaab564200db1a8ae166a747e4466f782", null ]
+];

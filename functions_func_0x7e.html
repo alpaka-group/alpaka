@@ -93,9 +93,6 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 <li>~AccCpuOmp2Threads()
 : <a class="el" href="classalpaka_1_1acc_1_1AccCpuOmp2Threads.html#a9b3bb26bacbe760b6dc0d3dc12e3e7af">alpaka::acc::AccCpuOmp2Threads&lt; TDim, TIdx &gt;</a>
 </li>
-<li>~AccCpuOmp4()
-: <a class="el" href="classalpaka_1_1acc_1_1AccCpuOmp4.html#a88bde4fd2075d19a17f6e7779ebb1e74">alpaka::acc::AccCpuOmp4&lt; TDim, TIdx &gt;</a>
-</li>
 <li>~AccCpuSerial()
 : <a class="el" href="classalpaka_1_1acc_1_1AccCpuSerial.html#a4462a8469d07f9c83108a66d673ef43a">alpaka::acc::AccCpuSerial&lt; TDim, TIdx &gt;</a>
 </li>
@@ -107,6 +104,9 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 </li>
 <li>~AccGpuUniformCudaHipRt()
 : <a class="el" href="classalpaka_1_1acc_1_1AccGpuUniformCudaHipRt.html#a954599ae39a659a1ddaf3837a859b256">alpaka::acc::AccGpuUniformCudaHipRt&lt; TDim, TIdx &gt;</a>
+</li>
+<li>~AccOmp5()
+: <a class="el" href="classalpaka_1_1acc_1_1AccOmp5.html#a94c11048d98928be444da86e72dddf83">alpaka::acc::AccOmp5&lt; TDim, TIdx &gt;</a>
 </li>
 <li>~AtomicNoOp()
 : <a class="el" href="classalpaka_1_1atomic_1_1AtomicNoOp.html#a72699a2695d10351e6b955176318bf1d">alpaka::atomic::AtomicNoOp</a>
@@ -168,6 +168,9 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 <li>~BufCpuImpl()
 : <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a6cef024cade2ca1d309319ec14d55cf1">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt;</a>
 </li>
+<li>~BufOmp5Impl()
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#a684b67072b722d8395eca5cfc057b794">alpaka::mem::buf::omp5::detail::BufOmp5Impl&lt; TElem, TDim, TIdx &gt;</a>
+</li>
 <li>~ConcurrentExecPool()
 : <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ac272f9dc3b96a91228c98cf548e134c0">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TisYielding &gt;</a>
 , <a class="el" href="classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool_3_01TIdx_00_01TConcurrentExec_00_01TPromise_9cccb122f69aea7cc89b9bcbdb078b48.html#abe02c25d7f0bade0d4faac3c387750a9">alpaka::core::detail::ConcurrentExecPool&lt; TIdx, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;</a>
@@ -177,6 +180,12 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 </li>
 <li>~DevCpuImpl()
 : <a class="el" href="classalpaka_1_1dev_1_1cpu_1_1detail_1_1DevCpuImpl.html#a2878c7c7bfa365c1b2a1a01a95cd8331">alpaka::dev::cpu::detail::DevCpuImpl</a>
+</li>
+<li>~DevOmp5()
+: <a class="el" href="classalpaka_1_1dev_1_1DevOmp5.html#a303cbed52b9b374a85b3c2970d89dc14">alpaka::dev::DevOmp5</a>
+</li>
+<li>~DevOmp5Impl()
+: <a class="el" href="classalpaka_1_1dev_1_1omp5_1_1detail_1_1DevOmp5Impl.html#ada09626ddd7f58a9844c2f98b2557c70">alpaka::dev::omp5::detail::DevOmp5Impl</a>
 </li>
 <li>~DevUniformCudaHipRt()
 : <a class="el" href="classalpaka_1_1dev_1_1DevUniformCudaHipRt.html#a6bdd368b754742065eea44fd156e6e5f">alpaka::dev::DevUniformCudaHipRt</a>
@@ -207,6 +216,9 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 </li>
 <li>~IdxBtZero()
 : <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#afd11347b2b65cace04840d7fa1bdd97a">alpaka::idx::bt::IdxBtZero&lt; TDim, TIdx &gt;</a>
+</li>
+<li>~IdxGbLinear()
+: <a class="el" href="classalpaka_1_1idx_1_1gb_1_1IdxGbLinear.html#ac4380cf9635738c538c41d9fa0982b63">alpaka::idx::gb::IdxGbLinear&lt; TDim, TIdx &gt;</a>
 </li>
 <li>~IdxGbRef()
 : <a class="el" href="classalpaka_1_1idx_1_1gb_1_1IdxGbRef.html#acd7219d283ceb6bfff7f78b181ff011d">alpaka::idx::gb::IdxGbRef&lt; TDim, TIdx &gt;</a>
@@ -259,9 +271,6 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 <li>~TaskKernelCpuOmp2Threads()
 : <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuOmp2Threads.html#a89223ef59eaa69241d9f00f5c6d8a944">alpaka::kernel::TaskKernelCpuOmp2Threads&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
 </li>
-<li>~TaskKernelCpuOmp4()
-: <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuOmp4.html#afe765051d7f8e215c48923b61e92266f">alpaka::kernel::TaskKernelCpuOmp4&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
-</li>
 <li>~TaskKernelCpuSerial()
 : <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuSerial.html#a02638b1cfa462743ff51223c45007930">alpaka::kernel::TaskKernelCpuSerial&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
 </li>
@@ -270,6 +279,9 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 </li>
 <li>~TaskKernelGpuUniformCudaHipRt()
 : <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html#ab395e979c6aec0c1d3f5c859697f38b2">alpaka::kernel::TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
+</li>
+<li>~TaskKernelOmp5()
+: <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelOmp5.html#aa7783e0c518842d3a8c468d4d20a1066">alpaka::kernel::TaskKernelOmp5&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>~TimeOmp()
 : <a class="el" href="classalpaka_1_1time_1_1TimeOmp.html#abc3b305633d6c4296f8860dd2ceceba5">alpaka::time::TimeOmp</a>
@@ -304,7 +316,7 @@ $(document).ready(function(){initNavTree('functions_func_0x7e.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 3 2020 14:14:11 for alpaka by
+    <li class="footer">Generated on Wed Sep 16 2020 14:53:44 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -31,5 +31,6 @@ var searchData=
   ['freemem_3c_20blocksharedmemstmastersync_20_3e',['FreeMem&lt; BlockSharedMemStMasterSync &gt;',['../structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMasterSync_01_4.html',1,'alpaka::block::shared::st::traits']]],
   ['freemem_3c_20blocksharedmemstmember_3c_20tdataalignbytes_20_3e_20_3e',['FreeMem&lt; BlockSharedMemStMember&lt; TDataAlignBytes &gt; &gt;',['../structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html',1,'alpaka::block::shared::st::traits']]],
   ['freemem_3c_20blocksharedmemstnosync_20_3e',['FreeMem&lt; BlockSharedMemStNoSync &gt;',['../structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStNoSync_01_4.html',1,'alpaka::block::shared::st::traits']]],
+  ['freemem_3c_20blocksharedmemstomp5_20_3e',['FreeMem&lt; BlockSharedMemStOmp5 &gt;',['../structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStOmp5_01_4.html',1,'alpaka::block::shared::st::traits']]],
   ['freemem_3c_20blocksharedmemstuniformcudahipbuiltin_20_3e',['FreeMem&lt; BlockSharedMemStUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html',1,'alpaka::block::shared::st::traits']]]
 ];

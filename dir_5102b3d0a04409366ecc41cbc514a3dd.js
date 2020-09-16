@@ -36,18 +36,6 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "CreateTaskKernel< acc::AccCpuOmp2Threads< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_019528c2827645d4037c76597c6aebd5e8.html", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_019528c2827645d4037c76597c6aebd5e8" ],
       [ "PltfType< acc::AccCpuOmp2Threads< TDim, TIdx > >", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
-    [ "AccCpuOmp4.hpp", "AccCpuOmp4_8hpp.html", [
-      [ "AccCpuOmp4", "classalpaka_1_1acc_1_1AccCpuOmp4.html", "classalpaka_1_1acc_1_1AccCpuOmp4" ],
-      [ "AccType< acc::AccCpuOmp4< TDim, TIdx > >", "structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccDevProps< acc::AccCpuOmp4< TDim, TIdx > >", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "GetAccName< acc::AccCpuOmp4< TDim, TIdx > >", "structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "DevType< acc::AccCpuOmp4< TDim, TIdx > >", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "DimType< acc::AccCpuOmp4< TDim, TIdx > >", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "IdxType< acc::AccCpuOmp4< TDim, TIdx > >", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4" ],
-      [ "TaskKernelCpuOmp4", "classalpaka_1_1kernel_1_1TaskKernelCpuOmp4.html", "classalpaka_1_1kernel_1_1TaskKernelCpuOmp4" ],
-      [ "CreateTaskKernel< acc::AccCpuOmp4< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01d374480a606bb4fcc878101a385ff715.html", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01d374480a606bb4fcc878101a385ff715" ],
-      [ "PltfType< acc::AccCpuOmp4< TDim, TIdx > >", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccCpuOmp4_3_01TDim_00_01TIdx_01_4_01_4" ]
-    ] ],
     [ "AccCpuSerial.hpp", "AccCpuSerial_8hpp.html", [
       [ "AccCpuSerial", "classalpaka_1_1acc_1_1AccCpuSerial.html", "classalpaka_1_1acc_1_1AccCpuSerial" ],
       [ "AccType< acc::AccCpuSerial< TDim, TIdx > >", "structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccCpuSerial_3_01TDim_00_01TIdx_01_4_01_4" ],
@@ -96,6 +84,18 @@ var dir_5102b3d0a04409366ecc41cbc514a3dd =
       [ "TaskKernelGpuUniformCudaHipRt", "classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html", "classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt" ],
       [ "CreateTaskKernel< acc::AccGpuUniformCudaHipRt< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_356d0ef6f6e4595baa73f8858e84e0cf.html", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_356d0ef6f6e4595baa73f8858e84e0cf" ],
       [ "PltfType< acc::AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ]
+    ] ],
+    [ "AccOmp5.hpp", "AccOmp5_8hpp.html", [
+      [ "AccOmp5", "classalpaka_1_1acc_1_1AccOmp5.html", "classalpaka_1_1acc_1_1AccOmp5" ],
+      [ "AccType< acc::AccOmp5< TDim, TIdx > >", "structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1acc_1_1traits_1_1AccType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "GetAccDevProps< acc::AccOmp5< TDim, TIdx > >", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "GetAccName< acc::AccOmp5< TDim, TIdx > >", "structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "DevType< acc::AccOmp5< TDim, TIdx > >", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "DimType< acc::AccOmp5< TDim, TIdx > >", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "IdxType< acc::AccOmp5< TDim, TIdx > >", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ],
+      [ "TaskKernelOmp5", "classalpaka_1_1kernel_1_1TaskKernelOmp5.html", "classalpaka_1_1kernel_1_1TaskKernelOmp5" ],
+      [ "CreateTaskKernel< acc::AccOmp5< TDim, TIdx >, TWorkDiv, TKernelFnObj, TArgs... >", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_b908a327a7d9e7ca2e15230258ec7023.html", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_b908a327a7d9e7ca2e15230258ec7023" ],
+      [ "PltfType< acc::AccOmp5< TDim, TIdx > >", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1pltf_1_1traits_1_1PltfType_3_01acc_1_1AccOmp5_3_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
     [ "Traits.hpp", "acc_2Traits_8hpp.html", "acc_2Traits_8hpp" ]
 ];

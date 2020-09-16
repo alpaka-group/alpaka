@@ -19,6 +19,7 @@ var searchData=
   ['alpaka_5ffn_5fhost_5facc',['ALPAKA_FN_HOST_ACC',['../Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3',1,'Common.hpp']]],
   ['alpaka_5ffn_5finline',['ALPAKA_FN_INLINE',['../Common_8hpp.html#abecbcba04c4231d227406ebb0020330b',1,'Common.hpp']]],
   ['alpaka_5fno_5fhost_5facc_5fwarning',['ALPAKA_NO_HOST_ACC_WARNING',['../Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c',1,'Common.hpp']]],
+  ['alpaka_5fomp5_5fcheck',['ALPAKA_OMP5_CHECK',['../Omp5_8hpp.html#ab181927481ae66c009a90750f0884b2b',1,'Omp5.hpp']]],
   ['alpaka_5foptimal_5falignment',['ALPAKA_OPTIMAL_ALIGNMENT',['../Align_8hpp.html#aa32712c717c4b16951a245ffaa20b7e1',1,'Align.hpp']]],
   ['alpaka_5fpp_5fconcat',['ALPAKA_PP_CONCAT',['../Cuda_8hpp.html#a78d586f3481be4a74b086709cb9b0ea2',1,'Cuda.hpp']]],
   ['alpaka_5fpp_5fconcat_5fdo',['ALPAKA_PP_CONCAT_DO',['../Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05',1,'Cuda.hpp']]],

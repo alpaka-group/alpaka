@@ -19,6 +19,7 @@ var namespacealpaka =
     [ "mem", "namespacealpaka_1_1mem.html", "namespacealpaka_1_1mem" ],
     [ "meta", "namespacealpaka_1_1meta.html", "namespacealpaka_1_1meta" ],
     [ "offset", "namespacealpaka_1_1offset.html", "namespacealpaka_1_1offset" ],
+    [ "omp5", "namespacealpaka_1_1omp5.html", null ],
     [ "pltf", "namespacealpaka_1_1pltf.html", "namespacealpaka_1_1pltf" ],
     [ "queue", "namespacealpaka_1_1queue.html", "namespacealpaka_1_1queue" ],
     [ "rand", "namespacealpaka_1_1rand.html", "namespacealpaka_1_1rand" ],

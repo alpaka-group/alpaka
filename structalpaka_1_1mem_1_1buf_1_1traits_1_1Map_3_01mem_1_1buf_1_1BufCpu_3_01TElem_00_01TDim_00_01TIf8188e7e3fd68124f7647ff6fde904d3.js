@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1buf_1_1traits_1_1Map_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIf8188e7e3fd68124f7647ff6fde904d3 =
+[
+    [ "map", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Map_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIf8188e7e3fd68124f7647ff6fde904d3.html#a5f2c9d86aa55a034adc506975dd44a49", null ]
+];

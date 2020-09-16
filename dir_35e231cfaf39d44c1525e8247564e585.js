@@ -26,6 +26,8 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
       [ "Empty< queue::QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Empty_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4" ],
       [ "Enqueue< queue::QueueGenericThreadsNonBlocking< TDev >, TTask >", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01TTask_01_4.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01TTask_01_4" ]
     ] ],
+    [ "QueueOmp5Blocking.hpp", "QueueOmp5Blocking_8hpp.html", null ],
+    [ "QueueOmp5NonBlocking.hpp", "QueueOmp5NonBlocking_8hpp.html", null ],
     [ "QueueUniformCudaHipRtBlocking.hpp", "QueueUniformCudaHipRtBlocking_8hpp.html", "QueueUniformCudaHipRtBlocking_8hpp" ],
     [ "QueueUniformCudaHipRtNonBlocking.hpp", "QueueUniformCudaHipRtNonBlocking_8hpp.html", "QueueUniformCudaHipRtNonBlocking_8hpp" ],
     [ "Traits.hpp", "queue_2Traits_8hpp.html", "queue_2Traits_8hpp" ]

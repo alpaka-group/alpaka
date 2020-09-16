@@ -10,6 +10,7 @@ var searchData=
   ['remainderuniformcudahipbuiltin',['RemainderUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1RemainderUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
   ['reset',['Reset',['../structalpaka_1_1dev_1_1traits_1_1Reset.html',1,'alpaka::dev::traits']]],
   ['reset_3c_20dev_3a_3adevcpu_20_3e',['Reset&lt; dev::DevCpu &gt;',['../structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevCpu_01_4.html',1,'alpaka::dev::traits']]],
+  ['reset_3c_20dev_3a_3adevomp5_20_3e',['Reset&lt; dev::DevOmp5 &gt;',['../structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevOmp5_01_4.html',1,'alpaka::dev::traits']]],
   ['reset_3c_20dev_3a_3adevuniformcudahiprt_20_3e',['Reset&lt; dev::DevUniformCudaHipRt &gt;',['../structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevUniformCudaHipRt_01_4.html',1,'alpaka::dev::traits']]],
   ['reverse',['Reverse',['../structalpaka_1_1vec_1_1traits_1_1Reverse.html',1,'alpaka::vec::traits']]],
   ['reverse_3c_20vec_3c_20dim_3a_3adimint_3c_201u_20_3e_2c_20tval_20_3e_20_3e',['Reverse&lt; Vec&lt; dim::DimInt&lt; 1u &gt;, TVal &gt; &gt;',['../structalpaka_1_1vec_1_1traits_1_1Reverse_3_01Vec_3_01dim_1_1DimInt_3_011u_01_4_00_01TVal_01_4_01_4.html',1,'alpaka::vec::traits']]],

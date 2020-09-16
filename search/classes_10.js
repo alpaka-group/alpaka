@@ -10,6 +10,8 @@ var searchData=
   ['taskcopycpu_3c_20dim_3a_3adimint_3c_201u_20_3e_2c_20tviewdst_2c_20tviewsrc_2c_20textent_20_3e',['TaskCopyCpu&lt; dim::DimInt&lt; 1u &gt;, TViewDst, TViewSrc, TExtent &gt;',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01T2d67058bec0cecb563bb3b5e1b588995.html',1,'alpaka::mem::view::cpu::detail']]],
   ['taskcopycpubase',['TaskCopyCpuBase',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html',1,'alpaka::mem::view::cpu::detail']]],
   ['taskcopycpubase_3c_20dim_3a_3adimint_3c_201u_20_3e_2c_20tviewdst_2c_20tviewsrc_2c_20textent_20_3e',['TaskCopyCpuBase&lt; dim::DimInt&lt; 1u &gt;, TViewDst, TViewSrc, TExtent &gt;',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html',1,'alpaka::mem::view::cpu::detail']]],
+  ['taskcopyomp5',['TaskCopyOmp5',['../structalpaka_1_1mem_1_1view_1_1omp5_1_1detail_1_1TaskCopyOmp5.html',1,'alpaka::mem::view::omp5::detail']]],
+  ['taskcopyomp5_3c_20dim_3a_3adimint_3c_201_20_3e_2c_20tviewdst_2c_20tviewsrc_2c_20textent_20_3e',['TaskCopyOmp5&lt; dim::DimInt&lt; 1 &gt;, TViewDst, TViewSrc, TExtent &gt;',['../structalpaka_1_1mem_1_1view_1_1omp5_1_1detail_1_1TaskCopyOmp5_3_01dim_1_1DimInt_3_011_01_4_00_018522ae365474bc3dadc8b926f8fea088.html',1,'alpaka::mem::view::omp5::detail']]],
   ['taskcopyuniformcudahip',['TaskCopyUniformCudaHip',['../structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip.html',1,'alpaka::mem::view::uniform_cuda_hip::detail']]],
   ['taskcopyuniformcudahip_3c_20dim_3a_3adimint_3c_201_20_3e_2c_20tviewdst_2c_20tviewsrc_2c_20textent_20_3e',['TaskCopyUniformCudaHip&lt; dim::DimInt&lt; 1 &gt;, TViewDst, TViewSrc, TExtent &gt;',['../structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html',1,'alpaka::mem::view::uniform_cuda_hip::detail']]],
   ['taskcopyuniformcudahip_3c_20dim_3a_3adimint_3c_202_20_3e_2c_20tviewdst_2c_20tviewsrc_2c_20textent_20_3e',['TaskCopyUniformCudaHip&lt; dim::DimInt&lt; 2 &gt;, TViewDst, TViewSrc, TExtent &gt;',['../structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_9d73e3b202845db0f67633a9869cf0e0.html',1,'alpaka::mem::view::uniform_cuda_hip::detail']]],
@@ -17,10 +19,10 @@ var searchData=
   ['taskkernelcpufibers',['TaskKernelCpuFibers',['../classalpaka_1_1kernel_1_1TaskKernelCpuFibers.html',1,'alpaka::kernel']]],
   ['taskkernelcpuomp2blocks',['TaskKernelCpuOmp2Blocks',['../classalpaka_1_1kernel_1_1TaskKernelCpuOmp2Blocks.html',1,'alpaka::kernel']]],
   ['taskkernelcpuomp2threads',['TaskKernelCpuOmp2Threads',['../classalpaka_1_1kernel_1_1TaskKernelCpuOmp2Threads.html',1,'alpaka::kernel']]],
-  ['taskkernelcpuomp4',['TaskKernelCpuOmp4',['../classalpaka_1_1kernel_1_1TaskKernelCpuOmp4.html',1,'alpaka::kernel']]],
   ['taskkernelcpuserial',['TaskKernelCpuSerial',['../classalpaka_1_1kernel_1_1TaskKernelCpuSerial.html',1,'alpaka::kernel']]],
   ['taskkernelcputhreads',['TaskKernelCpuThreads',['../classalpaka_1_1kernel_1_1TaskKernelCpuThreads.html',1,'alpaka::kernel']]],
   ['taskkernelgpuuniformcudahiprt',['TaskKernelGpuUniformCudaHipRt',['../classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html',1,'alpaka::kernel']]],
+  ['taskkernelomp5',['TaskKernelOmp5',['../classalpaka_1_1kernel_1_1TaskKernelOmp5.html',1,'alpaka::kernel']]],
   ['taskpkg',['TaskPkg',['../classalpaka_1_1core_1_1detail_1_1TaskPkg.html',1,'alpaka::core::detail']]],
   ['taskpkg_3c_20tpromise_2c_20tfnobj_2c_20void_20_3e',['TaskPkg&lt; TPromise, TFnObj, void &gt;',['../classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html',1,'alpaka::core::detail']]],
   ['tasksetcpu',['TaskSetCpu',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpu.html',1,'alpaka::mem::view::cpu::detail']]],
@@ -55,5 +57,6 @@ var searchData=
   ['trunc_3c_20truncuniformcudahipbuiltin_2c_20float_20_3e',['Trunc&lt; TruncUniformCudaHipBuiltIn, float &gt;',['../structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncUniformCudaHipBuiltIn_00_01float_01_4.html',1,'alpaka::math::traits']]],
   ['trunc_3c_20truncuniformcudahipbuiltin_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_3c_20targ_20_3e_3a_3avalue_20_3e_20_3e',['Trunc&lt; TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t&lt; std::is_floating_point&lt; TArg &gt;::value &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enaab84821241abd21bc8d0f2710f16f996.html',1,'alpaka::math::traits']]],
   ['truncstdlib',['TruncStdLib',['../classalpaka_1_1math_1_1TruncStdLib.html',1,'alpaka::math']]],
-  ['truncuniformcudahipbuiltin',['TruncUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1TruncUniformCudaHipBuiltIn.html',1,'alpaka::math']]]
+  ['truncuniformcudahipbuiltin',['TruncUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1TruncUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
+  ['type_20_3e',['type &gt;',['../structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type_01_4.html',1,'alpaka::extent::traits::GetExtent']]]
 ];

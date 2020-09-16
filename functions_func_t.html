@@ -92,6 +92,10 @@ $(document).ready(function(){initNavTree('functions_func_t.html','');});
 <li>TaskCopyCpuBase()
 : <a class="el" href="structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html#ac74bd4137fa5a6c72fff2a81f4a936f6">alpaka::mem::view::cpu::detail::TaskCopyCpuBase&lt; TDim, TViewDst, TViewSrc, TExtent &gt;</a>
 </li>
+<li>TaskCopyOmp5()
+: <a class="el" href="structalpaka_1_1mem_1_1view_1_1omp5_1_1detail_1_1TaskCopyOmp5.html#a09850eab3697bf767687643e64a81cc2">alpaka::mem::view::omp5::detail::TaskCopyOmp5&lt; TDim, TViewDst, TViewSrc, TExtent &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1view_1_1omp5_1_1detail_1_1TaskCopyOmp5_3_01dim_1_1DimInt_3_011_01_4_00_018522ae365474bc3dadc8b926f8fea088.html#ac4eada90e9edbeb5e12f7be1128c3e30">alpaka::mem::view::omp5::detail::TaskCopyOmp5&lt; dim::DimInt&lt; 1 &gt;, TViewDst, TViewSrc, TExtent &gt;</a>
+</li>
 <li>TaskCopyUniformCudaHip()
 : <a class="el" href="structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a3079c72e64cd4e5b237aeb9942c3a0c3">alpaka::mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip&lt; dim::DimInt&lt; 1 &gt;, TViewDst, TViewSrc, TExtent &gt;</a>
 , <a class="el" href="structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_9d73e3b202845db0f67633a9869cf0e0.html#ae7f5062caff6297fcfba665c8106235f">alpaka::mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip&lt; dim::DimInt&lt; 2 &gt;, TViewDst, TViewSrc, TExtent &gt;</a>
@@ -104,10 +108,7 @@ $(document).ready(function(){initNavTree('functions_func_t.html','');});
 : <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuOmp2Blocks.html#a925f889d0fb447c22091191e1411b34e">alpaka::kernel::TaskKernelCpuOmp2Blocks&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>TaskKernelCpuOmp2Threads()
-: <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuOmp2Threads.html#a339bb9219ad8e222c3d7986fc56a465c">alpaka::kernel::TaskKernelCpuOmp2Threads&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
-</li>
-<li>TaskKernelCpuOmp4()
-: <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuOmp4.html#abe73a9fa3a7079ae328e142b22cd334f">alpaka::kernel::TaskKernelCpuOmp4&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
+: <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuOmp2Threads.html#a7c930de0f21998d7462738e267f74d59">alpaka::kernel::TaskKernelCpuOmp2Threads&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>TaskKernelCpuSerial()
 : <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelCpuSerial.html#aed6ea2ee4f4638088d53c86ecd6f9538">alpaka::kernel::TaskKernelCpuSerial&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
@@ -117,6 +118,9 @@ $(document).ready(function(){initNavTree('functions_func_t.html','');});
 </li>
 <li>TaskKernelGpuUniformCudaHipRt()
 : <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelGpuUniformCudaHipRt.html#a9d26c72d1b29258925047df2f00644d7">alpaka::kernel::TaskKernelGpuUniformCudaHipRt&lt; TAcc, TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
+</li>
+<li>TaskKernelOmp5()
+: <a class="el" href="classalpaka_1_1kernel_1_1TaskKernelOmp5.html#ab921295b3c948ffe6fadccff86b18251">alpaka::kernel::TaskKernelOmp5&lt; TDim, TIdx, TKernelFnObj, TArgs &gt;</a>
 </li>
 <li>TaskPkg()
 : <a class="el" href="classalpaka_1_1core_1_1detail_1_1TaskPkg.html#a47a747dcb6498cf1fcec532eb92ccc2b">alpaka::core::detail::TaskPkg&lt; TPromise, TFnObj, TFnObjReturn &gt;</a>
@@ -141,19 +145,19 @@ $(document).ready(function(){initNavTree('functions_func_t.html','');});
 : <a class="el" href="classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html#a82030f637d0d2a4ea0205f6ff9485345">alpaka::core::detail::ThreadSafeQueue&lt; T &gt;</a>
 </li>
 <li>TimeOmp()
-: <a class="el" href="classalpaka_1_1time_1_1TimeOmp.html#abc4cf80daec594227447f745c5e63395">alpaka::time::TimeOmp</a>
+: <a class="el" href="classalpaka_1_1time_1_1TimeOmp.html#ab440dcf5f650735e1586e70066b3970f">alpaka::time::TimeOmp</a>
 </li>
 <li>TimeStdLib()
 : <a class="el" href="classalpaka_1_1time_1_1TimeStdLib.html#a396ef7e60768822b8e3b8019cccfdd95">alpaka::time::TimeStdLib</a>
 </li>
 <li>TimeUniformCudaHipBuiltIn()
-: <a class="el" href="classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#a4049c69cadaf1ee1eb8f20a9e1e464c9">alpaka::time::TimeUniformCudaHipBuiltIn</a>
+: <a class="el" href="classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#adf766675c17612cf440e9c213d42994e">alpaka::time::TimeUniformCudaHipBuiltIn</a>
 </li>
 <li>TinyMersenneTwister()
-: <a class="el" href="classalpaka_1_1rand_1_1generator_1_1cpu_1_1TinyMersenneTwister.html#aa511d9af6725c6bd38f69b52874a7d40">alpaka::rand::generator::cpu::TinyMersenneTwister</a>
+: <a class="el" href="classalpaka_1_1rand_1_1generator_1_1cpu_1_1TinyMersenneTwister.html#a9433d76dad0639f97b778f9c06e8883c">alpaka::rand::generator::cpu::TinyMersenneTwister</a>
 </li>
 <li>TinyMTengine()
-: <a class="el" href="structalpaka_1_1rand_1_1generator_1_1cpu_1_1TinyMTengine.html#aee593db6d93b59007b99ac5eb40ef6bb">alpaka::rand::generator::cpu::TinyMTengine</a>
+: <a class="el" href="structalpaka_1_1rand_1_1generator_1_1cpu_1_1TinyMTengine.html#a5fde4848e68e1b0a4883ef55b5b56645">alpaka::rand::generator::cpu::TinyMTengine</a>
 </li>
 <li>trunc()
 : <a class="el" href="structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01681590f8fb525c63f8b888402a73e238.html#a911f63f64f5f695ea8a720ec1587a7e6">alpaka::math::traits::Trunc&lt; TruncStdLib, TArg, std::enable_if_t&lt; std::is_arithmetic&lt; TArg &gt;::value &gt; &gt;</a>
@@ -166,7 +170,7 @@ $(document).ready(function(){initNavTree('functions_func_t.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 3 2020 14:14:11 for alpaka by
+    <li class="footer">Generated on Wed Sep 16 2020 14:53:44 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
