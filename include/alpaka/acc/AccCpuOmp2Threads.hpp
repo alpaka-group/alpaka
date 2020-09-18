@@ -104,7 +104,7 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_HOST AccCpuOmp2Threads(
                 TWorkDiv const & workDiv,
-                TIdx const & blockSharedMemDynSizeBytes) :
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TIdx>(),
@@ -114,7 +114,7 @@ namespace alpaka
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),

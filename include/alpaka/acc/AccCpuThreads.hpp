@@ -99,7 +99,7 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_HOST AccCpuThreads(
                 TWorkDiv const & workDiv,
-                TIdx const & blockSharedMemDynSizeBytes) :
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap),
@@ -109,7 +109,7 @@ namespace alpaka
                         atomic::AtomicStdLibLock<16>  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),

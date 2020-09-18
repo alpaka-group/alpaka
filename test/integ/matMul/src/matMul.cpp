@@ -176,7 +176,6 @@ namespace alpaka
                     TElem const & beta,
                     TElem * const C,
                     TIndex const & ldc)
-                -> TIndex
                 {
                     alpaka::ignore_unused(matMulKernel);
                     alpaka::ignore_unused(m);
@@ -192,7 +191,7 @@ namespace alpaka
                     alpaka::ignore_unused(ldc);
 
                     // Reserve the buffer for the two blocks of A and B.
-                    return 2u * blockThreadExtent.prod() * threadElemExtent.prod() * sizeof(TElem);
+                    return static_cast<std::size_t>(2u * blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(TElem);
                 }
             };
         }

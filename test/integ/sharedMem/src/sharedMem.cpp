@@ -124,10 +124,10 @@ namespace alpaka
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
                     TArgs && ...)
-                -> idx::Idx<TAcc>
+                -> std::size_t
                 {
                     alpaka::ignore_unused(sharedMemKernel);
-                    return blockThreadExtent.prod() * threadElemExtent.prod() * static_cast<idx::Idx<TAcc>>(sizeof(Val));
+                    return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
                 }
             };
         }

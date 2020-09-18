@@ -92,7 +92,7 @@ namespace alpaka
                 {
                     if(val % i == 0)
                     {
-                        divisorSet.insert(val/i);
+                        divisorSet.insert(static_cast<T>(val/i));
                     }
                 }
 

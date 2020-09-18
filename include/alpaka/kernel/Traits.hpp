@@ -91,7 +91,7 @@ namespace alpaka
                     alpaka::ignore_unused(threadElemExtent);
                     alpaka::ignore_unused(args...);
 
-                    return 0;
+                    return 0u;
                 }
             };
         }

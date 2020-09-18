@@ -102,7 +102,7 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_HOST AccCpuFibers(
                 TWorkDiv const & workDiv,
-                TIdx const & blockSharedMemDynSizeBytes) :
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices),
@@ -112,7 +112,7 @@ namespace alpaka
                         atomic::AtomicNoOp         // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(static_cast<std::size_t>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
                     block::shared::st::BlockSharedMemStMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
