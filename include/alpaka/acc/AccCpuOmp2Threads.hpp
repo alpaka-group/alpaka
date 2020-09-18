@@ -89,6 +89,7 @@ namespace alpaka
             public warp::WarpSingleThread,
             public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
         {
+            static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
         public:
             // Partial specialization with the correct TDim and TIdx is not allowed.
             template<
