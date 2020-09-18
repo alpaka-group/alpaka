@@ -84,7 +84,7 @@ namespace alpaka
                     vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
                     vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
-                -> idx::Idx<TAcc>
+                -> std::size_t
                 {
                     alpaka::ignore_unused(kernelFnObj);
                     alpaka::ignore_unused(blockThreadExtent);
@@ -122,7 +122,7 @@ namespace alpaka
             vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
             vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
             TArgs const & ... args)
-        -> idx::Idx<TAcc>
+        -> std::size_t
         {
             return
                 traits::BlockSharedMemDynSizeBytes<
