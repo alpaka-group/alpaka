@@ -24,7 +24,7 @@ namespace alpaka
             static auto popcountFallback(TValue value)
             -> std::int32_t
             {
-                std::uint32_t count = 0;
+                TValue count = 0;
                 while(value != 0)
                 {
                     count += value & 1u;

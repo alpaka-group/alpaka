@@ -168,7 +168,7 @@ namespace alpaka
                 typename FnObj>
             ALPAKA_FN_HOST auto parallelFn(
                 FnObj const & boundKernelFnObj,
-                TIdx const & blockSharedMemDynSizeBytes,
+                std::size_t const & blockSharedMemDynSizeBytes,
                 TIdx const & numBlocksInGrid,
                 vec::Vec<TDim, TIdx> const & gridBlockExtent) const
             -> void

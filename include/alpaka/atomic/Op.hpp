@@ -38,8 +38,15 @@ namespace alpaka
                 {
                     auto const old(*addr);
                     auto & ref(*addr);
+#if BOOST_COMP_GNUC 
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wconversion"
+#endif
                     ref += value;
                     return old;
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
                 }
             };
             //#############################################################################
@@ -58,7 +65,14 @@ namespace alpaka
                 {
                     auto const old(*addr);
                     auto & ref(*addr);
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wconversion"
+#endif
                     ref -= value;
+#if BOOST_COMP_GNUC
+    #pragma GCC diagnostic pop
+#endif
                     return old;
                 }
             };
@@ -140,7 +154,7 @@ namespace alpaka
                 {
                     auto const old(*addr);
                     auto & ref(*addr);
-                    ref = ((old >= value) ? 0 : old + 1);
+                    ref = ((old >= value) ? 0 : static_cast<T>(old + 1));
                     return old;
                 }
             };
@@ -162,7 +176,7 @@ namespace alpaka
                 {
                     auto const old(*addr);
                     auto & ref(*addr);
-                    ref = (((old == 0) || (old > value)) ? value : (old - 1));
+                    ref = (((old == 0) || (old > value)) ? value : static_cast<T>(old - 1));
                     return old;
                 }
             };

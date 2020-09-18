@@ -77,15 +77,14 @@ namespace alpaka
                     TVec const & blockThreadExtent,
                     TVec const & threadElemExtent,
                     bool * success)
-                -> idx::Idx<TAcc>
+                -> std::size_t
                 {
                     using Idx = alpaka::idx::Idx<TAcc>;
 
                     alpaka::ignore_unused(blockSharedMemDyn);
                     alpaka::ignore_unused(threadElemExtent);
                     alpaka::ignore_unused(success);
-                    return
-                        static_cast<idx::Idx<TAcc>>(sizeof(Idx)) * blockThreadExtent.prod();
+                    return static_cast<std::size_t>(blockThreadExtent.prod()) * sizeof(Idx);
                 }
             };
         }

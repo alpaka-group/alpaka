@@ -102,7 +102,7 @@ namespace alpaka
                 vec::Vec<TDim, TIdx> const & blockThreadExtent,
                 vec::Vec<TDim, TIdx> const & threadElemExtent,
                 TIdx const & gridBlockIdx,
-                TIdx const & blockSharedMemDynSizeBytes) :
+                std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
                     idx::gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TIdx>(),
@@ -112,7 +112,7 @@ namespace alpaka
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynMember<>(static_cast<unsigned int>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
                     //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
                     block::shared::st::BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity()),
                     block::sync::BlockSyncBarrierOmp(),

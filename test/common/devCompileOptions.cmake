@@ -51,6 +51,7 @@ ELSE()
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Werror")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wdouble-promotion")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wmissing-include-dirs")
+        LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wconversion")
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wunknown-pragmas")
         # Higher levels (max is 5) produce some strange warnings
         LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wstrict-overflow=2")

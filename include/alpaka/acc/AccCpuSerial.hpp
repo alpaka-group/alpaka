@@ -97,7 +97,7 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_HOST AccCpuSerial(
                 TWorkDiv const & workDiv,
-                TIdx const & blockSharedMemDynSizeBytes) :
+                size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TIdx>(),
@@ -107,7 +107,7 @@ namespace alpaka
                         atomic::AtomicNoOp         // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynMember<>(static_cast<unsigned int>(blockSharedMemDynSizeBytes)),
+                    block::shared::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
                     block::shared::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
                     block::sync::BlockSyncNoOp(),
                     rand::RandStdLib(),

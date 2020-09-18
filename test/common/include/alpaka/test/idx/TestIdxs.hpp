@@ -33,16 +33,12 @@ namespace alpaka
                     std::int64_t,
 #endif
                     std::uint64_t,
-                    std::int32_t,
+                    std::int32_t
 #if !defined(ALPAKA_CI)
-                    std::uint32_t,
-                    std::int16_t,
+                    ,std::uint32_t
 #endif
-                    std::uint16_t/*,
-                    // When Idx is a 8 bit integer, extents within the tests would be extremely limited
-                    // (especially when Dim is 4). Therefore, we do not test it.
-                    std::int8_t,
-                    std::uint8_t*/>;
+                    // index type must be >=32bit
+                >;
         }
     }
 }
