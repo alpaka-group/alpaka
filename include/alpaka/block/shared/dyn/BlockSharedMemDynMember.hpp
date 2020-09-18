@@ -34,11 +34,11 @@ namespace alpaka
                     //! "namespace" for static constexpr members that should be in BlockSharedMemDynMember
                     //! but cannot be because having a static const member breaks GCC 10
                     //! OpenMP target and OpenACC: type not mappable.
-                    template<unsigned int TStaticAllocKiB>
+                    template<std::size_t TStaticAllocKiB>
                     struct BlockSharedMemDynMemberStatic
                     {
                         //! Storage size in bytes
-                        static constexpr unsigned int staticAllocBytes = TStaticAllocKiB<<10;
+                        static constexpr std::size_t staticAllocBytes = TStaticAllocKiB<<10;
                     };
                 }
 
@@ -50,15 +50,15 @@ namespace alpaka
                 //! Dynamic block shared memory provider using fixed-size
                 //! member array to allocate memory on the stack or in shared
                 //! memory.
-                template<unsigned int TStaticAllocKiB = ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB>
+                template<std::size_t TStaticAllocKiB = ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB>
                 class alignas(core::vectorization::defaultAlignment) BlockSharedMemDynMember :
                     public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynMember<TStaticAllocKiB>>
                 {
                 public:
                     //-----------------------------------------------------------------------------
-                    BlockSharedMemDynMember(unsigned int sizeBytes)
-                        : m_dynPitch((sizeBytes/core::vectorization::defaultAlignment
-                             + (sizeBytes%core::vectorization::defaultAlignment>0))*core::vectorization::defaultAlignment)
+                    BlockSharedMemDynMember(std::size_t sizeBytes)
+                        : m_dynPitch((sizeBytes / core::vectorization::defaultAlignment
+                             + (sizeBytes % core::vectorization::defaultAlignment > 0u)) * core::vectorization::defaultAlignment)
                     {
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
                         ALPAKA_ASSERT(sizeBytes <= staticAllocBytes());
@@ -86,18 +86,18 @@ namespace alpaka
 
                     /*! \return the remaining capacity for static block shared memory.
                      */
-                    unsigned int staticMemCapacity() const
+                    std::size_t staticMemCapacity() const
                     {
                         return staticAllocBytes() - m_dynPitch;
                     }
 
                     //! Storage size in bytes
-                    static constexpr unsigned int staticAllocBytes() {return detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes;}
+                    static constexpr std::size_t staticAllocBytes() {return detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes;}
 
                 private:
 
                     mutable std::array<uint8_t, detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes> m_mem;
-                    unsigned int m_dynPitch;
+                    std::size_t m_dynPitch;
                 };
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
     #pragma warning(pop)
@@ -108,7 +108,7 @@ namespace alpaka
                     //#############################################################################
                     template<
                         typename T,
-                        unsigned int TStaticAllocKiB>
+                        std::size_t TStaticAllocKiB>
                     struct GetMem<
                         T,
                         BlockSharedMemDynMember<TStaticAllocKiB>>

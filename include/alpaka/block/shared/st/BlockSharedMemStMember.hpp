@@ -29,20 +29,20 @@ namespace alpaka
                 {
                     //#############################################################################
                     //! Implementation of static block shared memory provider.
-                    template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment>
+                    template<std::size_t TDataAlignBytes = core::vectorization::defaultAlignment>
                     class BlockSharedMemStMemberImpl
                     {
                     public:
                         //-----------------------------------------------------------------------------
 #ifndef NDEBUG
-                        BlockSharedMemStMemberImpl(uint8_t* mem, unsigned int capacity) : m_mem(mem), m_capacity(capacity)
+                        BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t capacity) : m_mem(mem), m_capacity(capacity)
                         {
 #ifdef ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
                             ALPAKA_ASSERT( ( m_mem == nullptr ) == ( m_capacity == 0u ) );
 #endif
                         }
 #else
-                        BlockSharedMemStMemberImpl(uint8_t* mem, unsigned int) : m_mem(mem) {}
+                        BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t) : m_mem(mem) {}
 #endif
                         //-----------------------------------------------------------------------------
                         BlockSharedMemStMemberImpl(BlockSharedMemStMemberImpl const &) = delete;
@@ -84,19 +84,19 @@ namespace alpaka
                         }
 
                     private:
-                        mutable unsigned int m_allocdBytes = 0;
+                        mutable std::size_t m_allocdBytes = 0;
                         mutable uint8_t* m_mem;
 #ifndef NDEBUG
-                        const unsigned int m_capacity;
+                        const std::size_t m_capacity;
 #endif
 
                         template<typename T>
-                        unsigned int allocPitch() const
+                        std::size_t allocPitch() const
                         {
                             static_assert(
                                 core::vectorization::defaultAlignment >= alignof(T),
                                 "Unable to get block shared static memory for types with alignment higher than defaultAlignment!");
-                            constexpr unsigned int align = std::max(TDataAlignBytes, static_cast<unsigned int>(alignof(T)));
+                            constexpr std::size_t align = std::max(TDataAlignBytes, alignof(T));
                             return (m_allocdBytes/align + (m_allocdBytes%align>0))*align;
                         }
                     };
@@ -105,7 +105,7 @@ namespace alpaka
                 //! Static block shared memory provider using a pointer to
                 //! externally allocated fixed-size memory, likely provided by
                 //! BlockSharedMemDynMember.
-                template<unsigned int TDataAlignBytes = core::vectorization::defaultAlignment>
+                template<std::size_t TDataAlignBytes = core::vectorization::defaultAlignment>
                 class BlockSharedMemStMember :
                     public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>,
                     public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
@@ -119,7 +119,7 @@ namespace alpaka
                     //#############################################################################
                     template<
                         typename T,
-                        unsigned int TDataAlignBytes,
+                        std::size_t TDataAlignBytes,
                         std::size_t TuniqueId>
                     struct AllocVar<
                         T,
@@ -137,7 +137,7 @@ namespace alpaka
                     };
                     //#############################################################################
                     template<
-                        unsigned int TDataAlignBytes>
+                        std::size_t TDataAlignBytes>
                     struct FreeMem<
                         BlockSharedMemStMember<TDataAlignBytes>>
                     {
