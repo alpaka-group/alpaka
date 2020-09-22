@@ -107,7 +107,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct AtomicOp<
-                    block::sync::op::Count>
+                    block::op::Count>
                 {
                     void operator()(std::atomic<int>& result, bool value)
                     {
@@ -117,7 +117,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct AtomicOp<
-                    block::sync::op::LogicalAnd>
+                    block::op::LogicalAnd>
                 {
                     void operator()(std::atomic<int>& result, bool value)
                     {
@@ -127,7 +127,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct AtomicOp<
-                    block::sync::op::LogicalOr>
+                    block::op::LogicalOr>
                 {
                     void operator()(std::atomic<int>& result, bool value)
                     {

@@ -76,9 +76,9 @@ namespace alpaka
                 atomic::AtomicOmpBuiltIn     // thread atomics
             >,
             public math::MathStdLib,
-            public block::shared::dyn::BlockSharedMemDynMember<>,
-            public block::shared::st::BlockSharedMemStOmp5,
-            public block::sync::BlockSyncBarrierOmp,
+            public block::dyn::BlockSharedMemDynMember<>,
+            public block::st::BlockSharedMemStOmp5,
+            public block::BlockSyncBarrierOmp,
             // cannot determine which intrinsics are safe to use (depends on target), using fallback
             public intrinsic::IntrinsicFallback,
             public rand::RandStdLib,
@@ -113,10 +113,10 @@ namespace alpaka
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
+                    block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
                     //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
-                    block::shared::st::BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity()),
-                    block::sync::BlockSyncBarrierOmp(),
+                    block::st::BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity()),
+                    block::BlockSyncBarrierOmp(),
                     rand::RandStdLib(),
                     time::TimeOmp()
             {}

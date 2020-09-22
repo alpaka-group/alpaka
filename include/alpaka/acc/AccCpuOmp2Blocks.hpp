@@ -79,9 +79,9 @@ namespace alpaka
                 atomic::AtomicNoOp           // thread atomics
             >,
             public math::MathStdLib,
-            public block::shared::dyn::BlockSharedMemDynMember<>,
-            public block::shared::st::BlockSharedMemStMember<>,
-            public block::sync::BlockSyncNoOp,
+            public block::dyn::BlockSharedMemDynMember<>,
+            public block::st::BlockSharedMemStMember<>,
+            public block::BlockSyncNoOp,
             public intrinsic::IntrinsicCpu,
             public rand::RandStdLib,
             public time::TimeOmp,
@@ -114,9 +114,9 @@ namespace alpaka
                         atomic::AtomicNoOp        // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
-                    block::shared::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
-                    block::sync::BlockSyncNoOp(),
+                    block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
+                    block::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
+                    block::BlockSyncNoOp(),
                     rand::RandStdLib(),
                     time::TimeOmp(),
                     m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())

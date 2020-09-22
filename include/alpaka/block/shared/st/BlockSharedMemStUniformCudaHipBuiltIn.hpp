@@ -30,70 +30,67 @@ namespace alpaka
 {
     namespace block
     {
-        namespace shared
+        namespace st
         {
-            namespace st
+            //#############################################################################
+            //! The GPU CUDA/HIP block shared memory allocator.
+            class BlockSharedMemStUniformCudaHipBuiltIn : public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStUniformCudaHipBuiltIn>
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default constructor.
+                BlockSharedMemStUniformCudaHipBuiltIn() = default;
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                __device__ BlockSharedMemStUniformCudaHipBuiltIn(BlockSharedMemStUniformCudaHipBuiltIn const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                __device__ BlockSharedMemStUniformCudaHipBuiltIn(BlockSharedMemStUniformCudaHipBuiltIn &&) = delete;
+                //-----------------------------------------------------------------------------
+                //! Copy assignment operator.
+                __device__ auto operator=(BlockSharedMemStUniformCudaHipBuiltIn const &) -> BlockSharedMemStUniformCudaHipBuiltIn & = delete;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                __device__ auto operator=(BlockSharedMemStUniformCudaHipBuiltIn &&) -> BlockSharedMemStUniformCudaHipBuiltIn & = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                /*virtual*/ ~BlockSharedMemStUniformCudaHipBuiltIn() = default;
+            };
+
+            namespace traits
             {
                 //#############################################################################
-                //! The GPU CUDA/HIP block shared memory allocator.
-                class BlockSharedMemStUniformCudaHipBuiltIn : public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStUniformCudaHipBuiltIn>
+                template<
+                    typename T,
+                    std::size_t TuniqueId>
+                struct AllocVar<
+                    T,
+                    TuniqueId,
+                    BlockSharedMemStUniformCudaHipBuiltIn>
                 {
-                public:
                     //-----------------------------------------------------------------------------
-                    //! Default constructor.
-                    BlockSharedMemStUniformCudaHipBuiltIn() = default;
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    __device__ BlockSharedMemStUniformCudaHipBuiltIn(BlockSharedMemStUniformCudaHipBuiltIn const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    __device__ BlockSharedMemStUniformCudaHipBuiltIn(BlockSharedMemStUniformCudaHipBuiltIn &&) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment operator.
-                    __device__ auto operator=(BlockSharedMemStUniformCudaHipBuiltIn const &) -> BlockSharedMemStUniformCudaHipBuiltIn & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move assignment operator.
-                    __device__ auto operator=(BlockSharedMemStUniformCudaHipBuiltIn &&) -> BlockSharedMemStUniformCudaHipBuiltIn & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    /*virtual*/ ~BlockSharedMemStUniformCudaHipBuiltIn() = default;
+                    __device__ static auto allocVar(
+                        block::st::BlockSharedMemStUniformCudaHipBuiltIn const &)
+                    -> T &
+                    {
+                        __shared__ uint8_t shMem alignas(alignof(T)) [sizeof(T)];
+                        return *(
+                            reinterpret_cast<T*>( shMem ));
+                    }
                 };
-
-                namespace traits
+                //#############################################################################
+                template<>
+                struct FreeMem<
+                    BlockSharedMemStUniformCudaHipBuiltIn>
                 {
-                    //#############################################################################
-                    template<
-                        typename T,
-                        std::size_t TuniqueId>
-                    struct AllocVar<
-                        T,
-                        TuniqueId,
-                        BlockSharedMemStUniformCudaHipBuiltIn>
+                    //-----------------------------------------------------------------------------
+                    __device__ static auto freeMem(
+                        block::st::BlockSharedMemStUniformCudaHipBuiltIn const &)
+                    -> void
                     {
-                        //-----------------------------------------------------------------------------
-                        __device__ static auto allocVar(
-                            block::shared::st::BlockSharedMemStUniformCudaHipBuiltIn const &)
-                        -> T &
-                        {
-                            __shared__ uint8_t shMem alignas(alignof(T)) [sizeof(T)];
-                            return *(
-                                reinterpret_cast<T*>( shMem ));
-                        }
-                    };
-                    //#############################################################################
-                    template<>
-                    struct FreeMem<
-                        BlockSharedMemStUniformCudaHipBuiltIn>
-                    {
-                        //-----------------------------------------------------------------------------
-                        __device__ static auto freeMem(
-                            block::shared::st::BlockSharedMemStUniformCudaHipBuiltIn const &)
-                        -> void
-                        {
-                            // Nothing to do. CUDA/HIP block shared memory is automatically freed when all threads left the block.
-                        }
-                    };
-                }
+                        // Nothing to do. CUDA/HIP block shared memory is automatically freed when all threads left the block.
+                    }
+                };
             }
         }
     }

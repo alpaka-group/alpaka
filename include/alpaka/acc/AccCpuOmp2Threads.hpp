@@ -80,9 +80,9 @@ namespace alpaka
                 atomic::AtomicOmpBuiltIn     // thread atomics
             >,
             public math::MathStdLib,
-            public block::shared::dyn::BlockSharedMemDynAlignedAlloc,
-            public block::shared::st::BlockSharedMemStMasterSync,
-            public block::sync::BlockSyncBarrierOmp,
+            public block::dyn::BlockSharedMemDynAlignedAlloc,
+            public block::st::BlockSharedMemStMasterSync,
+            public block::BlockSyncBarrierOmp,
             public intrinsic::IntrinsicCpu,
             public rand::RandStdLib,
             public time::TimeOmp,
@@ -115,11 +115,11 @@ namespace alpaka
                         atomic::AtomicOmpBuiltIn  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
-                    block::shared::st::BlockSharedMemStMasterSync(
-                        [this](){block::sync::syncBlockThreads(*this);},
+                    block::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
+                    block::st::BlockSharedMemStMasterSync(
+                        [this](){block::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),
-                    block::sync::BlockSyncBarrierOmp(),
+                    block::BlockSyncBarrierOmp(),
                     rand::RandStdLib(),
                     time::TimeOmp(),
                     m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
