@@ -92,7 +92,7 @@ var NAVTREEINDEX6 =
 "intrinsic_2Traits_8hpp.html#ae13d9eb8514affd794733a2137b623e2":[4,0,0,0,11,3,3],
 "intrinsic_2Traits_8hpp_source.html":[4,0,0,0,11,3],
 "kernel_2Traits_8hpp.html":[4,0,0,0,12,8],
-"kernel_2Traits_8hpp.html#a7ce1f79abd41304cb135fbc3b88d3028":[4,0,0,0,12,8,5],
+"kernel_2Traits_8hpp.html#a32c9e5f1de8d0433a0e41feb295d96e3":[4,0,0,0,12,8,5],
 "kernel_2Traits_8hpp.html#af60ebfc7f6bff0c661ad470cbd1b056a":[4,0,0,0,12,8,4],
 "kernel_2Traits_8hpp.html#afbb5e5eb95e5a2a0db73b218d639c7e6":[4,0,0,0,12,8,3],
 "kernel_2Traits_8hpp_source.html":[4,0,0,0,12,8],

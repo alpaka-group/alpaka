@@ -32,7 +32,7 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,14,0,1],
 "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01acc_1_1AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#aac3e1d5b7229467ba8a8bc2ecd05375e":[3,0,0,14,0,1,0],
 "structalpaka_1_1kernel_1_1traits_1_1BlockSharedMemDynSizeBytes.html":[3,0,0,14,1,0],
-"structalpaka_1_1kernel_1_1traits_1_1BlockSharedMemDynSizeBytes.html#ad9ffbaf93ef5233c0988b9e21de9c635":[3,0,0,14,1,0,0],
+"structalpaka_1_1kernel_1_1traits_1_1BlockSharedMemDynSizeBytes.html#ae1917f198a2362b640456913fac5e0d7":[3,0,0,14,1,0,0],
 "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel.html":[3,0,0,14,1,1],
 "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_b93542beab851b448a9b79ddeec86ada.html":[3,0,0,14,1,2],
 "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_b93542beab851b448a9b79ddeec86ada.html#a23adde3abeb120ea8e161f153408a80a":[3,0,0,14,1,2,0],
