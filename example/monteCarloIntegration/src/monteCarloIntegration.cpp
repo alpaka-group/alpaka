@@ -124,9 +124,9 @@ auto main() -> int
     using Acc = alpaka::example::ExampleDefaultAcc<
         Dim,
         Idx>;
-    using Host = alpaka::dev::DevCpu;
-    auto const devAcc = alpaka::pltf::getDevByIdx<Acc>(0u);
-    auto const devHost = alpaka::pltf::getDevByIdx<Host>(0u);
+    using Host = alpaka::DevCpu;
+    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const devHost = alpaka::getDevByIdx<Host>(0u);
     using QueueProperty = alpaka::queue::Blocking;
     using QueueAcc = alpaka::queue::Queue<
         Acc,

@@ -62,7 +62,7 @@ namespace alpaka
                         template<
                             typename TExtent>
                         ALPAKA_FN_HOST BufCpuImpl(
-                            dev::DevCpu const & dev,
+                            DevCpu const & dev,
                             TExtent const & extent) :
                                 mem::alloc::AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
                                 m_dev(dev),
@@ -126,7 +126,7 @@ namespace alpaka
                         }
 
                     public:
-                        dev::DevCpu const m_dev;
+                        DevCpu const m_dev;
                         vec::Vec<TDim, TIdx> const m_extentElements;
                         TElem * const m_pMem;
                         TIdx const m_pitchBytes;
@@ -149,7 +149,7 @@ namespace alpaka
                 template<
                     typename TExtent>
                 ALPAKA_FN_HOST BufCpu(
-                    dev::DevCpu const & dev,
+                    DevCpu const & dev,
                     TExtent const & extent) :
                         m_spBufCpuImpl(std::make_shared<cpu::detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, extent))
                 {}
@@ -170,38 +170,35 @@ namespace alpaka
         }
     }
 
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufCpu device type trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            mem::buf::BufCpu<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufCpu device type trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                mem::buf::BufCpu<TElem, TDim, TIdx>>
+            using type = DevCpu;
+        };
+        //#############################################################################
+        //! The BufCpu device get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetDev<
+            mem::buf::BufCpu<TElem, TDim, TIdx>>
+        {
+            ALPAKA_FN_HOST static auto getDev(
+                mem::buf::BufCpu<TElem, TDim, TIdx> const & buf)
+            -> DevCpu
             {
-                using type = dev::DevCpu;
-            };
-            //#############################################################################
-            //! The BufCpu device get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetDev<
-                mem::buf::BufCpu<TElem, TDim, TIdx>>
-            {
-                ALPAKA_FN_HOST static auto getDev(
-                    mem::buf::BufCpu<TElem, TDim, TIdx> const & buf)
-                -> dev::DevCpu
-                {
-                    return buf.m_spBufCpuImpl->m_dev;
-                }
-            };
-        }
+                return buf.m_spBufCpuImpl->m_dev;
+            }
+        };
     }
     namespace dim
     {
@@ -301,15 +298,15 @@ namespace alpaka
                     typename TIdx>
                 struct GetPtrDev<
                     mem::buf::BufCpu<TElem, TDim, TIdx>,
-                    dev::DevCpu>
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TIdx> const & buf,
-                        dev::DevCpu const & dev)
+                        DevCpu const & dev)
                     -> TElem const *
                     {
-                        if(dev == dev::getDev(buf))
+                        if(dev == getDev(buf))
                         {
                             return buf.m_spBufCpuImpl->m_pMem;
                         }
@@ -321,10 +318,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
-                        dev::DevCpu const & dev)
+                        DevCpu const & dev)
                     -> TElem *
                     {
-                        if(dev == dev::getDev(buf))
+                        if(dev == getDev(buf))
                         {
                             return buf.m_spBufCpuImpl->m_pMem;
                         }
@@ -368,13 +365,13 @@ namespace alpaka
                     TElem,
                     TDim,
                     TIdx,
-                    dev::DevCpu>
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
-                        dev::DevCpu const & dev,
+                        DevCpu const & dev,
                         TExtent const & extent)
                     -> mem::buf::BufCpu<TElem, TDim, TIdx>
                     {
@@ -396,17 +393,17 @@ namespace alpaka
                     typename TIdx>
                 struct Map<
                     mem::buf::BufCpu<TElem, TDim, TIdx>,
-                    dev::DevCpu>
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto map(
                         mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
-                        dev::DevCpu const & dev)
+                        DevCpu const & dev)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        if(dev::getDev(buf) != dev)
+                        if(getDev(buf) != dev)
                         {
                             throw std::runtime_error("Memory mapping of BufCpu between two devices is not implemented!");
                         }
@@ -421,17 +418,17 @@ namespace alpaka
                     typename TIdx>
                 struct Unmap<
                     mem::buf::BufCpu<TElem, TDim, TIdx>,
-                    dev::DevCpu>
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto unmap(
                         mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
-                        dev::DevCpu const & dev)
+                        DevCpu const & dev)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        if(dev::getDev(buf) != dev)
+                        if(getDev(buf) != dev)
                         {
                             throw std::runtime_error("Memory unmapping of BufCpu between two devices is not implemented!");
                         }

@@ -36,10 +36,7 @@
 
 namespace alpaka
 {
-    namespace dev
-    {
-        class DevOmp5;
-    }
+    class DevOmp5;
 }
 
 namespace alpaka
@@ -56,7 +53,7 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskSet<
                     TDim,
-                    dev::DevOmp5>
+                    DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -96,7 +93,7 @@ namespace alpaka
                         // Let alpaka calculate good block and grid sizes given our full problem extent
                         workdiv::WorkDivMembers<TDim, Idx> const workDiv(
                             workdiv::getValidWorkDiv<acc::AccOmp5<TDim,Idx>>(
-                                dev::getDev(view),
+                                getDev(view),
                                 byteExtent,
                                 elementsPerThread,
                                 false,

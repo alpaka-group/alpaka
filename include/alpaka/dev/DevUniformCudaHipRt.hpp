@@ -38,204 +38,196 @@
 
 namespace alpaka
 {
-    namespace pltf
+    namespace traits
     {
-        namespace traits
-        {
-            template<
-                typename TPltf,
-                typename TSfinae>
-            struct GetDevByIdx;
-        }
-        class PltfUniformCudaHipRt;
+        template<
+            typename TPltf,
+            typename TSfinae>
+        struct GetDevByIdx;
     }
+    class PltfUniformCudaHipRt;
     namespace queue
     {
         class QueueUniformCudaHipRtBlocking;
         class QueueUniformCudaHipRtNonBlocking;
     }
 
-    namespace dev
+    //#############################################################################
+    //! The CUDA/HIP RT device handle.
+    class DevUniformCudaHipRt :
+        public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevUniformCudaHipRt>,
+        public concepts::Implements<ConceptDev, DevUniformCudaHipRt>
     {
-        //#############################################################################
-        //! The CUDA/HIP RT device handle.
-        class DevUniformCudaHipRt :
-            public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevUniformCudaHipRt>,
-            public concepts::Implements<ConceptDev, DevUniformCudaHipRt>
+        friend struct traits::GetDevByIdx<PltfUniformCudaHipRt>;
+
+    protected:
+        //-----------------------------------------------------------------------------
+        DevUniformCudaHipRt() = default;
+    public:
+        //-----------------------------------------------------------------------------
+        DevUniformCudaHipRt(DevUniformCudaHipRt const &) = default;
+        //-----------------------------------------------------------------------------
+        DevUniformCudaHipRt(DevUniformCudaHipRt &&) = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(DevUniformCudaHipRt const &) -> DevUniformCudaHipRt & = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(DevUniformCudaHipRt &&) -> DevUniformCudaHipRt & = default;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST auto operator==(DevUniformCudaHipRt const & rhs) const
+        -> bool
         {
-            friend struct pltf::traits::GetDevByIdx<pltf::PltfUniformCudaHipRt>;
+            return m_iDevice == rhs.m_iDevice;
+        }
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST auto operator!=(DevUniformCudaHipRt const & rhs) const
+        -> bool
+        {
+            return !((*this) == rhs);
+        }
+        //-----------------------------------------------------------------------------
+        ~DevUniformCudaHipRt() = default;
 
-        protected:
-            //-----------------------------------------------------------------------------
-            DevUniformCudaHipRt() = default;
-        public:
-            //-----------------------------------------------------------------------------
-            DevUniformCudaHipRt(DevUniformCudaHipRt const &) = default;
-            //-----------------------------------------------------------------------------
-            DevUniformCudaHipRt(DevUniformCudaHipRt &&) = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(DevUniformCudaHipRt const &) -> DevUniformCudaHipRt & = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(DevUniformCudaHipRt &&) -> DevUniformCudaHipRt & = default;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator==(DevUniformCudaHipRt const & rhs) const
-            -> bool
-            {
-                return m_iDevice == rhs.m_iDevice;
-            }
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator!=(DevUniformCudaHipRt const & rhs) const
-            -> bool
-            {
-                return !((*this) == rhs);
-            }
-            //-----------------------------------------------------------------------------
-            ~DevUniformCudaHipRt() = default;
-
-        public:
-            int m_iDevice;
-        };
+    public:
+        int m_iDevice;
+    };
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-        using DevCudaRt = DevUniformCudaHipRt;
+    using DevCudaRt = DevUniformCudaHipRt;
 #else
-        using DevHipRt = DevUniformCudaHipRt;
+    using DevHipRt = DevUniformCudaHipRt;
 #endif
-    }
 
-    namespace dev
+
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT device name get trait specialization.
+        template<>
+        struct GetName<
+            DevUniformCudaHipRt>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT device name get trait specialization.
-            template<>
-            struct GetName<
-                dev::DevUniformCudaHipRt>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getName(
+                DevUniformCudaHipRt const & dev)
+            -> std::string
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getName(
-                    dev::DevUniformCudaHipRt const & dev)
-                -> std::string
-                {
-                    // There is cuda/hip-DeviceGetAttribute as faster alternative to cuda/hip-GetDeviceProperties to get a single device property but it has no option to get the name
+                // There is cuda/hip-DeviceGetAttribute as faster alternative to cuda/hip-GetDeviceProperties to get a single device property but it has no option to get the name
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                    cudaDeviceProp devProp;
+                cudaDeviceProp devProp;
 #else
-                    hipDeviceProp_t devProp;
+                hipDeviceProp_t devProp;
 #endif
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(GetDeviceProperties)(
-                            &devProp,
-                            dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(GetDeviceProperties)(
+                        &devProp,
+                        dev.m_iDevice));
 
-                    return std::string(devProp.name);
-                }
-            };
+                return std::string(devProp.name);
+            }
+        };
 
-            //#############################################################################
-            //! The CUDA/HIP RT device available memory get trait specialization.
-            template<>
-            struct GetMemBytes<
-                dev::DevUniformCudaHipRt>
+        //#############################################################################
+        //! The CUDA/HIP RT device available memory get trait specialization.
+        template<>
+        struct GetMemBytes<
+            DevUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getMemBytes(
+                DevUniformCudaHipRt const & dev)
+            -> std::size_t
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getMemBytes(
-                    dev::DevUniformCudaHipRt const & dev)
-                -> std::size_t
-                {
-                    // Set the current device to wait for.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(SetDevice)(
-                            dev.m_iDevice));
+                // Set the current device to wait for.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(SetDevice)(
+                        dev.m_iDevice));
 
-                    std::size_t freeInternal(0u);
-                    std::size_t totalInternal(0u);
+                std::size_t freeInternal(0u);
+                std::size_t totalInternal(0u);
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(MemGetInfo)(
-                            &freeInternal,
-                            &totalInternal));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(MemGetInfo)(
+                        &freeInternal,
+                        &totalInternal));
 
-                    return totalInternal;
-                }
-            };
+                return totalInternal;
+            }
+        };
 
-            //#############################################################################
-            //! The CUDA/HIP RT device free memory get trait specialization.
-            template<>
-            struct GetFreeMemBytes<
-                dev::DevUniformCudaHipRt>
+        //#############################################################################
+        //! The CUDA/HIP RT device free memory get trait specialization.
+        template<>
+        struct GetFreeMemBytes<
+            DevUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getFreeMemBytes(
+                DevUniformCudaHipRt const & dev)
+            -> std::size_t
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getFreeMemBytes(
-                    dev::DevUniformCudaHipRt const & dev)
-                -> std::size_t
-                {
-                    // Set the current device to wait for.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(SetDevice)(
-                            dev.m_iDevice));
+                // Set the current device to wait for.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(SetDevice)(
+                        dev.m_iDevice));
 
-                    std::size_t freeInternal(0u);
-                    std::size_t totalInternal(0u);
+                std::size_t freeInternal(0u);
+                std::size_t totalInternal(0u);
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(MemGetInfo)(
-                            &freeInternal,
-                            &totalInternal));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(MemGetInfo)(
+                        &freeInternal,
+                        &totalInternal));
 
-                    return freeInternal;
-                }
-            };
+                return freeInternal;
+            }
+        };
 
-            //#############################################################################
-            //! The CUDA/HIP RT device warp size get trait specialization.
-            template<>
-            struct GetWarpSize<
-                dev::DevUniformCudaHipRt>
+        //#############################################################################
+        //! The CUDA/HIP RT device warp size get trait specialization.
+        template<>
+        struct GetWarpSize<
+            DevUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getWarpSize(
+                DevUniformCudaHipRt const & dev)
+            -> std::size_t
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getWarpSize(
-                    dev::DevUniformCudaHipRt const & dev)
-                -> std::size_t
-                {
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                    cudaDeviceProp devProp;
+                cudaDeviceProp devProp;
 #else
-                    hipDeviceProp_t devProp;
+                hipDeviceProp_t devProp;
 #endif
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(GetDeviceProperties)(
-                            &devProp,
-                            dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(GetDeviceProperties)(
+                        &devProp,
+                        dev.m_iDevice));
 
-                    return static_cast<std::size_t>(devProp.warpSize);
-                }
-            };
+                return static_cast<std::size_t>(devProp.warpSize);
+            }
+        };
 
-            //#############################################################################
-            //! The CUDA/HIP RT device reset trait specialization.
-            template<>
-            struct Reset<
-                dev::DevUniformCudaHipRt>
+        //#############################################################################
+        //! The CUDA/HIP RT device reset trait specialization.
+        template<>
+        struct Reset<
+            DevUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto reset(
+                DevUniformCudaHipRt const & dev)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto reset(
-                    dev::DevUniformCudaHipRt const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    // Set the current device to wait for.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(SetDevice)(
-                            dev.m_iDevice));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(DeviceReset)());
-                }
-            };
-        }
+                // Set the current device to wait for.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(SetDevice)(
+                        dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(DeviceReset)());
+            }
+        };
     }
     namespace mem
     {
@@ -256,7 +248,7 @@ namespace alpaka
                     typename TDim,
                     typename TIdx>
                 struct BufType<
-                    dev::DevUniformCudaHipRt,
+                    DevUniformCudaHipRt,
                     TElem,
                     TDim,
                     TIdx>
@@ -266,19 +258,16 @@ namespace alpaka
             }
         }
     }
-    namespace pltf
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT device platform type trait specialization.
+        template<>
+        struct PltfType<
+            DevUniformCudaHipRt>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT device platform type trait specialization.
-            template<>
-            struct PltfType<
-                dev::DevUniformCudaHipRt>
-            {
-                using type = pltf::PltfUniformCudaHipRt;
-            };
-        }
+            using type = PltfUniformCudaHipRt;
+        };
     }
     namespace wait
     {
@@ -291,11 +280,11 @@ namespace alpaka
             //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
             template<>
             struct CurrentThreadWaitFor<
-                dev::DevUniformCudaHipRt>
+                DevUniformCudaHipRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    dev::DevUniformCudaHipRt const & dev)
+                    DevUniformCudaHipRt const & dev)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -314,7 +303,7 @@ namespace alpaka
         {
             template<>
             struct QueueType<
-                dev::DevUniformCudaHipRt,
+                DevUniformCudaHipRt,
                 queue::Blocking
             >
             {
@@ -323,7 +312,7 @@ namespace alpaka
 
             template<>
             struct QueueType<
-                dev::DevUniformCudaHipRt,
+                DevUniformCudaHipRt,
                 queue::NonBlocking
             >
             {

@@ -23,7 +23,7 @@ namespace alpaka
 {
     namespace queue
     {
-        using QueueOmp5NonBlocking = QueueGenericThreadsNonBlocking<dev::DevOmp5>;
+        using QueueOmp5NonBlocking = QueueGenericThreadsNonBlocking<DevOmp5>;
     }
 }
 

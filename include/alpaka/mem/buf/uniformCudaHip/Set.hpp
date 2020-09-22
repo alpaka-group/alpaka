@@ -39,10 +39,7 @@
 
 namespace alpaka
 {
-    namespace dev
-    {
-        class DevUniformCudaHipRt;
-    }
+    class DevUniformCudaHipRt;
 }
 
 namespace alpaka
@@ -71,7 +68,7 @@ namespace alpaka
                                 m_view(view),
                                 m_byte(byte),
                                 m_extent(extent),
-                                m_iDevice(dev::getDev(view).m_iDevice)
+                                m_iDevice(getDev(view).m_iDevice)
                         {
                             static_assert(
                                 !std::is_const<TView>::value,
@@ -335,7 +332,7 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskSet<
                     TDim,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<

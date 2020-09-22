@@ -78,7 +78,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
-                    typename dev::traits::DevType<TAcc>::type const & dev)
+                    typename alpaka::traits::DevType<TAcc>::type const & dev)
                 -> AccDevProps<typename dim::traits::DimType<TAcc>::type, typename idx::traits::IdxType<TAcc>::type>
                 {
                     using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
@@ -154,42 +154,35 @@ namespace alpaka
 
     }
 
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU HIP accelerator device type trait specialization.
+        template<typename TAcc>
+        struct DevType<
+            TAcc,
+            typename std::enable_if<
+                concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
+            >::type>
         {
-            //#############################################################################
-            //! The GPU HIP accelerator device type trait specialization.
-            template<typename TAcc>
-            struct DevType<
-               TAcc,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
-                >::type>
+            using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
+            using type = typename DevType<ImplementationBase>::type;
+        };
+    }
+    namespace traits
+    {
+        //#############################################################################
+        //! The CPU HIP execution task platform type trait specialization.
+        template<typename TAcc>
+        struct PltfType<
+            TAcc,
+            typename std::enable_if<
+                concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
+            >::type>
             {
                 using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
-                using type = typename DevType<ImplementationBase>::type;
+                using type = typename PltfType<ImplementationBase>::type;
             };
-        }
-    }
-    namespace pltf
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU HIP execution task platform type trait specialization.
-            template<typename TAcc>
-            struct PltfType<
-                TAcc,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<acc::ConceptUniformCudaHip, TAcc>::value
-                >::type>
-                {
-                    using ImplementationBase = typename concepts::ImplementationBase<acc::ConceptUniformCudaHip, TAcc>;
-                    using type = typename PltfType<ImplementationBase>::type;
-                };
-        }
-
     }
     namespace dim
     {
@@ -244,7 +237,7 @@ namespace alpaka
             >
             {
                 using type = typename QueueType<
-                    typename pltf::traits::PltfType<TAcc>::type,
+                    typename alpaka::traits::PltfType<TAcc>::type,
                     TProperty
                 >::type;
             };

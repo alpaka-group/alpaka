@@ -88,7 +88,7 @@ namespace alpaka
             //! Executes the kernel function object.
             ALPAKA_FN_HOST auto operator()(
                     const
-                    dev::DevOmp5& dev
+                    DevOmp5& dev
                 ) const
             -> void
             {
@@ -259,23 +259,20 @@ namespace alpaka
             };
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 execution task device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct DevType<
+            kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 execution task device type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevType<
-                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevOmp5;
-            };
-        }
+            using type = DevOmp5;
+        };
     }
     namespace dim
     {
@@ -295,23 +292,20 @@ namespace alpaka
             };
         }
     }
-    namespace pltf
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 execution task platform type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct PltfType<
+            kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 execution task platform type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct PltfType<
-                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = pltf::PltfOmp5;
-            };
-        }
+            using type = PltfOmp5;
+        };
     }
     namespace idx
     {

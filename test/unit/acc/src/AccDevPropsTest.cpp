@@ -18,9 +18,9 @@
 TEMPLATE_LIST_TEST_CASE( "getAccDevProps", "[acc]", alpaka::test::acc::TestAccs)
 {
     using Acc = TestType;
-    using Dev = alpaka::dev::Dev<Acc>;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
-    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    using Dev = alpaka::Dev<Acc>;
+    using Pltf = alpaka::Pltf<Dev>;
+    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
     auto const devProps = alpaka::acc::getAccDevProps<Acc>(dev);
 
     REQUIRE(devProps.m_gridBlockExtentMax.prod() > 0);

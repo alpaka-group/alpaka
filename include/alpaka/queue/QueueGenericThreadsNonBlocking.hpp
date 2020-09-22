@@ -110,7 +110,7 @@ namespace alpaka
         class QueueGenericThreadsNonBlocking final
             : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
             , public concepts::Implements<ConceptQueue, QueueGenericThreadsNonBlocking<TDev>>
-            , public concepts::Implements<dev::ConceptGetDev, QueueGenericThreadsNonBlocking<TDev>>
+            , public concepts::Implements<ConceptGetDev, QueueGenericThreadsNonBlocking<TDev>>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -150,35 +150,32 @@ namespace alpaka
         };
     }
 
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU non-blocking device queue device type trait specialization.
+        template<
+            typename TDev>
+        struct DevType<
+            queue::QueueGenericThreadsNonBlocking<TDev>>
         {
-            //#############################################################################
-            //! The CPU non-blocking device queue device type trait specialization.
-            template<
-                typename TDev>
-            struct DevType<
-                queue::QueueGenericThreadsNonBlocking<TDev>>
+            using type = TDev;
+        };
+        //#############################################################################
+        //! The CPU non-blocking device queue device get trait specialization.
+        template<
+            typename TDev>
+        struct GetDev<
+            queue::QueueGenericThreadsNonBlocking<TDev>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                queue::QueueGenericThreadsNonBlocking<TDev> const & queue)
+            -> TDev
             {
-                using type = TDev;
-            };
-            //#############################################################################
-            //! The CPU non-blocking device queue device get trait specialization.
-            template<
-                typename TDev>
-            struct GetDev<
-                queue::QueueGenericThreadsNonBlocking<TDev>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    queue::QueueGenericThreadsNonBlocking<TDev> const & queue)
-                -> TDev
-                {
-                    return queue.m_spQueueImpl->m_dev;
-                }
-            };
-        }
+                return queue.m_spQueueImpl->m_dev;
+            }
+        };
     }
     namespace event
     {

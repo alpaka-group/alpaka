@@ -864,8 +864,8 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevCpu,
-                    dev::DevUniformCudaHipRt>
+                    DevCpu,
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -885,7 +885,7 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         auto const iDevice(
-                            dev::getDev(viewSrc).m_iDevice);
+                            getDev(viewSrc).m_iDevice);
 
                         return
                             mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<
@@ -907,8 +907,8 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevUniformCudaHipRt,
-                    dev::DevCpu>
+                    DevUniformCudaHipRt,
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -928,7 +928,7 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         auto const iDevice(
-                            dev::getDev(viewDst).m_iDevice);
+                            getDev(viewDst).m_iDevice);
 
                         return
                             mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<
@@ -950,8 +950,8 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevUniformCudaHipRt,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt,
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -980,8 +980,8 @@ namespace alpaka
                                     viewSrc,
                                     extent,
                                     ALPAKA_API_PREFIX(MemcpyDeviceToDevice),
-                                    dev::getDev(viewDst).m_iDevice,
-                                    dev::getDev(viewSrc).m_iDevice);
+                                    getDev(viewDst).m_iDevice,
+                                    getDev(viewSrc).m_iDevice);
                     }
                 };
             }

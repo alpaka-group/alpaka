@@ -184,23 +184,20 @@ namespace alpaka
             };
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU TBB block execution task device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct DevType<
+            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU TBB block execution task device type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevType<
-                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevCpu;
-            };
-        }
+            using type = DevCpu;
+        };
     }
     namespace dim
     {
@@ -220,23 +217,20 @@ namespace alpaka
             };
         }
     }
-    namespace pltf
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU TBB block execution task platform type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct PltfType<
+            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU TBB block execution task platform type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct PltfType<
-                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = pltf::PltfCpu;
-            };
-        }
+            using type = PltfCpu;
+        };
     }
     namespace idx
     {

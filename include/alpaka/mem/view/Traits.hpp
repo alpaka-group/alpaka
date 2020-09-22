@@ -286,7 +286,7 @@ namespace alpaka
                 return
                     traits::CreateTaskSet<
                         dim::Dim<TView>,
-                        dev::Dev<TView>>
+                        Dev<TView>>
                     ::createTaskSet(
                         view,
                         byte,
@@ -347,8 +347,8 @@ namespace alpaka
                 return
                     traits::CreateTaskCopy<
                         dim::Dim<TViewDst>,
-                        dev::Dev<TViewDst>,
-                        dev::Dev<TViewSrc>>
+                        Dev<TViewDst>,
+                        Dev<TViewSrc>>
                     ::createTaskCopy(
                         viewDst,
                         viewSrc,

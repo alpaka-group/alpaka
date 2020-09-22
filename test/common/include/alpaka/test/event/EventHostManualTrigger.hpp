@@ -70,7 +70,7 @@ namespace alpaka
                     //#############################################################################
                     //! Event that can be enqueued into a queue and can be triggered by the Host.
                     //#############################################################################
-                    template<class TDev = dev::DevCpu>
+                    template<class TDev = DevCpu>
                     class EventHostManualTriggerCpuImpl
                     {
                     public:
@@ -129,7 +129,7 @@ namespace alpaka
             //#############################################################################
             //! Event that can be enqueued into a queue and can be triggered by the Host.
             //#############################################################################
-            template<class TDev = dev::DevCpu>
+            template<class TDev = DevCpu>
             class EventHostManualTriggerCpu
             {
             public:
@@ -192,9 +192,9 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevCpu>
+                    alpaka::DevCpu>
                 {
-                    using type = alpaka::test::event::EventHostManualTriggerCpu<dev::DevCpu>;
+                    using type = alpaka::test::event::EventHostManualTriggerCpu<DevCpu>;
                 };
 #ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
                 //#############################################################################
@@ -202,20 +202,20 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevOmp5>
+                    alpaka::DevOmp5>
                 {
-                    using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::dev::DevOmp5>;
+                    using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::DevOmp5>;
                 };
 #endif
                 //#############################################################################
                 //! The CPU event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevCpu>
+                    alpaka::DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevCpu const &)
+                        alpaka::DevCpu const &)
                     -> bool
                     {
                         return true;
@@ -226,11 +226,11 @@ namespace alpaka
                 //! The Omp5 event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevOmp5>
+                    alpaka::DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevOmp5 const &)
+                        alpaka::DevOmp5 const &)
                     -> bool
                     {
                         return true;
@@ -240,28 +240,25 @@ namespace alpaka
             }
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device event device get trait specialization.
+        //#############################################################################
+        template<typename TDev>
+        struct GetDev<
+            test::event::EventHostManualTriggerCpu<TDev>>
         {
-            //#############################################################################
-            //! The CPU device event device get trait specialization.
-            //#############################################################################
-            template<typename TDev>
-            struct GetDev<
-                test::event::EventHostManualTriggerCpu<TDev>>
+            //-----------------------------------------------------------------------------
+            //
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                test::event::EventHostManualTriggerCpu<TDev> const & event)
+            -> TDev
             {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    test::event::EventHostManualTriggerCpu<TDev> const & event)
-                -> TDev
-                {
-                    return event.m_spEventImpl->m_dev;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_dev;
+            }
+        };
     }
     namespace event
     {
@@ -423,7 +420,7 @@ namespace alpaka
                     public:
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST EventHostManualTriggerCudaImpl(
-                            dev::DevUniformCudaHipRt const & dev) :
+                            DevUniformCudaHipRt const & dev) :
                                 m_dev(dev),
                                 m_mutex(),
                                 m_bIsReady(true)
@@ -486,7 +483,7 @@ namespace alpaka
                         }
 
                     public:
-                        dev::DevUniformCudaHipRt const m_dev;     //!< The device this event is bound to.
+                        DevUniformCudaHipRt const m_dev;     //!< The device this event is bound to.
 
                         mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
                         void * m_devMem;
@@ -502,7 +499,7 @@ namespace alpaka
             public:
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST EventHostManualTriggerCuda(
-                    dev::DevUniformCudaHipRt const & dev) :
+                    DevUniformCudaHipRt const & dev) :
                         m_spEventImpl(std::make_shared<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl>(dev))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -545,7 +542,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevUniformCudaHipRt>
+                    alpaka::DevUniformCudaHipRt>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCuda;
                 };
@@ -553,11 +550,11 @@ namespace alpaka
                 //! The CPU event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevUniformCudaHipRt>
+                    alpaka::DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevCudaRt const & dev)
+                        alpaka::DevCudaRt const & dev)
                     -> bool
                     {
                         int result = 0;
@@ -571,25 +568,22 @@ namespace alpaka
             }
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device event device get trait specialization.
+        template<>
+        struct GetDev<
+            test::event::EventHostManualTriggerCuda>
         {
-            //#############################################################################
-            //! The CPU device event device get trait specialization.
-            template<>
-            struct GetDev<
-                test::event::EventHostManualTriggerCuda>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                test::event::EventHostManualTriggerCuda const & event)
+            -> DevUniformCudaHipRt
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    test::event::EventHostManualTriggerCuda const & event)
-                -> dev::DevUniformCudaHipRt
-                {
-                    return event.m_spEventImpl->m_dev;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_dev;
+            }
+        };
     }
     namespace event
     {
@@ -730,7 +724,7 @@ namespace alpaka
                     public:
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST EventHostManualTriggerHipImpl(
-                            dev::DevHipRt const & dev) :
+                            DevHipRt const & dev) :
                                 m_dev(dev),
                                 m_mutex(),
                                 m_bIsReady(true)
@@ -792,7 +786,7 @@ namespace alpaka
                         }
 
                     public:
-                        dev::DevHipRt const m_dev;     //!< The device this event is bound to.
+                        DevHipRt const m_dev;     //!< The device this event is bound to.
 
                         mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
                         void * m_devMem;
@@ -808,7 +802,7 @@ namespace alpaka
             public:
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST EventHostManualTriggerHip(
-                    dev::DevHipRt const & dev) :
+                    DevHipRt const & dev) :
                         m_spEventImpl(std::make_shared<hip::detail::EventHostManualTriggerHipImpl>(dev))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -851,7 +845,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevHipRt>
+                    alpaka::DevHipRt>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerHip;
                 };
@@ -860,13 +854,13 @@ namespace alpaka
                 //! The HIP event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevHipRt>
+                    alpaka::DevHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     // TODO: there is no CUDA_VERSION in the HIP compiler path.
                     // TODO: there is a hipDeviceGetAttribute, but there is no pendant for CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS.
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevHipRt const &)
+                        alpaka::DevHipRt const &)
                     -> bool
                     {
                         return false;
@@ -875,25 +869,22 @@ namespace alpaka
             }
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device event device get trait specialization.
+        template<>
+        struct GetDev<
+            test::event::EventHostManualTriggerHip>
         {
-            //#############################################################################
-            //! The CPU device event device get trait specialization.
-            template<>
-            struct GetDev<
-                test::event::EventHostManualTriggerHip>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                test::event::EventHostManualTriggerHip const & event)
+            -> DevHipRt
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    test::event::EventHostManualTriggerHip const & event)
-                -> dev::DevHipRt
-                {
-                    return event.m_spEventImpl->m_dev;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_dev;
+            }
+        };
     }
     namespace event
     {

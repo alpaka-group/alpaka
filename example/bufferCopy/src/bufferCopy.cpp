@@ -179,8 +179,8 @@ auto main()
     using HostQueue = alpaka::queue::Queue<Host, HostQueueProperty>;
 
     // Select devices
-    auto const devAcc = alpaka::pltf::getDevByIdx<Acc>(0u);
-    auto const devHost = alpaka::pltf::getDevByIdx<Host>(0u);
+    auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
+    auto const devHost = alpaka::getDevByIdx<Host>(0u);
 
     // Create queues
     DevQueue devQueue(devAcc);

@@ -51,7 +51,7 @@ namespace alpaka
                 public:
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST QueueUniformCudaHipRtImpl(
-                        dev::DevUniformCudaHipRt const & dev) :
+                        DevUniformCudaHipRt const & dev) :
                             m_dev(dev),
                             m_UniformCudaHipQueue()
                     {
@@ -107,7 +107,7 @@ namespace alpaka
                     }
 
                 public:
-                    dev::DevUniformCudaHipRt const m_dev;   //!< The device this queue is bound to.
+                    DevUniformCudaHipRt const m_dev;   //!< The device this queue is bound to.
                     ALPAKA_API_PREFIX(Stream_t) m_UniformCudaHipQueue;
                 };
 
@@ -116,12 +116,12 @@ namespace alpaka
                 class QueueUniformCudaHipRtBase
                     : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueUniformCudaHipRtBase>
                     , public concepts::Implements<ConceptQueue, QueueUniformCudaHipRtBase>
-                    , public concepts::Implements<dev::ConceptGetDev, QueueUniformCudaHipRtBase>
+                    , public concepts::Implements<ConceptGetDev, QueueUniformCudaHipRtBase>
                 {
                 public:
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST QueueUniformCudaHipRtBase(
-                        dev::DevUniformCudaHipRt const & dev) :
+                        DevUniformCudaHipRt const & dev) :
                         m_spQueueImpl(std::make_shared<QueueUniformCudaHipRtImpl>(dev))
                     {}
                     //-----------------------------------------------------------------------------
@@ -154,25 +154,22 @@ namespace alpaka
         }
     }
 
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT non-blocking queue device get trait specialization.
+        template<>
+        struct GetDev<
+            queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtBase>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT non-blocking queue device get trait specialization.
-            template<>
-            struct GetDev<
-                queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtBase>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtBase const & queue)
+            -> DevUniformCudaHipRt
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtBase const & queue)
-                -> dev::DevUniformCudaHipRt
-                {
-                    return queue.m_spQueueImpl->m_dev;
-                }
-            };
-        }
+                return queue.m_spQueueImpl->m_dev;
+            }
+        };
     }
     namespace queue
     {

@@ -87,10 +87,10 @@ struct TestTemplate
 
         // SETUP (defines and initialising)
         // DevAcc and DevHost are defined in Buffer.hpp too.
-        using DevAcc = alpaka::dev::Dev< TAcc >;
-        using DevHost = alpaka::dev::DevCpu;
-        using PltfAcc = alpaka::pltf::Pltf< DevAcc >;
-        using PltfHost = alpaka::pltf::Pltf< DevHost >;
+        using DevAcc = alpaka::Dev< TAcc >;
+        using DevHost = alpaka::DevCpu;
+        using PltfAcc = alpaka::Pltf< DevAcc >;
+        using PltfHost = alpaka::Pltf< DevHost >;
 
         using Dim = alpaka::dim::DimInt< 1u >;
         using Idx = std::size_t;
@@ -115,8 +115,8 @@ struct TestTemplate
         static constexpr size_t elementsPerThread = 1u;
         static constexpr size_t sizeExtent = 1u;
 
-        DevAcc const devAcc{ alpaka::pltf::getDevByIdx< PltfAcc >( 0u ) };
-        DevHost const devHost{ alpaka::pltf::getDevByIdx< PltfHost >( 0u ) };
+        DevAcc const devAcc{ alpaka::getDevByIdx< PltfAcc >( 0u ) };
+        DevHost const devHost{ alpaka::getDevByIdx< PltfHost >( 0u ) };
 
         QueueAcc queue{ devAcc };
 

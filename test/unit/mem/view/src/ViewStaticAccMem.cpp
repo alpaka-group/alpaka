@@ -68,9 +68,9 @@ using TestAccs = alpaka::test::acc::EnabledAccs<Dim, Idx>;
 TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAccs)
 {
     using Acc = TestType;
-    using DevAcc = alpaka::dev::Dev<Acc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    using DevAcc = alpaka::Dev<Acc>;
+    using PltfAcc = alpaka::Pltf<DevAcc>;
+    DevAcc devAcc(alpaka::getDevByIdx<PltfAcc>(0u));
 
     alpaka::vec::Vec<Dim, Idx> const extent(3u, 2u);
 
@@ -96,8 +96,8 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestA
     //-----------------------------------------------------------------------------
     // uninitialized static constant device memory
     {
-        using PltfHost = alpaka::pltf::PltfCpu;
-        auto devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+        using PltfHost = alpaka::PltfCpu;
+        auto devHost(alpaka::getDevByIdx<PltfHost>(0u));
 
         using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
         QueueAcc queueAcc(devAcc);
@@ -141,9 +141,9 @@ ALPAKA_STATIC_ACC_MEM_GLOBAL Elem g_globalMemory2DUninitialized[3][2];
 TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", TestAccs)
 {
     using Acc = TestType;
-    using DevAcc = alpaka::dev::Dev<Acc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
-    DevAcc devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+    using DevAcc = alpaka::Dev<Acc>;
+    using PltfAcc = alpaka::Pltf<DevAcc>;
+    DevAcc devAcc(alpaka::getDevByIdx<PltfAcc>(0u));
 
     alpaka::vec::Vec<Dim, Idx> const extent(3u, 2u);
 
@@ -171,8 +171,8 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
     //-----------------------------------------------------------------------------
     // uninitialized static global device memory
     {
-        using PltfHost = alpaka::pltf::PltfCpu;
-        auto devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u));
+        using PltfHost = alpaka::PltfCpu;
+        auto devHost(alpaka::getDevByIdx<PltfHost>(0u));
 
         using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
         QueueAcc queueAcc(devAcc);

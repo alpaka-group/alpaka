@@ -159,7 +159,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
-                    dev::DevOmp5 const & dev)
+                    DevOmp5 const & dev)
                 -> acc::AccDevProps<TDim, TIdx>
                 {
                     alpaka::ignore_unused(dev);
@@ -226,21 +226,18 @@ namespace alpaka
             };
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 accelerator device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            acc::AccOmp5<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 accelerator device type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                acc::AccOmp5<TDim, TIdx>>
-            {
-                using type = dev::DevOmp5;
-            };
-        }
+            using type = DevOmp5;
+        };
     }
     namespace dim
     {
@@ -295,21 +292,18 @@ namespace alpaka
             };
         }
     }
-    namespace pltf
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 execution task platform type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct PltfType<
+            acc::AccOmp5<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 execution task platform type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct PltfType<
-                acc::AccOmp5<TDim, TIdx>>
-            {
-                using type = pltf::PltfOmp5;
-            };
-        }
+            using type = PltfOmp5;
+        };
     }
     namespace idx
     {

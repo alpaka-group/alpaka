@@ -58,7 +58,7 @@ namespace alpaka
                 public:
                     //-----------------------------------------------------------------------------
                     QueueCpuOmp2CollectiveImpl(
-                        dev::DevCpu const & dev) noexcept :
+                        DevCpu const & dev) noexcept :
                             m_dev(dev),
                             m_uCurrentlyExecutingTask(0u)
                     {}
@@ -82,7 +82,7 @@ namespace alpaka
                     }
 
                 public:
-                    dev::DevCpu const m_dev;            //!< The device this queue is bound to.
+                    DevCpu const m_dev;            //!< The device this queue is bound to.
                     std::mutex mutable m_mutex;
                     std::atomic<uint32_t> m_uCurrentlyExecutingTask;
                 };
@@ -106,7 +106,7 @@ namespace alpaka
         public:
             //-----------------------------------------------------------------------------
             QueueCpuOmp2Collective(
-                dev::DevCpu const & dev) :
+                DevCpu const & dev) :
                     m_spQueueImpl(std::make_shared<cpu::detail::QueueCpuOmp2CollectiveImpl>(dev)),
                     m_spBlockingQueue(std::make_shared<QueueCpuBlocking>(dev))
             {
@@ -141,33 +141,30 @@ namespace alpaka
         };
     }
 
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU blocking device queue device type trait specialization.
+        template<>
+        struct DevType<
+            queue::QueueCpuOmp2Collective>
         {
-            //#############################################################################
-            //! The CPU blocking device queue device type trait specialization.
-            template<>
-            struct DevType<
-                queue::QueueCpuOmp2Collective>
+            using type = DevCpu;
+        };
+        //#############################################################################
+        //! The CPU blocking device queue device get trait specialization.
+        template<>
+        struct GetDev<
+            queue::QueueCpuOmp2Collective>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                queue::QueueCpuOmp2Collective const & queue)
+            -> DevCpu
             {
-                using type = dev::DevCpu;
-            };
-            //#############################################################################
-            //! The CPU blocking device queue device get trait specialization.
-            template<>
-            struct GetDev<
-                queue::QueueCpuOmp2Collective>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    queue::QueueCpuOmp2Collective const & queue)
-                -> dev::DevCpu
-                {
-                    return queue.m_spQueueImpl->m_dev;
-                }
-            };
-        }
+                return queue.m_spQueueImpl->m_dev;
+            }
+        };
     }
     namespace event
     {

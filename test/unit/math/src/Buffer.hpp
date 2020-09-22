@@ -42,9 +42,9 @@ struct Buffer
     using Idx = typename alpaka::idx::traits::IdxType<TAcc>::type;
 
     // Defines using's for alpaka-buffer.
-    using DevAcc = alpaka::dev::Dev< TAcc >;
-    using DevHost = alpaka::dev::DevCpu;
-    using PltfHost = alpaka::pltf::Pltf< DevHost >;
+    using DevAcc = alpaka::Dev< TAcc >;
+    using DevHost = alpaka::DevCpu;
+    using PltfHost = alpaka::Pltf< DevHost >;
 
     using BufHost = alpaka::mem::buf::Buf<
         DevHost,
@@ -76,7 +76,7 @@ struct Buffer
     // Constructor needs to initialize all Buffer.
     Buffer(const DevAcc & devAcc)
       :
-        devHost{ alpaka::pltf::getDevByIdx< PltfHost >( 0u ) },
+        devHost{ alpaka::getDevByIdx< PltfHost >( 0u ) },
         hostBuffer
         {
             alpaka::mem::buf::alloc<TData, Idx>(devHost, Tcapacity)
