@@ -205,24 +205,21 @@ namespace alpaka
             };
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP execution task device type trait specialization.
+        template<
+            typename TAcc,
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct DevType<
+            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP execution task device type trait specialization.
-            template<
-                typename TAcc,
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DevType<
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = dev::DevUniformCudaHipRt;
-            };
-        }
+            using type = DevUniformCudaHipRt;
+        };
     }
     namespace dim
     {
@@ -243,24 +240,21 @@ namespace alpaka
             };
         }
     }
-    namespace pltf
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU CUDA/HIP execution task platform type trait specialization.
+        template<
+            typename TAcc,
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct PltfType<
+            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU CUDA/HIP execution task platform type trait specialization.
-            template<
-                typename TAcc,
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct PltfType<
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = pltf::PltfUniformCudaHipRt;
-            };
-        }
+            using type = PltfUniformCudaHipRt;
+        };
     }
     namespace idx
     {
@@ -334,7 +328,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!workdiv::isValidWorkDiv<TAcc>(dev::getDev(queue), task))
+                    if(!workdiv::isValidWorkDiv<TAcc>(getDev(queue), task))
                     {
                         throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                     }
@@ -479,7 +473,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!workdiv::isValidWorkDiv<TAcc>(dev::getDev(queue), task))
+                    if(!workdiv::isValidWorkDiv<TAcc>(getDev(queue), task))
                     {
                         throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                     }

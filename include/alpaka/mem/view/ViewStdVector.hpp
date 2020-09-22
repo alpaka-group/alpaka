@@ -19,39 +19,36 @@
 
 namespace alpaka
 {
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::vector device type trait specialization.
+        template<
+            typename TElem,
+            typename TAllocator>
+        struct DevType<
+            std::vector<TElem, TAllocator>>
         {
-            //#############################################################################
-            //! The std::vector device type trait specialization.
-            template<
-                typename TElem,
-                typename TAllocator>
-            struct DevType<
-                std::vector<TElem, TAllocator>>
-            {
-                using type = dev::DevCpu;
-            };
+            using type = DevCpu;
+        };
 
-            //#############################################################################
-            //! The std::vector device get trait specialization.
-            template<
-                typename TElem,
-                typename TAllocator>
-            struct GetDev<
-                std::vector<TElem, TAllocator>>
+        //#############################################################################
+        //! The std::vector device get trait specialization.
+        template<
+            typename TElem,
+            typename TAllocator>
+        struct GetDev<
+            std::vector<TElem, TAllocator>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                std::vector<TElem, TAllocator> const & view)
+            -> DevCpu
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    std::vector<TElem, TAllocator> const & view)
-                -> dev::DevCpu
-                {
-                    alpaka::ignore_unused(view);
-                    return pltf::getDevByIdx<pltf::PltfCpu>(0u);
-                }
-            };
-        }
+                alpaka::ignore_unused(view);
+                return getDevByIdx<PltfCpu>(0u);
+            }
+        };
     }
     namespace dim
     {

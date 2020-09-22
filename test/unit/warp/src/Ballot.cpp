@@ -93,13 +93,13 @@ public:
 TEMPLATE_LIST_TEST_CASE( "ballot", "[warp]", alpaka::test::acc::TestAccs)
 {
     using Acc = TestType;
-    using Dev = alpaka::dev::Dev<Acc>;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Dev = alpaka::Dev<Acc>;
+    using Pltf = alpaka::Pltf<Dev>;
     using Dim = alpaka::dim::Dim<Acc>;
     using Idx = alpaka::idx::Idx<Acc>;
 
-    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
-    auto const warpExtent = alpaka::dev::getWarpSize(dev);
+    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+    auto const warpExtent = alpaka::getWarpSize(dev);
     if (warpExtent == 1)
     {
         Idx const gridThreadExtentPerDim = 4;

@@ -55,7 +55,7 @@ namespace alpaka
                 public:
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST EventUniformCudaHipImpl(
-                        dev::DevUniformCudaHipRt const & dev,
+                        DevUniformCudaHipRt const & dev,
                         bool bBusyWait) :
                             m_dev(dev),
                             m_UniformCudaHipEvent()
@@ -103,7 +103,7 @@ namespace alpaka
                     }
 
                 public:
-                    dev::DevUniformCudaHipRt const m_dev;   //!< The device this event is bound to.
+                    DevUniformCudaHipRt const m_dev;   //!< The device this event is bound to.
 
                     ALPAKA_API_PREFIX(Event_t) m_UniformCudaHipEvent;
                 };
@@ -114,12 +114,12 @@ namespace alpaka
         //! The CUDA/HIP RT device event.
         class EventUniformCudaHipRt final
             : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventUniformCudaHipRt>
-            , public concepts::Implements<dev::ConceptGetDev, EventUniformCudaHipRt>
+            , public concepts::Implements<ConceptGetDev, EventUniformCudaHipRt>
         {
         public:
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST EventUniformCudaHipRt(
-                dev::DevUniformCudaHipRt const & dev,
+                DevUniformCudaHipRt const & dev,
                 bool bBusyWait = true) :
                     m_spEventImpl(std::make_shared<uniform_cuda_hip::detail::EventUniformCudaHipImpl>(dev, bBusyWait))
             {
@@ -152,26 +152,22 @@ namespace alpaka
             std::shared_ptr<uniform_cuda_hip::detail::EventUniformCudaHipImpl> m_spEventImpl;
         };
     }
-
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT device event device get trait specialization.
+        template<>
+        struct GetDev<
+            event::EventUniformCudaHipRt>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT device event device get trait specialization.
-            template<>
-            struct GetDev<
-                event::EventUniformCudaHipRt>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                event::EventUniformCudaHipRt const & event)
+            -> DevUniformCudaHipRt
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    event::EventUniformCudaHipRt const & event)
-                -> dev::DevUniformCudaHipRt
-                {
-                    return event.m_spEventImpl->m_dev;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_dev;
+            }
+        };
     }
     namespace event
     {
@@ -320,12 +316,12 @@ namespace alpaka
             //! Any future work submitted in any queue of this device will wait for event to complete before beginning execution.
             template<>
             struct WaiterWaitFor<
-                dev::DevUniformCudaHipRt,
+                DevUniformCudaHipRt,
                 event::EventUniformCudaHipRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    dev::DevUniformCudaHipRt & dev,
+                    DevUniformCudaHipRt & dev,
                     event::EventUniformCudaHipRt const & event)
                 -> void
                 {

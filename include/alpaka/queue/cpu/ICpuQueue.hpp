@@ -20,7 +20,7 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU queue interface
-            using ICpuQueue = IGenericThreadsQueue<dev::DevCpu>;
+            using ICpuQueue = IGenericThreadsQueue<DevCpu>;
         }
     }
 }

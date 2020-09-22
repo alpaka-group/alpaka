@@ -64,7 +64,7 @@ namespace alpaka
         public:
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST QueueUniformCudaHipRtBlocking(
-                dev::DevUniformCudaHipRt const & dev) :
+                DevUniformCudaHipRt const & dev) :
                 uniform_cuda_hip::detail::QueueUniformCudaHipRtBase(dev)
             {}
             //-----------------------------------------------------------------------------
@@ -98,19 +98,16 @@ namespace alpaka
 #endif
     }
 
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT blocking queue device type trait specialization.
+        template<>
+        struct DevType<
+            queue::QueueUniformCudaHipRtBlocking>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT blocking queue device type trait specialization.
-            template<>
-            struct DevType<
-                queue::QueueUniformCudaHipRtBlocking>
-            {
-                using type = dev::DevUniformCudaHipRt;
-            };
-        }
+            using type = DevUniformCudaHipRt;
+        };
     }
     namespace event
     {

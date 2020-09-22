@@ -335,8 +335,8 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevOmp5,
-                    dev::DevCpu>
+                    DevOmp5,
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -364,7 +364,7 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-                                    dev::getDev(viewDst).m_spDevOmp5Impl->iDevice(),
+                                    getDev(viewDst).m_spDevOmp5Impl->iDevice(),
                                     omp_get_initial_device()
                                     );
                     }
@@ -376,8 +376,8 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevCpu,
-                    dev::DevOmp5>
+                    DevCpu,
+                    DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -406,7 +406,7 @@ namespace alpaka
                                     viewSrc,
                                     extent,
                                     omp_get_initial_device(),
-                                    dev::getDev(viewSrc).m_spDevOmp5Impl->iDevice()
+                                    getDev(viewSrc).m_spDevOmp5Impl->iDevice()
                                     );
                     }
                 };
@@ -417,8 +417,8 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevOmp5,
-                    dev::DevOmp5>
+                    DevOmp5,
+                    DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -446,8 +446,8 @@ namespace alpaka
                                     viewDst,
                                     viewSrc,
                                     extent,
-                                    dev::getDev(viewDst).m_spDevOmp5Impl->iDevice(),
-                                    dev::getDev(viewSrc).m_spDevOmp5Impl->iDevice()
+                                    getDev(viewDst).m_spDevOmp5Impl->iDevice(),
+                                    getDev(viewSrc).m_spDevOmp5Impl->iDevice()
                                     );
                     }
                 };

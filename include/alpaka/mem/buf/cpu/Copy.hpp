@@ -20,10 +20,7 @@
 
 namespace alpaka
 {
-    namespace dev
-    {
-        class DevCpu;
-    }
+    class DevCpu;
 }
 
 namespace alpaka
@@ -226,8 +223,8 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskCopy<
                     TDim,
-                    dev::DevCpu,
-                    dev::DevCpu>
+                    DevCpu,
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     template<

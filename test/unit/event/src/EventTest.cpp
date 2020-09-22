@@ -20,7 +20,7 @@ using TestQueues = alpaka::meta::Concatenate<
         alpaka::test::queue::TestQueues
  #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
         ,
-        std::tuple<std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuOmp2Collective>>
+        std::tuple<std::tuple<alpaka::DevCpu, alpaka::queue::QueueCpuOmp2Collective>>
 #endif
     >;
 

@@ -42,10 +42,7 @@
 
 namespace alpaka
 {
-    namespace dev
-    {
-        class DevUniformCudaHipRt;
-    }
+    class DevUniformCudaHipRt;
     namespace mem
     {
         namespace buf
@@ -85,7 +82,7 @@ namespace alpaka
                 template<
                     typename TExtent>
                 ALPAKA_FN_HOST BufUniformCudaHipRt(
-                    dev::DevUniformCudaHipRt const & dev,
+                    DevUniformCudaHipRt const & dev,
                     TElem * const pMem,
                     TIdx const & pitchBytes,
                     TExtent const & extent) :
@@ -113,7 +110,7 @@ namespace alpaka
                 //! Frees the shared buffer.
                 ALPAKA_FN_HOST static auto freeBuffer(
                     TElem * const memPtr,
-                    dev::DevUniformCudaHipRt const & dev)
+                    DevUniformCudaHipRt const & dev)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -128,7 +125,7 @@ namespace alpaka
                 }
 
             public:
-                dev::DevUniformCudaHipRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
+                DevUniformCudaHipRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
                 vec::Vec<TDim, TIdx> m_extentElements;
                 std::shared_ptr<TElem> m_spMem;
                 TIdx m_pitchBytes;
@@ -136,38 +133,35 @@ namespace alpaka
         }
     }
 
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufUniformCudaHipRt device type trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufUniformCudaHipRt device type trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
+            using type = DevUniformCudaHipRt;
+        };
+        //#############################################################################
+        //! The BufUniformCudaHipRt device get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetDev<
+            mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
+        {
+            ALPAKA_FN_HOST static auto getDev(
+                mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf)
+            -> DevUniformCudaHipRt
             {
-                using type = dev::DevUniformCudaHipRt;
-            };
-            //#############################################################################
-            //! The BufUniformCudaHipRt device get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetDev<
-                mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
-            {
-                ALPAKA_FN_HOST static auto getDev(
-                    mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf)
-                -> dev::DevUniformCudaHipRt
-                {
-                    return buf.m_dev;
-                }
-            };
-        }
+                return buf.m_dev;
+            }
+        };
     }
     namespace dim
     {
@@ -267,15 +261,15 @@ namespace alpaka
                     typename TIdx>
                 struct GetPtrDev<
                     mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf,
-                        dev::DevUniformCudaHipRt const & dev)
+                        DevUniformCudaHipRt const & dev)
                     -> TElem const *
                     {
-                        if(dev == dev::getDev(buf))
+                        if(dev == getDev(buf))
                         {
                             return buf.m_spMem.get();
                         }
@@ -287,10 +281,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx> & buf,
-                        dev::DevUniformCudaHipRt const & dev)
+                        DevUniformCudaHipRt const & dev)
                     -> TElem *
                     {
-                        if(dev == dev::getDev(buf))
+                        if(dev == getDev(buf))
                         {
                             return buf.m_spMem.get();
                         }
@@ -333,13 +327,13 @@ namespace alpaka
                     TElem,
                     dim::DimInt<1u>,
                     TIdx,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
-                        dev::DevUniformCudaHipRt const & dev,
+                        DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
                     -> mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<1u>, TIdx>
                     {
@@ -383,13 +377,13 @@ namespace alpaka
                     TElem,
                     dim::DimInt<2u>,
                     TIdx,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
-                        dev::DevUniformCudaHipRt const & dev,
+                        DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
                     -> mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<2u>, TIdx>
                     {
@@ -450,13 +444,13 @@ namespace alpaka
                     TElem,
                     dim::DimInt<3u>,
                     TIdx,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
-                        dev::DevUniformCudaHipRt const & dev,
+                        DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
                     -> mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<3u>, TIdx>
                     {
@@ -519,17 +513,17 @@ namespace alpaka
                     typename TIdx>
                 struct Map<
                     mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto map(
                         mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf,
-                        dev::DevUniformCudaHipRt const & dev)
+                        DevUniformCudaHipRt const & dev)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        if(dev::getDev(buf) != dev)
+                        if(getDev(buf) != dev)
                         {
                             throw std::runtime_error("Mapping memory from one CUDA/HIP device into an other CUDA/HIP device not implemented!");
                         }
@@ -544,17 +538,17 @@ namespace alpaka
                     typename TIdx>
                 struct Unmap<
                     mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto unmap(
                         mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf,
-                        dev::DevUniformCudaHipRt const & dev)
+                        DevUniformCudaHipRt const & dev)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        if(dev::getDev(buf) != dev)
+                        if(getDev(buf) != dev)
                         {
                             throw std::runtime_error("Unmapping memory mapped from one CUDA/HIP device into an other CUDA/HIP device not implemented!");
                         }
@@ -700,18 +694,18 @@ namespace alpaka
                     typename TIdx>
                 struct Map<
                     mem::buf::BufCpu<TElem, TDim, TIdx>,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto map(
                         mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
-                        dev::DevUniformCudaHipRt const & dev)
+                        DevUniformCudaHipRt const & dev)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // If it is already the same device, nothing has to be mapped.
-                        if(dev::getDev(buf) != dev)
+                        if(getDev(buf) != dev)
                         {
                             // cuda/hip-HostRegisterMapped:
                             //   Maps the allocation into the CUDA/HIP address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
@@ -732,17 +726,17 @@ namespace alpaka
                     typename TIdx>
                 struct Unmap<
                     mem::buf::BufCpu<TElem, TDim, TIdx>,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto unmap(
                         mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
-                        dev::DevUniformCudaHipRt const & dev)
+                        DevUniformCudaHipRt const & dev)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        if(dev::getDev(buf) != dev)
+                        if(getDev(buf) != dev)
                         {
                             // Unmaps the memory range whose base address is specified by ptr, and makes it pageable again.
                             // \FIXME: If the memory has separately been pinned before we destroy the pinning state.
@@ -767,12 +761,12 @@ namespace alpaka
                     typename TIdx>
                 struct GetPtrDev<
                     mem::buf::BufCpu<TElem, TDim, TIdx>,
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TIdx> const & buf,
-                        dev::DevUniformCudaHipRt const &)
+                        DevUniformCudaHipRt const &)
                     -> TElem const *
                     {
                         // TODO: Check if the memory is mapped at all!
@@ -789,7 +783,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TIdx> & buf,
-                        dev::DevUniformCudaHipRt const &)
+                        DevUniformCudaHipRt const &)
                     -> TElem *
                     {
                         // TODO: Check if the memory is mapped at all!

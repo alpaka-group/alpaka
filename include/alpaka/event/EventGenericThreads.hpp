@@ -101,7 +101,7 @@ namespace alpaka
             typename TDev>
         class EventGenericThreads final
             : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventGenericThreads<TDev>>
-            , public concepts::Implements<dev::ConceptGetDev, EventGenericThreads<TDev>>
+            , public concepts::Implements<ConceptGetDev, EventGenericThreads<TDev>>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -140,26 +140,22 @@ namespace alpaka
             std::shared_ptr<generic::detail::EventGenericThreadsImpl<TDev>> m_spEventImpl;
         };
     }
-
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device event device get trait specialization.
+        template<typename TDev>
+        struct GetDev<
+            event::EventGenericThreads<TDev>>
         {
-            //#############################################################################
-            //! The CPU device event device get trait specialization.
-            template<typename TDev>
-            struct GetDev<
-                event::EventGenericThreads<TDev>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                event::EventGenericThreads<TDev> const & event)
+            -> TDev
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    event::EventGenericThreads<TDev> const & event)
-                -> TDev
-                {
-                    return event.m_spEventImpl->m_dev;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_dev;
+            }
+        };
     }
     namespace event
     {
@@ -524,7 +520,7 @@ namespace alpaka
                 -> void
                 {
                     event::EventGenericThreads<TDev> event(
-                        dev::getDev(queue));
+                        getDev(queue));
                     queue::enqueue(
                         const_cast<queue::QueueGenericThreadsNonBlocking<TDev> &>(queue),
                         event);

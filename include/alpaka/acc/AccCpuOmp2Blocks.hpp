@@ -164,7 +164,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
-                    dev::DevCpu const & dev)
+                    DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim, TIdx>
                 {
                     alpaka::ignore_unused(dev);
@@ -205,21 +205,18 @@ namespace alpaka
             };
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block accelerator device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            acc::AccCpuOmp2Blocks<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block accelerator device type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>>
-            {
-                using type = dev::DevCpu;
-            };
-        }
+            using type = DevCpu;
+        };
     }
     namespace dim
     {
@@ -274,21 +271,18 @@ namespace alpaka
             };
         }
     }
-    namespace pltf
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block execution task platform type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct PltfType<
+            acc::AccCpuOmp2Blocks<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block execution task platform type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct PltfType<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>>
-            {
-                using type = pltf::PltfCpu;
-            };
-        }
+            using type = PltfCpu;
+        };
     }
     namespace idx
     {

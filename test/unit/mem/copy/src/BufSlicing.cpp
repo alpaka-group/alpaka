@@ -33,11 +33,11 @@ struct TestContainer
         TAcc,
         AccQueueProperty
     >;
-    using DevAcc = alpaka::dev::Dev<TAcc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using DevAcc = alpaka::Dev<TAcc>;
+    using PltfAcc = alpaka::Pltf<DevAcc>;
 
-    using DevHost = alpaka::dev::DevCpu;
-    using PltfHost = alpaka::pltf::Pltf<DevHost>;
+    using DevHost = alpaka::DevCpu;
+    using PltfHost = alpaka::Pltf<DevHost>;
 
     using BufHost = alpaka::mem::buf::Buf<
         DevHost,
@@ -66,8 +66,8 @@ struct TestContainer
 
     // Constructor
     TestContainer():
-        devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u)),
-        devHost(alpaka::pltf::getDevByIdx<PltfHost>(0u)),
+        devAcc(alpaka::getDevByIdx<PltfAcc>(0u)),
+        devHost(alpaka::getDevByIdx<PltfHost>(0u)),
         devQueue(devAcc)
     {}
 

@@ -28,8 +28,8 @@ namespace alpaka
             using Acc = TAcc;
             using Dim = alpaka::dim::Dim<Acc>;
             using Idx = alpaka::idx::Idx<Acc>;
-            using DevAcc = alpaka::dev::Dev<Acc>;
-            using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+            using DevAcc = alpaka::Dev<Acc>;
+            using PltfAcc = alpaka::Pltf<DevAcc>;
             using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
             using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
 
@@ -39,8 +39,8 @@ namespace alpaka
                 typename TExtent>
             KernelExecutionFixture(
                 TExtent const & extent) :
-                    m_devHost(alpaka::pltf::getDevByIdx<pltf::PltfCpu>(0u)),
-                    m_devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u)),
+                    m_devHost(alpaka::getDevByIdx<PltfCpu>(0u)),
+                    m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u)),
                     m_queue(m_devAcc),
                     m_workDiv(
                         alpaka::workdiv::getValidWorkDiv<Acc>(
@@ -53,8 +53,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             KernelExecutionFixture(
                 WorkDiv const & workDiv) :
-                    m_devHost(alpaka::pltf::getDevByIdx<pltf::PltfCpu>(0u)),
-                    m_devAcc(alpaka::pltf::getDevByIdx<PltfAcc>(0u)),
+                    m_devHost(alpaka::getDevByIdx<PltfCpu>(0u)),
+                    m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u)),
                     m_queue(m_devAcc),
                     m_workDiv(workDiv)
             {}
@@ -93,7 +93,7 @@ namespace alpaka
             }
 
         private:
-            alpaka::dev::DevCpu m_devHost;
+            alpaka::DevCpu m_devHost;
             DevAcc m_devAcc;
             QueueAcc m_queue;
             WorkDiv m_workDiv;

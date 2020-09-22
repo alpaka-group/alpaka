@@ -152,7 +152,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
-                    dev::DevUniformCudaHipRt const & dev)
+                    DevUniformCudaHipRt const & dev)
                 -> acc::AccDevProps<TDim, TIdx>
                 {
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
@@ -283,21 +283,18 @@ namespace alpaka
             };
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA accelerator device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA accelerator device type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
-            {
-                using type = dev::DevUniformCudaHipRt;
-            };
-        }
+            using type = DevUniformCudaHipRt;
+        };
     }
     namespace dim
     {
@@ -381,21 +378,18 @@ namespace alpaka
             };
         }
     }
-    namespace pltf
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU CUDA execution task platform type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct PltfType<
+            acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU CUDA execution task platform type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct PltfType<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
-            {
-                using type = pltf::PltfUniformCudaHipRt;
-            };
-        }
+            using type = PltfUniformCudaHipRt;
+        };
     }
     namespace idx
     {

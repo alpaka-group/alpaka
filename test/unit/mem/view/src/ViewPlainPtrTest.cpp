@@ -95,14 +95,14 @@ namespace view
     auto testViewPlainPtr()
     -> void
     {
-        using Dev = alpaka::dev::Dev<TAcc>;
-        using Pltf = alpaka::pltf::Pltf<Dev>;
+        using Dev = alpaka::Dev<TAcc>;
+        using Pltf = alpaka::Pltf<Dev>;
 
         using Dim = alpaka::dim::Dim<TAcc>;
         using Idx = alpaka::idx::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+        Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
         auto const extentBuf(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
@@ -111,7 +111,7 @@ namespace view
         auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
         View view(
             alpaka::mem::view::getPtrNative(buf),
-            alpaka::dev::getDev(buf),
+            alpaka::getDev(buf),
             alpaka::extent::getExtentVec(buf),
             alpaka::mem::view::getPitchBytesVec(buf));
 
@@ -125,14 +125,14 @@ namespace view
     auto testViewPlainPtrConst()
     -> void
     {
-        using Dev = alpaka::dev::Dev<TAcc>;
-        using Pltf = alpaka::pltf::Pltf<Dev>;
+        using Dev = alpaka::Dev<TAcc>;
+        using Pltf = alpaka::Pltf<Dev>;
 
         using Dim = alpaka::dim::Dim<TAcc>;
         using Idx = alpaka::idx::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+        Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
         auto const extentBuf(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
@@ -141,7 +141,7 @@ namespace view
         auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
         View const view(
             alpaka::mem::view::getPtrNative(buf),
-            alpaka::dev::getDev(buf),
+            alpaka::getDev(buf),
             alpaka::extent::getExtentVec(buf),
             alpaka::mem::view::getPitchBytesVec(buf));
 
@@ -155,21 +155,21 @@ namespace view
     auto testViewPlainPtrOperators()
     -> void
     {
-        using Dev = alpaka::dev::Dev<TAcc>;
-        using Pltf = alpaka::pltf::Pltf<Dev>;
+        using Dev = alpaka::Dev<TAcc>;
+        using Pltf = alpaka::Pltf<Dev>;
 
         using Dim = alpaka::dim::Dim<TAcc>;
         using Idx = alpaka::idx::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-        Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+        Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
         auto const extentBuf(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
         View view(
             alpaka::mem::view::getPtrNative(buf),
-            alpaka::dev::getDev(buf),
+            alpaka::getDev(buf),
             alpaka::extent::getExtentVec(buf),
             alpaka::mem::view::getPitchBytesVec(buf));
 

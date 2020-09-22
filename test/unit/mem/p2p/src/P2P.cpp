@@ -27,21 +27,21 @@ static auto testP2P(
     alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
 -> void
 {
-    using Dev = alpaka::dev::Dev<TAcc>;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Dev = alpaka::Dev<TAcc>;
+    using Pltf = alpaka::Pltf<Dev>;
     using Queue = alpaka::test::queue::DefaultQueue<Dev>;
 
     using Elem = std::uint32_t;
     using Idx = alpaka::idx::Idx<TAcc>;
 
-    if(alpaka::pltf::getDevCount<Pltf>()<2) {
+    if(alpaka::getDevCount<Pltf>()<2) {
       std::cerr << "No two devices found to test peer-to-peer copy." << std::endl;
       CHECK(true);
       return;
     }
 
-    Dev const dev0(alpaka::pltf::getDevByIdx<Pltf>(0u));
-    Dev const dev1(alpaka::pltf::getDevByIdx<Pltf>(1u));
+    Dev const dev0(alpaka::getDevByIdx<Pltf>(0u));
+    Dev const dev1(alpaka::getDevByIdx<Pltf>(1u));
     Queue queue0(dev0);
 
     //-----------------------------------------------------------------------------

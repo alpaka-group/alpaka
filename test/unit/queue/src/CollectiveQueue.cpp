@@ -45,12 +45,12 @@ TEST_CASE("queueCollective", "[queue]")
 
     // Define the accelerator
     using Acc = alpaka::acc::AccCpuOmp2Blocks<Dim, Idx>;
-    using Dev = alpaka::dev::Dev<Acc>;
+    using Dev = alpaka::Dev<Acc>;
 
     using Queue = alpaka::queue::QueueCpuOmp2Collective;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Pltf = alpaka::Pltf<Dev>;
 
-    auto dev = alpaka::pltf::getDevByIdx<Pltf>(0u);
+    auto dev = alpaka::getDevByIdx<Pltf>(0u);
     Queue queue(dev);
 
     std::vector<int> results(4, -1);
@@ -93,12 +93,12 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
 
     // Define the accelerator
     using Acc = alpaka::acc::AccCpuOmp2Blocks<Dim, Idx>;
-    using Dev = alpaka::dev::Dev<Acc>;
+    using Dev = alpaka::Dev<Acc>;
 
     using Queue = alpaka::queue::QueueCpuOmp2Collective;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Pltf = alpaka::Pltf<Dev>;
 
-    auto dev = alpaka::pltf::getDevByIdx<Pltf>(0u);
+    auto dev = alpaka::getDevByIdx<Pltf>(0u);
     Queue queue(dev);
 
     std::vector<int> results(4, -1);

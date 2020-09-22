@@ -20,10 +20,7 @@
 
 namespace alpaka
 {
-    namespace dev
-    {
-        class DevCpu;
-    }
+    class DevCpu;
 }
 
 namespace alpaka
@@ -193,7 +190,7 @@ namespace alpaka
                     typename TDim>
                 struct CreateTaskSet<
                     TDim,
-                    dev::DevCpu>
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     template<

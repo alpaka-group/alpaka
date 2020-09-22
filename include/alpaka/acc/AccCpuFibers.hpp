@@ -170,7 +170,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
-                    dev::DevCpu const & dev)
+                    DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim, TIdx>
                 {
 #ifdef ALPAKA_CI
@@ -194,7 +194,7 @@ namespace alpaka
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
-                        dev::getMemBytes( dev )};
+                        getMemBytes( dev )};
                 }
             };
             //#############################################################################
@@ -214,21 +214,18 @@ namespace alpaka
             };
         }
     }
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU fibers accelerator device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            acc::AccCpuFibers<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU fibers accelerator device type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                acc::AccCpuFibers<TDim, TIdx>>
-            {
-                using type = dev::DevCpu;
-            };
-        }
+            using type = DevCpu;
+        };
     }
     namespace dim
     {
@@ -283,21 +280,19 @@ namespace alpaka
             };
         }
     }
-    namespace pltf
+
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU fibers execution task platform type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct PltfType<
+            acc::AccCpuFibers<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU fibers execution task platform type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct PltfType<
-                acc::AccCpuFibers<TDim, TIdx>>
-            {
-                using type = pltf::PltfCpu;
-            };
-        }
+            using type = PltfCpu;
+        };
     }
     namespace idx
     {

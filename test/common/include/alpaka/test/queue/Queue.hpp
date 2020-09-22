@@ -34,7 +34,7 @@ namespace alpaka
                 //! The default queue type trait specialization for the CPU device.
                 template<>
                 struct DefaultQueueType<
-                    alpaka::dev::DevCpu>
+                    alpaka::DevCpu>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                     using type = alpaka::queue::QueueCpuBlocking;
@@ -49,7 +49,7 @@ namespace alpaka
                 //! The default queue type trait specialization for the CUDA/HIP device.
                 template<>
                 struct DefaultQueueType<
-                    alpaka::dev::DevUniformCudaHipRt>
+                    alpaka::DevUniformCudaHipRt>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                     using type = alpaka::queue::QueueUniformCudaHipRtBlocking;
@@ -119,7 +119,7 @@ namespace alpaka
                 //! The default queue type trait specialization for the Omp5 device.
                 template<>
                 struct DefaultQueueType<
-                    alpaka::dev::DevOmp5>
+                    alpaka::DevOmp5>
                 {
 #if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                     using type = alpaka::queue::QueueOmp5Blocking;
@@ -140,22 +140,22 @@ namespace alpaka
             //! A std::tuple holding tuples of devices and corresponding queue types.
             using TestQueues =
                 std::tuple<
-                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuBlocking>,
-                    std::tuple<alpaka::dev::DevCpu, alpaka::queue::QueueCpuNonBlocking>
+                    std::tuple<alpaka::DevCpu, alpaka::queue::QueueCpuBlocking>,
+                    std::tuple<alpaka::DevCpu, alpaka::queue::QueueCpuNonBlocking>
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
                     ,
-                    std::tuple<alpaka::dev::DevUniformCudaHipRt, alpaka::queue::QueueUniformCudaHipRtBlocking>,
-                    std::tuple<alpaka::dev::DevUniformCudaHipRt, alpaka::queue::QueueUniformCudaHipRtNonBlocking>
+                    std::tuple<alpaka::DevUniformCudaHipRt, alpaka::queue::QueueUniformCudaHipRtBlocking>,
+                    std::tuple<alpaka::DevUniformCudaHipRt, alpaka::queue::QueueUniformCudaHipRtNonBlocking>
 #endif
 #ifdef ALPAKA_ACC_GPU_HIP_ENABLED
                     ,
-                    std::tuple<alpaka::dev::DevHipRt, alpaka::queue::QueueHipRtBlocking>,
-                    std::tuple<alpaka::dev::DevHipRt, alpaka::queue::QueueHipRtNonBlocking>
+                    std::tuple<alpaka::DevHipRt, alpaka::queue::QueueHipRtBlocking>,
+                    std::tuple<alpaka::DevHipRt, alpaka::queue::QueueHipRtNonBlocking>
 #endif
 #ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
                     ,
-                    std::tuple<alpaka::dev::DevOmp5, alpaka::queue::QueueOmp5Blocking>,
-                    std::tuple<alpaka::dev::DevOmp5, alpaka::queue::QueueOmp5NonBlocking>
+                    std::tuple<alpaka::DevOmp5, alpaka::queue::QueueOmp5Blocking>,
+                    std::tuple<alpaka::DevOmp5, alpaka::queue::QueueOmp5NonBlocking>
 #endif
                 >;
         }

@@ -37,7 +37,7 @@ namespace alpaka
                     !std::is_const<TIdx>::value,
                     "The idx type of the view can not be const!");
 
-                using Dev = alpaka::dev::Dev<TDev>;
+                using Dev = alpaka::Dev<TDev>;
             public:
                 //-----------------------------------------------------------------------------
                 template<
@@ -122,41 +122,38 @@ namespace alpaka
 
     //-----------------------------------------------------------------------------
     // Trait specializations for ViewPlainPtr.
-    namespace dev
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewPlainPtr device type trait specialization.
+        template<
+            typename TDev,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewPlainPtr device type trait specialization.
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-            {
-                using type = alpaka::dev::Dev<TDev>;
-            };
+            using type = alpaka::Dev<TDev>;
+        };
 
-            //#############################################################################
-            //! The ViewPlainPtr device get trait specialization.
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetDev<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        //#############################################################################
+        //! The ViewPlainPtr device get trait specialization.
+        template<
+            typename TDev,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetDev<
+            mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+        {
+            static auto getDev(
+                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & view)
+                -> alpaka::Dev<TDev>
             {
-                static auto getDev(
-                    mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const & view)
-                    -> alpaka::dev::Dev<TDev>
-                {
-                    return view.m_dev;
-                }
-            };
-        }
+                return view.m_dev;
+            }
+        };
     }
     namespace dim
     {
@@ -277,7 +274,7 @@ namespace alpaka
                 //! The CPU device CreateStaticDevMemView trait specialization.
                 template<>
                 struct CreateStaticDevMemView<
-                    dev::DevCpu>
+                    DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -285,12 +282,12 @@ namespace alpaka
                         typename TExtent>
                     static auto createStaticDevMemView(
                         TElem * pMem,
-                        dev::DevCpu const & dev,
+                        DevCpu const & dev,
                         TExtent const & extent)
                     {
                         return
                             alpaka::mem::view::ViewPlainPtr<
-                                dev::DevCpu,
+                                DevCpu,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
                                 alpaka::idx::Idx<TExtent>>(
@@ -305,7 +302,7 @@ namespace alpaka
                 //! The CUDA/HIP RT device CreateStaticDevMemView trait specialization.
                 template<>
                 struct CreateStaticDevMemView<
-                    dev::DevUniformCudaHipRt>
+                    DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -313,7 +310,7 @@ namespace alpaka
                         typename TExtent>
                     static auto createStaticDevMemView(
                         TElem * pMem,
-                        dev::DevUniformCudaHipRt const & dev,
+                        DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
                     {
                         TElem* pMemAcc(nullptr);
@@ -340,7 +337,7 @@ namespace alpaka
 #endif
                         return
                             alpaka::mem::view::ViewPlainPtr<
-                                dev::DevUniformCudaHipRt,
+                                DevUniformCudaHipRt,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
                                 alpaka::idx::Idx<TExtent>>(
@@ -357,7 +354,7 @@ namespace alpaka
                 //! \todo What ist this for? Does this exist in OMP5?
                 template<>
                 struct CreateStaticDevMemView<
-                    dev::DevOmp5>
+                    DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     template<
@@ -365,12 +362,12 @@ namespace alpaka
                         typename TExtent>
                     static auto createStaticDevMemView(
                         TElem * pMem,
-                        dev::DevOmp5 const & dev,
+                        DevOmp5 const & dev,
                         TExtent const & extent)
                     {
                         return
                             alpaka::mem::view::ViewPlainPtr<
-                                dev::DevOmp5,
+                                DevOmp5,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
                                 alpaka::idx::Idx<TExtent>>(

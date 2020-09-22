@@ -149,8 +149,8 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
     using Val = std::int32_t;
     using TnumUselessWork = std::integral_constant<Idx, 100>;
 
-    using DevAcc = alpaka::dev::Dev<Acc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using DevAcc = alpaka::Dev<Acc>;
+    using PltfAcc = alpaka::Pltf<DevAcc>;
     using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
 
 
@@ -159,7 +159,7 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
 
     // Select a device to execute on.
     auto const devAcc(
-        alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+        alpaka::getDevByIdx<PltfAcc>(0u));
 
     // Get a queue on this device.
     QueueAcc queue(

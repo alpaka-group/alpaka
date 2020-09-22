@@ -23,39 +23,36 @@ namespace alpaka
     // Trait specializations for fixed idx arrays.
     //
     // This allows the usage of multidimensional compile time arrays e.g. int[4][3] as argument to memory ops.
-    /*namespace dev
+    /*namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The fixed idx array device type trait specialization.
+        template<
+            typename TFixedSizeArray>
+        struct DevType<
+            TFixedSizeArray,
+            std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
         {
-            //#############################################################################
-            //! The fixed idx array device type trait specialization.
-            template<
-                typename TFixedSizeArray>
-            struct DevType<
-                TFixedSizeArray,
-                std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
-            {
-                using type = dev::DevCpu;
-            };
+            using type = DevCpu;
+        };
 
-            //#############################################################################
-            //! The fixed idx array device get trait specialization.
-            template<
-                typename TFixedSizeArray>
-            struct GetDev<
-                TFixedSizeArray,
-                std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
+        //#############################################################################
+        //! The fixed idx array device get trait specialization.
+        template<
+            typename TFixedSizeArray>
+        struct GetDev<
+            TFixedSizeArray,
+            std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDev(
+                TFixedSizeArray const & view)
+            -> DevCpu
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDev(
-                    TFixedSizeArray const & view)
-                -> dev::DevCpu
-                {
-                    // \FIXME: CUDA device?
-                    return pltf::getDevByIdx<pltf::PltfCpu>(0u);
-                }
-            };
-        }
+                // \FIXME: CUDA device?
+                return getDevByIdx<PltfCpu>(0u);
+            }
+        };
     }
     namespace dim
     {
