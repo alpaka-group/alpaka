@@ -217,7 +217,7 @@ namespace alpaka
                 acc.m_threadToIndexMap.clear();
 
                 // After a block has been processed, the shared memory has to be deleted.
-                block::shared::st::freeMem(acc);
+                block::st::freeMem(acc);
             }
             //-----------------------------------------------------------------------------
             //! The function executed for each block thread on the host.

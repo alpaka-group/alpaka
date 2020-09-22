@@ -155,7 +155,7 @@ namespace alpaka
 
                          boundKernelFnObj(acc);
 
-                         block::shared::st::freeMem(acc);
+                         block::st::freeMem(acc);
                 });
 
             }

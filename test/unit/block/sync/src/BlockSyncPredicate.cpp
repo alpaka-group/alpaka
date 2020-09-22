@@ -35,53 +35,53 @@ public:
         auto const blockThreadIdx1D(alpaka::idx::mapIdx<1u>(blockThreadIdx, blockThreadExtent)[0u]);
         auto const blockThreadExtent1D(blockThreadExtent.prod());
 
-        // syncBlockThreadsPredicate<alpaka::block::sync::op::Count>
+        // syncBlockThreadsPredicate<alpaka::block::op::Count>
         {
             Idx const modulus(2u);
             int const predicate(static_cast<int>(blockThreadIdx1D % modulus));
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::Count>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::Count>(acc, predicate));
             auto const expectedResult(static_cast<int>(blockThreadExtent1D / modulus));
             ALPAKA_CHECK(*success, expectedResult == result);
         }
         {
             Idx const modulus(3u);
             int const predicate(static_cast<int>(blockThreadIdx1D % modulus));
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::Count>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::Count>(acc, predicate));
             auto const expectedResult(static_cast<int>(blockThreadExtent1D - ((blockThreadExtent1D + modulus - static_cast<Idx>(1u)) / modulus)));
             ALPAKA_CHECK(*success, expectedResult == result);
         }
 
-        // syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalAnd>
+        // syncBlockThreadsPredicate<alpaka::block::op::LogicalAnd>
         {
             int const predicate(1);
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalAnd>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::LogicalAnd>(acc, predicate));
             ALPAKA_CHECK(*success, result == 1);
         }
         {
             int const predicate(0);
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalAnd>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::LogicalAnd>(acc, predicate));
             ALPAKA_CHECK(*success, result == 0);
         }
         {
             int const predicate(blockThreadIdx1D != 0);
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalAnd>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::LogicalAnd>(acc, predicate));
             ALPAKA_CHECK(*success, result == 0);
         }
 
-        // syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalOr>
+        // syncBlockThreadsPredicate<alpaka::block::op::LogicalOr>
         {
             int const predicate(1);
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalOr>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::LogicalOr>(acc, predicate));
             ALPAKA_CHECK(*success, result == 1);
         }
         {
             int const predicate(0);
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalOr>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::LogicalOr>(acc, predicate));
             ALPAKA_CHECK(*success, result == 0);
         }
         {
             int const predicate(static_cast<int>(blockThreadIdx1D != 1));
-            auto const result(alpaka::block::sync::syncBlockThreadsPredicate<alpaka::block::sync::op::LogicalOr>(acc, predicate));
+            auto const result(alpaka::block::syncBlockThreadsPredicate<alpaka::block::op::LogicalOr>(acc, predicate));
             ALPAKA_CHECK(*success, result == 1);
         }
     }

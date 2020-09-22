@@ -27,133 +27,130 @@ namespace alpaka
 {
     namespace block
     {
-        namespace sync
+        //#############################################################################
+        //! The GPU CUDA/HIP block synchronization.
+        class BlockSyncUniformCudaHipBuiltIn : public concepts::Implements<ConceptBlockSync, BlockSyncUniformCudaHipBuiltIn>
+        {
+        public:
+            //-----------------------------------------------------------------------------
+            BlockSyncUniformCudaHipBuiltIn() = default;
+            //-----------------------------------------------------------------------------
+            __device__ BlockSyncUniformCudaHipBuiltIn(BlockSyncUniformCudaHipBuiltIn const &) = delete;
+            //-----------------------------------------------------------------------------
+            __device__ BlockSyncUniformCudaHipBuiltIn(BlockSyncUniformCudaHipBuiltIn &&) = delete;
+            //-----------------------------------------------------------------------------
+            __device__ auto operator=(BlockSyncUniformCudaHipBuiltIn const &) -> BlockSyncUniformCudaHipBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            __device__ auto operator=(BlockSyncUniformCudaHipBuiltIn &&) -> BlockSyncUniformCudaHipBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            /*virtual*/ ~BlockSyncUniformCudaHipBuiltIn() = default;
+        };
+
+        namespace traits
         {
             //#############################################################################
-            //! The GPU CUDA/HIP block synchronization.
-            class BlockSyncUniformCudaHipBuiltIn : public concepts::Implements<ConceptBlockSync, BlockSyncUniformCudaHipBuiltIn>
+            template<>
+            struct SyncBlockThreads<
+                BlockSyncUniformCudaHipBuiltIn>
             {
-            public:
                 //-----------------------------------------------------------------------------
-                BlockSyncUniformCudaHipBuiltIn() = default;
-                //-----------------------------------------------------------------------------
-                __device__ BlockSyncUniformCudaHipBuiltIn(BlockSyncUniformCudaHipBuiltIn const &) = delete;
-                //-----------------------------------------------------------------------------
-                __device__ BlockSyncUniformCudaHipBuiltIn(BlockSyncUniformCudaHipBuiltIn &&) = delete;
-                //-----------------------------------------------------------------------------
-                __device__ auto operator=(BlockSyncUniformCudaHipBuiltIn const &) -> BlockSyncUniformCudaHipBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                __device__ auto operator=(BlockSyncUniformCudaHipBuiltIn &&) -> BlockSyncUniformCudaHipBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                /*virtual*/ ~BlockSyncUniformCudaHipBuiltIn() = default;
+                __device__ static auto syncBlockThreads(
+                    block::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/)
+                -> void
+                {
+                    __syncthreads();
+                }
             };
 
-            namespace traits
+            //#############################################################################
+            template<>
+            struct SyncBlockThreadsPredicate<
+                block::op::Count,
+                BlockSyncUniformCudaHipBuiltIn>
             {
-                //#############################################################################
-                template<>
-                struct SyncBlockThreads<
-                    BlockSyncUniformCudaHipBuiltIn>
+                //-----------------------------------------------------------------------------
+                __device__ static auto syncBlockThreadsPredicate(
+                    block::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/,
+                    int predicate)
+                -> int
                 {
-                    //-----------------------------------------------------------------------------
-                    __device__ static auto syncBlockThreads(
-                        block::sync::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/)
-                    -> void
-                    {
-                        __syncthreads();
-                    }
-                };
-
-                //#############################################################################
-                template<>
-                struct SyncBlockThreadsPredicate<
-                    block::sync::op::Count,
-                    BlockSyncUniformCudaHipBuiltIn>
-                {
-                    //-----------------------------------------------------------------------------
-                    __device__ static auto syncBlockThreadsPredicate(
-                        block::sync::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/,
-                        int predicate)
-                    -> int
-                    {
 #if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && BOOST_COMP_HIP
-                        // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
-                        __shared__ int tmp;
-                        __syncthreads();
-                        if(threadIdx.x==0)
-                            tmp=0;
-                        __syncthreads();
-                        if(predicate)
-                            atomicAdd(&tmp, 1);
-                        __syncthreads();
+                    // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
+                    __shared__ int tmp;
+                    __syncthreads();
+                    if(threadIdx.x==0)
+                        tmp=0;
+                    __syncthreads();
+                    if(predicate)
+                        atomicAdd(&tmp, 1);
+                    __syncthreads();
 
-                        return tmp;
+                    return tmp;
 #else
-                        return __syncthreads_count(predicate);
+                    return __syncthreads_count(predicate);
 #endif
-                    }
-                };
+                }
+            };
 
-                //#############################################################################
-                template<>
-                struct SyncBlockThreadsPredicate<
-                    block::sync::op::LogicalAnd,
-                    BlockSyncUniformCudaHipBuiltIn>
+            //#############################################################################
+            template<>
+            struct SyncBlockThreadsPredicate<
+                block::op::LogicalAnd,
+                BlockSyncUniformCudaHipBuiltIn>
+            {
+                //-----------------------------------------------------------------------------
+                __device__ static auto syncBlockThreadsPredicate(
+                    block::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/,
+                    int predicate)
+                -> int
                 {
-                    //-----------------------------------------------------------------------------
-                    __device__ static auto syncBlockThreadsPredicate(
-                        block::sync::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/,
-                        int predicate)
-                    -> int
-                    {
 #if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && BOOST_COMP_HIP
-                        // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
-                        __shared__ int tmp;
-                        __syncthreads();
-                        if(threadIdx.x==0)
-                            tmp=1;
-                        __syncthreads();
-                        if(!predicate)
-                            atomicAnd(&tmp, 0);
-                        __syncthreads();
+                    // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
+                    __shared__ int tmp;
+                    __syncthreads();
+                    if(threadIdx.x==0)
+                        tmp=1;
+                    __syncthreads();
+                    if(!predicate)
+                        atomicAnd(&tmp, 0);
+                    __syncthreads();
 
-                        return tmp;
+                    return tmp;
 #else
-                        return __syncthreads_and(predicate);
+                    return __syncthreads_and(predicate);
 #endif
-                    }
-                };
+                }
+            };
 
-                //#############################################################################
-                template<>
-                struct SyncBlockThreadsPredicate<
-                    block::sync::op::LogicalOr,
-                    BlockSyncUniformCudaHipBuiltIn>
+            //#############################################################################
+            template<>
+            struct SyncBlockThreadsPredicate<
+                block::op::LogicalOr,
+                BlockSyncUniformCudaHipBuiltIn>
+            {
+                //-----------------------------------------------------------------------------
+                __device__ static auto syncBlockThreadsPredicate(
+                    block::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/,
+                    int predicate)
+                -> int
                 {
-                    //-----------------------------------------------------------------------------
-                    __device__ static auto syncBlockThreadsPredicate(
-                        block::sync::BlockSyncUniformCudaHipBuiltIn const & /*blockSync*/,
-                        int predicate)
-                    -> int
-                    {
 #if defined(__HIP_ARCH_HAS_SYNC_THREAD_EXT__) && __HIP_ARCH_HAS_SYNC_THREAD_EXT__==0 && BOOST_COMP_HIP
-                        // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
-                        __shared__ int tmp;
-                        __syncthreads();
-                        if(threadIdx.x==0)
-                            tmp=0;
-                        __syncthreads();
-                        if(predicate)
-                            atomicOr(&tmp, 1);
-                        __syncthreads();
+                    // workaround for unsupported syncthreads_* operation on AMD hardware without sync extension
+                    __shared__ int tmp;
+                    __syncthreads();
+                    if(threadIdx.x==0)
+                        tmp=0;
+                    __syncthreads();
+                    if(predicate)
+                        atomicOr(&tmp, 1);
+                    __syncthreads();
 
-                        return tmp;
+                    return tmp;
 #else
-                        return __syncthreads_or(predicate);
+                    return __syncthreads_or(predicate);
 #endif
-                    }
-                };
-            }
+                }
+            };
         }
     }
 }

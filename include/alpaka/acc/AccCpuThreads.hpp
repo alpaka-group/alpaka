@@ -75,9 +75,9 @@ namespace alpaka
                 atomic::AtomicStdLibLock<16>  // thread atomics
             >,
             public math::MathStdLib,
-            public block::shared::dyn::BlockSharedMemDynAlignedAlloc,
-            public block::shared::st::BlockSharedMemStMasterSync,
-            public block::sync::BlockSyncBarrierThread<TIdx>,
+            public block::dyn::BlockSharedMemDynAlignedAlloc,
+            public block::st::BlockSharedMemStMasterSync,
+            public block::BlockSyncBarrierThread<TIdx>,
             public intrinsic::IntrinsicCpu,
             public rand::RandStdLib,
             public time::TimeStdLib,
@@ -110,11 +110,11 @@ namespace alpaka
                         atomic::AtomicStdLibLock<16>  // atomics between threads
                     >(),
                     math::MathStdLib(),
-                    block::shared::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
-                    block::shared::st::BlockSharedMemStMasterSync(
-                        [this](){block::sync::syncBlockThreads(*this);},
+                    block::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
+                    block::st::BlockSharedMemStMasterSync(
+                        [this](){block::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
-                    block::sync::BlockSyncBarrierThread<TIdx>(
+                    block::BlockSyncBarrierThread<TIdx>(
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStdLib(),
                     time::TimeStdLib(),
