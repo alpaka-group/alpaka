@@ -205,3 +205,8 @@
 // vec
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/vec/Traits.hpp>
+
+namespace alpaka {
+    using namespace alpaka::dev;
+    using namespace alpaka::pltf;
+}

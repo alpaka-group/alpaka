@@ -26,15 +26,15 @@ static auto testBufferMutable(
     alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
 -> void
 {
-    using Dev = alpaka::dev::Dev<TAcc>;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Dev = alpaka::Dev<TAcc>;
+    using Pltf = alpaka::Pltf<Dev>;
     using Queue = alpaka::test::queue::DefaultQueue<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
 
-    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
     Queue queue(dev);
 
     //-----------------------------------------------------------------------------
@@ -93,14 +93,14 @@ static auto testBufferImmutable(
     alpaka::vec::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
 -> void
 {
-    using Dev = alpaka::dev::Dev<TAcc>;
-    using Pltf = alpaka::pltf::Pltf<Dev>;
+    using Dev = alpaka::Dev<TAcc>;
+    using Pltf = alpaka::Pltf<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
 
-    Dev const dev(alpaka::pltf::getDevByIdx<Pltf>(0u));
+    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
     //-----------------------------------------------------------------------------
     // alpaka::mem::buf::alloc

@@ -123,11 +123,11 @@ auto main( ) -> int
     using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
     std::cout << "Using alpaka accelerator: " << alpaka::acc::getAccName<Acc>() << std::endl;
 
-    using DevHost = alpaka::dev::DevCpu;
+    using DevHost = alpaka::DevCpu;
 
     // Select specific devices
-    auto const devAcc = alpaka::pltf::getDevByIdx< Acc >( 0u );
-    auto const devHost = alpaka::pltf::getDevByIdx< DevHost >( 0u );
+    auto const devAcc = alpaka::getDevByIdx< Acc >( 0u );
+    auto const devHost = alpaka::getDevByIdx< DevHost >( 0u );
 
     // Get valid workdiv for the given problem
     uint32_t elemPerThread = 1;

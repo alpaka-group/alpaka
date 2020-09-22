@@ -192,7 +192,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevCpu>
+                    alpaka::DevCpu>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCpu<dev::DevCpu>;
                 };
@@ -202,20 +202,20 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevOmp5>
+                    alpaka::DevOmp5>
                 {
-                    using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::dev::DevOmp5>;
+                    using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::DevOmp5>;
                 };
 #endif
                 //#############################################################################
                 //! The CPU event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevCpu>
+                    alpaka::DevCpu>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevCpu const &)
+                        alpaka::DevCpu const &)
                     -> bool
                     {
                         return true;
@@ -226,11 +226,11 @@ namespace alpaka
                 //! The Omp5 event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevOmp5>
+                    alpaka::DevOmp5>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevOmp5 const &)
+                        alpaka::DevOmp5 const &)
                     -> bool
                     {
                         return true;
@@ -545,7 +545,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevUniformCudaHipRt>
+                    alpaka::DevUniformCudaHipRt>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerCuda;
                 };
@@ -553,11 +553,11 @@ namespace alpaka
                 //! The CPU event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevUniformCudaHipRt>
+                    alpaka::DevUniformCudaHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevCudaRt const & dev)
+                        alpaka::DevCudaRt const & dev)
                     -> bool
                     {
                         int result = 0;
@@ -851,7 +851,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct EventHostManualTriggerType<
-                    alpaka::dev::DevHipRt>
+                    alpaka::DevHipRt>
                 {
                     using type = alpaka::test::event::EventHostManualTriggerHip;
                 };
@@ -860,13 +860,13 @@ namespace alpaka
                 //! The HIP event host manual trigger support get trait specialization.
                 template<>
                 struct IsEventHostManualTriggerSupported<
-                    alpaka::dev::DevHipRt>
+                    alpaka::DevHipRt>
                 {
                     //-----------------------------------------------------------------------------
                     // TODO: there is no CUDA_VERSION in the HIP compiler path.
                     // TODO: there is a hipDeviceGetAttribute, but there is no pendant for CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS.
                     ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::dev::DevHipRt const &)
+                        alpaka::DevHipRt const &)
                     -> bool
                     {
                         return false;

@@ -90,21 +90,21 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
 #endif
 
     using Val = float;
-    using DevAcc = alpaka::dev::Dev<Acc>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using DevAcc = alpaka::Dev<Acc>;
+    using PltfAcc = alpaka::Pltf<DevAcc>;
     using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
-    using PltfHost = alpaka::pltf::PltfCpu;
+    using PltfHost = alpaka::PltfCpu;
 
     // Create the kernel function object.
     AxpyKernel kernel;
 
     // Get the host device.
     auto const devHost(
-        alpaka::pltf::getDevByIdx<PltfHost>(0u));
+        alpaka::getDevByIdx<PltfHost>(0u));
 
     // Select a device to execute on.
     auto const devAcc(
-        alpaka::pltf::getDevByIdx<PltfAcc>(0u));
+        alpaka::getDevByIdx<PltfAcc>(0u));
 
     // Get a queue on this device.
     QueueAcc queue(devAcc);

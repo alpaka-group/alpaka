@@ -48,18 +48,18 @@ namespace alpaka
                 -> void
                 {
                     //-----------------------------------------------------------------------------
-                    // alpaka::dev::traits::DevType
+                    // alpaka::traits::DevType
                     {
                         static_assert(
-                            std::is_same<alpaka::dev::Dev<TView>, TDev>::value,
+                            std::is_same<alpaka::Dev<TView>, TDev>::value,
                             "The device type of the view has to be equal to the specified one.");
                     }
 
                     //-----------------------------------------------------------------------------
-                    // alpaka::dev::traits::GetDev
+                    // alpaka::traits::GetDev
                     {
                         REQUIRE(
-                            dev == alpaka::dev::getDev(view));
+                            dev == alpaka::getDev(view));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -289,14 +289,14 @@ namespace alpaka
                     using Dim = alpaka::dim::Dim<TView>;
                     using Idx = alpaka::idx::Idx<TView>;
 
-                    using DevHost = alpaka::dev::DevCpu;
-                    using PltfHost = alpaka::pltf::Pltf<DevHost>;
+                    using DevHost = alpaka::DevCpu;
+                    using PltfHost = alpaka::Pltf<DevHost>;
 
                     using Elem = alpaka::elem::Elem<TView>;
 
                     using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Idx>;
 
-                    DevHost const devHost(alpaka::pltf::getDevByIdx<PltfHost>(0));
+                    DevHost const devHost(alpaka::getDevByIdx<PltfHost>(0));
 
                     auto const extent(alpaka::extent::getExtentVec(view));
 
@@ -351,7 +351,7 @@ namespace alpaka
                         using Elem = alpaka::elem::Elem<TView>;
                         using Idx = alpaka::idx::Idx<TView>;
 
-                        auto const devAcc = alpaka::dev::getDev(view);
+                        auto const devAcc = alpaka::getDev(view);
 
                         //-----------------------------------------------------------------------------
                         // alpaka::mem::view::copy into given view

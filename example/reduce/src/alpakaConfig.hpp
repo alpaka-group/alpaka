@@ -86,10 +86,10 @@ struct Omp5
 {
     using Host = alpaka::acc::AccCpuSerial<Dim, Extent>;
     using Acc = alpaka::acc::AccOmp5<Dim, Extent>;
-    using DevHost = alpaka::dev::Dev<Host>;
-    using DevAcc = alpaka::dev::Dev<Acc>;
-    using PltfHost = alpaka::pltf::Pltf<DevHost>;
-    using PltfAcc = alpaka::pltf::Pltf<DevAcc>;
+    using DevHost = alpaka::Dev<Host>;
+    using DevAcc = alpaka::Dev<Acc>;
+    using PltfHost = alpaka::Pltf<DevHost>;
+    using PltfAcc = alpaka::Pltf<DevAcc>;
     using Stream = alpaka::queue::QueueCpuBlocking;
     using Event = alpaka::event::Event<Stream>;
     using MaxBlockSize = alpaka::dim::DimInt<1u>;
