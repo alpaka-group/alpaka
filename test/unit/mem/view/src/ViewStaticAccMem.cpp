@@ -72,7 +72,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestA
     using PltfAcc = alpaka::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::vec::Vec<Dim, Idx> const extent(3u, 2u);
+    alpaka::Vec<Dim, Idx> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(extent);
 
@@ -145,7 +145,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
     using PltfAcc = alpaka::Pltf<DevAcc>;
     DevAcc devAcc(alpaka::getDevByIdx<PltfAcc>(0u));
 
-    alpaka::vec::Vec<Dim, Idx> const extent(3u, 2u);
+    alpaka::Vec<Dim, Idx> const extent(3u, 2u);
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(extent);
 

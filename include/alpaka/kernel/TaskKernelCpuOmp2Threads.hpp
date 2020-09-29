@@ -151,7 +151,7 @@ namespace alpaka
                 // Execute the blocks serially.
                 meta::ndLoopIncIdx(
                     gridBlockExtent,
-                    [&](vec::Vec<TDim, TIdx> const & gridBlockIdx)
+                    [&](Vec<TDim, TIdx> const & gridBlockIdx)
                     {
                         acc.m_gridBlockIdx = gridBlockIdx;
 

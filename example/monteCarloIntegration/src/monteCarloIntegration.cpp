@@ -118,7 +118,7 @@ auto main() -> int
     // Defines and setup.
     using Dim = alpaka::dim::DimInt<1>;
     using Idx = std::size_t;
-    using Vec = alpaka::vec::Vec<
+    using Vec = alpaka::Vec<
         Dim,
         Idx>;
     using Acc = alpaka::example::ExampleDefaultAcc<

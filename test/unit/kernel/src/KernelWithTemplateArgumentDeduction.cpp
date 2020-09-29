@@ -62,7 +62,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromValue", "[kern
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
@@ -78,7 +78,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstValue", "
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
@@ -94,7 +94,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstReference
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionValueSemantics< Value > kernel;
@@ -147,7 +147,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointer", "[ke
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionPointerSemantics< Value > kernel;
@@ -164,7 +164,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointerToConst
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionPointerSemantics< Value const, Value > kernel;
@@ -181,7 +181,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromStaticArray", 
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionPointerSemantics< Value > kernel;
@@ -197,7 +197,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstStaticArr
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     using Value = std::int32_t;
     KernelInvocationTemplateDeductionPointerSemantics< Value const, Value > kernel;

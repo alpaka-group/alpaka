@@ -127,7 +127,7 @@ namespace alpaka
 
                     public:
                         DevCpu const m_dev;
-                        vec::Vec<TDim, TIdx> const m_extentElements;
+                        Vec<TDim, TIdx> const m_extentElements;
                         TElem * const m_pMem;
                         TIdx const m_pitchBytes;
 #if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)

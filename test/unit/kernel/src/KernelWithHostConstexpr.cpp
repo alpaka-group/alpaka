@@ -53,7 +53,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelWithHostConstexpr", "[kernel]", alpaka::test::ac
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     KernelWithHostConstexpr kernel;
 

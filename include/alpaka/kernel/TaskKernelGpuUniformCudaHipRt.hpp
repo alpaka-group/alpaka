@@ -80,7 +80,7 @@ namespace alpaka
                     typename TKernelFnObj,
                     typename... TArgs>
                 __global__ void uniformCudaHipKernel(
-                    vec::Vec<TDim, TIdx> const threadElemExtent,
+                    Vec<TDim, TIdx> const threadElemExtent,
                     TKernelFnObj const kernelFnObj,
                     TArgs ... args)
                 {
@@ -111,7 +111,7 @@ namespace alpaka
                     typename TIdx
                 >
                 ALPAKA_FN_HOST auto checkVecOnly3Dim(
-                    vec::Vec<TDim, TIdx> const & vec)
+                    Vec<TDim, TIdx> const & vec)
                 -> void
                 {
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
@@ -129,7 +129,7 @@ namespace alpaka
                     typename TIdx
                 >
                 ALPAKA_FN_HOST auto convertVecToUniformCudaHipDim(
-                    vec::Vec<TDim, TIdx> const & vec)
+                    Vec<TDim, TIdx> const & vec)
                 -> dim3
                 {
                     dim3 dim(1, 1, 1);

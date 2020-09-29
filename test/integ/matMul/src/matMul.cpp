@@ -213,7 +213,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     Idx const k(23u);
 
     using Val = std::uint32_t;
-    using Vec2 = alpaka::vec::Vec<Dim, Idx>;
+    using Vec2 = alpaka::Vec<Dim, Idx>;
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
     using QueueAcc = alpaka::test::queue::DefaultQueue<alpaka::Dev<Acc>>;
@@ -259,7 +259,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
         alpaka::workdiv::getValidWorkDiv<Acc>(
             devAcc,
             extentC,
-            alpaka::vec::Vec<Dim, Idx>::ones(),
+            alpaka::Vec<Dim, Idx>::ones(),
             false,
             alpaka::workdiv::GridBlockExtentSubDivRestrictions::EqualExtent));
 

@@ -393,7 +393,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        vec::Vec<dim::Dim<TView>, idx::Idx<TView>> const & extent,
+                        Vec<dim::Dim<TView>, idx::Idx<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -440,7 +440,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        vec::Vec<dim::Dim<TView>, idx::Idx<TView>> const & extent,
+                        Vec<dim::Dim<TView>, idx::Idx<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -526,10 +526,10 @@ namespace alpaka
                 typename TPitch>
             auto getPitchBytesVec(
                 TPitch const & pitch = TPitch())
-            -> vec::Vec<dim::Dim<TPitch>, idx::Idx<TPitch>>
+            -> Vec<dim::Dim<TPitch>, idx::Idx<TPitch>>
             {
                 return
-                    vec::createVecFromIndexedFn<
+                    createVecFromIndexedFn<
                         dim::Dim<TPitch>,
                         detail::CreatePitchBytes>(
                             pitch);
@@ -541,11 +541,11 @@ namespace alpaka
                 typename TPitch>
             ALPAKA_FN_HOST auto getPitchBytesVecEnd(
                 TPitch const & pitch = TPitch())
-            -> vec::Vec<TDim, idx::Idx<TPitch>>
+            -> Vec<TDim, idx::Idx<TPitch>>
             {
                 using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TPitch>::value) - static_cast<std::intmax_t>(TDim::value)>;
                 return
-                    vec::createVecFromIndexedFnOffset<
+                    createVecFromIndexedFnOffset<
                         TDim,
                         detail::CreatePitchBytes,
                         IdxOffset>(

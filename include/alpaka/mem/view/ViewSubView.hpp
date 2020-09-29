@@ -155,7 +155,7 @@ namespace alpaka
                         ViewSubView(
                             view,
                             view,
-                            vec::Vec<TDim, TIdx>::all(0))
+                            Vec<TDim, TIdx>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 }
@@ -169,15 +169,15 @@ namespace alpaka
                         ViewSubView(
                             view,
                             view,
-                            vec::Vec<TDim, TIdx>::all(0))
+                            Vec<TDim, TIdx>::all(0))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 }
 
             public:
                 mem::view::ViewPlainPtr<Dev, TElem, TDim, TIdx> m_viewParentView; // This wraps the parent view.
-                vec::Vec<TDim, TIdx> m_extentElements;     // The extent of this view.
-                vec::Vec<TDim, TIdx> m_offsetsElements;    // The offset relative to the parent view.
+                Vec<TDim, TIdx> m_extentElements;     // The extent of this view.
+                Vec<TDim, TIdx> m_offsetsElements;    // The offset relative to the parent view.
             };
         }
     }

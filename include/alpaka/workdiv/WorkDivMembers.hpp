@@ -59,9 +59,9 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 TWorkDiv const & other) :
-                    m_gridBlockExtent(vec::subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
-                    m_blockThreadExtent(vec::subVecEnd<TDim>(getWorkDiv<Block, Threads>(other))),
-                    m_threadElemExtent(vec::subVecEnd<TDim>(getWorkDiv<Thread, Elems>(other)))
+                    m_gridBlockExtent(subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
+                    m_blockThreadExtent(subVecEnd<TDim>(getWorkDiv<Block, Threads>(other))),
+                    m_threadElemExtent(subVecEnd<TDim>(getWorkDiv<Thread, Elems>(other)))
             {}
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
@@ -83,9 +83,9 @@ namespace alpaka
                 TWorkDiv const & other)
             -> WorkDivMembers<TDim, TIdx> &
             {
-                m_gridBlockExtent = vec::subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
-                m_blockThreadExtent = vec::subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
-                m_threadElemExtent = vec::subVecEnd<TDim>(getWorkDiv<Thread, Elems>(other));
+                m_gridBlockExtent = subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
+                m_blockThreadExtent = subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
+                m_threadElemExtent = subVecEnd<TDim>(getWorkDiv<Thread, Elems>(other));
                 return *this;
             }
             //-----------------------------------------------------------------------------
@@ -93,9 +93,9 @@ namespace alpaka
             /*virtual*/ ALPAKA_FN_HOST_ACC ~WorkDivMembers() = default;
 
         public:
-            vec::Vec<TDim, TIdx> m_gridBlockExtent;
-            vec::Vec<TDim, TIdx> m_blockThreadExtent;
-            vec::Vec<TDim, TIdx> m_threadElemExtent;
+            Vec<TDim, TIdx> m_gridBlockExtent;
+            Vec<TDim, TIdx> m_blockThreadExtent;
+            Vec<TDim, TIdx> m_threadElemExtent;
         };
 
         //-----------------------------------------------------------------------------
@@ -166,7 +166,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     WorkDivMembers<TDim, TIdx> const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     return workDiv.m_gridBlockExtent;
                 }
@@ -187,7 +187,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     WorkDivMembers<TDim, TIdx> const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     return workDiv.m_blockThreadExtent;
                 }
@@ -208,7 +208,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     WorkDivMembers<TDim, TIdx> const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     return workDiv.m_threadElemExtent;
                 }

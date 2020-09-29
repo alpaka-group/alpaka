@@ -103,7 +103,7 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     QueueAcc queueAcc(devAcc);
 
     // The data extent.
-    alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Idx> const extent(
+    alpaka::Vec<alpaka::dim::DimInt<1u>, Idx> const extent(
         numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.

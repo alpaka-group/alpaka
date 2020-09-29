@@ -129,7 +129,7 @@ TEMPLATE_LIST_TEST_CASE( "defaultRandomGeneratorIsWorking", "[rand]", alpaka::te
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     RandTestKernel kernel;
 

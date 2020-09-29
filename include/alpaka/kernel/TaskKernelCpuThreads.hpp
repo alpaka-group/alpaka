@@ -173,8 +173,8 @@ namespace alpaka
             //! The function executed for each grid block.
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuThreads<TDim, TIdx> & acc,
-                vec::Vec<TDim, TIdx> const & gridBlockIdx,
-                vec::Vec<TDim, TIdx> const & blockThreadExtent,
+                Vec<TDim, TIdx> const & gridBlockIdx,
+                Vec<TDim, TIdx> const & blockThreadExtent,
                 ThreadPool & threadPool,
                 TKernelFnObj const & kernelFnObj,
                 std::decay_t<TArgs> const & ... args)
@@ -225,11 +225,11 @@ namespace alpaka
                 acc::AccCpuThreads<TDim, TIdx> & acc,
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 std::vector<std::future<void>> & futuresInBlock,
-                vec::Vec<TDim, TIdx> const & blockThreadIdx,
+                Vec<TDim, TIdx> const & blockThreadIdx,
                 ThreadPool & threadPool,
 #else
                 std::vector<std::future<void>> &,
-                vec::Vec<TDim, TIdx> const & blockThreadIdx,
+                Vec<TDim, TIdx> const & blockThreadIdx,
                 ThreadPool &,
 #endif
                 TKernelFnObj const & kernelFnObj,
@@ -261,7 +261,7 @@ namespace alpaka
             //! The thread entry point on the accelerator.
             ALPAKA_FN_HOST static auto blockThreadExecAcc(
                 acc::AccCpuThreads<TDim, TIdx> & acc,
-                vec::Vec<TDim, TIdx> const & blockThreadIdx,
+                Vec<TDim, TIdx> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 std::decay_t<TArgs> const & ... args)
             -> void

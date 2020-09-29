@@ -90,14 +90,14 @@ namespace alpaka
                 static auto getIdx(
                     idx::bt::IdxBtOmp<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     alpaka::ignore_unused(idx);
                     // We assume that the thread id is positive.
                     ALPAKA_ASSERT(::omp_get_thread_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return idx::mapIdx<TDim::value>(
-                        vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
+                        Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
                         workdiv::getWorkDiv<Block, Threads>(workDiv));
                 }
             };
@@ -116,10 +116,10 @@ namespace alpaka
                 static auto getIdx(
                     idx::bt::IdxBtOmp<dim::DimInt<1u>, TIdx> const & idx,
                     TWorkDiv const &)
-                -> vec::Vec<dim::DimInt<1u>, TIdx>
+                -> Vec<dim::DimInt<1u>, TIdx>
                 {
                     alpaka::ignore_unused(idx);
-                    return vec::Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
+                    return Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
                 }
             };
         }

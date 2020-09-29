@@ -73,7 +73,7 @@ TEMPLATE_LIST_TEST_CASE( "sincos", "[sincos]", TestAccs)
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     SinCosTestKernel kernel;
 

@@ -67,7 +67,7 @@ TEMPLATE_LIST_TEST_CASE( "ffs", "[intrinsic]", alpaka::test::acc::TestAccs)
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     FfsTestKernel<std::int32_t> kernel32bit;
     REQUIRE(

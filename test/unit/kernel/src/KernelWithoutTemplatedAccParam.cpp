@@ -60,7 +60,7 @@ struct KernelNoTemplateCpu
 TEST_CASE("kernelNoTemplateCpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     KernelNoTemplateCpu kernel;
 
@@ -90,7 +90,7 @@ struct KernelNoTemplateGpu
 TEST_CASE("kernelNoTemplateGpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     KernelNoTemplateGpu kernel;
 
@@ -121,7 +121,7 @@ struct KernelWithoutTemplateParamCpu
 TEST_CASE("kernelWithoutTemplateParamCpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccCpu> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     KernelWithoutTemplateParamCpu kernel;
 
@@ -153,7 +153,7 @@ struct KernelWithoutTemplateParamGpu
 TEST_CASE("kernelWithoutTemplateParamGpu", "[kernel]")
 {
     alpaka::test::KernelExecutionFixture<AccGpu> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     KernelWithoutTemplateParamGpu kernel;
 

@@ -109,7 +109,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     // Get a queue on this device.
     QueueAcc queue(devAcc);
 
-    alpaka::vec::Vec<Dim, Idx> const extent(
+    alpaka::Vec<Dim, Idx> const extent(
         numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.

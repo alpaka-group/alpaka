@@ -94,7 +94,7 @@ namespace alpaka
         public:
             //-----------------------------------------------------------------------------
             __device__ AccGpuUniformCudaHipRt(
-                vec::Vec<TDim, TIdx> const & threadElemExtent) :
+                Vec<TDim, TIdx> const & threadElemExtent) :
                     workdiv::WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent),
                     idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>(),
                     idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>(),
@@ -209,7 +209,7 @@ namespace alpaka
                         alpaka::core::clipCast<TIdx>(multiProcessorCount),
                         // m_gridBlockExtentMax
                         extent::getExtentVecEnd<TDim>(
-                            vec::Vec<dim::DimInt<3u>, TIdx>(
+                            Vec<dim::DimInt<3u>, TIdx>(
                                 alpaka::core::clipCast<TIdx>(maxGridSize[2u]),
                                 alpaka::core::clipCast<TIdx>(maxGridSize[1u]),
                                 alpaka::core::clipCast<TIdx>(maxGridSize[0u]))),
@@ -217,14 +217,14 @@ namespace alpaka
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
                         extent::getExtentVecEnd<TDim>(
-                            vec::Vec<dim::DimInt<3u>, TIdx>(
+                            Vec<dim::DimInt<3u>, TIdx>(
                                 alpaka::core::clipCast<TIdx>(maxBlockDim[2u]),
                                 alpaka::core::clipCast<TIdx>(maxBlockDim[1u]),
                                 alpaka::core::clipCast<TIdx>(maxBlockDim[0u]))),
                         // m_blockThreadCountMax
                         alpaka::core::clipCast<TIdx>(maxThreadsPerBlock),
                         // m_threadElemExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes
@@ -242,7 +242,7 @@ namespace alpaka
                         alpaka::core::clipCast<TIdx>(hipDevProp.multiProcessorCount),
                         // m_gridBlockExtentMax
                         extent::getExtentVecEnd<TDim>(
-                            vec::Vec<dim::DimInt<3u>, TIdx>(
+                            Vec<dim::DimInt<3u>, TIdx>(
                                 alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[2u]),
                                 alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[1u]),
                                 alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[0u]))),
@@ -250,14 +250,14 @@ namespace alpaka
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
                         extent::getExtentVecEnd<TDim>(
-                            vec::Vec<dim::DimInt<3u>, TIdx>(
+                            Vec<dim::DimInt<3u>, TIdx>(
                                 alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[2u]),
                                 alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[1u]),
                                 alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[0u]))),
                         // m_blockThreadCountMax
                         alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsPerBlock),
                         // m_threadElemExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes

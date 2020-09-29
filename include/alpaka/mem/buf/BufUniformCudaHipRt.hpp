@@ -126,7 +126,7 @@ namespace alpaka
 
             public:
                 DevUniformCudaHipRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
-                vec::Vec<TDim, TIdx> m_extentElements;
+                Vec<TDim, TIdx> m_extentElements;
                 std::shared_ptr<TElem> m_spMem;
                 TIdx m_pitchBytes;
             };

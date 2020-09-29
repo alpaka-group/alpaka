@@ -36,8 +36,8 @@ void ALPAKA_FN_ACC hiWorldFunction(
 {
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
-    using Vec = alpaka::vec::Vec<Dim, Idx>;
-    using Vec1 = alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
+    using Vec1 = alpaka::Vec<alpaka::dim::DimInt<1u>, Idx>;
 
     Vec const globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
     Vec const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
@@ -99,7 +99,7 @@ auto main()
     Queue queue(devAcc);
 
     // Define the work division
-    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerGrid(Vec::all(static_cast<Idx>(8)));
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;

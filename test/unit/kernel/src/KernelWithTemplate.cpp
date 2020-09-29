@@ -50,7 +50,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplate", "[kernel]", alpaka::test
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     KernelFuntionObjectTemplate<std::int32_t> kernel;
 
@@ -90,7 +90,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectExtraTemplate", "[kernel]", alpaka:
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     KernelInvocationWithAdditionalTemplate kernel;
 

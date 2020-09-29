@@ -35,8 +35,8 @@ struct HelloWorldKernel
     {
         using Dim = alpaka::dim::Dim<TAcc>;
         using Idx = alpaka::idx::Idx<TAcc>;
-        using Vec = alpaka::vec::Vec<Dim, Idx>;
-        using Vec1 = alpaka::vec::Vec<alpaka::dim::DimInt<1u>, Idx>;
+        using Vec = alpaka::Vec<Dim, Idx>;
+        using Vec1 = alpaka::Vec<alpaka::dim::DimInt<1u>, Idx>;
 
         // In the most cases the parallel work distibution depends
         // on the current index of a thread and how many threads
@@ -164,7 +164,7 @@ auto main()
     // memory. Elements are supposed to be used for vectorization.
     // Thus, a thread can process data element size wise with its
     // vector processing unit.
-    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerGrid(Vec::all(static_cast<Idx>(8)));
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;

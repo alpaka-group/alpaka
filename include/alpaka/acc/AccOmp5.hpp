@@ -99,9 +99,9 @@ namespace alpaka
         private:
             //-----------------------------------------------------------------------------
             AccOmp5(
-                vec::Vec<TDim, TIdx> const & gridBlockExtent,
-                vec::Vec<TDim, TIdx> const & blockThreadExtent,
-                vec::Vec<TDim, TIdx> const & threadElemExtent,
+                Vec<TDim, TIdx> const & gridBlockExtent,
+                Vec<TDim, TIdx> const & blockThreadExtent,
+                Vec<TDim, TIdx> const & threadElemExtent,
                 TIdx const & gridBlockIdx,
                 std::size_t const & blockSharedMemDynSizeBytes) :
                     workdiv::WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
@@ -194,15 +194,15 @@ namespace alpaka
                         // m_multiProcessorCount
                         static_cast<TIdx>(gridBlockCountMax),
                         // m_gridBlockExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
-                        vec::Vec<TDim, TIdx>::all(blockThreadCountMax),
+                        Vec<TDim, TIdx>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes

@@ -62,7 +62,7 @@ TEST_CASE("cudaOnlyModeWorking", "[cudaOnly]")
     using Idx = alpaka::idx::Idx<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     CudaOnlyTestKernel kernel;
 

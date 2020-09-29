@@ -94,7 +94,7 @@ TEMPLATE_LIST_TEST_CASE( "activemask", "[warp]", alpaka::test::acc::TestAccs)
     {
         Idx const gridThreadExtentPerDim = 4;
         alpaka::test::KernelExecutionFixture<Acc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
+            alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
         ActivemaskSingleThreadWarpTestKernel kernel;
         REQUIRE(
             fixture(
@@ -107,11 +107,11 @@ TEMPLATE_LIST_TEST_CASE( "activemask", "[warp]", alpaka::test::acc::TestAccs)
         return;
 #else
         using ExecutionFixture = alpaka::test::KernelExecutionFixture<Acc>;
-        auto const gridBlockExtent = alpaka::vec::Vec<Dim, Idx>::all(2);
+        auto const gridBlockExtent = alpaka::Vec<Dim, Idx>::all(2);
         // Enforce one warp per thread block
-        auto blockThreadExtent = alpaka::vec::Vec<Dim, Idx>::ones();
+        auto blockThreadExtent = alpaka::Vec<Dim, Idx>::ones();
         blockThreadExtent[0] = static_cast<Idx>(warpExtent);
-        auto const threadElementExtent = alpaka::vec::Vec<Dim, Idx>::ones();
+        auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
         auto workDiv = typename ExecutionFixture::WorkDiv{
             gridBlockExtent,
             blockThreadExtent,

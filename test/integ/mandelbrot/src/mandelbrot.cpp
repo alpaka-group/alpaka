@@ -346,7 +346,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
     QueueAcc queue(
         devAcc);
 
-    alpaka::vec::Vec<Dim, Idx> const extent(
+    alpaka::Vec<Dim, Idx> const extent(
         static_cast<Idx>(numRows),
         static_cast<Idx>(numCols));
 
@@ -355,7 +355,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
         alpaka::workdiv::getValidWorkDiv<Acc>(
             devAcc,
             extent,
-            alpaka::vec::Vec<Dim, Idx>::ones(),
+            alpaka::Vec<Dim, Idx>::ones(),
             false,
             alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 

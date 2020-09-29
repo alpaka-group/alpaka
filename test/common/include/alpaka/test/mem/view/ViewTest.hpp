@@ -43,8 +43,8 @@ namespace alpaka
                 ALPAKA_FN_HOST auto testViewImmutable(
                     TView const & view,
                     TDev const & dev,
-                    alpaka::vec::Vec<TDim, TIdx> const & extent,
-                    alpaka::vec::Vec<TDim, TIdx> const & offset)
+                    alpaka::Vec<TDim, TIdx> const & extent,
+                    alpaka::Vec<TDim, TIdx> const & offset)
                 -> void
                 {
                     //-----------------------------------------------------------------------------
@@ -90,7 +90,7 @@ namespace alpaka
                     // alpaka::mem::view::traits::GetPitchBytes
                     {
                         // The pitches have to be at least as large as the values we calculate here.
-                        auto pitchMinimum(alpaka::vec::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TIdx>::ones());
+                        auto pitchMinimum(alpaka::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TIdx>::ones());
                         // Initialize the pitch between two elements of the X dimension ...
                         pitchMinimum[TDim::value] = sizeof(TElem);
                         // ... and fill all the other dimensions.
@@ -195,7 +195,7 @@ namespace alpaka
                     using Idx = alpaka::idx::Idx<TView>;
 
                     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-                        alpaka::vec::Vec<Dim, Idx>::ones());
+                        alpaka::Vec<Dim, Idx>::ones());
 
                     VerifyBytesSetKernel verifyBytesSet;
 
@@ -264,7 +264,7 @@ namespace alpaka
                     static_assert(std::is_same<IdxA, IdxB>::value, "viewA and viewB are required to have identical Idx");
 
                     alpaka::test::KernelExecutionFixture<TAcc> fixture(
-                        alpaka::vec::Vec<DimA, IdxA>::ones());
+                        alpaka::Vec<DimA, IdxA>::ones());
 
                     VerifyViewsEqualKernel verifyViewsEqualKernel;
 

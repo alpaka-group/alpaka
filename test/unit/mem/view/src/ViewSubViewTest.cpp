@@ -46,8 +46,8 @@ namespace view
         alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> const & view,
         TBuf & buf,
         TDev const & dev,
-        alpaka::vec::Vec<TDim, TIdx> const & extentView,
-        alpaka::vec::Vec<TDim, TIdx> const & offsetView)
+        alpaka::Vec<TDim, TIdx> const & extentView,
+        alpaka::Vec<TDim, TIdx> const & offsetView)
     -> void
     {
         //-----------------------------------------------------------------------------
@@ -104,8 +104,8 @@ namespace view
         alpaka::mem::view::ViewSubView<TDev, TElem, TDim, TIdx> & view,
         TBuf & buf,
         TDev const & dev,
-        alpaka::vec::Vec<TDim, TIdx> const & extentView,
-        alpaka::vec::Vec<TDim, TIdx> const & offsetView)
+        alpaka::Vec<TDim, TIdx> const & extentView,
+        alpaka::Vec<TDim, TIdx> const & offsetView)
     -> void
     {
         //-----------------------------------------------------------------------------
@@ -142,11 +142,11 @@ namespace view
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
-        auto const extentBuf(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
+        auto const extentBuf(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
         auto const extentView(extentBuf);
-        auto const offsetView(alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
+        auto const offsetView(alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
         View view(buf);
 
         alpaka::test::mem::view::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
@@ -168,11 +168,11 @@ namespace view
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
-        auto const extentBuf(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
+        auto const extentBuf(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
-        auto const extentView(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView>());
-        auto const offsetView(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>());
+        auto const extentView(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView>());
+        auto const offsetView(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>());
         View view(buf, extentView, offsetView);
 
         alpaka::test::mem::view::testViewSubViewMutable<TAcc>(view, buf, dev, extentView, offsetView);
@@ -194,11 +194,11 @@ namespace view
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
-        auto const extentBuf(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
+        auto const extentBuf(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
         auto buf(alpaka::mem::buf::alloc<TElem, Idx>(dev, extentBuf));
 
-        auto const extentView(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView>());
-        auto const offsetView(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>());
+        auto const extentView(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView>());
+        auto const offsetView(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForOffset>());
         View const view(buf, extentView, offsetView);
 
         alpaka::test::mem::view::testViewSubViewImmutable<TAcc>(view, buf, dev, extentView, offsetView);

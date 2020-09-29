@@ -33,11 +33,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST AccDevProps(
                 TIdx const & multiProcessorCount,
-                vec::Vec<TDim, TIdx> const & gridBlockExtentMax,
+                Vec<TDim, TIdx> const & gridBlockExtentMax,
                 TIdx const & gridBlockCountMax,
-                vec::Vec<TDim, TIdx> const & blockThreadExtentMax,
+                Vec<TDim, TIdx> const & blockThreadExtentMax,
                 TIdx const & blockThreadCountMax,
-                vec::Vec<TDim, TIdx> const & threadElemExtentMax,
+                Vec<TDim, TIdx> const & threadElemExtentMax,
                 TIdx const & threadElemCountMax,
                 size_t const & sharedMemSizeBytes) :
                     m_gridBlockExtentMax(gridBlockExtentMax),
@@ -51,9 +51,9 @@ namespace alpaka
             {}
 
             // NOTE: The members have been reordered from the order in the constructor because gcc is buggy for some TDim and TIdx and generates invalid assembly.
-            vec::Vec<TDim, TIdx> m_gridBlockExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
-            vec::Vec<TDim, TIdx> m_blockThreadExtentMax;    //!< The maximum number of threads in each dimension of a block.
-            vec::Vec<TDim, TIdx> m_threadElemExtentMax;     //!< The maximum number of elements in each dimension of a thread.
+            Vec<TDim, TIdx> m_gridBlockExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
+            Vec<TDim, TIdx> m_blockThreadExtentMax;    //!< The maximum number of threads in each dimension of a block.
+            Vec<TDim, TIdx> m_threadElemExtentMax;     //!< The maximum number of elements in each dimension of a thread.
 
             TIdx m_gridBlockCountMax;                  //!< The maximum number of blocks in a grid.
             TIdx m_blockThreadCountMax;                //!< The maximum number of threads in a block.

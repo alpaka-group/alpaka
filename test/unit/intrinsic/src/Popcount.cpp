@@ -63,7 +63,7 @@ TEMPLATE_LIST_TEST_CASE( "popcount", "[intrinsic]", alpaka::test::acc::TestAccs)
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     PopcountTestKernel<std::uint32_t> kernel32bit;
     REQUIRE(

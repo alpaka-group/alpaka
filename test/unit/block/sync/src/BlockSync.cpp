@@ -99,7 +99,7 @@ TEMPLATE_LIST_TEST_CASE( "synchronize", "[blockSync]", alpaka::test::acc::TestAc
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(BlockSyncTestKernel::gridThreadExtentPerDim)));
+        alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(BlockSyncTestKernel::gridThreadExtentPerDim)));
 
     BlockSyncTestKernel kernel;
 

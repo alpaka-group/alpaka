@@ -170,7 +170,7 @@ namespace alpaka
                 FnObj const & boundKernelFnObj,
                 std::size_t const & blockSharedMemDynSizeBytes,
                 TIdx const & numBlocksInGrid,
-                vec::Vec<TDim, TIdx> const & gridBlockExtent) const
+                Vec<TDim, TIdx> const & gridBlockExtent) const
             -> void
             {
                 #pragma omp single nowait
@@ -206,9 +206,9 @@ namespace alpaka
                 {
 #if _OPENMP < 200805
                     auto const i_tidx  = static_cast<TIdx>(i); // for issue #840
-                    auto const index   = vec::Vec<dim::DimInt<1u>, TIdx>( i_tidx ); // for issue #840
+                    auto const index   = Vec<dim::DimInt<1u>, TIdx>( i_tidx ); // for issue #840
 #else
-                    auto const index   = vec::Vec<dim::DimInt<1u>, TIdx>( i ); // for issue #840
+                    auto const index   = Vec<dim::DimInt<1u>, TIdx>( i ); // for issue #840
 #endif
                     acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(index,
                                                                   gridBlockExtent);
