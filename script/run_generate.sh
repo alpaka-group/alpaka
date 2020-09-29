@@ -29,7 +29,7 @@ source ./script/set.sh
 # @endcode
 function env2cmake()
 {
-    if [ ! -z "${1+x}" ] ; then
+    if [ ! -z "${!1}" ] ; then
         echo -n "-D$1=${!1}"
     fi
 }
