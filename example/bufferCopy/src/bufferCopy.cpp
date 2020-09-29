@@ -47,7 +47,7 @@ struct PrintBufferKernel
     -> void
     {
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
         auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
@@ -87,7 +87,7 @@ struct TestBufferKernel
     -> void
     {
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
         auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
@@ -115,7 +115,7 @@ struct FillBufferKernel
     -> void
     {
         auto const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
         auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
             globalThreadIdx,
@@ -190,19 +190,19 @@ auto main()
     using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerGrid(Vec::all(static_cast<Idx>(10)));
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
-    WorkDiv const devWorkDiv = alpaka::workdiv::getValidWorkDiv<Acc>(
+    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
+    WorkDiv const devWorkDiv = alpaka::getValidWorkDiv<Acc>(
         devAcc,
         threadsPerGrid,
         elementsPerThread,
         false,
-        alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted);
-    WorkDiv const hostWorkDiv = alpaka::workdiv::getValidWorkDiv<Host>(
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
+    WorkDiv const hostWorkDiv = alpaka::getValidWorkDiv<Host>(
         devHost,
         threadsPerGrid,
         elementsPerThread,
         false,
-        alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted);
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Create host and device buffers
     //

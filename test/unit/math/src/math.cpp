@@ -94,7 +94,7 @@ struct TestTemplate
 
         using Dim = alpaka::dim::DimInt< 1u >;
         using Idx = std::size_t;
-        using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
+        using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
         using QueueAcc = alpaka::test::queue::DefaultQueue< DevAcc >;
         using TArgsItem = alpaka::test::unit::math::ArgsItem<TData, TFunctor::arity>;
 
@@ -126,12 +126,12 @@ struct TestTemplate
         Results results{ devAcc };
 
         WorkDiv const workDiv{
-            alpaka::workdiv::getValidWorkDiv< TAcc >(
+            alpaka::getValidWorkDiv< TAcc >(
                 devAcc,
                 sizeExtent,
                 elementsPerThread,
                 false,
-                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted
+                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted
             )};
         // SETUP COMPLETED.
 

@@ -152,7 +152,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         class TaskKernelGpuUniformCudaHipRt final :
-            public workdiv::WorkDivMembers<TDim, TIdx>
+            public WorkDivMembers<TDim, TIdx>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -162,7 +162,7 @@ namespace alpaka
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs && ... args) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
+                    WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
                     m_kernelFnObj(kernelFnObj),
                     m_args(std::forward<TArgs>(args)...)
             {
@@ -309,11 +309,11 @@ namespace alpaka
                     //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
                     auto const gridBlockExtent(
-                        workdiv::getWorkDiv<Grid, Blocks>(task));
+                        getWorkDiv<Grid, Blocks>(task));
                     auto const blockThreadExtent(
-                        workdiv::getWorkDiv<Block, Threads>(task));
+                        getWorkDiv<Block, Threads>(task));
                     auto const threadElemExtent(
-                        workdiv::getWorkDiv<Thread, Elems>(task));
+                        getWorkDiv<Thread, Elems>(task));
 
                     dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
                     dim3 const blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
@@ -328,7 +328,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!workdiv::isValidWorkDiv<TAcc>(getDev(queue), task))
+                    if(!isValidWorkDiv<TAcc>(getDev(queue), task))
                     {
                         throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                     }
@@ -449,11 +449,11 @@ namespace alpaka
                     //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
                     auto const gridBlockExtent(
-                        workdiv::getWorkDiv<Grid, Blocks>(task));
+                        getWorkDiv<Grid, Blocks>(task));
                     auto const blockThreadExtent(
-                        workdiv::getWorkDiv<Block, Threads>(task));
+                        getWorkDiv<Block, Threads>(task));
                     auto const threadElemExtent(
-                        workdiv::getWorkDiv<Thread, Elems>(task));
+                        getWorkDiv<Thread, Elems>(task));
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
@@ -473,7 +473,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!workdiv::isValidWorkDiv<TAcc>(getDev(queue), task))
+                    if(!isValidWorkDiv<TAcc>(getDev(queue), task))
                     {
                         throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                     }

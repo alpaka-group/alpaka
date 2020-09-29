@@ -73,7 +73,7 @@ namespace alpaka
                         if(pitch[0] == 0)
                         {
                             return kernel::createTaskKernel<acc::AccOmp5<TDim,Idx>>(
-                                    workdiv::WorkDivMembers<TDim, Idx>(
+                                    WorkDivMembers<TDim, Idx>(
                                         Vec<TDim, Idx>::zeros(),
                                         Vec<TDim, Idx>::zeros(),
                                         Vec<TDim, Idx>::zeros()),
@@ -91,13 +91,13 @@ namespace alpaka
                         auto elementsPerThread = Vec<TDim, Idx>::all(static_cast<Idx>(1u));
                         elementsPerThread[lastDim] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
-                        workdiv::WorkDivMembers<TDim, Idx> const workDiv(
-                            workdiv::getValidWorkDiv<acc::AccOmp5<TDim,Idx>>(
+                        WorkDivMembers<TDim, Idx> const workDiv(
+                            getValidWorkDiv<acc::AccOmp5<TDim,Idx>>(
                                 getDev(view),
                                 byteExtent,
                                 elementsPerThread,
                                 false,
-                                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+                                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
                         return
                             kernel::createTaskKernel<acc::AccOmp5<TDim,Idx>>(
                                     workDiv,

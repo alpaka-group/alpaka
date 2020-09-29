@@ -71,7 +71,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccCpuOmp2Threads final :
-            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public WorkDivMembers<TDim, TIdx>,
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtOmp<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -106,7 +106,7 @@ namespace alpaka
             ALPAKA_FN_HOST AccCpuOmp2Threads(
                 TWorkDiv const & workDiv,
                 std::size_t const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TIdx>(),
                     atomic::AtomicHierarchy<

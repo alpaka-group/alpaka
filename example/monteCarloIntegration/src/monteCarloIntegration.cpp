@@ -70,7 +70,7 @@ struct Kernel
         auto const globalThreadIdx = alpaka::idx::getIdx<
             alpaka::Grid,
             alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::workdiv::getWorkDiv<
+        auto const globalThreadExtent = alpaka::getWorkDiv<
             alpaka::Grid,
             alpaka::Threads>(acc);
 
@@ -143,7 +143,7 @@ auto main() -> int
         uint32_t,
         Dim,
         Idx>;
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<
+    using WorkDiv = alpaka::WorkDivMembers<
         Dim,
         Idx>;
     // Problem parameter.
@@ -152,12 +152,12 @@ auto main() -> int
     constexpr size_t numThreads = 100u; // Kernel will decide numCalcPerThread.
     constexpr size_t numAlpakaElementsPerThread = 1;
     WorkDiv workdiv{
-        alpaka::workdiv::getValidWorkDiv<Acc>(
+        alpaka::getValidWorkDiv<Acc>(
             devAcc,
             Vec(numThreads),
             Vec(numAlpakaElementsPerThread),
             false,
-            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted)};
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
 
     // Setup buffer.
     BufHost bufHost{

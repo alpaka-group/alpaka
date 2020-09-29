@@ -55,7 +55,7 @@ public:
             "The AxpyKernel expects 1-dimensional indices!");
 
         auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
+        auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
         auto const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
         if(threadFirstElemIdx < numElements)
@@ -113,13 +113,13 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
         numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::workdiv::WorkDivMembers<Dim, Idx> const workDiv(
-        alpaka::workdiv::getValidWorkDiv<Acc>(
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(
+        alpaka::getValidWorkDiv<Acc>(
             devAcc,
             extent,
             static_cast<Idx>(3u),
             false,
-            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     std::cout
         << "AxpyKernel("

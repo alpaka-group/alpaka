@@ -72,7 +72,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccGpuUniformCudaHipRt :
-            public workdiv::WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
+            public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
             public idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
             public idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -95,7 +95,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             __device__ AccGpuUniformCudaHipRt(
                 Vec<TDim, TIdx> const & threadElemExtent) :
-                    workdiv::WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent),
+                    WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent),
                     idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>(),
                     idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>(),
                     atomic::AtomicHierarchy<

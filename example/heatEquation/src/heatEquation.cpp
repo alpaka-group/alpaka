@@ -135,17 +135,17 @@ auto main( ) -> int
         Dim,
         Idx
     > const extent { numNodesX };
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<
+    using WorkDiv = alpaka::WorkDivMembers<
         Dim,
         Idx
     >;
     auto workdiv = WorkDiv{
-        alpaka::workdiv::getValidWorkDiv< Acc >(
+        alpaka::getValidWorkDiv< Acc >(
             devAcc,
             extent,
             elemPerThread,
             false,
-            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted
         )
     };
 

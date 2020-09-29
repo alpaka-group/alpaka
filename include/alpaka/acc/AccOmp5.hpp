@@ -67,7 +67,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccOmp5 final :
-            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public WorkDivMembers<TDim, TIdx>,
             public idx::gb::IdxGbLinear<TDim, TIdx>,
             public idx::bt::IdxBtOmp<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -104,7 +104,7 @@ namespace alpaka
                 Vec<TDim, TIdx> const & threadElemExtent,
                 TIdx const & gridBlockIdx,
                 std::size_t const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
+                    WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
                     idx::gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TIdx>(),
                     atomic::AtomicHierarchy<

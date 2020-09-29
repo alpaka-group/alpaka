@@ -24,7 +24,7 @@
 using Dim = alpaka::dim::DimInt<1u>;
 using Idx = uint64_t;
 using Extent = uint64_t;
-using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Extent>;
+using WorkDiv = alpaka::WorkDivMembers<Dim, Extent>;
 
 //-----------------------------------------------------------------------------
 //! Returns the supplied number or the maxumim number of threads per block for a

@@ -52,7 +52,7 @@ namespace alpaka
                 {
                     using Idx = typename idx::traits::IdxType<TExtent>::type;
                     auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
-                    auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
+                    auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
                     auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
                     auto idx = idx::mapIdxPitchBytes<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
                     constexpr auto lastDim = dim::Dim<TAcc>::value - 1;

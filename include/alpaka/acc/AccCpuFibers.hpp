@@ -69,7 +69,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccCpuFibers final :
-            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public WorkDivMembers<TDim, TIdx>,
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -104,7 +104,7 @@ namespace alpaka
             ALPAKA_FN_HOST AccCpuFibers(
                 TWorkDiv const & workDiv,
                 std::size_t const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices),
                     atomic::AtomicHierarchy<
@@ -118,7 +118,7 @@ namespace alpaka
                         [this](){block::syncBlockThreads(*this);},
                         [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
                     block::BlockSyncBarrierFiber<TIdx>(
-                        workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
+                        getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStdLib(),
                     time::TimeStdLib(),
                     m_gridBlockIdx(Vec<TDim, TIdx>::zeros())

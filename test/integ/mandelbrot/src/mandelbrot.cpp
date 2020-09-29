@@ -351,13 +351,13 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
         static_cast<Idx>(numCols));
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::workdiv::WorkDivMembers<Dim, Idx> const workDiv(
-        alpaka::workdiv::getValidWorkDiv<Acc>(
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(
+        alpaka::getValidWorkDiv<Acc>(
             devAcc,
             extent,
             alpaka::Vec<Dim, Idx>::ones(),
             false,
-            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     std::cout
         << "MandelbrotKernel("

@@ -74,7 +74,7 @@ public:
         auto const & blockThreadIdxY(blockThreadIdx[0u]);
 
         // The block threads extent.
-        auto const blockThreadExtent(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
+        auto const blockThreadExtent(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
         auto const & blockThreadExtentX(blockThreadExtent[1u]);
         auto const & blockThreadExtentY(blockThreadExtent[0u]);
         //ALPAKA_ASSERT(blockThreadExtentX == blockThreadExtentY);
@@ -255,13 +255,13 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
         static_cast<Idx>(n));
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::workdiv::WorkDivMembers<Dim, Idx> const workDiv(
-        alpaka::workdiv::getValidWorkDiv<Acc>(
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(
+        alpaka::getValidWorkDiv<Acc>(
             devAcc,
             extentC,
             alpaka::Vec<Dim, Idx>::ones(),
             false,
-            alpaka::workdiv::GridBlockExtentSubDivRestrictions::EqualExtent));
+            alpaka::GridBlockExtentSubDivRestrictions::EqualExtent));
 
     std::cout
         << "MatMulKernel("
