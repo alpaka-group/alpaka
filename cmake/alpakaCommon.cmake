@@ -358,14 +358,6 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     target_compile_options(alpaka INTERFACE "-save-temps")
                 endif()
 
-                # When libstdc++ is used and -std=gnu++XX is set, we get the following compile error:
-                # /usr/lib/gcc/x86_64-linux-gnu/5.5.0/../../../../include/c++/5.5.0/type_traits:311:39: error: __float128 is not supported on this target struct __is_floating_point_helper<__float128>
-                # Clang doesn't support the __float128 type (at least when building CUDA device code)
-                # * Due to the minimum requirement to compile with C++14 and because extensions are enabled by default by CMake, it adds -std=gnu++14 instead of -std=c++14 to the command line.
-                #   Due to alpaka being an INTERFACE library (header-only) we are not allowed to set CXX_EXTENSIONS to OFF and transitively disable extensions for inherited targets.
-                # * Defining __float128 on the command line is the least invasive workaround found here: https://bugs.llvm.org/show_bug.cgi?id=13530#c6
-                target_compile_definitions(alpaka INTERFACE "__float128=void")
-
                 # CMake 3.15 does not provide the `--std=c++*` argument to clang anymore.
                 # It is not necessary for basic c++ compilation because clangs default is already higher, but CUDA code compiled with -x cuda still defaults to c++98.
                 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
