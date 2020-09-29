@@ -55,7 +55,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         class TaskKernelOmp5 final :
-            public workdiv::WorkDivMembers<TDim, TIdx>
+            public WorkDivMembers<TDim, TIdx>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ namespace alpaka
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs && ... args) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
+                    WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
                     m_kernelFnObj(kernelFnObj),
                     m_args(std::forward<TArgs>(args)...)
             {
@@ -95,11 +95,11 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 auto const gridBlockExtent(
-                    workdiv::getWorkDiv<Grid, Blocks>(*this));
+                    getWorkDiv<Grid, Blocks>(*this));
                 auto const blockThreadExtent(
-                    workdiv::getWorkDiv<Block, Threads>(*this));
+                    getWorkDiv<Block, Threads>(*this));
                 auto const threadElemExtent(
-                    workdiv::getWorkDiv<Thread, Elems>(*this));
+                    getWorkDiv<Thread, Elems>(*this));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 std::cout << "m_gridBlockExtent=" << this->m_gridBlockExtent << "\tgridBlockExtent=" << gridBlockExtent << std::endl;

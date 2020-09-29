@@ -44,7 +44,7 @@ public:
             "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
-        Idx const blockThreadCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the dynamically allocated shared memory.
         Val * const pBlockShared(alpaka::block::dyn::getMem<Val>(acc));
@@ -166,13 +166,13 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
         devAcc);
 
     // Set the grid blocks extent.
-    alpaka::workdiv::WorkDivMembers<Dim, Idx> const workDiv(
-        alpaka::workdiv::getValidWorkDiv<Acc>(
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(
+        alpaka::getValidWorkDiv<Acc>(
             devAcc,
             numElements,
             static_cast<Idx>(1u),
             false,
-            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     std::cout
         << "SharedMemKernel("
@@ -182,9 +182,9 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
         << ")" << std::endl;
 
     Idx const gridBlocksCount(
-        alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
+        alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
     Idx const blockThreadCount(
-        alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
+        alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
 
     // An array for the return values calculated by the blocks.
     std::vector<Val> blockRetVals(static_cast<std::size_t>(gridBlocksCount));

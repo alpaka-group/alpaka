@@ -155,7 +155,7 @@ namespace alpaka
                 {
                     return
                         idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)
-                        * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
+                        * getWorkDiv<origin::Block, unit::Threads>(workDiv)
                         + idx::getIdx<origin::Block, unit::Threads>(idx, workDiv);
                 }
             };
@@ -188,7 +188,7 @@ namespace alpaka
             TGridThreadIdx const & gridThreadIdx)
         -> Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
         {
-            auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
+            auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
             return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx, threadElemExtent);
         }
         //-----------------------------------------------------------------------------

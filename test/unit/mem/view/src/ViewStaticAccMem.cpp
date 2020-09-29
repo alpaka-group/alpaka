@@ -51,7 +51,7 @@ struct StaticDeviceMemoryTestKernel
         TElem const * const pConstantMem) const
     {
         auto const gridThreadExtent =
-            alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+            alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridThreadIdx =
             alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
 

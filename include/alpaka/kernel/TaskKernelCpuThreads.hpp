@@ -53,7 +53,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         class TaskKernelCpuThreads final :
-            public workdiv::WorkDivMembers<TDim, TIdx>
+            public WorkDivMembers<TDim, TIdx>
         {
         private:
             //#############################################################################
@@ -86,7 +86,7 @@ namespace alpaka
                 TWorkDiv && workDiv,
                 TKernelFnObj const & kernelFnObj,
                 TArgs && ... args) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
+                    WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
                     m_kernelFnObj(kernelFnObj),
                     m_args(std::forward<TArgs>(args)...)
             {
@@ -113,11 +113,11 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 auto const gridBlockExtent(
-                    workdiv::getWorkDiv<Grid, Blocks>(*this));
+                    getWorkDiv<Grid, Blocks>(*this));
                 auto const blockThreadExtent(
-                    workdiv::getWorkDiv<Block, Threads>(*this));
+                    getWorkDiv<Block, Threads>(*this));
                 auto const threadElemExtent(
-                    workdiv::getWorkDiv<Thread, Elems>(*this));
+                    getWorkDiv<Thread, Elems>(*this));
 
                 // Get the size of the block shared dynamic memory.
                 auto const blockSharedMemDynSizeBytes(
@@ -139,7 +139,7 @@ namespace alpaka
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
                 acc::AccCpuThreads<TDim, TIdx> acc(
-                    *static_cast<workdiv::WorkDivMembers<TDim, TIdx> const *>(this),
+                    *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
                 auto const blockThreadCount(blockThreadExtent.prod());

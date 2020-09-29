@@ -66,7 +66,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccCpuThreads final :
-            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public WorkDivMembers<TDim, TIdx>,
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -101,7 +101,7 @@ namespace alpaka
             ALPAKA_FN_HOST AccCpuThreads(
                 TWorkDiv const & workDiv,
                 std::size_t const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap),
                     atomic::AtomicHierarchy<
@@ -115,7 +115,7 @@ namespace alpaka
                         [this](){block::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
                     block::BlockSyncBarrierThread<TIdx>(
-                        workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
+                        getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStdLib(),
                     time::TimeStdLib(),
                     m_gridBlockIdx(Vec<TDim, TIdx>::zeros())

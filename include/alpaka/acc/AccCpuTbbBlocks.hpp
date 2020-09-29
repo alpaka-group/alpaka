@@ -62,7 +62,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class AccCpuTbbBlocks final :
-            public workdiv::WorkDivMembers<TDim, TIdx>,
+            public WorkDivMembers<TDim, TIdx>,
             public idx::gb::IdxGbRef<TDim, TIdx>,
             public idx::bt::IdxBtZero<TDim, TIdx>,
             public atomic::AtomicHierarchy<
@@ -97,7 +97,7 @@ namespace alpaka
             ALPAKA_FN_HOST AccCpuTbbBlocks(
                 TWorkDiv const & workDiv,
                 std::size_t const & blockSharedMemDynSizeBytes) :
-                    workdiv::WorkDivMembers<TDim, TIdx>(workDiv),
+                    WorkDivMembers<TDim, TIdx>(workDiv),
                     idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TIdx>(),
                     atomic::AtomicHierarchy<

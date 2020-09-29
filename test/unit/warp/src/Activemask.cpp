@@ -55,7 +55,7 @@ public:
         ALPAKA_CHECK(*success, warpExtent > 1);
 
         // Test relies on having a single warp per thread block
-        auto const blockExtent = alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
+        auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const localThreadIdx = alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const threadIdxInWarp = static_cast<std::uint64_t>(

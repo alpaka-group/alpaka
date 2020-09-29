@@ -56,7 +56,7 @@ public:
             "The VectorAddKernel expects 1-dimensional indices!");
 
         TIdx const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        TIdx const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
+        TIdx const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
         TIdx const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
         if(threadFirstElemIdx < numElements)
@@ -121,13 +121,13 @@ auto main()
     alpaka::Vec<Dim, Idx> const extent(numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    alpaka::workdiv::WorkDivMembers<Dim, Idx> const workDiv(
-        alpaka::workdiv::getValidWorkDiv<Acc>(
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(
+        alpaka::getValidWorkDiv<Acc>(
             devAcc,
             extent,
             elementsPerThread,
             false,
-            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     // Define the buffer element type
     using Data = std::uint32_t;

@@ -21,7 +21,7 @@
 //! When the CUDA accelerator is used, the following error is triggered:
 //! /alpaka/include/alpaka/workdiv/Traits.hpp(...): error: calling a __device__ function("getWorkDiv") from a __host__ __device__ function("getWorkDiv") is not allowed
 //! The kernel function objects function call operator is attributed with ALPAKA_FN_ACC which is identical to __host__ __device__.
-//! The 'alpaka::workdiv::getWorkDiv<...>(acc)' function that is called has the ALPAKA_FN_HOST_ACC attribute (also equal to __host__ __device__).
+//! The 'alpaka::getWorkDiv<...>(acc)' function that is called has the ALPAKA_FN_HOST_ACC attribute (also equal to __host__ __device__).
 //! The underlying trait calls the CUDA specialized method which has the __device__ attribute.
 //! Because this call chain does not contain any templates and therefore no calls depending on input types,
 //! everything can be resolved at the first time the template is parsed which results in the given error.
@@ -52,7 +52,7 @@ struct KernelNoTemplateCpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -82,7 +82,7 @@ struct KernelNoTemplateGpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -113,7 +113,7 @@ struct KernelWithoutTemplateParamCpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -145,7 +145,7 @@ struct KernelWithoutTemplateParamGpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 

@@ -39,7 +39,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByValue, TExpected>::value,
@@ -127,7 +127,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByPointer, TExpectedFirst>::value,

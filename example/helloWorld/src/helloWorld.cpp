@@ -44,7 +44,7 @@ struct HelloWorldKernel
         // getIdx() and getWorkDiv(). In this example these
         // values are obtained for a global scope.
         Vec const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
-        Vec const globalThreadExtent = alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
+        Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
         // Map the three dimensional thread index into a
         // one dimensional thread index space. We call it
@@ -167,13 +167,13 @@ auto main()
     using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerGrid(Vec::all(static_cast<Idx>(8)));
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv = alpaka::workdiv::getValidWorkDiv<Acc>(
+    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
+    WorkDiv const workDiv = alpaka::getValidWorkDiv<Acc>(
         devAcc,
         threadsPerGrid,
         elementsPerThread,
         false,
-        alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted);
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted);
 
     // Instantiate the kernel function object
     //

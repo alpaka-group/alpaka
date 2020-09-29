@@ -35,7 +35,7 @@ TEMPLATE_LIST_TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]", alpaka::tes
         {
             ALPAKA_CHECK(
                 *success,
-                static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+                static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
         };
 
     REQUIRE(fixture(kernel));

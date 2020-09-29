@@ -31,7 +31,7 @@ namespace alpaka
             using DevAcc = alpaka::Dev<Acc>;
             using PltfAcc = alpaka::Pltf<DevAcc>;
             using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
-            using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
+            using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
         public:
             //-----------------------------------------------------------------------------
@@ -43,12 +43,12 @@ namespace alpaka
                     m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u)),
                     m_queue(m_devAcc),
                     m_workDiv(
-                        alpaka::workdiv::getValidWorkDiv<Acc>(
+                        alpaka::getValidWorkDiv<Acc>(
                             m_devAcc,
                             extent,
                             alpaka::Vec<Dim, Idx>::ones(),
                             false,
-                            alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted))
+                            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted))
             {}
             //-----------------------------------------------------------------------------
             KernelExecutionFixture(

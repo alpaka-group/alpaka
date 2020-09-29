@@ -60,7 +60,7 @@ TEST_CASE("queueCollective", "[queue]")
     Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
     Vec const blocksPerGrid(results.size());
 
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
+    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     WorkDiv const workDiv(
         blocksPerGrid,
         threadsPerBlock,
@@ -109,7 +109,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
     Vec const blocksPerGrid(results.size());
 
-    using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;
+    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     WorkDiv const workDiv(
         blocksPerGrid,
         threadsPerBlock,

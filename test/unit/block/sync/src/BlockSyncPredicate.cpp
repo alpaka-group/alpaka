@@ -31,7 +31,7 @@ public:
 
         // Get the index of the current thread within the block and the block extent and map them to 1D.
         auto const blockThreadIdx(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc));
-        auto const blockThreadExtent(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
+        auto const blockThreadExtent(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
         auto const blockThreadIdx1D(alpaka::idx::mapIdx<1u>(blockThreadIdx, blockThreadExtent)[0u]);
         auto const blockThreadExtent1D(blockThreadExtent.prod());
 

@@ -98,7 +98,7 @@ namespace alpaka
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return idx::mapIdx<TDim::value>(
                         Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
-                        workdiv::getWorkDiv<Block, Threads>(workDiv));
+                        getWorkDiv<Block, Threads>(workDiv));
                 }
             };
 
