@@ -99,5 +99,5 @@ var searchData=
   ['disjunctionimpl_3c_20b1_2c_20bn_2e_2e_2e_20_3e',['DisjunctionImpl&lt; B1, Bn... &gt;',['../structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl_3_01B1_00_01Bn_8_8_8_01_4.html',1,'alpaka::meta::detail']]],
   ['divup',['divUp',['../namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#af669ac7360f05f8d165c25a19f68b71c',1,'alpaka::mem::view::uniform_cuda_hip::detail']]],
   ['dstsize',['DstSize',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html#a7db607d2df61c357bfecb1516a9da351',1,'alpaka::mem::view::cpu::detail::TaskCopyCpuBase::DstSize()'],['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpuBase.html#ac0e25d27bf1b565f98ddec679dd18c31',1,'alpaka::mem::view::cpu::detail::TaskSetCpuBase::DstSize()']]],
-  ['dynmembegin',['dynMemBegin',['../classalpaka_1_1block_1_1shared_1_1dyn_1_1BlockSharedMemDynMember.html#a9b6f6bfa401cc2b482162ee2361a8430',1,'alpaka::block::shared::dyn::BlockSharedMemDynMember']]]
+  ['dynmembegin',['dynMemBegin',['../classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynMember.html#a82ac096cf1d9cfefbf91da9b437e7efa',1,'alpaka::block::dyn::BlockSharedMemDynMember']]]
 ];

@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4 =
-[
-    [ "allocVar", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#a253141b3cf7dfc4292c7908079bf0856", null ]
-];

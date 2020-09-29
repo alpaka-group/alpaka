@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4 =
-[
-    [ "getMem", "structalpaka_1_1block_1_1shared_1_1dyn_1_1traits_1_1GetMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4.html#a0d9b9f6ab90919ab099b5e04acd9746f", null ]
-];

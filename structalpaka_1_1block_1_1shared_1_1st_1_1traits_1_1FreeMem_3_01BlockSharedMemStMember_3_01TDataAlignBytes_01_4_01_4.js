@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4 =
-[
-    [ "freeMem", "structalpaka_1_1block_1_1shared_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html#ab344a5f0932ab1329cb438e496b7be16", null ]
-];

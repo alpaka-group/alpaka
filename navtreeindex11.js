@@ -1,9 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1idx_1_1traits_1_1IdxType_3_01workdiv_1_1WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,12,3,48],
-"structalpaka_1_1idx_1_1traits_1_1IdxType_3_01workdiv_1_1WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html#a5b47fe289c451fa624e54d7e629abb87":[3,0,0,12,3,48,0],
-"structalpaka_1_1idx_1_1traits_1_1IdxType_3_01workdiv_1_1WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,12,3,49],
-"structalpaka_1_1idx_1_1traits_1_1IdxType_3_01workdiv_1_1WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#ab5c78a1055d6f9fdeeaf759f7a569272":[3,0,0,12,3,49,0],
 "structalpaka_1_1intrinsic_1_1ConceptIntrinsic.html":[3,0,0,13,1],
 "structalpaka_1_1intrinsic_1_1traits_1_1Ffs.html":[3,0,0,13,0,0],
 "structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicCpu_01_4.html":[3,0,0,13,0,1],
@@ -249,5 +245,9 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1math_1_1traits_1_1Tan_3_01TanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_660fa124a75d295c4cd9e5f10f245afc.html#aa36fab496221f748aee298f2e91d1a5c":[3,0,0,15,0,98,0],
 "structalpaka_1_1math_1_1traits_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_0a507f047b14f0574b6dd9e6dd43406a.html":[3,0,0,15,0,100],
 "structalpaka_1_1math_1_1traits_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_0a507f047b14f0574b6dd9e6dd43406a.html#a7498ea144b3fb9bdf22dc41e027a4f35":[3,0,0,15,0,100,0],
-"structalpaka_1_1math_1_1traits_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01float_01_4.html":[3,0,0,15,0,99]
+"structalpaka_1_1math_1_1traits_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01float_01_4.html":[3,0,0,15,0,99],
+"structalpaka_1_1math_1_1traits_1_1Tan_3_01TanUniformCudaHipBuiltIn_00_01float_01_4.html#a82e10b944a84fd85111beb5a3cd75201":[3,0,0,15,0,99,0],
+"structalpaka_1_1math_1_1traits_1_1Trunc.html":[3,0,0,15,0,101],
+"structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01681590f8fb525c63f8b888402a73e238.html":[3,0,0,15,0,102],
+"structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01681590f8fb525c63f8b888402a73e238.html#a911f63f64f5f695ea8a720ec1587a7e6":[3,0,0,15,0,102,0]
 };

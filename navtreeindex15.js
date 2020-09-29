@@ -1,9 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"tinymt32_8h_source.html":[4,0,0,0,19,0,1],
-"todo.html":[1],
-"uniformCudaHip_2Copy_8hpp.html":[4,0,0,0,14,1,2,0],
-"uniformCudaHip_2Copy_8hpp.html#a510ff69f3b44c1fb2509f80b421c0e16":[4,0,0,0,14,1,2,0,16],
 "uniformCudaHip_2Copy_8hpp.html#a6a5e53d5b071b1c14a7880a890193c4c":[4,0,0,0,14,1,2,0,13],
 "uniformCudaHip_2Copy_8hpp.html#a9214f00d091b88d0e3ca1f7c6466bfb7":[4,0,0,0,14,1,2,0,18],
 "uniformCudaHip_2Copy_8hpp.html#aa1a1043ec13b042397a78bd5d26fb65f":[4,0,0,0,14,1,2,0,17],
