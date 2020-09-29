@@ -49,7 +49,7 @@ TEMPLATE_LIST_TEST_CASE( "getSize", "[warp]", alpaka::test::acc::TestAccs)
     auto const expectedWarpSize = static_cast<int>(alpaka::getWarpSize(dev));
     Idx const gridThreadExtentPerDim = 8;
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
+        alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
     GetSizeTestKernel kernel;
     REQUIRE(
         fixture(

@@ -83,11 +83,11 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto getIdx(
                     idx::bt::IdxBtZero<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     alpaka::ignore_unused(idx);
                     alpaka::ignore_unused(workDiv);
-                    return vec::Vec<TDim, TIdx>::zeros();
+                    return Vec<TDim, TIdx>::zeros();
                 }
             };
         }

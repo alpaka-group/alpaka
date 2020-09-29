@@ -179,8 +179,8 @@ namespace alpaka
             //! The function executed for each grid block.
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuFibers<TDim, TIdx> & acc,
-                vec::Vec<TDim, TIdx> const & gridBlockIdx,
-                vec::Vec<TDim, TIdx> const & blockThreadExtent,
+                Vec<TDim, TIdx> const & gridBlockIdx,
+                Vec<TDim, TIdx> const & blockThreadExtent,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 std::decay_t<TArgs> const & ... args)
@@ -229,11 +229,11 @@ namespace alpaka
                 acc::AccCpuFibers<TDim, TIdx> & acc,
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 std::vector<boost::fibers::future<void>> & futuresInBlock,
-                vec::Vec<TDim, TIdx> const & blockThreadIdx,
+                Vec<TDim, TIdx> const & blockThreadIdx,
                 FiberPool & fiberPool,
 #else
                 std::vector<boost::fibers::future<void>> &,
-                vec::Vec<TDim, TIdx> const & blockThreadIdx,
+                Vec<TDim, TIdx> const & blockThreadIdx,
                 FiberPool &,
 #endif
                 TKernelFnObj const & kernelFnObj,
@@ -265,7 +265,7 @@ namespace alpaka
             //! The fiber entry point.
             ALPAKA_FN_HOST static auto blockThreadFiberFn(
                 acc::AccCpuFibers<TDim, TIdx> & acc,
-                vec::Vec<TDim, TIdx> const & blockThreadIdx,
+                Vec<TDim, TIdx> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 std::decay_t<TArgs> const & ... args)
             -> void

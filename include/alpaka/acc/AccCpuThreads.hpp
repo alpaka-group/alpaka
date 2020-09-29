@@ -118,7 +118,7 @@ namespace alpaka
                         workdiv::getWorkDiv<Block, Threads>(workDiv).prod()),
                     rand::RandStdLib(),
                     time::TimeStdLib(),
-                    m_gridBlockIdx(vec::Vec<TDim, TIdx>::zeros())
+                    m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
             {}
 
         public:
@@ -137,7 +137,7 @@ namespace alpaka
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
             typename idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
-            vec::Vec<TDim, TIdx> mutable m_gridBlockIdx;                   //!< The index of the currently executed block.
+            Vec<TDim, TIdx> mutable m_gridBlockIdx;                   //!< The index of the currently executed block.
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
@@ -182,15 +182,15 @@ namespace alpaka
                         // m_multiProcessorCount
                         static_cast<TIdx>(1),
                         // m_gridBlockExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_gridBlockCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_blockThreadExtentMax
-                        vec::Vec<TDim, TIdx>::all(blockThreadCountMax),
+                        Vec<TDim, TIdx>::all(blockThreadCountMax),
                         // m_blockThreadCountMax
                         blockThreadCountMax,
                         // m_threadElemExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
                         // m_threadElemCountMax
                         std::numeric_limits<TIdx>::max(),
                         // m_sharedMemSizeBytes

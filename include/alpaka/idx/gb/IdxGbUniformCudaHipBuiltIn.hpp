@@ -102,14 +102,14 @@ namespace alpaka
                 __device__ static auto getIdx(
                     idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx> const & idx,
                     TWorkDiv const &)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     alpaka::ignore_unused(idx);
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return vec::cast<TIdx>(offset::getOffsetVecEnd<TDim>(blockIdx));
+                    return cast<TIdx>(offset::getOffsetVecEnd<TDim>(blockIdx));
 #else
                     return offset::getOffsetVecEnd<TDim>(
-                        vec::Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
+                        Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
                             static_cast<TIdx>(hipBlockIdx_z),
                             static_cast<TIdx>(hipBlockIdx_y),
                             static_cast<TIdx>(hipBlockIdx_x)));

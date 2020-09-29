@@ -60,7 +60,7 @@ namespace alpaka
         public:
             //-----------------------------------------------------------------------------
             __device__ AccGpuHipRt(
-                vec::Vec<TDim, TIdx> const & threadElemExtent) :
+                Vec<TDim, TIdx> const & threadElemExtent) :
                     AccGpuUniformCudaHipRt<TDim,TIdx>(threadElemExtent)
             {}
 

@@ -79,15 +79,15 @@ namespace alpaka
                             int const & iSrcDevice) :
                                 m_iDstDevice(iDstDevice),
                                 m_iSrcDevice(iSrcDevice),
-                                m_extent(vec::cast<size_t>(extent::getExtentVec(extent))),
-                                m_dstPitchBytes(vec::cast<size_t>(mem::view::getPitchBytesVec(viewDst))),
-                                m_srcPitchBytes(vec::cast<size_t>(mem::view::getPitchBytesVec(viewSrc))),
+                                m_extent(cast<size_t>(extent::getExtentVec(extent))),
+                                m_dstPitchBytes(cast<size_t>(mem::view::getPitchBytesVec(viewDst))),
+                                m_srcPitchBytes(cast<size_t>(mem::view::getPitchBytesVec(viewSrc))),
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            const auto dstExtent(vec::cast<size_t>(extent::getExtentVec(viewDst)));
-                            const auto srcExtent(vec::cast<size_t>(extent::getExtentVec(viewSrc)));
+                            const auto dstExtent(cast<size_t>(extent::getExtentVec(viewDst)));
+                            const auto srcExtent(cast<size_t>(extent::getExtentVec(viewSrc)));
                             for(auto i = static_cast<decltype(TDim::value)>(0u); i < TDim::value; ++i)
                             {
                                 ALPAKA_ASSERT(m_extent[i] <= dstExtent[i]);
@@ -114,9 +114,9 @@ namespace alpaka
 #endif
                         int m_iDstDevice;
                         int m_iSrcDevice;
-                        vec::Vec<TDim, size_t> m_extent;
-                        vec::Vec<TDim, size_t> m_dstPitchBytes;
-                        vec::Vec<TDim, size_t> m_srcPitchBytes;
+                        Vec<TDim, size_t> m_extent;
+                        Vec<TDim, size_t> m_dstPitchBytes;
+                        Vec<TDim, size_t> m_srcPitchBytes;
                         void * m_dstMemNative;
                         void const * m_srcMemNative;
 
@@ -135,11 +135,11 @@ namespace alpaka
                             if(m_extent.prod() > 0)
                             {
                                 // offsets == 0 by ptr shift (?)
-                                auto dstOffset(vec::Vec<TDim, size_t>::zeros());
-                                auto srcOffset(vec::Vec<TDim, size_t>::zeros());
+                                auto dstOffset(Vec<TDim, size_t>::zeros());
+                                auto srcOffset(Vec<TDim, size_t>::zeros());
 
-                                auto dstExtentFull(vec::Vec<TDim, size_t>::zeros());
-                                auto srcExtentFull(vec::Vec<TDim, size_t>::zeros());
+                                auto dstExtentFull(Vec<TDim, size_t>::zeros());
+                                auto srcExtentFull(Vec<TDim, size_t>::zeros());
 
                                 const size_t elementSize =
                                     ( m_dstPitchBytes[0]%sizeof(elem::Elem<TViewDst>) || m_srcPitchBytes[0]%sizeof(elem::Elem<TViewDst>) )

@@ -22,7 +22,7 @@ template<
     typename TIdx,
     typename TAcc,
     typename TData,
-    typename Vec = alpaka::vec::Vec<
+    typename Vec = alpaka::Vec<
         TDim,
         TIdx>>
 struct TestContainer
@@ -225,18 +225,18 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
     > slicingTest;
 
     auto const extents(
-        alpaka::vec::createVecFromIndexedFn<
+        alpaka::createVecFromIndexedFn<
             Dim,
             alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf
         >());
 
     auto const extentsSubView(
-        alpaka::vec::createVecFromIndexedFn<
+        alpaka::createVecFromIndexedFn<
             Dim,
             alpaka::test::CreateVecWithIdx<Idx>::template ForExtentSubView
         >());
     auto const offsets(
-        alpaka::vec::createVecFromIndexedFn<
+        alpaka::createVecFromIndexedFn<
             Dim,
             alpaka::test::CreateVecWithIdx<Idx>::template ForOffset
         >());
@@ -287,7 +287,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
             Dim::value,
             Dim1::value
         >(
-            alpaka::vec::Vec<
+            alpaka::Vec<
                 Dim1,
                 Idx
             >(i),

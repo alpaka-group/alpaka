@@ -55,8 +55,8 @@ namespace alpaka
             {
                 namespace detail
                 {
-                    using vec3D = alpaka::vec::Vec<alpaka::dim::DimInt<3u>, size_t>;
-                    using vec2D = alpaka::vec::Vec<alpaka::dim::DimInt<2u>, size_t>;
+                    using vec3D = alpaka::Vec<alpaka::dim::DimInt<3u>, size_t>;
+                    using vec2D = alpaka::Vec<alpaka::dim::DimInt<2u>, size_t>;
 
                     ///! copy 3D memory
                     ///
@@ -75,7 +75,7 @@ namespace alpaka
                         // blockDim.[y,z] is always 1 and is not needed for index calculations
                         // gridDim and blockIdx is already in alpaka index order [z,y,x]
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        alpaka::vec::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
+                        alpaka::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
                             blockIdx.x,
                             blockIdx.y,
                             blockIdx.z * blockDim.x + threadIdx.x);
@@ -83,7 +83,7 @@ namespace alpaka
                         size_t const bytePerBlock = sizeof(T) * blockDim.x;
                         size_t const bytePerRow = gridDim.z * bytePerBlock;
 #else
-                        alpaka::vec::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
+                        alpaka::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
                             hipBlockIdx_x,
                             hipBlockIdx_y,
                             hipBlockIdx_z * hipBlockDim_x + hipThreadIdx_x);

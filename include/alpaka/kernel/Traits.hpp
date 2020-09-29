@@ -81,8 +81,8 @@ namespace alpaka
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                     TKernelFnObj const & kernelFnObj,
-                    vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
-                    vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
+                    Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
+                    Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
                 -> std::size_t
                 {
@@ -119,8 +119,8 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
             TKernelFnObj const & kernelFnObj,
-            vec::Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
-            vec::Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
+            Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
+            Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
             TArgs const & ... args)
         -> std::size_t
         {

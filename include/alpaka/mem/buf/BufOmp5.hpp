@@ -73,9 +73,9 @@ namespace alpaka
                             typename TExtent>
                         ALPAKA_FN_HOST static auto calculatePitchesFromExtents(
                             TExtent const & extent)
-                        -> vec::Vec<TDim, TIdx>
+                        -> Vec<TDim, TIdx>
                         {
-                            vec::Vec<TDim, TIdx> pitchBytes(vec::Vec<TDim, TIdx>::all(0));
+                            Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
                             pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
                             for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
                             {
@@ -110,8 +110,8 @@ namespace alpaka
 
                     public:
                         DevOmp5 m_dev;
-                        vec::Vec<TDim, TIdx> m_extentElements;
-                        vec::Vec<TDim, TIdx> m_pitchBytes;
+                        Vec<TDim, TIdx> m_extentElements;
+                        Vec<TDim, TIdx> m_pitchBytes;
                         TElem* m_pMem;
 
                         BufOmp5Impl(const BufOmp5Impl&) = delete;
@@ -151,7 +151,7 @@ namespace alpaka
                 omp5::detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*() {return *m_spBufImpl;}
                 const omp5::detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*() const {return *m_spBufImpl;}
 
-                inline const vec::Vec<TDim, TIdx>& extentElements() const {return m_spBufImpl->m_extentElements;}
+                inline const Vec<TDim, TIdx>& extentElements() const {return m_spBufImpl->m_extentElements;}
 
             private:
                 std::shared_ptr<omp5::detail::BufOmp5Impl<TElem, TDim, TIdx>> m_spBufImpl;

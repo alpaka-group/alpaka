@@ -24,9 +24,9 @@ TEMPLATE_LIST_TEST_CASE( "mapIdxPitchBytes", "[idx]", alpaka::test::dim::TestDim
 {
     using Dim = TestType;
     using Idx = std::size_t;
-    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
 
-    auto const extentNd(alpaka::vec::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
+    auto const extentNd(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
 
     using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
     using Dev = alpaka::Dev<Acc>;

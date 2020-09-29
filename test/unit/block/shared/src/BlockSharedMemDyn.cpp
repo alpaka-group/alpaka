@@ -85,7 +85,7 @@ TEMPLATE_LIST_TEST_CASE( "sameNonNullAdress", "[blockSharedMemDyn]", alpaka::tes
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     BlockSharedMemDynTestKernel kernel;
 

@@ -74,9 +74,9 @@ namespace alpaka
                         {
                             return kernel::createTaskKernel<acc::AccOmp5<TDim,Idx>>(
                                     workdiv::WorkDivMembers<TDim, Idx>(
-                                        vec::Vec<TDim, Idx>::zeros(),
-                                        vec::Vec<TDim, Idx>::zeros(),
-                                        vec::Vec<TDim, Idx>::zeros()),
+                                        Vec<TDim, Idx>::zeros(),
+                                        Vec<TDim, Idx>::zeros(),
+                                        Vec<TDim, Idx>::zeros()),
                                     view::MemSetKernel(),
                                     byte,
                                     reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
@@ -88,7 +88,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
 #endif
-                        auto elementsPerThread = vec::Vec<TDim, Idx>::all(static_cast<Idx>(1u));
+                        auto elementsPerThread = Vec<TDim, Idx>::all(static_cast<Idx>(1u));
                         elementsPerThread[lastDim] = 4;
                         // Let alpaka calculate good block and grid sizes given our full problem extent
                         workdiv::WorkDivMembers<TDim, Idx> const workDiv(

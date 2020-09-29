@@ -159,7 +159,7 @@ namespace alpaka
                 "The values in the index_sequence have to be unique!");
 
             auto idx(
-                vec::Vec<dim::Dim<TExtentVec>, idx::Idx<TExtentVec>>::zeros());
+                Vec<dim::Dim<TExtentVec>, idx::Idx<TExtentVec>>::zeros());
 
             detail::NdLoop<
                 std::index_sequence<Tdims...>>

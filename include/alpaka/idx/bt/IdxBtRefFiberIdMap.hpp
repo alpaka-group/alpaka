@@ -36,7 +36,7 @@ namespace alpaka
             class IdxBtRefFiberIdMap : public concepts::Implements<ConceptIdxBt, IdxBtRefFiberIdMap<TDim, TIdx>>
             {
             public:
-                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, vec::Vec<TDim, TIdx>>;
+                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<TDim, TIdx>>;
 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST IdxBtRefFiberIdMap(
@@ -97,7 +97,7 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto getIdx(
                     idx::bt::IdxBtRefFiberIdMap<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     alpaka::ignore_unused(workDiv);
                     auto const fiberId(boost::this_fiber::get_id());

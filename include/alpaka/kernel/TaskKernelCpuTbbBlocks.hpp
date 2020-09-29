@@ -147,7 +147,7 @@ namespace alpaka
 
                          acc.m_gridBlockIdx =
                              idx::mapIdx<TDim::value>(
-                                 vec::Vec<dim::DimInt<1u>, TIdx>(
+                                 Vec<dim::DimInt<1u>, TIdx>(
                                      static_cast<TIdx>(i)
                                   ),
                                   gridBlockExtent

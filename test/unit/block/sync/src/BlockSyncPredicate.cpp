@@ -99,7 +99,7 @@ TEMPLATE_LIST_TEST_CASE( "synchronizePredicate", "[blockSync]", alpaka::test::ac
     // 4^Dim
     {
         alpaka::test::KernelExecutionFixture<Acc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(4u)));
+            alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(4u)));
 
         REQUIRE(
             fixture(
@@ -109,7 +109,7 @@ TEMPLATE_LIST_TEST_CASE( "synchronizePredicate", "[blockSync]", alpaka::test::ac
     // 1^Dim
     {
         alpaka::test::KernelExecutionFixture<Acc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
+            alpaka::Vec<Dim, Idx>::ones());
 
         REQUIRE(
             fixture(

@@ -135,15 +135,15 @@ namespace alpaka
                             using Dim1 = alpaka::dim::DimInt<1>;
                             using DimMin1 = alpaka::dim::DimInt<Dim::value - 1u>;
 
-                            vec::Vec<Dim1, Idx> const currentIdxDim1{m_currentIdx};
-                            vec::Vec<Dim, Idx> const currentIdxDimx(alpaka::idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
+                            Vec<Dim1, Idx> const currentIdxDim1{m_currentIdx};
+                            Vec<Dim, Idx> const currentIdxDimx(alpaka::idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
                             // [pz, py, px] -> [py, px]
-                            auto const pitchWithoutOutermost(vec::subVecEnd<DimMin1>(m_pitchBytes));
+                            auto const pitchWithoutOutermost(subVecEnd<DimMin1>(m_pitchBytes));
                             // [ElemSize]
-                            vec::Vec<Dim1, Idx> const elementSizeVec(static_cast<Idx>(sizeof(Elem)));
+                            Vec<Dim1, Idx> const elementSizeVec(static_cast<Idx>(sizeof(Elem)));
                             // [py, px] ++ [ElemSize] -> [py, px, ElemSize]
-                            vec::Vec<Dim, Idx> const dstPitchBytes(vec::concat(pitchWithoutOutermost, elementSizeVec));
+                            Vec<Dim, Idx> const dstPitchBytes(concat(pitchWithoutOutermost, elementSizeVec));
                             // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
                             auto const dimensionalOffsetsInByte(currentIdxDimx * dstPitchBytes);
                             // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
@@ -168,8 +168,8 @@ namespace alpaka
                     private:
                         Elem * const m_nativePtr;
                         Idx m_currentIdx;
-                        vec::Vec<Dim, Idx> const m_extents;
-                        vec::Vec<Dim, Idx> const m_pitchBytes;
+                        Vec<Dim, Idx> const m_extents;
+                        Vec<Dim, Idx> const m_pitchBytes;
                     };
 #if BOOST_COMP_GNUC
     #pragma GCC diagnostic pop

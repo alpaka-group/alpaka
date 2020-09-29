@@ -48,7 +48,7 @@ TEMPLATE_LIST_TEST_CASE( "stdFunctionKernelIsWorking", "[kernel]", alpaka::test:
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     const auto kernel = std::function<void(Acc const &, bool *, std::int32_t)>( kernelFn<Acc> );
     REQUIRE(fixture(kernel, 42));
@@ -62,7 +62,7 @@ TEMPLATE_LIST_TEST_CASE( "stdBindKernelIsWorking", "[kernel]", alpaka::test::acc
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     const auto kernel = std::bind( kernelFn<Acc>, std::placeholders::_1, std::placeholders::_2, 42 );
     REQUIRE(fixture(kernel));
@@ -83,7 +83,7 @@ TEMPLATE_LIST_TEST_CASE( "nvstdFunctionKernelIsWorking", "[kernel]", alpaka::tes
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     const auto kernel = nvstd::function<void(Acc const &, bool *, std::int32_t)>( kernelFn<Acc> );
     REQUIRE(fixture(kernel, 42));

@@ -36,7 +36,7 @@ namespace alpaka
             class IdxBtRefThreadIdMap : public concepts::Implements<ConceptIdxBt, IdxBtRefThreadIdMap<TDim, TIdx>>
             {
             public:
-                using ThreadIdToIdxMap = std::map<std::thread::id, vec::Vec<TDim, TIdx>>;
+                using ThreadIdToIdxMap = std::map<std::thread::id, Vec<TDim, TIdx>>;
 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST IdxBtRefThreadIdMap(
@@ -97,7 +97,7 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto getIdx(
                     idx::bt::IdxBtRefThreadIdMap<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     alpaka::ignore_unused(workDiv);
                     auto const threadId(std::this_thread::get_id());

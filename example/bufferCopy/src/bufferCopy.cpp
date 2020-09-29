@@ -187,7 +187,7 @@ auto main()
     HostQueue hostQueue(devHost);
 
     // Define the work division for kernels to be run on devAcc and devHost
-    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerGrid(Vec::all(static_cast<Idx>(10)));
     using WorkDiv = alpaka::workdiv::WorkDivMembers<Dim, Idx>;

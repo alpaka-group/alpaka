@@ -39,7 +39,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto getIdx(
             TIdx const & idx,
             TWorkDiv const & workDiv)
-        -> vec::Vec<dim::Dim<TWorkDiv>, idx::Idx<TIdx>>
+        -> Vec<dim::Dim<TWorkDiv>, idx::Idx<TIdx>>
         {
             return
                 traits::GetIdx<
@@ -59,7 +59,7 @@ namespace alpaka
             typename TIdxWorkDiv>
         ALPAKA_FN_HOST_ACC auto getIdx(
             TIdxWorkDiv const & idxWorkDiv)
-        -> vec::Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
+        -> Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
         {
             return
                 traits::GetIdx<
@@ -91,7 +91,7 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdxGb const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<dim::Dim<ImplementationBase>, idx::Idx<ImplementationBase>>
+                -> Vec<dim::Dim<ImplementationBase>, idx::Idx<ImplementationBase>>
                 {
                     return
                         traits::GetIdx<
@@ -122,7 +122,7 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdxBt const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<dim::Dim<ImplementationBase>, idx::Idx<ImplementationBase>>
+                -> Vec<dim::Dim<ImplementationBase>, idx::Idx<ImplementationBase>>
                 {
                     return
                         traits::GetIdx<
@@ -171,7 +171,7 @@ namespace alpaka
             TIdxWorkDiv const & idxWorkDiv,
             TGridThreadIdx const & gridThreadIdx,
             TThreadElemExtent const & threadElemExtent)
-        -> vec::Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
+        -> Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
         {
             alpaka::ignore_unused(idxWorkDiv);
 
@@ -186,7 +186,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
             TIdxWorkDiv const & idxWorkDiv,
             TGridThreadIdx const & gridThreadIdx)
-        -> vec::Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
+        -> Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
         {
             auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
             return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx, threadElemExtent);
@@ -198,7 +198,7 @@ namespace alpaka
             typename TIdxWorkDiv>
         ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
             TIdxWorkDiv const & idxWorkDiv)
-        -> vec::Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
+        -> Vec<dim::Dim<TIdxWorkDiv>, idx::Idx<TIdxWorkDiv>>
         {
             auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(idxWorkDiv));
             return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx);

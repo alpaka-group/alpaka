@@ -87,11 +87,11 @@ namespace alpaka
                 static auto getIdx(
                     idx::gb::IdxGbLinear<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return idx::mapIdx<TDim::value>(
-                        vec::Vec<dim::DimInt<1u>, TIdx>(idx.m_gridBlockIdx),
+                        Vec<dim::DimInt<1u>, TIdx>(idx.m_gridBlockIdx),
                         workdiv::getWorkDiv<Grid, Blocks>(workDiv));
                 }
             };
@@ -110,7 +110,7 @@ namespace alpaka
                 static auto getIdx(
                     idx::gb::IdxGbLinear<dim::DimInt<1u>, TIdx> const & idx,
                     TWorkDiv const &)
-                -> vec::Vec<dim::DimInt<1u>, TIdx>
+                -> Vec<dim::DimInt<1u>, TIdx>
                 {
                     return idx.m_gridBlockIdx;
                 }

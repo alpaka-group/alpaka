@@ -25,7 +25,7 @@ TEMPLATE_LIST_TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]", alpaka::tes
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     auto kernel =
         [] ALPAKA_FN_ACC (
@@ -49,7 +49,7 @@ TEMPLATE_LIST_TEST_CASE( "variadicGenericLambdaKernelIsWorking", "[kernel]", alp
     using Idx = alpaka::idx::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::ones());
+        alpaka::Vec<Dim, Idx>::ones());
 
     std::uint32_t const arg1 = 42u;
     std::uint32_t const arg2 = 43u;

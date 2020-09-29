@@ -76,7 +76,7 @@ TEMPLATE_LIST_TEST_CASE( "nonNull", "[blockSharedMemSt]", alpaka::test::acc::Tes
 
     // Use multiple threads to make sure the synchronization really works.
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(3u)));
+        alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(3u)));
 
     BlockSharedMemStNonNullTestKernel kernel;
 
@@ -129,7 +129,7 @@ TEMPLATE_LIST_TEST_CASE( "sameTypeDifferentAddress", "[blockSharedMemSt]", alpak
 
     // Use multiple threads to make sure the synchronization really works.
     alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::vec::Vec<Dim, Idx>::all(static_cast<Idx>(3u)));
+        alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(3u)));
 
     BlockSharedMemStSameTypeDifferentAdressTestKernel kernel;
 

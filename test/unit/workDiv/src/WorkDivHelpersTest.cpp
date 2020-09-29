@@ -28,8 +28,8 @@ namespace
         using Idx = alpaka::idx::Idx<TAcc>;
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
-        auto const gridThreadExtent = alpaka::vec::Vec<Dim, Idx>::all(10);
-        auto const threadElementExtent = alpaka::vec::Vec<Dim, Idx>::ones();
+        auto const gridThreadExtent = alpaka::Vec<Dim, Idx>::all(10);
+        auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
         auto workDiv = alpaka::workdiv::getValidWorkDiv<TAcc>(
             dev,
             gridThreadExtent,

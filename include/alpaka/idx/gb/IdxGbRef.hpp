@@ -33,7 +33,7 @@ namespace alpaka
             public:
                 //-----------------------------------------------------------------------------
                 IdxGbRef(
-                    vec::Vec<TDim, TIdx> const & gridBlockIdx) :
+                    Vec<TDim, TIdx> const & gridBlockIdx) :
                         m_gridBlockIdx(gridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ namespace alpaka
                 /*virtual*/ ~IdxGbRef() = default;
 
             public:
-                vec::Vec<TDim, TIdx> const & m_gridBlockIdx;
+                Vec<TDim, TIdx> const & m_gridBlockIdx;
             };
         }
     }
@@ -90,7 +90,7 @@ namespace alpaka
                 ALPAKA_FN_HOST static auto getIdx(
                     idx::gb::IdxGbRef<TDim, TIdx> const & idx,
                     TWorkDiv const & workDiv)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
                     alpaka::ignore_unused(workDiv);
                     return idx.m_gridBlockIdx;

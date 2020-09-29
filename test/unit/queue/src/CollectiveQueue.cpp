@@ -55,7 +55,7 @@ TEST_CASE("queueCollective", "[queue]")
 
     std::vector<int> results(4, -1);
 
-    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
     Vec const blocksPerGrid(results.size());
@@ -104,7 +104,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     std::vector<int> results(4, -1);
 
     // Define the work division
-    using Vec = alpaka::vec::Vec<Dim, Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
     Vec const elementsPerThread(Vec::all(static_cast<Idx>(1)));
     Vec const threadsPerBlock(Vec::all(static_cast<Idx>(1)));
     Vec const blocksPerGrid(results.size());

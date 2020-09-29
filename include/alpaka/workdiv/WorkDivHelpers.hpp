@@ -121,9 +121,9 @@ namespace alpaka
             }
 
             // Store the maxima allowed for extents of grid, blocks and threads.
-            auto const gridBlockExtentMax(vec::subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax));
-            auto const blockThreadExtentMax(vec::subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax));
-            auto const threadElemExtentMax(vec::subVecEnd<TDim>(accDevProps.m_threadElemExtentMax));
+            auto const gridBlockExtentMax(subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax));
+            auto const blockThreadExtentMax(subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax));
+            auto const threadElemExtentMax(subVecEnd<TDim>(accDevProps.m_threadElemExtentMax));
 
             // Check that the extents for all dimensions are correct.
             for(typename TDim::value_type i(0); i<TDim::value; ++i)
@@ -161,8 +161,8 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         ALPAKA_FN_HOST auto subDivideGridElems(
-            vec::Vec<TDim, TIdx> const & gridElemExtent,
-            vec::Vec<TDim, TIdx> threadElemExtent,
+            Vec<TDim, TIdx> const & gridElemExtent,
+            Vec<TDim, TIdx> threadElemExtent,
             acc::AccDevProps<TDim, TIdx> const & accDevProps,
             bool requireBlockThreadExtentToDivideGridThreadExtent = true,
             GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
@@ -189,7 +189,7 @@ namespace alpaka
             }
 
             // Calculate the grid thread extent.
-            auto gridThreadExtent(vec::Vec<TDim, TIdx>::zeros());
+            auto gridThreadExtent(Vec<TDim, TIdx>::zeros());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridThreadExtent[i] =
@@ -350,7 +350,7 @@ namespace alpaka
             // Compute the gridBlockExtent.
 
             // Set the grid block extent (rounded to the next integer not less then the quotient.
-            auto gridBlockExtent(vec::Vec<TDim, TIdx>::ones());
+            auto gridBlockExtent(Vec<TDim, TIdx>::ones());
             for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 gridBlockExtent[i] =
@@ -437,9 +437,9 @@ namespace alpaka
         -> bool
         {
             // Store the maxima allowed for extents of grid, blocks and threads.
-            auto const gridBlockExtentMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax));
-            auto const blockThreadExtentMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax));
-            auto const threadElemExtentMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax));
+            auto const gridBlockExtentMax(subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax));
+            auto const blockThreadExtentMax(subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax));
+            auto const threadElemExtentMax(subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax));
 
             // Get the extents of grid, blocks and threads of the work division to check.
             auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(workDiv));

@@ -964,7 +964,7 @@ struct TestAtomicOperations
         using Idx = alpaka::idx::Idx<TAcc>;
 
         alpaka::test::KernelExecutionFixture<TAcc> fixture(
-            alpaka::vec::Vec<Dim, Idx>::ones());
+            alpaka::Vec<Dim, Idx>::ones());
 
         AtomicTestKernel<TAcc, T> kernel;
 

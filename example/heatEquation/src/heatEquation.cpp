@@ -131,7 +131,7 @@ auto main( ) -> int
 
     // Get valid workdiv for the given problem
     uint32_t elemPerThread = 1;
-    alpaka::vec::Vec<
+    alpaka::Vec<
         Dim,
         Idx
     > const extent { numNodesX };

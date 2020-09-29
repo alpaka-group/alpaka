@@ -65,9 +65,9 @@ namespace alpaka
                         m_dev(dev),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
                         m_pitchBytes(
-                            vec::subVecEnd<TDim>(
+                            subVecEnd<TDim>(
                                static_cast<
-                                    vec::Vec<TDim, TIdx> >(pitchBytes)
+                                    Vec<TDim, TIdx> >(pitchBytes)
                             )
                         )
                 {}
@@ -100,9 +100,9 @@ namespace alpaka
                     typename TExtent>
                 ALPAKA_FN_HOST static auto calculatePitchesFromExtents(
                     TExtent const & extent)
-                -> vec::Vec<TDim, TIdx>
+                -> Vec<TDim, TIdx>
                 {
-                    vec::Vec<TDim, TIdx> pitchBytes(vec::Vec<TDim, TIdx>::all(0));
+                    Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
                     pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
                     for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
                     {
@@ -114,8 +114,8 @@ namespace alpaka
             public:
                 TElem * const m_pMem;
                 Dev const m_dev;
-                vec::Vec<TDim, TIdx> const m_extentElements;
-                vec::Vec<TDim, TIdx> const m_pitchBytes;
+                Vec<TDim, TIdx> const m_extentElements;
+                Vec<TDim, TIdx> const m_pitchBytes;
             };
         }
     }
