@@ -214,13 +214,13 @@ jobs:
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 5,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.66.0, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 3, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04"}
         - name: linux_gcc-6_debug_c++17
           os: ubuntu-latest
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 6,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.70.0, ALPAKA_CI_CMAKE_VER: 3.16.5, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_CXX_STANDARD: 17}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 6,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.70.0, ALPAKA_CI_CMAKE_VER: 3.16.5, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_CXX_STANDARD: 17, CMAKE_CXX_EXTENSIONS: OFF}
         - name: linux_gcc-7_release
           os: ubuntu-latest
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 7,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.65.1, ALPAKA_CI_CMAKE_VER: 3.17.3, OMP_NUM_THREADS: 1, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04"}
         - name: linux_gcc-8_debug
           os: ubuntu-latest
-          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 8,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.18.0, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:16.04"}
+          env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 8,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.72.0, ALPAKA_CI_CMAKE_VER: 3.18.0, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:16.04", CMAKE_CXX_EXTENSIONS: OFF}
         - name: linux_gcc-9_debug_c++17
           os: ubuntu-latest
           env: {CXX: g++,     CC: gcc,    ALPAKA_CI_GCC_VER: 9,        ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.68.0, ALPAKA_CI_CMAKE_VER: 3.15.7, OMP_NUM_THREADS: 3, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CXX_STANDARD: 17}
@@ -240,10 +240,10 @@ jobs:
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: "6.0",  ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.65.1, ALPAKA_CI_CMAKE_VER: 3.17.3, OMP_NUM_THREADS: 2, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_CI_SANITIZERS: ASan, ALPAKA_CXX_STANDARD: 17}
         - name: linux_clang-7_release_c++17
           os: ubuntu-latest
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 7,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0, ALPAKA_CI_CMAKE_VER: 3.16.5, OMP_NUM_THREADS: 1, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CXX_STANDARD: 17}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 7,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0, ALPAKA_CI_CMAKE_VER: 3.16.5, OMP_NUM_THREADS: 1, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:20.04", ALPAKA_CXX_STANDARD: 17, CMAKE_CXX_EXTENSIONS: OFF}
         - name: linux_clang-8_release
           os: ubuntu-latest
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 8,      ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.0, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04"}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 8,      ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.74.0, ALPAKA_CI_CMAKE_VER: 3.18.0, OMP_NUM_THREADS: 4, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", CMAKE_CXX_EXTENSIONS: OFF}
         - name: linux_clang-9_debug
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 9,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.71.0, ALPAKA_CI_CMAKE_VER: 3.16.5, OMP_NUM_THREADS: 1, ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04"}
@@ -302,7 +302,7 @@ jobs:
         # clang++
         - name: linux_clang-7_cuda-9.2_release_c++17
           os: ubuntu-latest
-          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 7,      ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0, ALPAKA_CI_CMAKE_VER: 3.18.0,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "9.2", ALPAKA_CUDA_COMPILER: clang, ALPAKA_CXX_STANDARD: 17,                       ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
+          env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 7,      ALPAKA_CI_STDLIB: libc++,    CMAKE_BUILD_TYPE: Release, ALPAKA_CI_BOOST_BRANCH: boost-1.67.0, ALPAKA_CI_CMAKE_VER: 3.18.0,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:18.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "9.2", ALPAKA_CUDA_COMPILER: clang, ALPAKA_CXX_STANDARD: 17, CMAKE_CXX_EXTENSIONS: OFF, ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
         - name: linux_clang-8_cuda-9.2_debug
           os: ubuntu-latest
           env: {CXX: clang++, CC: clang,  ALPAKA_CI_CLANG_VER: 8,      ALPAKA_CI_STDLIB: libstdc++, CMAKE_BUILD_TYPE: Debug,   ALPAKA_CI_BOOST_BRANCH: boost-1.70.0, ALPAKA_CI_CMAKE_VER: 3.15.7,                     ALPAKA_CI_DOCKER_BASE_IMAGE_NAME: "ubuntu:16.04", ALPAKA_ACC_GPU_CUDA_ENABLE: ON, ALPAKA_CUDA_VERSION: "9.2", ALPAKA_CUDA_COMPILER: clang, ALPAKA_CUDA_ARCH: "35;72",                     ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE: OFF, ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE: OFF, ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE: OFF}
