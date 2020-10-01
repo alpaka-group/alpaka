@@ -183,15 +183,20 @@ ALPAKA_ACC_GPU_CUDA_ONLY_MODE
      alpaka code with native CUDA code).
 
 
-ALPAKA_CUDA_ARCH
+CMAKE_CUDA_ARCHITECTURES
   .. code-block::
 
-     Set the GPU architecture: e.g. "35".
+     Set the GPU architecture: e.g. "35;72".
 
-ALPAKA_CUDA_COMPILER
+CMAKE_CUDA_COMPILER
   .. code-block::
 
-     Set the CUDA compiler: "nvcc" or "clang".
+     Set the CUDA compiler: "nvcc" (default) or "clang++".
+
+CUDACXX
+  .. code-block::
+
+     Select a specific CUDA compiler version.
 
 ALPAKA_CUDA_KEEP_FILES
   .. code-block::
@@ -203,6 +208,11 @@ ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA
   .. code-block::
 
      Enable experimental, extended host-device lambdas in NVCC.
+
+CMAKE_CUDA_SEPARABLE_COMPILATION
+  .. code-block::
+
+     Enable separable compilation.
 
 https://developer.nvidia.com/blog/separate-compilation-linking-cuda-device-code/
 

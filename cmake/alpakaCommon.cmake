@@ -179,7 +179,7 @@ endif()
 if(MSVC)
     # CUDA\v9.2\include\crt/host_runtime.h(265): warning C4505: '__cudaUnregisterBinaryUtil': unreferenced local function has been removed
     if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE)
-        target_compile_options(alpaka INTERFACE "/wd4505")
+        target_compile_options(alpaka INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/wd4505>)
     endif()
 else()
     find_package(Threads REQUIRED)
@@ -313,257 +313,146 @@ endif()
 #-------------------------------------------------------------------------------
 # Find CUDA.
 if(ALPAKA_ACC_GPU_CUDA_ENABLE)
+    include(CheckLanguage)
+    check_language(CUDA)
 
-    if(NOT DEFINED ALPAKA_CUDA_VERSION)
-        set(ALPAKA_CUDA_VERSION 9.0)
-    endif()
+    if(CMAKE_CUDA_COMPILER)
+        enable_language(CUDA)
+        find_package(CUDAToolkit REQUIRED)
 
-    if(ALPAKA_CUDA_VERSION VERSION_LESS 9.0)
-        message(FATAL_ERROR "CUDA Toolkit < 9.0 is not supported!")
-
-    else()
-        find_package(CUDA "${ALPAKA_CUDA_VERSION}")
-        if(NOT CUDA_FOUND)
-            message(FATAL_ERROR "Optional alpaka dependency CUDA could not be found!")
-        else()
-            set(ALPAKA_CUDA_VERSION "${CUDA_VERSION}")
-            if(CUDA_VERSION VERSION_LESS 10.3)
-                set(ALPAKA_CUDA_ARCH "30" CACHE STRING "GPU architecture")
-            else()
-                set(ALPAKA_CUDA_ARCH "35" CACHE STRING "GPU architecture")
-            endif()
-            set(ALPAKA_CUDA_COMPILER "nvcc" CACHE STRING "CUDA compiler")
-            set_property(CACHE ALPAKA_CUDA_COMPILER PROPERTY STRINGS "nvcc;clang")
-
-            alpaka_compiler_option(CUDA_SHOW_REGISTER "Show kernel registers and create device ASM" DEFAULT)
-            alpaka_compiler_option(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" DEFAULT)
-            alpaka_compiler_option(CUDA_EXPT_EXTENDED_LAMBDA "Enable experimental, extended host-device lambdas in CUDA with nvcc" ON)
-
-            if(ALPAKA_CUDA_COMPILER MATCHES "clang")
-                if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-                    message(FATAL_ERROR "Using clang as CUDA compiler is only possible if clang is the host compiler!")
-                endif()
-
-                if(CMAKE_CXX_COMPILER_VERSION LESS 9.0)
-                    message(FATAL_ERROR "Clang versions lower than 9 are not supported as CUDA compilers!")
-                endif()
-                
-                if(CMAKE_CXX_COMPILER_VERSION LESS 10.0)
-                    if(CUDA_VERSION GREATER_EQUAL 10.2)
-                        message(FATAL_ERROR "Clang versions lower than 10 do not support CUDA 10.2 or greater!")
-                    endif()
-                endif()
-
-                if(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
-                    message(FATAL_ERROR "Clang as a CUDA compiler does not support boost.fiber!")
-                endif()
-                if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
-                    message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
-                endif()
-                if(ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
-                    message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 5!")
-                endif()
-
-                foreach(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
-                    target_compile_options(alpaka INTERFACE  "--cuda-gpu-arch=sm_${_CUDA_ARCH_ELEM}")
-                endforeach()
-
-                target_compile_options(alpaka INTERFACE "--cuda-path=${CUDA_TOOLKIT_ROOT_DIR}")
-
-                # This flag silences the warning produced by the Dummy.cpp files:
-                # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
-                # This seems to be a false positive as all flags are 'unused' for an empty file.
-                target_compile_options(alpaka INTERFACE "-Qunused-arguments")
-
-                # Silences warnings that are produced by boost because clang is not correctly identified.
-                target_compile_options(alpaka INTERFACE "-Wno-unused-local-typedef")
-
-                if(ALPAKA_FAST_MATH STREQUAL ON)
-                    # -ffp-contract=fast enables the usage of FMA
-                    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-ffast-math" "-ffp-contract=fast")
-                endif()
-
-                if(ALPAKA_FTZ STREQUAL ON)
-                    alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fcuda-flush-denormals-to-zero")
-                endif()
-
-                if(ALPAKA_CUDA_SHOW_REGISTER STREQUAL ON)
-                    alpaka_set_compiler_options(DEVICE target alpaka "-Xcuda-ptxas=-v")
-                endif()
-
-                if(ALPAKA_CUDA_KEEP_FILES STREQUAL ON)
-                    alpaka_set_compiler_options(DEVICE target alpaka "-save-temps")
-                endif()
-
-                # CMake 3.15 does not provide the `--std=c++*` argument to clang anymore.
-                # It is not necessary for basic c++ compilation because clangs default is already higher, but CUDA code compiled with -x cuda still defaults to c++98.
-                if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.15.0")
-                    target_compile_options(alpaka INTERFACE "-std=c++${ALPAKA_CXX_STANDARD}")
-                endif()
-
-            else()
-                if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-                    if((CUDA_VERSION VERSION_EQUAL 9.0) OR (CUDA_VERSION VERSION_EQUAL 9.1))
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 6.0)
-                            message(FATAL_ERROR "NVCC 9.0 - 9.1 do not support GCC 7+ and fail compiling the std::tuple implementation in GCC 6+. Please use GCC 5!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 9.2)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 8.0)
-                            message(FATAL_ERROR "NVCC 9.2 does not support GCC 8+. Please use GCC 5, 6 or 7!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 10.0)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 8.0)
-                            message(FATAL_ERROR "NVCC 10.0 does not support GCC 8+. Please use GCC 5, 6 or 7!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 10.1)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 9.0)
-                            message(FATAL_ERROR "NVCC 10.1 does not support GCC 9+. Please use GCC 5, 6, 7 or 8!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 10.2)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 9.0)
-                            message(FATAL_ERROR "NVCC 10.2 does not support GCC 9+. Please use GCC 5, 6, 7 or 8!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 11.0)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 10.0)
-                            message(FATAL_ERROR "NVCC 11.0 does not support GCC 10+. Please use GCC 5, 6, 7, 8 or 9!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 11.1 OR CUDA_VERSION VERSION_EQUAL 11.2 OR CUDA_VERSION VERSION_EQUAL 11.3)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 11.0)
-                            message(FATAL_ERROR "NVCC ${CUDA_VERSION} does not support GCC 11+. Please use GCC 5, 6, 7, 8, 9 or 10!")
-                        endif()
-                    endif()
-                elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-                    if(CUDA_VERSION VERSION_EQUAL 9.0)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 4.0)
-                            message(FATAL_ERROR "NVCC 9.0 does not support clang 4+. Please use NVCC 9.1!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 9.1)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 5.0)
-                            message(FATAL_ERROR "NVCC 9.1 does not support clang 5+. Please use clang 4!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 9.2)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 5.0)
-                            message(FATAL_ERROR "NVCC 9.2 does not support clang 6+ and fails compiling with clang 5. Please use clang 4!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 10.0)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 7.0)
-                            message(FATAL_ERROR "NVCC 10.0 does not support clang 7+. Please use clang 4, 5 or 6!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 10.1)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 9.0)
-                            message(FATAL_ERROR "NVCC 10.1 does not support clang 9+. Please use clang 4, 5, 6, 7 or 8!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 10.2)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 9.0)
-                            message(FATAL_ERROR "NVCC 10.2 does not support clang 9+. Please use clang 4, 5, 6, 7 or 8!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 11.0)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 10.0)
-                            message(FATAL_ERROR "NVCC 11.0 does not support clang 10+. Please use clang 4, 5, 6, 7, 8 or 9!")
-                        endif()
-                    elseif(CUDA_VERSION VERSION_EQUAL 11.1 OR CUDA_VERSION VERSION_EQUAL 11.2 OR CUDA_VERSION VERSION_EQUAL 11.3)
-                        if(CMAKE_CXX_COMPILER_VERSION GREATER_EQUAL 11.0)
-                            message(FATAL_ERROR "NVCC ${CUDA_VERSION} does not support clang 11+. Please use clang 4, 5, 6, 7, 8, 9 or 10!")
-                        endif()
-                    endif()
-                endif()
-
-                if(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
-                    message(FATAL_ERROR "NVCC does not support boost.fiber!")
-                endif()
-
-                # Clean up the flags. Else, multiple find calls would result in duplicate flags. Furthermore, other modules may have set different settings.
-                set(CUDA_NVCC_FLAGS)
-
-                if(${ALPAKA_DEBUG} GREATER 1)
-                    set(CUDA_VERBOSE_BUILD ON)
-                endif()
-
-                set(CUDA_PROPAGATE_HOST_FLAGS ON)
-
-                # nvcc sets no linux/__linux macros on OpenPOWER linux
-                # nvidia bug id: 2448610
-                if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-                    if(CMAKE_SYSTEM_PROCESSOR STREQUAL "ppc64le")
-                        alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Dlinux)
-                    endif()
-                endif()
-
-                # NOTE: Since CUDA 10.2 this option is also alternatively called '--extended-lambda'
-                if(ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA STREQUAL ON)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --expt-extended-lambda)
-                endif()
-                # This is mandatory because with c++14 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
-                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --expt-relaxed-constexpr)
-
-                foreach(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
-                    # set flags to create device code for the given architecture
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS
-                        --generate-code=arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM}
-                        --generate-code=arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}
-                    )
-                endforeach()
-
-                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -std=c++${ALPAKA_CXX_STANDARD})
-
-                set(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
-
-                if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -g)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -lineinfo)
-                endif()
-
-                if(ALPAKA_FAST_MATH STREQUAL ON)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS "--use_fast_math")
-                endif()
-
-                if(ALPAKA_FTZ STREQUAL ON)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --ftz=true)
-                elseif(ALPAKA_FTZ STREQUAL OFF)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --ftz=false)
-                endif()
-
-                if(ALPAKA_CUDA_SHOW_REGISTER STREQUAL ON)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xptxas=-v)
-                endif()
-
-                # Always add warning/error numbers which can be used for suppressions
-                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--display_error_number)
-
-                # avoids warnings on host-device signatured, default constructors/destructors
-                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=esa_on_defaulted_function_ignored)
-
-                # avoids warnings on host-device signature of 'std::__shared_count<>'
-                if(CUDA_VERSION EQUAL 10.0)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2905)
-                elseif(CUDA_VERSION EQUAL 10.1)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2912)
-                elseif(CUDA_VERSION EQUAL 10.2)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2976)
-                endif()
-
-                if(ALPAKA_CUDA_KEEP_FILES STREQUAL ON)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --keep)
-                endif()
-
-                option(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_CUDA_KEEP_FILES is enabled source code will be inlined in ptx." OFF)
-                if(ALPAKA_CUDA_SHOW_CODELINES)
-                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --source-in-ptx -lineinfo)
-                    if(NOT MSVC)
-                        alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcompiler=-rdynamic)
-                    endif()
-                endif()
-            endif()
-
-            if(OpenMP_CXX_FOUND)
-                # correctly propagate OpenMP flags
-                # This can be removed once we support CMake's first class CUDA support.
-                target_compile_options(alpaka INTERFACE ${OpenMP_CXX_FLAGS})
-            endif()
-
-            target_link_libraries(alpaka INTERFACE ${CUDA_CUDART_LIBRARY})
-            target_include_directories(alpaka INTERFACE ${CUDA_INCLUDE_DIRS})
+        if(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
+            message(FATAL_ERROR "CUDA cannot be used together with Boost.Fiber!")
         endif()
+
+        target_compile_features(alpaka INTERFACE cuda_std_${ALPAKA_CXX_STANDARD})
+
+        alpaka_compiler_option(CUDA_SHOW_REGISTER "Show kernel registers and create device ASM" DEFAULT)
+        alpaka_compiler_option(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" DEFAULT)
+        alpaka_compiler_option(CUDA_EXPT_EXTENDED_LAMBDA "Enable experimental, extended host-device lambdas in CUDA with nvcc" ON)
+
+        if(CMAKE_CUDA_COMPILER_ID STREQUAL "Clang")
+            message(STATUS "clang is used as CUDA compiler")
+
+            if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE)
+                message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 2!")
+            endif()
+            if(ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
+                message(FATAL_ERROR "Clang as a CUDA compiler does not support OpenMP 5!")
+            endif()
+
+            # libstdc++ since version 7 when GNU extensions are enabled (e.g. -std=gnu++11)
+            # uses `__CUDACC__` to avoid defining overloads using non-standard `__float128`.
+            # This is fixed in clang-11: https://github.com/llvm/llvm-project/commit/8e20516540444618ad32dd11e835c05804053697
+            if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
+                target_compile_definitions(alpaka INTERFACE "__CUDACC__")
+            endif()
+
+            # This flag silences the warning produced by the Dummy.cpp files:
+            # clang: warning: argument unused during compilation: '--cuda-gpu-arch=sm_XX'
+            # This seems to be a false positive as all flags are 'unused' for an empty file.
+            alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Qunused-arguments>)
+
+            # Silences warnings that are produced by boost because clang is not correctly identified.
+            alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Wno-unused-local-typedef>)
+
+            if(ALPAKA_FAST_MATH STREQUAL ON)
+                # -ffp-contract=fast enables the usage of FMA
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-ffast-math -ffp-contract=fast>)
+            endif()
+
+            if(ALPAKA_FTZ STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-fcuda-flush-denormals-to-zero>)
+            endif()
+
+            if(ALPAKA_CUDA_SHOW_REGISTER STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcuda-ptxas=-v>)
+            endif()
+
+            if(ALPAKA_CUDA_KEEP_FILES STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-save-temps>)
+            endif()
+
+        elseif(CMAKE_CUDA_COMPILER_ID STREQUAL "NVIDIA")
+            message(STATUS "nvcc is used as CUDA compiler")
+
+            # nvcc sets no linux/__linux macros on OpenPOWER linux
+            # nvidia bug id: 2448610
+            if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+                if(CMAKE_SYSTEM_PROCESSOR STREQUAL "ppc64le")
+                    alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Dlinux>)
+                endif()
+            endif()
+
+            # NOTE: Since CUDA 10.2 this option is also alternatively called '--extended-lambda'
+            if(ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--expt-extended-lambda>)
+            endif()
+            # This is mandatory because with c++14 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
+            alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>)
+
+            if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-g>)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-lineinfo>)
+            endif()
+
+            if(ALPAKA_FAST_MATH STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--use_fast_math>)
+            endif()
+
+            if(ALPAKA_FTZ STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--ftz=true>)
+            elseif(ALPAKA_FTZ STREQUAL OFF)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--ftz=false>)
+            endif()
+
+            if(ALPAKA_CUDA_SHOW_REGISTER STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xptxas=-v>)
+            endif()
+
+            if(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE OR ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE OR ALPAKA_ACC_ANY_BT_OMP5_ENABLE)
+                if(NOT MSVC)
+                    alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fopenmp>)
+                else()
+                    alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=/openmp>)
+                endif()
+            endif()
+
+            # Always add warning/error numbers which can be used for suppressions
+            alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--display_error_number>)
+
+            # avoids warnings on host-device signatured, default constructors/destructors
+            alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=esa_on_defaulted_function_ignored>)
+
+            # avoids warnings on host-device signature of 'std::__shared_count<>'
+            if(CUDAToolkit_VERSION VERSION_EQUAL 10.0)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=2905>)
+            elseif(CUDAToolkit_VERSION VERSION_EQUAL 10.1)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=2912>)
+            elseif(CUDAToolkit_VERSION VERSION_EQUAL 10.2)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcudafe=--diag_suppress=2976>)
+            endif()
+
+            if(ALPAKA_CUDA_KEEP_FILES STREQUAL ON)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--keep>)
+            endif()
+
+            option(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_CUDA_KEEP_FILES is enabled source code will be inlined in ptx." OFF)
+            if(ALPAKA_CUDA_SHOW_CODELINES)
+                alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:--source-in-ptx -lineinfo>)
+
+                # This is shaky - We currently don't have a way of checking for the host compiler ID.
+                # See https://gitlab.kitware.com/cmake/cmake/-/issues/20901
+                if(NOT MSVC)
+                    alpaka_set_compiler_options(DEVICE target alpaka $<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-rdynamic>)
+                endif()
+                set(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
+            endif()
+        endif()
+
+        target_link_libraries(alpaka INTERFACE CUDA::cudart)
+        target_include_directories(alpaka INTERFACE ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+    else()
+        message(FATAL_ERROR "Optional alpaka dependency CUDA could not be found!")
     endif()
 endif()
 
@@ -879,7 +768,7 @@ if(TARGET alpaka)
 endif()
 
 # NVCC does not incorporate the COMPILE_OPTIONS of a target but only the CMAKE_CXX_FLAGS
-if((ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE) AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
+if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
     get_property(_ALPAKA_COMPILE_OPTIONS_PUBLIC
                  TARGET alpaka
                  PROPERTY INTERFACE_COMPILE_OPTIONS)
