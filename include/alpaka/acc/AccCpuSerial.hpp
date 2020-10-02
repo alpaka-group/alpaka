@@ -44,15 +44,13 @@
 
 namespace alpaka
 {
-    namespace kernel
-    {
-        template<
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelCpuSerial;
-    }
+    template<
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelCpuSerial;
+
     //#############################################################################
     //! The CPU serial accelerator.
     //!
@@ -88,7 +86,7 @@ namespace alpaka
             typename TIdx2,
             typename TKernelFnObj,
             typename... TArgs>
-        friend class ::alpaka::kernel::TaskKernelCpuSerial;
+        friend class ::alpaka::TaskKernelCpuSerial;
 
     private:
         //-----------------------------------------------------------------------------
@@ -219,42 +217,39 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace kernel
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU serial accelerator execution task type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct CreateTaskKernel<
+            AccCpuSerial<TDim, TIdx>,
+            TWorkDiv,
+            TKernelFnObj,
+            TArgs...>
         {
-            //#############################################################################
-            //! The CPU serial accelerator execution task type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TWorkDiv,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct CreateTaskKernel<
-                AccCpuSerial<TDim, TIdx>,
-                TWorkDiv,
-                TKernelFnObj,
-                TArgs...>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto createTaskKernel(
+                TWorkDiv const & workDiv,
+                TKernelFnObj const & kernelFnObj,
+                TArgs && ... args)
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto createTaskKernel(
-                    TWorkDiv const & workDiv,
-                    TKernelFnObj const & kernelFnObj,
-                    TArgs && ... args)
-                {
-                    return
-                        kernel::TaskKernelCpuSerial<
-                            TDim,
-                            TIdx,
-                            TKernelFnObj,
-                            TArgs...>(
-                                workDiv,
-                                kernelFnObj,
-                                std::forward<TArgs>(args)...);
-                }
-            };
-        }
+                return
+                    TaskKernelCpuSerial<
+                        TDim,
+                        TIdx,
+                        TKernelFnObj,
+                        TArgs...>(
+                            workDiv,
+                            kernelFnObj,
+                            std::forward<TArgs>(args)...);
+            }
+        };
     }
     namespace traits
     {

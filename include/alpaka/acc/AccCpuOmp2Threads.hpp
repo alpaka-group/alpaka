@@ -51,15 +51,13 @@
 
 namespace alpaka
 {
-    namespace kernel
-    {
-        template<
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelCpuOmp2Threads;
-    }
+    template<
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelCpuOmp2Threads;
+
     //#############################################################################
     //! The CPU OpenMP 2.0 thread accelerator.
     //!
@@ -95,7 +93,7 @@ namespace alpaka
             typename TIdx2,
             typename TKernelFnObj,
             typename... TArgs>
-        friend class ::alpaka::kernel::TaskKernelCpuOmp2Threads;
+        friend class ::alpaka::TaskKernelCpuOmp2Threads;
 
     private:
         //-----------------------------------------------------------------------------
@@ -231,42 +229,39 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace kernel
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 thread accelerator execution task type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct CreateTaskKernel<
+            AccCpuOmp2Threads<TDim, TIdx>,
+            TWorkDiv,
+            TKernelFnObj,
+            TArgs...>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 thread accelerator execution task type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TWorkDiv,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct CreateTaskKernel<
-                AccCpuOmp2Threads<TDim, TIdx>,
-                TWorkDiv,
-                TKernelFnObj,
-                TArgs...>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto createTaskKernel(
+                TWorkDiv const & workDiv,
+                TKernelFnObj const & kernelFnObj,
+                TArgs && ... args)
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto createTaskKernel(
-                    TWorkDiv const & workDiv,
-                    TKernelFnObj const & kernelFnObj,
-                    TArgs && ... args)
-                {
-                    return
-                        kernel::TaskKernelCpuOmp2Threads<
-                            TDim,
-                            TIdx,
-                            TKernelFnObj,
-                            TArgs...>(
-                                workDiv,
-                                kernelFnObj,
-                                std::forward<TArgs>(args)...);
-                }
-            };
-        }
+                return
+                    TaskKernelCpuOmp2Threads<
+                        TDim,
+                        TIdx,
+                        TKernelFnObj,
+                        TArgs...>(
+                            workDiv,
+                            kernelFnObj,
+                            std::forward<TArgs>(args)...);
+            }
+        };
     }
     namespace traits
     {

@@ -64,127 +64,124 @@
 
 namespace alpaka
 {
-    namespace kernel
+    namespace uniform_cuda_hip
     {
-        namespace uniform_cuda_hip
+        namespace detail
         {
-            namespace detail
+            //-----------------------------------------------------------------------------
+            //! The GPU CUDA/HIP kernel entry point.
+            // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
+            template<
+                typename TAcc,
+                typename TDim,
+                typename TIdx,
+                typename TKernelFnObj,
+                typename... TArgs>
+            __global__ void uniformCudaHipKernel(
+                Vec<TDim, TIdx> const threadElemExtent,
+                TKernelFnObj const kernelFnObj,
+                TArgs ... args)
             {
-                //-----------------------------------------------------------------------------
-                //! The GPU CUDA/HIP kernel entry point.
-                // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
-                template<
-                    typename TAcc,
-                    typename TDim,
-                    typename TIdx,
-                    typename TKernelFnObj,
-                    typename... TArgs>
-                __global__ void uniformCudaHipKernel(
-                    Vec<TDim, TIdx> const threadElemExtent,
-                    TKernelFnObj const kernelFnObj,
-                    TArgs ... args)
-                {
 #if BOOST_ARCH_PTX && (BOOST_ARCH_PTX < BOOST_VERSION_NUMBER(2, 0, 0))
-    #error "Device capability >= 2.0 is required!"
+#error "Device capability >= 2.0 is required!"
 #endif
 
-                    const TAcc acc(threadElemExtent);
+                const TAcc acc(threadElemExtent);
 
 // with clang it is not possible to query std::result_of for a pure device lambda created on the host side
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_COMP_CLANG)
-                    static_assert(
-                        std::is_same<
-                            decltype(kernelFnObj(
-                                const_cast<TAcc const &>(acc),
-                                args...)),
-                            void>::value,
-                        "The TKernelFnObj is required to return void!");
+                static_assert(
+                    std::is_same<
+                        decltype(kernelFnObj(
+                            const_cast<TAcc const &>(acc),
+                            args...)),
+                        void>::value,
+                    "The TKernelFnObj is required to return void!");
 #endif
-                    kernelFnObj(
-                        const_cast<TAcc const &>(acc),
-                        args...);
-                }
-
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TDim,
-                    typename TIdx
-                >
-                ALPAKA_FN_HOST auto checkVecOnly3Dim(
-                    Vec<TDim, TIdx> const & vec)
-                -> void
-                {
-                    for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
-                    {
-                        if(vec[TDim::value-1u-i] != 1)
-                        {
-                            throw std::runtime_error("The CUDA/HIP accelerator supports a maximum of 3 dimensions. All work division extents of the dimensions higher 3 have to be 1!");
-                        }
-                    }
-                }
-
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TDim,
-                    typename TIdx
-                >
-                ALPAKA_FN_HOST auto convertVecToUniformCudaHipDim(
-                    Vec<TDim, TIdx> const & vec)
-                -> dim3
-                {
-                    dim3 dim(1, 1, 1);
-                    for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
-                    {
-                        reinterpret_cast<unsigned int *>(&dim)[i] = static_cast<unsigned int>(vec[TDim::value-1u-i]);
-                    }
-                    checkVecOnly3Dim(vec);
-                    return dim;
-                }
+                kernelFnObj(
+                    const_cast<TAcc const &>(acc),
+                    args...);
             }
-        }
 
-        //#############################################################################
-        //! The GPU CUDA/HIP accelerator execution task.
-        template<
-            typename TAcc,
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelGpuUniformCudaHipRt final :
-            public WorkDivMembers<TDim, TIdx>
-        {
-        public:
             //-----------------------------------------------------------------------------
             template<
-                typename TWorkDiv>
-            ALPAKA_FN_HOST TaskKernelGpuUniformCudaHipRt(
-                TWorkDiv && workDiv,
-                TKernelFnObj const & kernelFnObj,
-                TArgs && ... args) :
-                    WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
-                    m_kernelFnObj(kernelFnObj),
-                    m_args(std::forward<TArgs>(args)...)
+                typename TDim,
+                typename TIdx
+            >
+            ALPAKA_FN_HOST auto checkVecOnly3Dim(
+                Vec<TDim, TIdx> const & vec)
+            -> void
             {
-                static_assert(
-                    Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
-                    "The work division and the execution task have to be of the same dimensionality!");
+                for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
+                {
+                    if(vec[TDim::value-1u-i] != 1)
+                    {
+                        throw std::runtime_error("The CUDA/HIP accelerator supports a maximum of 3 dimensions. All work division extents of the dimensions higher 3 have to be 1!");
+                    }
+                }
             }
-            //-----------------------------------------------------------------------------
-            TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt const &) = default;
-            //-----------------------------------------------------------------------------
-            TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt &&) = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelGpuUniformCudaHipRt const &) -> TaskKernelGpuUniformCudaHipRt & = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelGpuUniformCudaHipRt &&) -> TaskKernelGpuUniformCudaHipRt & = default;
-            //-----------------------------------------------------------------------------
-            ~TaskKernelGpuUniformCudaHipRt() = default;
 
-            TKernelFnObj m_kernelFnObj;
-            std::tuple<std::decay_t<TArgs>...> m_args;
-        };
+            //-----------------------------------------------------------------------------
+            template<
+                typename TDim,
+                typename TIdx
+            >
+            ALPAKA_FN_HOST auto convertVecToUniformCudaHipDim(
+                Vec<TDim, TIdx> const & vec)
+            -> dim3
+            {
+                dim3 dim(1, 1, 1);
+                for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
+                {
+                    reinterpret_cast<unsigned int *>(&dim)[i] = static_cast<unsigned int>(vec[TDim::value-1u-i]);
+                }
+                checkVecOnly3Dim(vec);
+                return dim;
+            }
+        }
     }
+
+    //#############################################################################
+    //! The GPU CUDA/HIP accelerator execution task.
+    template<
+        typename TAcc,
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelGpuUniformCudaHipRt final :
+        public WorkDivMembers<TDim, TIdx>
+    {
+    public:
+        //-----------------------------------------------------------------------------
+        template<
+            typename TWorkDiv>
+        ALPAKA_FN_HOST TaskKernelGpuUniformCudaHipRt(
+            TWorkDiv && workDiv,
+            TKernelFnObj const & kernelFnObj,
+            TArgs && ... args) :
+                WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
+                m_kernelFnObj(kernelFnObj),
+                m_args(std::forward<TArgs>(args)...)
+        {
+            static_assert(
+                Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
+                "The work division and the execution task have to be of the same dimensionality!");
+        }
+        //-----------------------------------------------------------------------------
+        TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt const &) = default;
+        //-----------------------------------------------------------------------------
+        TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt &&) = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(TaskKernelGpuUniformCudaHipRt const &) -> TaskKernelGpuUniformCudaHipRt & = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(TaskKernelGpuUniformCudaHipRt &&) -> TaskKernelGpuUniformCudaHipRt & = default;
+        //-----------------------------------------------------------------------------
+        ~TaskKernelGpuUniformCudaHipRt() = default;
+
+        TKernelFnObj m_kernelFnObj;
+        std::tuple<std::decay_t<TArgs>...> m_args;
+    };
 
     namespace traits
     {
@@ -197,7 +194,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct AccType<
-            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = AccGpuUniformCudaHipRt<TDim, TIdx>;
         };
@@ -213,7 +210,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct DevType<
-            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = DevUniformCudaHipRt;
         };
@@ -229,7 +226,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct DimType<
-            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TDim;
         };
@@ -245,7 +242,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct PltfType<
-            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = PltfUniformCudaHipRt;
         };
@@ -261,7 +258,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct IdxType<
-            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TIdx;
         };
@@ -278,12 +275,12 @@ namespace alpaka
             typename... TArgs>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
-            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking & queue,
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+                TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -304,9 +301,9 @@ namespace alpaka
                 auto const threadElemExtent(
                     getWorkDiv<Thread, Elems>(task));
 
-                dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                dim3 const blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+                dim3 const gridDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
+                dim3 const blockDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
+                uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__
@@ -329,7 +326,7 @@ namespace alpaka
                         [&](ALPAKA_DECAY_T(TArgs) const & ... args)
                         {
                             return
-                                kernel::getBlockSharedMemDynSizeBytes<
+                                getBlockSharedMemDynSizeBytes<
                                     TAcc>(
                                         task.m_kernelFnObj,
                                         blockThreadExtent,
@@ -343,7 +340,7 @@ namespace alpaka
                 std::cout << __func__
                     << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
-                auto kernelName = kernel::uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
+                auto kernelName = uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
@@ -418,12 +415,12 @@ namespace alpaka
             typename... TArgs>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
-            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking & queue,
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+                TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -445,13 +442,13 @@ namespace alpaka
                     getWorkDiv<Thread, Elems>(task));
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                dim3 const blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+                dim3 const gridDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
+                dim3 const blockDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
+                uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 #else
-                dim3 gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                dim3 blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+                dim3 gridDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
+                dim3 blockDim(uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
+                uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 #endif
 
 
@@ -474,7 +471,7 @@ namespace alpaka
                         [&](ALPAKA_DECAY_T(TArgs) const & ... args)
                         {
                             return
-                                kernel::getBlockSharedMemDynSizeBytes<
+                                getBlockSharedMemDynSizeBytes<
                                     TAcc>(
                                         task.m_kernelFnObj,
                                         blockThreadExtent,
@@ -489,7 +486,7 @@ namespace alpaka
                     << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
 
-                auto kernelName = kernel::uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
+                auto kernelName = uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // hipFuncAttributes not ported from HIP to HIP.
                 // TODO why this is currently not possible

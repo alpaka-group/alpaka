@@ -92,7 +92,7 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
                       static_cast<Extent>(1) };
 
     // create main reduction kernel execution task
-    auto const taskKernelReduceMain(alpaka::kernel::createTaskKernel<Acc>(
+    auto const taskKernelReduceMain(alpaka::createTaskKernel<Acc>(
         workDiv1,
         kernel1,
         alpaka::mem::view::getPtrNative(sourceDeviceMemory),
@@ -101,7 +101,7 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
         func));
 
     // create last block reduction kernel execution task
-    auto const taskKernelReduceLastBlock(alpaka::kernel::createTaskKernel<Acc>(
+    auto const taskKernelReduceLastBlock(alpaka::createTaskKernel<Acc>(
         workDiv2,
         kernel2,
         alpaka::mem::view::getPtrNative(destinationDeviceMemory),

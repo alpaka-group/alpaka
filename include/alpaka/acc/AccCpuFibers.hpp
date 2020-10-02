@@ -47,15 +47,13 @@
 
 namespace alpaka
 {
-    namespace kernel
-    {
-        template<
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelCpuFibers;
-    }
+    template<
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelCpuFibers;
+
     //#############################################################################
     //! The CPU fibers accelerator.
     //!
@@ -93,7 +91,7 @@ namespace alpaka
             typename TIdx2,
             typename TKernelFnObj,
             typename... TArgs>
-        friend class ::alpaka::kernel::TaskKernelCpuFibers;
+        friend class ::alpaka::TaskKernelCpuFibers;
 
     private:
         //-----------------------------------------------------------------------------
@@ -234,42 +232,39 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace kernel
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU fibers accelerator execution task type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct CreateTaskKernel<
+            AccCpuFibers<TDim, TIdx>,
+            TWorkDiv,
+            TKernelFnObj,
+            TArgs...>
         {
-            //#############################################################################
-            //! The CPU fibers accelerator execution task type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TWorkDiv,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct CreateTaskKernel<
-                AccCpuFibers<TDim, TIdx>,
-                TWorkDiv,
-                TKernelFnObj,
-                TArgs...>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto createTaskKernel(
+                TWorkDiv const & workDiv,
+                TKernelFnObj const & kernelFnObj,
+                TArgs && ... args)
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto createTaskKernel(
-                    TWorkDiv const & workDiv,
-                    TKernelFnObj const & kernelFnObj,
-                    TArgs && ... args)
-                {
-                    return
-                        kernel::TaskKernelCpuFibers<
-                            TDim,
-                            TIdx,
-                            TKernelFnObj,
-                            TArgs...>(
-                                workDiv,
-                                kernelFnObj,
-                                std::forward<TArgs>(args)...);
-                }
-            };
-        }
+                return
+                    TaskKernelCpuFibers<
+                        TDim,
+                        TIdx,
+                        TKernelFnObj,
+                        TArgs...>(
+                            workDiv,
+                            kernelFnObj,
+                            std::forward<TArgs>(args)...);
+            }
+        };
     }
 
     namespace traits

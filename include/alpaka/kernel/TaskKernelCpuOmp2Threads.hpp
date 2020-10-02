@@ -44,164 +44,161 @@
 
 namespace alpaka
 {
-    namespace kernel
+    //#############################################################################
+    //! The CPU OpenMP 2.0 thread accelerator execution task.
+    template<
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelCpuOmp2Threads final :
+        public WorkDivMembers<TDim, TIdx>
     {
-        //#############################################################################
-        //! The CPU OpenMP 2.0 thread accelerator execution task.
+    public:
+        //-----------------------------------------------------------------------------
         template<
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelCpuOmp2Threads final :
-            public WorkDivMembers<TDim, TIdx>
+            typename TWorkDiv>
+        ALPAKA_FN_HOST TaskKernelCpuOmp2Threads(
+            TWorkDiv && workDiv,
+            TKernelFnObj const & kernelFnObj,
+            TArgs && ... args) :
+                WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
+                m_kernelFnObj(kernelFnObj),
+                m_args(std::forward<TArgs>(args)...)
         {
-        public:
-            //-----------------------------------------------------------------------------
-            template<
-                typename TWorkDiv>
-            ALPAKA_FN_HOST TaskKernelCpuOmp2Threads(
-                TWorkDiv && workDiv,
-                TKernelFnObj const & kernelFnObj,
-                TArgs && ... args) :
-                    WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
-                    m_kernelFnObj(kernelFnObj),
-                    m_args(std::forward<TArgs>(args)...)
-            {
-                static_assert(
-                    Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
-                    "The work division and the execution task have to be of the same dimensionality!");
-            }
-            //-----------------------------------------------------------------------------
-            TaskKernelCpuOmp2Threads(TaskKernelCpuOmp2Threads const &) = default;
-            //-----------------------------------------------------------------------------
-            TaskKernelCpuOmp2Threads(TaskKernelCpuOmp2Threads &&) = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelCpuOmp2Threads const &) -> TaskKernelCpuOmp2Threads & = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelCpuOmp2Threads &&) -> TaskKernelCpuOmp2Threads & = default;
-            //-----------------------------------------------------------------------------
-            ~TaskKernelCpuOmp2Threads() = default;
+            static_assert(
+                Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
+                "The work division and the execution task have to be of the same dimensionality!");
+        }
+        //-----------------------------------------------------------------------------
+        TaskKernelCpuOmp2Threads(TaskKernelCpuOmp2Threads const &) = default;
+        //-----------------------------------------------------------------------------
+        TaskKernelCpuOmp2Threads(TaskKernelCpuOmp2Threads &&) = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(TaskKernelCpuOmp2Threads const &) -> TaskKernelCpuOmp2Threads & = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(TaskKernelCpuOmp2Threads &&) -> TaskKernelCpuOmp2Threads & = default;
+        //-----------------------------------------------------------------------------
+        ~TaskKernelCpuOmp2Threads() = default;
 
-            //-----------------------------------------------------------------------------
-            //! Executes the kernel function object.
-            ALPAKA_FN_HOST auto operator()() const
-            -> void
-            {
-                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+        //-----------------------------------------------------------------------------
+        //! Executes the kernel function object.
+        ALPAKA_FN_HOST auto operator()() const
+        -> void
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtent(
-                    getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtent(
-                    getWorkDiv<Block, Threads>(*this));
-                auto const threadElemExtent(
-                    getWorkDiv<Thread, Elems>(*this));
+            auto const gridBlockExtent(
+                getWorkDiv<Grid, Blocks>(*this));
+            auto const blockThreadExtent(
+                getWorkDiv<Block, Threads>(*this));
+            auto const threadElemExtent(
+                getWorkDiv<Thread, Elems>(*this));
 
-                // Get the size of the block shared dynamic memory.
-                auto const blockSharedMemDynSizeBytes(
-                    meta::apply(
-                        [&](ALPAKA_DECAY_T(TArgs) const & ... args)
-                        {
-                            return
-                                kernel::getBlockSharedMemDynSizeBytes<
-                                    AccCpuOmp2Threads<TDim, TIdx>>(
-                                        m_kernelFnObj,
-                                        blockThreadExtent,
-                                        threadElemExtent,
-                                        args...);
-                        },
-                        m_args));
+            // Get the size of the block shared dynamic memory.
+            auto const blockSharedMemDynSizeBytes(
+                meta::apply(
+                    [&](ALPAKA_DECAY_T(TArgs) const & ... args)
+                    {
+                        return
+                            getBlockSharedMemDynSizeBytes<
+                                AccCpuOmp2Threads<TDim, TIdx>>(
+                                    m_kernelFnObj,
+                                    blockThreadExtent,
+                                    threadElemExtent,
+                                    args...);
+                    },
+                    m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << __func__
-                    << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
+            std::cout << __func__
+                << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
-                // Bind all arguments except the accelerator.
-                // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
-                auto const boundKernelFnObj(
-                    meta::apply(
-                        [this](ALPAKA_DECAY_T(TArgs) const & ... args)
-                        {
-                            return
-                                std::bind(
-                                    std::ref(m_kernelFnObj),
-                                    std::placeholders::_1,
-                                    std::ref(args)...);
-                        },
-                        m_args));
-
-                AccCpuOmp2Threads<TDim, TIdx> acc(
-                    *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
-                    blockSharedMemDynSizeBytes);
-
-                // The number of threads in this block.
-                TIdx const blockThreadCount(blockThreadExtent.prod());
-                int const iBlockThreadCount(static_cast<int>(blockThreadCount));
-                alpaka::ignore_unused(iBlockThreadCount);
-
-                if(::omp_in_parallel() != 0)
-                {
-                    throw std::runtime_error("The OpenMP 2.0 thread backend can not be used within an existing parallel region!");
-                }
-
-                // Force the environment to use the given number of threads.
-                int const ompIsDynamic(::omp_get_dynamic());
-                ::omp_set_dynamic(0);
-
-                // Execute the blocks serially.
-                meta::ndLoopIncIdx(
-                    gridBlockExtent,
-                    [&](Vec<TDim, TIdx> const & gridBlockIdx)
+            // Bind all arguments except the accelerator.
+            // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
+            auto const boundKernelFnObj(
+                meta::apply(
+                    [this](ALPAKA_DECAY_T(TArgs) const & ... args)
                     {
-                        acc.m_gridBlockIdx = gridBlockIdx;
+                        return
+                            std::bind(
+                                std::ref(m_kernelFnObj),
+                                std::placeholders::_1,
+                                std::ref(args)...);
+                    },
+                    m_args));
 
-                        // Execute the threads in parallel.
+            AccCpuOmp2Threads<TDim, TIdx> acc(
+                *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
+                blockSharedMemDynSizeBytes);
 
-                        // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
-                        // So we have to spawn one OS thread per thread in a block.
-                        // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
-                        // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                        #pragma omp parallel num_threads(iBlockThreadCount)
-                        {
-                            // The guard is for gcc internal compiler error, as discussed in #735
-#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 1, 0))
-                            #pragma omp single nowait
-                            {
-                                // The OpenMP runtime does not create a parallel region when only one thread is required in the num_threads clause.
-                                // In all other cases we expect to be in a parallel region now.
-                                if((iBlockThreadCount > 1) && (::omp_in_parallel() == 0))
-                                {
-                                    throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
-                                }
+            // The number of threads in this block.
+            TIdx const blockThreadCount(blockThreadExtent.prod());
+            int const iBlockThreadCount(static_cast<int>(blockThreadCount));
+            alpaka::ignore_unused(iBlockThreadCount);
 
-                                int const numThreads(::omp_get_num_threads());
-                                if(numThreads != iBlockThreadCount)
-                                {
-                                    throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
-                                }
-                            }
-#endif
-                            boundKernelFnObj(
-                                acc);
-
-                            // Wait for all threads to finish before deleting the shared memory.
-                            // This is done by default if the omp 'nowait' clause is missing on the omp parallel directive
-                            //block::syncBlockThreads(acc);
-                        }
-
-                        // After a block has been processed, the shared memory has to be deleted.
-                        block::st::freeMem(acc);
-                    });
-
-                // Reset the dynamic thread number setting.
-                ::omp_set_dynamic(ompIsDynamic);
+            if(::omp_in_parallel() != 0)
+            {
+                throw std::runtime_error("The OpenMP 2.0 thread backend can not be used within an existing parallel region!");
             }
 
-        private:
-            TKernelFnObj m_kernelFnObj;
-            std::tuple<std::decay_t<TArgs>...> m_args;
-        };
-    }
+            // Force the environment to use the given number of threads.
+            int const ompIsDynamic(::omp_get_dynamic());
+            ::omp_set_dynamic(0);
+
+            // Execute the blocks serially.
+            meta::ndLoopIncIdx(
+                gridBlockExtent,
+                [&](Vec<TDim, TIdx> const & gridBlockIdx)
+                {
+                    acc.m_gridBlockIdx = gridBlockIdx;
+
+                    // Execute the threads in parallel.
+
+                    // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                    // So we have to spawn one OS thread per thread in a block.
+                    // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                    // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                    #pragma omp parallel num_threads(iBlockThreadCount)
+                    {
+                        // The guard is for gcc internal compiler error, as discussed in #735
+#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(8, 1, 0))
+                        #pragma omp single nowait
+                        {
+                            // The OpenMP runtime does not create a parallel region when only one thread is required in the num_threads clause.
+                            // In all other cases we expect to be in a parallel region now.
+                            if((iBlockThreadCount > 1) && (::omp_in_parallel() == 0))
+                            {
+                                throw std::runtime_error("The OpenMP 2.0 runtime did not create a parallel region!");
+                            }
+
+                            int const numThreads(::omp_get_num_threads());
+                            if(numThreads != iBlockThreadCount)
+                            {
+                                throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
+                            }
+                        }
+#endif
+                        boundKernelFnObj(
+                            acc);
+
+                        // Wait for all threads to finish before deleting the shared memory.
+                        // This is done by default if the omp 'nowait' clause is missing on the omp parallel directive
+                        //block::syncBlockThreads(acc);
+                    }
+
+                    // After a block has been processed, the shared memory has to be deleted.
+                    block::st::freeMem(acc);
+                });
+
+            // Reset the dynamic thread number setting.
+            ::omp_set_dynamic(ompIsDynamic);
+        }
+
+    private:
+        TKernelFnObj m_kernelFnObj;
+        std::tuple<std::decay_t<TArgs>...> m_args;
+    };
 
     namespace traits
     {
@@ -213,7 +210,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct AccType<
-            kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = AccCpuOmp2Threads<TDim, TIdx>;
         };
@@ -228,7 +225,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct DevType<
-            kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = DevCpu;
         };
@@ -243,7 +240,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct DimType<
-            kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TDim;
         };
@@ -258,7 +255,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct PltfType<
-            kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = PltfCpu;
         };
@@ -273,7 +270,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct IdxType<
-            kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TIdx;
         };

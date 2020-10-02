@@ -183,7 +183,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
 #endif
 
     // Create the kernel execution task.
-    auto const taskKernel(alpaka::kernel::createTaskKernel<Acc>(
+    auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
         numElements,

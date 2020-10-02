@@ -144,7 +144,7 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     alpaka::mem::view::copy(queueAcc, memBufAccB, memBufHostB, extent);
 
     // Create the executor task.
-    auto const taskKernel(alpaka::kernel::createTaskKernel<Acc>(
+    auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
         alpaka::mem::view::getPtrNative(memBufAccA),

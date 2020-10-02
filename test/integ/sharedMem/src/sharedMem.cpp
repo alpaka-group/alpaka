@@ -100,37 +100,34 @@ public:
 
 namespace alpaka
 {
-    namespace kernel
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The trait for getting the size of the block shared dynamic memory for a kernel.
+        template<
+            typename TnumUselessWork,
+            typename Val,
+            typename TAcc>
+        struct BlockSharedMemDynSizeBytes<
+            SharedMemKernel<TnumUselessWork, Val>,
+            TAcc>
         {
-            //#############################################################################
-            //! The trait for getting the size of the block shared dynamic memory for a kernel.
+            //-----------------------------------------------------------------------------
+            //! \return The size of the shared memory allocated for a block.
             template<
-                typename TnumUselessWork,
-                typename Val,
-                typename TAcc>
-            struct BlockSharedMemDynSizeBytes<
-                SharedMemKernel<TnumUselessWork, Val>,
-                TAcc>
+                typename TVec,
+                typename... TArgs>
+            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+                SharedMemKernel<TnumUselessWork, Val> const & sharedMemKernel,
+                TVec const & blockThreadExtent,
+                TVec const & threadElemExtent,
+                TArgs && ...)
+            -> std::size_t
             {
-                //-----------------------------------------------------------------------------
-                //! \return The size of the shared memory allocated for a block.
-                template<
-                    typename TVec,
-                    typename... TArgs>
-                ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                    SharedMemKernel<TnumUselessWork, Val> const & sharedMemKernel,
-                    TVec const & blockThreadExtent,
-                    TVec const & threadElemExtent,
-                    TArgs && ...)
-                -> std::size_t
-                {
-                    alpaka::ignore_unused(sharedMemKernel);
-                    return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
-                }
-            };
-        }
+                alpaka::ignore_unused(sharedMemKernel);
+                return static_cast<std::size_t>(blockThreadExtent.prod() * threadElemExtent.prod()) * sizeof(Val);
+            }
+        };
     }
 }
 
@@ -195,7 +192,7 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
     alpaka::mem::view::copy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
     // Create the kernel execution task.
-    auto const taskKernel(alpaka::kernel::createTaskKernel<Acc>(
+    auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
         alpaka::mem::view::getPtrNative(blockRetValsAcc)));

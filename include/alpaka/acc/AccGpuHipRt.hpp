@@ -33,16 +33,14 @@
 
 namespace alpaka
 {
-    namespace kernel
-    {
-        template<
-            typename TAcc,
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelGpuUniformCudaHipRt;
-    }
+    template<
+        typename TAcc,
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelGpuUniformCudaHipRt;
+
     //#############################################################################
     //! The GPU HIP accelerator.
     //!
@@ -104,43 +102,40 @@ namespace alpaka
             }
         };
     }
-    namespace kernel
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU HIP accelerator execution task type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct CreateTaskKernel<
+            AccGpuHipRt<TDim, TIdx>,
+            TWorkDiv,
+            TKernelFnObj,
+            TArgs...>
         {
-            //#############################################################################
-            //! The GPU HIP accelerator execution task type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TWorkDiv,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct CreateTaskKernel<
-                AccGpuHipRt<TDim, TIdx>,
-                TWorkDiv,
-                TKernelFnObj,
-                TArgs...>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto createTaskKernel(
+                TWorkDiv const & workDiv,
+                TKernelFnObj const & kernelFnObj,
+                TArgs && ... args)
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto createTaskKernel(
-                    TWorkDiv const & workDiv,
-                    TKernelFnObj const & kernelFnObj,
-                    TArgs && ... args)
-                {
-                    return
-                        kernel::TaskKernelGpuUniformCudaHipRt<
-                            AccGpuHipRt<TDim, TIdx>,
-                            TDim,
-                            TIdx,
-                            TKernelFnObj,
-                            TArgs...>(
-                                workDiv,
-                                kernelFnObj,
-                                std::forward<TArgs>(args)...);
-                }
-            };
-        }
+                return
+                    TaskKernelGpuUniformCudaHipRt<
+                        AccGpuHipRt<TDim, TIdx>,
+                        TDim,
+                        TIdx,
+                        TKernelFnObj,
+                        TArgs...>(
+                            workDiv,
+                            kernelFnObj,
+                            std::forward<TArgs>(args)...);
+            }
+        };
     }
 }
 

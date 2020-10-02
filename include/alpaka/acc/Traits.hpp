@@ -121,32 +121,28 @@ namespace alpaka
             ::getAccName();
     }
 
-    namespace kernel
+    namespace detail
     {
-        namespace detail
+        template<typename TAcc>
+        struct CheckFnReturnType<
+            TAcc,
+            typename std::enable_if<
+                concepts::ImplementsConcept<ConceptUniformCudaHip, TAcc>::value
+            >::type>
         {
-            template<typename TAcc>
-            struct CheckFnReturnType<
-                TAcc,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<ConceptUniformCudaHip, TAcc>::value
-                >::type>
+                template<
+                typename TKernelFnObj,
+                typename... TArgs>
+            void operator()(
+                TKernelFnObj const & kernelFnObj,
+                TArgs const & ... args)
             {
-                 template<
-                    typename TKernelFnObj,
-                    typename... TArgs>
-                void operator()(
-                    TKernelFnObj const & kernelFnObj,
-                    TArgs const & ... args)
-                {
-                    using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
-                    CheckFnReturnType<ImplementationBase>{}(
-                        kernelFnObj,
-                        args...);
-                }
-            };
-        }
-
+                using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
+                CheckFnReturnType<ImplementationBase>{}(
+                    kernelFnObj,
+                    args...);
+            }
+        };
     }
 
     namespace traits

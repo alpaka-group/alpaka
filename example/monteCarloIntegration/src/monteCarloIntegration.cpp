@@ -184,7 +184,7 @@ auto main() -> int
         extent);
 
     Kernel kernel;
-    alpaka::kernel::exec<Acc>(
+    alpaka::exec<Acc>(
         queue,
         workdiv,
         kernel,

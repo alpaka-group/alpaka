@@ -70,7 +70,7 @@ TEST_CASE("queueCollective", "[queue]")
     {
         // The kernel will be performed collectively.
         // OpenMP will distribute the work between the threads from the parallel region
-        alpaka::kernel::exec<Acc>(
+        alpaka::exec<Acc>(
                queue,
                workDiv,
                QueueCollectiveTestKernel{},
