@@ -57,7 +57,7 @@ using MaxBlockSize = Accelerator::MaxBlockSize;
 //!
 //! Returns true if the reduction was correct and false otherwise.
 template<typename T, typename DevHost, typename DevAcc, typename TFunc>
-T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem::buf::Buf<DevHost, T, Dim, Idx> hostMemory, TFunc func)
+T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::buf::Buf<DevHost, T, Dim, Idx> hostMemory, TFunc func)
 {
     static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
 
@@ -72,15 +72,15 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
     if (blockCount > maxBlockCount)
         blockCount = maxBlockCount;
 
-    alpaka::mem::buf::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory =
-        alpaka::mem::buf::alloc<T, Idx>(devAcc, n);
+    alpaka::buf::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory =
+        alpaka::buf::alloc<T, Idx>(devAcc, n);
 
-    alpaka::mem::buf::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory =
-        alpaka::mem::buf::alloc<T, Idx>(
+    alpaka::buf::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory =
+        alpaka::buf::alloc<T, Idx>(
             devAcc, static_cast<Extent>(blockCount));
 
     // copy the data to the GPU
-    alpaka::mem::view::copy(queue, sourceDeviceMemory, hostMemory, n);
+    alpaka::view::copy(queue, sourceDeviceMemory, hostMemory, n);
 
     // create kernels with their workdivs
     ReduceKernel<blockSize, T, TFunc> kernel1, kernel2;
@@ -95,8 +95,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
     auto const taskKernelReduceMain(alpaka::createTaskKernel<Acc>(
         workDiv1,
         kernel1,
-        alpaka::mem::view::getPtrNative(sourceDeviceMemory),
-        alpaka::mem::view::getPtrNative(destinationDeviceMemory),
+        alpaka::view::getPtrNative(sourceDeviceMemory),
+        alpaka::view::getPtrNative(destinationDeviceMemory),
         n,
         func));
 
@@ -104,8 +104,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
     auto const taskKernelReduceLastBlock(alpaka::createTaskKernel<Acc>(
         workDiv2,
         kernel2,
-        alpaka::mem::view::getPtrNative(destinationDeviceMemory),
-        alpaka::mem::view::getPtrNative(destinationDeviceMemory),
+        alpaka::view::getPtrNative(destinationDeviceMemory),
+        alpaka::view::getPtrNative(destinationDeviceMemory),
         blockCount,
         func));
 
@@ -116,10 +116,10 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
     //  download result from GPU
     T resultGpuHost;
     auto resultGpuDevice =
-        alpaka::mem::view::ViewPlainPtr<DevHost, T, Dim, Idx>(
+        alpaka::view::ViewPlainPtr<DevHost, T, Dim, Idx>(
             &resultGpuHost, devHost, static_cast<Extent>(blockSize));
 
-    alpaka::mem::view::copy(queue, resultGpuDevice, destinationDeviceMemory, 1);
+    alpaka::view::copy(queue, resultGpuDevice, destinationDeviceMemory, 1);
 
     return resultGpuHost;
 }
@@ -149,9 +149,9 @@ int main()
         blockCount = maxBlockCount;
 
     // allocate memory
-    auto hostMemory = alpaka::mem::buf::alloc<T, Idx>(devHost, n);
+    auto hostMemory = alpaka::buf::alloc<T, Idx>(devHost, n);
 
-    T *nativeHostMemory = alpaka::mem::view::getPtrNative(hostMemory);
+    T *nativeHostMemory = alpaka::view::getPtrNative(hostMemory);
 
     // fill array with data
     for (uint64_t i = 0; i < n; i++)

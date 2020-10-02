@@ -45,17 +45,17 @@ static auto testP2P(
     Queue queue0(dev0);
 
     //-----------------------------------------------------------------------------
-    auto buf0(alpaka::mem::buf::alloc<Elem, Idx>(dev0, extent));
-    auto buf1(alpaka::mem::buf::alloc<Elem, Idx>(dev1, extent));
+    auto buf0(alpaka::buf::alloc<Elem, Idx>(dev0, extent));
+    auto buf1(alpaka::buf::alloc<Elem, Idx>(dev1, extent));
 
     //-----------------------------------------------------------------------------
     std::uint8_t const byte(static_cast<uint8_t>(42u));
-    alpaka::mem::view::set(queue0, buf0, byte, extent);
+    alpaka::view::set(queue0, buf0, byte, extent);
 
     //-----------------------------------------------------------------------------
-    alpaka::mem::view::copy(queue0, buf1, buf0, extent);
+    alpaka::view::copy(queue0, buf1, buf0, extent);
     alpaka::wait(queue0);
-    alpaka::test::mem::view::verifyBytesSet<TAcc>(buf1, byte);
+    alpaka::test::view::verifyBytesSet<TAcc>(buf1, byte);
 }
 
 //-----------------------------------------------------------------------------

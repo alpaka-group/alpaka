@@ -39,20 +39,20 @@ struct TestContainer
     using DevHost = alpaka::DevCpu;
     using PltfHost = alpaka::Pltf<DevHost>;
 
-    using BufHost = alpaka::mem::buf::Buf<
+    using BufHost = alpaka::buf::Buf<
         DevHost,
         TData,
         TDim,
         TIdx
     >;
-    using BufDevice = alpaka::mem::buf::Buf<
+    using BufDevice = alpaka::buf::Buf<
         DevAcc,
         TData,
         TDim,
         TIdx
     >;
 
-    using SubView = alpaka::mem::view::ViewSubView<
+    using SubView = alpaka::view::ViewSubView<
         DevAcc,
         TData,
         TDim,
@@ -78,7 +78,7 @@ struct TestContainer
     ) -> BufHost
     {
         BufHost bufHost(
-            alpaka::mem::buf::alloc<
+            alpaka::buf::alloc<
                 TData,
                 TIdx
             >(
@@ -87,7 +87,7 @@ struct TestContainer
             ));
         if(indexed)
         {
-            TData *const ptr = alpaka::mem::view::getPtrNative(bufHost);
+            TData *const ptr = alpaka::view::getPtrNative(bufHost);
             for(TIdx i(0);i < extents.prod();++i)
             {
                 ptr[i] = static_cast<TData>(i);
@@ -100,7 +100,7 @@ struct TestContainer
     auto createDeviceBuffer(Vec extents) -> BufDevice
     {
         BufDevice bufDevice(
-            alpaka::mem::buf::alloc<
+            alpaka::buf::alloc<
                 TData,
                 TIdx
             >(
@@ -117,7 +117,7 @@ struct TestContainer
         Vec extents
     ) -> void
     {
-        alpaka::mem::view::copy(
+        alpaka::view::copy(
             devQueue,
             bufAcc,
             bufHost,
@@ -132,7 +132,7 @@ struct TestContainer
         Vec extents
     ) -> void
     {
-        alpaka::mem::view::copy(
+        alpaka::view::copy(
             devQueue,
             bufHost,
             bufAcc,
@@ -155,7 +155,7 @@ struct TestContainer
             offsets
         );
         // Copy the subView into a new buffer.
-        alpaka::mem::view::copy(
+        alpaka::view::copy(
             devQueue,
             slicedBuffer,
             subView,
@@ -171,8 +171,8 @@ struct TestContainer
         Vec const & extents
     ) const
     {
-        TData const *const ptrA = alpaka::mem::view::getPtrNative(bufferA);
-        TData const *const ptrB = alpaka::mem::view::getPtrNative(bufferB);
+        TData const *const ptrA = alpaka::view::getPtrNative(bufferA);
+        TData const *const ptrB = alpaka::view::getPtrNative(bufferB);
         for(TIdx i(0);i < extents.prod();++i)
         {
             INFO("Dim: " << TDim::value)
@@ -278,7 +278,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
         extentsSubView,
         false
     );
-    Data *ptrNative = alpaka::mem::view::getPtrNative(correctResults);
+    Data *ptrNative = alpaka::view::getPtrNative(correctResults);
     using Dim1 = alpaka::DimInt<1u>;
 
     for(Idx i(0);i < extentsSubView.prod();++i)

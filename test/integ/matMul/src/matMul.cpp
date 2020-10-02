@@ -271,14 +271,14 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
         << ")" << std::endl;
 
     // Allocate the A and B matrices as std::vectors because this allows them to be filled with uint32_t(1).
-    // alpaka::mem::view::set only supports setting all bytes leading to a value of 16843009 in all elements.
+    // alpaka::view::set only supports setting all bytes leading to a value of 16843009 in all elements.
     std::vector<Val> bufAHost1d(m * k, static_cast<Val>(1));
     std::vector<Val> bufBHost1d(k * n, static_cast<Val>(1));
     // Wrap the std::vectors into a memory buffer object.
-    // For 1D data this would not be required because alpaka::mem::view::copy is specialized for std::vector and std::array.
-    // For multi dimensional data you could directly create them using alpaka::mem::buf::alloc<Type>(devHost, extent), which is not used here.
+    // For 1D data this would not be required because alpaka::view::copy is specialized for std::vector and std::array.
+    // For multi dimensional data you could directly create them using alpaka::buf::alloc<Type>(devHost, extent), which is not used here.
     // Instead we use ViewPlainPtr to wrap the data.
-    using BufWrapper = alpaka::mem::view::ViewPlainPtr<
+    using BufWrapper = alpaka::view::ViewPlainPtr<
         DevHost,
         Val,
         Dim,
@@ -287,19 +287,19 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     BufWrapper bufBHost(bufBHost1d.data(), devHost, extentB);
 
     // Allocate C and set it to zero.
-    auto bufCHost(alpaka::mem::buf::alloc<Val, Idx>(devHost, extentC));
-    alpaka::mem::view::set(queueHost, bufCHost, 0u, extentC);
+    auto bufCHost(alpaka::buf::alloc<Val, Idx>(devHost, extentC));
+    alpaka::view::set(queueHost, bufCHost, 0u, extentC);
 
     // Allocate the buffers on the accelerator.
-    auto bufAAcc(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extentA));
-    auto bufBAcc(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extentB));
-    auto bufCAcc(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extentC));
+    auto bufAAcc(alpaka::buf::alloc<Val, Idx>(devAcc, extentA));
+    auto bufBAcc(alpaka::buf::alloc<Val, Idx>(devAcc, extentB));
+    auto bufCAcc(alpaka::buf::alloc<Val, Idx>(devAcc, extentC));
 
     // Copy Host -> Acc.
-    alpaka::mem::view::copy(queueAcc, bufAAcc, bufAHost, extentA);
-    alpaka::mem::view::copy(queueAcc, bufBAcc, bufBHost, extentB);
+    alpaka::view::copy(queueAcc, bufAAcc, bufAHost, extentA);
+    alpaka::view::copy(queueAcc, bufBAcc, bufBHost, extentB);
     alpaka::wait(queueHost);
-    alpaka::mem::view::copy(queueAcc, bufCAcc, bufCHost, extentC);
+    alpaka::view::copy(queueAcc, bufCAcc, bufCHost, extentC);
 
     // Create the kernel execution task.
     auto const taskKernel(alpaka::createTaskKernel<Acc>(
@@ -309,13 +309,13 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
         n,
         k,
         static_cast<Val>(1),
-        alpaka::mem::view::getPtrNative(bufAAcc),
-        static_cast<Idx>(alpaka::mem::view::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
-        alpaka::mem::view::getPtrNative(bufBAcc),
-        static_cast<Idx>(alpaka::mem::view::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
+        alpaka::view::getPtrNative(bufAAcc),
+        static_cast<Idx>(alpaka::view::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
+        alpaka::view::getPtrNative(bufBAcc),
+        static_cast<Idx>(alpaka::view::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
         static_cast<Val>(1),
-        alpaka::mem::view::getPtrNative(bufCAcc),
-        static_cast<Idx>(alpaka::mem::view::getPitchBytes<1u>(bufCAcc) / sizeof(Val))));
+        alpaka::view::getPtrNative(bufCAcc),
+        static_cast<Idx>(alpaka::view::getPitchBytes<1u>(bufCAcc) / sizeof(Val))));
 
     // Profile the kernel execution.
     std::cout << "Execution time: "
@@ -326,7 +326,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
         << std::endl;
 
     // Copy back the result.
-    alpaka::mem::view::copy(queueAcc, bufCHost, bufCAcc, extentC);
+    alpaka::view::copy(queueAcc, bufCHost, bufCAcc, extentC);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queueAcc);
@@ -336,7 +336,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     auto const correctResult(static_cast<Val>(k));
 
     bool resultCorrect(true);
-    auto const pHostData(alpaka::mem::view::getPtrNative(bufCHost));
+    auto const pHostData(alpaka::view::getPtrNative(bufCHost));
     for(Idx i(0u);
         i < m * n;
         ++i)

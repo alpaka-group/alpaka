@@ -158,7 +158,7 @@ auto main( ) -> int
     QueueAcc queue { devAcc };
 
     // Initialize host-buffer
-    using BufHost = alpaka::mem::buf::Buf<
+    using BufHost = alpaka::buf::Buf<
         DevHost,
         double,
         Dim,
@@ -166,7 +166,7 @@ auto main( ) -> int
     >;
     // This buffer holds the calculated values
     auto uNextBufHost = BufHost{
-        alpaka::mem::buf::alloc<
+        alpaka::buf::alloc<
             double,
             Idx
         >(
@@ -176,7 +176,7 @@ auto main( ) -> int
     };
     // This buffer will hold the current values (used for the next step)
     auto uCurrBufHost = BufHost{
-        alpaka::mem::buf::alloc<
+        alpaka::buf::alloc<
             double,
             Idx
         >(
@@ -185,18 +185,18 @@ auto main( ) -> int
         )
     };
 
-    double * const pCurrHost = alpaka::mem::view::getPtrNative( uCurrBufHost );
-    double * const pNextHost = alpaka::mem::view::getPtrNative( uNextBufHost );
+    double * const pCurrHost = alpaka::view::getPtrNative( uCurrBufHost );
+    double * const pNextHost = alpaka::view::getPtrNative( uNextBufHost );
 
     // Accelerator buffer
-    using BufAcc = alpaka::mem::buf::Buf<
+    using BufAcc = alpaka::buf::Buf<
         Acc,
         double,
         Dim,
         Idx
     >;
     auto uNextBufAcc = BufAcc{
-        alpaka::mem::buf::alloc<
+        alpaka::buf::alloc<
             double,
             Idx
         >(
@@ -205,7 +205,7 @@ auto main( ) -> int
         )
     };
     auto uCurrBufAcc = BufAcc{
-        alpaka::mem::buf::alloc<
+        alpaka::buf::alloc<
             double,
             Idx
         >(
@@ -214,8 +214,8 @@ auto main( ) -> int
         )
     };
 
-    double * pCurrAcc = alpaka::mem::view::getPtrNative( uCurrBufAcc );
-    double * pNextAcc = alpaka::mem::view::getPtrNative( uNextBufAcc );
+    double * pCurrAcc = alpaka::view::getPtrNative( uCurrBufAcc );
+    double * pNextAcc = alpaka::view::getPtrNative( uNextBufAcc );
 
     // Apply initial conditions for the test problem
     for( uint32_t i = 0; i < numNodesX; i++ )
@@ -229,14 +229,14 @@ auto main( ) -> int
     HeatEquationKernel kernel;
 
     // Copy host -> device
-    alpaka::mem::view::copy(
+    alpaka::view::copy(
         queue,
         uCurrBufAcc,
         uCurrBufHost,
         extent
     );
     // Copy to the buffer for next as well to have boundary values set
-    alpaka::mem::view::copy(
+    alpaka::view::copy(
         queue,
         uNextBufAcc,
         uCurrBufAcc,
@@ -268,7 +268,7 @@ auto main( ) -> int
     }
 
     // Copy device -> host
-    alpaka::mem::view::copy(
+    alpaka::view::copy(
         queue,
         uNextBufHost,
         uNextBufAcc,

@@ -102,54 +102,51 @@ namespace alpaka
             };
         }
     }
-    namespace mem
+    namespace view
     {
-        namespace view
+        namespace traits
         {
-            namespace traits
+            //#############################################################################
+            //! The std::vector native pointer get trait specialization.
+            template<
+                typename TElem,
+                typename TAllocator>
+            struct GetPtrNative<
+                std::vector<TElem, TAllocator>>
             {
-                //#############################################################################
-                //! The std::vector native pointer get trait specialization.
-                template<
-                    typename TElem,
-                    typename TAllocator>
-                struct GetPtrNative<
-                    std::vector<TElem, TAllocator>>
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getPtrNative(
+                    std::vector<TElem, TAllocator> const & view)
+                -> TElem const *
                 {
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getPtrNative(
-                        std::vector<TElem, TAllocator> const & view)
-                    -> TElem const *
-                    {
-                        return view.data();
-                    }
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getPtrNative(
-                        std::vector<TElem, TAllocator> & view)
-                    -> TElem *
-                    {
-                        return view.data();
-                    }
-                };
+                    return view.data();
+                }
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getPtrNative(
+                    std::vector<TElem, TAllocator> & view)
+                -> TElem *
+                {
+                    return view.data();
+                }
+            };
 
-                //#############################################################################
-                //! The std::vector pitch get trait specialization.
-                template<
-                    typename TElem,
-                    typename TAllocator>
-                struct GetPitchBytes<
-                    DimInt<0u>,
-                    std::vector<TElem, TAllocator>>
+            //#############################################################################
+            //! The std::vector pitch get trait specialization.
+            template<
+                typename TElem,
+                typename TAllocator>
+            struct GetPitchBytes<
+                DimInt<0u>,
+                std::vector<TElem, TAllocator>>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getPitchBytes(
+                    std::vector<TElem, TAllocator> const & pitch)
+                -> Idx<std::vector<TElem, TAllocator>>
                 {
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto getPitchBytes(
-                        std::vector<TElem, TAllocator> const & pitch)
-                    -> Idx<std::vector<TElem, TAllocator>>
-                    {
-                        return sizeof(TElem) * pitch.size();
-                    }
-                };
-            }
+                    return sizeof(TElem) * pitch.size();
+                }
+            };
         }
     }
     namespace offset

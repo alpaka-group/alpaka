@@ -27,350 +27,345 @@ namespace alpaka
     namespace test
     {
         //-----------------------------------------------------------------------------
-        //! The test mem specifics.
-        namespace mem
+        namespace view
         {
             //-----------------------------------------------------------------------------
-            namespace view
+            template<
+                typename TElem,
+                typename TDim,
+                typename TIdx,
+                typename TDev,
+                typename TView>
+            ALPAKA_FN_HOST auto testViewImmutable(
+                TView const & view,
+                TDev const & dev,
+                alpaka::Vec<TDim, TIdx> const & extent,
+                alpaka::Vec<TDim, TIdx> const & offset)
+            -> void
             {
                 //-----------------------------------------------------------------------------
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TIdx,
-                    typename TDev,
-                    typename TView>
-                ALPAKA_FN_HOST auto testViewImmutable(
-                    TView const & view,
-                    TDev const & dev,
-                    alpaka::Vec<TDim, TIdx> const & extent,
-                    alpaka::Vec<TDim, TIdx> const & offset)
-                -> void
+                // alpaka::traits::DevType
                 {
-                    //-----------------------------------------------------------------------------
-                    // alpaka::traits::DevType
+                    static_assert(
+                        std::is_same<alpaka::Dev<TView>, TDev>::value,
+                        "The device type of the view has to be equal to the specified one.");
+                }
+
+                //-----------------------------------------------------------------------------
+                // alpaka::traits::GetDev
+                {
+                    REQUIRE(
+                        dev == alpaka::getDev(view));
+                }
+
+                //-----------------------------------------------------------------------------
+                // alpaka::traits::DimType
+                {
+                    static_assert(
+                        alpaka::Dim<TView>::value == TDim::value,
+                        "The dimensionality of the view has to be equal to the specified one.");
+                }
+
+                //-----------------------------------------------------------------------------
+                // alpaka::elem::traits::ElemType
+                {
+                    static_assert(
+                        std::is_same<alpaka::elem::Elem<TView>, TElem>::value,
+                        "The element type of the view has to be equal to the specified one.");
+                }
+
+                //-----------------------------------------------------------------------------
+                // alpaka::extent::traits::GetExtent
+                {
+                    REQUIRE(
+                        extent ==
+                        alpaka::extent::getExtentVec(view));
+                }
+
+                //-----------------------------------------------------------------------------
+                // alpaka::view::traits::GetPitchBytes
+                {
+                    // The pitches have to be at least as large as the values we calculate here.
+                    auto pitchMinimum(alpaka::Vec<alpaka::DimInt<TDim::value + 1u>, TIdx>::ones());
+                    // Initialize the pitch between two elements of the X dimension ...
+                    pitchMinimum[TDim::value] = sizeof(TElem);
+                    // ... and fill all the other dimensions.
+                    for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
                     {
-                        static_assert(
-                            std::is_same<alpaka::Dev<TView>, TDev>::value,
-                            "The device type of the view has to be equal to the specified one.");
+                        pitchMinimum[i-1] = extent[i-1] * pitchMinimum[i];
                     }
 
-                    //-----------------------------------------------------------------------------
-                    // alpaka::traits::GetDev
+                    auto const pitchView(alpaka::view::getPitchBytesVec(view));
+
+                    for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
                     {
                         REQUIRE(
-                            dev == alpaka::getDev(view));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    // alpaka::traits::DimType
-                    {
-                        static_assert(
-                            alpaka::Dim<TView>::value == TDim::value,
-                            "The dimensionality of the view has to be equal to the specified one.");
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    // alpaka::elem::traits::ElemType
-                    {
-                        static_assert(
-                            std::is_same<alpaka::elem::Elem<TView>, TElem>::value,
-                            "The element type of the view has to be equal to the specified one.");
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    // alpaka::extent::traits::GetExtent
-                    {
-                        REQUIRE(
-                            extent ==
-                            alpaka::extent::getExtentVec(view));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    // alpaka::mem::view::traits::GetPitchBytes
-                    {
-                        // The pitches have to be at least as large as the values we calculate here.
-                        auto pitchMinimum(alpaka::Vec<alpaka::DimInt<TDim::value + 1u>, TIdx>::ones());
-                        // Initialize the pitch between two elements of the X dimension ...
-                        pitchMinimum[TDim::value] = sizeof(TElem);
-                        // ... and fill all the other dimensions.
-                        for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
-                        {
-                            pitchMinimum[i-1] = extent[i-1] * pitchMinimum[i];
-                        }
-
-                        auto const pitchView(alpaka::mem::view::getPitchBytesVec(view));
-
-                        for(TIdx i = TDim::value; i > static_cast<TIdx>(0u); --i)
-                        {
-                            REQUIRE(
-                                pitchView[i-1] >=
-                                pitchMinimum[i-1]);
-                        }
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    // alpaka::mem::view::traits::GetPtrNative
-                    {
-                        // The view is a const& so the pointer has to point to a const value.
-                        using NativePtr = decltype(alpaka::mem::view::getPtrNative(view));
-                        static_assert(
-                            std::is_pointer<NativePtr>::value,
-                            "The value returned by getPtrNative has to be a pointer.");
-                        static_assert(
-                            std::is_const<std::remove_pointer_t<NativePtr>>::value,
-                            "The value returned by getPtrNative has to be const when the view is const.");
-
-                        if(alpaka::extent::getExtentProduct(view) != static_cast<TIdx>(0u))
-                        {
-                            // The pointer is only required to be non-null when the extent is > 0.
-                            TElem const * const invalidPtr(nullptr);
-                            REQUIRE(
-                                invalidPtr !=
-                                alpaka::mem::view::getPtrNative(view));
-                        }
-                        else
-                        {
-                            // When the extent is 0, the pointer is undefined but it should still be possible get it.
-                            alpaka::mem::view::getPtrNative(view);
-                        }
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    // alpaka::offset::traits::GetOffset
-                    {
-                        REQUIRE(
-                            offset ==
-                            alpaka::offset::getOffsetVec(view));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    // alpaka::traits::IdxType
-                    {
-                        static_assert(
-                            std::is_same<alpaka::Idx<TView>, TIdx>::value,
-                            "The idx type of the view has to be equal to the specified one.");
+                            pitchView[i-1] >=
+                            pitchMinimum[i-1]);
                     }
                 }
 
-                //#############################################################################
-                //! Compares element-wise that all bytes are set to the same value.
-                struct VerifyBytesSetKernel
-                {
-                    ALPAKA_NO_HOST_ACC_WARNING
-                    template<
-                        typename TAcc,
-                        typename TIter>
-                    ALPAKA_FN_ACC void operator()(
-                        TAcc const & acc,
-                        bool * success,
-                        TIter const & begin,
-                        TIter const & end,
-                        std::uint8_t const & byte) const
-                    {
-                        alpaka::ignore_unused(acc);
-
-                        constexpr auto elemSizeInByte = sizeof(decltype(*begin));
-                        for(auto it = begin; it != end; ++it)
-                        {
-                            auto const& elem = *it;
-                            auto const pBytes = reinterpret_cast<std::uint8_t const *>(&elem);
-                            for(std::size_t i = 0u; i < elemSizeInByte; ++i)
-                            {
-                                ALPAKA_CHECK(*success, pBytes[i] == byte);
-                            }
-                        }
-                    }
-                };
                 //-----------------------------------------------------------------------------
+                // alpaka::view::traits::GetPtrNative
+                {
+                    // The view is a const& so the pointer has to point to a const value.
+                    using NativePtr = decltype(alpaka::view::getPtrNative(view));
+                    static_assert(
+                        std::is_pointer<NativePtr>::value,
+                        "The value returned by getPtrNative has to be a pointer.");
+                    static_assert(
+                        std::is_const<std::remove_pointer_t<NativePtr>>::value,
+                        "The value returned by getPtrNative has to be const when the view is const.");
+
+                    if(alpaka::extent::getExtentProduct(view) != static_cast<TIdx>(0u))
+                    {
+                        // The pointer is only required to be non-null when the extent is > 0.
+                        TElem const * const invalidPtr(nullptr);
+                        REQUIRE(
+                            invalidPtr !=
+                            alpaka::view::getPtrNative(view));
+                    }
+                    else
+                    {
+                        // When the extent is 0, the pointer is undefined but it should still be possible get it.
+                        alpaka::view::getPtrNative(view);
+                    }
+                }
+
+                //-----------------------------------------------------------------------------
+                // alpaka::offset::traits::GetOffset
+                {
+                    REQUIRE(
+                        offset ==
+                        alpaka::offset::getOffsetVec(view));
+                }
+
+                //-----------------------------------------------------------------------------
+                // alpaka::traits::IdxType
+                {
+                    static_assert(
+                        std::is_same<alpaka::Idx<TView>, TIdx>::value,
+                        "The idx type of the view has to be equal to the specified one.");
+                }
+            }
+
+            //#############################################################################
+            //! Compares element-wise that all bytes are set to the same value.
+            struct VerifyBytesSetKernel
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TAcc,
-                    typename TView>
-                ALPAKA_FN_HOST auto verifyBytesSet(
-                    TView const & view,
-                    std::uint8_t const & byte)
-                -> void
+                    typename TIter>
+                ALPAKA_FN_ACC void operator()(
+                    TAcc const & acc,
+                    bool * success,
+                    TIter const & begin,
+                    TIter const & end,
+                    std::uint8_t const & byte) const
                 {
-                    using Dim = alpaka::Dim<TView>;
-                    using Idx = alpaka::Idx<TView>;
+                    alpaka::ignore_unused(acc);
 
-                    alpaka::test::KernelExecutionFixture<TAcc> fixture(
-                        alpaka::Vec<Dim, Idx>::ones());
-
-                    VerifyBytesSetKernel verifyBytesSet;
-
-                    REQUIRE(
-                        fixture(
-                            verifyBytesSet,
-                            alpaka::test::mem::view::begin(view),
-                            alpaka::test::mem::view::end(view),
-                            byte));
-                }
-
-                //#############################################################################
-                //! Compares iterators element-wise
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
-#endif
-                struct VerifyViewsEqualKernel
-                {
-                    ALPAKA_NO_HOST_ACC_WARNING
-                    template<
-                        typename TAcc,
-                        typename TIterA,
-                        typename TIterB>
-                    ALPAKA_FN_ACC void operator()(
-                        TAcc const & acc,
-                        bool * success,
-                        TIterA beginA,
-                        TIterA const & endA,
-                        TIterB beginB) const
+                    constexpr auto elemSizeInByte = sizeof(decltype(*begin));
+                    for(auto it = begin; it != end; ++it)
                     {
-                        alpaka::ignore_unused(acc);
-
-                        for(; beginA != endA; ++beginA, ++beginB)
+                        auto const& elem = *it;
+                        auto const pBytes = reinterpret_cast<std::uint8_t const *>(&elem);
+                        for(std::size_t i = 0u; i < elemSizeInByte; ++i)
                         {
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
-#endif
-                            ALPAKA_CHECK(*success, *beginA == *beginB);
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+                            ALPAKA_CHECK(*success, pBytes[i] == byte);
                         }
                     }
-                };
-#if BOOST_COMP_GNUC
-    #pragma GCC diagnostic pop
-#endif
+                }
+            };
+            //-----------------------------------------------------------------------------
+            template<
+                typename TAcc,
+                typename TView>
+            ALPAKA_FN_HOST auto verifyBytesSet(
+                TView const & view,
+                std::uint8_t const & byte)
+            -> void
+            {
+                using Dim = alpaka::Dim<TView>;
+                using Idx = alpaka::Idx<TView>;
 
-                //-----------------------------------------------------------------------------
+                alpaka::test::KernelExecutionFixture<TAcc> fixture(
+                    alpaka::Vec<Dim, Idx>::ones());
+
+                VerifyBytesSetKernel verifyBytesSet;
+
+                REQUIRE(
+                    fixture(
+                        verifyBytesSet,
+                        alpaka::test::view::begin(view),
+                        alpaka::test::view::end(view),
+                        byte));
+            }
+
+            //#############################################################################
+            //! Compares iterators element-wise
+#if BOOST_COMP_GNUC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"  // "comparing floating point with == or != is unsafe"
+#endif
+            struct VerifyViewsEqualKernel
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TAcc,
-                    typename TViewB,
-                    typename TViewA>
-                ALPAKA_FN_HOST auto verifyViewsEqual(
-                    TViewA const & viewA,
-                    TViewB const & viewB)
-                -> void
+                    typename TIterA,
+                    typename TIterB>
+                ALPAKA_FN_ACC void operator()(
+                    TAcc const & acc,
+                    bool * success,
+                    TIterA beginA,
+                    TIterA const & endA,
+                    TIterB beginB) const
                 {
-                    using DimA = alpaka::Dim<TViewA>;
-                    using DimB = alpaka::Dim<TViewB>;
-                    static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
-                    using IdxA = alpaka::Idx<TViewA>;
-                    using IdxB = alpaka::Idx<TViewB>;
-                    static_assert(std::is_same<IdxA, IdxB>::value, "viewA and viewB are required to have identical Idx");
+                    alpaka::ignore_unused(acc);
 
-                    alpaka::test::KernelExecutionFixture<TAcc> fixture(
-                        alpaka::Vec<DimA, IdxA>::ones());
+                    for(; beginA != endA; ++beginA, ++beginB)
+                    {
+#if BOOST_COMP_CLANG
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
+#endif
+                        ALPAKA_CHECK(*success, *beginA == *beginB);
+#if BOOST_COMP_CLANG
+#pragma clang diagnostic pop
+#endif
+                    }
+                }
+            };
+#if BOOST_COMP_GNUC
+#pragma GCC diagnostic pop
+#endif
 
-                    VerifyViewsEqualKernel verifyViewsEqualKernel;
+            //-----------------------------------------------------------------------------
+            template<
+                typename TAcc,
+                typename TViewB,
+                typename TViewA>
+            ALPAKA_FN_HOST auto verifyViewsEqual(
+                TViewA const & viewA,
+                TViewB const & viewB)
+            -> void
+            {
+                using DimA = alpaka::Dim<TViewA>;
+                using DimB = alpaka::Dim<TViewB>;
+                static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
+                using IdxA = alpaka::Idx<TViewA>;
+                using IdxB = alpaka::Idx<TViewB>;
+                static_assert(std::is_same<IdxA, IdxB>::value, "viewA and viewB are required to have identical Idx");
 
-                    REQUIRE(
-                        fixture(
-                            verifyViewsEqualKernel,
-                            alpaka::test::mem::view::begin(viewA),
-                            alpaka::test::mem::view::end(viewA),
-                            alpaka::test::mem::view::begin(viewB)));
+                alpaka::test::KernelExecutionFixture<TAcc> fixture(
+                    alpaka::Vec<DimA, IdxA>::ones());
+
+                VerifyViewsEqualKernel verifyViewsEqualKernel;
+
+                REQUIRE(
+                    fixture(
+                        verifyViewsEqualKernel,
+                        alpaka::test::view::begin(viewA),
+                        alpaka::test::view::end(viewA),
+                        alpaka::test::view::begin(viewB)));
+            }
+
+            //-----------------------------------------------------------------------------
+            //! Fills the given view with increasing values starting at 0.
+            template<
+                typename TView,
+                typename TQueue>
+            ALPAKA_FN_HOST auto iotaFillView(
+                TQueue & queue,
+                TView & view)
+            -> void
+            {
+                using Dim = alpaka::Dim<TView>;
+                using Idx = alpaka::Idx<TView>;
+
+                using DevHost = alpaka::DevCpu;
+                using PltfHost = alpaka::Pltf<DevHost>;
+
+                using Elem = alpaka::elem::Elem<TView>;
+
+                using ViewPlainPtr = alpaka::view::ViewPlainPtr<DevHost, Elem, Dim, Idx>;
+
+                DevHost const devHost(alpaka::getDevByIdx<PltfHost>(0));
+
+                auto const extent(alpaka::extent::getExtentVec(view));
+
+                // Init buf with increasing values
+                std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
+                std::iota(v.begin(), v.end(), static_cast<Elem>(0));
+                ViewPlainPtr plainBuf(v.data(), devHost, extent);
+
+                // Copy the generated content into the given view.
+                alpaka::view::copy(queue, view, plainBuf, extent);
+
+                alpaka::wait(queue);
+            }
+
+            //-----------------------------------------------------------------------------
+            template<
+                typename TAcc,
+                typename TView,
+                typename TQueue>
+            ALPAKA_FN_HOST auto testViewMutable(
+                TQueue & queue,
+                TView & view)
+            -> void
+            {
+                //-----------------------------------------------------------------------------
+                // alpaka::view::traits::GetPtrNative
+                {
+                    // The view is a non-const so the pointer has to point to a non-const value.
+                    using NativePtr = decltype(alpaka::view::getPtrNative(view));
+                    static_assert(
+                        std::is_pointer<NativePtr>::value,
+                        "The value returned by getPtrNative has to be a pointer.");
+                    static_assert(
+                        !std::is_const<std::remove_pointer_t<NativePtr>>::value,
+                        "The value returned by getPtrNative has to be non-const when the view is non-const.");
                 }
 
+                auto const extent(alpaka::extent::getExtentVec(view));
+
                 //-----------------------------------------------------------------------------
-                //! Fills the given view with increasing values starting at 0.
-                template<
-                    typename TView,
-                    typename TQueue>
-                ALPAKA_FN_HOST auto iotaFillView(
-                    TQueue & queue,
-                    TView & view)
-                -> void
+                // alpaka::view::set
                 {
-                    using Dim = alpaka::Dim<TView>;
-                    using Idx = alpaka::Idx<TView>;
-
-                    using DevHost = alpaka::DevCpu;
-                    using PltfHost = alpaka::Pltf<DevHost>;
-
-                    using Elem = alpaka::elem::Elem<TView>;
-
-                    using ViewPlainPtr = alpaka::mem::view::ViewPlainPtr<DevHost, Elem, Dim, Idx>;
-
-                    DevHost const devHost(alpaka::getDevByIdx<PltfHost>(0));
-
-                    auto const extent(alpaka::extent::getExtentVec(view));
-
-                    // Init buf with increasing values
-                    std::vector<Elem> v(static_cast<std::size_t>(extent.prod()), static_cast<Elem>(0));
-                    std::iota(v.begin(), v.end(), static_cast<Elem>(0));
-                    ViewPlainPtr plainBuf(v.data(), devHost, extent);
-
-                    // Copy the generated content into the given view.
-                    alpaka::mem::view::copy(queue, view, plainBuf, extent);
-
+                    std::uint8_t const byte(static_cast<uint8_t>(42u));
+                    alpaka::view::set(queue, view, byte, extent);
                     alpaka::wait(queue);
+                    verifyBytesSet<TAcc>(view, byte);
                 }
 
                 //-----------------------------------------------------------------------------
-                template<
-                    typename TAcc,
-                    typename TView,
-                    typename TQueue>
-                ALPAKA_FN_HOST auto testViewMutable(
-                    TQueue & queue,
-                    TView & view)
-                -> void
+                // alpaka::view::copy
                 {
-                    //-----------------------------------------------------------------------------
-                    // alpaka::mem::view::traits::GetPtrNative
-                    {
-                        // The view is a non-const so the pointer has to point to a non-const value.
-                        using NativePtr = decltype(alpaka::mem::view::getPtrNative(view));
-                        static_assert(
-                            std::is_pointer<NativePtr>::value,
-                            "The value returned by getPtrNative has to be a pointer.");
-                        static_assert(
-                            !std::is_const<std::remove_pointer_t<NativePtr>>::value,
-                            "The value returned by getPtrNative has to be non-const when the view is non-const.");
-                    }
+                    using Elem = alpaka::elem::Elem<TView>;
+                    using Idx = alpaka::Idx<TView>;
 
-                    auto const extent(alpaka::extent::getExtentVec(view));
+                    auto const devAcc = alpaka::getDev(view);
 
                     //-----------------------------------------------------------------------------
-                    // alpaka::mem::view::set
+                    // alpaka::view::copy into given view
                     {
-                        std::uint8_t const byte(static_cast<uint8_t>(42u));
-                        alpaka::mem::view::set(queue, view, byte, extent);
+                        auto srcBufAcc(alpaka::buf::alloc<Elem, Idx>(devAcc, extent));
+                        iotaFillView(queue, srcBufAcc);
+                        alpaka::view::copy(queue, view, srcBufAcc, extent);
                         alpaka::wait(queue);
-                        verifyBytesSet<TAcc>(view, byte);
+                        verifyViewsEqual<TAcc>(view, srcBufAcc);
                     }
 
                     //-----------------------------------------------------------------------------
-                    // alpaka::mem::view::copy
+                    // alpaka::view::copy from given view
                     {
-                        using Elem = alpaka::elem::Elem<TView>;
-                        using Idx = alpaka::Idx<TView>;
-
-                        auto const devAcc = alpaka::getDev(view);
-
-                        //-----------------------------------------------------------------------------
-                        // alpaka::mem::view::copy into given view
-                        {
-                            auto srcBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
-                            iotaFillView(queue, srcBufAcc);
-                            alpaka::mem::view::copy(queue, view, srcBufAcc, extent);
-                            alpaka::wait(queue);
-                            verifyViewsEqual<TAcc>(view, srcBufAcc);
-                        }
-
-                        //-----------------------------------------------------------------------------
-                        // alpaka::mem::view::copy from given view
-                        {
-                            auto dstBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
-                            alpaka::mem::view::copy(queue, dstBufAcc, view, extent);
-                            alpaka::wait(queue);
-                            verifyViewsEqual<TAcc>(dstBufAcc, view);
-                        }
+                        auto dstBufAcc(alpaka::buf::alloc<Elem, Idx>(devAcc, extent));
+                        alpaka::view::copy(queue, dstBufAcc, view, extent);
+                        alpaka::wait(queue);
+                        verifyViewsEqual<TAcc>(dstBufAcc, view);
                     }
                 }
             }

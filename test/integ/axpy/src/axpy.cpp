@@ -130,12 +130,12 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
         << ")" << std::endl;
 
     // Allocate host memory buffers.
-    auto memBufHostX(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
-    auto memBufHostOrigY(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
-    auto memBufHostY(alpaka::mem::buf::alloc<Val, Idx>(devHost, extent));
-    Val * const pBufHostX = alpaka::mem::view::getPtrNative(memBufHostX);
-    Val * const pBufHostOrigY = alpaka::mem::view::getPtrNative(memBufHostOrigY);
-    Val * const pBufHostY = alpaka::mem::view::getPtrNative(memBufHostY);
+    auto memBufHostX(alpaka::buf::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostOrigY(alpaka::buf::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostY(alpaka::buf::alloc<Val, Idx>(devHost, extent));
+    Val * const pBufHostX = alpaka::view::getPtrNative(memBufHostX);
+    Val * const pBufHostOrigY = alpaka::view::getPtrNative(memBufHostOrigY);
+    Val * const pBufHostY = alpaka::view::getPtrNative(memBufHostY);
 
     // random generator for uniformly distributed numbers in [0,1)
     // keep in mind, this can generate different values on different platforms
@@ -156,29 +156,29 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     std::cout << __func__
         << " alpha: " << alpha << std::endl;
     std::cout << __func__ << " X_host: ";
-    alpaka::mem::view::print(memBufHostX, std::cout);
+    alpaka::view::print(memBufHostX, std::cout);
     std::cout << std::endl;
     std::cout << __func__ << " Y_host: ";
-    alpaka::mem::view::print(memBufHostOrigY, std::cout);
+    alpaka::view::print(memBufHostOrigY, std::cout);
     std::cout << std::endl;
 #endif
 
     // Allocate the buffer on the accelerator.
-    auto memBufAccX(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
-    auto memBufAccY(alpaka::mem::buf::alloc<Val, Idx>(devAcc, extent));
+    auto memBufAccX(alpaka::buf::alloc<Val, Idx>(devAcc, extent));
+    auto memBufAccY(alpaka::buf::alloc<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
-    alpaka::mem::view::copy(queue, memBufAccX, memBufHostX, extent);
-    alpaka::mem::view::copy(queue, memBufAccY, memBufHostOrigY, extent);
+    alpaka::view::copy(queue, memBufAccX, memBufHostX, extent);
+    alpaka::view::copy(queue, memBufAccY, memBufHostOrigY, extent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     alpaka::wait(queue);
 
     std::cout << __func__ << " X_Dev: ";
-    alpaka::mem::view::print(memBufHostX, std::cout);
+    alpaka::view::print(memBufHostX, std::cout);
     std::cout << std::endl;
     std::cout << __func__ << " Y_Dev: ";
-    alpaka::mem::view::print(memBufHostX, std::cout);
+    alpaka::view::print(memBufHostX, std::cout);
     std::cout << std::endl;
 #endif
 
@@ -188,8 +188,8 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
         kernel,
         numElements,
         alpha,
-        alpaka::mem::view::getPtrNative(memBufAccX),
-        alpaka::mem::view::getPtrNative(memBufAccY)));
+        alpaka::view::getPtrNative(memBufAccX),
+        alpaka::view::getPtrNative(memBufAccY)));
 
     // Profile the kernel execution.
     std::cout << "Execution time: "
@@ -200,7 +200,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
         << std::endl;
 
     // Copy back the result.
-    alpaka::mem::view::copy(queue, memBufHostY, memBufAccY, extent);
+    alpaka::view::copy(queue, memBufHostY, memBufAccY, extent);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queue);

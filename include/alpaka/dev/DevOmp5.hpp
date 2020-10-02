@@ -252,33 +252,30 @@ namespace alpaka
             }
         };
     }
-    namespace mem
+    namespace buf
     {
-        namespace buf
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        class BufOmp5;
+
+        namespace traits
         {
+            //#############################################################################
+            //! The OpenMP 5.0 device memory buffer type trait specialization.
             template<
                 typename TElem,
                 typename TDim,
                 typename TIdx>
-            class BufOmp5;
-
-            namespace traits
+            struct BufType<
+                DevOmp5,
+                TElem,
+                TDim,
+                TIdx>
             {
-                //#############################################################################
-                //! The OpenMP 5.0 device memory buffer type trait specialization.
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TIdx>
-                struct BufType<
-                    DevOmp5,
-                    TElem,
-                    TDim,
-                    TIdx>
-                {
-                    using type = mem::buf::BufOmp5<TElem, TDim, TIdx>;
-                };
-            }
+                using type = buf::BufOmp5<TElem, TDim, TIdx>;
+            };
         }
     }
     namespace traits

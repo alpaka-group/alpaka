@@ -46,13 +46,13 @@ struct Buffer
     using DevHost = alpaka::DevCpu;
     using PltfHost = alpaka::Pltf< DevHost >;
 
-    using BufHost = alpaka::mem::buf::Buf<
+    using BufHost = alpaka::buf::Buf<
         DevHost,
         TData,
         Dim,
         Idx
     >;
-    using BufAcc = alpaka::mem::buf::Buf<
+    using BufAcc = alpaka::buf::Buf<
         DevAcc,
         TData,
         Dim,
@@ -79,21 +79,21 @@ struct Buffer
         devHost{ alpaka::getDevByIdx< PltfHost >( 0u ) },
         hostBuffer
         {
-            alpaka::mem::buf::alloc<TData, Idx>(devHost, Tcapacity)
+            alpaka::buf::alloc<TData, Idx>(devHost, Tcapacity)
         },
         devBuffer
         {
-            alpaka::mem::buf::alloc<TData, Idx>(devAcc, Tcapacity)
+            alpaka::buf::alloc<TData, Idx>(devAcc, Tcapacity)
         },
-        pHostBuffer{ alpaka::mem::view::getPtrNative( hostBuffer ) },
-        pDevBuffer{ alpaka::mem::view::getPtrNative( devBuffer ) }
+        pHostBuffer{ alpaka::view::getPtrNative( hostBuffer ) },
+        pDevBuffer{ alpaka::view::getPtrNative( devBuffer ) }
     {}
 
     // Copy Host -> Acc.
     template< typename Queue >
     auto copyToDevice( Queue queue ) -> void
     {
-        alpaka::mem::view::copy(
+        alpaka::view::copy(
             queue,
             devBuffer,
             hostBuffer,
@@ -105,7 +105,7 @@ struct Buffer
     template< typename Queue >
     auto copyFromDevice( Queue queue ) -> void
     {
-        alpaka::mem::view::copy(
+        alpaka::view::copy(
             queue,
             hostBuffer,
             devBuffer,
