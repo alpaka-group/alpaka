@@ -80,7 +80,7 @@ namespace alpaka
         public block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn,
         public block::st::BlockSharedMemStUniformCudaHipBuiltIn,
         public block::BlockSyncUniformCudaHipBuiltIn,
-        public intrinsic::IntrinsicUniformCudaHipBuiltIn,
+        public IntrinsicUniformCudaHipBuiltIn,
         public rand::RandUniformCudaHipRand,
         public time::TimeUniformCudaHipBuiltIn,
         public warp::WarpUniformCudaHipBuiltIn,
