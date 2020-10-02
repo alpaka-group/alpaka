@@ -287,22 +287,19 @@ namespace alpaka
             using type = DimInt<4u>;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA vectors elem type trait specialization.
+        template<
+            typename T>
+        struct ElemType<
+            T,
+            std::enable_if_t<
+                cuda::traits::IsCudaBuiltInType<T>::value>>
         {
-            //#############################################################################
-            //! The CUDA vectors elem type trait specialization.
-            template<
-                typename T>
-            struct ElemType<
-                T,
-                std::enable_if_t<
-                    cuda::traits::IsCudaBuiltInType<T>::value>>
-            {
-                using type = decltype(std::declval<T>().x);
-            };
-        }
+            using type = decltype(std::declval<T>().x);
+        };
     }
     namespace extent
     {

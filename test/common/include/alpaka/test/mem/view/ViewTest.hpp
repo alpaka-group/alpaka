@@ -67,10 +67,10 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                // alpaka::elem::traits::ElemType
+                // alpaka::traits::ElemType
                 {
                     static_assert(
-                        std::is_same<alpaka::elem::Elem<TView>, TElem>::value,
+                        std::is_same<alpaka::Elem<TView>, TElem>::value,
                         "The element type of the view has to be equal to the specified one.");
                 }
 
@@ -288,7 +288,7 @@ namespace alpaka
                 using DevHost = alpaka::DevCpu;
                 using PltfHost = alpaka::Pltf<DevHost>;
 
-                using Elem = alpaka::elem::Elem<TView>;
+                using Elem = alpaka::Elem<TView>;
 
                 using ViewPlainPtr = alpaka::view::ViewPlainPtr<DevHost, Elem, Dim, Idx>;
 
@@ -344,7 +344,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 // alpaka::view::copy
                 {
-                    using Elem = alpaka::elem::Elem<TView>;
+                    using Elem = alpaka::Elem<TView>;
                     using Idx = alpaka::Idx<TView>;
 
                     auto const devAcc = alpaka::getDev(view);

@@ -167,23 +167,20 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewPlainPtr memory element type get trait specialization.
+        template<
+            typename TDev,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct ElemType<
+            view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewPlainPtr memory element type get trait specialization.
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct ElemType<
-                view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-            {
-                using type = TElem;
-            };
-        }
+            using type = TElem;
+        };
     }
     namespace extent
     {

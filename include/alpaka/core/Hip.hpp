@@ -244,22 +244,19 @@ namespace alpaka
             using type = DimInt<4u>;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The HIP vectors elem type trait specialization.
+        template<
+            typename T>
+        struct ElemType<
+            T,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<T>::value>>
         {
-            //#############################################################################
-            //! The HIP vectors elem type trait specialization.
-            template<
-                typename T>
-            struct ElemType<
-                T,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<T>::value>>
-            {
-                using type = decltype(std::declval<T>().x);
-            };
-        }
+            using type = decltype(std::declval<T>().x);
+        };
     }
     namespace extent
     {

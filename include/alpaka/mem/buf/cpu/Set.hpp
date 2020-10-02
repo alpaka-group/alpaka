@@ -41,7 +41,7 @@ namespace alpaka
                 {
                     using ExtentSize = Idx<TExtent>;
                     using DstSize = Idx<TView>;
-                    using Elem = elem::Elem<TView>;
+                    using Elem = alpaka::Elem<TView>;
 
                     static_assert(
                         !std::is_const<TView>::value,

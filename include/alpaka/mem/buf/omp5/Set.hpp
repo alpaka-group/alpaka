@@ -66,7 +66,7 @@ namespace alpaka
                     auto pitch = view::getPitchBytesVec(view);
                     auto byteExtent = extent::getExtentVec(extent);
                     constexpr auto lastDim = TDim::value - 1;
-                    byteExtent[lastDim] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
+                    byteExtent[lastDim] *= static_cast<Idx>(sizeof(Elem<TView>));
 
                     if(pitch[0] == 0)
                     {
