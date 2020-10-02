@@ -57,9 +57,7 @@ namespace alpaka
         {
             using type = DevUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT platform device count get trait specialization.
         template<>

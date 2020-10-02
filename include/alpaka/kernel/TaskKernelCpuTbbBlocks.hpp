@@ -177,9 +177,7 @@ namespace alpaka
         {
             using type = AccCpuTbbBlocks<TDim, TIdx>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU TBB block execution task device type trait specialization.
         template<
@@ -192,9 +190,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU TBB block execution task dimension getter trait specialization.
         template<
@@ -207,9 +203,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU TBB block execution task platform type trait specialization.
         template<
@@ -222,9 +216,7 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU TBB block execution task idx type trait specialization.
         template<

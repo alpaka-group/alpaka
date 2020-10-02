@@ -62,9 +62,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP accelerator block thread index get trait specialization.
         template<
@@ -114,9 +112,7 @@ namespace alpaka
                 return Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP accelerator block thread index idx type trait specialization.
         template<

@@ -274,9 +274,7 @@ namespace alpaka
                 return "AccGpuUniformCudaHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA accelerator device type trait specialization.
         template<
@@ -287,9 +285,7 @@ namespace alpaka
         {
             using type = DevUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA accelerator dimension getter trait specialization.
         template<
@@ -328,7 +324,6 @@ namespace alpaka
             }
         };
     }
-
     namespace traits
     {
         //#############################################################################
@@ -363,9 +358,7 @@ namespace alpaka
                             std::forward<TArgs>(args)...);
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU CUDA execution task platform type trait specialization.
         template<
@@ -376,9 +369,7 @@ namespace alpaka
         {
             using type = PltfUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA accelerator idx type trait specialization.
         template<

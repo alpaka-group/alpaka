@@ -49,9 +49,7 @@ namespace alpaka
                 return getDevByIdx<PltfCpu>(0u);
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The std::array dimension getter trait specialization.
         template<
@@ -62,9 +60,7 @@ namespace alpaka
         {
             using type = DimInt<1u>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The std::array memory element type get trait specialization.
         template<
@@ -167,9 +163,7 @@ namespace alpaka
                 return 0u;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The std::vector idx type trait specialization.
         template<

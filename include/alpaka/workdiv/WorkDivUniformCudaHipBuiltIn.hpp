@@ -78,9 +78,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA/HIP accelerator work division idx type trait specialization.
         template<
@@ -91,9 +89,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA/HIP accelerator work division grid block extent trait specialization.
         template<

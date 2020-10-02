@@ -153,29 +153,25 @@ namespace alpaka
                 return event.m_spEventImpl->m_dev;
             }
         };
-    }
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU device event test trait specialization.
-            template<typename TDev>
-            struct IsComplete<
-                EventGenericThreads<TDev>>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return If the event is not waiting within a queue (not enqueued or already handled).
-                ALPAKA_FN_HOST static auto isComplete(
-                    EventGenericThreads<TDev> const & event)
-                -> bool
-                {
-                    std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
 
-                    return event.m_spEventImpl->isReady();
-                }
-            };
-        }
-    namespace traits
-    {
+        //#############################################################################
+        //! The CPU device event test trait specialization.
+        template<typename TDev>
+        struct IsComplete<
+            EventGenericThreads<TDev>>
+        {
+            //-----------------------------------------------------------------------------
+            //! \return If the event is not waiting within a queue (not enqueued or already handled).
+            ALPAKA_FN_HOST static auto isComplete(
+                EventGenericThreads<TDev> const & event)
+            -> bool
+            {
+                std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
+
+                return event.m_spEventImpl->isReady();
+            }
+        };
+
         //#############################################################################
         //! The CPU non-blocking device queue enqueue trait specialization.
         template<

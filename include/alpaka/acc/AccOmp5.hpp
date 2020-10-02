@@ -217,9 +217,7 @@ namespace alpaka
                 return "AccOmp5<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 accelerator device type trait specialization.
         template<
@@ -230,9 +228,7 @@ namespace alpaka
         {
             using type = DevOmp5;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 accelerator dimension getter trait specialization.
         template<
@@ -243,9 +239,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 accelerator execution task type trait specialization.
         template<
@@ -277,9 +271,7 @@ namespace alpaka
                             std::forward<TArgs>(args)...);
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 execution task platform type trait specialization.
         template<
@@ -290,9 +282,7 @@ namespace alpaka
         {
             using type = PltfOmp5;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 accelerator idx type trait specialization.
         template<

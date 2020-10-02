@@ -205,9 +205,7 @@ namespace alpaka
                 return "AccCpuThreads<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU threads accelerator device type trait specialization.
         template<
@@ -218,9 +216,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU threads accelerator dimension getter trait specialization.
         template<
@@ -231,9 +227,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU threads accelerator execution task type trait specialization.
         template<
@@ -265,9 +259,7 @@ namespace alpaka
                             std::forward<TArgs>(args)...);
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU threads execution task platform type trait specialization.
         template<
@@ -278,9 +270,7 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU threads accelerator idx type trait specialization.
         template<

@@ -165,9 +165,7 @@ namespace alpaka
                 return event.m_spEventImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT device event test trait specialization.
         template<>
@@ -190,9 +188,7 @@ namespace alpaka
                 return (ret == ALPAKA_API_PREFIX(Success));
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT queue enqueue trait specialization.
         template<>
@@ -233,9 +229,7 @@ namespace alpaka
                     queue.m_spQueueImpl->m_UniformCudaHipQueue));
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT device event thread wait trait specialization.
         //!

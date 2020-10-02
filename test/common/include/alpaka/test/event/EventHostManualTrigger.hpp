@@ -253,9 +253,7 @@ namespace alpaka
                 return event.m_spEventImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU device event test trait specialization.
         //#############################################################################
@@ -275,9 +273,7 @@ namespace alpaka
                 return event.m_spEventImpl->m_bIsReady;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //!
         //#############################################################################
@@ -569,9 +565,7 @@ namespace alpaka
                 return event.m_spEventImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU device event test trait specialization.
         template<>
@@ -589,9 +583,7 @@ namespace alpaka
                 return event.m_spEventImpl->m_bIsReady;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         template<>
         struct Enqueue<
@@ -861,9 +853,7 @@ namespace alpaka
                 return event.m_spEventImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU device event test trait specialization.
         template<>
@@ -881,9 +871,7 @@ namespace alpaka
                 return event.m_spEventImpl->m_bIsReady;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         template<>
         struct Enqueue<

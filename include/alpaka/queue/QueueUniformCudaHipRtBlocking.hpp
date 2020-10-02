@@ -98,9 +98,7 @@ namespace alpaka
         {
             using type = DevUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT blocking queue event type trait specialization.
         template<>
@@ -109,9 +107,7 @@ namespace alpaka
         {
             using type = EventUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT blocking queue enqueue trait specialization.
         template<

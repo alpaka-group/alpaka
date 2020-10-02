@@ -167,9 +167,7 @@ namespace alpaka
                 return queue.m_spQueueImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT blocking queue test trait specialization.
         template<>
@@ -191,9 +189,7 @@ namespace alpaka
                 return (ret == ALPAKA_API_PREFIX(Success));
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP RT blocking queue thread wait trait specialization.
         //!

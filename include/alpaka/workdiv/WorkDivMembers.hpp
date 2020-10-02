@@ -124,9 +124,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The WorkDivMembers idx type trait specialization.
         template<
@@ -137,9 +135,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The WorkDivMembers grid block extent trait specialization.
         template<

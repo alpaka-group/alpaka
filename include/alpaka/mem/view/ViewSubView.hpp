@@ -216,9 +216,7 @@ namespace alpaka
                         view.m_viewParentView);
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The ViewSubView dimension getter trait specialization.
         template<
@@ -231,9 +229,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The ViewSubView memory element type get trait specialization.
         template<
@@ -403,9 +399,7 @@ namespace alpaka
                 return offset.m_offsetsElements[TIdxIntegralConst::value];
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The ViewSubView idx type trait specialization.
         template<

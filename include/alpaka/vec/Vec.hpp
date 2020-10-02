@@ -616,9 +616,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The Vec idx type trait specialization.
         template<
@@ -629,10 +627,7 @@ namespace alpaka
         {
             using type = TVal;
         };
-    }
 
-    namespace traits
-    {
         //#############################################################################
         //! Specialization for selecting a sub-vector.
         template<

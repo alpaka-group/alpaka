@@ -45,9 +45,7 @@ namespace alpaka
         {
             using type = DevOmp5;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5 platform device count get trait specialization.
         template<>

@@ -69,9 +69,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU fibers accelerator block thread index get trait specialization.
         template<
@@ -98,9 +96,7 @@ namespace alpaka
                 return fiberEntry->second;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU fibers accelerator block thread index idx type trait specialization.
         template<

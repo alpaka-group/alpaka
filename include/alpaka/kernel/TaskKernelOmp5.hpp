@@ -251,9 +251,7 @@ namespace alpaka
         {
             using type = AccOmp5<TDim, TIdx>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 execution task device type trait specialization.
         template<
@@ -266,9 +264,7 @@ namespace alpaka
         {
             using type = DevOmp5;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 execution task dimension getter trait specialization.
         template<
@@ -281,9 +277,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 execution task platform type trait specialization.
         template<
@@ -296,9 +290,7 @@ namespace alpaka
         {
             using type = PltfOmp5;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The OpenMP 5.0 execution task idx type trait specialization.
         template<
@@ -311,10 +303,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    }
 
-    namespace traits
-    {
         template<
             typename TDim,
             typename TIdx,

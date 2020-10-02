@@ -162,9 +162,7 @@ namespace alpaka
                 return queue.m_spQueueImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU blocking device queue event type trait specialization.
         template<>
@@ -173,9 +171,6 @@ namespace alpaka
         {
             using type = EventCpu;
         };
-    }
-    namespace traits
-    {
 
         //#############################################################################
         //! The CPU blocking device queue enqueue trait specialization.
@@ -340,10 +335,7 @@ namespace alpaka
                 // but a specialization is needed to path the EventTests
             }
         };
-    }
 
-    namespace traits
-    {
         //#############################################################################
         //! The CPU blocking device queue thread wait trait specialization.
         //!

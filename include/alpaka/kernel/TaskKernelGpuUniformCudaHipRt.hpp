@@ -198,9 +198,7 @@ namespace alpaka
         {
             using type = AccGpuUniformCudaHipRt<TDim, TIdx>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA/HIP execution task device type trait specialization.
         template<
@@ -214,9 +212,7 @@ namespace alpaka
         {
             using type = DevUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA/HIP execution task dimension getter trait specialization.
         template<
@@ -230,9 +226,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU CUDA/HIP execution task platform type trait specialization.
         template<
@@ -246,9 +240,7 @@ namespace alpaka
         {
             using type = PltfUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA/HIP execution task idx type trait specialization.
         template<
@@ -262,9 +254,7 @@ namespace alpaka
         {
             using type = TIdx;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA/HIP non-blocking kernel enqueue trait specialization.
         template<

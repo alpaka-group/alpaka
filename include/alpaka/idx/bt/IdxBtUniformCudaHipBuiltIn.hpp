@@ -74,9 +74,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA/HIP accelerator block thread index get trait specialization.
         template<
@@ -108,9 +106,7 @@ namespace alpaka
 #endif
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA/HIP accelerator block thread index idx type trait specialization.
         template<

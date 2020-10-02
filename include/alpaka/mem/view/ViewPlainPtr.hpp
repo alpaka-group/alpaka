@@ -151,9 +151,7 @@ namespace alpaka
                 return view.m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The ViewPlainPtr dimension getter trait.
         template<
@@ -166,9 +164,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The ViewPlainPtr memory element type get trait specialization.
         template<
@@ -392,9 +388,7 @@ namespace alpaka
                 return 0u;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The ViewPlainPtr idx type trait specialization.
         template<

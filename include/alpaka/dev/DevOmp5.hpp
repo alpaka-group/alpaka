@@ -311,9 +311,7 @@ namespace alpaka
         {
             using type = QueueOmp5NonBlocking;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The thread Omp5 device wait specialization.
         //!

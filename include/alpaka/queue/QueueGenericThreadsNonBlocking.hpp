@@ -167,9 +167,7 @@ namespace alpaka
                 return queue.m_spQueueImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU non-blocking device queue event type trait specialization.
         template<
@@ -179,9 +177,7 @@ namespace alpaka
         {
             using type = EventGenericThreads<TDev>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU non-blocking device queue enqueue trait specialization.
         //! This default implementation for all tasks directly invokes the function call operator of the task.

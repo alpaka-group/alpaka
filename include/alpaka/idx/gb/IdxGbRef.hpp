@@ -62,9 +62,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The IdxGbRef grid block index grid block index get trait specialization.
         template<
@@ -88,9 +86,7 @@ namespace alpaka
                 return idx.m_gridBlockIdx;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The IdxGbRef grid block index idx type trait specialization.
         template<

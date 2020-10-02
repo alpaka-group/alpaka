@@ -182,9 +182,7 @@ namespace alpaka
                 return (*buf).m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufOmp5 dimension getter trait specialization.
         template<
@@ -196,9 +194,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufOmp5 memory element type get trait specialization.
         template<
@@ -567,9 +563,7 @@ namespace alpaka
                 return 0u;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufOmp5 idx type trait specialization.
         template<
