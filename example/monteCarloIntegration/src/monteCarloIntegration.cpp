@@ -133,12 +133,12 @@ auto main() -> int
         QueueProperty>;
     QueueAcc queue{devAcc};
 
-    using BufHost = alpaka::mem::buf::Buf<
+    using BufHost = alpaka::buf::Buf<
         Host,
         uint32_t,
         Dim,
         Idx>;
-    using BufAcc = alpaka::mem::buf::Buf<
+    using BufAcc = alpaka::buf::Buf<
         Acc,
         uint32_t,
         Dim,
@@ -161,23 +161,23 @@ auto main() -> int
 
     // Setup buffer.
     BufHost bufHost{
-        alpaka::mem::buf::alloc<
+        alpaka::buf::alloc<
             uint32_t,
             Idx>(
             devHost,
             extent)};
-    uint32_t *const ptrBufHost{alpaka::mem::view::getPtrNative(bufHost)};
+    uint32_t *const ptrBufHost{alpaka::view::getPtrNative(bufHost)};
     BufAcc bufAcc{
-        alpaka::mem::buf::alloc<
+        alpaka::buf::alloc<
             uint32_t,
             Idx>(
             devAcc,
             extent)};
-    uint32_t *const ptrBufAcc{alpaka::mem::view::getPtrNative(bufAcc)};
+    uint32_t *const ptrBufAcc{alpaka::view::getPtrNative(bufAcc)};
 
     // Initialize the global count to 0.
     ptrBufHost[0] = 0.0f;
-    alpaka::mem::view::copy(
+    alpaka::view::copy(
         queue,
         bufAcc,
         bufHost,
@@ -191,7 +191,7 @@ auto main() -> int
         numPoints,
         ptrBufAcc,
         Function{});
-    alpaka::mem::view::copy(
+    alpaka::view::copy(
         queue,
         bufHost,
         bufAcc,

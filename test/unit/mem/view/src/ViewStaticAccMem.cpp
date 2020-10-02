@@ -84,14 +84,14 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestA
     // initialized static constant device memory
     {
         auto const viewConstantMemInitialized(
-            alpaka::mem::view::createStaticDevMemView(
+            alpaka::view::createStaticDevMemView(
                 &g_constantMemory2DInitialized[0u][0u],
                 devAcc,
                 extent));
 
         REQUIRE(fixture(
             kernel,
-            alpaka::mem::view::getPtrNative(viewConstantMemInitialized)));
+            alpaka::view::getPtrNative(viewConstantMemInitialized)));
     }
     //-----------------------------------------------------------------------------
     // uninitialized static constant device memory
@@ -103,20 +103,20 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestA
         QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
-        alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Idx> bufHost(data.data(), devHost, extent);
+        alpaka::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Idx> bufHost(data.data(), devHost, extent);
 
         auto viewConstantMemUninitialized(
-            alpaka::mem::view::createStaticDevMemView(
+            alpaka::view::createStaticDevMemView(
                 &g_constantMemory2DUninitialized[0u][0u],
                 devAcc,
                 extent));
 
-        alpaka::mem::view::copy(queueAcc, viewConstantMemUninitialized, bufHost, extent);
+        alpaka::view::copy(queueAcc, viewConstantMemUninitialized, bufHost, extent);
         alpaka::wait(queueAcc);
 
         REQUIRE(fixture(
             kernel,
-            alpaka::mem::view::getPtrNative(viewConstantMemUninitialized)));
+            alpaka::view::getPtrNative(viewConstantMemUninitialized)));
     }
 #endif
 }
@@ -157,7 +157,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
     // initialized static global device memory
     {
         auto const viewGlobalMemInitialized(
-            alpaka::mem::view::createStaticDevMemView(
+            alpaka::view::createStaticDevMemView(
                 &g_globalMemory2DInitialized[0u][0u],
                 devAcc,
                 extent));
@@ -165,7 +165,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
         REQUIRE(
             fixture(
                 kernel,
-                alpaka::mem::view::getPtrNative(viewGlobalMemInitialized)));
+                alpaka::view::getPtrNative(viewGlobalMemInitialized)));
     }
 
     //-----------------------------------------------------------------------------
@@ -178,21 +178,21 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
         QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
-        alpaka::mem::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Idx> bufHost(data.data(), devHost, extent);
+        alpaka::view::ViewPlainPtr<decltype(devHost), const Elem, Dim, Idx> bufHost(data.data(), devHost, extent);
 
         auto viewGlobalMemUninitialized(
-            alpaka::mem::view::createStaticDevMemView(
+            alpaka::view::createStaticDevMemView(
                 &g_globalMemory2DUninitialized[0u][0u],
                 devAcc,
                 extent));
 
-        alpaka::mem::view::copy(queueAcc, viewGlobalMemUninitialized, bufHost, extent);
+        alpaka::view::copy(queueAcc, viewGlobalMemUninitialized, bufHost, extent);
         alpaka::wait(queueAcc);
 
         REQUIRE(
             fixture(
                 kernel,
-                alpaka::mem::view::getPtrNative(viewGlobalMemUninitialized)));
+                alpaka::view::getPtrNative(viewGlobalMemUninitialized)));
     }
 #endif
 }

@@ -16,58 +16,55 @@
 
 namespace alpaka
 {
-    namespace mem
+    //-----------------------------------------------------------------------------
+    //! The allocator specifics.
+    namespace alloc
     {
-        //-----------------------------------------------------------------------------
-        //! The allocator specifics.
-        namespace alloc
+        //#############################################################################
+        //! The CPU new allocator.
+        class AllocCpuNew : public concepts::Implements<ConceptMemAlloc, AllocCpuNew>
+        {
+        };
+
+        namespace traits
         {
             //#############################################################################
-            //! The CPU new allocator.
-            class AllocCpuNew : public concepts::Implements<ConceptMemAlloc, AllocCpuNew>
+            //! The CPU new allocator memory allocation trait specialization.
+            template<
+                typename T>
+            struct Alloc<
+                T,
+                AllocCpuNew>
             {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto alloc(
+                    AllocCpuNew const & alloc,
+                    std::size_t const & sizeElems)
+                -> T *
+                {
+                    alpaka::ignore_unused(alloc);
+                    return new T[sizeElems];
+                }
             };
 
-            namespace traits
+            //#############################################################################
+            //! The CPU new allocator memory free trait specialization.
+            template<
+                typename T>
+            struct Free<
+                T,
+                AllocCpuNew>
             {
-                //#############################################################################
-                //! The CPU new allocator memory allocation trait specialization.
-                template<
-                    typename T>
-                struct Alloc<
-                    T,
-                    AllocCpuNew>
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto free(
+                    AllocCpuNew const & alloc,
+                    T const * const ptr)
+                -> void
                 {
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto alloc(
-                        AllocCpuNew const & alloc,
-                        std::size_t const & sizeElems)
-                    -> T *
-                    {
-                        alpaka::ignore_unused(alloc);
-                        return new T[sizeElems];
-                    }
-                };
-
-                //#############################################################################
-                //! The CPU new allocator memory free trait specialization.
-                template<
-                    typename T>
-                struct Free<
-                    T,
-                    AllocCpuNew>
-                {
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto free(
-                        AllocCpuNew const & alloc,
-                        T const * const ptr)
-                    -> void
-                    {
-                        alpaka::ignore_unused(alloc);
-                        return delete[] ptr;
-                    }
-                };
-            }
+                    alpaka::ignore_unused(alloc);
+                    return delete[] ptr;
+                }
+            };
         }
     }
 }

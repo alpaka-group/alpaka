@@ -136,15 +136,15 @@ auto main()
     auto const devHost = alpaka::getDevByIdx<DevHost>(0u);
 
     // Allocate 3 host memory buffers
-    using BufHost = alpaka::mem::buf::Buf<DevHost, Data, Dim, Idx>;
-    BufHost bufHostA(alpaka::mem::buf::alloc<Data, Idx>(devHost, extent));
-    BufHost bufHostB(alpaka::mem::buf::alloc<Data, Idx>(devHost, extent));
-    BufHost bufHostC(alpaka::mem::buf::alloc<Data, Idx>(devHost, extent));
+    using BufHost = alpaka::buf::Buf<DevHost, Data, Dim, Idx>;
+    BufHost bufHostA(alpaka::buf::alloc<Data, Idx>(devHost, extent));
+    BufHost bufHostB(alpaka::buf::alloc<Data, Idx>(devHost, extent));
+    BufHost bufHostC(alpaka::buf::alloc<Data, Idx>(devHost, extent));
 
     // Initialize the host input vectors A and B
-    Data * const pBufHostA(alpaka::mem::view::getPtrNative(bufHostA));
-    Data * const pBufHostB(alpaka::mem::view::getPtrNative(bufHostB));
-    Data * const pBufHostC(alpaka::mem::view::getPtrNative(bufHostC));
+    Data * const pBufHostA(alpaka::view::getPtrNative(bufHostA));
+    Data * const pBufHostB(alpaka::view::getPtrNative(bufHostB));
+    Data * const pBufHostC(alpaka::view::getPtrNative(bufHostC));
 
     // C++14 random generator for uniformly distributed numbers in {1,..,42}
     std::random_device rd{};
@@ -159,15 +159,15 @@ auto main()
     }
 
     // Allocate 3 buffers on the accelerator
-    using BufAcc = alpaka::mem::buf::Buf<Acc, Data, Dim, Idx>;
-    BufAcc bufAccA(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extent));
-    BufAcc bufAccB(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extent));
-    BufAcc bufAccC(alpaka::mem::buf::alloc<Data, Idx>(devAcc, extent));
+    using BufAcc = alpaka::buf::Buf<Acc, Data, Dim, Idx>;
+    BufAcc bufAccA(alpaka::buf::alloc<Data, Idx>(devAcc, extent));
+    BufAcc bufAccB(alpaka::buf::alloc<Data, Idx>(devAcc, extent));
+    BufAcc bufAccC(alpaka::buf::alloc<Data, Idx>(devAcc, extent));
 
     // Copy Host -> Acc
-    alpaka::mem::view::copy(queue, bufAccA, bufHostA, extent);
-    alpaka::mem::view::copy(queue, bufAccB, bufHostB, extent);
-    alpaka::mem::view::copy(queue, bufAccC, bufHostC, extent);
+    alpaka::view::copy(queue, bufAccA, bufHostA, extent);
+    alpaka::view::copy(queue, bufAccB, bufHostB, extent);
+    alpaka::view::copy(queue, bufAccC, bufHostC, extent);
 
     // Instantiate the kernel function object
     VectorAddKernel kernel;
@@ -176,9 +176,9 @@ auto main()
     auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::mem::view::getPtrNative(bufAccA),
-        alpaka::mem::view::getPtrNative(bufAccB),
-        alpaka::mem::view::getPtrNative(bufAccC),
+        alpaka::view::getPtrNative(bufAccA),
+        alpaka::view::getPtrNative(bufAccB),
+        alpaka::view::getPtrNative(bufAccC),
         numElements));
 
     // Enqueue the kernel execution task
@@ -193,7 +193,7 @@ auto main()
     // Copy back the result
     {
         auto beginT = std::chrono::high_resolution_clock::now();
-        alpaka::mem::view::copy(queue, bufHostC, bufAccC, extent);
+        alpaka::view::copy(queue, bufHostC, bufAccC, extent);
         alpaka::wait(queue);
         const auto endT = std::chrono::high_resolution_clock::now();
         std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT-beginT).count() << 's' << std::endl;

@@ -41,75 +41,72 @@ namespace alpaka
 
 namespace alpaka
 {
-    namespace mem
+    namespace view
     {
-        namespace view
+        namespace traits
         {
-            namespace traits
+            //#############################################################################
+            //! The OMP5 device memory set trait specialization.
+            template<
+                typename TDim>
+            struct CreateTaskSet<
+                TDim,
+                DevOmp5>
             {
-                //#############################################################################
-                //! The OMP5 device memory set trait specialization.
+                //-----------------------------------------------------------------------------
                 template<
-                    typename TDim>
-                struct CreateTaskSet<
-                    TDim,
-                    DevOmp5>
+                    typename TExtent,
+                    typename TView>
+                ALPAKA_FN_HOST static auto createTaskSet(
+                    TView & view,
+                    std::uint8_t const & byte,
+                    TExtent const & extent)
                 {
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TExtent,
-                        typename TView>
-                    ALPAKA_FN_HOST static auto createTaskSet(
-                        TView & view,
-                        std::uint8_t const & byte,
-                        TExtent const & extent)
-                    {
-                        using Idx = typename alpaka::traits::IdxType<TExtent>::type;
-                        auto pitch = view::getPitchBytesVec(view);
-                        auto byteExtent = extent::getExtentVec(extent);
-                        constexpr auto lastDim = TDim::value - 1;
-                        byteExtent[lastDim] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
+                    using Idx = typename alpaka::traits::IdxType<TExtent>::type;
+                    auto pitch = view::getPitchBytesVec(view);
+                    auto byteExtent = extent::getExtentVec(extent);
+                    constexpr auto lastDim = TDim::value - 1;
+                    byteExtent[lastDim] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
 
-                        if(pitch[0] == 0)
-                        {
-                            return createTaskKernel<AccOmp5<TDim,Idx>>(
-                                    WorkDivMembers<TDim, Idx>(
-                                        Vec<TDim, Idx>::zeros(),
-                                        Vec<TDim, Idx>::zeros(),
-                                        Vec<TDim, Idx>::zeros()),
-                                    view::MemSetKernel(),
-                                    byte,
-                                    reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
-                                    byteExtent,
-                                    pitch
-                                ); // NOP if size is zero
-                        }
+                    if(pitch[0] == 0)
+                    {
+                        return createTaskKernel<AccOmp5<TDim,Idx>>(
+                                WorkDivMembers<TDim, Idx>(
+                                    Vec<TDim, Idx>::zeros(),
+                                    Vec<TDim, Idx>::zeros(),
+                                    Vec<TDim, Idx>::zeros()),
+                                view::MemSetKernel(),
+                                byte,
+                                reinterpret_cast<std::uint8_t*>(alpaka::view::getPtrNative(view)),
+                                byteExtent,
+                                pitch
+                            ); // NOP if size is zero
+                    }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
+                    std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
 #endif
-                        auto elementsPerThread = Vec<TDim, Idx>::all(static_cast<Idx>(1u));
-                        elementsPerThread[lastDim] = 4;
-                        // Let alpaka calculate good block and grid sizes given our full problem extent
-                        WorkDivMembers<TDim, Idx> const workDiv(
-                            getValidWorkDiv<AccOmp5<TDim,Idx>>(
-                                getDev(view),
+                    auto elementsPerThread = Vec<TDim, Idx>::all(static_cast<Idx>(1u));
+                    elementsPerThread[lastDim] = 4;
+                    // Let alpaka calculate good block and grid sizes given our full problem extent
+                    WorkDivMembers<TDim, Idx> const workDiv(
+                        getValidWorkDiv<AccOmp5<TDim,Idx>>(
+                            getDev(view),
+                            byteExtent,
+                            elementsPerThread,
+                            false,
+                            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+                    return
+                        createTaskKernel<AccOmp5<TDim,Idx>>(
+                                workDiv,
+                                view::MemSetKernel(),
+                                byte,
+                                reinterpret_cast<std::uint8_t*>(alpaka::view::getPtrNative(view)),
                                 byteExtent,
-                                elementsPerThread,
-                                false,
-                                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
-                        return
-                            createTaskKernel<AccOmp5<TDim,Idx>>(
-                                    workDiv,
-                                    view::MemSetKernel(),
-                                    byte,
-                                    reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
-                                    byteExtent,
-                                    pitch
-                                );
-                    }
-                };
-            }
+                                pitch
+                            );
+                }
+            };
         }
     }
 }
