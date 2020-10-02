@@ -24,15 +24,9 @@
 
 namespace alpaka
 {
-    namespace event
-    {
-        template<typename TDev>
-        class EventGenericThreads;
-    }
-}
+    template<typename TDev>
+    class EventGenericThreads;
 
-namespace alpaka
-{
     namespace generic
     {
         namespace detail
@@ -69,13 +63,13 @@ namespace alpaka
                 auto operator=(QueueGenericThreadsBlockingImpl<TDev> &&) -> QueueGenericThreadsBlockingImpl<TDev> & = delete;
 
                 //-----------------------------------------------------------------------------
-                void enqueue(event::EventGenericThreads<TDev> & ev) final
+                void enqueue(EventGenericThreads<TDev> & ev) final
                 {
                     alpaka::enqueue(*this, ev);
                 }
 
                 //-----------------------------------------------------------------------------
-                void wait(event::EventGenericThreads<TDev> const & ev) final
+                void wait(EventGenericThreads<TDev> const & ev) final
                 {
                     alpaka::wait(*this, ev);
                 }
@@ -161,20 +155,17 @@ namespace alpaka
             }
         };
     }
-    namespace event
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU blocking device queue event type trait specialization.
+        template<
+            typename TDev>
+        struct EventType<
+            QueueGenericThreadsBlocking<TDev>>
         {
-            //#############################################################################
-            //! The CPU blocking device queue event type trait specialization.
-            template<
-                typename TDev>
-            struct EventType<
-                QueueGenericThreadsBlocking<TDev>>
-            {
-                using type = event::EventGenericThreads<TDev>;
-            };
-        }
+            using type = EventGenericThreads<TDev>;
+        };
     }
     namespace traits
     {

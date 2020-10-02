@@ -69,12 +69,12 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 auto operator=(QueueCpuOmp2CollectiveImpl &&) -> QueueCpuOmp2CollectiveImpl & = delete;
                 //-----------------------------------------------------------------------------
-                void enqueue(event::EventCpu & ev) final
+                void enqueue(EventCpu & ev) final
                 {
                     alpaka::enqueue(*this, ev);
                 }
                 //-----------------------------------------------------------------------------
-                void wait(event::EventCpu const & ev) final
+                void wait(EventCpu const & ev) final
                 {
                     alpaka::wait(*this, ev);
                 }
@@ -163,19 +163,16 @@ namespace alpaka
             }
         };
     }
-    namespace event
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU blocking device queue event type trait specialization.
+        template<>
+        struct EventType<
+            QueueCpuOmp2Collective>
         {
-            //#############################################################################
-            //! The CPU blocking device queue event type trait specialization.
-            template<>
-            struct EventType<
-                QueueCpuOmp2Collective>
-            {
-                using type = event::EventCpu;
-            };
-        }
+            using type = EventCpu;
+        };
     }
     namespace traits
     {
@@ -235,12 +232,12 @@ namespace alpaka
         template<>
         struct Enqueue<
             cpu::detail::QueueCpuOmp2CollectiveImpl,
-            event::EventCpu>
+            EventCpu>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 cpu::detail::QueueCpuOmp2CollectiveImpl &,
-                event::EventCpu &)
+                EventCpu &)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -253,12 +250,12 @@ namespace alpaka
         template<>
         struct Enqueue<
             QueueCpuOmp2Collective,
-            event::EventCpu>
+            EventCpu>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueCpuOmp2Collective & queue,
-                event::EventCpu & event)
+                EventCpu & event)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -329,14 +326,14 @@ namespace alpaka
         template<>
         struct Enqueue<
             QueueCpuOmp2Collective,
-            test::event::EventHostManualTriggerCpu<>>
+            test::EventHostManualTriggerCpu<>>
         {
             //-----------------------------------------------------------------------------
             //
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueCpuOmp2Collective & ,
-                test::event::EventHostManualTriggerCpu<> & )
+                test::EventHostManualTriggerCpu<> & )
             -> void
             {
                 // EventHostManualTriggerCpu are not supported for together with the queue QueueCpuOmp2Collective
@@ -380,12 +377,12 @@ namespace alpaka
         template<>
         struct WaiterWaitFor<
             cpu::detail::QueueCpuOmp2CollectiveImpl,
-            event::EventCpu>
+            EventCpu>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto waiterWaitFor(
                 cpu::detail::QueueCpuOmp2CollectiveImpl &,
-                event::EventCpu const &)
+                EventCpu const &)
             -> void
             {
                 #pragma omp barrier
@@ -396,12 +393,12 @@ namespace alpaka
         template<>
         struct WaiterWaitFor<
             QueueCpuOmp2Collective,
-            event::EventCpu>
+            EventCpu>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto waiterWaitFor(
                 QueueCpuOmp2Collective & queue,
-                event::EventCpu const & event)
+                EventCpu const & event)
             -> void
             {
                 if(::omp_in_parallel() != 0)

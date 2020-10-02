@@ -21,223 +21,217 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace test
     {
-        //-----------------------------------------------------------------------------
-        //! The test event specifics.
-        //-----------------------------------------------------------------------------
-        namespace event
+        namespace traits
         {
-            namespace traits
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TDev>
+            struct EventHostManualTriggerType;
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TDev>
+            struct IsEventHostManualTriggerSupported;
+        }
+
+        //#############################################################################
+        //! The event host manual trigger type trait alias template to remove the ::type.
+        //#############################################################################
+        template<
+            typename TDev>
+        using EventHostManualTrigger = typename traits::EventHostManualTriggerType<TDev>::type;
+
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDev>
+        ALPAKA_FN_HOST auto isEventHostManualTriggerSupported(
+            TDev const & dev)
+        -> bool
+        {
+            return
+                traits::IsEventHostManualTriggerSupported<
+                    TDev>
+                ::isSupported(
+                    dev);
+        }
+
+        namespace cpu
+        {
+            namespace detail
             {
                 //#############################################################################
-                //!
+                //! Event that can be enqueued into a queue and can be triggered by the Host.
                 //#############################################################################
-                template<
-                    typename TDev>
-                struct EventHostManualTriggerType;
-                //#############################################################################
-                //!
-                //#############################################################################
-                template<
-                    typename TDev>
-                struct IsEventHostManualTriggerSupported;
+                template<class TDev = DevCpu>
+                class EventHostManualTriggerCpuImpl
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(
+                        TDev const & dev) noexcept :
+                            m_dev(dev),
+                            m_mutex(),
+                            m_enqueueCount(0u),
+                            m_bIsReady(true)
+                    {}
+                    //-----------------------------------------------------------------------------
+                    //! Copy constructor.
+                    //-----------------------------------------------------------------------------
+                    EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl const & other) = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move constructor.
+                    //-----------------------------------------------------------------------------
+                    EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl &&) = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Copy assignment operator.
+                    //-----------------------------------------------------------------------------
+                    auto operator=(EventHostManualTriggerCpuImpl const &) -> EventHostManualTriggerCpuImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    auto operator=(EventHostManualTriggerCpuImpl &&) -> EventHostManualTriggerCpuImpl & = delete;
+
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    void trigger()
+                    {
+                        {
+                            std::unique_lock<std::mutex> lock(m_mutex);
+                            m_bIsReady = true;
+                        }
+                        m_conditionVariable.notify_one();
+                    }
+
+                public:
+                    TDev const m_dev;                                //!< The device this event is bound to.
+
+                    mutable std::mutex m_mutex;                             //!< The mutex used to synchronize access to the event.
+
+                    mutable std::condition_variable m_conditionVariable;    //!< The condition signaling the event completion.
+                    std::size_t m_enqueueCount;                             //!< The number of times this event has been enqueued.
+
+                    bool m_bIsReady;                                        //!< If the event is not waiting within a queue (not enqueued or already completed).
+                };
             }
+        }
 
-            //#############################################################################
-            //! The event host manual trigger type trait alias template to remove the ::type.
-            //#############################################################################
-            template<
-                typename TDev>
-            using EventHostManualTrigger = typename traits::EventHostManualTriggerType<TDev>::type;
-
+        //#############################################################################
+        //! Event that can be enqueued into a queue and can be triggered by the Host.
+        //#############################################################################
+        template<class TDev = DevCpu>
+        class EventHostManualTriggerCpu
+        {
+        public:
             //-----------------------------------------------------------------------------
-            template<
-                typename TDev>
-            ALPAKA_FN_HOST auto isEventHostManualTriggerSupported(
-                TDev const & dev)
+            //! Constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST EventHostManualTriggerCpu(
+                TDev const & dev) :
+                    m_spEventImpl(std::make_shared<cpu::detail::EventHostManualTriggerCpuImpl<TDev>>(dev))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            EventHostManualTriggerCpu(EventHostManualTriggerCpu const &) = default;
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            EventHostManualTriggerCpu(EventHostManualTriggerCpu &&) = default;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment operator.
+            //-----------------------------------------------------------------------------
+            auto operator=(EventHostManualTriggerCpu const &) -> EventHostManualTriggerCpu & = default;
+            //-----------------------------------------------------------------------------
+            //! Move assignment operator.
+            //-----------------------------------------------------------------------------
+            auto operator=(EventHostManualTriggerCpu &&) -> EventHostManualTriggerCpu & = default;
+            //-----------------------------------------------------------------------------
+            //! Equality comparison operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator==(EventHostManualTriggerCpu const & rhs) const
             -> bool
             {
-                return
-                    traits::IsEventHostManualTriggerSupported<
-                        TDev>
-                    ::isSupported(
-                        dev);
+                return (m_spEventImpl == rhs.m_spEventImpl);
+            }
+            //-----------------------------------------------------------------------------
+            //! Inequality comparison operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator!=(EventHostManualTriggerCpu const & rhs) const
+            -> bool
+            {
+                return !((*this) == rhs);
             }
 
-            namespace cpu
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            void trigger()
             {
-                namespace detail
-                {
-                    //#############################################################################
-                    //! Event that can be enqueued into a queue and can be triggered by the Host.
-                    //#############################################################################
-                    template<class TDev = DevCpu>
-                    class EventHostManualTriggerCpuImpl
-                    {
-                    public:
-                        //-----------------------------------------------------------------------------
-                        //! Constructor.
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST EventHostManualTriggerCpuImpl(
-                            TDev const & dev) noexcept :
-                                m_dev(dev),
-                                m_mutex(),
-                                m_enqueueCount(0u),
-                                m_bIsReady(true)
-                        {}
-                        //-----------------------------------------------------------------------------
-                        //! Copy constructor.
-                        //-----------------------------------------------------------------------------
-                        EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl const & other) = delete;
-                        //-----------------------------------------------------------------------------
-                        //! Move constructor.
-                        //-----------------------------------------------------------------------------
-                        EventHostManualTriggerCpuImpl(EventHostManualTriggerCpuImpl &&) = delete;
-                        //-----------------------------------------------------------------------------
-                        //! Copy assignment operator.
-                        //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerCpuImpl const &) -> EventHostManualTriggerCpuImpl & = delete;
-                        //-----------------------------------------------------------------------------
-                        //! Move assignment operator.
-                        //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerCpuImpl &&) -> EventHostManualTriggerCpuImpl & = delete;
-
-                        //-----------------------------------------------------------------------------
-                        //!
-                        //-----------------------------------------------------------------------------
-                        void trigger()
-                        {
-                            {
-                                std::unique_lock<std::mutex> lock(m_mutex);
-                                m_bIsReady = true;
-                            }
-                            m_conditionVariable.notify_one();
-                        }
-
-                    public:
-                        TDev const m_dev;                                //!< The device this event is bound to.
-
-                        mutable std::mutex m_mutex;                             //!< The mutex used to synchronize access to the event.
-
-                        mutable std::condition_variable m_conditionVariable;    //!< The condition signaling the event completion.
-                        std::size_t m_enqueueCount;                             //!< The number of times this event has been enqueued.
-
-                        bool m_bIsReady;                                        //!< If the event is not waiting within a queue (not enqueued or already completed).
-                    };
-                }
+                m_spEventImpl->trigger();
             }
 
+        public:
+            std::shared_ptr<cpu::detail::EventHostManualTriggerCpuImpl<TDev>> m_spEventImpl;
+        };
+
+        namespace traits
+        {
             //#############################################################################
-            //! Event that can be enqueued into a queue and can be triggered by the Host.
+            //!
             //#############################################################################
-            template<class TDev = DevCpu>
-            class EventHostManualTriggerCpu
+            template<>
+            struct EventHostManualTriggerType<
+                alpaka::DevCpu>
             {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST EventHostManualTriggerCpu(
-                    TDev const & dev) :
-                        m_spEventImpl(std::make_shared<cpu::detail::EventHostManualTriggerCpuImpl<TDev>>(dev))
-                {}
-                //-----------------------------------------------------------------------------
-                //! Copy constructor.
-                //-----------------------------------------------------------------------------
-                EventHostManualTriggerCpu(EventHostManualTriggerCpu const &) = default;
-                //-----------------------------------------------------------------------------
-                //! Move constructor.
-                //-----------------------------------------------------------------------------
-                EventHostManualTriggerCpu(EventHostManualTriggerCpu &&) = default;
-                //-----------------------------------------------------------------------------
-                //! Copy assignment operator.
-                //-----------------------------------------------------------------------------
-                auto operator=(EventHostManualTriggerCpu const &) -> EventHostManualTriggerCpu & = default;
-                //-----------------------------------------------------------------------------
-                //! Move assignment operator.
-                //-----------------------------------------------------------------------------
-                auto operator=(EventHostManualTriggerCpu &&) -> EventHostManualTriggerCpu & = default;
-                //-----------------------------------------------------------------------------
-                //! Equality comparison operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator==(EventHostManualTriggerCpu const & rhs) const
-                -> bool
-                {
-                    return (m_spEventImpl == rhs.m_spEventImpl);
-                }
-                //-----------------------------------------------------------------------------
-                //! Inequality comparison operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator!=(EventHostManualTriggerCpu const & rhs) const
-                -> bool
-                {
-                    return !((*this) == rhs);
-                }
-
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                void trigger()
-                {
-                    m_spEventImpl->trigger();
-                }
-
-            public:
-                std::shared_ptr<cpu::detail::EventHostManualTriggerCpuImpl<TDev>> m_spEventImpl;
+                using type = alpaka::test::EventHostManualTriggerCpu<DevCpu>;
             };
-
-            namespace traits
+#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<>
+            struct EventHostManualTriggerType<
+                alpaka::DevOmp5>
             {
-                //#############################################################################
-                //!
-                //#############################################################################
-                template<>
-                struct EventHostManualTriggerType<
-                    alpaka::DevCpu>
-                {
-                    using type = alpaka::test::event::EventHostManualTriggerCpu<DevCpu>;
-                };
-#ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-                //#############################################################################
-                //!
-                //#############################################################################
-                template<>
-                struct EventHostManualTriggerType<
-                    alpaka::DevOmp5>
-                {
-                    using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::DevOmp5>;
-                };
+                using type = alpaka::test::EventHostManualTriggerCpu<alpaka::DevOmp5>;
+            };
 #endif
-                //#############################################################################
-                //! The CPU event host manual trigger support get trait specialization.
-                template<>
-                struct IsEventHostManualTriggerSupported<
-                    alpaka::DevCpu>
+            //#############################################################################
+            //! The CPU event host manual trigger support get trait specialization.
+            template<>
+            struct IsEventHostManualTriggerSupported<
+                alpaka::DevCpu>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto isSupported(
+                    alpaka::DevCpu const &)
+                -> bool
                 {
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::DevCpu const &)
-                    -> bool
-                    {
-                        return true;
-                    }
-                };
+                    return true;
+                }
+            };
 #ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-                //#############################################################################
-                //! The Omp5 event host manual trigger support get trait specialization.
-                template<>
-                struct IsEventHostManualTriggerSupported<
-                    alpaka::DevOmp5>
+            //#############################################################################
+            //! The Omp5 event host manual trigger support get trait specialization.
+            template<>
+            struct IsEventHostManualTriggerSupported<
+                alpaka::DevOmp5>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto isSupported(
+                    alpaka::DevOmp5 const &)
+                -> bool
                 {
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::DevOmp5 const &)
-                    -> bool
-                    {
-                        return true;
-                    }
-                };
+                    return true;
+                }
+            };
 #endif
-            }
         }
     }
     namespace traits
@@ -247,43 +241,40 @@ namespace alpaka
         //#############################################################################
         template<typename TDev>
         struct GetDev<
-            test::event::EventHostManualTriggerCpu<TDev>>
+            test::EventHostManualTriggerCpu<TDev>>
         {
             //-----------------------------------------------------------------------------
             //
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getDev(
-                test::event::EventHostManualTriggerCpu<TDev> const & event)
+                test::EventHostManualTriggerCpu<TDev> const & event)
             -> TDev
             {
                 return event.m_spEventImpl->m_dev;
             }
         };
     }
-    namespace event
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device event test trait specialization.
+        //#############################################################################
+        template<typename TDev>
+        struct IsComplete<
+        test::EventHostManualTriggerCpu<TDev>>
         {
-            //#############################################################################
-            //! The CPU device event test trait specialization.
-            //#############################################################################
-            template<typename TDev>
-            struct IsComplete<
-                test::event::EventHostManualTriggerCpu<TDev>>
+            //-----------------------------------------------------------------------------
+            //! \return If the event is not waiting within a queue (not enqueued or already handled).
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto isComplete(
+            test::EventHostManualTriggerCpu<TDev> const & event)
+            -> bool
             {
-                //-----------------------------------------------------------------------------
-                //! \return If the event is not waiting within a queue (not enqueued or already handled).
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto isComplete(
-                    test::event::EventHostManualTriggerCpu<TDev> const & event)
-                -> bool
-                {
-                    std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
+                std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
 
-                    return event.m_spEventImpl->m_bIsReady;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_bIsReady;
+            }
+        };
     }
     namespace traits
     {
@@ -293,7 +284,7 @@ namespace alpaka
         template<typename TDev>
         struct Enqueue<
             QueueGenericThreadsNonBlocking<TDev>,
-            test::event::EventHostManualTriggerCpu<TDev>>
+            test::EventHostManualTriggerCpu<TDev>>
         {
             //-----------------------------------------------------------------------------
             //
@@ -304,7 +295,7 @@ namespace alpaka
 #else
                 QueueGenericThreadsNonBlocking<TDev> &,
 #endif
-                test::event::EventHostManualTriggerCpu<TDev> & event)
+                test::EventHostManualTriggerCpu<TDev> & event)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -349,14 +340,14 @@ namespace alpaka
         template<typename TDev>
         struct Enqueue<
             QueueGenericThreadsBlocking<TDev>,
-            test::event::EventHostManualTriggerCpu<TDev>>
+            test::EventHostManualTriggerCpu<TDev>>
         {
             //-----------------------------------------------------------------------------
             //
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueGenericThreadsBlocking<TDev> &,
-                test::event::EventHostManualTriggerCpu<TDev> & event)
+                test::EventHostManualTriggerCpu<TDev> & event)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -405,164 +396,161 @@ namespace alpaka
 {
     namespace test
     {
-        namespace event
+        namespace uniform_cuda_hip
         {
-            namespace uniform_cuda_hip
-            {
-                namespace detail
-                {
-                    //#############################################################################
-                    class EventHostManualTriggerCudaImpl final
-                    {
-                    public:
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST EventHostManualTriggerCudaImpl(
-                            DevUniformCudaHipRt const & dev) :
-                                m_dev(dev),
-                                m_mutex(),
-                                m_bIsReady(true)
-                        {
-                            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                            // Set the current device.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                cudaSetDevice(
-                                    m_dev.m_iDevice));
-                            // Allocate the buffer on this device.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                cudaMalloc(
-                                    &m_devMem,
-                                    static_cast<size_t>(sizeof(int32_t))));
-                            // Initiate the memory set.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                cudaMemset(
-                                    m_devMem,
-                                    static_cast<int>(0u),
-                                    static_cast<size_t>(sizeof(int32_t))));
-                        }
-                        //-----------------------------------------------------------------------------
-                        EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl const &) = delete;
-                        //-----------------------------------------------------------------------------
-                        EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl &&) = delete;
-                        //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerCudaImpl const &) -> EventHostManualTriggerCudaImpl & = delete;
-                        //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerCudaImpl &&) -> EventHostManualTriggerCudaImpl & = delete;
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST ~EventHostManualTriggerCudaImpl()
-                        {
-                            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                            // Set the current device.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                cudaSetDevice(
-                                    m_dev.m_iDevice));
-                            // Free the buffer.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaFree(m_devMem));
-                        }
-
-                        //-----------------------------------------------------------------------------
-                        void trigger()
-                        {
-                            std::unique_lock<std::mutex> lock(m_mutex);
-                            m_bIsReady = true;
-
-                            // Set the current device.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                cudaSetDevice(
-                                    m_dev.m_iDevice));
-                            // Initiate the memory set.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                cudaMemset(
-                                    m_devMem,
-                                    static_cast<int>(1u),
-                                    static_cast<size_t>(sizeof(int32_t))));
-                        }
-
-                    public:
-                        DevUniformCudaHipRt const m_dev;     //!< The device this event is bound to.
-
-                        mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
-                        void * m_devMem;
-
-                        bool m_bIsReady;                //!< If the event is not waiting within a queue (not enqueued or already completed).
-                    };
-                }
-            }
-
-            //#############################################################################
-            class EventHostManualTriggerCuda final
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST EventHostManualTriggerCuda(
-                    DevUniformCudaHipRt const & dev) :
-                        m_spEventImpl(std::make_shared<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl>(dev))
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                }
-                //-----------------------------------------------------------------------------
-                EventHostManualTriggerCuda(EventHostManualTriggerCuda const &) = default;
-                //-----------------------------------------------------------------------------
-                EventHostManualTriggerCuda(EventHostManualTriggerCuda &&) = default;
-                //-----------------------------------------------------------------------------
-                auto operator=(EventHostManualTriggerCuda const &) -> EventHostManualTriggerCuda & = default;
-                //-----------------------------------------------------------------------------
-                auto operator=(EventHostManualTriggerCuda &&) -> EventHostManualTriggerCuda & = default;
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator==(EventHostManualTriggerCuda const & rhs) const
-                -> bool
-                {
-                    return (m_spEventImpl == rhs.m_spEventImpl);
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator!=(EventHostManualTriggerCuda const & rhs) const
-                -> bool
-                {
-                    return !((*this) == rhs);
-                }
-                //-----------------------------------------------------------------------------
-                ~EventHostManualTriggerCuda() = default;
-
-                //-----------------------------------------------------------------------------
-                void trigger()
-                {
-                    m_spEventImpl->trigger();
-                }
-
-            public:
-                std::shared_ptr<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl> m_spEventImpl;
-            };
-
-            namespace traits
+            namespace detail
             {
                 //#############################################################################
-                template<>
-                struct EventHostManualTriggerType<
-                    alpaka::DevUniformCudaHipRt>
+                class EventHostManualTriggerCudaImpl final
                 {
-                    using type = alpaka::test::event::EventHostManualTriggerCuda;
-                };
-                //#############################################################################
-                //! The CPU event host manual trigger support get trait specialization.
-                template<>
-                struct IsEventHostManualTriggerSupported<
-                    alpaka::DevUniformCudaHipRt>
-                {
+                public:
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::DevCudaRt const & dev)
-                    -> bool
+                    ALPAKA_FN_HOST EventHostManualTriggerCudaImpl(
+                        DevUniformCudaHipRt const & dev) :
+                            m_dev(dev),
+                            m_mutex(),
+                            m_bIsReady(true)
                     {
-                        int result = 0;
-                        cuDeviceGetAttribute(
-                            &result,
-                            CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS,
-                            dev.m_iDevice);
-                        return result != 0;
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            cudaSetDevice(
+                                m_dev.m_iDevice));
+                        // Allocate the buffer on this device.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            cudaMalloc(
+                                &m_devMem,
+                                static_cast<size_t>(sizeof(int32_t))));
+                        // Initiate the memory set.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            cudaMemset(
+                                m_devMem,
+                                static_cast<int>(0u),
+                                static_cast<size_t>(sizeof(int32_t))));
                     }
+                    //-----------------------------------------------------------------------------
+                    EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl const &) = delete;
+                    //-----------------------------------------------------------------------------
+                    EventHostManualTriggerCudaImpl(EventHostManualTriggerCudaImpl &&) = delete;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(EventHostManualTriggerCudaImpl const &) -> EventHostManualTriggerCudaImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(EventHostManualTriggerCudaImpl &&) -> EventHostManualTriggerCudaImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST ~EventHostManualTriggerCudaImpl()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            cudaSetDevice(
+                                m_dev.m_iDevice));
+                        // Free the buffer.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaFree(m_devMem));
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    void trigger()
+                    {
+                        std::unique_lock<std::mutex> lock(m_mutex);
+                        m_bIsReady = true;
+
+                        // Set the current device.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            cudaSetDevice(
+                                m_dev.m_iDevice));
+                        // Initiate the memory set.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            cudaMemset(
+                                m_devMem,
+                                static_cast<int>(1u),
+                                static_cast<size_t>(sizeof(int32_t))));
+                    }
+
+                public:
+                    DevUniformCudaHipRt const m_dev;     //!< The device this event is bound to.
+
+                    mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
+                    void * m_devMem;
+
+                    bool m_bIsReady;                //!< If the event is not waiting within a queue (not enqueued or already completed).
                 };
             }
+        }
+
+        //#############################################################################
+        class EventHostManualTriggerCuda final
+        {
+        public:
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST EventHostManualTriggerCuda(
+                DevUniformCudaHipRt const & dev) :
+                    m_spEventImpl(std::make_shared<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl>(dev))
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+            }
+            //-----------------------------------------------------------------------------
+            EventHostManualTriggerCuda(EventHostManualTriggerCuda const &) = default;
+            //-----------------------------------------------------------------------------
+            EventHostManualTriggerCuda(EventHostManualTriggerCuda &&) = default;
+            //-----------------------------------------------------------------------------
+            auto operator=(EventHostManualTriggerCuda const &) -> EventHostManualTriggerCuda & = default;
+            //-----------------------------------------------------------------------------
+            auto operator=(EventHostManualTriggerCuda &&) -> EventHostManualTriggerCuda & = default;
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator==(EventHostManualTriggerCuda const & rhs) const
+            -> bool
+            {
+                return (m_spEventImpl == rhs.m_spEventImpl);
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator!=(EventHostManualTriggerCuda const & rhs) const
+            -> bool
+            {
+                return !((*this) == rhs);
+            }
+            //-----------------------------------------------------------------------------
+            ~EventHostManualTriggerCuda() = default;
+
+            //-----------------------------------------------------------------------------
+            void trigger()
+            {
+                m_spEventImpl->trigger();
+            }
+
+        public:
+            std::shared_ptr<uniform_cuda_hip::detail::EventHostManualTriggerCudaImpl> m_spEventImpl;
+        };
+
+        namespace traits
+        {
+            //#############################################################################
+            template<>
+            struct EventHostManualTriggerType<
+                alpaka::DevUniformCudaHipRt>
+            {
+                using type = alpaka::test::EventHostManualTriggerCuda;
+            };
+            //#############################################################################
+            //! The CPU event host manual trigger support get trait specialization.
+            template<>
+            struct IsEventHostManualTriggerSupported<
+                alpaka::DevUniformCudaHipRt>
+            {
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto isSupported(
+                    alpaka::DevCudaRt const & dev)
+                -> bool
+                {
+                    int result = 0;
+                    cuDeviceGetAttribute(
+                        &result,
+                        CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS,
+                        dev.m_iDevice);
+                    return result != 0;
+                }
+            };
         }
     }
     namespace traits
@@ -571,39 +559,36 @@ namespace alpaka
         //! The CPU device event device get trait specialization.
         template<>
         struct GetDev<
-            test::event::EventHostManualTriggerCuda>
+            test::EventHostManualTriggerCuda>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getDev(
-                test::event::EventHostManualTriggerCuda const & event)
+                test::EventHostManualTriggerCuda const & event)
             -> DevUniformCudaHipRt
             {
                 return event.m_spEventImpl->m_dev;
             }
         };
     }
-    namespace event
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device event test trait specialization.
+        template<>
+        struct IsComplete<
+            test::EventHostManualTriggerCuda>
         {
-            //#############################################################################
-            //! The CPU device event test trait specialization.
-            template<>
-            struct IsComplete<
-                test::event::EventHostManualTriggerCuda>
+            //-----------------------------------------------------------------------------
+            //! \return If the event is not waiting within a queue (not enqueued or already handled).
+            ALPAKA_FN_HOST static auto isComplete(
+                test::EventHostManualTriggerCuda const & event)
+            -> bool
             {
-                //-----------------------------------------------------------------------------
-                //! \return If the event is not waiting within a queue (not enqueued or already handled).
-                ALPAKA_FN_HOST static auto isComplete(
-                    test::event::EventHostManualTriggerCuda const & event)
-                -> bool
-                {
-                    std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
+                std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
 
-                    return event.m_spEventImpl->m_bIsReady;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_bIsReady;
+            }
+        };
     }
     namespace traits
     {
@@ -611,12 +596,12 @@ namespace alpaka
         template<>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
-            test::event::EventHostManualTriggerCuda>
+            test::EventHostManualTriggerCuda>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking & queue,
-                test::event::EventHostManualTriggerCuda & event)
+                test::EventHostManualTriggerCuda & event)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -651,12 +636,12 @@ namespace alpaka
         template<>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
-            test::event::EventHostManualTriggerCuda>
+            test::EventHostManualTriggerCuda>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking & queue,
-                test::event::EventHostManualTriggerCuda & event)
+                test::EventHostManualTriggerCuda & event)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -706,161 +691,158 @@ namespace alpaka
 {
     namespace test
     {
-        namespace event
+        namespace hip
         {
-            namespace hip
+            namespace detail
             {
-                namespace detail
+                //#############################################################################
+                class EventHostManualTriggerHipImpl final
                 {
-                    //#############################################################################
-                    class EventHostManualTriggerHipImpl final
+                public:
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST EventHostManualTriggerHipImpl(
+                        DevHipRt const & dev) :
+                            m_dev(dev),
+                            m_mutex(),
+                            m_bIsReady(true)
                     {
-                    public:
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST EventHostManualTriggerHipImpl(
-                            DevHipRt const & dev) :
-                                m_dev(dev),
-                                m_mutex(),
-                                m_bIsReady(true)
-                        {
-                            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            // Set the current device.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                hipSetDevice(
-                                    m_dev.m_iDevice));
-                            // Allocate the buffer on this device.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                hipMalloc(
-                                    &m_devMem,
-                                    static_cast<size_t>(sizeof(int32_t))));
-                            // Initiate the memory set.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                hipMemset(
-                                    m_devMem,
-                                    static_cast<int>(0u),
-                                    static_cast<size_t>(sizeof(int32_t))));
-                        }
-                        //-----------------------------------------------------------------------------
-                        EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl const &) = delete;
-                        //-----------------------------------------------------------------------------
-                        EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl &&) = delete;
-                        //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerHipImpl const &) -> EventHostManualTriggerHipImpl & = delete;
-                        //-----------------------------------------------------------------------------
-                        auto operator=(EventHostManualTriggerHipImpl &&) -> EventHostManualTriggerHipImpl & = delete;
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FN_HOST ~EventHostManualTriggerHipImpl()
-                        {
-                            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                        // Set the current device.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            hipSetDevice(
+                                m_dev.m_iDevice));
+                        // Allocate the buffer on this device.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            hipMalloc(
+                                &m_devMem,
+                                static_cast<size_t>(sizeof(int32_t))));
+                        // Initiate the memory set.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            hipMemset(
+                                m_devMem,
+                                static_cast<int>(0u),
+                                static_cast<size_t>(sizeof(int32_t))));
+                    }
+                    //-----------------------------------------------------------------------------
+                    EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl const &) = delete;
+                    //-----------------------------------------------------------------------------
+                    EventHostManualTriggerHipImpl(EventHostManualTriggerHipImpl &&) = delete;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(EventHostManualTriggerHipImpl const &) -> EventHostManualTriggerHipImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    auto operator=(EventHostManualTriggerHipImpl &&) -> EventHostManualTriggerHipImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST ~EventHostManualTriggerHipImpl()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                hipSetDevice(
-                                    m_dev.m_iDevice));
-                            // Free the buffer.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipFree(m_devMem));
-                        }
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            hipSetDevice(
+                                m_dev.m_iDevice));
+                        // Free the buffer.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipFree(m_devMem));
+                    }
 
-                        //-----------------------------------------------------------------------------
-                        void trigger()
-                        {
-                            std::unique_lock<std::mutex> lock(m_mutex);
-                            m_bIsReady = true;
+                    //-----------------------------------------------------------------------------
+                    void trigger()
+                    {
+                        std::unique_lock<std::mutex> lock(m_mutex);
+                        m_bIsReady = true;
 
-                            // Set the current device.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                hipSetDevice(
-                                    m_dev.m_iDevice));
-                            // Initiate the memory set.
-                            ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                                hipMemset(
-                                    m_devMem,
-                                    static_cast<int>(1u),
-                                    static_cast<size_t>(sizeof(int32_t))));
-                        }
+                        // Set the current device.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            hipSetDevice(
+                                m_dev.m_iDevice));
+                        // Initiate the memory set.
+                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                            hipMemset(
+                                m_devMem,
+                                static_cast<int>(1u),
+                                static_cast<size_t>(sizeof(int32_t))));
+                    }
 
-                    public:
-                        DevHipRt const m_dev;     //!< The device this event is bound to.
+                public:
+                    DevHipRt const m_dev;     //!< The device this event is bound to.
 
-                        mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
-                        void * m_devMem;
+                    mutable std::mutex m_mutex;     //!< The mutex used to synchronize access to the event.
+                    void * m_devMem;
 
-                        bool m_bIsReady;                //!< If the event is not waiting within a queue (not enqueued or already completed).
-                    };
-                }
+                    bool m_bIsReady;                //!< If the event is not waiting within a queue (not enqueued or already completed).
+                };
+            }
+        }
+
+        //#############################################################################
+        class EventHostManualTriggerHip final
+        {
+        public:
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST EventHostManualTriggerHip(
+                DevHipRt const & dev) :
+                    m_spEventImpl(std::make_shared<hip::detail::EventHostManualTriggerHipImpl>(dev))
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+            }
+            //-----------------------------------------------------------------------------
+            EventHostManualTriggerHip(EventHostManualTriggerHip const &) = default;
+            //-----------------------------------------------------------------------------
+            EventHostManualTriggerHip(EventHostManualTriggerHip &&) = default;
+            //-----------------------------------------------------------------------------
+            auto operator=(EventHostManualTriggerHip const &) -> EventHostManualTriggerHip & = default;
+            //-----------------------------------------------------------------------------
+            auto operator=(EventHostManualTriggerHip &&) -> EventHostManualTriggerHip & = default;
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator==(EventHostManualTriggerHip const & rhs) const
+            -> bool
+            {
+                return (m_spEventImpl == rhs.m_spEventImpl);
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator!=(EventHostManualTriggerHip const & rhs) const
+            -> bool
+            {
+                return !((*this) == rhs);
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST ~EventHostManualTriggerHip() = default;
+
+            //-----------------------------------------------------------------------------
+            void trigger()
+            {
+                m_spEventImpl->trigger();
             }
 
+        public:
+            std::shared_ptr<hip::detail::EventHostManualTriggerHipImpl> m_spEventImpl;
+        };
+
+        namespace traits
+        {
             //#############################################################################
-            class EventHostManualTriggerHip final
+            template<>
+            struct EventHostManualTriggerType<
+                alpaka::DevHipRt>
             {
-            public:
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST EventHostManualTriggerHip(
-                    DevHipRt const & dev) :
-                        m_spEventImpl(std::make_shared<hip::detail::EventHostManualTriggerHipImpl>(dev))
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                }
-                //-----------------------------------------------------------------------------
-                EventHostManualTriggerHip(EventHostManualTriggerHip const &) = default;
-                //-----------------------------------------------------------------------------
-                EventHostManualTriggerHip(EventHostManualTriggerHip &&) = default;
-                //-----------------------------------------------------------------------------
-                auto operator=(EventHostManualTriggerHip const &) -> EventHostManualTriggerHip & = default;
-                //-----------------------------------------------------------------------------
-                auto operator=(EventHostManualTriggerHip &&) -> EventHostManualTriggerHip & = default;
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator==(EventHostManualTriggerHip const & rhs) const
-                -> bool
-                {
-                    return (m_spEventImpl == rhs.m_spEventImpl);
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator!=(EventHostManualTriggerHip const & rhs) const
-                -> bool
-                {
-                    return !((*this) == rhs);
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST ~EventHostManualTriggerHip() = default;
-
-                //-----------------------------------------------------------------------------
-                void trigger()
-                {
-                    m_spEventImpl->trigger();
-                }
-
-            public:
-                std::shared_ptr<hip::detail::EventHostManualTriggerHipImpl> m_spEventImpl;
+            using type = alpaka::test::EventHostManualTriggerHip;
             };
 
-            namespace traits
+            //#############################################################################
+            //! The HIP event host manual trigger support get trait specialization.
+            template<>
+            struct IsEventHostManualTriggerSupported<
+                alpaka::DevHipRt>
             {
-                //#############################################################################
-                template<>
-                struct EventHostManualTriggerType<
-                    alpaka::DevHipRt>
+                //-----------------------------------------------------------------------------
+                // TODO: there is no CUDA_VERSION in the HIP compiler path.
+                // TODO: there is a hipDeviceGetAttribute, but there is no pendant for CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS.
+                ALPAKA_FN_HOST static auto isSupported(
+                    alpaka::DevHipRt const &)
+                -> bool
                 {
-                    using type = alpaka::test::event::EventHostManualTriggerHip;
-                };
-
-                //#############################################################################
-                //! The HIP event host manual trigger support get trait specialization.
-                template<>
-                struct IsEventHostManualTriggerSupported<
-                    alpaka::DevHipRt>
-                {
-                    //-----------------------------------------------------------------------------
-                    // TODO: there is no CUDA_VERSION in the HIP compiler path.
-                    // TODO: there is a hipDeviceGetAttribute, but there is no pendant for CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS.
-                    ALPAKA_FN_HOST static auto isSupported(
-                        alpaka::DevHipRt const &)
-                    -> bool
-                    {
-                        return false;
-                    }
-                };
-            }
+                    return false;
+                }
+            };
         }
     }
     namespace traits
@@ -869,39 +851,36 @@ namespace alpaka
         //! The CPU device event device get trait specialization.
         template<>
         struct GetDev<
-            test::event::EventHostManualTriggerHip>
+            test::EventHostManualTriggerHip>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getDev(
-                test::event::EventHostManualTriggerHip const & event)
+                test::EventHostManualTriggerHip const & event)
             -> DevHipRt
             {
                 return event.m_spEventImpl->m_dev;
             }
         };
     }
-    namespace event
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device event test trait specialization.
+        template<>
+        struct IsComplete<
+           test::EventHostManualTriggerHip>
         {
-            //#############################################################################
-            //! The CPU device event test trait specialization.
-            template<>
-            struct IsComplete<
-                test::event::EventHostManualTriggerHip>
+            //-----------------------------------------------------------------------------
+            //! \return If the event is not waiting within a queue (not enqueued or already handled).
+            ALPAKA_FN_HOST static auto isComplete(
+               test::EventHostManualTriggerHip const & event)
+            -> bool
             {
-                //-----------------------------------------------------------------------------
-                //! \return If the event is not waiting within a queue (not enqueued or already handled).
-                ALPAKA_FN_HOST static auto isComplete(
-                    test::event::EventHostManualTriggerHip const & event)
-                -> bool
-                {
-                    std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
+                std::lock_guard<std::mutex> lk(event.m_spEventImpl->m_mutex);
 
-                    return event.m_spEventImpl->m_bIsReady;
-                }
-            };
-        }
+                return event.m_spEventImpl->m_bIsReady;
+            }
+        };
     }
     namespace traits
     {
@@ -909,12 +888,12 @@ namespace alpaka
         template<>
         struct Enqueue<
             QueueHipRtNonBlocking,
-            test::event::EventHostManualTriggerHip>
+            test::EventHostManualTriggerHip>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueHipRtNonBlocking & queue,
-                test::event::EventHostManualTriggerHip & event)
+                test::EventHostManualTriggerHip & event)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -954,12 +933,12 @@ namespace alpaka
         template<>
         struct Enqueue<
             QueueHipRtBlocking,
-            test::event::EventHostManualTriggerHip>
+            test::EventHostManualTriggerHip>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueHipRtBlocking & queue,
-                test::event::EventHostManualTriggerHip & event)
+                test::EventHostManualTriggerHip & event)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

@@ -46,14 +46,8 @@
 
 namespace alpaka
 {
-    namespace event
-    {
-        class EventUniformCudaHipRt;
-    }
-}
+    class EventUniformCudaHipRt;
 
-namespace alpaka
-{
     //#############################################################################
     //! The CUDA/HIP RT non-blocking queue.
     class QueueUniformCudaHipRtNonBlocking final : public uniform_cuda_hip::detail::QueueUniformCudaHipRtBase
@@ -105,19 +99,16 @@ namespace alpaka
             using type = DevUniformCudaHipRt;
         };
     }
-    namespace event
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT non-blocking queue event type trait specialization.
+        template<>
+        struct EventType<
+            QueueUniformCudaHipRtNonBlocking>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT non-blocking queue event type trait specialization.
-            template<>
-            struct EventType<
-                QueueUniformCudaHipRtNonBlocking>
-            {
-                using type = event::EventUniformCudaHipRt;
-            };
-        }
+            using type = EventUniformCudaHipRt;
+        };
     }
     namespace traits
     {
