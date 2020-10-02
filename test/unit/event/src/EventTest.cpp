@@ -17,10 +17,10 @@
 #include <catch2/catch.hpp>
 
 using TestQueues = alpaka::meta::Concatenate<
-        alpaka::test::queue::TestQueues
+        alpaka::test::TestQueues
  #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
         ,
-        std::tuple<std::tuple<alpaka::DevCpu, alpaka::queue::QueueCpuOmp2Collective>>
+        std::tuple<std::tuple<alpaka::DevCpu, alpaka::QueueCpuOmp2Collective>>
 #endif
     >;
 
@@ -28,7 +28,7 @@ using TestQueues = alpaka::meta::Concatenate<
 TEMPLATE_LIST_TEST_CASE( "eventTestShouldInitiallyBeTrue", "[event]", TestQueues)
 {
     using DevQueue = TestType;
-    using Fixture = alpaka::test::queue::QueueTestFixture<DevQueue>;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     using Queue = typename Fixture::Queue;
 
     Fixture f;
@@ -41,7 +41,7 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldInitiallyBeTrue", "[event]", TestQueues
 TEMPLATE_LIST_TEST_CASE( "eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingProcessed", "[event]", TestQueues)
 {
     using DevQueue = TestType;
-    using Fixture = alpaka::test::queue::QueueTestFixture<DevQueue>;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     using Queue = typename Fixture::Queue;
     using Dev = typename Fixture::Dev;
 
@@ -52,14 +52,14 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingPro
         alpaka::event::Event<Queue> e1(f1.m_dev);
         alpaka::test::event::EventHostManualTrigger<Dev> k1(f1.m_dev);
 
-        if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
+        if(!alpaka::test::IsBlockingQueue<Queue>::value)
         {
-            alpaka::queue::enqueue(q1, k1);
+            alpaka::enqueue(q1, k1);
         }
 
-        alpaka::queue::enqueue(q1, e1);
+        alpaka::enqueue(q1, e1);
 
-        if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
+        if(!alpaka::test::IsBlockingQueue<Queue>::value)
         {
             REQUIRE(alpaka::event::test(e1) == false);
 
@@ -80,11 +80,11 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingPro
 TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[event]", TestQueues)
 {
     using DevQueue = TestType;
-    using Fixture = alpaka::test::queue::QueueTestFixture<DevQueue>;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     using Queue = typename Fixture::Queue;
     using Dev = typename Fixture::Dev;
 
-    if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
+    if(!alpaka::test::IsBlockingQueue<Queue>::value)
     {
         Fixture f1;
         if(alpaka::test::event::isEventHostManualTriggerSupported(f1.m_dev))
@@ -95,23 +95,23 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[eve
             alpaka::test::event::EventHostManualTrigger<Dev> k2(f1.m_dev);
 
             // q1 = [k1]
-            alpaka::queue::enqueue(q1, k1);
+            alpaka::enqueue(q1, k1);
             REQUIRE(!alpaka::event::test(k1));
 
             // q1 = [k1, e1]
-            alpaka::queue::enqueue(q1, e1);
+            alpaka::enqueue(q1, e1);
             REQUIRE(!alpaka::event::test(k1));
             REQUIRE(!alpaka::event::test(e1));
 
             // q1 = [k1, e1, k2]
-            alpaka::queue::enqueue(q1, k2);
+            alpaka::enqueue(q1, k2);
             REQUIRE(!alpaka::event::test(k1));
             REQUIRE(!alpaka::event::test(e1));
             REQUIRE(!alpaka::event::test(k2));
 
             // re-enqueue should be possible
             // q1 = [k1, k2, e1]
-            alpaka::queue::enqueue(q1, e1);
+            alpaka::enqueue(q1, e1);
             REQUIRE(!alpaka::event::test(k1));
             REQUIRE(!alpaka::event::test(k2));
             REQUIRE(!alpaka::event::test(e1));
@@ -139,11 +139,11 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[eve
 TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[event]", TestQueues)
 {
     using DevQueue = TestType;
-    using Fixture = alpaka::test::queue::QueueTestFixture<DevQueue>;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     using Queue = typename Fixture::Queue;
     using Dev = typename Fixture::Dev;
 
-    if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
+    if(!alpaka::test::IsBlockingQueue<Queue>::value)
     {
         Fixture f1;
         Fixture f2;
@@ -158,16 +158,16 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
             alpaka::test::event::EventHostManualTrigger<Dev> k2(f1.m_dev);
 
             // q1 = [k1]
-            alpaka::queue::enqueue(q1, k1);
+            alpaka::enqueue(q1, k1);
             REQUIRE(!alpaka::event::test(k1));
 
             // q1 = [k1, e1]
-            alpaka::queue::enqueue(q1, e1);
+            alpaka::enqueue(q1, e1);
             REQUIRE(!alpaka::event::test(k1));
             REQUIRE(!alpaka::event::test(e1));
 
             // q1 = [k1, e1, k2]
-            alpaka::queue::enqueue(q1, k2);
+            alpaka::enqueue(q1, k2);
             REQUIRE(!alpaka::event::test(k1));
             REQUIRE(!alpaka::event::test(e1));
             REQUIRE(!alpaka::event::test(k2));
@@ -177,12 +177,12 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
             alpaka::wait::wait(q2, e1);
 
             // q2 = [->e1, e2]
-            alpaka::queue::enqueue(q2, e2);
+            alpaka::enqueue(q2, e2);
             REQUIRE(!alpaka::event::test(e2));
 
             // re-enqueue should be possible
             // q1 = [k1, e1-old, k2, e1]
-            alpaka::queue::enqueue(q1, e1);
+            alpaka::enqueue(q1, e1);
             REQUIRE(!alpaka::event::test(k1));
             REQUIRE(!alpaka::event::test(k2));
             REQUIRE(!alpaka::event::test(e1));
@@ -216,11 +216,11 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
 TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[event]", TestQueues)
 {
     using DevQueue = TestType;
-    using Fixture = alpaka::test::queue::QueueTestFixture<DevQueue>;
+    using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     using Queue = typename Fixture::Queue;
     using Dev = typename Fixture::Dev;
 
-    if(!alpaka::test::queue::IsBlockingQueue<Queue>::value)
+    if(!alpaka::test::IsBlockingQueue<Queue>::value)
     {
         Fixture f1;
         Fixture f2;
@@ -235,14 +235,14 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
 
             // 1. kernel k1 is enqueued into queue q1
             // q1 = [k1]
-            alpaka::queue::enqueue(q1, k1);
+            alpaka::enqueue(q1, k1);
             // 2. kernel k2 is enqueued into queue q2
             // q2 = [k2]
-            alpaka::queue::enqueue(q2, k2);
+            alpaka::enqueue(q2, k2);
 
             // 3. event e1 is enqueued into queue q1
             // q1 = [k1, e1]
-            alpaka::queue::enqueue(q1, e1);
+            alpaka::enqueue(q1, e1);
 
             // 4. q2 waits for e1
             // q2 = [k2, ->e1]
@@ -259,7 +259,7 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
 
             // 7. e1 is re-enqueued again but this time into q2
             // q2 = [k2, ->e1, e1]
-            alpaka::queue::enqueue(q2, e1);
+            alpaka::enqueue(q2, e1);
 
             // 8. kernel k2 finishes
             // q2 = [->e1, e1]

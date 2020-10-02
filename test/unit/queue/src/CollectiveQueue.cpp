@@ -47,7 +47,7 @@ TEST_CASE("queueCollective", "[queue]")
     using Acc = alpaka::AccCpuOmp2Blocks<Dim, Idx>;
     using Dev = alpaka::Dev<Acc>;
 
-    using Queue = alpaka::queue::QueueCpuOmp2Collective;
+    using Queue = alpaka::QueueCpuOmp2Collective;
     using Pltf = alpaka::Pltf<Dev>;
 
     auto dev = alpaka::getDevByIdx<Pltf>(0u);
@@ -95,7 +95,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     using Acc = alpaka::AccCpuOmp2Blocks<Dim, Idx>;
     using Dev = alpaka::Dev<Acc>;
 
-    using Queue = alpaka::queue::QueueCpuOmp2Collective;
+    using Queue = alpaka::QueueCpuOmp2Collective;
     using Pltf = alpaka::Pltf<Dev>;
 
     auto dev = alpaka::getDevByIdx<Pltf>(0u);

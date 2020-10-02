@@ -14,8 +14,5 @@
 
 namespace alpaka
 {
-    namespace queue
-    {
-        using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
-    }
+    using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
 }

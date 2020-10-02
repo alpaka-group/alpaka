@@ -322,61 +322,58 @@ namespace alpaka
         }
     }
 
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct Enqueue<
+            QueueOmp5Blocking,
+            kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> >
         {
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct Enqueue<
-                queue::QueueOmp5Blocking,
-                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> >
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueOmp5Blocking& queue,
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+            -> void
             {
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueOmp5Blocking& queue,
-                    kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
-                -> void
-                {
-                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
+                std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
 
-                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = true;
+                queue.m_spQueueImpl->m_bCurrentlyExecutingTask = true;
 
-                    task(
-                            queue.m_spQueueImpl->m_dev
-                        );
+                task(
+                        queue.m_spQueueImpl->m_dev
+                    );
 
-                    queue.m_spQueueImpl->m_bCurrentlyExecutingTask = false;
-                }
-            };
+                queue.m_spQueueImpl->m_bCurrentlyExecutingTask = false;
+            }
+        };
 
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct Enqueue<
-                queue::QueueOmp5NonBlocking,
-                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> >
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct Enqueue<
+            QueueOmp5NonBlocking,
+            kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> >
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueOmp5NonBlocking& queue,
+                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueOmp5NonBlocking& queue,
-                    kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...> const & task)
-                -> void
-                {
-                    queue.m_spQueueImpl->m_workerThread.enqueueTask(
-                        [&queue, task]()
-                        {
-                            task(
-                                    queue.m_spQueueImpl->m_dev
-                                );
-                        });
-                }
-            };
-        }
+                queue.m_spQueueImpl->m_workerThread.enqueueTask(
+                    [&queue, task]()
+                    {
+                        task(
+                                queue.m_spQueueImpl->m_dev
+                            );
+                    });
+            }
+        };
     }
 }
 

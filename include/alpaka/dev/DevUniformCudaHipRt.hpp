@@ -46,11 +46,8 @@ namespace alpaka
         struct GetDevByIdx;
     }
     class PltfUniformCudaHipRt;
-    namespace queue
-    {
-        class QueueUniformCudaHipRtBlocking;
-        class QueueUniformCudaHipRtNonBlocking;
-    }
+    class QueueUniformCudaHipRtBlocking;
+    class QueueUniformCudaHipRtNonBlocking;
 
     //#############################################################################
     //! The CUDA/HIP RT device handle.
@@ -297,28 +294,25 @@ namespace alpaka
             };
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        template<>
+        struct QueueType<
+            DevUniformCudaHipRt,
+            Blocking
+        >
         {
-            template<>
-            struct QueueType<
-                DevUniformCudaHipRt,
-                queue::Blocking
-            >
-            {
-                using type = queue::QueueUniformCudaHipRtBlocking;
-            };
+            using type = QueueUniformCudaHipRtBlocking;
+        };
 
-            template<>
-            struct QueueType<
-                DevUniformCudaHipRt,
-                queue::NonBlocking
-            >
-            {
-                using type = queue::QueueUniformCudaHipRtNonBlocking;
-            };
-        }
+        template<>
+        struct QueueType<
+            DevUniformCudaHipRt,
+            NonBlocking
+        >
+        {
+            using type = QueueUniformCudaHipRtNonBlocking;
+        };
     }
 }
 

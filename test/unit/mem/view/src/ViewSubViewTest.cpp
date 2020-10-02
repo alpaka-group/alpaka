@@ -117,7 +117,7 @@ namespace view
                 extentView,
                 offsetView);
 
-        using Queue = alpaka::test::queue::DefaultQueue<TDev>;
+        using Queue = alpaka::test::DefaultQueue<TDev>;
         Queue queue(dev);
         //-----------------------------------------------------------------------------
         alpaka::test::mem::view::testViewMutable<

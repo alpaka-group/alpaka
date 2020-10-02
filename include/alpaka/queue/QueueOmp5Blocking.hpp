@@ -21,10 +21,7 @@
 
 namespace alpaka
 {
-    namespace queue
-    {
-        using QueueOmp5Blocking = QueueGenericThreadsBlocking<DevOmp5>;
-    }
+    using QueueOmp5Blocking = QueueGenericThreadsBlocking<DevOmp5>;
 }
 
 #endif

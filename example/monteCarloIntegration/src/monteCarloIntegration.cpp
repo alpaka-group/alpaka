@@ -127,8 +127,8 @@ auto main() -> int
     using Host = alpaka::DevCpu;
     auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
     auto const devHost = alpaka::getDevByIdx<Host>(0u);
-    using QueueProperty = alpaka::queue::Blocking;
-    using QueueAcc = alpaka::queue::Queue<
+    using QueueProperty = alpaka::Blocking;
+    using QueueAcc = alpaka::Queue<
         Acc,
         QueueProperty>;
     QueueAcc queue{devAcc};

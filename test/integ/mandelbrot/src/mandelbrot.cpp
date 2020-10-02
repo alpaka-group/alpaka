@@ -328,7 +328,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
     using Val = std::uint32_t;
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
-    using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+    using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
     using PltfHost = alpaka::PltfCpu;
 
     // Create the kernel function object.

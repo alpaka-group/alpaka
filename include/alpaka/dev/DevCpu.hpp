@@ -33,12 +33,9 @@
 namespace alpaka
 {
     class DevCpu;
-    namespace queue
+    namespace cpu
     {
-        namespace cpu
-        {
-            using ICpuQueue = IGenericThreadsQueue<DevCpu>;
-        }
+        using ICpuQueue = IGenericThreadsQueue<DevCpu>;
     }
     namespace traits
     {
@@ -75,9 +72,9 @@ namespace alpaka
 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST auto getAllExistingQueues() const
-                -> std::vector<std::shared_ptr<queue::cpu::ICpuQueue>>
+                -> std::vector<std::shared_ptr<cpu::ICpuQueue>>
                 {
-                    std::vector<std::shared_ptr<queue::cpu::ICpuQueue>> vspQueues;
+                    std::vector<std::shared_ptr<cpu::ICpuQueue>> vspQueues;
 
                     std::lock_guard<std::mutex> lk(m_Mutex);
                     vspQueues.reserve(m_queues.size());
@@ -101,7 +98,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Registers the given queue on this device.
                 //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::cpu::ICpuQueue> spQueue) const
+                ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<cpu::ICpuQueue> spQueue) const
                 -> void
                 {
                     std::lock_guard<std::mutex> lk(m_Mutex);
@@ -112,7 +109,7 @@ namespace alpaka
 
             private:
                 std::mutex mutable m_Mutex;
-                std::vector<std::weak_ptr<queue::cpu::ICpuQueue>> mutable m_queues;
+                std::vector<std::weak_ptr<cpu::ICpuQueue>> mutable m_queues;
             };
         }
     }
@@ -154,7 +151,7 @@ namespace alpaka
         ~DevCpu() = default;
 
         ALPAKA_FN_HOST auto getAllQueues() const
-        -> std::vector<std::shared_ptr<queue::cpu::ICpuQueue>>
+        -> std::vector<std::shared_ptr<cpu::ICpuQueue>>
         {
             return m_spDevCpuImpl->getAllExistingQueues();
         }
@@ -162,7 +159,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Registers the given queue on this device.
         //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::cpu::ICpuQueue> spQueue) const
+        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<cpu::ICpuQueue> spQueue) const
         -> void
         {
             m_spDevCpuImpl->registerQueue(spQueue);
@@ -301,30 +298,27 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace queue
+    using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;
+    using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
+
+    namespace traits
     {
-        using QueueCpuNonBlocking = QueueGenericThreadsNonBlocking<DevCpu>;
-        using QueueCpuBlocking = QueueGenericThreadsBlocking<DevCpu>;
-
-        namespace traits
+        template<>
+        struct QueueType<
+            DevCpu,
+            Blocking
+        >
         {
-            template<>
-            struct QueueType<
-                DevCpu,
-                queue::Blocking
-            >
-            {
-                using type = queue::QueueCpuBlocking;
-            };
+            using type = QueueCpuBlocking;
+        };
 
-            template<>
-            struct QueueType<
-                DevCpu,
-                queue::NonBlocking
-            >
-            {
-                using type = queue::QueueCpuNonBlocking;
-            };
-        }
+        template<>
+        struct QueueType<
+            DevCpu,
+            NonBlocking
+        >
+        {
+            using type = QueueCpuNonBlocking;
+        };
     }
 }

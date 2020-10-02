@@ -65,9 +65,9 @@ namespace alpaka
 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST auto getAllExistingQueues() const
-                -> std::vector<std::shared_ptr<queue::IGenericThreadsQueue<DevOmp5>>>
+                -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
                 {
-                    std::vector<std::shared_ptr<queue::IGenericThreadsQueue<DevOmp5>>> vspQueues;
+                    std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>> vspQueues;
 
                     std::lock_guard<std::mutex> lk(m_Mutex);
                     vspQueues.reserve(m_queues.size());
@@ -91,7 +91,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Registers the given queue on this device.
                 //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-                ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::IGenericThreadsQueue<DevOmp5>> spQueue)
+                ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOmp5>> spQueue)
                 -> void
                 {
                     std::lock_guard<std::mutex> lk(m_Mutex);
@@ -104,7 +104,7 @@ namespace alpaka
 
             private:
                 std::mutex mutable m_Mutex;
-                std::vector<std::weak_ptr<queue::IGenericThreadsQueue<DevOmp5>>> mutable m_queues;
+                std::vector<std::weak_ptr<IGenericThreadsQueue<DevOmp5>>> mutable m_queues;
                 const int m_iDevice;
             };
         }
@@ -147,7 +147,7 @@ namespace alpaka
         int iDevice() const {return m_spDevOmp5Impl->iDevice();}
 
         ALPAKA_FN_HOST auto getAllQueues() const
-        -> std::vector<std::shared_ptr<queue::IGenericThreadsQueue<DevOmp5>>>
+        -> std::vector<std::shared_ptr<IGenericThreadsQueue<DevOmp5>>>
         {
             return m_spDevOmp5Impl->getAllExistingQueues();
         }
@@ -155,7 +155,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Registers the given queue on this device.
         //! NOTE: Every queue has to be registered for correct functionality of device wait operations!
-        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<queue::IGenericThreadsQueue<DevOmp5>> spQueue) const
+        ALPAKA_FN_HOST auto registerQueue(std::shared_ptr<IGenericThreadsQueue<DevOmp5>> spQueue) const
         -> void
         {
             m_spDevOmp5Impl->registerQueue(spQueue);
@@ -292,31 +292,28 @@ namespace alpaka
             using type = PltfOmp5;
         };
     }
-    namespace queue
+    using QueueOmp5NonBlocking = QueueGenericThreadsNonBlocking<DevOmp5>;
+    using QueueOmp5Blocking = QueueGenericThreadsBlocking<DevOmp5>;
+
+    namespace traits
     {
-        using QueueOmp5NonBlocking = QueueGenericThreadsNonBlocking<DevOmp5>;
-        using QueueOmp5Blocking = QueueGenericThreadsBlocking<DevOmp5>;
-
-        namespace traits
+        template<>
+        struct QueueType<
+            DevOmp5,
+            Blocking
+        >
         {
-            template<>
-            struct QueueType<
-                DevOmp5,
-                queue::Blocking
-            >
-            {
-                using type = queue::QueueOmp5Blocking;
-            };
+            using type = QueueOmp5Blocking;
+        };
 
-            template<>
-            struct QueueType<
-                DevOmp5,
-                queue::NonBlocking
-            >
-            {
-                using type = queue::QueueOmp5NonBlocking;
-            };
-        }
+        template<>
+        struct QueueType<
+            DevOmp5,
+            NonBlocking
+        >
+        {
+            using type = QueueOmp5NonBlocking;
+        };
     }
     namespace wait
     {

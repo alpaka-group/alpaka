@@ -30,7 +30,7 @@ namespace alpaka
             using Idx = alpaka::idx::Idx<Acc>;
             using DevAcc = alpaka::Dev<Acc>;
             using PltfAcc = alpaka::Pltf<DevAcc>;
-            using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+            using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
             using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
         public:

@@ -95,7 +95,7 @@ struct TestTemplate
         using Dim = alpaka::dim::DimInt< 1u >;
         using Idx = std::size_t;
         using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-        using QueueAcc = alpaka::test::queue::DefaultQueue< DevAcc >;
+        using QueueAcc = alpaka::test::DefaultQueue< DevAcc >;
         using TArgsItem = alpaka::test::unit::math::ArgsItem<TData, TFunctor::arity>;
 
         static constexpr auto capacity = 1000;
@@ -154,7 +154,7 @@ struct TestTemplate
             )
         );
         // Enqueue the kernel execution task.
-        alpaka::queue::enqueue( queue, taskKernel );
+        alpaka::enqueue( queue, taskKernel );
         // Copy back the results (encapsulated in the buffer class).
         results.copyFromDevice( queue );
         alpaka::wait::wait( queue );

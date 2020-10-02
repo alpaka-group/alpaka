@@ -216,10 +216,10 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     using Vec2 = alpaka::Vec<Dim, Idx>;
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
-    using QueueAcc = alpaka::test::queue::DefaultQueue<alpaka::Dev<Acc>>;
+    using QueueAcc = alpaka::test::DefaultQueue<alpaka::Dev<Acc>>;
     using PltfHost = alpaka::PltfCpu;
     using DevHost = alpaka::Dev<PltfHost>;
-    using QueueHost = alpaka::queue::QueueCpuNonBlocking;
+    using QueueHost = alpaka::QueueCpuNonBlocking;
 
     // Create the kernel function object.
     MatMulKernel kernel;

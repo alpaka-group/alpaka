@@ -108,23 +108,20 @@ namespace alpaka
         return devs;
     }
 
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        template<
+            typename TPltf,
+            typename TProperty>
+        struct QueueType<
+            TPltf,
+            TProperty,
+            std::enable_if_t<concepts::ImplementsConcept<ConceptPltf, TPltf>::value>
+        >
         {
-            template<
-                typename TPltf,
-                typename TProperty>
-            struct QueueType<
-                TPltf,
-                TProperty,
-                std::enable_if_t<concepts::ImplementsConcept<ConceptPltf, TPltf>::value>
-            >
-            {
-                using type = typename QueueType<
-                    typename alpaka::traits::DevType<TPltf>::type,
-                    TProperty>::type;
-            };
-        }
+            using type = typename QueueType<
+                typename alpaka::traits::DevType<TPltf>::type,
+                TProperty>::type;
+        };
     }
 }

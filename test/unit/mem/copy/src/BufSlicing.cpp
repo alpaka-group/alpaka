@@ -28,8 +28,8 @@ template<
 struct TestContainer
 {
 
-    using AccQueueProperty = alpaka::queue::Blocking;
-    using DevQueue = alpaka::queue::Queue<
+    using AccQueueProperty = alpaka::Blocking;
+    using DevQueue = alpaka::Queue<
         TAcc,
         AccQueueProperty
     >;

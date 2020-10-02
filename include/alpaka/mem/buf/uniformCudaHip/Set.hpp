@@ -360,137 +360,134 @@ namespace alpaka
             }
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA non-blocking device queue 1D set enqueue trait specialization.
+        template<
+            typename TView,
+            typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent>>
         {
-            //#############################################################################
-            //! The CUDA non-blocking device queue 1D set enqueue trait specialization.
-            template<
-                typename TView,
-                typename TExtent>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    task.enqueue(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA blocking device queue 1D set enqueue trait specialization.
-            template<
-                typename TView,
-                typename TExtent>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent>>
+                task.enqueue(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA blocking device queue 1D set enqueue trait specialization.
+        template<
+            typename TView,
+            typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<1u>, TView, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    task.enqueue(queue);
+                task.enqueue(queue);
 
-                    wait::wait(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA non-blocking device queue 2D set enqueue trait specialization.
-            template<
-                typename TView,
-                typename TExtent>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent>>
+                wait::wait(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA non-blocking device queue 2D set enqueue trait specialization.
+        template<
+            typename TView,
+            typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    task.enqueue(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA blocking device queue 2D set enqueue trait specialization.
-            template<
-                typename TView,
-                typename TExtent>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent>>
+                task.enqueue(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA blocking device queue 2D set enqueue trait specialization.
+        template<
+            typename TView,
+            typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<2u>, TView, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    task.enqueue(queue);
+                task.enqueue(queue);
 
-                    wait::wait(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA non-blocking device queue 3D set enqueue trait specialization.
-            template<
-                typename TView,
-                typename TExtent>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent>>
+                wait::wait(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA non-blocking device queue 3D set enqueue trait specialization.
+        template<
+            typename TView,
+            typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    task.enqueue(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA blocking device queue 3D set enqueue trait specialization.
-            template<
-                typename TView,
-                typename TExtent>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent>>
+                task.enqueue(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA blocking device queue 3D set enqueue trait specialization.
+        template<
+            typename TView,
+            typename TExtent>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskSetUniformCudaHip<dim::DimInt<3u>, TView, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    task.enqueue(queue);
+                task.enqueue(queue);
 
-                    wait::wait(queue);
-                }
-            };
-        }
+                wait::wait(queue);
+            }
+        };
     }
 }
 

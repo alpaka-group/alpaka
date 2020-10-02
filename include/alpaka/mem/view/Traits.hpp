@@ -311,7 +311,7 @@ namespace alpaka
                 TExtent const & extent)
             -> void
             {
-                queue::enqueue(
+                enqueue(
                     queue,
                     mem::view::createTaskSet(
                         view,
@@ -374,7 +374,7 @@ namespace alpaka
                 TExtent const & extent)
             -> void
             {
-                queue::enqueue(
+                enqueue(
                     queue,
                     mem::view::createTaskCopy(
                         viewDst,

@@ -28,7 +28,7 @@ static auto testBufferMutable(
 {
     using Dev = alpaka::Dev<TAcc>;
     using Pltf = alpaka::Pltf<Dev>;
-    using Queue = alpaka::test::queue::DefaultQueue<Dev>;
+    using Queue = alpaka::test::DefaultQueue<Dev>;
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;

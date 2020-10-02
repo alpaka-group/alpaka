@@ -110,8 +110,8 @@ auto main()
     // Defines the synchronization behavior of a queue
     //
     // choose between Blocking and NonBlocking
-    using QueueProperty = alpaka::queue::Blocking;
-    using Queue = alpaka::queue::Queue<Acc, QueueProperty>;
+    using QueueProperty = alpaka::Blocking;
+    using Queue = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
     //
