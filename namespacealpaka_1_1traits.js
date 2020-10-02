@@ -1,5 +1,10 @@
 var namespacealpaka_1_1traits =
 [
+    [ "Cast", "structalpaka_1_1traits_1_1Cast.html", null ],
+    [ "Cast< TSizeNew, Vec< TDim, TVal > >", "structalpaka_1_1traits_1_1Cast_3_01TSizeNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html", "structalpaka_1_1traits_1_1Cast_3_01TSizeNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4" ],
+    [ "Cast< TVal, Vec< TDim, TVal > >", "structalpaka_1_1traits_1_1Cast_3_01TVal_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html", "structalpaka_1_1traits_1_1Cast_3_01TVal_00_01Vec_3_01TDim_00_01TVal_01_4_01_4" ],
+    [ "Concat", "structalpaka_1_1traits_1_1Concat.html", null ],
+    [ "Concat< Vec< TDimL, TVal >, Vec< TDimR, TVal > >", "structalpaka_1_1traits_1_1Concat_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4.html", "structalpaka_1_1traits_1_1Concat_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4" ],
     [ "DevType", "structalpaka_1_1traits_1_1DevType.html", null ],
     [ "DevType< acc::AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1traits_1_1DevType_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DevType_3_01acc_1_1AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4" ],
     [ "DevType< acc::AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1DevType_3_01acc_1_1AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4" ],
@@ -91,5 +96,11 @@ var namespacealpaka_1_1traits =
     [ "Reset", "structalpaka_1_1traits_1_1Reset.html", null ],
     [ "Reset< DevCpu >", "structalpaka_1_1traits_1_1Reset_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1Reset_3_01DevCpu_01_4" ],
     [ "Reset< DevOmp5 >", "structalpaka_1_1traits_1_1Reset_3_01DevOmp5_01_4.html", "structalpaka_1_1traits_1_1Reset_3_01DevOmp5_01_4" ],
-    [ "Reset< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1Reset_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1Reset_3_01DevUniformCudaHipRt_01_4" ]
+    [ "Reset< DevUniformCudaHipRt >", "structalpaka_1_1traits_1_1Reset_3_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1traits_1_1Reset_3_01DevUniformCudaHipRt_01_4" ],
+    [ "Reverse", "structalpaka_1_1traits_1_1Reverse.html", null ],
+    [ "Reverse< Vec< dim::DimInt< 1u >, TVal > >", "structalpaka_1_1traits_1_1Reverse_3_01Vec_3_01dim_1_1DimInt_3_011u_01_4_00_01TVal_01_4_01_4.html", "structalpaka_1_1traits_1_1Reverse_3_01Vec_3_01dim_1_1DimInt_3_011u_01_4_00_01TVal_01_4_01_4" ],
+    [ "Reverse< Vec< TDim, TVal > >", "structalpaka_1_1traits_1_1Reverse_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html", "structalpaka_1_1traits_1_1Reverse_3_01Vec_3_01TDim_00_01TVal_01_4_01_4" ],
+    [ "SubVecFromIndices", "structalpaka_1_1traits_1_1SubVecFromIndices.html", null ],
+    [ "SubVecFromIndices< Vec< TDim, TVal >, std::integer_sequence< std::size_t, TIndices... >, std::enable_if_t< !std::is_same< std::integer_sequence< std::size_t, TIndices... >, std::make_integer_sequence< std::size_t, TDim::value > >::value > >", "structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_632e4d1af35f7a1f7a3408fe04d80014.html", "structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_632e4d1af35f7a1f7a3408fe04d80014" ],
+    [ "SubVecFromIndices< Vec< TDim, TVal >, std::integer_sequence< std::size_t, TIndices... >, std::enable_if_t< std::is_same< std::integer_sequence< std::size_t, TIndices... >, std::make_integer_sequence< std::size_t, TDim::value > >::value > >", "structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_2ffbe340e8a55c27a635eb7467fff12f.html", "structalpaka_1_1traits_1_1SubVecFromIndices_3_01Vec_3_01TDim_00_01TVal_01_4_00_01std_1_1integer_2ffbe340e8a55c27a635eb7467fff12f" ]
 ];

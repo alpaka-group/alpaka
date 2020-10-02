@@ -69,7 +69,7 @@ var searchData=
   ['_7etimeomp',['~TimeOmp',['../classalpaka_1_1time_1_1TimeOmp.html#abc3b305633d6c4296f8860dd2ceceba5',1,'alpaka::time::TimeOmp']]],
   ['_7etimestdlib',['~TimeStdLib',['../classalpaka_1_1time_1_1TimeStdLib.html#ab25accaccf8e4c6ab16d41e0e110cb30',1,'alpaka::time::TimeStdLib']]],
   ['_7etimeuniformcudahipbuiltin',['~TimeUniformCudaHipBuiltIn',['../classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html#ae091bdac65da3933165ab638bc86f49d',1,'alpaka::time::TimeUniformCudaHipBuiltIn']]],
-  ['_7evec',['~Vec',['../classalpaka_1_1vec_1_1Vec.html#ab6bc2bb33b6c8081224009d51d6b89bf',1,'alpaka::vec::Vec']]],
+  ['_7evec',['~Vec',['../classalpaka_1_1Vec.html#a88e66f65fd471ecdc55b4116e19d84a8',1,'alpaka::Vec']]],
   ['_7eviewplainptr',['~ViewPlainPtr',['../classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a832e57e78d552d41bca4c3ff64b38223',1,'alpaka::mem::view::ViewPlainPtr']]],
   ['_7ewarpsinglethread',['~WarpSingleThread',['../classalpaka_1_1warp_1_1WarpSingleThread.html#a817c34d9cd62b7f1f705aebd20501461',1,'alpaka::warp::WarpSingleThread']]],
   ['_7ewarpuniformcudahipbuiltin',['~WarpUniformCudaHipBuiltIn',['../classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html#a9eda65cf7748d18be3a506f80d75a8d2',1,'alpaka::warp::WarpUniformCudaHipBuiltIn']]],

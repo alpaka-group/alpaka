@@ -8,6 +8,6 @@ var MapIdx_8hpp =
     [ "MapIdxPitchBytes< 1u, TidxDimIn, typename std::enable_if< TidxDimIn !=1u >::type >", "structalpaka_1_1idx_1_1detail_1_1MapIdxPitchBytes_3_011u_00_01TidxDimIn_00_01typename_01std_1_1eeb17368a57a8b6509b43403a0790a83e.html", "structalpaka_1_1idx_1_1detail_1_1MapIdxPitchBytes_3_011u_00_01TidxDimIn_00_01typename_01std_1_1eeb17368a57a8b6509b43403a0790a83e" ],
     [ "MapIdxPitchBytes< TidxDim, TidxDim >", "structalpaka_1_1idx_1_1detail_1_1MapIdxPitchBytes_3_01TidxDim_00_01TidxDim_01_4.html", "structalpaka_1_1idx_1_1detail_1_1MapIdxPitchBytes_3_01TidxDim_00_01TidxDim_01_4" ],
     [ "MapIdxPitchBytes< TidxDimOut, 1u, typename std::enable_if< TidxDimOut !=1u >::type >", "structalpaka_1_1idx_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01typename_01std_1_1ac6a2badfb69c55ca9b56ef94fa4eb68.html", "structalpaka_1_1idx_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01typename_01std_1_1ac6a2badfb69c55ca9b56ef94fa4eb68" ],
-    [ "mapIdx", "MapIdx_8hpp.html#ac131ec100c727e3e04383b7c530150ed", null ],
-    [ "mapIdxPitchBytes", "MapIdx_8hpp.html#a11cafb310de344f3690fea7bced5a3af", null ]
+    [ "mapIdx", "MapIdx_8hpp.html#a5eb3432b70c98f392d4ce2e987368cdd", null ],
+    [ "mapIdxPitchBytes", "MapIdx_8hpp.html#a3e0d633e21f2fb4d2ad9fc12d056ca17", null ]
 ];

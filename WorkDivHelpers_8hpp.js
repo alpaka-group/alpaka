@@ -11,5 +11,5 @@ var WorkDivHelpers_8hpp =
     [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#a7d08b79b7a5050c0208eebce3df40794", null ],
     [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#ad8a3f6a58910f715e46a8348da258e9f", null ],
     [ "nextDivisorLowerOrEqual", "WorkDivHelpers_8hpp.html#aa93e0159a259aafa2a66e17cb33cc125", null ],
-    [ "subDivideGridElems", "WorkDivHelpers_8hpp.html#ab52eee3cbb455f3799257d30917b7e3a", null ]
+    [ "subDivideGridElems", "WorkDivHelpers_8hpp.html#a4447c52adc4c5e97854b5e57e34b0264", null ]
 ];

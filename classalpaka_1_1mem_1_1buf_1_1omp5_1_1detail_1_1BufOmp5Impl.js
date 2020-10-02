@@ -7,7 +7,7 @@ var classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl =
     [ "operator=", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#ab5ac3b4c001d5fba1464e09aef44e125", null ],
     [ "operator=", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#a20b148e3504f0466c324e04733004d94", null ],
     [ "m_dev", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#ab791aa0348b28eb387c924c476ff14f5", null ],
-    [ "m_extentElements", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#abc2c8eb6de16b4bd6c6df0ccf5153e89", null ],
-    [ "m_pitchBytes", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#a8fa64c413c670903769f5b3c696185dd", null ],
+    [ "m_extentElements", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#aec05786a00ac784ea24d36df198883be", null ],
+    [ "m_pitchBytes", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#ab41c79a1d9c67c2ee209b59ee47f49b9", null ],
     [ "m_pMem", "classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#a545e4261e8ddf036a5cc4153878bc907", null ]
 ];

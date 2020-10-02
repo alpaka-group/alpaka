@@ -7,7 +7,7 @@ var classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl =
     [ "operator=", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a347fad9998e416e078b61e75fafcfbab", null ],
     [ "operator=", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#af187830655ee9de6c6d7768e00af8808", null ],
     [ "m_dev", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a2f1789975b1385cd4b021a6ebfa6ccc1", null ],
-    [ "m_extentElements", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a27a672d2dd3c975708851f1852953f9b", null ],
+    [ "m_extentElements", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a80238fdf3325b8e1c4ebfaaaf47e0b68", null ],
     [ "m_pitchBytes", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a9c17cf4a6ac38a03b21808f4f0d6287d", null ],
     [ "m_pMem", "classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a30e5c7180f5e60dceb8f251f602b895e", null ]
 ];

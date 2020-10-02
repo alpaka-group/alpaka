@@ -131,10 +131,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ab10c7cdb423dd50a56e20f973b328165"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TGridElemExtent , typename TThreadElemExtent , typename TDev &gt; </td></tr>
 <tr class="memitem:ab10c7cdb423dd50a56e20f973b328165"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#ab10c7cdb423dd50a56e20f973b328165">getValidWorkDiv</a> (TDev const &amp;dev, TGridElemExtent const &amp;gridElemExtent=TGridElemExtent(), TThreadElemExtent const &amp;threadElemExtents=TThreadElemExtent(), bool requireBlockThreadExtentToDivideGridThreadExtent=true, <a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TGridElemExtent &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TGridElemExtent &gt;&gt;</td></tr>
 <tr class="separator:ab10c7cdb423dd50a56e20f973b328165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8d11477730440166f130f5677797aa6"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:ab8d11477730440166f130f5677797aa6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#ab8d11477730440166f130f5677797aa6">getWorkDiv</a> (TWorkDiv const &amp;workDiv) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TWorkDiv &gt;&gt;</td></tr>
-<tr class="memdesc:ab8d11477730440166f130f5677797aa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the extent requested.  <a href="#ab8d11477730440166f130f5677797aa6">More...</a><br /></td></tr>
-<tr class="separator:ab8d11477730440166f130f5677797aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77825ef5ae43194b01cd8079728ce59b"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a77825ef5ae43194b01cd8079728ce59b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a77825ef5ae43194b01cd8079728ce59b">getWorkDiv</a> (TWorkDiv const &amp;workDiv) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TWorkDiv &gt;&gt;</td></tr>
+<tr class="memdesc:a77825ef5ae43194b01cd8079728ce59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the extent requested.  <a href="#a77825ef5ae43194b01cd8079728ce59b">More...</a><br /></td></tr>
+<tr class="separator:a77825ef5ae43194b01cd8079728ce59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba5c202eb52a626944b0d52323537289"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:aba5c202eb52a626944b0d52323537289"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#aba5c202eb52a626944b0d52323537289">isValidAccDevProps</a> (<a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps) -&gt; bool</td></tr>
 <tr class="separator:aba5c202eb52a626944b0d52323537289"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,10 +147,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a5125180f779736f24fdcfee693a5b071"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:a5125180f779736f24fdcfee693a5b071"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a5125180f779736f24fdcfee693a5b071">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">WorkDivMembers</a>&lt; TDim, TIdx &gt; const &amp;workDiv) -&gt; std::ostream &amp;</td></tr>
 <tr class="separator:a5125180f779736f24fdcfee693a5b071"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab52eee3cbb455f3799257d30917b7e3a"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:ab52eee3cbb455f3799257d30917b7e3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#ab52eee3cbb455f3799257d30917b7e3a">subDivideGridElems</a> (<a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;gridElemExtent, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; threadElemExtent, <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps, bool requireBlockThreadExtentToDivideGridThreadExtent=true, <a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt; TDim, TIdx &gt;</td></tr>
-<tr class="memdesc:ab52eee3cbb455f3799257d30917b7e3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extent into blocks restricted by the maxima allowed.  <a href="#ab52eee3cbb455f3799257d30917b7e3a">More...</a><br /></td></tr>
-<tr class="separator:ab52eee3cbb455f3799257d30917b7e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4447c52adc4c5e97854b5e57e34b0264"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a4447c52adc4c5e97854b5e57e34b0264"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a4447c52adc4c5e97854b5e57e34b0264">subDivideGridElems</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;gridElemExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; threadElemExtent, <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">acc::AccDevProps</a>&lt; TDim, TIdx &gt; const &amp;accDevProps, bool requireBlockThreadExtentToDivideGridThreadExtent=true, <a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010">GridBlockExtentSubDivRestrictions</a> gridBlockExtentSubDivRestrictions=<a class="el" href="namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870">GridBlockExtentSubDivRestrictions::Unrestricted</a>) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html">workdiv::WorkDivMembers</a>&lt; TDim, TIdx &gt;</td></tr>
+<tr class="memdesc:a4447c52adc4c5e97854b5e57e34b0264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extent into blocks restricted by the maxima allowed.  <a href="#a4447c52adc4c5e97854b5e57e34b0264">More...</a><br /></td></tr>
+<tr class="separator:a4447c52adc4c5e97854b5e57e34b0264"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The work division traits specifics. </p>
@@ -261,8 +261,8 @@ template&lt;typename TAcc , typename TGridElemExtent , typename TThreadElemExten
 
 </div>
 </div>
-<a id="ab8d11477730440166f130f5677797aa6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8d11477730440166f130f5677797aa6">&#9670;&nbsp;</a></span>getWorkDiv()</h2>
+<a id="a77825ef5ae43194b01cd8079728ce59b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77825ef5ae43194b01cd8079728ce59b">&#9670;&nbsp;</a></span>getWorkDiv()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,7 +274,7 @@ template&lt;typename TOrigin , typename TUnit , typename TWorkDiv &gt; </div>
           <td>(</td>
           <td class="paramtype">TWorkDiv const &amp;&#160;</td>
           <td class="paramname"><em>workDiv</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TWorkDiv&gt;&gt;
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TWorkDiv&gt;&gt;
         </td>
         </tr>
       </table>
@@ -452,8 +452,8 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 
 </div>
 </div>
-<a id="ab52eee3cbb455f3799257d30917b7e3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab52eee3cbb455f3799257d30917b7e3a">&#9670;&nbsp;</a></span>subDivideGridElems()</h2>
+<a id="a4447c52adc4c5e97854b5e57e34b0264"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4447c52adc4c5e97854b5e57e34b0264">&#9670;&nbsp;</a></span>subDivideGridElems()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -463,13 +463,13 @@ template&lt;typename TDim , typename TIdx &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::subDivideGridElems </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
           <td class="paramname"><em>gridElemExtent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; TDim, TIdx &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt;&#160;</td>
           <td class="paramname"><em>threadElemExtent</em>, </td>
         </tr>
         <tr>
@@ -526,7 +526,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv.html">workdiv</a></li>
-    <li class="footer">Generated on Fri Oct 2 2020 07:12:26 for alpaka by
+    <li class="footer">Generated on Fri Oct 2 2020 18:12:45 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

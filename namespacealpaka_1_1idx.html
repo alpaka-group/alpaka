@@ -121,34 +121,34 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a40eff4d23909f623ba37f50a2c750ac2"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TIdx , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:a40eff4d23909f623ba37f50a2c750ac2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a40eff4d23909f623ba37f50a2c750ac2">getIdx</a> (TIdx const &amp;idx, TWorkDiv const &amp;workDiv) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdx &gt;&gt;</td></tr>
-<tr class="memdesc:a40eff4d23909f623ba37f50a2c750ac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices requested.  <a href="#a40eff4d23909f623ba37f50a2c750ac2">More...</a><br /></td></tr>
-<tr class="separator:a40eff4d23909f623ba37f50a2c750ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abaf8a8502ae07cf4a2ac3738d3e09330"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TIdxWorkDiv &gt; </td></tr>
-<tr class="memitem:abaf8a8502ae07cf4a2ac3738d3e09330"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#abaf8a8502ae07cf4a2ac3738d3e09330">getIdx</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
-<tr class="memdesc:abaf8a8502ae07cf4a2ac3738d3e09330"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices requested.  <a href="#abaf8a8502ae07cf4a2ac3738d3e09330">More...</a><br /></td></tr>
-<tr class="separator:abaf8a8502ae07cf4a2ac3738d3e09330"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71a37a436cfd8b0fbd1411cb597001c0"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv , typename TGridThreadIdx , typename TThreadElemExtent &gt; </td></tr>
-<tr class="memitem:a71a37a436cfd8b0fbd1411cb597001c0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a71a37a436cfd8b0fbd1411cb597001c0">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv, TGridThreadIdx const &amp;gridThreadIdx, TThreadElemExtent const &amp;threadElemExtent) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
-<tr class="memdesc:a71a37a436cfd8b0fbd1411cb597001c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#a71a37a436cfd8b0fbd1411cb597001c0">More...</a><br /></td></tr>
-<tr class="separator:a71a37a436cfd8b0fbd1411cb597001c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae88ebdfc966ba8d4dd602036419e2d3f"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv , typename TGridThreadIdx &gt; </td></tr>
-<tr class="memitem:ae88ebdfc966ba8d4dd602036419e2d3f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#ae88ebdfc966ba8d4dd602036419e2d3f">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv, TGridThreadIdx const &amp;gridThreadIdx) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
-<tr class="memdesc:ae88ebdfc966ba8d4dd602036419e2d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#ae88ebdfc966ba8d4dd602036419e2d3f">More...</a><br /></td></tr>
-<tr class="separator:ae88ebdfc966ba8d4dd602036419e2d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada6b43fa9f251508d956a805631ac75c"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv &gt; </td></tr>
-<tr class="memitem:ada6b43fa9f251508d956a805631ac75c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#ada6b43fa9f251508d956a805631ac75c">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
-<tr class="memdesc:ada6b43fa9f251508d956a805631ac75c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#ada6b43fa9f251508d956a805631ac75c">More...</a><br /></td></tr>
-<tr class="separator:ada6b43fa9f251508d956a805631ac75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac131ec100c727e3e04383b7c530150ed"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; </td></tr>
-<tr class="memitem:ac131ec100c727e3e04383b7c530150ed"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#ac131ec100c727e3e04383b7c530150ed">mapIdx</a> (<a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;(TidxDimOut&lt; TidxDimIn) ? TidxDimIn :TidxDimOut &gt;, TElem &gt; const &amp;extent) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
-<tr class="memdesc:ac131ec100c727e3e04383b7c530150ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="#ac131ec100c727e3e04383b7c530150ed">More...</a><br /></td></tr>
-<tr class="separator:ac131ec100c727e3e04383b7c530150ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11cafb310de344f3690fea7bced5a3af"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; </td></tr>
-<tr class="memitem:a11cafb310de344f3690fea7bced5a3af"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a11cafb310de344f3690fea7bced5a3af">mapIdxPitchBytes</a> (<a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;(TidxDimOut&lt; TidxDimIn) ? TidxDimIn :TidxDimOut &gt;, TElem &gt; const &amp;pitch) -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
-<tr class="memdesc:a11cafb310de344f3690fea7bced5a3af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position based on pitch in a buffer without padding or a byte buffer.  <a href="#a11cafb310de344f3690fea7bced5a3af">More...</a><br /></td></tr>
-<tr class="separator:a11cafb310de344f3690fea7bced5a3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add7cb06c6c8e957074a6a275dbf53a30"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TIdx , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:add7cb06c6c8e957074a6a275dbf53a30"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#add7cb06c6c8e957074a6a275dbf53a30">getIdx</a> (TIdx const &amp;idx, TWorkDiv const &amp;workDiv) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdx &gt;&gt;</td></tr>
+<tr class="memdesc:add7cb06c6c8e957074a6a275dbf53a30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices requested.  <a href="#add7cb06c6c8e957074a6a275dbf53a30">More...</a><br /></td></tr>
+<tr class="separator:add7cb06c6c8e957074a6a275dbf53a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30bfdec69627d86e8f95e24f17795e54"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TIdxWorkDiv &gt; </td></tr>
+<tr class="memitem:a30bfdec69627d86e8f95e24f17795e54"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a30bfdec69627d86e8f95e24f17795e54">getIdx</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
+<tr class="memdesc:a30bfdec69627d86e8f95e24f17795e54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices requested.  <a href="#a30bfdec69627d86e8f95e24f17795e54">More...</a><br /></td></tr>
+<tr class="separator:a30bfdec69627d86e8f95e24f17795e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a362f3cfa0bc21d82f7a40dbe6c6f2818"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv , typename TGridThreadIdx , typename TThreadElemExtent &gt; </td></tr>
+<tr class="memitem:a362f3cfa0bc21d82f7a40dbe6c6f2818"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a362f3cfa0bc21d82f7a40dbe6c6f2818">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv, TGridThreadIdx const &amp;gridThreadIdx, TThreadElemExtent const &amp;threadElemExtent) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
+<tr class="memdesc:a362f3cfa0bc21d82f7a40dbe6c6f2818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#a362f3cfa0bc21d82f7a40dbe6c6f2818">More...</a><br /></td></tr>
+<tr class="separator:a362f3cfa0bc21d82f7a40dbe6c6f2818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab523d78b41ea9a0cb9dfe2fe8d631a23"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv , typename TGridThreadIdx &gt; </td></tr>
+<tr class="memitem:ab523d78b41ea9a0cb9dfe2fe8d631a23"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#ab523d78b41ea9a0cb9dfe2fe8d631a23">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv, TGridThreadIdx const &amp;gridThreadIdx) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
+<tr class="memdesc:ab523d78b41ea9a0cb9dfe2fe8d631a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#ab523d78b41ea9a0cb9dfe2fe8d631a23">More...</a><br /></td></tr>
+<tr class="separator:ab523d78b41ea9a0cb9dfe2fe8d631a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae02a788ddf84352002a7b899bbced7b8"><td class="memTemplParams" colspan="2">template&lt;typename TIdxWorkDiv &gt; </td></tr>
+<tr class="memitem:ae02a788ddf84352002a7b899bbced7b8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#ae02a788ddf84352002a7b899bbced7b8">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
+<tr class="memdesc:ae02a788ddf84352002a7b899bbced7b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#ae02a788ddf84352002a7b899bbced7b8">More...</a><br /></td></tr>
+<tr class="separator:ae02a788ddf84352002a7b899bbced7b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb3432b70c98f392d4ce2e987368cdd"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; </td></tr>
+<tr class="memitem:a5eb3432b70c98f392d4ce2e987368cdd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a5eb3432b70c98f392d4ce2e987368cdd">mapIdx</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;(TidxDimOut&lt; TidxDimIn) ? TidxDimIn :TidxDimOut &gt;, TElem &gt; const &amp;extent) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
+<tr class="memdesc:a5eb3432b70c98f392d4ce2e987368cdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="#a5eb3432b70c98f392d4ce2e987368cdd">More...</a><br /></td></tr>
+<tr class="separator:a5eb3432b70c98f392d4ce2e987368cdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e0d633e21f2fb4d2ad9fc12d056ca17"><td class="memTemplParams" colspan="2">template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; </td></tr>
+<tr class="memitem:a3e0d633e21f2fb4d2ad9fc12d056ca17"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a3e0d633e21f2fb4d2ad9fc12d056ca17">mapIdxPitchBytes</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;idx, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;(TidxDimOut&lt; TidxDimIn) ? TidxDimIn :TidxDimOut &gt;, TElem &gt; const &amp;pitch) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimOut &gt;, TElem &gt;</td></tr>
+<tr class="memdesc:a3e0d633e21f2fb4d2ad9fc12d056ca17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position based on pitch in a buffer without padding or a byte buffer.  <a href="#a3e0d633e21f2fb4d2ad9fc12d056ca17">More...</a><br /></td></tr>
+<tr class="separator:a3e0d633e21f2fb4d2ad9fc12d056ca17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The index specifics. </p>
@@ -172,8 +172,8 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a40eff4d23909f623ba37f50a2c750ac2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40eff4d23909f623ba37f50a2c750ac2">&#9670;&nbsp;</a></span>getIdx() <span class="overload">[1/2]</span></h2>
+<a id="add7cb06c6c8e957074a6a275dbf53a30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add7cb06c6c8e957074a6a275dbf53a30">&#9670;&nbsp;</a></span>getIdx() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,7 +195,7 @@ template&lt;typename TOrigin , typename TUnit , typename TIdx , typename TWorkDi
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdx&gt;&gt;
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdx&gt;&gt;
         </td>
         </tr>
       </table>
@@ -207,8 +207,8 @@ template&lt;typename TOrigin , typename TUnit , typename TIdx , typename TWorkDi
 
 </div>
 </div>
-<a id="abaf8a8502ae07cf4a2ac3738d3e09330"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abaf8a8502ae07cf4a2ac3738d3e09330">&#9670;&nbsp;</a></span>getIdx() <span class="overload">[2/2]</span></h2>
+<a id="a30bfdec69627d86e8f95e24f17795e54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30bfdec69627d86e8f95e24f17795e54">&#9670;&nbsp;</a></span>getIdx() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,7 +220,7 @@ template&lt;typename TOrigin , typename TUnit , typename TIdxWorkDiv &gt; </div>
           <td>(</td>
           <td class="paramtype">TIdxWorkDiv const &amp;&#160;</td>
           <td class="paramname"><em>idxWorkDiv</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
         </td>
         </tr>
       </table>
@@ -232,8 +232,8 @@ template&lt;typename TOrigin , typename TUnit , typename TIdxWorkDiv &gt; </div>
 
 </div>
 </div>
-<a id="a71a37a436cfd8b0fbd1411cb597001c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71a37a436cfd8b0fbd1411cb597001c0">&#9670;&nbsp;</a></span>getIdxThreadFirstElem() <span class="overload">[1/3]</span></h2>
+<a id="a362f3cfa0bc21d82f7a40dbe6c6f2818"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a362f3cfa0bc21d82f7a40dbe6c6f2818">&#9670;&nbsp;</a></span>getIdxThreadFirstElem() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,7 +261,7 @@ template&lt;typename TIdxWorkDiv , typename TGridThreadIdx , typename TThreadEle
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
         </td>
         </tr>
       </table>
@@ -273,8 +273,8 @@ template&lt;typename TIdxWorkDiv , typename TGridThreadIdx , typename TThreadEle
 
 </div>
 </div>
-<a id="ae88ebdfc966ba8d4dd602036419e2d3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae88ebdfc966ba8d4dd602036419e2d3f">&#9670;&nbsp;</a></span>getIdxThreadFirstElem() <span class="overload">[2/3]</span></h2>
+<a id="ab523d78b41ea9a0cb9dfe2fe8d631a23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab523d78b41ea9a0cb9dfe2fe8d631a23">&#9670;&nbsp;</a></span>getIdxThreadFirstElem() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -296,7 +296,7 @@ template&lt;typename TIdxWorkDiv , typename TGridThreadIdx &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
         </td>
         </tr>
       </table>
@@ -308,8 +308,8 @@ template&lt;typename TIdxWorkDiv , typename TGridThreadIdx &gt; </div>
 
 </div>
 </div>
-<a id="ada6b43fa9f251508d956a805631ac75c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada6b43fa9f251508d956a805631ac75c">&#9670;&nbsp;</a></span>getIdxThreadFirstElem() <span class="overload">[3/3]</span></h2>
+<a id="ae02a788ddf84352002a7b899bbced7b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae02a788ddf84352002a7b899bbced7b8">&#9670;&nbsp;</a></span>getIdxThreadFirstElem() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,7 +321,7 @@ template&lt;typename TIdxWorkDiv &gt; </div>
           <td>(</td>
           <td class="paramtype">TIdxWorkDiv const &amp;&#160;</td>
           <td class="paramname"><em>idxWorkDiv</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TIdxWorkDiv&gt;, <a class="el" href="namespacealpaka_1_1idx.html#a8e4e6c23fe1fb0e71b79fd43cc1b0348">idx::Idx</a>&lt;TIdxWorkDiv&gt;&gt;
         </td>
         </tr>
       </table>
@@ -333,8 +333,8 @@ template&lt;typename TIdxWorkDiv &gt; </div>
 
 </div>
 </div>
-<a id="ac131ec100c727e3e04383b7c530150ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac131ec100c727e3e04383b7c530150ed">&#9670;&nbsp;</a></span>mapIdx()</h2>
+<a id="a5eb3432b70c98f392d4ce2e987368cdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eb3432b70c98f392d4ce2e987368cdd">&#9670;&nbsp;</a></span>mapIdx()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -344,9 +344,9 @@ template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; <
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::idx::mapIdx </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;TidxDimOut&gt;, TElem&gt;
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;TidxDimOut&gt;, TElem&gt;
         </td>
         </tr>
       </table>
@@ -366,8 +366,8 @@ template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; <
 
 </div>
 </div>
-<a id="a11cafb310de344f3690fea7bced5a3af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11cafb310de344f3690fea7bced5a3af">&#9670;&nbsp;</a></span>mapIdxPitchBytes()</h2>
+<a id="a3e0d633e21f2fb4d2ad9fc12d056ca17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e0d633e21f2fb4d2ad9fc12d056ca17">&#9670;&nbsp;</a></span>mapIdxPitchBytes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -377,9 +377,9 @@ template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; <
         <tr>
           <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::idx::mapIdxPitchBytes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; TidxDimIn &gt;, TElem &gt; const &amp;&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1vec_1_1Vec.html">vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;TidxDimOut&gt;, TElem&gt;
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;TidxDimOut&gt;, TElem&gt;
         </td>
         </tr>
       </table>
@@ -405,7 +405,7 @@ template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; <
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1idx.html">idx</a></li>
-    <li class="footer">Generated on Fri Oct 2 2020 07:12:25 for alpaka by
+    <li class="footer">Generated on Fri Oct 2 2020 18:12:43 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

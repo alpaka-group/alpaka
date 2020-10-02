@@ -13,12 +13,12 @@ var namespacealpaka_1_1offset_1_1traits =
     [ "GetOffset< TIdxIntegralConst, mem::buf::BufUniformCudaHipRt< TElem, TDim, TIdx > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufUnifor3a06fee17e8111b78dbddb5db6593fac.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufUnifor3a06fee17e8111b78dbddb5db6593fac" ],
     [ "GetOffset< TIdxIntegralConst, mem::view::ViewPlainPtr< TDev, TElem, TDim, TIdx > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1view_1_1ViewPlai61898bd1d92f2ffbae747dbde473ef90.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1view_1_1ViewPlai61898bd1d92f2ffbae747dbde473ef90" ],
     [ "value)> >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1view_1_1ViewSubV011c919f3b6f7116055f5b8a052a19ba.html", null ],
-    [ "value)> >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01vec_1_1Vec_3_01TDim_00_e43e635cead6fd22b4cb8c3c3348363e.html", null ],
+    [ "value)> >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_27caf28f33cc2a5c21c22bffb05ae5f0.html", null ],
     [ "SetOffset", "structalpaka_1_1offset_1_1traits_1_1SetOffset.html", null ],
     [ "SetOffset< dim::DimInt< 0u >, TOffsets, TOffset, std::enable_if_t< std::is_integral< TOffsets >::value > >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_010u_01_4_00_01TOffsets_00_01T91bb9083fc44a32006b62ed41cdc1b25.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_010u_01_4_00_01TOffsets_00_01T91bb9083fc44a32006b62ed41cdc1b25" ],
     [ "value >=1)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_4414bf7e80aaf6dac34187b382e4cc503.html", null ],
     [ "value >=2)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_49727024b2fee9145d951d625fc413493.html", null ],
     [ "value >=3)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_4862a9cbf6cc0d1923baad371b4f72360.html", null ],
     [ "value >=4)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_01dim_1_1Dim_3_01TOffsets_01_446b82379640c1f8260eb9d10426bf42b.html", null ],
-    [ "value)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01TIdxIntegralConst_00_01vec_1_1Vec_3_01TDim_00_db8f61f6cdc566497c978bbde0781e76.html", null ]
+    [ "value)> >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01TIdxIntegralConst_00_01Vec_3_01TDim_00_01TVal_cae7b58dbb289f50a78e5f91a2ce4d92.html", null ]
 ];

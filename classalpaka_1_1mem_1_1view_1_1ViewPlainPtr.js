@@ -8,7 +8,7 @@ var classalpaka_1_1mem_1_1view_1_1ViewPlainPtr =
     [ "operator=", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#adaa82eff6aef533e9d76b944c3cea687", null ],
     [ "operator=", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a6e484ab90e7a939afc0d66048fcbf1f1", null ],
     [ "m_dev", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a16a331f1946b97e283c4258c82800342", null ],
-    [ "m_extentElements", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#ae533489c917b98db2276f472c0d410cd", null ],
-    [ "m_pitchBytes", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a50b0476ba52349e24f98fbfceee8b525", null ],
+    [ "m_extentElements", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a11faa87acf29aea17eaf0839958b0b75", null ],
+    [ "m_pitchBytes", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a02613fc88fd7b10d4f65deeba78e4292", null ],
     [ "m_pMem", "classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#ab9292db42c9b522b5916a5e8671010f2", null ]
 ];

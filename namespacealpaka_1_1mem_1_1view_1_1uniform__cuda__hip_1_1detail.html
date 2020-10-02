@@ -122,10 +122,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a6a5e53d5b071b1c14a7880a890193c4c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a6a5e53d5b071b1c14a7880a890193c4c">vec2D</a> = <a class="el" href="classalpaka_1_1vec_1_1Vec.html">alpaka::vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt; 2u &gt;, size_t &gt;</td></tr>
-<tr class="separator:a6a5e53d5b071b1c14a7880a890193c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adec5db91cdfa78463ad9b72e4af7c800"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#adec5db91cdfa78463ad9b72e4af7c800">vec3D</a> = <a class="el" href="classalpaka_1_1vec_1_1Vec.html">alpaka::vec::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt; 3u &gt;, size_t &gt;</td></tr>
-<tr class="separator:adec5db91cdfa78463ad9b72e4af7c800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c4027e2f6e3de062151bc9671516321"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a2c4027e2f6e3de062151bc9671516321">vec2D</a> = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt; 2u &gt;, size_t &gt;</td></tr>
+<tr class="separator:a2c4027e2f6e3de062151bc9671516321"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca371769e5bc88648b304c062bde5c05"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aca371769e5bc88648b304c062bde5c05">vec3D</a> = <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt; 3u &gt;, size_t &gt;</td></tr>
+<tr class="separator:aca371769e5bc88648b304c062bde5c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -135,21 +135,21 @@ Functions</h2></td></tr>
 <tr class="memdesc:a510ff69f3b44c1fb2509f80b421c0e16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not being able to enable peer access does not prevent such device to device memory copies. However, those copies may be slower because the memory is copied via the CPU.  <a href="#a510ff69f3b44c1fb2509f80b421c0e16">More...</a><br /></td></tr>
 <tr class="separator:a510ff69f3b44c1fb2509f80b421c0e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1a1043ec13b042397a78bd5d26fb65f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa1a1043ec13b042397a78bd5d26fb65f"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aa1a1043ec13b042397a78bd5d26fb65f">hipMemcpy3DEmulatedKernelD2D</a> (char *dstPtr, <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a6a5e53d5b071b1c14a7880a890193c4c">vec2D</a> const dstPitch, char const *srcPtr, <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a6a5e53d5b071b1c14a7880a890193c4c">vec2D</a> const srcPitch, <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#adec5db91cdfa78463ad9b72e4af7c800">vec3D</a> const extent)</td></tr>
+<tr class="memitem:aa1a1043ec13b042397a78bd5d26fb65f"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aa1a1043ec13b042397a78bd5d26fb65f">hipMemcpy3DEmulatedKernelD2D</a> (char *dstPtr, <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a2c4027e2f6e3de062151bc9671516321">vec2D</a> const dstPitch, char const *srcPtr, <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a2c4027e2f6e3de062151bc9671516321">vec2D</a> const srcPitch, <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aca371769e5bc88648b304c062bde5c05">vec3D</a> const extent)</td></tr>
 <tr class="memdesc:aa1a1043ec13b042397a78bd5d26fb65f"><td class="mdescLeft">&#160;</td><td class="mdescRight">! copy 3D memory  <a href="#aa1a1043ec13b042397a78bd5d26fb65f">More...</a><br /></td></tr>
 <tr class="separator:aa1a1043ec13b042397a78bd5d26fb65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9214f00d091b88d0e3ca1f7c6466bfb7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a9214f00d091b88d0e3ca1f7c6466bfb7">memcpy3DEmulatedD2DAsync</a> (<a class="el" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(Memcpy3DParms) const *const p, <a class="el" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(Stream_t) stream)</td></tr>
 <tr class="separator:a9214f00d091b88d0e3ca1f7c6466bfb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a6a5e53d5b071b1c14a7880a890193c4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a5e53d5b071b1c14a7880a890193c4c">&#9670;&nbsp;</a></span>vec2D</h2>
+<a id="a2c4027e2f6e3de062151bc9671516321"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c4027e2f6e3de062151bc9671516321">&#9670;&nbsp;</a></span>vec2D</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a6a5e53d5b071b1c14a7880a890193c4c">alpaka::mem::view::uniform_cuda_hip::detail::vec2D</a> = typedef <a class="el" href="classalpaka_1_1vec_1_1Vec.html">alpaka::vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt;2u&gt;, size_t&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a2c4027e2f6e3de062151bc9671516321">alpaka::mem::view::uniform_cuda_hip::detail::vec2D</a> = typedef <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt;2u&gt;, size_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -158,14 +158,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adec5db91cdfa78463ad9b72e4af7c800"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adec5db91cdfa78463ad9b72e4af7c800">&#9670;&nbsp;</a></span>vec3D</h2>
+<a id="aca371769e5bc88648b304c062bde5c05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca371769e5bc88648b304c062bde5c05">&#9670;&nbsp;</a></span>vec3D</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#adec5db91cdfa78463ad9b72e4af7c800">alpaka::mem::view::uniform_cuda_hip::detail::vec3D</a> = typedef <a class="el" href="classalpaka_1_1vec_1_1Vec.html">alpaka::vec::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt;3u&gt;, size_t&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aca371769e5bc88648b304c062bde5c05">alpaka::mem::view::uniform_cuda_hip::detail::vec3D</a> = typedef <a class="el" href="classalpaka_1_1Vec.html">alpaka::Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">alpaka::dim::DimInt</a>&lt;3u&gt;, size_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -271,7 +271,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a6a5e53d5b071b1c14a7880a890193c4c">vec2D</a> const&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a2c4027e2f6e3de062151bc9671516321">vec2D</a> const&#160;</td>
           <td class="paramname"><em>dstPitch</em>, </td>
         </tr>
         <tr>
@@ -283,13 +283,13 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a6a5e53d5b071b1c14a7880a890193c4c">vec2D</a> const&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#a2c4027e2f6e3de062151bc9671516321">vec2D</a> const&#160;</td>
           <td class="paramname"><em>srcPitch</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#adec5db91cdfa78463ad9b72e4af7c800">vec3D</a> const&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html#aca371769e5bc88648b304c062bde5c05">vec3D</a> const&#160;</td>
           <td class="paramname"><em>extent</em>&#160;</td>
         </tr>
         <tr>
@@ -351,7 +351,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view.html">view</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Fri Oct 2 2020 07:12:26 for alpaka by
+    <li class="footer">Generated on Fri Oct 2 2020 18:12:44 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

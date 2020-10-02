@@ -7,6 +7,7 @@ var namespacealpaka =
     [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cpu", "namespacealpaka_1_1cpu.html", "namespacealpaka_1_1cpu" ],
     [ "cuda", "namespacealpaka_1_1cuda.html", "namespacealpaka_1_1cuda" ],
+    [ "detail", "namespacealpaka_1_1detail.html", "namespacealpaka_1_1detail" ],
     [ "dim", "namespacealpaka_1_1dim.html", "namespacealpaka_1_1dim" ],
     [ "elem", "namespacealpaka_1_1elem.html", "namespacealpaka_1_1elem" ],
     [ "event", "namespacealpaka_1_1event.html", "namespacealpaka_1_1event" ],
@@ -25,7 +26,6 @@ var namespacealpaka =
     [ "time", "namespacealpaka_1_1time.html", "namespacealpaka_1_1time" ],
     [ "traits", "namespacealpaka_1_1traits.html", "namespacealpaka_1_1traits" ],
     [ "uniform_cuda_hip", "namespacealpaka_1_1uniform__cuda__hip.html", null ],
-    [ "vec", "namespacealpaka_1_1vec.html", "namespacealpaka_1_1vec" ],
     [ "wait", "namespacealpaka_1_1wait.html", "namespacealpaka_1_1wait" ],
     [ "warp", "namespacealpaka_1_1warp.html", "namespacealpaka_1_1warp" ],
     [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ],
@@ -35,5 +35,6 @@ var namespacealpaka =
     [ "DevUniformCudaHipRt", "classalpaka_1_1DevUniformCudaHipRt.html", "classalpaka_1_1DevUniformCudaHipRt" ],
     [ "PltfCpu", "classalpaka_1_1PltfCpu.html", "classalpaka_1_1PltfCpu" ],
     [ "PltfOmp5", "classalpaka_1_1PltfOmp5.html", "classalpaka_1_1PltfOmp5" ],
-    [ "PltfUniformCudaHipRt", "classalpaka_1_1PltfUniformCudaHipRt.html", "classalpaka_1_1PltfUniformCudaHipRt" ]
+    [ "PltfUniformCudaHipRt", "classalpaka_1_1PltfUniformCudaHipRt.html", "classalpaka_1_1PltfUniformCudaHipRt" ],
+    [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ]
 ];

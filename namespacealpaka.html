@@ -115,6 +115,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cuda.html">cuda</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1cuda"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1dim"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html">dim</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1dim"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,9 +176,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1unit"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1unit.html">unit</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1unit"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the units available for getting extent and indices of kernel executions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1vec"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1vec.html">vec</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1vec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vec specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1wait"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1wait.html">wait</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1wait"><td class="mdescLeft">&#160;</td><td class="mdescRight">The wait specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,6 +208,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1PltfUniformCudaHipRt.html">PltfUniformCudaHipRt</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA/HIP RT platform.  <a href="classalpaka_1_1PltfUniformCudaHipRt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1Vec.html">Vec</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A n-dimensional vector.  <a href="classalpaka_1_1Vec.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -225,6 +227,24 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ae75955daa12079832ffe5071ba6aa8ec"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TVec &gt; </td></tr>
+<tr class="memitem:ae75955daa12079832ffe5071ba6aa8ec"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae75955daa12079832ffe5071ba6aa8ec">cast</a> (TVec const &amp;vec)</td></tr>
+<tr class="separator:ae75955daa12079832ffe5071ba6aa8ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13411d732518c8f7a93b39f0495cf219"><td class="memTemplParams" colspan="2">template&lt;typename TVecL , typename TVecR &gt; </td></tr>
+<tr class="memitem:a13411d732518c8f7a93b39f0495cf219"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a13411d732518c8f7a93b39f0495cf219">concat</a> (TVecL const &amp;vecL, TVecR const &amp;vecR)</td></tr>
+<tr class="separator:a13411d732518c8f7a93b39f0495cf219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c3580b7a262d20a172b62cb8b6153c5"><td class="memTemplParams" colspan="2">template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename... TArgs&gt; </td></tr>
+<tr class="memitem:a8c3580b7a262d20a172b62cb8b6153c5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8c3580b7a262d20a172b62cb8b6153c5">createVecFromIndexedFn</a> (TArgs &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a8c3580b7a262d20a172b62cb8b6153c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [0, TDim].  <a href="#a8c3580b7a262d20a172b62cb8b6153c5">More...</a><br /></td></tr>
+<tr class="separator:a8c3580b7a262d20a172b62cb8b6153c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="memTemplParams" colspan="2">template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename... TArgs, typename TIdxSize , TIdxSize... TIndices&gt; </td></tr>
+<tr class="memitem:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab1ea0e2c9c7d20f30f7802e9b1f00225">createVecFromIndexedFnArbitrary</a> (std::integer_sequence&lt; TIdxSize, TIndices... &gt; const &amp;indices, TArgs &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single value constructor helper.  <a href="#ab1ea0e2c9c7d20f30f7802e9b1f00225">More...</a><br /></td></tr>
+<tr class="separator:ab1ea0e2c9c7d20f30f7802e9b1f00225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a730e9a7d0baa70426246af2bb311417a"><td class="memTemplParams" colspan="2">template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename TIdxOffset , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a730e9a7d0baa70426246af2bb311417a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a730e9a7d0baa70426246af2bb311417a">createVecFromIndexedFnOffset</a> (TArgs &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a730e9a7d0baa70426246af2bb311417a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [TIdxOffset, TIdxOffset + TDim].  <a href="#a730e9a7d0baa70426246af2bb311417a">More...</a><br /></td></tr>
+<tr class="separator:a730e9a7d0baa70426246af2bb311417a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4fe5980725182b3306caf3167053a75"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa4fe5980725182b3306caf3167053a75"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa4fe5980725182b3306caf3167053a75">getDev</a> (T const &amp;t)</td></tr>
 <tr class="separator:aa4fe5980725182b3306caf3167053a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,10 +275,48 @@ Functions</h2></td></tr>
 <tr class="memitem:a7832bfe5bb3073f33cbfa6d0e94a701a"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:a7832bfe5bb3073f33cbfa6d0e94a701a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#abecbcba04c4231d227406ebb0020330b">ALPAKA_FN_INLINE</a> constexpr <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7832bfe5bb3073f33cbfa6d0e94a701a">ignore_unused</a> ()</td></tr>
 <tr class="separator:a7832bfe5bb3073f33cbfa6d0e94a701a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3cd463ab74e56638a88cbd26947f9ca"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:ad3cd463ab74e56638a88cbd26947f9ca"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad3cd463ab74e56638a88cbd26947f9ca">operator*</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt;</td></tr>
+<tr class="separator:ad3cd463ab74e56638a88cbd26947f9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a519c0bbc9b76e57cabbf56c4536d3496"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:a519c0bbc9b76e57cabbf56c4536d3496"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a519c0bbc9b76e57cabbf56c4536d3496">operator+</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt;</td></tr>
+<tr class="separator:a519c0bbc9b76e57cabbf56c4536d3496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9494ce52d74ea89e27a4e36cd4bae1d"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:ac9494ce52d74ea89e27a4e36cd4bae1d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac9494ce52d74ea89e27a4e36cd4bae1d">operator-</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt;</td></tr>
+<tr class="separator:ac9494ce52d74ea89e27a4e36cd4bae1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a041fc9736d774674b3c1c88ac0223154"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:a041fc9736d774674b3c1c88ac0223154"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a041fc9736d774674b3c1c88ac0223154">operator&lt;</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, bool &gt;</td></tr>
+<tr class="separator:a041fc9736d774674b3c1c88ac0223154"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2715ecae174d1ee0aa6f8cd3119890c"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:ae2715ecae174d1ee0aa6f8cd3119890c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae2715ecae174d1ee0aa6f8cd3119890c">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;v) -&gt; std::ostream &amp;</td></tr>
+<tr class="memdesc:ae2715ecae174d1ee0aa6f8cd3119890c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream out operator.  <a href="#ae2715ecae174d1ee0aa6f8cd3119890c">More...</a><br /></td></tr>
+<tr class="separator:ae2715ecae174d1ee0aa6f8cd3119890c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6478089a0e990dafe16e41ac020006db"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:a6478089a0e990dafe16e41ac020006db"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6478089a0e990dafe16e41ac020006db">operator&lt;=</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, bool &gt;</td></tr>
+<tr class="separator:a6478089a0e990dafe16e41ac020006db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa757a761ea2d12be2faf686128b23c80"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:aa757a761ea2d12be2faf686128b23c80"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aa757a761ea2d12be2faf686128b23c80">operator&gt;</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, bool &gt;</td></tr>
+<tr class="separator:aa757a761ea2d12be2faf686128b23c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab78d2caecca495409c72d739be847926"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
+<tr class="memitem:ab78d2caecca495409c72d739be847926"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab78d2caecca495409c72d739be847926">operator&gt;=</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, bool &gt;</td></tr>
+<tr class="separator:ab78d2caecca495409c72d739be847926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943">reset</a> (TDev const &amp;dev) -&gt; void</td></tr>
 <tr class="memdesc:a41ac82cec34e8e887aaa4d8e4e064943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the device. What this method does is dependent on the accelerator.  <a href="#a41ac82cec34e8e887aaa4d8e4e064943">More...</a><br /></td></tr>
 <tr class="separator:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a900c94138ff56cd315379675c592171d"><td class="memTemplParams" colspan="2">template&lt;typename TVec &gt; </td></tr>
+<tr class="memitem:a900c94138ff56cd315379675c592171d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a900c94138ff56cd315379675c592171d">reverse</a> (TVec const &amp;vec)</td></tr>
+<tr class="separator:a900c94138ff56cd315379675c592171d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fb281be5e276c272c312ac4466d9274"><td class="memTemplParams" colspan="2">template&lt;typename TSubDim , typename TVec &gt; </td></tr>
+<tr class="memitem:a1fb281be5e276c272c312ac4466d9274"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1fb281be5e276c272c312ac4466d9274">subVecBegin</a> (TVec const &amp;vec)</td></tr>
+<tr class="separator:a1fb281be5e276c272c312ac4466d9274"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9150bbecec9af2a3fb957a89498d985"><td class="memTemplParams" colspan="2">template&lt;typename TSubDim , typename TVec &gt; </td></tr>
+<tr class="memitem:ae9150bbecec9af2a3fb957a89498d985"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ae9150bbecec9af2a3fb957a89498d985">subVecEnd</a> (TVec const &amp;vec)</td></tr>
+<tr class="separator:ae9150bbecec9af2a3fb957a89498d985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9691cd72d5c39a51b8422078edeeacaf"><td class="memTemplParams" colspan="2">template&lt;typename TIndexSequence , typename TVec &gt; </td></tr>
+<tr class="memitem:a9691cd72d5c39a51b8422078edeeacaf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9691cd72d5c39a51b8422078edeeacaf">subVecFromIndices</a> (TVec const &amp;vec)</td></tr>
+<tr class="memdesc:a9691cd72d5c39a51b8422078edeeacaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a new vector by selecting the elements of the source vector in the given order. Repeating and swizzling elements is allowed.  <a href="#a9691cd72d5c39a51b8422078edeeacaf">More...</a><br /></td></tr>
+<tr class="separator:a9691cd72d5c39a51b8422078edeeacaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Suggests vectorization of the directly following loop to the compiler. </p>
@@ -323,6 +381,144 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ae75955daa12079832ffe5071ba6aa8ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae75955daa12079832ffe5071ba6aa8ec">&#9670;&nbsp;</a></span>cast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TVal , typename TVec &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::cast </td>
+          <td>(</td>
+          <td class="paramtype">TVec const &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The casted vector. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00135">135</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a13411d732518c8f7a93b39f0495cf219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13411d732518c8f7a93b39f0495cf219">&#9670;&nbsp;</a></span>concat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TVecL , typename TVecR &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::concat </td>
+          <td>(</td>
+          <td class="paramtype">TVecL const &amp;&#160;</td>
+          <td class="paramname"><em>vecL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TVecR const &amp;&#160;</td>
+          <td class="paramname"><em>vecR</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The concatenated vector. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00167">167</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a8c3580b7a262d20a172b62cb8b6153c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c3580b7a262d20a172b62cb8b6153c5">&#9670;&nbsp;</a></span>createVecFromIndexedFn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::createVecFromIndexedFn </td>
+          <td>(</td>
+          <td class="paramtype">TArgs &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [0, TDim]. </p>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00067">67</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab1ea0e2c9c7d20f30f7802e9b1f00225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1ea0e2c9c7d20f30f7802e9b1f00225">&#9670;&nbsp;</a></span>createVecFromIndexedFnArbitrary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename... TArgs, typename TIdxSize , TIdxSize... TIndices&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::createVecFromIndexedFnArbitrary </td>
+          <td>(</td>
+          <td class="paramtype">std::integer_sequence&lt; TIdxSize, TIndices... &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Single value constructor helper. </p>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00050">50</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a730e9a7d0baa70426246af2bb311417a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a730e9a7d0baa70426246af2bb311417a">&#9670;&nbsp;</a></span>createVecFromIndexedFnOffset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typename TIdxOffset , typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::createVecFromIndexedFnOffset </td>
+          <td>(</td>
+          <td class="paramtype">TArgs &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [TIdxOffset, TIdxOffset + TDim]. </p>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00087">87</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
 <a id="aa4fe5980725182b3306caf3167053a75"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4fe5980725182b3306caf3167053a75">&#9670;&nbsp;</a></span>getDev()</h2>
 
@@ -554,6 +750,279 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
+<a id="ad3cd463ab74e56638a88cbd26947f9ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cd463ab74e56638a88cbd26947f9ca">&#9670;&nbsp;</a></span>operator*()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::operator* </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TVal&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise product of two vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00466">466</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a519c0bbc9b76e57cabbf56c4536d3496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a519c0bbc9b76e57cabbf56c4536d3496">&#9670;&nbsp;</a></span>operator+()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::operator+ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TVal&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise sum of two vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00414">414</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ac9494ce52d74ea89e27a4e36cd4bae1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9494ce52d74ea89e27a4e36cd4bae1d">&#9670;&nbsp;</a></span>operator-()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::operator- </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TVal&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise difference of two vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00440">440</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a041fc9736d774674b3c1c88ac0223154"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a041fc9736d774674b3c1c88ac0223154">&#9670;&nbsp;</a></span>operator<()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, bool&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise less than relation of two vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00492">492</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ae2715ecae174d1ee0aa6f8cd3119890c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2715ecae174d1ee0aa6f8cd3119890c">&#9670;&nbsp;</a></span>operator<<()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::ostream &amp;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stream out operator. </p>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00588">588</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a6478089a0e990dafe16e41ac020006db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6478089a0e990dafe16e41ac020006db">&#9670;&nbsp;</a></span>operator<=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, bool&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise less than or equal relation of two vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00518">518</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa757a761ea2d12be2faf686128b23c80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa757a761ea2d12be2faf686128b23c80">&#9670;&nbsp;</a></span>operator>()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, bool&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise greater than relation of two vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00570">570</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab78d2caecca495409c72d739be847926"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab78d2caecca495409c72d739be847926">&#9670;&nbsp;</a></span>operator>=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TVal &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::operator&gt;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, bool&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The element-wise greater than or equal relation of two vectors. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00544">544</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a41ac82cec34e8e887aaa4d8e4e064943"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41ac82cec34e8e887aaa4d8e4e064943">&#9670;&nbsp;</a></span>reset()</h2>
 
@@ -579,13 +1048,121 @@ template&lt;typename TDev &gt; </div>
 
 </div>
 </div>
+<a id="a900c94138ff56cd315379675c592171d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a900c94138ff56cd315379675c592171d">&#9670;&nbsp;</a></span>reverse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TVec &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::reverse </td>
+          <td>(</td>
+          <td class="paramtype">TVec const &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The reverse vector. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00151">151</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a1fb281be5e276c272c312ac4466d9274"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fb281be5e276c272c312ac4466d9274">&#9670;&nbsp;</a></span>subVecBegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TSubDim , typename TVec &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::subVecBegin </td>
+          <td>(</td>
+          <td class="paramtype">TVec const &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TVec</td><td>has to specialize SubVecFromIndices. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The sub-vector consisting of the first N elements of the source vector. </dd></dl>
+<p>A sequence of integers from 0 to dim-1. </p>
+
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00084">84</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ae9150bbecec9af2a3fb957a89498d985"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9150bbecec9af2a3fb957a89498d985">&#9670;&nbsp;</a></span>subVecEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TSubDim , typename TVec &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::subVecEnd </td>
+          <td>(</td>
+          <td class="paramtype">TVec const &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TVec</td><td>has to specialize SubVecFromIndices. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The sub-vector consisting of the last N elements of the source vector. </dd></dl>
+<p>A sequence of integers from 0 to dim-1. </p>
+
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00108">108</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a9691cd72d5c39a51b8422078edeeacaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9691cd72d5c39a51b8422078edeeacaf">&#9670;&nbsp;</a></span>subVecFromIndices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIndexSequence , typename TVec &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::subVecFromIndices </td>
+          <td>(</td>
+          <td class="paramtype">TVec const &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Builds a new vector by selecting the elements of the source vector in the given order. Repeating and swizzling elements is allowed. </p>
+<dl class="section return"><dt>Returns</dt><dd>The sub-vector consisting of the elements specified by the indices. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00067">67</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Oct 2 2020 07:12:24 for alpaka by
+    <li class="footer">Generated on Fri Oct 2 2020 18:12:43 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

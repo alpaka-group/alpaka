@@ -1,4 +1,0 @@
-var structalpaka_1_1vec_1_1traits_1_1Concat_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4 =
-[
-    [ "concat", "structalpaka_1_1vec_1_1traits_1_1Concat_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4.html#ac3d65c1e648b059b0ccebda7a31f8fa7", null ]
-];

@@ -1,9 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"vec_2Traits_8hpp.html#a6f0489a5bc3aaf355099a2c1cdc0d084":[4,0,0,0,22,0,5],
-"vec_2Traits_8hpp.html#ab54c29eb06733eb7c62b3507d25db358":[4,0,0,0,22,0,6],
-"vec_2Traits_8hpp.html#ac25c13a054b10186cc505ed0b0d4c1c4":[4,0,0,0,22,0,4],
-"vec_2Traits_8hpp.html#afd2e94bcc86152faaf65214f8d8224cc":[4,0,0,0,22,0,7],
 "vec_2Traits_8hpp_source.html":[4,0,0,0,22,0],
 "version_8hpp.html":[4,0,0,0,27],
 "version_8hpp.html#a35cc4276fce8540b45fa1f5db49fd86b":[4,0,0,0,27,3],
@@ -23,6 +19,6 @@ var NAVTREEINDEX15 =
 "warp_2Traits_8hpp.html#aa9fddbe593ae1d26989838411072a2ad":[4,0,0,0,24,0,10],
 "warp_2Traits_8hpp_source.html":[4,0,0,0,24,0],
 "workdiv_2Traits_8hpp.html":[4,0,0,0,25,0],
-"workdiv_2Traits_8hpp.html#ab8d11477730440166f130f5677797aa6":[4,0,0,0,25,0,5],
+"workdiv_2Traits_8hpp.html#a77825ef5ae43194b01cd8079728ce59b":[4,0,0,0,25,0,5],
 "workdiv_2Traits_8hpp_source.html":[4,0,0,0,25,0]
 };

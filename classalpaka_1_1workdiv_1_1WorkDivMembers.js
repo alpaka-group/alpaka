@@ -9,7 +9,7 @@ var classalpaka_1_1workdiv_1_1WorkDivMembers =
     [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a2a052b99c4b2c485daeabdd7dee081d2", null ],
     [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a5a6852914f2abff3d24902765ce1e3e6", null ],
     [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ab9f2a6541177b62f03ead63fd7b2314e", null ],
-    [ "m_blockThreadExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ab1b3bd789d3a1f70eab155e7927ffa03", null ],
-    [ "m_gridBlockExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a4cbfc969cf394601fe59f4bd08ab8b1a", null ],
-    [ "m_threadElemExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a93ef236f9184524da7c7e2451b1edadc", null ]
+    [ "m_blockThreadExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ace6022c1dc7cfb7e24358d816d7f7f16", null ],
+    [ "m_gridBlockExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a8dad8a60046c99f587cd56ff021d8b8a", null ],
+    [ "m_threadElemExtent", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ae88c37e4a0c87aa33f8766392446eac4", null ]
 ];

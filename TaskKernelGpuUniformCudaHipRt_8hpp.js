@@ -8,7 +8,7 @@ var TaskKernelGpuUniformCudaHipRt_8hpp =
     [ "Enqueue< queue::QueueUniformCudaHipRtNonBlocking, kernel::TaskKernelGpuUniformCudaHipRt< TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01ke643e259c0a7757401d67b3e6cbec2031.html", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01ke643e259c0a7757401d67b3e6cbec2031" ],
     [ "DevType< kernel::TaskKernelGpuUniformCudaHipRt< TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1DevType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim64382bad8888c55ed0c4f02b4ce0a90f.html", "structalpaka_1_1traits_1_1DevType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim64382bad8888c55ed0c4f02b4ce0a90f" ],
     [ "PltfType< kernel::TaskKernelGpuUniformCudaHipRt< TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDi82d64ffa93836efd4ab131c824f37a87.html", "structalpaka_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDi82d64ffa93836efd4ab131c824f37a87" ],
-    [ "checkVecOnly3Dim", "TaskKernelGpuUniformCudaHipRt_8hpp.html#ad59ea870313619807dbbd6aca34f51ef", null ],
-    [ "convertVecToUniformCudaHipDim", "TaskKernelGpuUniformCudaHipRt_8hpp.html#a858a96dc4b1e85dcb24964531062c5c6", null ],
-    [ "uniformCudaHipKernel", "TaskKernelGpuUniformCudaHipRt_8hpp.html#a1e0899aa59e13f0eac42adc7b3975645", null ]
+    [ "checkVecOnly3Dim", "TaskKernelGpuUniformCudaHipRt_8hpp.html#a249e4a893a837b649dbbd392ab13446b", null ],
+    [ "convertVecToUniformCudaHipDim", "TaskKernelGpuUniformCudaHipRt_8hpp.html#aa1eb1eb379c518d58a8d2d885729f727", null ],
+    [ "uniformCudaHipKernel", "TaskKernelGpuUniformCudaHipRt_8hpp.html#ad6e7721bab7e220a10b523fa4f4f23db", null ]
 ];
