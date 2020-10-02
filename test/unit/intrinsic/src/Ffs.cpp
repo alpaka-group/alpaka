@@ -39,7 +39,7 @@ public:
         for( auto const input : inputs )
         {
             std::int32_t const expected = ffsNaive(input);
-            std::int32_t const actual = alpaka::intrinsic::ffs(acc, input);
+            std::int32_t const actual = alpaka::ffs(acc, input);
             ALPAKA_CHECK(*success, actual == expected);
         }
     }

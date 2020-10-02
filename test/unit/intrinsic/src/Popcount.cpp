@@ -37,7 +37,7 @@ public:
         for( auto const input : inputs )
         {
             int const expected = popcountNaive(input);
-            int const actual = alpaka::intrinsic::popcount(acc, input);
+            int const actual = alpaka::popcount(acc, input);
             ALPAKA_CHECK(*success, actual == expected);
         }
     }

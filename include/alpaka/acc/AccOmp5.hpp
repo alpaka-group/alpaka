@@ -76,7 +76,7 @@ namespace alpaka
         public block::st::BlockSharedMemStOmp5,
         public block::BlockSyncBarrierOmp,
         // cannot determine which intrinsics are safe to use (depends on target), using fallback
-        public intrinsic::IntrinsicFallback,
+        public IntrinsicFallback,
         public rand::RandStdLib,
         public time::TimeOmp,
         public warp::WarpSingleThread,

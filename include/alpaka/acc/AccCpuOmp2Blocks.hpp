@@ -78,7 +78,7 @@ namespace alpaka
         public block::dyn::BlockSharedMemDynMember<>,
         public block::st::BlockSharedMemStMember<>,
         public block::BlockSyncNoOp,
-        public intrinsic::IntrinsicCpu,
+        public IntrinsicCpu,
         public rand::RandStdLib,
         public time::TimeOmp,
         public warp::WarpSingleThread,

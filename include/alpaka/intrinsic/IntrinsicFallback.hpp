@@ -13,113 +13,110 @@
 
 namespace alpaka
 {
-    namespace intrinsic
+    namespace detail
     {
-        namespace detail
+        //#############################################################################
+        //! Fallback implementaion of popcount.
+        template<
+            typename TValue>
+        static auto popcountFallback(TValue value)
+        -> std::int32_t
         {
-            //#############################################################################
-            //! Fallback implementaion of popcount.
-            template<
-                typename TValue>
-            static auto popcountFallback(TValue value)
-            -> std::int32_t
+            TValue count = 0;
+            while(value != 0)
             {
-                TValue count = 0;
-                while(value != 0)
-                {
-                    count += value & 1u;
-                    value >>= 1u;
-                }
-                return static_cast<std::int32_t>(count);
+                count += value & 1u;
+                value >>= 1u;
             }
-
-            //#############################################################################
-            //! Fallback implementaion of ffs.
-            template<
-                typename TValue>
-            static auto ffsFallback(TValue value)
-            -> std::int32_t
-            {
-                if (value == 0)
-                    return 0;
-                std::int32_t result = 1;
-                while ((value & 1) == 0)
-                {
-                    value >>= 1;
-                    result++;
-                }
-                return result;
-            }
+            return static_cast<std::int32_t>(count);
         }
 
         //#############################################################################
-        //! The Fallback intrinsic.
-        class IntrinsicFallback : public concepts::Implements<ConceptIntrinsic, IntrinsicFallback>
+        //! Fallback implementaion of ffs.
+        template<
+            typename TValue>
+        static auto ffsFallback(TValue value)
+        -> std::int32_t
         {
-        public:
+            if (value == 0)
+                return 0;
+            std::int32_t result = 1;
+            while ((value & 1) == 0)
+            {
+                value >>= 1;
+                result++;
+            }
+            return result;
+        }
+    }
+
+    //#############################################################################
+    //! The Fallback intrinsic.
+    class IntrinsicFallback : public concepts::Implements<ConceptIntrinsic, IntrinsicFallback>
+    {
+    public:
+        //-----------------------------------------------------------------------------
+        IntrinsicFallback() = default;
+        //-----------------------------------------------------------------------------
+        IntrinsicFallback(IntrinsicFallback const &) = delete;
+        //-----------------------------------------------------------------------------
+        IntrinsicFallback(IntrinsicFallback &&) = delete;
+        //-----------------------------------------------------------------------------
+        auto operator=(IntrinsicFallback const &) -> IntrinsicFallback & = delete;
+        //-----------------------------------------------------------------------------
+        auto operator=(IntrinsicFallback &&) -> IntrinsicFallback & = delete;
+        //-----------------------------------------------------------------------------
+        ~IntrinsicFallback() = default;
+    };
+
+    namespace traits
+    {
+        //#############################################################################
+        template<>
+        struct Popcount<
+            IntrinsicFallback>
+        {
             //-----------------------------------------------------------------------------
-            IntrinsicFallback() = default;
+            static auto popcount(
+                IntrinsicFallback const & /*intrinsic*/,
+                std::uint32_t value)
+            -> std::int32_t
+            {
+                return detail::popcountFallback(value);
+            }
+
             //-----------------------------------------------------------------------------
-            IntrinsicFallback(IntrinsicFallback const &) = delete;
-            //-----------------------------------------------------------------------------
-            IntrinsicFallback(IntrinsicFallback &&) = delete;
-            //-----------------------------------------------------------------------------
-            auto operator=(IntrinsicFallback const &) -> IntrinsicFallback & = delete;
-            //-----------------------------------------------------------------------------
-            auto operator=(IntrinsicFallback &&) -> IntrinsicFallback & = delete;
-            //-----------------------------------------------------------------------------
-            ~IntrinsicFallback() = default;
+            static auto popcount(
+                IntrinsicFallback const & /*intrinsic*/,
+                std::uint64_t value)
+            -> std::int32_t
+            {
+                return detail::popcountFallback(value);
+            }
         };
 
-        namespace traits
+        //#############################################################################
+        template<>
+        struct Ffs<
+            IntrinsicFallback>
         {
-            //#############################################################################
-            template<>
-            struct Popcount<
-                IntrinsicFallback>
+            //-----------------------------------------------------------------------------
+            static auto ffs(
+                IntrinsicFallback const & /*intrinsic*/,
+                std::int32_t value)
+            -> std::int32_t
             {
-                //-----------------------------------------------------------------------------
-                static auto popcount(
-                    intrinsic::IntrinsicFallback const & /*intrinsic*/,
-                    std::uint32_t value)
-                -> std::int32_t
-                {
-                    return intrinsic::detail::popcountFallback(value);
-                }
+                return detail::ffsFallback(value);
+            }
 
-                //-----------------------------------------------------------------------------
-                static auto popcount(
-                    intrinsic::IntrinsicFallback const & /*intrinsic*/,
-                    std::uint64_t value)
-                -> std::int32_t
-                {
-                    return intrinsic::detail::popcountFallback(value);
-                }
-            };
-
-            //#############################################################################
-            template<>
-            struct Ffs<
-                IntrinsicFallback>
+            //-----------------------------------------------------------------------------
+            static auto ffs(
+                IntrinsicFallback const & /*intrinsic*/,
+                std::int64_t value)
+            -> std::int32_t
             {
-                //-----------------------------------------------------------------------------
-                static auto ffs(
-                    intrinsic::IntrinsicFallback const & /*intrinsic*/,
-                    std::int32_t value)
-                -> std::int32_t
-                {
-                    return intrinsic::detail::ffsFallback(value);
-                }
-
-                //-----------------------------------------------------------------------------
-                static auto ffs(
-                    intrinsic::IntrinsicFallback const & /*intrinsic*/,
-                    std::int64_t value)
-                -> std::int32_t
-                {
-                    return intrinsic::detail::ffsFallback(value);
-                }
-            };
-        }
+                return detail::ffsFallback(value);
+            }
+        };
     }
 }
