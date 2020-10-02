@@ -197,22 +197,19 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufOmp5 memory element type get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct ElemType<
+            buf::BufOmp5<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufOmp5 memory element type get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct ElemType<
-                buf::BufOmp5<TElem, TDim, TIdx>>
-            {
-                using type = TElem;
-            };
-        }
+            using type = TElem;
+        };
     }
     namespace extent
     {

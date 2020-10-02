@@ -138,7 +138,7 @@ namespace alpaka
                             return;
                         }
 
-                        auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
+                        auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(Elem<TView>)));
 #if !defined(NDEBUG)
                         auto const dstWidth(extent::getWidth(view));
 #endif
@@ -205,7 +205,7 @@ namespace alpaka
                             return;
                         }
 
-                        auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(elem::Elem<TView>)));
+                        auto const extentWidthBytes(extentWidth * static_cast<Idx>(sizeof(Elem<TView>)));
 
 #if !defined(NDEBUG)
                         auto const dstWidth(extent::getWidth(view));
@@ -265,7 +265,7 @@ namespace alpaka
                             Dim<TView>::value == Dim<TExtent>::value,
                             "The destination buffer and the extent are required to have the same dimensionality!");
 
-                        using Elem = alpaka::elem::Elem<TView>;
+                        using Elem = alpaka::Elem<TView>;
                         using Idx = Idx<TExtent>;
 
                         auto & view(this->m_view);

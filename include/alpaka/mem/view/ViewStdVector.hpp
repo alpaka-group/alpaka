@@ -63,21 +63,18 @@ namespace alpaka
             using type = DimInt<1u>;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::vector memory element type get trait specialization.
+        template<
+            typename TElem,
+            typename TAllocator>
+        struct ElemType<
+            std::vector<TElem, TAllocator>>
         {
-            //#############################################################################
-            //! The std::vector memory element type get trait specialization.
-            template<
-                typename TElem,
-                typename TAllocator>
-            struct ElemType<
-                std::vector<TElem, TAllocator>>
-            {
-                using type = TElem;
-            };
-        }
+            using type = TElem;
+        };
     }
     namespace extent
     {

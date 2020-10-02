@@ -114,7 +114,7 @@ namespace alpaka
                     {
                         return
                             extent::getExtent<Dim<TView>::value - 1u>(view)
-                            * sizeof(elem::Elem<TView>);
+                            * sizeof(Elem<TView>);
                     }
                 };
                 //#############################################################################
@@ -130,7 +130,7 @@ namespace alpaka
                     -> Idx<TView>
                     {
                         return
-                            sizeof(elem::Elem<TView>);
+                            sizeof(Elem<TView>);
                     }
                 };
             }
@@ -173,7 +173,7 @@ namespace alpaka
             typename TView>
         ALPAKA_FN_HOST auto getPtrNative(
             TView const & view)
-        -> elem::Elem<TView> const *
+        -> Elem<TView> const *
         {
             return
                 traits::GetPtrNative<
@@ -190,7 +190,7 @@ namespace alpaka
             typename TView>
         ALPAKA_FN_HOST auto getPtrNative(
             TView & view)
-        -> elem::Elem<TView> *
+        -> Elem<TView> *
         {
             return
                 traits::GetPtrNative<
@@ -211,7 +211,7 @@ namespace alpaka
         ALPAKA_FN_HOST auto getPtrDev(
             TView const & view,
             TDev const & dev)
-        -> elem::Elem<TView> const *
+        -> Elem<TView> const *
         {
             return
                 traits::GetPtrDev<
@@ -233,7 +233,7 @@ namespace alpaka
         ALPAKA_FN_HOST auto getPtrDev(
             TView & view,
             TDev const & dev)
-        -> elem::Elem<TView> *
+        -> Elem<TView> *
         {
             return
                 traits::GetPtrDev<
@@ -339,7 +339,7 @@ namespace alpaka
                 Dim<TViewDst>::value == Dim<TExtent>::value,
                 "The destination view and the extent are required to have the same dimensionality!");
             static_assert(
-                std::is_same<elem::Elem<TViewDst>, std::remove_const_t<elem::Elem<TViewSrc>>>::value,
+                std::is_same<Elem<TViewDst>, std::remove_const_t<Elem<TViewSrc>>>::value,
                 "The source and the destination view are required to have the same element type!");
 
             return
@@ -390,7 +390,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST static auto print(
                     TView const & view,
-                    elem::Elem<TView> const * const ptr,
+                    Elem<TView> const * const ptr,
                     Vec<Dim<TView>, Idx<TView>> const & extent,
                     std::ostream & os,
                     std::string const & elementSeparator,
@@ -410,7 +410,7 @@ namespace alpaka
                             TView>
                         ::print(
                             view,
-                            reinterpret_cast<elem::Elem<TView> const *>(reinterpret_cast<std::uint8_t const *>(ptr)+i*pitch),
+                            reinterpret_cast<Elem<TView> const *>(reinterpret_cast<std::uint8_t const *>(ptr)+i*pitch),
                             extent,
                             os,
                             elementSeparator,
@@ -437,7 +437,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST static auto print(
                     TView const & view,
-                    elem::Elem<TView> const * const ptr,
+                    Elem<TView> const * const ptr,
                     Vec<Dim<TView>, Idx<TView>> const & extent,
                     std::ostream & os,
                     std::string const & elementSeparator,

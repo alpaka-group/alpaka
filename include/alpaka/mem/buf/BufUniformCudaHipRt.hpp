@@ -170,22 +170,19 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufUniformCudaHipRt memory element type get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct ElemType<
+            buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufUniformCudaHipRt memory element type get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct ElemType<
-                buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
-            {
-                using type = TElem;
-            };
-        }
+            using type = TElem;
+        };
     }
     namespace extent
     {
@@ -690,7 +687,7 @@ namespace alpaka
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                             ALPAKA_API_PREFIX(HostRegister)(
                                 const_cast<void *>(reinterpret_cast<void const *>(view::getPtrNative(buf))),
-                                extent::getExtentProduct(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TIdx>>),
+                                extent::getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
                                 ALPAKA_API_PREFIX(HostRegisterMapped)));
                     }
                 }

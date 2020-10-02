@@ -232,23 +232,20 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewSubView memory element type get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TDev,
+            typename TIdx>
+        struct ElemType<
+            view::ViewSubView<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewSubView memory element type get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev,
-                typename TIdx>
-            struct ElemType<
-                view::ViewSubView<TDev, TElem, TDim, TIdx>>
-            {
-                using type = TElem;
-            };
-        }
+            using type = TElem;
+        };
     }
     namespace extent
     {

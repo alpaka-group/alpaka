@@ -51,7 +51,7 @@ namespace alpaka
                     using TViewDecayed = std::decay_t<TView>;
                     using Dim = alpaka::Dim<TViewDecayed>;
                     using Idx = alpaka::Idx<TViewDecayed>;
-                    using Elem = MimicConst<alpaka::elem::Elem<TViewDecayed>, TView>;
+                    using Elem = MimicConst<alpaka::Elem<TViewDecayed>, TView>;
 
                 public:
                     //-----------------------------------------------------------------------------

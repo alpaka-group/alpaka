@@ -45,7 +45,7 @@ namespace alpaka
                     using ExtentSize = Idx<TExtent>;
                     using DstSize = Idx<TViewDst>;
                     using SrcSize = Idx<TViewSrc>;
-                    using Elem = elem::Elem<TViewSrc>;
+                    using Elem = alpaka::Elem<TViewSrc>;
 
                     static_assert(
                         !std::is_const<TViewDst>::value,
@@ -69,7 +69,7 @@ namespace alpaka
                         "The source view and the extent are required to have compatible idx type!");
 
                     static_assert(
-                        std::is_same<elem::Elem<TViewDst>, std::remove_const_t<elem::Elem<TViewSrc>>>::value,
+                        std::is_same<alpaka::Elem<TViewDst>, std::remove_const_t<alpaka::Elem<TViewSrc>>>::value,
                         "The source and the destination view are required to have the same element type!");
 
                     //-----------------------------------------------------------------------------

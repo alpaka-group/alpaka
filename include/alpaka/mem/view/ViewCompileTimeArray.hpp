@@ -67,22 +67,19 @@ namespace alpaka
             using type = DimInt<std::rank<TFixedSizeArray>::value>;
         };
     }
-    namespace elem
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The fixed idx array memory element type get trait specialization.
+        template<
+            typename TFixedSizeArray>
+        struct ElemType<
+            TFixedSizeArray,
+            std::enable_if_t<
+                std::is_array<TFixedSizeArray>::value>>
         {
-            //#############################################################################
-            //! The fixed idx array memory element type get trait specialization.
-            template<
-                typename TFixedSizeArray>
-            struct ElemType<
-                TFixedSizeArray,
-                std::enable_if_t<
-                    std::is_array<TFixedSizeArray>::value>>
-            {
-                using type = std::remove_all_extent_t<TFixedSizeArray>;
-            };
-        }
+            using type = std::remove_all_extent_t<TFixedSizeArray>;
+        };
     }
     namespace extent
     {

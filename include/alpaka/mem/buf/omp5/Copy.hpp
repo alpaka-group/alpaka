@@ -63,7 +63,7 @@ namespace alpaka
                         "The views and the extent are required to have the same dimensionality!");
                     // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                     static_assert(
-                        std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                        std::is_same<Elem<TViewDst>, typename std::remove_const<Elem<TViewSrc>>::type>::value,
                         "The source and the destination view are required to have the same element type!");
 
                     using Idx = alpaka::Idx<TExtent>;
@@ -140,8 +140,8 @@ namespace alpaka
                             auto srcExtentFull(Vec<TDim, size_t>::zeros());
 
                             const size_t elementSize =
-                                ( m_dstPitchBytes[0]%sizeof(elem::Elem<TViewDst>) || m_srcPitchBytes[0]%sizeof(elem::Elem<TViewDst>) )
-                                ? 1 : sizeof(elem::Elem<TViewDst>);
+                                ( m_dstPitchBytes[0]%sizeof(Elem<TViewDst>) || m_srcPitchBytes[0]%sizeof(Elem<TViewDst>) )
+                                ? 1 : sizeof(Elem<TViewDst>);
 
                             dstExtentFull[lastDim] = m_dstPitchBytes[lastDim]/elementSize;
                             srcExtentFull[lastDim] = m_srcPitchBytes[lastDim]/elementSize;
@@ -154,7 +154,7 @@ namespace alpaka
                             ALPAKA_OMP5_CHECK(
                                 omp_target_memcpy_rect(
                                     m_dstMemNative, const_cast<void*>(m_srcMemNative),
-                                    sizeof(elem::Elem<TViewDst>),
+                                    sizeof(Elem<TViewDst>),
                                     TDim::value,
                                     reinterpret_cast<size_t const *>(&m_extent),
                                     reinterpret_cast<size_t const *>(&dstOffset),
@@ -193,7 +193,7 @@ namespace alpaka
                         "The extent is required to have dimensionality 1!");
                     // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                     static_assert(
-                        std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
+                        std::is_same<Elem<TViewDst>, typename std::remove_const<Elem<TViewSrc>>::type>::value,
                         "The source and the destination view are required to have the same element type!");
 
                     using Idx = alpaka::Idx<TExtent>;
@@ -212,7 +212,7 @@ namespace alpaka
                             m_dstWidth(static_cast<Idx>(extent::getWidth(viewDst))),
                             m_srcWidth(static_cast<Idx>(extent::getWidth(viewSrc))),
 #endif
-                            m_extentWidthBytes(extent::getWidth(extent) * static_cast<Idx>(sizeof(elem::Elem<TViewDst>))),
+                            m_extentWidthBytes(extent::getWidth(extent) * static_cast<Idx>(sizeof(Elem<TViewDst>))),
                             m_dstMemNative(reinterpret_cast<void *>(view::getPtrNative(viewDst))),
                             m_srcMemNative(reinterpret_cast<void const *>(view::getPtrNative(viewSrc)))
                     {
