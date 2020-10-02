@@ -13,15 +13,9 @@
 
 namespace alpaka
 {
-    namespace event
-    {
-        template<typename TDev>
-        class EventGenericThreads;
-    }
-}
+    template<typename TDev>
+    class EventGenericThreads;
 
-namespace alpaka
-{
 #if BOOST_COMP_CLANG
     // avoid diagnostic warning: "has no out-of-line virtual method definitions; its vtable will be emitted in every translation unit [-Werror,-Wweak-vtables]"
     // https://stackoverflow.com/a/29288300
@@ -38,10 +32,10 @@ namespace alpaka
     public:
         //-----------------------------------------------------------------------------
         //! enqueue the event
-        virtual void enqueue(event::EventGenericThreads<TDev> &) = 0;
+        virtual void enqueue(EventGenericThreads<TDev> &) = 0;
         //-----------------------------------------------------------------------------
         //! waiting for the event
-        virtual void wait(event::EventGenericThreads<TDev> const &) = 0;
+        virtual void wait(EventGenericThreads<TDev> const &) = 0;
         //-----------------------------------------------------------------------------
         virtual ~IGenericThreadsQueue() = default;
     };

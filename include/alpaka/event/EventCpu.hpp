@@ -14,8 +14,5 @@
 
 namespace alpaka
 {
-    namespace event
-    {
-        using EventCpu = EventGenericThreads<DevCpu>;
-    }
+    using EventCpu = EventGenericThreads<DevCpu>;
 }

@@ -20,10 +20,7 @@
 
 namespace alpaka
 {
-    namespace event
-    {
-        using EventOmp5 = EventGenericThreads<DevOmp5>;
-    }
+    using EventOmp5 = EventGenericThreads<DevOmp5>;
 }
 
 #endif
