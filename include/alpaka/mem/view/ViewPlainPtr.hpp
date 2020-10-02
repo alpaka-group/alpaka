@@ -371,33 +371,30 @@ namespace alpaka
 #endif
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewPlainPtr offset get trait specialization.
+        template<
+            typename TIdxIntegralConst,
+            typename TDev,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetOffset<
+            TIdxIntegralConst,
+            view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewPlainPtr offset get trait specialization.
-            template<
-                typename TIdxIntegralConst,
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetOffset<
-                TIdxIntegralConst,
-                view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC
+            static auto getOffset(
+                view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const &)
+            -> TIdx
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC
-                static auto getOffset(
-                    view::ViewPlainPtr<TDev, TElem, TDim, TIdx> const &)
-                -> TIdx
-                {
-                    return 0u;
-                }
-            };
-        }
+                return 0u;
+            }
+        };
     }
     namespace traits
     {

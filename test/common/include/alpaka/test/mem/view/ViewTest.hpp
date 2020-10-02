@@ -133,11 +133,11 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                // alpaka::offset::traits::GetOffset
+                // alpaka::traits::GetOffset
                 {
                     REQUIRE(
                         offset ==
-                        alpaka::offset::getOffsetVec(view));
+                        alpaka::getOffsetVec(view));
                 }
 
                 //-----------------------------------------------------------------------------

@@ -98,9 +98,9 @@ namespace alpaka
             {
                 alpaka::ignore_unused(idx);
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                return cast<TIdx>(offset::getOffsetVecEnd<TDim>(threadIdx));
+                return cast<TIdx>(getOffsetVecEnd<TDim>(threadIdx));
 #else
-                return offset::getOffsetVecEnd<TDim>(
+                return getOffsetVecEnd<TDim>(
                     Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
                         static_cast<TIdx>(hipThreadIdx_z),
                         static_cast<TIdx>(hipThreadIdx_y),

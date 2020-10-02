@@ -427,171 +427,168 @@ namespace alpaka
             };
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The HIP vectors offset get trait specialization.
+        template<
+            typename TOffsets>
+        struct GetOffset<
+            DimInt<Dim<TOffsets>::value - 1u>,
+            TOffsets,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 1)>>
         {
-            //#############################################################################
-            //! The HIP vectors offset get trait specialization.
-            template<
-                typename TOffsets>
-            struct GetOffset<
-                DimInt<Dim<TOffsets>::value - 1u>,
-                TOffsets,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 1)>>
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getOffset(
+                TOffsets const & offsets)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getOffset(
-                    TOffsets const & offsets)
-                {
-                    return offsets.x;
-                }
-            };
-            //#############################################################################
-            //! The HIP vectors offset get trait specialization.
-            template<
-                typename TOffsets>
-            struct GetOffset<
-                DimInt<Dim<TOffsets>::value - 2u>,
-                TOffsets,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 2)>>
+                return offsets.x;
+            }
+        };
+        //#############################################################################
+        //! The HIP vectors offset get trait specialization.
+        template<
+            typename TOffsets>
+        struct GetOffset<
+            DimInt<Dim<TOffsets>::value - 2u>,
+            TOffsets,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 2)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getOffset(
+                TOffsets const & offsets)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getOffset(
-                    TOffsets const & offsets)
-                {
-                    return offsets.y;
-                }
-            };
-            //#############################################################################
-            //! The HIP vectors offset get trait specialization.
-            template<
-                typename TOffsets>
-            struct GetOffset<
-                DimInt<Dim<TOffsets>::value - 3u>,
-                TOffsets,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 3)>>
+                return offsets.y;
+            }
+        };
+        //#############################################################################
+        //! The HIP vectors offset get trait specialization.
+        template<
+            typename TOffsets>
+        struct GetOffset<
+            DimInt<Dim<TOffsets>::value - 3u>,
+            TOffsets,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 3)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getOffset(
+                TOffsets const & offsets)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getOffset(
-                    TOffsets const & offsets)
-                {
-                    return offsets.z;
-                }
-            };
-            //#############################################################################
-            //! The HIP vectors offset get trait specialization.
-            template<
-                typename TOffsets>
-            struct GetOffset<
-                DimInt<Dim<TOffsets>::value - 4u>,
-                TOffsets,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 4)>>
+                return offsets.z;
+            }
+        };
+        //#############################################################################
+        //! The HIP vectors offset get trait specialization.
+        template<
+            typename TOffsets>
+        struct GetOffset<
+            DimInt<Dim<TOffsets>::value - 4u>,
+            TOffsets,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 4)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getOffset(
+                TOffsets const & offsets)
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getOffset(
-                    TOffsets const & offsets)
-                {
-                    return offsets.w;
-                }
-            };
-            //#############################################################################
-            //! The HIP vectors offset set trait specialization.
-            template<
-                typename TOffsets,
-                typename TOffset>
-            struct SetOffset<
-                DimInt<Dim<TOffsets>::value - 1u>,
-                TOffsets,
-                TOffset,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 1)>>
+                return offsets.w;
+            }
+        };
+        //#############################################################################
+        //! The HIP vectors offset set trait specialization.
+        template<
+            typename TOffsets,
+            typename TOffset>
+        struct SetOffset<
+            DimInt<Dim<TOffsets>::value - 1u>,
+            TOffsets,
+            TOffset,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 1)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setOffset(
+                TOffsets const & offsets,
+                TOffset const & offset)
+            -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setOffset(
-                    TOffsets const & offsets,
-                    TOffset const & offset)
-                -> void
-                {
-                    offsets.x = offset;
-                }
-            };
-            //#############################################################################
-            //! The HIP vectors offset set trait specialization.
-            template<
-                typename TOffsets,
-                typename TOffset>
-            struct SetOffset<
-                DimInt<Dim<TOffsets>::value - 2u>,
-                TOffsets,
-                TOffset,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 2)>>
+                offsets.x = offset;
+            }
+        };
+        //#############################################################################
+        //! The HIP vectors offset set trait specialization.
+        template<
+            typename TOffsets,
+            typename TOffset>
+        struct SetOffset<
+            DimInt<Dim<TOffsets>::value - 2u>,
+            TOffsets,
+            TOffset,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 2)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setOffset(
+                TOffsets const & offsets,
+                TOffset const & offset)
+            -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setOffset(
-                    TOffsets const & offsets,
-                    TOffset const & offset)
-                -> void
-                {
-                    offsets.y = offset;
-                }
-            };
-            //#############################################################################
-            //! The HIP vectors offset set trait specialization.
-            template<
-                typename TOffsets,
-                typename TOffset>
-            struct SetOffset<
-                DimInt<Dim<TOffsets>::value - 3u>,
-                TOffsets,
-                TOffset,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 3)>>
+                offsets.y = offset;
+            }
+        };
+        //#############################################################################
+        //! The HIP vectors offset set trait specialization.
+        template<
+            typename TOffsets,
+            typename TOffset>
+        struct SetOffset<
+            DimInt<Dim<TOffsets>::value - 3u>,
+            TOffsets,
+            TOffset,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 3)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setOffset(
+                TOffsets const & offsets,
+                TOffset const & offset)
+            -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setOffset(
-                    TOffsets const & offsets,
-                    TOffset const & offset)
-                -> void
-                {
-                    offsets.z = offset;
-                }
-            };
-            //#############################################################################
-            //! The HIP vectors offset set trait specialization.
-            template<
-                typename TOffsets,
-                typename TOffset>
-            struct SetOffset<
-                DimInt<Dim<TOffsets>::value - 4u>,
-                TOffsets,
-                TOffset,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TOffsets>::value
-                    && (Dim<TOffsets>::value >= 4)>>
+                offsets.z = offset;
+            }
+        };
+        //#############################################################################
+        //! The HIP vectors offset set trait specialization.
+        template<
+            typename TOffsets,
+            typename TOffset>
+        struct SetOffset<
+            DimInt<Dim<TOffsets>::value - 4u>,
+            TOffsets,
+            TOffset,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TOffsets>::value
+                && (Dim<TOffsets>::value >= 4)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setOffset(
+                TOffsets const & offsets,
+                TOffset const & offset)
+            -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setOffset(
-                    TOffsets const & offsets,
-                    TOffset const & offset)
-                -> void
-                {
-                    offsets.w = offset;
-                }
-            };
-        }
+                offsets.w = offset;
+            }
+        };
     }
     namespace traits
     {
