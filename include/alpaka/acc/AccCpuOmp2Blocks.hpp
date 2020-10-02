@@ -58,152 +58,146 @@ namespace alpaka
             typename... TArgs>
         class TaskKernelCpuOmp2Blocks;
     }
-    namespace acc
+    //#############################################################################
+    //! The CPU OpenMP 2.0 block accelerator.
+    //!
+    //! This accelerator allows parallel kernel execution on a CPU device.
+    //! It uses OpenMP 2.0 to implement the grid block parallelism.
+    //! The block idx is restricted to 1x1x1.
+    template<
+        typename TDim,
+        typename TIdx>
+    class AccCpuOmp2Blocks final :
+        public WorkDivMembers<TDim, TIdx>,
+        public idx::gb::IdxGbRef<TDim, TIdx>,
+        public idx::bt::IdxBtZero<TDim, TIdx>,
+        public atomic::AtomicHierarchy<
+            atomic::AtomicStdLibLock<16>,   // grid atomics
+            atomic::AtomicOmpBuiltIn,    // block atomics
+            atomic::AtomicNoOp           // thread atomics
+        >,
+        public math::MathStdLib,
+        public block::dyn::BlockSharedMemDynMember<>,
+        public block::st::BlockSharedMemStMember<>,
+        public block::BlockSyncNoOp,
+        public intrinsic::IntrinsicCpu,
+        public rand::RandStdLib,
+        public time::TimeOmp,
+        public warp::WarpSingleThread,
+        public concepts::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
+    {
+        static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
+    public:
+        // Partial specialization with the correct TDim and TIdx is not allowed.
+        template<
+            typename TDim2,
+            typename TIdx2,
+            typename TKernelFnObj,
+            typename... TArgs>
+        friend class ::alpaka::kernel::TaskKernelCpuOmp2Blocks;
+
+    private:
+        //-----------------------------------------------------------------------------
+        template<
+            typename TWorkDiv>
+        ALPAKA_FN_HOST AccCpuOmp2Blocks(
+            TWorkDiv const & workDiv,
+            std::size_t const & blockSharedMemDynSizeBytes) :
+                WorkDivMembers<TDim, TIdx>(workDiv),
+                idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                idx::bt::IdxBtZero<TDim, TIdx>(),
+                atomic::AtomicHierarchy<
+                    atomic::AtomicStdLibLock<16>,// atomics between grids
+                    atomic::AtomicOmpBuiltIn, // atomics between blocks
+                    atomic::AtomicNoOp        // atomics between threads
+                >(),
+                math::MathStdLib(),
+                block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
+                block::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
+                block::BlockSyncNoOp(),
+                rand::RandStdLib(),
+                time::TimeOmp(),
+                m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
+        {}
+
+    public:
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST AccCpuOmp2Blocks(AccCpuOmp2Blocks const &) = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST AccCpuOmp2Blocks(AccCpuOmp2Blocks &&) = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST auto operator=(AccCpuOmp2Blocks const &) -> AccCpuOmp2Blocks & = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST auto operator=(AccCpuOmp2Blocks &&) -> AccCpuOmp2Blocks & = delete;
+        //-----------------------------------------------------------------------------
+        /*virtual*/ ~AccCpuOmp2Blocks() = default;
+
+    private:
+        // getIdx
+        Vec<TDim, TIdx> mutable m_gridBlockIdx;   //!< The index of the currently executed block.
+    };
+
+    namespace traits
     {
         //#############################################################################
-        //! The CPU OpenMP 2.0 block accelerator.
-        //!
-        //! This accelerator allows parallel kernel execution on a CPU device.
-        //! It uses OpenMP 2.0 to implement the grid block parallelism.
-        //! The block idx is restricted to 1x1x1.
+        //! The CPU OpenMP 2.0 block accelerator accelerator type trait specialization.
         template<
             typename TDim,
             typename TIdx>
-        class AccCpuOmp2Blocks final :
-            public WorkDivMembers<TDim, TIdx>,
-            public idx::gb::IdxGbRef<TDim, TIdx>,
-            public idx::bt::IdxBtZero<TDim, TIdx>,
-            public atomic::AtomicHierarchy<
-                atomic::AtomicStdLibLock<16>,   // grid atomics
-                atomic::AtomicOmpBuiltIn,    // block atomics
-                atomic::AtomicNoOp           // thread atomics
-            >,
-            public math::MathStdLib,
-            public block::dyn::BlockSharedMemDynMember<>,
-            public block::st::BlockSharedMemStMember<>,
-            public block::BlockSyncNoOp,
-            public intrinsic::IntrinsicCpu,
-            public rand::RandStdLib,
-            public time::TimeOmp,
-            public warp::WarpSingleThread,
-            public concepts::Implements<ConceptAcc, AccCpuOmp2Blocks<TDim, TIdx>>
+        struct AccType<
+            AccCpuOmp2Blocks<TDim, TIdx>>
         {
-            static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
-        public:
-            // Partial specialization with the correct TDim and TIdx is not allowed.
-            template<
-                typename TDim2,
-                typename TIdx2,
-                typename TKernelFnObj,
-                typename... TArgs>
-            friend class ::alpaka::kernel::TaskKernelCpuOmp2Blocks;
-
-        private:
-            //-----------------------------------------------------------------------------
-            template<
-                typename TWorkDiv>
-            ALPAKA_FN_HOST AccCpuOmp2Blocks(
-                TWorkDiv const & workDiv,
-                std::size_t const & blockSharedMemDynSizeBytes) :
-                    WorkDivMembers<TDim, TIdx>(workDiv),
-                    idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
-                    idx::bt::IdxBtZero<TDim, TIdx>(),
-                    atomic::AtomicHierarchy<
-                        atomic::AtomicStdLibLock<16>,// atomics between grids
-                        atomic::AtomicOmpBuiltIn, // atomics between blocks
-                        atomic::AtomicNoOp        // atomics between threads
-                    >(),
-                    math::MathStdLib(),
-                    block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
-                    block::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
-                    block::BlockSyncNoOp(),
-                    rand::RandStdLib(),
-                    time::TimeOmp(),
-                    m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
-            {}
-
-        public:
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AccCpuOmp2Blocks(AccCpuOmp2Blocks const &) = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AccCpuOmp2Blocks(AccCpuOmp2Blocks &&) = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AccCpuOmp2Blocks const &) -> AccCpuOmp2Blocks & = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AccCpuOmp2Blocks &&) -> AccCpuOmp2Blocks & = delete;
-            //-----------------------------------------------------------------------------
-            /*virtual*/ ~AccCpuOmp2Blocks() = default;
-
-        private:
-            // getIdx
-            Vec<TDim, TIdx> mutable m_gridBlockIdx;   //!< The index of the currently executed block.
+            using type = AccCpuOmp2Blocks<TDim, TIdx>;
         };
-    }
-
-    namespace acc
-    {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block accelerator device properties get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccDevProps<
+            AccCpuOmp2Blocks<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block accelerator accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct AccType<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccDevProps(
+                DevCpu const & dev)
+            -> alpaka::AccDevProps<TDim, TIdx>
             {
-                using type = acc::AccCpuOmp2Blocks<TDim, TIdx>;
-            };
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block accelerator device properties get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccDevProps<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccDevProps(
-                    DevCpu const & dev)
-                -> alpaka::acc::AccDevProps<TDim, TIdx>
-                {
-                    alpaka::ignore_unused(dev);
+                alpaka::ignore_unused(dev);
 
-                    return {
-                        // m_multiProcessorCount
-                        static_cast<TIdx>(1),
-                        // m_gridBlockExtentMax
-                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_gridBlockCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_blockThreadExtentMax
-                        Vec<TDim, TIdx>::ones(),
-                        // m_blockThreadCountMax
-                        static_cast<TIdx>(1),
-                        // m_threadElemExtentMax
-                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_sharedMemSizeBytes
-                        static_cast<size_t>( acc::AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes() )};
-                }
-            };
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block accelerator name trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccName<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>>
+                return {
+                    // m_multiProcessorCount
+                    static_cast<TIdx>(1),
+                    // m_gridBlockExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_gridBlockCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_blockThreadExtentMax
+                    Vec<TDim, TIdx>::ones(),
+                    // m_blockThreadCountMax
+                    static_cast<TIdx>(1),
+                    // m_threadElemExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_threadElemCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_sharedMemSizeBytes
+                    static_cast<size_t>( AccCpuOmp2Blocks<TDim, TIdx>::staticAllocBytes() )};
+            }
+        };
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block accelerator name trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccName<
+            AccCpuOmp2Blocks<TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccName()
+            -> std::string
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccName()
-                -> std::string
-                {
-                    return "AccCpuOmp2Blocks<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
-                }
-            };
-        }
+                return "AccCpuOmp2Blocks<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+            }
+        };
     }
     namespace traits
     {
@@ -213,7 +207,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct DevType<
-            acc::AccCpuOmp2Blocks<TDim, TIdx>>
+            AccCpuOmp2Blocks<TDim, TIdx>>
         {
             using type = DevCpu;
         };
@@ -228,7 +222,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>>
+                AccCpuOmp2Blocks<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -247,7 +241,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct CreateTaskKernel<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>,
+                AccCpuOmp2Blocks<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
@@ -279,7 +273,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct PltfType<
-            acc::AccCpuOmp2Blocks<TDim, TIdx>>
+            AccCpuOmp2Blocks<TDim, TIdx>>
         {
             using type = PltfCpu;
         };
@@ -294,7 +288,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct IdxType<
-                acc::AccCpuOmp2Blocks<TDim, TIdx>>
+                AccCpuOmp2Blocks<TDim, TIdx>>
             {
                 using type = TIdx;
             };

@@ -73,7 +73,7 @@ public:
     }
 };
 
-using TestAccs = alpaka::test::acc::EnabledAccs<
+using TestAccs = alpaka::test::EnabledAccs<
     alpaka::dim::DimInt<1u>,
     std::size_t>;
 
@@ -124,7 +124,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     std::cout
         << "AxpyKernel("
         << " numElements:" << numElements
-        << ", accelerator: " << alpaka::acc::getAccName<Acc>()
+        << ", accelerator: " << alpaka::getAccName<Acc>()
         << ", kernel: " << typeid(kernel).name()
         << ", workDiv: " << workDiv
         << ")" << std::endl;

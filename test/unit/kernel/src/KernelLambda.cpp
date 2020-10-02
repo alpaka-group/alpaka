@@ -120,17 +120,17 @@ void operator()()
 
 TEST_CASE( "lambdaKernelIsWorking", "[kernel]")
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateLambda() );
+    alpaka::meta::forEachType< alpaka::test::TestAccs >( TestTemplateLambda() );
 }
 
 TEST_CASE( "lambdaKernelWithArgumentIsWorking", "[kernel]")
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateArg() );
+    alpaka::meta::forEachType< alpaka::test::TestAccs >( TestTemplateArg() );
 }
 
 TEST_CASE( "lambdaKernelWithCapturingIsWorking", "[kernel]")
 {
-    alpaka::meta::forEachType< alpaka::test::acc::TestAccs >( TestTemplateCapture() );
+    alpaka::meta::forEachType< alpaka::test::TestAccs >( TestTemplateCapture() );
 }
 
 #endif

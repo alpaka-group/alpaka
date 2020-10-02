@@ -68,7 +68,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "nonNull", "[blockSharedMemSt]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "nonNull", "[blockSharedMemSt]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
@@ -121,7 +121,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "sameTypeDifferentAddress", "[blockSharedMemSt]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "sameTypeDifferentAddress", "[blockSharedMemSt]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

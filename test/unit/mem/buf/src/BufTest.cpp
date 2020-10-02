@@ -58,7 +58,7 @@ static auto testBufferMutable(
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "memBufBasicTest", "[memBuf]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "memBufBasicTest", "[memBuf]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
@@ -72,7 +72,7 @@ TEMPLATE_LIST_TEST_CASE( "memBufBasicTest", "[memBuf]", alpaka::test::acc::TestA
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "memBufZeroSizeTest", "[memBuf]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "memBufZeroSizeTest", "[memBuf]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
@@ -117,7 +117,7 @@ static auto testBufferImmutable(
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "memBufConstTest", "[memBuf]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "memBufConstTest", "[memBuf]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

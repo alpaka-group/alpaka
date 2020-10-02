@@ -44,7 +44,7 @@ private:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "kernelWithConstructorAndMember", "[kernel]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "kernelWithConstructorAndMember", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
@@ -59,7 +59,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelWithConstructorAndMember", "[kernel]", alpaka::t
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "kernelWithConstructorDefaultParamAndMember", "[kernel]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "kernelWithConstructorDefaultParamAndMember", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

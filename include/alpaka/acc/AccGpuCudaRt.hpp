@@ -44,72 +44,66 @@ namespace alpaka
             typename... TArgs>
         class TaskKernelGpuUniformCudaHipRt;
     }
-    namespace acc
+    //#############################################################################
+    //! The GPU CUDA accelerator.
+    //!
+    //! This accelerator allows parallel kernel execution on devices supporting CUDA.
+    template<
+        typename TDim,
+        typename TIdx>
+    class AccGpuCudaRt final :
+        public AccGpuUniformCudaHipRt<TDim,TIdx>,
+        public concepts::Implements<ConceptUniformCudaHip, AccGpuUniformCudaHipRt<TDim, TIdx>>
+    {
+        static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
+    public:
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuCudaRt(
+            Vec<TDim, TIdx> const & threadElemExtent) :
+                AccGpuUniformCudaHipRt<TDim,TIdx>(threadElemExtent)
+        {}
+
+    public:
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuCudaRt(AccGpuCudaRt const &) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuCudaRt(AccGpuCudaRt &&) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(AccGpuCudaRt const &) -> AccGpuCudaRt & = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(AccGpuCudaRt &&) -> AccGpuCudaRt & = delete;
+        //-----------------------------------------------------------------------------
+        ~AccGpuCudaRt() = default;
+    };
+
+    namespace traits
     {
         //#############################################################################
-        //! The GPU CUDA accelerator.
-        //!
-        //! This accelerator allows parallel kernel execution on devices supporting CUDA.
+        //! The GPU CUDA accelerator accelerator type trait specialization.
         template<
             typename TDim,
             typename TIdx>
-        class AccGpuCudaRt final :
-            public acc::AccGpuUniformCudaHipRt<TDim,TIdx>,
-            public concepts::Implements<ConceptUniformCudaHip, AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct AccType<
+            AccGpuCudaRt<TDim, TIdx>>
         {
-            static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
-        public:
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuCudaRt(
-                Vec<TDim, TIdx> const & threadElemExtent) :
-                   AccGpuUniformCudaHipRt<TDim,TIdx>(threadElemExtent)
-            {}
-
-        public:
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuCudaRt(AccGpuCudaRt const &) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuCudaRt(AccGpuCudaRt &&) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuCudaRt const &) -> AccGpuCudaRt & = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuCudaRt &&) -> AccGpuCudaRt & = delete;
-            //-----------------------------------------------------------------------------
-            ~AccGpuCudaRt() = default;
+            using type = AccGpuCudaRt<TDim, TIdx>;
         };
-    }
 
-    namespace acc
-    {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA accelerator name trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccName<
+            AccGpuCudaRt<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA accelerator accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct AccType<
-                acc::AccGpuCudaRt<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccName()
+            -> std::string
             {
-                using type = acc::AccGpuCudaRt<TDim, TIdx>;
-            };
-
-            //#############################################################################
-            //! The GPU CUDA accelerator name trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccName<
-                acc::AccGpuCudaRt<TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccName()
-                -> std::string
-                {
-                    return "AccGpuCudaRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
-                }
-            };
-        }
+                return "AccGpuCudaRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+            }
+        };
     }
     namespace kernel
     {
@@ -124,7 +118,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct CreateTaskKernel<
-                acc::AccGpuCudaRt<TDim, TIdx>,
+                AccGpuCudaRt<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
@@ -137,7 +131,7 @@ namespace alpaka
                 {
                     return
                         kernel::TaskKernelGpuUniformCudaHipRt<
-                            acc::AccGpuCudaRt<TDim, TIdx>,
+                            AccGpuCudaRt<TDim, TIdx>,
                             TDim,
                             TIdx,
                             TKernelFnObj,

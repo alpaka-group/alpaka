@@ -186,24 +186,21 @@ namespace alpaka
         };
     }
 
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP execution task accelerator type trait specialization.
+        template<
+            typename TAcc,
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP execution task accelerator type trait specialization.
-            template<
-                typename TAcc,
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccGpuUniformCudaHipRt<TDim, TIdx>;
-            };
-        }
+            using type = AccGpuUniformCudaHipRt<TDim, TIdx>;
+        };
     }
     namespace traits
     {
@@ -330,7 +327,7 @@ namespace alpaka
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
                     if(!isValidWorkDiv<TAcc>(getDev(queue), task))
                     {
-                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
+                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                     }
 #endif
 
@@ -475,7 +472,7 @@ namespace alpaka
                     // This checks for a valid work division that is also compliant with the maxima of the accelerator.
                     if(!isValidWorkDiv<TAcc>(getDev(queue), task))
                     {
-                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
+                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
                     }
 #endif
 

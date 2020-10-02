@@ -62,7 +62,7 @@ struct StaticDeviceMemoryTestKernel
     }
 };
 
-using TestAccs = alpaka::test::acc::EnabledAccs<Dim, Idx>;
+using TestAccs = alpaka::test::EnabledAccs<Dim, Idx>;
 
 //-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestAccs)

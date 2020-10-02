@@ -212,19 +212,19 @@ namespace view
 #endif
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "viewSubViewNoOffsetTest", "[memView]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "viewSubViewNoOffsetTest", "[memView]", alpaka::test::TestAccs)
 {
     alpaka::test::mem::view::testViewSubViewNoOffset<TestType, float>();
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "viewSubViewOffsetTest", "[memView]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "viewSubViewOffsetTest", "[memView]", alpaka::test::TestAccs)
 {
     alpaka::test::mem::view::testViewSubViewOffset<TestType, float>();
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "viewSubViewOffsetConstTest", "[memView]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "viewSubViewOffsetConstTest", "[memView]", alpaka::test::TestAccs)
 {
     alpaka::test::mem::view::testViewSubViewOffsetConst<TestType, float>();
 }

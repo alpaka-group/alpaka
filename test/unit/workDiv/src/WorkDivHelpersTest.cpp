@@ -41,7 +41,7 @@ namespace
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "getValidWorkDiv", "[workDiv]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "getValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     // Note: getValidWorkDiv() is called inside getWorkDiv
@@ -50,7 +50,7 @@ TEMPLATE_LIST_TEST_CASE( "getValidWorkDiv", "[workDiv]", alpaka::test::acc::Test
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "isValidWorkDiv", "[workDiv]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "isValidWorkDiv", "[workDiv]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dev = alpaka::Dev<Acc>;
@@ -60,7 +60,7 @@ TEMPLATE_LIST_TEST_CASE( "isValidWorkDiv", "[workDiv]", alpaka::test::acc::TestA
     auto workDiv = getWorkDiv< Acc >();
     // Test both overloads
     REQUIRE( alpaka::isValidWorkDiv(
-        alpaka::acc::getAccDevProps< Acc >( dev ),
+        alpaka::getAccDevProps< Acc >( dev ),
         workDiv));
     REQUIRE( alpaka::isValidWorkDiv<Acc>(
         dev,

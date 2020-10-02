@@ -364,14 +364,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuUniformCudaHipRt<TDim, TIdx>,
+    alpaka::AccGpuUniformCudaHipRt<TDim, TIdx>,
     T>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuUniformCudaHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuUniformCudaHipRt<TDim, TIdx> const & acc,
         bool * success,
         T operandOrig) const
     -> void
@@ -389,14 +389,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    alpaka::AccGpuCudaRt<TDim, TIdx>,
     int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         int operandOrig) const
     -> void
@@ -427,14 +427,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    alpaka::AccGpuCudaRt<TDim, TIdx>,
     unsigned int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         unsigned int operandOrig) const
     -> void
@@ -463,14 +463,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    alpaka::AccGpuCudaRt<TDim, TIdx>,
     unsigned long int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         unsigned long int operandOrig) const
     -> void
@@ -511,14 +511,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    alpaka::AccGpuCudaRt<TDim, TIdx>,
     unsigned long long int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         unsigned long long int operandOrig) const
     -> void
@@ -553,14 +553,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    alpaka::AccGpuCudaRt<TDim, TIdx>,
     float>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         float operandOrig) const
     -> void
@@ -594,14 +594,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    alpaka::AccGpuCudaRt<TDim, TIdx>,
     double>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         double operandOrig) const
     -> void
@@ -637,7 +637,7 @@ template<
     typename TIdx,
     typename T>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuCudaRt<TDim, TIdx>,
+    alpaka::AccGpuCudaRt<TDim, TIdx>,
     T,
     std::enable_if_t<
         !std::is_same<int, T>::value
@@ -652,7 +652,7 @@ public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuCudaRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuCudaRt<TDim, TIdx> const & acc,
         bool * success,
         T operandOrig) const
     -> void
@@ -672,14 +672,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuHipRt<TDim, TIdx>,
+    alpaka::AccGpuHipRt<TDim, TIdx>,
     int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuHipRt<TDim, TIdx> const & acc,
         bool * success,
         int operandOrig) const
     -> void
@@ -710,14 +710,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuHipRt<TDim, TIdx>,
+    alpaka::AccGpuHipRt<TDim, TIdx>,
     unsigned int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuHipRt<TDim, TIdx> const & acc,
         bool * success,
         unsigned int operandOrig) const
     -> void
@@ -746,14 +746,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuHipRt<TDim, TIdx>,
+    alpaka::AccGpuHipRt<TDim, TIdx>,
     unsigned long int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuHipRt<TDim, TIdx> const & acc,
         bool * success,
         unsigned long int operandOrig) const
     -> void
@@ -794,14 +794,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuHipRt<TDim, TIdx>,
+    alpaka::AccGpuHipRt<TDim, TIdx>,
     unsigned long long int>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuHipRt<TDim, TIdx> const & acc,
         bool * success,
         unsigned long long int operandOrig) const
     -> void
@@ -836,14 +836,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuHipRt<TDim, TIdx>,
+    alpaka::AccGpuHipRt<TDim, TIdx>,
     float>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuHipRt<TDim, TIdx> const & acc,
         bool * success,
         float operandOrig) const
     -> void
@@ -877,14 +877,14 @@ template<
     typename TDim,
     typename TIdx>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuHipRt<TDim, TIdx>,
+    alpaka::AccGpuHipRt<TDim, TIdx>,
     double>
 {
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuHipRt<TDim, TIdx> const & acc,
         bool * success,
         double operandOrig) const
     -> void
@@ -920,7 +920,7 @@ template<
     typename TIdx,
     typename T>
 class AtomicTestKernel<
-    alpaka::acc::AccGpuHipRt<TDim, TIdx>,
+    alpaka::AccGpuHipRt<TDim, TIdx>,
     T,
     std::enable_if_t<
         !std::is_same<int, T>::value
@@ -935,7 +935,7 @@ public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto operator()(
-        alpaka::acc::AccGpuHipRt<TDim, TIdx> const & acc,
+        alpaka::AccGpuHipRt<TDim, TIdx> const & acc,
         bool * success,
         T operandOrig) const
     -> void
@@ -973,7 +973,7 @@ struct TestAtomicOperations
     }
 };
 
-using TestAccs = alpaka::test::acc::EnabledAccs<
+using TestAccs = alpaka::test::EnabledAccs<
     alpaka::dim::DimInt<1u>,
     std::size_t>;
 

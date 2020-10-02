@@ -71,8 +71,7 @@ auto main()
 
     // Define the accelerator
     //
-    // It is possible to choose from a set of accelerators
-    // that are defined in the alpaka::acc namespace e.g.:
+    // It is possible to choose from a set of accelerators:
     // - AccGpuCudaRt
     // - AccGpuHipRt
     // - AccCpuThreads
@@ -82,9 +81,9 @@ auto main()
     // - AccOmp5
     // - AccCpuTbbBlocks
     // - AccCpuSerial
-    // using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    // using Acc = alpaka::AccCpuSerial<Dim, Idx>;
     using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
-    std::cout << "Using alpaka accelerator: " << alpaka::acc::getAccName<Acc>() << std::endl;
+    std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
     // Defines the synchronization behavior of a queue
     //

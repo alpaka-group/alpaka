@@ -43,72 +43,66 @@ namespace alpaka
             typename... TArgs>
         class TaskKernelGpuUniformCudaHipRt;
     }
-    namespace acc
+    //#############################################################################
+    //! The GPU HIP accelerator.
+    //!
+    //! This accelerator allows parallel kernel execution on devices supporting HIP
+    template<
+        typename TDim,
+        typename TIdx>
+    class AccGpuHipRt final :
+        public AccGpuUniformCudaHipRt<TDim,TIdx>,
+        public concepts::Implements<ConceptUniformCudaHip, AccGpuUniformCudaHipRt<TDim, TIdx>>
+    {
+        static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
+    public:
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuHipRt(
+            Vec<TDim, TIdx> const & threadElemExtent) :
+                AccGpuUniformCudaHipRt<TDim,TIdx>(threadElemExtent)
+        {}
+
+    public:
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuHipRt(AccGpuHipRt const &) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuHipRt(AccGpuHipRt &&) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(AccGpuHipRt const &) -> AccGpuHipRt & = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(AccGpuHipRt &&) -> AccGpuHipRt & = delete;
+        //-----------------------------------------------------------------------------
+        ~AccGpuHipRt() = default;
+    };
+
+    namespace traits
     {
         //#############################################################################
-        //! The GPU HIP accelerator.
-        //!
-        //! This accelerator allows parallel kernel execution on devices supporting HIP
+        //! The GPU HIP accelerator accelerator type trait specialization.
         template<
             typename TDim,
             typename TIdx>
-        class AccGpuHipRt final :
-            public acc::AccGpuUniformCudaHipRt<TDim,TIdx>,
-            public concepts::Implements<ConceptUniformCudaHip, AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct AccType<
+            AccGpuHipRt<TDim, TIdx>>
         {
-            static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
-        public:
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuHipRt(
-                Vec<TDim, TIdx> const & threadElemExtent) :
-                    AccGpuUniformCudaHipRt<TDim,TIdx>(threadElemExtent)
-            {}
-
-        public:
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuHipRt(AccGpuHipRt const &) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuHipRt(AccGpuHipRt &&) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuHipRt const &) -> AccGpuHipRt & = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuHipRt &&) -> AccGpuHipRt & = delete;
-            //-----------------------------------------------------------------------------
-            ~AccGpuHipRt() = default;
+            using type = AccGpuHipRt<TDim, TIdx>;
         };
-    }
 
-    namespace acc
-    {
-        namespace traits
+        //#############################################################################
+        //! The GPU Hip accelerator name trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccName<
+            AccGpuHipRt<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU HIP accelerator accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct AccType<
-                acc::AccGpuHipRt<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccName()
+            -> std::string
             {
-                using type = acc::AccGpuHipRt<TDim, TIdx>;
-            };
-
-            //#############################################################################
-            //! The GPU Hip accelerator name trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccName<
-                acc::AccGpuHipRt<TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccName()
-                -> std::string
-                {
-                    return "AccGpuHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
-                }
-            };
-        }
+                return "AccGpuHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+            }
+        };
     }
     namespace kernel
     {
@@ -123,7 +117,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct CreateTaskKernel<
-                acc::AccGpuHipRt<TDim, TIdx>,
+                AccGpuHipRt<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
@@ -136,7 +130,7 @@ namespace alpaka
                 {
                     return
                         kernel::TaskKernelGpuUniformCudaHipRt<
-                            acc::AccGpuHipRt<TDim, TIdx>,
+                            AccGpuHipRt<TDim, TIdx>,
                             TDim,
                             TIdx,
                             TKernelFnObj,

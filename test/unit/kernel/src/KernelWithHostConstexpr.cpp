@@ -46,7 +46,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "kernelWithHostConstexpr", "[kernel]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "kernelWithHostConstexpr", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
