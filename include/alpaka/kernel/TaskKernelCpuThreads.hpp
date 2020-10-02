@@ -126,7 +126,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuThreads<TDim, TIdx>>(
+                                    AccCpuThreads<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -138,7 +138,7 @@ namespace alpaka
                 std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
-                acc::AccCpuThreads<TDim, TIdx> acc(
+                AccCpuThreads<TDim, TIdx> acc(
                     *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
@@ -172,7 +172,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The function executed for each grid block.
             ALPAKA_FN_HOST static auto gridBlockExecHost(
-                acc::AccCpuThreads<TDim, TIdx> & acc,
+                AccCpuThreads<TDim, TIdx> & acc,
                 Vec<TDim, TIdx> const & gridBlockIdx,
                 Vec<TDim, TIdx> const & blockThreadExtent,
                 ThreadPool & threadPool,
@@ -222,7 +222,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The function executed for each block thread on the host.
             ALPAKA_FN_HOST static auto blockThreadExecHost(
-                acc::AccCpuThreads<TDim, TIdx> & acc,
+                AccCpuThreads<TDim, TIdx> & acc,
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 std::vector<std::future<void>> & futuresInBlock,
                 Vec<TDim, TIdx> const & blockThreadIdx,
@@ -260,7 +260,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The thread entry point on the accelerator.
             ALPAKA_FN_HOST static auto blockThreadExecAcc(
-                acc::AccCpuThreads<TDim, TIdx> & acc,
+                AccCpuThreads<TDim, TIdx> & acc,
                 Vec<TDim, TIdx> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 std::decay_t<TArgs> const & ... args)
@@ -288,7 +288,7 @@ namespace alpaka
 
                 // Execute the kernel itself.
                 kernelFnObj(
-                    const_cast<acc::AccCpuThreads<TDim, TIdx> const &>(acc),
+                    const_cast<AccCpuThreads<TDim, TIdx> const &>(acc),
                     args...);
 
                 // We have to sync all threads here because if a thread would finish before all threads have been started,
@@ -301,23 +301,20 @@ namespace alpaka
         };
     }
 
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU threads execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU threads execution task accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccCpuThreads<TDim, TIdx>;
-            };
-        }
+            using type = AccCpuThreads<TDim, TIdx>;
+        };
     }
     namespace traits
     {

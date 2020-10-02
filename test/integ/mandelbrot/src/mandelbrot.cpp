@@ -302,7 +302,7 @@ auto writeTgaColorImage(
     }
 }
 
-using TestAccs = alpaka::test::acc::EnabledAccs<
+using TestAccs = alpaka::test::EnabledAccs<
     alpaka::dim::DimInt<2u>,
     std::uint32_t>;
 
@@ -364,7 +364,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
         << " numRows:" << numRows
         << ", numCols:" << numCols
         << ", maxIterations:" << maxIterations
-        << ", accelerator: " << alpaka::acc::getAccName<Acc>()
+        << ", accelerator: " << alpaka::getAccName<Acc>()
         << ", kernel: " << typeid(kernel).name()
         << ", workDiv: " << workDiv
         << ")" << std::endl;
@@ -409,7 +409,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
     alpaka::wait::wait(queue);
 
     // Write the image to a file.
-    std::string fileName("mandelbrot"+std::to_string(numCols)+"x"+std::to_string(numRows)+"_"+alpaka::acc::getAccName<Acc>()+".tga");
+    std::string fileName("mandelbrot"+std::to_string(numCols)+"x"+std::to_string(numRows)+"_"+alpaka::getAccName<Acc>()+".tga");
     std::replace(fileName.begin(), fileName.end(), '<', '_');
     std::replace(fileName.begin(), fileName.end(), '>', '_');
     writeTgaColorImage(

@@ -56,7 +56,7 @@ private:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "popcount", "[intrinsic]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "popcount", "[intrinsic]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

@@ -84,7 +84,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "any", "[warp]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "any", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dev = alpaka::Dev<Acc>;

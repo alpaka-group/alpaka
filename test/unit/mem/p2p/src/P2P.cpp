@@ -59,7 +59,7 @@ static auto testP2P(
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "memP2PTest", "[memP2P]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "memP2PTest", "[memP2P]", alpaka::test::TestAccs)
 {
 #if defined(ALPAKA_CI) &&                             \
     BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(7,2,0) && \

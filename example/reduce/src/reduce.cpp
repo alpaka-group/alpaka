@@ -64,7 +64,7 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
     // calculate optimal block size (8 times the MP count proved to be
     // relatively near to peak performance in benchmarks)
     uint32_t blockCount = static_cast<uint32_t>(
-        alpaka::acc::getAccDevProps<Acc>(devAcc).m_multiProcessorCount *
+        alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount *
         8);
     uint32_t maxBlockCount = static_cast<uint32_t>(
         (((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
@@ -140,7 +140,7 @@ int main()
     // calculate optimal block size (8 times the MP count proved to be
     // relatively near to peak performance in benchmarks)
     uint32_t blockCount = static_cast<uint32_t>(
-        alpaka::acc::getAccDevProps<Acc>(devAcc).m_multiProcessorCount *
+        alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount *
         8);
     uint32_t maxBlockCount = static_cast<uint32_t>(
         (((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)

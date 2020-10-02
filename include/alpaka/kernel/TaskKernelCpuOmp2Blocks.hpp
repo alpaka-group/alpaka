@@ -105,7 +105,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuOmp2Blocks<TDim, TIdx>>(
+                                    AccCpuOmp2Blocks<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -189,7 +189,7 @@ namespace alpaka
 #endif
                 }
 
-                acc::AccCpuOmp2Blocks<TDim, TIdx> acc(
+                AccCpuOmp2Blocks<TDim, TIdx> acc(
                     *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
@@ -226,23 +226,20 @@ namespace alpaka
         };
     }
 
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 grid block execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 grid block execution task accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccCpuOmp2Blocks<TDim, TIdx>;
-            };
-        }
+            using type = AccCpuOmp2Blocks<TDim, TIdx>;
+        };
     }
     namespace traits
     {

@@ -69,7 +69,7 @@ public:
     }
 };
 
-using TestAccs = alpaka::test::acc::EnabledAccs<
+using TestAccs = alpaka::test::EnabledAccs<
     alpaka::dim::DimInt<1u>,
     std::size_t>;
 
@@ -117,7 +117,7 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
 
     std::cout
         << typeid(kernel).name() << "("
-        << "accelerator: " << alpaka::acc::getAccName<Acc>()
+        << "accelerator: " << alpaka::getAccName<Acc>()
         << ", workDiv: " << workDiv
         << ", numElements:" << numElements
         << ")" << std::endl;

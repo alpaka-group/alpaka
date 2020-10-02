@@ -18,7 +18,7 @@
 #if !defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
@@ -42,7 +42,7 @@ TEMPLATE_LIST_TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]", alpaka::tes
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "variadicGenericLambdaKernelIsWorking", "[kernel]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "variadicGenericLambdaKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

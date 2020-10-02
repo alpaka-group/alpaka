@@ -134,7 +134,7 @@ namespace alpaka
     }
 }
 
-using TestAccs = alpaka::test::acc::EnabledAccs<
+using TestAccs = alpaka::test::EnabledAccs<
     alpaka::dim::DimInt<1u>,
     std::uint32_t>;
 
@@ -176,7 +176,7 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
 
     std::cout
         << "SharedMemKernel("
-        << " accelerator: " << alpaka::acc::getAccName<Acc>()
+        << " accelerator: " << alpaka::getAccName<Acc>()
         << ", kernel: " << typeid(kernel).name()
         << ", workDiv: " << workDiv
         << ")" << std::endl;

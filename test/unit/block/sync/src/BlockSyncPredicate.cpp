@@ -88,7 +88,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "synchronizePredicate", "[blockSync]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "synchronizePredicate", "[blockSync]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

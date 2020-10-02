@@ -103,7 +103,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuTbbBlocks<TDim, TIdx>>(
+                                    AccCpuTbbBlocks<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -141,7 +141,7 @@ namespace alpaka
                     static_cast<TIdx>(0),
                     static_cast<TIdx>(numBlocksInGrid),
                     [&](TIdx i){
-                         acc::AccCpuTbbBlocks<TDim, TIdx> acc(
+                         AccCpuTbbBlocks<TDim, TIdx> acc(
                              *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
                              blockSharedMemDynSizeBytes);
 
@@ -166,23 +166,20 @@ namespace alpaka
         };
     }
 
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU TBB block execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU TBB block execution task accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccCpuTbbBlocks<TDim, TIdx>;
-            };
-        }
+            using type = AccCpuTbbBlocks<TDim, TIdx>;
+        };
     }
     namespace traits
     {

@@ -104,7 +104,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuOmp2Threads<TDim, TIdx>>(
+                                    AccCpuOmp2Threads<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -130,7 +130,7 @@ namespace alpaka
                         },
                         m_args));
 
-                acc::AccCpuOmp2Threads<TDim, TIdx> acc(
+                AccCpuOmp2Threads<TDim, TIdx> acc(
                     *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
@@ -203,23 +203,20 @@ namespace alpaka
         };
     }
 
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block thread execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block thread execution task accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelCpuOmp2Threads<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccCpuOmp2Threads<TDim, TIdx>;
-            };
-        }
+            using type = AccCpuOmp2Threads<TDim, TIdx>;
+        };
     }
     namespace traits
     {

@@ -53,150 +53,143 @@ namespace alpaka
             typename... TArgs>
         class TaskKernelCpuTbbBlocks;
     }
-    namespace acc
+    //#############################################################################
+    //! The CPU TBB block accelerator.
+    template<
+        typename TDim,
+        typename TIdx>
+    class AccCpuTbbBlocks final :
+        public WorkDivMembers<TDim, TIdx>,
+        public idx::gb::IdxGbRef<TDim, TIdx>,
+        public idx::bt::IdxBtZero<TDim, TIdx>,
+        public atomic::AtomicHierarchy<
+            atomic::AtomicStdLibLock<16>, // grid atomics
+            atomic::AtomicStdLibLock<16>, // block atomics
+            atomic::AtomicNoOp         // thread atomics
+        >,
+        public math::MathStdLib,
+        public block::dyn::BlockSharedMemDynMember<>,
+        public block::st::BlockSharedMemStMember<>,
+        public block::BlockSyncNoOp,
+        public intrinsic::IntrinsicCpu,
+        public rand::RandStdLib,
+        public time::TimeStdLib,
+        public warp::WarpSingleThread,
+        public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
     {
+        static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
+    public:
+        // Partial specialization with the correct TDim and TIdx is not allowed.
+        template<
+            typename TDim2,
+            typename TIdx2,
+            typename TKernelFnObj,
+            typename... TArgs>
+        friend class ::alpaka::kernel::TaskKernelCpuTbbBlocks;
 
+    private:
+        //-----------------------------------------------------------------------------
+        template<
+            typename TWorkDiv>
+        ALPAKA_FN_HOST AccCpuTbbBlocks(
+            TWorkDiv const & workDiv,
+            std::size_t const & blockSharedMemDynSizeBytes) :
+                WorkDivMembers<TDim, TIdx>(workDiv),
+                idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                idx::bt::IdxBtZero<TDim, TIdx>(),
+                atomic::AtomicHierarchy<
+                    atomic::AtomicStdLibLock<16>, // atomics between grids
+                    atomic::AtomicStdLibLock<16>, // atomics between blocks
+                    atomic::AtomicNoOp         // atomics between threads
+                >(),
+                math::MathStdLib(),
+                block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
+                block::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
+                block::BlockSyncNoOp(),
+                rand::RandStdLib(),
+                time::TimeStdLib(),
+                m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
+        {}
+
+    public:
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks const &) = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks &&) = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks const &) -> AccCpuTbbBlocks & = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks &&) -> AccCpuTbbBlocks & = delete;
+        //-----------------------------------------------------------------------------
+        /*virtual*/ ~AccCpuTbbBlocks() = default;
+
+    private:
+        // getIdx
+        Vec<TDim, TIdx> mutable m_gridBlockIdx;  //!< The index of the currently executed block.
+    };
+
+    namespace traits
+    {
         //#############################################################################
-        //! The CPU TBB block accelerator.
+        //! The CPU TBB block accelerator type trait specialization.
         template<
             typename TDim,
             typename TIdx>
-        class AccCpuTbbBlocks final :
-            public WorkDivMembers<TDim, TIdx>,
-            public idx::gb::IdxGbRef<TDim, TIdx>,
-            public idx::bt::IdxBtZero<TDim, TIdx>,
-            public atomic::AtomicHierarchy<
-                atomic::AtomicStdLibLock<16>, // grid atomics
-                atomic::AtomicStdLibLock<16>, // block atomics
-                atomic::AtomicNoOp         // thread atomics
-            >,
-            public math::MathStdLib,
-            public block::dyn::BlockSharedMemDynMember<>,
-            public block::st::BlockSharedMemStMember<>,
-            public block::BlockSyncNoOp,
-            public intrinsic::IntrinsicCpu,
-            public rand::RandStdLib,
-            public time::TimeStdLib,
-            public warp::WarpSingleThread,
-            public concepts::Implements<ConceptAcc, AccCpuTbbBlocks<TDim, TIdx>>
+        struct AccType<
+            AccCpuTbbBlocks<TDim, TIdx>>
         {
-            static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
-        public:
-            // Partial specialization with the correct TDim and TIdx is not allowed.
-            template<
-                typename TDim2,
-                typename TIdx2,
-                typename TKernelFnObj,
-                typename... TArgs>
-            friend class ::alpaka::kernel::TaskKernelCpuTbbBlocks;
-
-        private:
-            //-----------------------------------------------------------------------------
-            template<
-                typename TWorkDiv>
-            ALPAKA_FN_HOST AccCpuTbbBlocks(
-                TWorkDiv const & workDiv,
-                std::size_t const & blockSharedMemDynSizeBytes) :
-                    WorkDivMembers<TDim, TIdx>(workDiv),
-                    idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
-                    idx::bt::IdxBtZero<TDim, TIdx>(),
-                    atomic::AtomicHierarchy<
-                        atomic::AtomicStdLibLock<16>, // atomics between grids
-                        atomic::AtomicStdLibLock<16>, // atomics between blocks
-                        atomic::AtomicNoOp         // atomics between threads
-                    >(),
-                    math::MathStdLib(),
-                    block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
-                    block::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
-                    block::BlockSyncNoOp(),
-                    rand::RandStdLib(),
-                    time::TimeStdLib(),
-                    m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
-            {}
-
-        public:
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks const &) = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST AccCpuTbbBlocks(AccCpuTbbBlocks &&) = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks const &) -> AccCpuTbbBlocks & = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(AccCpuTbbBlocks &&) -> AccCpuTbbBlocks & = delete;
-            //-----------------------------------------------------------------------------
-            /*virtual*/ ~AccCpuTbbBlocks() = default;
-
-        private:
-            // getIdx
-            Vec<TDim, TIdx> mutable m_gridBlockIdx;  //!< The index of the currently executed block.
+            using type = AccCpuTbbBlocks<TDim, TIdx>;
         };
-    }
-
-    namespace acc
-    {
-        namespace traits
+        //#############################################################################
+        //! The CPU TBB block accelerator device properties get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccDevProps<
+            AccCpuTbbBlocks<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU TBB block accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct AccType<
-                acc::AccCpuTbbBlocks<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getAccDevProps(
+                DevCpu const & dev)
+            -> AccDevProps<TDim, TIdx>
             {
-                using type = acc::AccCpuTbbBlocks<TDim, TIdx>;
-            };
-            //#############################################################################
-            //! The CPU TBB block accelerator device properties get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccDevProps<
-                acc::AccCpuTbbBlocks<TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                  ALPAKA_FN_HOST static auto getAccDevProps(
-                    DevCpu const & dev)
-                -> acc::AccDevProps<TDim, TIdx>
-                {
-                    alpaka::ignore_unused(dev);
+                alpaka::ignore_unused(dev);
 
-                    return {
-                        // m_multiProcessorCount
-                        static_cast<TIdx>(1),
-                        // m_gridBlockExtentMax
-                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_gridBlockCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_blockThreadExtentMax
-                        Vec<TDim, TIdx>::ones(),
-                        // m_blockThreadCountMax
-                        static_cast<TIdx>(1),
-                        // m_threadElemExtentMax
-                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_sharedMemSizeBytes
-                        static_cast< size_t >( acc::AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes() )};
-                }
+                return {
+                    // m_multiProcessorCount
+                    static_cast<TIdx>(1),
+                    // m_gridBlockExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_gridBlockCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_blockThreadExtentMax
+                    Vec<TDim, TIdx>::ones(),
+                    // m_blockThreadCountMax
+                    static_cast<TIdx>(1),
+                    // m_threadElemExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_threadElemCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_sharedMemSizeBytes
+                    static_cast< size_t >( AccCpuTbbBlocks<TDim, TIdx>::staticAllocBytes() )};
+            }
 
-            };
-            //#############################################################################
-            //! The CPU TBB block accelerator name trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccName<
-                acc::AccCpuTbbBlocks<TDim, TIdx>>
+        };
+        //#############################################################################
+        //! The CPU TBB block accelerator name trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccName<
+            AccCpuTbbBlocks<TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccName()
+            -> std::string
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccName()
-                -> std::string
-                {
-                    return "AccCpuTbbBlocks<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
-                }
-            };
-        }
+                return "AccCpuTbbBlocks<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+            }
+        };
     }
     namespace traits
     {
@@ -206,7 +199,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct DevType<
-            acc::AccCpuTbbBlocks<TDim, TIdx>>
+            AccCpuTbbBlocks<TDim, TIdx>>
         {
             using type = DevCpu;
         };
@@ -221,7 +214,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                acc::AccCpuTbbBlocks<TDim, TIdx>>
+                AccCpuTbbBlocks<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -240,7 +233,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct CreateTaskKernel<
-                acc::AccCpuTbbBlocks<TDim, TIdx>,
+                AccCpuTbbBlocks<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
@@ -272,7 +265,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct PltfType<
-            acc::AccCpuTbbBlocks<TDim, TIdx>>
+            AccCpuTbbBlocks<TDim, TIdx>>
         {
             using type = PltfCpu;
         };
@@ -287,7 +280,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct IdxType<
-                acc::AccCpuTbbBlocks<TDim, TIdx>>
+                AccCpuTbbBlocks<TDim, TIdx>>
             {
                 using type = TIdx;
             };

@@ -57,7 +57,7 @@ public:
 //-----------------------------------------------------------------------------
 TEST_CASE("cudaOnlyModeWorking", "[cudaOnly]")
 {
-    using TAcc = alpaka::acc::AccGpuCudaRt<alpaka::dim::DimInt<1u>, std::uint32_t>;
+    using TAcc = alpaka::AccGpuCudaRt<alpaka::dim::DimInt<1u>, std::uint32_t>;
     using Dim = alpaka::dim::Dim<TAcc>;
     using Idx = alpaka::idx::Idx<TAcc>;
 

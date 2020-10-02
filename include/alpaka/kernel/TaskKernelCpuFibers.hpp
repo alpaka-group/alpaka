@@ -127,7 +127,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuFibers<TDim, TIdx>>(
+                                    AccCpuFibers<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -139,7 +139,7 @@ namespace alpaka
                 std::cout << __func__
                     << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
-                acc::AccCpuFibers<TDim, TIdx> acc(
+                AccCpuFibers<TDim, TIdx> acc(
                     *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
@@ -178,7 +178,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The function executed for each grid block.
             ALPAKA_FN_HOST static auto gridBlockExecHost(
-                acc::AccCpuFibers<TDim, TIdx> & acc,
+                AccCpuFibers<TDim, TIdx> & acc,
                 Vec<TDim, TIdx> const & gridBlockIdx,
                 Vec<TDim, TIdx> const & blockThreadExtent,
                 FiberPool & fiberPool,
@@ -226,7 +226,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The function executed for each block thread.
             ALPAKA_FN_HOST static auto blockThreadExecHost(
-                acc::AccCpuFibers<TDim, TIdx> & acc,
+                AccCpuFibers<TDim, TIdx> & acc,
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
                 std::vector<boost::fibers::future<void>> & futuresInBlock,
                 Vec<TDim, TIdx> const & blockThreadIdx,
@@ -264,7 +264,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The fiber entry point.
             ALPAKA_FN_HOST static auto blockThreadFiberFn(
-                acc::AccCpuFibers<TDim, TIdx> & acc,
+                AccCpuFibers<TDim, TIdx> & acc,
                 Vec<TDim, TIdx> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 std::decay_t<TArgs> const & ... args)
@@ -287,7 +287,7 @@ namespace alpaka
 
                 // Execute the kernel itself.
                 kernelFnObj(
-                    const_cast<acc::AccCpuFibers<TDim, TIdx> const &>(acc),
+                    const_cast<AccCpuFibers<TDim, TIdx> const &>(acc),
                     args...);
 
                 // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!
@@ -299,23 +299,20 @@ namespace alpaka
         };
     }
 
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU fibers execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU fibers execution task accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelCpuFibers<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccCpuFibers<TDim, TIdx>;
-            };
-        }
+            using type = AccCpuFibers<TDim, TIdx>;
+        };
     }
     namespace traits
     {

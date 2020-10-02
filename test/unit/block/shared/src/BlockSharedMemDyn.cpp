@@ -78,7 +78,7 @@ namespace alpaka
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "sameNonNullAdress", "[blockSharedMemDyn]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "sameNonNullAdress", "[blockSharedMemDyn]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

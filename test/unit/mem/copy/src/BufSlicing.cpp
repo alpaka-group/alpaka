@@ -177,7 +177,7 @@ struct TestContainer
         {
             INFO("Dim: " << TDim::value)
             INFO("Idx: " << typeid(TIdx).name())
-            INFO("Acc: " << alpaka::acc::traits::GetAccName<TAcc>::getAccName())
+            INFO("Acc: " << alpaka::traits::GetAccName<TAcc>::getAccName())
             INFO("i: " << i)
             REQUIRE(ptrA[i] == Approx(ptrB[i]));
         }
@@ -194,7 +194,7 @@ using DataTypes = std::tuple<
 using TestAccWithDataTypes =
 alpaka::meta::CartesianProduct<
     std::tuple,
-    alpaka::test::acc::TestAccs,
+    alpaka::test::TestAccs,
     DataTypes
 >;
 

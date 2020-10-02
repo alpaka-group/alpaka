@@ -18,7 +18,7 @@
 
 #include <catch2/catch.hpp>
 
-using TestAccs = alpaka::test::acc::EnabledAccs<
+using TestAccs = alpaka::test::EnabledAccs<
     alpaka::dim::DimInt< 1u >,
     std::size_t
 >;

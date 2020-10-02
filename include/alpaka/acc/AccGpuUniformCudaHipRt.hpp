@@ -62,226 +62,220 @@ namespace alpaka
             typename... TArgs>
         class TaskKernelGpuUniformCudaHipRt;
     }
-    namespace acc
+    //#############################################################################
+    //! The GPU CUDA accelerator.
+    //!
+    //! This accelerator allows parallel kernel execution on devices supporting CUDA.
+    template<
+        typename TDim,
+        typename TIdx>
+    class AccGpuUniformCudaHipRt :
+        public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
+        public idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
+        public idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
+        public atomic::AtomicHierarchy<
+            atomic::AtomicUniformCudaHipBuiltIn, // grid atomics
+            atomic::AtomicUniformCudaHipBuiltIn, // block atomics
+            atomic::AtomicUniformCudaHipBuiltIn  // thread atomics
+        >,
+        public math::MathUniformCudaHipBuiltIn,
+        public block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn,
+        public block::st::BlockSharedMemStUniformCudaHipBuiltIn,
+        public block::BlockSyncUniformCudaHipBuiltIn,
+        public intrinsic::IntrinsicUniformCudaHipBuiltIn,
+        public rand::RandUniformCudaHipRand,
+        public time::TimeUniformCudaHipBuiltIn,
+        public warp::WarpUniformCudaHipBuiltIn,
+        public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TDim, TIdx>>
+    {
+        static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
+    public:
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuUniformCudaHipRt(
+            Vec<TDim, TIdx> const & threadElemExtent) :
+                WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent),
+                idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>(),
+                idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>(),
+                atomic::AtomicHierarchy<
+                    atomic::AtomicUniformCudaHipBuiltIn, // atomics between grids
+                    atomic::AtomicUniformCudaHipBuiltIn, // atomics between blocks
+                    atomic::AtomicUniformCudaHipBuiltIn  // atomics between threads
+                >(),
+                math::MathUniformCudaHipBuiltIn(),
+                block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn(),
+                block::st::BlockSharedMemStUniformCudaHipBuiltIn(),
+                block::BlockSyncUniformCudaHipBuiltIn(),
+                rand::RandUniformCudaHipRand(),
+                time::TimeUniformCudaHipBuiltIn()
+        {}
+
+    public:
+
+        //using baseType = AccUniformCudaHip<TDim,TIdx>;
+
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt const &) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt &&) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(AccGpuUniformCudaHipRt const &) -> AccGpuUniformCudaHipRt & = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(AccGpuUniformCudaHipRt &&) -> AccGpuUniformCudaHipRt & = delete;
+        //-----------------------------------------------------------------------------
+        ~AccGpuUniformCudaHipRt() = default;
+    };
+
+    namespace traits
     {
         //#############################################################################
-        //! The GPU CUDA accelerator.
-        //!
-        //! This accelerator allows parallel kernel execution on devices supporting CUDA.
+        //! The GPU CUDA accelerator accelerator type trait specialization.
         template<
             typename TDim,
             typename TIdx>
-        class AccGpuUniformCudaHipRt :
-            public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
-            public idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
-            public idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
-            public atomic::AtomicHierarchy<
-                atomic::AtomicUniformCudaHipBuiltIn, // grid atomics
-                atomic::AtomicUniformCudaHipBuiltIn, // block atomics
-                atomic::AtomicUniformCudaHipBuiltIn  // thread atomics
-            >,
-            public math::MathUniformCudaHipBuiltIn,
-            public block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn,
-            public block::st::BlockSharedMemStUniformCudaHipBuiltIn,
-            public block::BlockSyncUniformCudaHipBuiltIn,
-            public intrinsic::IntrinsicUniformCudaHipBuiltIn,
-            public rand::RandUniformCudaHipRand,
-            public time::TimeUniformCudaHipBuiltIn,
-            public warp::WarpUniformCudaHipBuiltIn,
-            public concepts::Implements<ConceptAcc, AccGpuUniformCudaHipRt<TDim, TIdx>>
+        struct AccType<
+            AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            static_assert(sizeof(TIdx) >= sizeof(int), "Index type is not supported, consider using int or a larger type.");
-        public:
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuUniformCudaHipRt(
-                Vec<TDim, TIdx> const & threadElemExtent) :
-                    WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent),
-                    idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>(),
-                    idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>(),
-                    atomic::AtomicHierarchy<
-                        atomic::AtomicUniformCudaHipBuiltIn, // atomics between grids
-                        atomic::AtomicUniformCudaHipBuiltIn, // atomics between blocks
-                        atomic::AtomicUniformCudaHipBuiltIn  // atomics between threads
-                    >(),
-                    math::MathUniformCudaHipBuiltIn(),
-                    block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn(),
-                    block::st::BlockSharedMemStUniformCudaHipBuiltIn(),
-                    block::BlockSyncUniformCudaHipBuiltIn(),
-                    rand::RandUniformCudaHipRand(),
-                    time::TimeUniformCudaHipBuiltIn()
-            {}
-
-        public:
-
-            //using baseType = AccUniformCudaHip<TDim,TIdx>;
-
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt const &) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ AccGpuUniformCudaHipRt(AccGpuUniformCudaHipRt &&) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuUniformCudaHipRt const &) -> AccGpuUniformCudaHipRt & = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(AccGpuUniformCudaHipRt &&) -> AccGpuUniformCudaHipRt & = delete;
-            //-----------------------------------------------------------------------------
-            ~AccGpuUniformCudaHipRt() = default;
+            using type = AccGpuUniformCudaHipRt<TDim, TIdx>;
         };
-    }
-
-    namespace acc
-    {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA accelerator device properties get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccDevProps<
+            AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA accelerator accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct AccType<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccDevProps(
+                DevUniformCudaHipRt const & dev)
+            -> AccDevProps<TDim, TIdx>
             {
-                using type = acc::AccGpuUniformCudaHipRt<TDim, TIdx>;
-            };
-            //#############################################################################
-            //! The GPU CUDA accelerator device properties get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccDevProps<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccDevProps(
-                    DevUniformCudaHipRt const & dev)
-                -> acc::AccDevProps<TDim, TIdx>
-                {
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                    // Reading only the necessary attributes with cudaDeviceGetAttribute is faster than reading all with cuda
-                    // https://devblogs.nvidia.com/cuda-pro-tip-the-fast-way-to-query-device-properties/
-                    int multiProcessorCount = {};
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &multiProcessorCount,
-                        cudaDevAttrMultiProcessorCount,
-                        dev.m_iDevice));
+                // Reading only the necessary attributes with cudaDeviceGetAttribute is faster than reading all with cuda
+                // https://devblogs.nvidia.com/cuda-pro-tip-the-fast-way-to-query-device-properties/
+                int multiProcessorCount = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &multiProcessorCount,
+                    cudaDevAttrMultiProcessorCount,
+                    dev.m_iDevice));
 
-                    int maxGridSize[3] = {};
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &maxGridSize[0],
-                        cudaDevAttrMaxGridDimX,
-                        dev.m_iDevice));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &maxGridSize[1],
-                        cudaDevAttrMaxGridDimY,
-                        dev.m_iDevice));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &maxGridSize[2],
-                        cudaDevAttrMaxGridDimZ,
-                        dev.m_iDevice));
+                int maxGridSize[3] = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &maxGridSize[0],
+                    cudaDevAttrMaxGridDimX,
+                    dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &maxGridSize[1],
+                    cudaDevAttrMaxGridDimY,
+                    dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &maxGridSize[2],
+                    cudaDevAttrMaxGridDimZ,
+                    dev.m_iDevice));
 
-                    int maxBlockDim[3] = {};
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &maxBlockDim[0],
-                        cudaDevAttrMaxBlockDimX,
-                        dev.m_iDevice));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &maxBlockDim[1],
-                        cudaDevAttrMaxBlockDimY,
-                        dev.m_iDevice));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &maxBlockDim[2],
-                        cudaDevAttrMaxBlockDimZ,
-                        dev.m_iDevice));
+                int maxBlockDim[3] = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &maxBlockDim[0],
+                    cudaDevAttrMaxBlockDimX,
+                    dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &maxBlockDim[1],
+                    cudaDevAttrMaxBlockDimY,
+                    dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &maxBlockDim[2],
+                    cudaDevAttrMaxBlockDimZ,
+                    dev.m_iDevice));
 
-                    int maxThreadsPerBlock = {};
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &maxThreadsPerBlock,
-                        cudaDevAttrMaxThreadsPerBlock,
-                        dev.m_iDevice));
+                int maxThreadsPerBlock = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &maxThreadsPerBlock,
+                    cudaDevAttrMaxThreadsPerBlock,
+                    dev.m_iDevice));
 
-                    int sharedMemSizeBytes = {};
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
-                        &sharedMemSizeBytes,
-                        cudaDevAttrMaxSharedMemoryPerBlock,
-                        dev.m_iDevice));
+                int sharedMemSizeBytes = {};
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(cudaDeviceGetAttribute(
+                    &sharedMemSizeBytes,
+                    cudaDevAttrMaxSharedMemoryPerBlock,
+                    dev.m_iDevice));
 
-                    return {
-                        // m_multiProcessorCount
-                        alpaka::core::clipCast<TIdx>(multiProcessorCount),
-                        // m_gridBlockExtentMax
-                        extent::getExtentVecEnd<TDim>(
-                            Vec<dim::DimInt<3u>, TIdx>(
-                                alpaka::core::clipCast<TIdx>(maxGridSize[2u]),
-                                alpaka::core::clipCast<TIdx>(maxGridSize[1u]),
-                                alpaka::core::clipCast<TIdx>(maxGridSize[0u]))),
-                        // m_gridBlockCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_blockThreadExtentMax
-                        extent::getExtentVecEnd<TDim>(
-                            Vec<dim::DimInt<3u>, TIdx>(
-                                alpaka::core::clipCast<TIdx>(maxBlockDim[2u]),
-                                alpaka::core::clipCast<TIdx>(maxBlockDim[1u]),
-                                alpaka::core::clipCast<TIdx>(maxBlockDim[0u]))),
-                        // m_blockThreadCountMax
-                        alpaka::core::clipCast<TIdx>(maxThreadsPerBlock),
-                        // m_threadElemExtentMax
-                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_sharedMemSizeBytes
-                        static_cast<size_t>(sharedMemSizeBytes)
-                    };
+                return {
+                    // m_multiProcessorCount
+                    alpaka::core::clipCast<TIdx>(multiProcessorCount),
+                    // m_gridBlockExtentMax
+                    extent::getExtentVecEnd<TDim>(
+                        Vec<dim::DimInt<3u>, TIdx>(
+                            alpaka::core::clipCast<TIdx>(maxGridSize[2u]),
+                            alpaka::core::clipCast<TIdx>(maxGridSize[1u]),
+                            alpaka::core::clipCast<TIdx>(maxGridSize[0u]))),
+                    // m_gridBlockCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_blockThreadExtentMax
+                    extent::getExtentVecEnd<TDim>(
+                        Vec<dim::DimInt<3u>, TIdx>(
+                            alpaka::core::clipCast<TIdx>(maxBlockDim[2u]),
+                            alpaka::core::clipCast<TIdx>(maxBlockDim[1u]),
+                            alpaka::core::clipCast<TIdx>(maxBlockDim[0u]))),
+                    // m_blockThreadCountMax
+                    alpaka::core::clipCast<TIdx>(maxThreadsPerBlock),
+                    // m_threadElemExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_threadElemCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_sharedMemSizeBytes
+                    static_cast<size_t>(sharedMemSizeBytes)
+                };
 
 #else
-                    hipDeviceProp_t hipDevProp;
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipGetDeviceProperties(
-                        &hipDevProp,
-                        dev.m_iDevice));
+                hipDeviceProp_t hipDevProp;
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipGetDeviceProperties(
+                    &hipDevProp,
+                    dev.m_iDevice));
 
-                    return {
-                        // m_multiProcessorCount
-                        alpaka::core::clipCast<TIdx>(hipDevProp.multiProcessorCount),
-                        // m_gridBlockExtentMax
-                        extent::getExtentVecEnd<TDim>(
-                            Vec<dim::DimInt<3u>, TIdx>(
-                                alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[2u]),
-                                alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[1u]),
-                                alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[0u]))),
-                        // m_gridBlockCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_blockThreadExtentMax
-                        extent::getExtentVecEnd<TDim>(
-                            Vec<dim::DimInt<3u>, TIdx>(
-                                alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[2u]),
-                                alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[1u]),
-                                alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[0u]))),
-                        // m_blockThreadCountMax
-                        alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsPerBlock),
-                        // m_threadElemExtentMax
-                        Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_sharedMemSizeBytes
-                        static_cast<size_t>(hipDevProp.sharedMemPerBlock)
-                    };
+                return {
+                    // m_multiProcessorCount
+                    alpaka::core::clipCast<TIdx>(hipDevProp.multiProcessorCount),
+                    // m_gridBlockExtentMax
+                    extent::getExtentVecEnd<TDim>(
+                        Vec<dim::DimInt<3u>, TIdx>(
+                            alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[2u]),
+                            alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[1u]),
+                            alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[0u]))),
+                    // m_gridBlockCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_blockThreadExtentMax
+                    extent::getExtentVecEnd<TDim>(
+                        Vec<dim::DimInt<3u>, TIdx>(
+                            alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[2u]),
+                            alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[1u]),
+                            alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[0u]))),
+                    // m_blockThreadCountMax
+                    alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsPerBlock),
+                    // m_threadElemExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_threadElemCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_sharedMemSizeBytes
+                    static_cast<size_t>(hipDevProp.sharedMemPerBlock)
+                };
 #endif
-                }
-            };
-            //#############################################################################
-            //! The GPU CUDA accelerator name trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccName<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
+            }
+        };
+        //#############################################################################
+        //! The GPU CUDA accelerator name trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccName<
+            AccGpuUniformCudaHipRt<TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccName()
+            -> std::string
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccName()
-                -> std::string
-                {
-                    return "AccGpuUniformCudaHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
-                }
-            };
-        }
+                return "AccGpuUniformCudaHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+            }
+        };
     }
     namespace traits
     {
@@ -291,7 +285,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct DevType<
-            acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
+            AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
             using type = DevUniformCudaHipRt;
         };
@@ -306,7 +300,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
+                AccGpuUniformCudaHipRt<TDim, TIdx>>
             {
                 using type = TDim;
             };
@@ -326,7 +320,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct CheckFnReturnType<
-                acc::AccGpuUniformCudaHipRt<
+                AccGpuUniformCudaHipRt<
                     TDim,
                     TIdx>>
             {
@@ -353,7 +347,7 @@ namespace alpaka
                 typename TKernelFnObj,
                 typename... TArgs>
             struct CreateTaskKernel<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>,
+                AccGpuUniformCudaHipRt<TDim, TIdx>,
                 TWorkDiv,
                 TKernelFnObj,
                 TArgs...>
@@ -366,7 +360,7 @@ namespace alpaka
                 {
                     return
                         kernel::TaskKernelGpuUniformCudaHipRt<
-                            acc::AccGpuUniformCudaHipRt<TDim, TIdx>,
+                            AccGpuUniformCudaHipRt<TDim, TIdx>,
                             TDim,
                             TIdx,
                             TKernelFnObj,
@@ -386,7 +380,7 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct PltfType<
-            acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
+            AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
             using type = PltfUniformCudaHipRt;
         };
@@ -401,7 +395,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct IdxType<
-                acc::AccGpuUniformCudaHipRt<TDim, TIdx>>
+                AccGpuUniformCudaHipRt<TDim, TIdx>>
             {
                 using type = TIdx;
             };

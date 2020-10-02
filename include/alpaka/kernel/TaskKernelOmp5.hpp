@@ -114,7 +114,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccOmp5<TDim, TIdx>>(
+                                    AccOmp5<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -180,7 +180,7 @@ namespace alpaka
                         }
                         printf("threadElemCount_dev %d\n", int(threadElemExtent[0u]));
 #endif
-                        acc::AccOmp5<TDim, TIdx> acc(
+                        AccOmp5<TDim, TIdx> acc(
                             gridBlockExtent,
                             blockThreadExtent,
                             threadElemExtent,
@@ -240,24 +240,20 @@ namespace alpaka
             std::tuple<std::decay_t<TArgs>...> m_args;
         };
     }
-
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 execution task accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccOmp5<TDim, TIdx>;
-            };
-        }
+            using type = AccOmp5<TDim, TIdx>;
+        };
     }
     namespace traits
     {

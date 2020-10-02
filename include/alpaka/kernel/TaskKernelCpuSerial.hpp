@@ -97,7 +97,7 @@ namespace alpaka
                         {
                             return
                                 kernel::getBlockSharedMemDynSizeBytes<
-                                    acc::AccCpuSerial<TDim, TIdx>>(
+                                    AccCpuSerial<TDim, TIdx>>(
                                         m_kernelFnObj,
                                         blockThreadExtent,
                                         threadElemExtent,
@@ -123,7 +123,7 @@ namespace alpaka
                         },
                         m_args));
 
-                acc::AccCpuSerial<TDim, TIdx> acc(
+                AccCpuSerial<TDim, TIdx> acc(
                     *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
                     blockSharedMemDynSizeBytes);
 
@@ -153,23 +153,20 @@ namespace alpaka
         };
     }
 
-    namespace acc
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU serial execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            kernel::TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU serial execution task accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct AccType<
-                kernel::TaskKernelCpuSerial<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = acc::AccCpuSerial<TDim, TIdx>;
-            };
-        }
+            using type = AccCpuSerial<TDim, TIdx>;
+        };
     }
     namespace traits
     {

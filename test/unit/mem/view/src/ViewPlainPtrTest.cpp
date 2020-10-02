@@ -188,19 +188,19 @@ namespace view
 #endif
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "viewPlainPtrTest", "[memView]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "viewPlainPtrTest", "[memView]", alpaka::test::TestAccs)
 {
     alpaka::test::mem::view::testViewPlainPtr<TestType, float>();
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "viewPlainPtrConstTest", "[memView]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "viewPlainPtrConstTest", "[memView]", alpaka::test::TestAccs)
 {
     alpaka::test::mem::view::testViewPlainPtrConst<TestType, float>();
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "viewPlainPtrOperatorTest", "[memView]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "viewPlainPtrOperatorTest", "[memView]", alpaka::test::TestAccs)
 {
     alpaka::test::mem::view::testViewPlainPtrOperators<TestType, float>();
 }

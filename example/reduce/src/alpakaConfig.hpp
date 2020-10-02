@@ -62,17 +62,17 @@ struct GetIterator
 //! Defines Host, Device, etc. for the OpenMP 2 Blocks accelerator.
 struct CpuOmp2Blocks
 {
-    using Host = alpaka::acc::AccCpuOmp2Blocks<Dim, Extent>;
-    using Acc = alpaka::acc::AccCpuOmp2Blocks<Dim, Extent>;
+    using Host = alpaka::AccCpuOmp2Blocks<Dim, Extent>;
+    using Acc = alpaka::AccCpuOmp2Blocks<Dim, Extent>;
     using SmCount = alpaka::dim::DimInt<1u>;
     using MaxBlockSize = alpaka::dim::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::acc::AccCpuOmp2Blocks<TArgs...>>
+struct GetIterator<T, TBuf, alpaka::AccCpuOmp2Blocks<TArgs...>>
 {
     using Iterator =
-        IteratorCpu<alpaka::acc::AccCpuOmp2Blocks<TArgs...>, T, TBuf>;
+        IteratorCpu<alpaka::AccCpuOmp2Blocks<TArgs...>, T, TBuf>;
 };
 #endif
 
@@ -84,8 +84,8 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuOmp2Blocks<TArgs...>>
 //! Defines Host, Device, etc. for the OpenMP 5 accelerator.
 struct Omp5
 {
-    using Host = alpaka::acc::AccCpuSerial<Dim, Extent>;
-    using Acc = alpaka::acc::AccOmp5<Dim, Extent>;
+    using Host = alpaka::AccCpuSerial<Dim, Extent>;
+    using Acc = alpaka::AccOmp5<Dim, Extent>;
     using DevHost = alpaka::Dev<Host>;
     using DevAcc = alpaka::Dev<Acc>;
     using PltfHost = alpaka::Pltf<DevHost>;
@@ -96,9 +96,9 @@ struct Omp5
 };
 
 template <typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::acc::AccOmp5<TArgs...>>
+struct GetIterator<T, TBuf, alpaka::AccOmp5<TArgs...>>
 {
-    using Iterator = IteratorCpu<alpaka::acc::AccOmp5<TArgs...>, T, TBuf>;
+    using Iterator = IteratorCpu<alpaka::AccOmp5<TArgs...>, T, TBuf>;
 };
 #endif
 #endif
@@ -110,15 +110,15 @@ struct GetIterator<T, TBuf, alpaka::acc::AccOmp5<TArgs...>>
 //! Defines Host, Device, etc. for the serial CPU accelerator.
 struct CpuSerial
 {
-    using Host = alpaka::acc::AccCpuSerial<Dim, Extent>;
-    using Acc = alpaka::acc::AccCpuSerial<Dim, Extent>;
+    using Host = alpaka::AccCpuSerial<Dim, Extent>;
+    using Acc = alpaka::AccCpuSerial<Dim, Extent>;
     using MaxBlockSize = alpaka::dim::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::acc::AccCpuSerial<TArgs...>>
+struct GetIterator<T, TBuf, alpaka::AccCpuSerial<TArgs...>>
 {
-    using Iterator = IteratorCpu<alpaka::acc::AccCpuSerial<TArgs...>, T, TBuf>;
+    using Iterator = IteratorCpu<alpaka::AccCpuSerial<TArgs...>, T, TBuf>;
 };
 #endif
 
@@ -129,15 +129,15 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuSerial<TArgs...>>
 //! Defines Host, Device, etc. for the CPU Threads accelerator.
 struct CpuThreads
 {
-    using Host = alpaka::acc::AccCpuThreads<Dim, Extent>;
-    using Acc = alpaka::acc::AccCpuThreads<Dim, Extent>;
+    using Host = alpaka::AccCpuThreads<Dim, Extent>;
+    using Acc = alpaka::AccCpuThreads<Dim, Extent>;
     using MaxBlockSize = alpaka::dim::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::acc::AccCpuThreads<TArgs...>>
+struct GetIterator<T, TBuf, alpaka::AccCpuThreads<TArgs...>>
 {
-    using Iterator = IteratorCpu<alpaka::acc::AccCpuThreads<TArgs...>, T, TBuf>;
+    using Iterator = IteratorCpu<alpaka::AccCpuThreads<TArgs...>, T, TBuf>;
 };
 #endif
 
@@ -149,15 +149,15 @@ struct GetIterator<T, TBuf, alpaka::acc::AccCpuThreads<TArgs...>>
 //! Defines Host, Device, etc. for the CUDA/HIP accelerator.
 struct GpuCudaRt
 {
-    using Host = alpaka::acc::AccCpuSerial<Dim, Extent>;
-    using Acc = alpaka::acc::AccGpuCudaRt<Dim, Extent>;
+    using Host = alpaka::AccCpuSerial<Dim, Extent>;
+    using Acc = alpaka::AccGpuCudaRt<Dim, Extent>;
     using MaxBlockSize = alpaka::dim::DimInt<1024u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
-struct GetIterator<T, TBuf, alpaka::acc::AccGpuUniformCudaHipRt<TArgs...>>
+struct GetIterator<T, TBuf, alpaka::AccGpuUniformCudaHipRt<TArgs...>>
 {
-    using Iterator = IteratorGpu<alpaka::acc::AccGpuUniformCudaHipRt<TArgs...>, T, TBuf>;
+    using Iterator = IteratorGpu<alpaka::AccGpuUniformCudaHipRt<TArgs...>, T, TBuf>;
 };
 #endif
 #endif

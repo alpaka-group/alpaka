@@ -42,7 +42,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "clockIsWorking", "[timeClock]", alpaka::test::acc::TestAccs)
+TEMPLATE_LIST_TEST_CASE( "clockIsWorking", "[timeClock]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;

@@ -107,7 +107,7 @@ namespace alpaka
         typename TDim,
         typename TIdx>
     ALPAKA_FN_HOST auto isValidAccDevProps(
-        acc::AccDevProps<TDim, TIdx> const & accDevProps)
+        AccDevProps<TDim, TIdx> const & accDevProps)
     -> bool
     {
         // Check that the maximum counts are greater or equal 1.
@@ -161,7 +161,7 @@ namespace alpaka
     ALPAKA_FN_HOST auto subDivideGridElems(
         Vec<TDim, TIdx> const & gridElemExtent,
         Vec<TDim, TIdx> threadElemExtent,
-        acc::AccDevProps<TDim, TIdx> const & accDevProps,
+        AccDevProps<TDim, TIdx> const & accDevProps,
         bool requireBlockThreadExtentToDivideGridThreadExtent = true,
         GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
     -> WorkDivMembers<TDim, TIdx>
@@ -413,7 +413,7 @@ namespace alpaka
         return subDivideGridElems(
             extent::getExtentVec(gridElemExtent),
             extent::getExtentVec(threadElemExtents),
-            acc::getAccDevProps<TAcc>(dev),
+            getAccDevProps<TAcc>(dev),
             requireBlockThreadExtentToDivideGridThreadExtent,
             gridBlockExtentSubDivRestrictions);
     }
@@ -430,7 +430,7 @@ namespace alpaka
         typename TIdx,
         typename TWorkDiv>
     ALPAKA_FN_HOST auto isValidWorkDiv(
-        acc::AccDevProps<TDim, TIdx> const & accDevProps,
+        AccDevProps<TDim, TIdx> const & accDevProps,
         TWorkDiv const & workDiv)
     -> bool
     {
@@ -491,7 +491,7 @@ namespace alpaka
     {
         return
             isValidWorkDiv(
-                acc::getAccDevProps<TAcc>(dev),
+                getAccDevProps<TAcc>(dev),
                 workDiv);
     }
 }

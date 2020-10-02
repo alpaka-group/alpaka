@@ -119,9 +119,9 @@ auto main( ) -> int
     using Idx = uint32_t;
 
     // Select accelerator-types for host and device
-    // using Acc = alpaka::acc::AccCpuSerial<Dim, Idx>;
+    // using Acc = alpaka::AccCpuSerial<Dim, Idx>;
     using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
-    std::cout << "Using alpaka accelerator: " << alpaka::acc::getAccName<Acc>() << std::endl;
+    std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
 
     using DevHost = alpaka::DevCpu;
 

@@ -44,7 +44,7 @@ TEST_CASE("queueCollective", "[queue]")
     using Idx = size_t;
 
     // Define the accelerator
-    using Acc = alpaka::acc::AccCpuOmp2Blocks<Dim, Idx>;
+    using Acc = alpaka::AccCpuOmp2Blocks<Dim, Idx>;
     using Dev = alpaka::Dev<Acc>;
 
     using Queue = alpaka::queue::QueueCpuOmp2Collective;
@@ -92,7 +92,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     using Idx = size_t;
 
     // Define the accelerator
-    using Acc = alpaka::acc::AccCpuOmp2Blocks<Dim, Idx>;
+    using Acc = alpaka::AccCpuOmp2Blocks<Dim, Idx>;
     using Dev = alpaka::Dev<Acc>;
 
     using Queue = alpaka::queue::QueueCpuOmp2Collective;
