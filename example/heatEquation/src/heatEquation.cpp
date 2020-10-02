@@ -242,7 +242,7 @@ auto main( ) -> int
         uCurrBufAcc,
         extent
     );
-    alpaka::wait::wait( queue );
+    alpaka::wait( queue );
 
     for( uint32_t step = 0; step < numTimeSteps; step++ )
     {
@@ -274,7 +274,7 @@ auto main( ) -> int
         uNextBufAcc,
         extent
     );
-    alpaka::wait::wait( queue );
+    alpaka::wait( queue );
 
     // Calculate error
     double maxError = 0.0;

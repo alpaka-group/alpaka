@@ -145,7 +145,7 @@ auto main()
         },
         nExclamationMarks
     );
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     return EXIT_SUCCESS;
 

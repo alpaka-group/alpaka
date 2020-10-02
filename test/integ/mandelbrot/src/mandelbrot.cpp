@@ -406,7 +406,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
     alpaka::mem::view::copy(queue, bufColorHost, bufColorAcc, extent);
 
     // Wait for the queue to finish the memory operation.
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     // Write the image to a file.
     std::string fileName("mandelbrot"+std::to_string(numCols)+"x"+std::to_string(numRows)+"_"+alpaka::getAccName<Acc>()+".tga");

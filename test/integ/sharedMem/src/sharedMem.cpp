@@ -209,7 +209,7 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
     alpaka::mem::view::copy(queue, blockRetVals, blockRetValsAcc, resultElemCount);
 
     // Wait for the queue to finish the memory operation.
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     // Assert that the results are correct.
     Val const correctResult(

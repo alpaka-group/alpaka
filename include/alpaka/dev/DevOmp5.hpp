@@ -112,7 +112,7 @@ namespace alpaka
     //#############################################################################
     //! The Omp5 device handle.
     class DevOmp5 :
-        public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevOmp5>,
+        public concepts::Implements<ConceptCurrentThreadWaitFor, DevOmp5>,
         public concepts::Implements<ConceptDev, DevOmp5>
     {
         friend struct traits::GetDevByIdx<PltfOmp5>;
@@ -315,30 +315,27 @@ namespace alpaka
             using type = QueueOmp5NonBlocking;
         };
     }
-    namespace wait
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The thread Omp5 device wait specialization.
+        //!
+        //! Blocks until the device has completed all preceding requested tasks.
+        //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
+        template<>
+        struct CurrentThreadWaitFor<
+            DevOmp5>
         {
-            //#############################################################################
-            //! The thread Omp5 device wait specialization.
-            //!
-            //! Blocks until the device has completed all preceding requested tasks.
-            //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
-            template<>
-            struct CurrentThreadWaitFor<
-                DevOmp5>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+                DevOmp5 const & dev)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    DevOmp5 const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    generic::currentThreadWaitForDevice(dev);
-                }
-            };
-        }
+                generic::currentThreadWaitForDevice(dev);
+            }
+        };
     }
 }
 

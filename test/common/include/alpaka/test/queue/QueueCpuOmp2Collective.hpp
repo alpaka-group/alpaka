@@ -76,7 +76,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 void wait(event::EventCpu const & ev) final
                 {
-                    wait::wait(*this, ev);
+                    alpaka::wait(*this, ev);
                 }
 
             public:
@@ -99,7 +99,7 @@ namespace alpaka
     // All other operations will be performed from one thread (it is not defined which thread).
     //
     // Outside of a OpenMP parallel region the queue behaves like QueueCpuBlocking.
-    class QueueCpuOmp2Collective final : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueCpuOmp2Collective>
+    class QueueCpuOmp2Collective final : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueCpuOmp2Collective>
     {
     public:
         //-----------------------------------------------------------------------------
@@ -345,78 +345,75 @@ namespace alpaka
         };
     }
 
-    namespace wait
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU blocking device queue thread wait trait specialization.
+        //!
+        //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
+        template<>
+        struct CurrentThreadWaitFor<
+            QueueCpuOmp2Collective>
         {
-            //#############################################################################
-            //! The CPU blocking device queue thread wait trait specialization.
-            //!
-            //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
-            template<>
-            struct CurrentThreadWaitFor<
-                QueueCpuOmp2Collective>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+                QueueCpuOmp2Collective const & queue)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    QueueCpuOmp2Collective const & queue)
-                -> void
+                if(::omp_in_parallel() != 0)
                 {
-                    if(::omp_in_parallel() != 0)
-                    {
-                        // wait for all tasks en-queued before the parallel region
-                        while(!empty(*queue.m_spBlockingQueue)){}
-                        #pragma omp barrier
-                    }
-                    else
-                    {
-                        std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
-                        wait::wait(*queue.m_spBlockingQueue);
-                    }
-                }
-            };
-
-
-            //#############################################################################
-            //! The CPU OpenMP2 collective device queue event wait trait specialization.
-            template<>
-            struct WaiterWaitFor<
-                cpu::detail::QueueCpuOmp2CollectiveImpl,
-                event::EventCpu>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto waiterWaitFor(
-                    cpu::detail::QueueCpuOmp2CollectiveImpl &,
-                    event::EventCpu const &)
-                -> void
-                {
+                    // wait for all tasks en-queued before the parallel region
+                    while(!empty(*queue.m_spBlockingQueue)){}
                     #pragma omp barrier
                 }
-            };
-            //#############################################################################
-            //! The CPU OpenMP2 collective queue event wait trait specialization.
-            template<>
-            struct WaiterWaitFor<
-                QueueCpuOmp2Collective,
-                event::EventCpu>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto waiterWaitFor(
-                    QueueCpuOmp2Collective & queue,
-                    event::EventCpu const & event)
-                -> void
+                else
                 {
-                    if(::omp_in_parallel() != 0)
-                    {
-                        // wait for all tasks en-queued before the parallel region
-                        while(!empty(*queue.m_spBlockingQueue)){}
-                        wait::wait(queue);
-                    }
-                    else
-                        wait::wait(*queue.m_spBlockingQueue, event);
+                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
+                    wait(*queue.m_spBlockingQueue);
                 }
-            };
-        }
+            }
+        };
+
+
+        //#############################################################################
+        //! The CPU OpenMP2 collective device queue event wait trait specialization.
+        template<>
+        struct WaiterWaitFor<
+            cpu::detail::QueueCpuOmp2CollectiveImpl,
+            event::EventCpu>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto waiterWaitFor(
+                cpu::detail::QueueCpuOmp2CollectiveImpl &,
+                event::EventCpu const &)
+            -> void
+            {
+                #pragma omp barrier
+            }
+        };
+        //#############################################################################
+        //! The CPU OpenMP2 collective queue event wait trait specialization.
+        template<>
+        struct WaiterWaitFor<
+            QueueCpuOmp2Collective,
+            event::EventCpu>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto waiterWaitFor(
+                QueueCpuOmp2Collective & queue,
+                event::EventCpu const & event)
+            -> void
+            {
+                if(::omp_in_parallel() != 0)
+                {
+                    // wait for all tasks en-queued before the parallel region
+                    while(!empty(*queue.m_spBlockingQueue)){}
+                    wait(queue);
+                }
+                else
+                    wait(*queue.m_spBlockingQueue, event);
+            }
+        };
     }
     //-----------------------------------------------------------------------------
     //! The test specifics.

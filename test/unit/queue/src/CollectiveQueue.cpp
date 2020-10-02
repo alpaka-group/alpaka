@@ -76,7 +76,7 @@ TEST_CASE("queueCollective", "[queue]")
                QueueCollectiveTestKernel{},
                results.data());
 
-        alpaka::wait::wait(queue);
+        alpaka::wait(queue);
     }
 
     for(size_t i = 0; i < results.size(); ++i)
@@ -140,7 +140,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
         // only one thread will perform this memcpy
         alpaka::mem::view::copy(queue, dst, src, Vec(static_cast<Idx>(1u)));
 
-        alpaka::wait::wait(queue);
+        alpaka::wait(queue);
     }
 
     uint32_t numFlippedValues = 0u;

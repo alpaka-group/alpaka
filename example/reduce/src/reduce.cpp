@@ -162,7 +162,7 @@ int main()
 
     // reduce
     T result = reduce<T>(devHost, devAcc, queue, n, hostMemory, addFn);
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     // check result
     T expectedResult = static_cast<T>(n / 2 * (n + 1));

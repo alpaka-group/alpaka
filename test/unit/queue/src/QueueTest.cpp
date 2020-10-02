@@ -78,7 +78,7 @@ TEMPLATE_LIST_TEST_CASE( "queueWaitShouldWork", "[queue]", TestQueues)
             CallbackFinished = true;
         });
 
-    alpaka::wait::wait(f.m_queue);
+    alpaka::wait(f.m_queue);
     CHECK(CallbackFinished);
 }
 
@@ -102,7 +102,7 @@ TEMPLATE_LIST_TEST_CASE( "queueShouldNotBeEmptyWhenLastTaskIsStillExecutingAndIs
     // A non-blocking queue will always stay empty because the task has been executed immediately.
     if(!alpaka::test::IsBlockingQueue<typename Fixture::Queue>::value)
     {
-        alpaka::wait::wait(f.m_queue);
+        alpaka::wait(f.m_queue);
     }
 
     CHECK(alpaka::empty(f.m_queue));
@@ -150,7 +150,7 @@ TEMPLATE_LIST_TEST_CASE( "queueShouldNotExecuteTasksInParallel", "[queue]", Test
     thread1.join();
     thread2.join();
 
-    alpaka::wait::wait(f.m_queue);
+    alpaka::wait(f.m_queue);
 
     firstTaskFinishedFuture.get();
     secondTaskFinishedFuture.get();

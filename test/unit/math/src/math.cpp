@@ -157,7 +157,7 @@ struct TestTemplate
         alpaka::enqueue( queue, taskKernel );
         // Copy back the results (encapsulated in the buffer class).
         results.copyFromDevice( queue );
-        alpaka::wait::wait( queue );
+        alpaka::wait( queue );
         std::cout.precision( std::numeric_limits<TData>::digits10 + 1 );
 
         INFO("Operator: " << functor)

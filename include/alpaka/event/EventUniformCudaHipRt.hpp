@@ -113,7 +113,7 @@ namespace alpaka
         //#############################################################################
         //! The CUDA/HIP RT device event.
         class EventUniformCudaHipRt final
-            : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, EventUniformCudaHipRt>
+            : public concepts::Implements<ConceptCurrentThreadWaitFor, EventUniformCudaHipRt>
             , public concepts::Implements<ConceptGetDev, EventUniformCudaHipRt>
         {
         public:
@@ -240,102 +240,99 @@ namespace alpaka
             }
         };
     }
-    namespace wait
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT device event thread wait trait specialization.
+        //!
+        //! Waits until the event itself and therefore all tasks preceding it in the queue it is enqueued to have been completed.
+        //! If the event is not enqueued to a queue the method returns immediately.
+        template<>
+        struct CurrentThreadWaitFor<
+            event::EventUniformCudaHipRt>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT device event thread wait trait specialization.
-            //!
-            //! Waits until the event itself and therefore all tasks preceding it in the queue it is enqueued to have been completed.
-            //! If the event is not enqueued to a queue the method returns immediately.
-            template<>
-            struct CurrentThreadWaitFor<
-                event::EventUniformCudaHipRt>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+                event::EventUniformCudaHipRt const & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    event::EventUniformCudaHipRt const & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Sync is allowed even for events on non current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventSynchronize)(
-                        event.m_spEventImpl->m_UniformCudaHipEvent));
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP RT queue event wait trait specialization.
-            template<>
-            struct WaiterWaitFor<
-                QueueUniformCudaHipRtNonBlocking,
-                event::EventUniformCudaHipRt>
+                // Sync is allowed even for events on non current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventSynchronize)(
+                    event.m_spEventImpl->m_UniformCudaHipEvent));
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP RT queue event wait trait specialization.
+        template<>
+        struct WaiterWaitFor<
+            QueueUniformCudaHipRtNonBlocking,
+            event::EventUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto waiterWaitFor(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                event::EventUniformCudaHipRt const & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto waiterWaitFor(
-                    QueueUniformCudaHipRtNonBlocking & queue,
-                    event::EventUniformCudaHipRt const & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue,
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        0));
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP RT queue event wait trait specialization.
-            template<>
-            struct WaiterWaitFor<
-                QueueUniformCudaHipRtBlocking,
-                event::EventUniformCudaHipRt>
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                    event.m_spEventImpl->m_UniformCudaHipEvent,
+                    0));
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP RT queue event wait trait specialization.
+        template<>
+        struct WaiterWaitFor<
+            QueueUniformCudaHipRtBlocking,
+            event::EventUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto waiterWaitFor(
+                QueueUniformCudaHipRtBlocking & queue,
+                event::EventUniformCudaHipRt const & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto waiterWaitFor(
-                    QueueUniformCudaHipRtBlocking & queue,
-                    event::EventUniformCudaHipRt const & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue,
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        0));
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP RT device event wait trait specialization.
-            //!
-            //! Any future work submitted in any queue of this device will wait for event to complete before beginning execution.
-            template<>
-            struct WaiterWaitFor<
-                DevUniformCudaHipRt,
-                event::EventUniformCudaHipRt>
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                    event.m_spEventImpl->m_UniformCudaHipEvent,
+                    0));
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP RT device event wait trait specialization.
+        //!
+        //! Any future work submitted in any queue of this device will wait for event to complete before beginning execution.
+        template<>
+        struct WaiterWaitFor<
+            DevUniformCudaHipRt,
+            event::EventUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto waiterWaitFor(
+                DevUniformCudaHipRt & dev,
+                event::EventUniformCudaHipRt const & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto waiterWaitFor(
-                    DevUniformCudaHipRt & dev,
-                    event::EventUniformCudaHipRt const & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(SetDevice)(
-                            dev.m_iDevice));
+                // Set the current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(SetDevice)(
+                        dev.m_iDevice));
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
-                        nullptr,
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        0));
-                }
-            };
-        }
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamWaitEvent)(
+                    nullptr,
+                    event.m_spEventImpl->m_UniformCudaHipEvent,
+                    0));
+            }
+        };
     }
 }
 

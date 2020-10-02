@@ -308,7 +308,7 @@ namespace alpaka
                     // Copy the generated content into the given view.
                     alpaka::mem::view::copy(queue, view, plainBuf, extent);
 
-                    alpaka::wait::wait(queue);
+                    alpaka::wait(queue);
                 }
 
                 //-----------------------------------------------------------------------------
@@ -341,7 +341,7 @@ namespace alpaka
                     {
                         std::uint8_t const byte(static_cast<uint8_t>(42u));
                         alpaka::mem::view::set(queue, view, byte, extent);
-                        alpaka::wait::wait(queue);
+                        alpaka::wait(queue);
                         verifyBytesSet<TAcc>(view, byte);
                     }
 
@@ -359,7 +359,7 @@ namespace alpaka
                             auto srcBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
                             iotaFillView(queue, srcBufAcc);
                             alpaka::mem::view::copy(queue, view, srcBufAcc, extent);
-                            alpaka::wait::wait(queue);
+                            alpaka::wait(queue);
                             verifyViewsEqual<TAcc>(view, srcBufAcc);
                         }
 
@@ -368,7 +368,7 @@ namespace alpaka
                         {
                             auto dstBufAcc(alpaka::mem::buf::alloc<Elem, Idx>(devAcc, extent));
                             alpaka::mem::view::copy(queue, dstBufAcc, view, extent);
-                            alpaka::wait::wait(queue);
+                            alpaka::wait(queue);
                             verifyViewsEqual<TAcc>(dstBufAcc, view);
                         }
                     }
