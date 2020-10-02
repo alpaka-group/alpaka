@@ -176,11 +176,11 @@ namespace alpaka
             //#############################################################################
             //! The CUDA/HIP RT device event test trait specialization.
             template<>
-            struct Test<
+            struct IsComplete<
                 event::EventUniformCudaHipRt>
             {
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto test(
+                ALPAKA_FN_HOST static auto isComplete(
                     event::EventUniformCudaHipRt const & event)
                 -> bool
                 {

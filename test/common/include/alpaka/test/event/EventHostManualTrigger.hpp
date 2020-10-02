@@ -268,13 +268,13 @@ namespace alpaka
             //! The CPU device event test trait specialization.
             //#############################################################################
             template<typename TDev>
-            struct Test<
+            struct IsComplete<
                 test::event::EventHostManualTriggerCpu<TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a queue (not enqueued or already handled).
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto test(
+                ALPAKA_FN_HOST static auto isComplete(
                     test::event::EventHostManualTriggerCpu<TDev> const & event)
                 -> bool
                 {
@@ -589,12 +589,12 @@ namespace alpaka
             //#############################################################################
             //! The CPU device event test trait specialization.
             template<>
-            struct Test<
+            struct IsComplete<
                 test::event::EventHostManualTriggerCuda>
             {
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a queue (not enqueued or already handled).
-                ALPAKA_FN_HOST static auto test(
+                ALPAKA_FN_HOST static auto isComplete(
                     test::event::EventHostManualTriggerCuda const & event)
                 -> bool
                 {
@@ -887,12 +887,12 @@ namespace alpaka
             //#############################################################################
             //! The CPU device event test trait specialization.
             template<>
-            struct Test<
+            struct IsComplete<
                 test::event::EventHostManualTriggerHip>
             {
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a queue (not enqueued or already handled).
-                ALPAKA_FN_HOST static auto test(
+                ALPAKA_FN_HOST static auto isComplete(
                     test::event::EventHostManualTriggerHip const & event)
                 -> bool
                 {
