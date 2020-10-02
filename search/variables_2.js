@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['no_5fcpuid',['NO_CPUID',['../namespacealpaka_1_1dev_1_1cpu_1_1detail.html#a04694b20419052aedac258d70c28fd34',1,'alpaka::dev::cpu::detail']]]
+  ['no_5fcpuid',['NO_CPUID',['../namespacealpaka_1_1cpu_1_1detail.html#a00bbec37f6a4dd972e4c008f6c0dffff',1,'alpaka::cpu::detail']]]
 ];

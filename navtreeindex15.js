@@ -1,14 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"uniformCudaHip_2Copy_8hpp.html#a6a5e53d5b071b1c14a7880a890193c4c":[4,0,0,0,14,1,2,0,13],
-"uniformCudaHip_2Copy_8hpp.html#a9214f00d091b88d0e3ca1f7c6466bfb7":[4,0,0,0,14,1,2,0,18],
-"uniformCudaHip_2Copy_8hpp.html#aa1a1043ec13b042397a78bd5d26fb65f":[4,0,0,0,14,1,2,0,17],
-"uniformCudaHip_2Copy_8hpp.html#adec5db91cdfa78463ad9b72e4af7c800":[4,0,0,0,14,1,2,0,14],
-"uniformCudaHip_2Copy_8hpp.html#af669ac7360f05f8d165c25a19f68b71c":[4,0,0,0,14,1,2,0,15],
-"uniformCudaHip_2Copy_8hpp_source.html":[4,0,0,0,14,1,2,0],
-"vec_2Traits_8hpp.html":[4,0,0,0,22,0],
-"vec_2Traits_8hpp.html#a2cfe75fa59e306e7fae8efa6036cd60e":[4,0,0,0,22,0,8],
-"vec_2Traits_8hpp.html#a414df9a22d1285d28c9e737f10e053be":[4,0,0,0,22,0,9],
 "vec_2Traits_8hpp.html#a6f0489a5bc3aaf355099a2c1cdc0d084":[4,0,0,0,22,0,5],
 "vec_2Traits_8hpp.html#ab54c29eb06733eb7c62b3507d25db358":[4,0,0,0,22,0,6],
 "vec_2Traits_8hpp.html#ac25c13a054b10186cc505ed0b0d4c1c4":[4,0,0,0,22,0,4],

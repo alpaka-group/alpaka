@@ -2,7 +2,7 @@ var dir_54c2063cf9a2dba4131b4727fce3a926 =
 [
     [ "Copy.hpp", "uniformCudaHip_2Copy_8hpp.html", "uniformCudaHip_2Copy_8hpp" ],
     [ "Set.hpp", "mem_2buf_2uniformCudaHip_2Set_8hpp.html", [
-      [ "CreateTaskSet< TDim, dev::DevUniformCudaHipRt >", "structalpaka_1_1mem_1_1view_1_1traits_1_1CreateTaskSet_3_01TDim_00_01dev_1_1DevUniformCudaHipRt_01_4.html", "structalpaka_1_1mem_1_1view_1_1traits_1_1CreateTaskSet_3_01TDim_00_01dev_1_1DevUniformCudaHipRt_01_4" ],
+      [ "CreateTaskSet< TDim, DevUniformCudaHipRt >", "structalpaka_1_1mem_1_1view_1_1traits_1_1CreateTaskSet_3_01TDim_00_01DevUniformCudaHipRt_01_4.html", "structalpaka_1_1mem_1_1view_1_1traits_1_1CreateTaskSet_3_01TDim_00_01DevUniformCudaHipRt_01_4" ],
       [ "TaskSetUniformCudaHip", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip.html", null ],
       [ "TaskSetUniformCudaHip< dim::DimInt< 1 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_18c1306ad454a11ca1243cf2ab2c150d3.html", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_18c1306ad454a11ca1243cf2ab2c150d3" ],
       [ "TaskSetUniformCudaHip< dim::DimInt< 2 >, TView, TExtent >", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500.html", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskSetUniformCudaHip_3_01dim_1_1ac9912bacbaf37d5063f975fab6af500" ],

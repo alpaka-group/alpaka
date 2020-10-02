@@ -1,6 +1,6 @@
 var classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking =
 [
-    [ "QueueUniformCudaHipRtBlocking", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#aef94ff353e2b012d907393c6c447d874", null ],
+    [ "QueueUniformCudaHipRtBlocking", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a486bb847b61e66083ff25364e69a081a", null ],
     [ "QueueUniformCudaHipRtBlocking", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#ace4fb4db26a282f5cc68c5c2759136f7", null ],
     [ "QueueUniformCudaHipRtBlocking", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a6a7bbafa5eeac9599932d10b77ad19ab", null ],
     [ "~QueueUniformCudaHipRtBlocking", "classalpaka_1_1queue_1_1QueueUniformCudaHipRtBlocking.html#a3450e2f0a7fbe24a468872deea7d41fe", null ],

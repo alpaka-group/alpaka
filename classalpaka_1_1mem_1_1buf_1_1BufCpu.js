@@ -1,6 +1,6 @@
 var classalpaka_1_1mem_1_1buf_1_1BufCpu =
 [
-    [ "BufCpu", "classalpaka_1_1mem_1_1buf_1_1BufCpu.html#af2cdb3405160ba420e57a30e70c7d1c1", null ],
+    [ "BufCpu", "classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a464e7c4b3de87489b02dc57ab6ae1233", null ],
     [ "BufCpu", "classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a825ae426b27fab4eeb28231b9f565c81", null ],
     [ "BufCpu", "classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a766efed9833acd530bc7e55e0c1a0c8b", null ],
     [ "~BufCpu", "classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a9fc804b054157c4951c5998792469eed", null ],

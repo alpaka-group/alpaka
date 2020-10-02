@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['getdevbyidx_3c_20pltf_3a_3apltfcpu_20_3e',['GetDevByIdx&lt; pltf::PltfCpu &gt;',['../classalpaka_1_1dev_1_1DevCpu.html#a7eb2d526f16f708540ec6620ae4520aa',1,'alpaka::dev::DevCpu']]],
-  ['getdevbyidx_3c_20pltf_3a_3apltfomp5_20_3e',['GetDevByIdx&lt; pltf::PltfOmp5 &gt;',['../classalpaka_1_1dev_1_1DevOmp5.html#a46b1295f82308af88f8ce3ed64159eb0',1,'alpaka::dev::DevOmp5']]],
-  ['getdevbyidx_3c_20pltf_3a_3apltfuniformcudahiprt_20_3e',['GetDevByIdx&lt; pltf::PltfUniformCudaHipRt &gt;',['../classalpaka_1_1dev_1_1DevUniformCudaHipRt.html#ae98beceea6575e03aab0edef047d64fe',1,'alpaka::dev::DevUniformCudaHipRt']]]
+  ['getdevbyidx_3c_20pltfcpu_20_3e',['GetDevByIdx&lt; PltfCpu &gt;',['../classalpaka_1_1DevCpu.html#aaabba793f276079a7bf3fe3eb96bb005',1,'alpaka::DevCpu']]],
+  ['getdevbyidx_3c_20pltfomp5_20_3e',['GetDevByIdx&lt; PltfOmp5 &gt;',['../classalpaka_1_1DevOmp5.html#aa0a663c0a3aa1349e53cdc98ac32478c',1,'alpaka::DevOmp5']]],
+  ['getdevbyidx_3c_20pltfuniformcudahiprt_20_3e',['GetDevByIdx&lt; PltfUniformCudaHipRt &gt;',['../classalpaka_1_1DevUniformCudaHipRt.html#aca7a2eb6b8d9f4735f6ba5fcb297ecc7',1,'alpaka::DevUniformCudaHipRt']]]
 ];

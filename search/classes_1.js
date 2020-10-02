@@ -31,8 +31,8 @@ var searchData=
   ['bufomp5',['BufOmp5',['../classalpaka_1_1mem_1_1buf_1_1BufOmp5.html',1,'alpaka::mem::buf']]],
   ['bufomp5impl',['BufOmp5Impl',['../classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html',1,'alpaka::mem::buf::omp5::detail']]],
   ['buftype',['BufType',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType.html',1,'alpaka::mem::buf::traits']]],
-  ['buftype_3c_20dev_3a_3adevcpu_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; dev::DevCpu, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
-  ['buftype_3c_20dev_3a_3adevomp5_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; dev::DevOmp5, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
-  ['buftype_3c_20dev_3a_3adevuniformcudahiprt_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; dev::DevUniformCudaHipRt, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01dev_1_1DevUniformCudaHipRt_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
+  ['buftype_3c_20devcpu_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevCpu, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
+  ['buftype_3c_20devomp5_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevOmp5, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
+  ['buftype_3c_20devuniformcudahiprt_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevUniformCudaHipRt, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01DevUniformCudaHipRt_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
   ['bufuniformcudahiprt',['BufUniformCudaHipRt',['../classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html',1,'alpaka::mem::buf']]]
 ];

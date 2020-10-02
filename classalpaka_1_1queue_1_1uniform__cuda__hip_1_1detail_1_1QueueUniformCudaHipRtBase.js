@@ -1,6 +1,6 @@
 var classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase =
 [
-    [ "QueueUniformCudaHipRtBase", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html#a8314fab9902200129abd4300153f1ab4", null ],
+    [ "QueueUniformCudaHipRtBase", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html#acec2cf79b643e91c4ea9720214b34d8b", null ],
     [ "QueueUniformCudaHipRtBase", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html#afbebf0ab2854cfdabcf15a64393e5e92", null ],
     [ "QueueUniformCudaHipRtBase", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html#a6e84074cae211d7e831c5a08ca14a1f7", null ],
     [ "~QueueUniformCudaHipRtBase", "classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html#a8b782bac7f70616a392a6613b8a7de46", null ],
