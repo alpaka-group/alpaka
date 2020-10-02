@@ -70,10 +70,10 @@ namespace alpaka
         public WorkDivMembers<TDim, TIdx>,
         public idx::gb::IdxGbRef<TDim, TIdx>,
         public idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>,
-        public atomic::AtomicHierarchy<
-            atomic::AtomicStdLibLock<16>, // grid atomics
-            atomic::AtomicStdLibLock<16>, // block atomics
-            atomic::AtomicNoOp         // thread atomics
+        public AtomicHierarchy<
+            AtomicStdLibLock<16>, // grid atomics
+            AtomicStdLibLock<16>, // block atomics
+            AtomicNoOp         // thread atomics
         >,
         public math::MathStdLib,
         public block::dyn::BlockSharedMemDynAlignedAlloc,
@@ -105,10 +105,10 @@ namespace alpaka
                 WorkDivMembers<TDim, TIdx>(workDiv),
                 idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
                 idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices),
-                atomic::AtomicHierarchy<
-                    atomic::AtomicStdLibLock<16>, // atomics between grids
-                    atomic::AtomicStdLibLock<16>, // atomics between blocks
-                    atomic::AtomicNoOp         // atomics between threads
+                AtomicHierarchy<
+                    AtomicStdLibLock<16>, // atomics between grids
+                    AtomicStdLibLock<16>, // atomics between blocks
+                    AtomicNoOp         // atomics between threads
                 >(),
                 math::MathStdLib(),
                 block::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
