@@ -196,9 +196,7 @@ namespace alpaka
                 return "AccCpuOmp2Blocks<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 block accelerator device type trait specialization.
         template<
@@ -209,9 +207,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 block accelerator dimension getter trait specialization.
         template<
@@ -222,9 +218,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 block accelerator execution task type trait specialization.
         template<
@@ -256,9 +250,7 @@ namespace alpaka
                             std::forward<TArgs>(args)...);
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 block execution task platform type trait specialization.
         template<
@@ -269,9 +261,7 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 block accelerator idx type trait specialization.
         template<

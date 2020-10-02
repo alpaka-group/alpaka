@@ -102,9 +102,7 @@ namespace alpaka
                 return "AccGpuCudaRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU CUDA accelerator execution task type trait specialization.
         template<

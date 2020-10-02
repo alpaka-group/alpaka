@@ -286,9 +286,7 @@ namespace alpaka
         {
             using type = DimInt<4u>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA vectors elem type trait specialization.
         template<
@@ -629,9 +627,7 @@ namespace alpaka
                 offsets.w = offset;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CUDA vectors idx type trait specialization.
         template<

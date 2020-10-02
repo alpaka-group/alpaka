@@ -190,9 +190,7 @@ namespace alpaka
                 return "AccCpuSerial<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial accelerator device type trait specialization.
         template<
@@ -203,9 +201,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial accelerator dimension getter trait specialization.
         template<
@@ -216,9 +212,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial accelerator execution task type trait specialization.
         template<
@@ -250,9 +244,7 @@ namespace alpaka
                             std::forward<TArgs>(args)...);
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial execution task platform type trait specialization.
         template<
@@ -263,9 +255,7 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial accelerator idx type trait specialization.
         template<

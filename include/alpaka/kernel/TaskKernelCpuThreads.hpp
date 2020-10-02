@@ -298,53 +298,47 @@ namespace alpaka
         std::tuple<std::decay_t<TArgs>...> m_args;
     };
 
-namespace traits
-{
-    //#############################################################################
-    //! The CPU threads execution task accelerator type trait specialization.
-    template<
-        typename TDim,
-        typename TIdx,
-        typename TKernelFnObj,
-        typename... TArgs>
-    struct AccType<
-        TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+    namespace traits
     {
-        using type = AccCpuThreads<TDim, TIdx>;
-    };
-}
-namespace traits
-{
-    //#############################################################################
-    //! The CPU threads execution task device type trait specialization.
-    template<
-        typename TDim,
-        typename TIdx,
-        typename TKernelFnObj,
-        typename... TArgs>
-    struct DevType<
-        TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
-    {
-        using type = DevCpu;
-    };
-}
-namespace traits
-{
-    //#############################################################################
-    //! The CPU threads execution task dimension getter trait specialization.
-    template<
-        typename TDim,
-        typename TIdx,
-        typename TKernelFnObj,
+        //#############################################################################
+        //! The CPU threads execution task accelerator type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct AccType<
+            TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+        {
+            using type = AccCpuThreads<TDim, TIdx>;
+        };
+
+        //#############################################################################
+        //! The CPU threads execution task device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct DevType<
+            TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
+        {
+            using type = DevCpu;
+        };
+
+        //#############################################################################
+        //! The CPU threads execution task dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
             typename... TArgs>
         struct DimType<
             TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU threads execution task platform type trait specialization.
         template<
@@ -357,9 +351,7 @@ namespace traits
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU threads execution task idx type trait specialization.
         template<

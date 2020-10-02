@@ -101,9 +101,7 @@ namespace alpaka
                 return "AccGpuHipRt<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU HIP accelerator execution task type trait specialization.
         template<

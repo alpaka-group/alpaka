@@ -155,9 +155,7 @@ namespace alpaka
                 return buf.m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufUniformCudaHipRt dimension getter trait specialization.
         template<
@@ -169,9 +167,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufUniformCudaHipRt memory element type get trait specialization.
         template<
@@ -640,9 +636,7 @@ namespace alpaka
                 return 0u;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufUniformCudaHipRt idx type trait specialization.
         template<

@@ -243,9 +243,7 @@ namespace alpaka
         {
             using type = DimInt<4u>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The HIP vectors elem type trait specialization.
         template<
@@ -586,9 +584,7 @@ namespace alpaka
                 offsets.w = offset;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The HIP vectors idx type trait specialization.
         template<

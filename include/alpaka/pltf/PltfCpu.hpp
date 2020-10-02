@@ -39,9 +39,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU platform device count get trait specialization.
         template<>

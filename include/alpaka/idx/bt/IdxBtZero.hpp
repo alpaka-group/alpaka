@@ -55,9 +55,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The zero block thread index provider block thread index get trait specialization.
         template<
@@ -82,9 +80,7 @@ namespace alpaka
                 return Vec<TDim, TIdx>::zeros();
             }
         };
-    }
-    namespace traits
-    {
+ 
         //#############################################################################
         //! The zero block thread index idx type trait specialization.
         template<

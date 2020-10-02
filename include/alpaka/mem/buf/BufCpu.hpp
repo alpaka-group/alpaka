@@ -196,9 +196,7 @@ namespace alpaka
                 return buf.m_spBufCpuImpl->m_dev;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufCpu dimension getter trait.
         template<
@@ -210,9 +208,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufCpu memory element type get trait specialization.
         template<
@@ -604,9 +600,7 @@ namespace alpaka
                 return 0u;
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The BufCpu idx type trait specialization.
         template<

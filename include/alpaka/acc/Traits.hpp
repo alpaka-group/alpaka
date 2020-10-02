@@ -159,9 +159,7 @@ namespace alpaka
             using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
             using type = typename DevType<ImplementationBase>::type;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU HIP execution task platform type trait specialization.
         template<typename TAcc>
@@ -174,9 +172,7 @@ namespace alpaka
                 using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
                 using type = typename PltfType<ImplementationBase>::type;
             };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU HIP accelerator dimension getter trait specialization.
         template<typename TAcc>
@@ -189,9 +185,7 @@ namespace alpaka
                 using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
                 using type = typename DimType<ImplementationBase>::type;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The GPU HIP accelerator idx type trait specialization.
         template<typename TAcc>
@@ -204,10 +198,7 @@ namespace alpaka
             using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
             using type = typename IdxType<ImplementationBase>::type;
         };
-    }
 
-    namespace traits
-    {
         template<
             typename TAcc,
             typename TProperty>

@@ -33,8 +33,6 @@ namespace alpaka
         typename T>
     using Idx = typename traits::IdxType<T>::type;
 
-    //-----------------------------------------------------------------------------
-    // Trait specializations for unsigned integral types.
     namespace traits
     {
         //#############################################################################
@@ -47,12 +45,7 @@ namespace alpaka
         {
             using type = std::decay_t<T>;
         };
-    }
 
-    //-----------------------------------------------------------------------------
-    //! The index traits.
-    namespace traits
-    {
         //#############################################################################
         //! The index get trait.
         template<

@@ -262,9 +262,7 @@ namespace alpaka
         {
             using type = PltfUniformCudaHipRt;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The thread CUDA/HIP device wait specialization.
         //!
@@ -287,9 +285,7 @@ namespace alpaka
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceSynchronize)());
             }
         };
-    }
-    namespace traits
-    {
+
         template<>
         struct QueueType<
             DevUniformCudaHipRt,

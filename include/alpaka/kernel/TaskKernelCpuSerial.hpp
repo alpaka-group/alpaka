@@ -164,9 +164,7 @@ namespace alpaka
         {
             using type = AccCpuSerial<TDim, TIdx>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial execution task device type trait specialization.
         template<
@@ -179,9 +177,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial execution task dimension getter trait specialization.
         template<
@@ -194,9 +190,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial execution task platform type trait specialization.
         template<
@@ -209,9 +203,7 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU serial execution task idx type trait specialization.
         template<

@@ -205,9 +205,7 @@ namespace alpaka
                 return "AccCpuFibers<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
             }
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU fibers accelerator device type trait specialization.
         template<
@@ -218,9 +216,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU fibers accelerator dimension getter trait specialization.
         template<
@@ -231,9 +227,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU fibers accelerator execution task type trait specialization.
         template<
@@ -265,10 +259,7 @@ namespace alpaka
                             std::forward<TArgs>(args)...);
             }
         };
-    }
 
-    namespace traits
-    {
         //#############################################################################
         //! The CPU fibers execution task platform type trait specialization.
         template<
@@ -279,9 +270,7 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU fibers accelerator idx type trait specialization.
         template<

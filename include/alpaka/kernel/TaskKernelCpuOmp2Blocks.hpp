@@ -237,9 +237,7 @@ namespace alpaka
         {
             using type = AccCpuOmp2Blocks<TDim, TIdx>;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 grid block execution task device type trait specialization.
         template<
@@ -252,9 +250,7 @@ namespace alpaka
         {
             using type = DevCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 grid block execution task dimension getter trait specialization.
         template<
@@ -267,9 +263,7 @@ namespace alpaka
         {
             using type = TDim;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 grid block execution task platform type trait specialization.
         template<
@@ -282,9 +276,7 @@ namespace alpaka
         {
             using type = PltfCpu;
         };
-    }
-    namespace traits
-    {
+
         //#############################################################################
         //! The CPU OpenMP 2.0 block execution task idx type trait specialization.
         template<
