@@ -53,7 +53,7 @@ struct StaticDeviceMemoryTestKernel
         auto const gridThreadExtent =
             alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
         auto const gridThreadIdx =
-            alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+            alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
 
         auto const offset = gridThreadExtent[1u] * gridThreadIdx[0u] + gridThreadIdx[1u];
         auto const val = offset;

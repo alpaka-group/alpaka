@@ -65,8 +65,8 @@ namespace alpaka
         typename TIdx>
     class AccCpuThreads final :
         public WorkDivMembers<TDim, TIdx>,
-        public idx::gb::IdxGbRef<TDim, TIdx>,
-        public idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>,
+        public gb::IdxGbRef<TDim, TIdx>,
+        public bt::IdxBtRefThreadIdMap<TDim, TIdx>,
         public AtomicHierarchy<
             AtomicStdLibLock<16>, // grid atomics
             AtomicStdLibLock<16>, // block atomics
@@ -100,8 +100,8 @@ namespace alpaka
             TWorkDiv const & workDiv,
             std::size_t const & blockSharedMemDynSizeBytes) :
                 WorkDivMembers<TDim, TIdx>(workDiv),
-                idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
-                idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap),
+                gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                bt::IdxBtRefThreadIdMap<TDim, TIdx>(m_threadToIndexMap),
                 AtomicHierarchy<
                     AtomicStdLibLock<16>, // atomics between grids
                     AtomicStdLibLock<16>, // atomics between blocks
@@ -134,7 +134,7 @@ namespace alpaka
     private:
         // getIdx
         std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
-        typename idx::bt::IdxBtRefThreadIdMap<TDim, TIdx>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
+        typename bt::IdxBtRefThreadIdMap<TDim, TIdx>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
         Vec<TDim, TIdx> mutable m_gridBlockIdx;                   //!< The index of the currently executed block.
 
         // allocBlockSharedArr
@@ -287,21 +287,18 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU threads accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccCpuThreads<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU threads accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                AccCpuThreads<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

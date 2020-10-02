@@ -63,8 +63,8 @@ namespace alpaka
         typename TIdx>
     class AccCpuSerial final :
         public WorkDivMembers<TDim, TIdx>,
-        public idx::gb::IdxGbRef<TDim, TIdx>,
-        public idx::bt::IdxBtZero<TDim, TIdx>,
+        public gb::IdxGbRef<TDim, TIdx>,
+        public bt::IdxBtZero<TDim, TIdx>,
         public AtomicHierarchy<
             AtomicStdLibLock<16>, // grid atomics
             AtomicNoOp,        // block atomics
@@ -98,8 +98,8 @@ namespace alpaka
             TWorkDiv const & workDiv,
             size_t const & blockSharedMemDynSizeBytes) :
                 WorkDivMembers<TDim, TIdx>(workDiv),
-                idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
-                idx::bt::IdxBtZero<TDim, TIdx>(),
+                gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                bt::IdxBtZero<TDim, TIdx>(),
                 AtomicHierarchy<
                     AtomicStdLibLock<16>, // atomics between grids
                     AtomicNoOp,        // atomics between blocks
@@ -272,21 +272,18 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU serial accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccCpuSerial<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU serial accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                AccCpuSerial<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

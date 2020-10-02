@@ -37,32 +37,29 @@
 
 namespace alpaka
 {
-    namespace idx
+    namespace gb
     {
-        namespace gb
+        //#############################################################################
+        //! The CUDA/HIP accelerator ND index provider.
+        template<
+            typename TDim,
+            typename TIdx>
+        class IdxGbUniformCudaHipBuiltIn : public concepts::Implements<ConceptIdxGb, IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CUDA/HIP accelerator ND index provider.
-            template<
-                typename TDim,
-                typename TIdx>
-            class IdxGbUniformCudaHipBuiltIn : public concepts::Implements<ConceptIdxGb, IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                IdxGbUniformCudaHipBuiltIn() = default;
-                //-----------------------------------------------------------------------------
-                __device__ IdxGbUniformCudaHipBuiltIn(IdxGbUniformCudaHipBuiltIn const &) = delete;
-                //-----------------------------------------------------------------------------
-                __device__ IdxGbUniformCudaHipBuiltIn(IdxGbUniformCudaHipBuiltIn &&) = delete;
-                //-----------------------------------------------------------------------------
-                __device__ auto operator=(IdxGbUniformCudaHipBuiltIn const & ) -> IdxGbUniformCudaHipBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                __device__ auto operator=(IdxGbUniformCudaHipBuiltIn &&) -> IdxGbUniformCudaHipBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                /*virtual*/ ~IdxGbUniformCudaHipBuiltIn() = default;
-            };
-        }
+        public:
+            //-----------------------------------------------------------------------------
+            IdxGbUniformCudaHipBuiltIn() = default;
+            //-----------------------------------------------------------------------------
+            __device__ IdxGbUniformCudaHipBuiltIn(IdxGbUniformCudaHipBuiltIn const &) = delete;
+            //-----------------------------------------------------------------------------
+            __device__ IdxGbUniformCudaHipBuiltIn(IdxGbUniformCudaHipBuiltIn &&) = delete;
+            //-----------------------------------------------------------------------------
+            __device__ auto operator=(IdxGbUniformCudaHipBuiltIn const & ) -> IdxGbUniformCudaHipBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            __device__ auto operator=(IdxGbUniformCudaHipBuiltIn &&) -> IdxGbUniformCudaHipBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            /*virtual*/ ~IdxGbUniformCudaHipBuiltIn() = default;
+        };
     }
 
     namespace dim
@@ -75,64 +72,58 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
+                gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
             {
                 using type = TDim;
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP accelerator grid block index get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetIdx<
+            gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
+            origin::Grid,
+            unit::Blocks>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP accelerator grid block index get trait specialization.
+            //-----------------------------------------------------------------------------
+            //! \return The index of the current block in the grid.
             template<
-                typename TDim,
-                typename TIdx>
-            struct GetIdx<
-                idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
-                origin::Grid,
-                unit::Blocks>
+                typename TWorkDiv>
+            __device__ static auto getIdx(
+                gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx> const & idx,
+                TWorkDiv const &)
+            -> Vec<TDim, TIdx>
             {
-                //-----------------------------------------------------------------------------
-                //! \return The index of the current block in the grid.
-                template<
-                    typename TWorkDiv>
-                __device__ static auto getIdx(
-                    idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx> const & idx,
-                    TWorkDiv const &)
-                -> Vec<TDim, TIdx>
-                {
-                    alpaka::ignore_unused(idx);
+                alpaka::ignore_unused(idx);
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return cast<TIdx>(offset::getOffsetVecEnd<TDim>(blockIdx));
+                return cast<TIdx>(offset::getOffsetVecEnd<TDim>(blockIdx));
 #else
-                    return offset::getOffsetVecEnd<TDim>(
-                        Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
-                            static_cast<TIdx>(hipBlockIdx_z),
-                            static_cast<TIdx>(hipBlockIdx_y),
-                            static_cast<TIdx>(hipBlockIdx_x)));
+                return offset::getOffsetVecEnd<TDim>(
+                    Vec<std::integral_constant<typename TDim::value_type, 3>, TIdx>(
+                        static_cast<TIdx>(hipBlockIdx_z),
+                        static_cast<TIdx>(hipBlockIdx_y),
+                        static_cast<TIdx>(hipBlockIdx_x)));
 #endif
-                }
-            };
-        }
+            }
+        };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP accelerator grid block index idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP accelerator grid block index idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

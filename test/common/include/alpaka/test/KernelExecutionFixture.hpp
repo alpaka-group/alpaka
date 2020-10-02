@@ -27,7 +27,7 @@ namespace alpaka
         public:
             using Acc = TAcc;
             using Dim = alpaka::dim::Dim<Acc>;
-            using Idx = alpaka::idx::Idx<Acc>;
+            using Idx = alpaka::Idx<Acc>;
             using DevAcc = alpaka::Dev<Acc>;
             using PltfAcc = alpaka::Pltf<DevAcc>;
             using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;

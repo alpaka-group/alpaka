@@ -68,8 +68,8 @@ namespace alpaka
         typename TIdx>
     class AccCpuFibers final :
         public WorkDivMembers<TDim, TIdx>,
-        public idx::gb::IdxGbRef<TDim, TIdx>,
-        public idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>,
+        public gb::IdxGbRef<TDim, TIdx>,
+        public bt::IdxBtRefFiberIdMap<TDim, TIdx>,
         public AtomicHierarchy<
             AtomicStdLibLock<16>, // grid atomics
             AtomicStdLibLock<16>, // block atomics
@@ -103,8 +103,8 @@ namespace alpaka
             TWorkDiv const & workDiv,
             std::size_t const & blockSharedMemDynSizeBytes) :
                 WorkDivMembers<TDim, TIdx>(workDiv),
-                idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
-                idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices),
+                gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                bt::IdxBtRefFiberIdMap<TDim, TIdx>(m_fibersToIndices),
                 AtomicHierarchy<
                     AtomicStdLibLock<16>, // atomics between grids
                     AtomicStdLibLock<16>, // atomics between blocks
@@ -136,7 +136,7 @@ namespace alpaka
 
     private:
         // getIdx
-        typename idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
+        typename bt::IdxBtRefFiberIdMap<TDim, TIdx>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
         Vec<TDim, TIdx> mutable m_gridBlockIdx;                    //!< The index of the currently executed block.
 
         // allocBlockSharedArr
@@ -288,21 +288,18 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU fibers accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccCpuFibers<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU fibers accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                AccCpuFibers<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

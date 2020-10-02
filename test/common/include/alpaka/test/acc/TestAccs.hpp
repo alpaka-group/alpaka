@@ -252,7 +252,7 @@ namespace alpaka
                 alpaka::meta::CartesianProduct<
                     std::tuple,
                     dim::TestDims,
-                    idx::TestIdxs
+                    TestIdxs
                 >;
 
             template<

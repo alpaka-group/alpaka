@@ -46,7 +46,7 @@ TEMPLATE_LIST_TEST_CASE( "clockIsWorking", "[timeClock]", alpaka::test::TestAccs
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());

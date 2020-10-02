@@ -55,7 +55,7 @@ struct HeatEquationKernel
         // Each kernel executes one element
         double const r = dt / ( dx * dx );
         int idx =
-            alpaka::idx::getIdx<
+            alpaka::getIdx<
                 alpaka::Grid,
                 alpaka::Threads
             >( acc )[0];

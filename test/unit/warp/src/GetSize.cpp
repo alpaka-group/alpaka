@@ -43,7 +43,7 @@ TEMPLATE_LIST_TEST_CASE( "getSize", "[warp]", alpaka::test::TestAccs)
     using Dev = alpaka::Dev<Acc>;
     using Pltf = alpaka::Pltf<Dev>;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
     auto const expectedWarpSize = static_cast<int>(alpaka::getWarpSize(dev));

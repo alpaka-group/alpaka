@@ -60,8 +60,8 @@ namespace alpaka
         typename TIdx>
     class AccCpuTbbBlocks final :
         public WorkDivMembers<TDim, TIdx>,
-        public idx::gb::IdxGbRef<TDim, TIdx>,
-        public idx::bt::IdxBtZero<TDim, TIdx>,
+        public gb::IdxGbRef<TDim, TIdx>,
+        public bt::IdxBtZero<TDim, TIdx>,
         public AtomicHierarchy<
             AtomicStdLibLock<16>, // grid atomics
             AtomicStdLibLock<16>, // block atomics
@@ -95,8 +95,8 @@ namespace alpaka
             TWorkDiv const & workDiv,
             std::size_t const & blockSharedMemDynSizeBytes) :
                 WorkDivMembers<TDim, TIdx>(workDiv),
-                idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
-                idx::bt::IdxBtZero<TDim, TIdx>(),
+                gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                bt::IdxBtZero<TDim, TIdx>(),
                 AtomicHierarchy<
                     AtomicStdLibLock<16>, // atomics between grids
                     AtomicStdLibLock<16>, // atomics between blocks
@@ -270,21 +270,18 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU TBB block accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccCpuTbbBlocks<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU TBB block accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                AccCpuTbbBlocks<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

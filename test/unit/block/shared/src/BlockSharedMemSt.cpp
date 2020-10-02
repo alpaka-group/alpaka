@@ -72,7 +72,7 @@ TEMPLATE_LIST_TEST_CASE( "nonNull", "[blockSharedMemSt]", alpaka::test::TestAccs
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     // Use multiple threads to make sure the synchronization really works.
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -125,7 +125,7 @@ TEMPLATE_LIST_TEST_CASE( "sameTypeDifferentAddress", "[blockSharedMemSt]", alpak
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     // Use multiple threads to make sure the synchronization really works.
     alpaka::test::KernelExecutionFixture<Acc> fixture(

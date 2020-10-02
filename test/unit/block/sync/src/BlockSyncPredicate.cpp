@@ -27,12 +27,12 @@ public:
         bool * success) const
     -> void
     {
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
 
         // Get the index of the current thread within the block and the block extent and map them to 1D.
-        auto const blockThreadIdx(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc));
+        auto const blockThreadIdx(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc));
         auto const blockThreadExtent(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
-        auto const blockThreadIdx1D(alpaka::idx::mapIdx<1u>(blockThreadIdx, blockThreadExtent)[0u]);
+        auto const blockThreadIdx1D(alpaka::mapIdx<1u>(blockThreadIdx, blockThreadExtent)[0u]);
         auto const blockThreadExtent1D(blockThreadExtent.prod());
 
         // syncBlockThreadsPredicate<alpaka::block::op::Count>
@@ -92,7 +92,7 @@ TEMPLATE_LIST_TEST_CASE( "synchronizePredicate", "[blockSync]", alpaka::test::Te
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     BlockSyncPredicateTestKernel kernel;
 

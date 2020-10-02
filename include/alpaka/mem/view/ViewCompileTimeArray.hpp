@@ -108,7 +108,7 @@ namespace alpaka
                 static constexpr auto getExtent(
                     TFixedSizeArray const & extent
                 )
-                -> idx::Idx<TFixedSizeArray>
+                -> Idx<TFixedSizeArray>
                 {
                     alpaka::ignore_unused(extent);
                     return std::extent<TFixedSizeArray, TIdxIntegralConst::value>::value;
@@ -165,7 +165,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     static constexpr auto getPitchBytes(
                         TFixedSizeArray const &)
-                    -> idx::Idx<TFixedSizeArray>
+                    -> Idx<TFixedSizeArray>
                     {
                         return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
                     }
@@ -190,27 +190,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 static auto getOffset(
                     TFixedSizeArray const &)
-                -> idx::Idx<TFixedSizeArray>
+                -> Idx<TFixedSizeArray>
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::vector idx type trait specialization.
+        template<
+            typename TFixedSizeArray>
+        struct IdxType<
+            TFixedSizeArray,
+            std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
         {
-            //#############################################################################
-            //! The std::vector idx type trait specialization.
-            template<
-                typename TFixedSizeArray>
-            struct IdxType<
-                TFixedSizeArray,
-                std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
-            {
-                using type = std::size_t;
-            };
-        }
+            using type = std::size_t;
+        };
     }*/
 }

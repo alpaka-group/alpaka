@@ -216,7 +216,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
     {
         return;
     }
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
     TestContainer<
         Dim,
         Idx,
@@ -283,7 +283,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
 
     for(Idx i(0);i < extentsSubView.prod();++i)
     {
-        auto mappedToND = alpaka::idx::mapIdx<
+        auto mappedToND = alpaka::mapIdx<
             Dim::value,
             Dim1::value
         >(
@@ -294,7 +294,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
             extentsSubView
         );
         auto addedOffset = mappedToND + offsets;
-        auto mappedTo1D = alpaka::idx::mapIdx<Dim1::value>(
+        auto mappedTo1D = alpaka::mapIdx<Dim1::value>(
             addedOffset,
             extents
         )[0]; // take the only element in the vector

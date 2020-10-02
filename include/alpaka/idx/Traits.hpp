@@ -14,57 +14,52 @@
 
 namespace alpaka
 {
+    struct ConceptIdxBt{};
+    struct ConceptIdxGb{};
+
     //-----------------------------------------------------------------------------
-    //! The index specifics.
-    namespace idx
+    //! The idx traits.
+    namespace traits
     {
-        struct ConceptIdxBt{};
-        struct ConceptIdxGb{};
+        //#############################################################################
+        //! The idx type trait.
+        template<
+            typename T,
+            typename TSfinae = void>
+        struct IdxType;
+    }
 
-        //-----------------------------------------------------------------------------
-        //! The idx traits.
-        namespace traits
-        {
-            //#############################################################################
-            //! The idx type trait.
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct IdxType;
-        }
+    template<
+        typename T>
+    using Idx = typename traits::IdxType<T>::type;
 
+    //-----------------------------------------------------------------------------
+    // Trait specializations for unsigned integral types.
+    namespace traits
+    {
+        //#############################################################################
+        //! The arithmetic idx type trait specialization.
         template<
             typename T>
-        using Idx = typename traits::IdxType<T>::type;
-
-        //-----------------------------------------------------------------------------
-        // Trait specializations for unsigned integral types.
-        namespace traits
+        struct IdxType<
+            T,
+            std::enable_if_t<std::is_arithmetic<T>::value>>
         {
-            //#############################################################################
-            //! The arithmetic idx type trait specialization.
-            template<
-                typename T>
-            struct IdxType<
-                T,
-                std::enable_if_t<std::is_arithmetic<T>::value>>
-            {
-                using type = std::decay_t<T>;
-            };
-        }
+            using type = std::decay_t<T>;
+        };
+    }
 
-        //-----------------------------------------------------------------------------
-        //! The index traits.
-        namespace traits
-        {
-            //#############################################################################
-            //! The index get trait.
-            template<
-                typename TIdx,
-                typename TOrigin,
-                typename TUnit,
-                typename TSfinae = void>
-            struct GetIdx;
-        }
+    //-----------------------------------------------------------------------------
+    //! The index traits.
+    namespace traits
+    {
+        //#############################################################################
+        //! The index get trait.
+        template<
+            typename TIdx,
+            typename TOrigin,
+            typename TUnit,
+            typename TSfinae = void>
+        struct GetIdx;
     }
 }

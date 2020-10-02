@@ -84,15 +84,15 @@ struct ReduceKernel
                                                 __COUNTER__>(acc));
 
         const uint32_t blockIndex(static_cast<uint32_t>(
-            alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0]));
+            alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0]));
         const uint32_t threadIndex(static_cast<uint32_t>(
-            alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0]));
+            alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0]));
         const uint32_t gridDimension(static_cast<uint32_t>(
             alpaka::getWorkDiv<alpaka::Grid, alpaka::Blocks>(acc)[0]));
 
         // equivalent to blockIndex * TBlockSize + threadIndex
         const uint32_t linearizedIndex(static_cast<uint32_t>(
-            alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]));
+            alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]));
 
         typename GetIterator<T, TElem, TAcc>::Iterator it(
             acc, source, linearizedIndex, gridDimension * TBlockSize, n);

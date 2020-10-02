@@ -19,38 +19,35 @@
 
 namespace alpaka
 {
-    namespace idx
+    namespace gb
     {
-        namespace gb
+        //#############################################################################
+        //! A IdxGbRef grid block index.
+        template<
+            typename TDim,
+            typename TIdx>
+        class IdxGbRef : public concepts::Implements<ConceptIdxGb, IdxGbRef<TDim, TIdx>>
         {
-            //#############################################################################
-            //! A IdxGbRef grid block index.
-            template<
-                typename TDim,
-                typename TIdx>
-            class IdxGbRef : public concepts::Implements<ConceptIdxGb, IdxGbRef<TDim, TIdx>>
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                IdxGbRef(
-                    Vec<TDim, TIdx> const & gridBlockIdx) :
-                        m_gridBlockIdx(gridBlockIdx)
-                {}
-                //-----------------------------------------------------------------------------
-                IdxGbRef(IdxGbRef const &) = delete;
-                //-----------------------------------------------------------------------------
-                IdxGbRef(IdxGbRef &&) = delete;
-                //-----------------------------------------------------------------------------
-                auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
-                //-----------------------------------------------------------------------------
-                auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
-                //-----------------------------------------------------------------------------
-                /*virtual*/ ~IdxGbRef() = default;
+        public:
+            //-----------------------------------------------------------------------------
+            IdxGbRef(
+                Vec<TDim, TIdx> const & gridBlockIdx) :
+                    m_gridBlockIdx(gridBlockIdx)
+            {}
+            //-----------------------------------------------------------------------------
+            IdxGbRef(IdxGbRef const &) = delete;
+            //-----------------------------------------------------------------------------
+            IdxGbRef(IdxGbRef &&) = delete;
+            //-----------------------------------------------------------------------------
+            auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
+            //-----------------------------------------------------------------------------
+            auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
+            //-----------------------------------------------------------------------------
+            /*virtual*/ ~IdxGbRef() = default;
 
-            public:
-                Vec<TDim, TIdx> const & m_gridBlockIdx;
-            };
-        }
+        public:
+            Vec<TDim, TIdx> const & m_gridBlockIdx;
+        };
     }
 
     namespace dim
@@ -63,55 +60,49 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                idx::gb::IdxGbRef<TDim, TIdx>>
+                gb::IdxGbRef<TDim, TIdx>>
             {
                 using type = TDim;
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The IdxGbRef grid block index grid block index get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetIdx<
+            gb::IdxGbRef<TDim, TIdx>,
+            origin::Grid,
+            unit::Blocks>
         {
-            //#############################################################################
-            //! The IdxGbRef grid block index grid block index get trait specialization.
+            //-----------------------------------------------------------------------------
+            //! \return The index of the current block in the grid.
             template<
-                typename TDim,
-                typename TIdx>
-            struct GetIdx<
-                idx::gb::IdxGbRef<TDim, TIdx>,
-                origin::Grid,
-                unit::Blocks>
+                typename TWorkDiv>
+            ALPAKA_FN_HOST static auto getIdx(
+                gb::IdxGbRef<TDim, TIdx> const & idx,
+                TWorkDiv const & workDiv)
+            -> Vec<TDim, TIdx>
             {
-                //-----------------------------------------------------------------------------
-                //! \return The index of the current block in the grid.
-                template<
-                    typename TWorkDiv>
-                ALPAKA_FN_HOST static auto getIdx(
-                    idx::gb::IdxGbRef<TDim, TIdx> const & idx,
-                    TWorkDiv const & workDiv)
-                -> Vec<TDim, TIdx>
-                {
-                    alpaka::ignore_unused(workDiv);
-                    return idx.m_gridBlockIdx;
-                }
-            };
-        }
+                alpaka::ignore_unused(workDiv);
+                return idx.m_gridBlockIdx;
+            }
+        };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The IdxGbRef grid block index idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            gb::IdxGbRef<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The IdxGbRef grid block index idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                idx::gb::IdxGbRef<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }

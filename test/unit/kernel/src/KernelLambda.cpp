@@ -25,7 +25,7 @@ template< typename TAcc >
 void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -42,7 +42,7 @@ void operator()()
         {
             ALPAKA_CHECK(
                 *success,
-                static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+                static_cast<alpaka::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
         };
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
     #pragma warning(pop)
@@ -59,7 +59,7 @@ template< typename TAcc >
 void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -88,7 +88,7 @@ template< typename TAcc >
 void operator()()
 {
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
         alpaka::Vec<Dim, Idx>::ones());

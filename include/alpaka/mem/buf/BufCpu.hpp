@@ -79,7 +79,7 @@ namespace alpaka
                                 TDim::value == dim::Dim<TExtent>::value,
                                 "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                             static_assert(
-                                std::is_same<TIdx, idx::Idx<TExtent>>::value,
+                                std::is_same<TIdx, Idx<TExtent>>::value,
                                 "The idx type of TExtent and the TIdx template parameter have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -620,22 +620,19 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufCpu idx type trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            mem::buf::BufCpu<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufCpu idx type trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                mem::buf::BufCpu<TElem, TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

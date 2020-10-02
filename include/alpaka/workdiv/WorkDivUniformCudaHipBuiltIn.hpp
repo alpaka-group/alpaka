@@ -82,21 +82,18 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP accelerator work division idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP accelerator work division idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
     namespace traits
     {

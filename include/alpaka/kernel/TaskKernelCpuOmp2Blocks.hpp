@@ -210,7 +210,7 @@ namespace alpaka
 #else
                     auto const index   = Vec<dim::DimInt<1u>, TIdx>( i ); // for issue #840
 #endif
-                    acc.m_gridBlockIdx = idx::mapIdx<TDim::value>(index,
+                    acc.m_gridBlockIdx = mapIdx<TDim::value>(index,
                                                                   gridBlockExtent);
 
                     boundKernelFnObj(
@@ -289,23 +289,20 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block execution task idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct IdxType<
+            kernel::TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block execution task idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct IdxType<
-                kernel::TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

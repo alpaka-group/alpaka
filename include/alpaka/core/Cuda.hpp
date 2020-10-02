@@ -639,22 +639,19 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA vectors idx type trait specialization.
+        template<
+            typename TIdx>
+        struct IdxType<
+            TIdx,
+            std::enable_if_t<
+                cuda::traits::IsCudaBuiltInType<TIdx>::value>>
         {
-            //#############################################################################
-            //! The CUDA vectors idx type trait specialization.
-            template<
-                typename TIdx>
-            struct IdxType<
-                TIdx,
-                std::enable_if_t<
-                    cuda::traits::IsCudaBuiltInType<TIdx>::value>>
-            {
-                using type = std::size_t;
-            };
-        }
+            using type = std::size_t;
+        };
     }
 }
 

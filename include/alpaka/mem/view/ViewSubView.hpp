@@ -75,13 +75,13 @@ namespace alpaka
                         "The dev type of TView and the Dev template parameter have to be identical!");
 
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        std::is_same<TIdx, Idx<TView>>::value,
                         "The idx type of TView and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TExtent>>::value,
+                        std::is_same<TIdx, Idx<TExtent>>::value,
                         "The idx type of TExtent and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TOffsets>>::value,
+                        std::is_same<TIdx, Idx<TOffsets>>::value,
                         "The idx type of TOffsets and the TIdx template parameter have to be identical!");
 
                     static_assert(
@@ -124,13 +124,13 @@ namespace alpaka
                         "The dev type of TView and the Dev template parameter have to be identical!");
 
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TView>>::value,
+                        std::is_same<TIdx, Idx<TView>>::value,
                         "The idx type of TView and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TExtent>>::value,
+                        std::is_same<TIdx, Idx<TExtent>>::value,
                         "The idx type of TExtent and the TIdx template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TIdx, idx::Idx<TOffsets>>::value,
+                        std::is_same<TIdx, Idx<TOffsets>>::value,
                         "The idx type of TOffsets and the TIdx template parameter have to be identical!");
 
                     static_assert(
@@ -419,22 +419,19 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewSubView idx type trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TDev,
+            typename TIdx>
+        struct IdxType<
+            mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewSubView idx type trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev,
-                typename TIdx>
-            struct IdxType<
-                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }

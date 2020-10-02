@@ -68,7 +68,7 @@ namespace alpaka
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Idx = idx::Idx<TExtent>;
+                        using Idx = alpaka::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopyOmp5(
@@ -198,7 +198,7 @@ namespace alpaka
                             std::is_same<elem::Elem<TViewDst>, typename std::remove_const<elem::Elem<TViewSrc>>::type>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Idx = idx::Idx<TExtent>;
+                        using Idx = alpaka::Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopyOmp5(

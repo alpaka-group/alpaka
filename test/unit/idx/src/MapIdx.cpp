@@ -26,9 +26,9 @@ TEMPLATE_LIST_TEST_CASE( "mapIdx", "[idx]", alpaka::test::dim::TestDims)
     auto const extentNd(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
     auto const idxNd(extentNd - Vec::all(4u));
 
-    auto const idx1d(alpaka::idx::mapIdx<1u>(idxNd, extentNd));
+    auto const idx1d(alpaka::mapIdx<1u>(idxNd, extentNd));
 
-    auto const idxNdResult(alpaka::idx::mapIdx<Dim::value>(idx1d, extentNd));
+    auto const idxNdResult(alpaka::mapIdx<Dim::value>(idx1d, extentNd));
 
     REQUIRE(idxNd == idxNdResult);
 }

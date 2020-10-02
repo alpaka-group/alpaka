@@ -98,7 +98,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
                     std::vector<TElem, TAllocator> const & extent)
-                -> idx::Idx<std::vector<TElem, TAllocator>>
+                -> Idx<std::vector<TElem, TAllocator>>
                 {
                     return extent.size();
                 }
@@ -147,7 +147,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
                         std::vector<TElem, TAllocator> const & pitch)
-                    -> idx::Idx<std::vector<TElem, TAllocator>>
+                    -> Idx<std::vector<TElem, TAllocator>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -172,27 +172,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
                     std::vector<TElem, TAllocator> const &)
-                -> idx::Idx<std::vector<TElem, TAllocator>>
+                -> Idx<std::vector<TElem, TAllocator>>
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::vector idx type trait specialization.
+        template<
+            typename TElem,
+            typename TAllocator>
+        struct IdxType<
+            std::vector<TElem, TAllocator>>
         {
-            //#############################################################################
-            //! The std::vector idx type trait specialization.
-            template<
-                typename TElem,
-                typename TAllocator>
-            struct IdxType<
-                std::vector<TElem, TAllocator>>
-            {
-                using type = std::size_t;
-            };
-        }
+            using type = std::size_t;
+        };
     }
 }

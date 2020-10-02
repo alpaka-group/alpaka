@@ -37,7 +37,7 @@ public:
         Val * const puiBlockRetVals) const
     -> void
     {
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
 
         static_assert(
             alpaka::dim::Dim<TAcc>::value == 1,
@@ -50,7 +50,7 @@ public:
         Val * const pBlockShared(alpaka::block::dyn::getMem<Val>(acc));
 
         // Calculate linearized index of the thread in the block.
-        Idx const blockThreadIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        Idx const blockThreadIdx1d(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
@@ -91,7 +91,7 @@ public:
         if(blockThreadIdx1d==0)
         {
             // Calculate linearized block id.
-            Idx const gridBlockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
+            Idx const gridBlockIdx(alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
             puiBlockRetVals[gridBlockIdx] = pBlockShared[0];
         }
@@ -142,7 +142,7 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     Idx const numElements = 1u<<16u;
 

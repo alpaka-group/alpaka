@@ -23,7 +23,7 @@
 template<
     typename TAcc>
 static auto testBufferMutable(
-    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
+    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::Idx<TAcc>> const & extent)
 -> void
 {
     using Dev = alpaka::Dev<TAcc>;
@@ -32,7 +32,7 @@ static auto testBufferMutable(
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
     Queue queue(dev);
@@ -62,7 +62,7 @@ TEMPLATE_LIST_TEST_CASE( "memBufBasicTest", "[memBuf]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     auto const extent(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
 
@@ -76,7 +76,7 @@ TEMPLATE_LIST_TEST_CASE( "memBufZeroSizeTest", "[memBuf]", alpaka::test::TestAcc
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     auto const extent(alpaka::Vec<Dim, Idx>::zeros());
 
@@ -90,7 +90,7 @@ TEMPLATE_LIST_TEST_CASE( "memBufZeroSizeTest", "[memBuf]", alpaka::test::TestAcc
 template<
     typename TAcc>
 static auto testBufferImmutable(
-    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
+    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::Idx<TAcc>> const & extent)
 -> void
 {
     using Dev = alpaka::Dev<TAcc>;
@@ -98,7 +98,7 @@ static auto testBufferImmutable(
 
     using Elem = float;
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
@@ -121,7 +121,7 @@ TEMPLATE_LIST_TEST_CASE( "memBufConstTest", "[memBuf]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     auto const extent(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
 

@@ -64,12 +64,12 @@ public:
             "The accelerator used for the GemmAlpakaKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
-        auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
+        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc));
         auto const & gridThreadIdxX(gridThreadIdx[1u]);
         auto const & gridThreadIdxY(gridThreadIdx[0u]);
 
         // Column and row inside the block of C to calculate.
-        auto const blockThreadIdx(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc));
+        auto const blockThreadIdx(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc));
         auto const & blockThreadIdxX(blockThreadIdx[1u]);
         auto const & blockThreadIdxY(blockThreadIdx[0u]);
 
@@ -206,7 +206,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     Idx const m(64u);
     Idx const n(79u);

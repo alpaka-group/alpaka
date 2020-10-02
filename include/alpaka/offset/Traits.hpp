@@ -38,9 +38,9 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const &)
-                -> idx::Idx<TOffsets>
+                -> Idx<TOffsets>
                 {
-                    return static_cast<idx::Idx<TOffsets>>(0);
+                    return static_cast<Idx<TOffsets>>(0);
                 }
             };
 
@@ -62,7 +62,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffset(
             TOffsets const & offsets)
-        -> idx::Idx<TOffsets>
+        -> Idx<TOffsets>
         {
             return
                 traits::GetOffset<
@@ -78,7 +78,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetX(
             TOffsets const & offsets = TOffsets())
-        -> idx::Idx<TOffsets>
+        -> Idx<TOffsets>
         {
             return getOffset<dim::Dim<TOffsets>::value - 1u>(offsets);
         }
@@ -89,7 +89,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetY(
             TOffsets const & offsets = TOffsets())
-        -> idx::Idx<TOffsets>
+        -> Idx<TOffsets>
         {
             return getOffset<dim::Dim<TOffsets>::value - 2u>(offsets);
         }
@@ -100,7 +100,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetZ(
             TOffsets const & offsets = TOffsets())
-        -> idx::Idx<TOffsets>
+        -> Idx<TOffsets>
         {
             return getOffset<dim::Dim<TOffsets>::value - 3u>(offsets);
         }
@@ -182,7 +182,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offset)
-                -> idx::Idx<TOffsets>
+                -> Idx<TOffsets>
                 {
                     return offset;
                 }

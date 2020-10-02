@@ -128,7 +128,7 @@ namespace alpaka
                                 dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                                 "The destination buffer and the extent are required to have the same dimensionality!");
 
-                            using Idx = idx::Idx<TExtent>;
+                            using Idx = Idx<TExtent>;
 
                             auto & view(this->m_view);
                             auto const & extent(this->m_extent);
@@ -194,7 +194,7 @@ namespace alpaka
                                 dim::Dim<TView>::value == dim::Dim<TExtent>::value,
                                 "The destination buffer and the extent are required to have the same dimensionality!");
 
-                            using Idx = idx::Idx<TExtent>;
+                            using Idx = Idx<TExtent>;
 
                             auto & view(this->m_view);
                             auto const & extent(this->m_extent);
@@ -268,7 +268,7 @@ namespace alpaka
                                 "The destination buffer and the extent are required to have the same dimensionality!");
 
                             using Elem = alpaka::elem::Elem<TView>;
-                            using Idx = idx::Idx<TExtent>;
+                            using Idx = Idx<TExtent>;
 
                             auto & view(this->m_view);
                             auto const & extent(this->m_extent);

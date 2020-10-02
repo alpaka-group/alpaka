@@ -395,7 +395,7 @@ namespace alpaka
         TThreadElemExtent const & threadElemExtents = TThreadElemExtent(),
         bool requireBlockThreadExtentToDivideGridThreadExtent = true,
         GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
-    -> WorkDivMembers<dim::Dim<TGridElemExtent>, idx::Idx<TGridElemExtent>>
+    -> WorkDivMembers<dim::Dim<TGridElemExtent>, Idx<TGridElemExtent>>
     {
         static_assert(
             dim::Dim<TGridElemExtent>::value == dim::Dim<TAcc>::value,
@@ -404,10 +404,10 @@ namespace alpaka
             dim::Dim<TThreadElemExtent>::value == dim::Dim<TAcc>::value,
             "The dimension of TAcc and the dimension of TThreadElemExtent have to be identical!");
         static_assert(
-            std::is_same<idx::Idx<TGridElemExtent>, idx::Idx<TAcc>>::value,
+            std::is_same<Idx<TGridElemExtent>, Idx<TAcc>>::value,
             "The idx type of TAcc and the idx type of TGridElemExtent have to be identical!");
         static_assert(
-            std::is_same<idx::Idx<TThreadElemExtent>, idx::Idx<TAcc>>::value,
+            std::is_same<Idx<TThreadElemExtent>, Idx<TAcc>>::value,
             "The idx type of TAcc and the idx type of TThreadElemExtent have to be identical!");
 
         return subDivideGridElems(

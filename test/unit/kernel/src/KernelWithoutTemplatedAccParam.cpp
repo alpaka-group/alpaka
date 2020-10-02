@@ -52,7 +52,7 @@ struct KernelNoTemplateCpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -82,7 +82,7 @@ struct KernelNoTemplateGpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -113,7 +113,7 @@ struct KernelWithoutTemplateParamCpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<AccCpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 
@@ -145,7 +145,7 @@ struct KernelWithoutTemplateParamGpu
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<AccGpu>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
     }
 };
 

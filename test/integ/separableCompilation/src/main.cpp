@@ -50,7 +50,7 @@ public:
             alpaka::dim::Dim<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
-        auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
         auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
         auto const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
@@ -76,7 +76,7 @@ using TestAccs = alpaka::test::EnabledAccs<
 TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestAccs)
 {
     using Acc = TestType;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     using Val = double;
 

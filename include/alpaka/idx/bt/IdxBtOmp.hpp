@@ -25,32 +25,29 @@
 
 namespace alpaka
 {
-    namespace idx
+    namespace bt
     {
-        namespace bt
+        //#############################################################################
+        //! The OpenMP accelerator index provider.
+        template<
+            typename TDim,
+            typename TIdx>
+        class IdxBtOmp : public concepts::Implements<ConceptIdxBt, IdxBtOmp<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The OpenMP accelerator index provider.
-            template<
-                typename TDim,
-                typename TIdx>
-            class IdxBtOmp : public concepts::Implements<ConceptIdxBt, IdxBtOmp<TDim, TIdx>>
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                IdxBtOmp() = default;
-                //-----------------------------------------------------------------------------
-                IdxBtOmp(IdxBtOmp const &) = delete;
-                //-----------------------------------------------------------------------------
-                IdxBtOmp(IdxBtOmp &&) = delete;
-                //-----------------------------------------------------------------------------
-                auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
-                //-----------------------------------------------------------------------------
-                auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
-                //-----------------------------------------------------------------------------
-                /*virtual*/ ~IdxBtOmp() = default;
-            };
-        }
+        public:
+            //-----------------------------------------------------------------------------
+            IdxBtOmp() = default;
+            //-----------------------------------------------------------------------------
+            IdxBtOmp(IdxBtOmp const &) = delete;
+            //-----------------------------------------------------------------------------
+            IdxBtOmp(IdxBtOmp &&) = delete;
+            //-----------------------------------------------------------------------------
+            auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
+            //-----------------------------------------------------------------------------
+            auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
+            //-----------------------------------------------------------------------------
+            /*virtual*/ ~IdxBtOmp() = default;
+        };
     }
 
     namespace dim
@@ -63,82 +60,76 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                idx::bt::IdxBtOmp<TDim, TIdx>>
+                bt::IdxBtOmp<TDim, TIdx>>
             {
                 using type = TDim;
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP accelerator block thread index get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetIdx<
+            bt::IdxBtOmp<TDim, TIdx>,
+            origin::Block,
+            unit::Threads>
         {
-            //#############################################################################
-            //! The OpenMP accelerator block thread index get trait specialization.
+            //-----------------------------------------------------------------------------
+            //! \return The index of the current thread in the block.
             template<
-                typename TDim,
-                typename TIdx>
-            struct GetIdx<
-                idx::bt::IdxBtOmp<TDim, TIdx>,
-                origin::Block,
-                unit::Threads>
+                typename TWorkDiv>
+            static auto getIdx(
+                bt::IdxBtOmp<TDim, TIdx> const & idx,
+                TWorkDiv const & workDiv)
+            -> Vec<TDim, TIdx>
             {
-                //-----------------------------------------------------------------------------
-                //! \return The index of the current thread in the block.
-                template<
-                    typename TWorkDiv>
-                static auto getIdx(
-                    idx::bt::IdxBtOmp<TDim, TIdx> const & idx,
-                    TWorkDiv const & workDiv)
-                -> Vec<TDim, TIdx>
-                {
-                    alpaka::ignore_unused(idx);
-                    // We assume that the thread id is positive.
-                    ALPAKA_ASSERT(::omp_get_thread_num()>=0);
-                    // \TODO: Would it be faster to precompute the index and cache it inside an array?
-                    return idx::mapIdx<TDim::value>(
-                        Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
-                        getWorkDiv<Block, Threads>(workDiv));
-                }
-            };
+                alpaka::ignore_unused(idx);
+                // We assume that the thread id is positive.
+                ALPAKA_ASSERT(::omp_get_thread_num()>=0);
+                // \TODO: Would it be faster to precompute the index and cache it inside an array?
+                return mapIdx<TDim::value>(
+                    Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
+                    getWorkDiv<Block, Threads>(workDiv));
+            }
+        };
 
-            template<
-                typename TIdx>
-            struct GetIdx<
-                idx::bt::IdxBtOmp<dim::DimInt<1u>, TIdx>,
-                origin::Block,
-                unit::Threads>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return The index of the current thread in the block.
-                template<
-                    typename TWorkDiv>
-                static auto getIdx(
-                    idx::bt::IdxBtOmp<dim::DimInt<1u>, TIdx> const & idx,
-                    TWorkDiv const &)
-                -> Vec<dim::DimInt<1u>, TIdx>
-                {
-                    alpaka::ignore_unused(idx);
-                    return Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
-                }
-            };
-        }
-    }
-    namespace idx
-    {
-        namespace traits
+        template<
+            typename TIdx>
+        struct GetIdx<
+            bt::IdxBtOmp<dim::DimInt<1u>, TIdx>,
+            origin::Block,
+            unit::Threads>
         {
-            //#############################################################################
-            //! The OpenMP accelerator block thread index idx type trait specialization.
+            //-----------------------------------------------------------------------------
+            //! \return The index of the current thread in the block.
             template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                idx::bt::IdxBtOmp<TDim, TIdx>>
+                typename TWorkDiv>
+            static auto getIdx(
+                bt::IdxBtOmp<dim::DimInt<1u>, TIdx> const & idx,
+                TWorkDiv const &)
+            -> Vec<dim::DimInt<1u>, TIdx>
             {
-                using type = TIdx;
-            };
-        }
+                alpaka::ignore_unused(idx);
+                return Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
+            }
+        };
+    }
+    namespace traits
+    {
+        //#############################################################################
+        //! The OpenMP accelerator block thread index idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            bt::IdxBtOmp<TDim, TIdx>>
+        {
+            using type = TIdx;
+        };
     }
 }
 

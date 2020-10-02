@@ -81,8 +81,8 @@ namespace alpaka
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                     TKernelFnObj const & kernelFnObj,
-                    Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
-                    Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
+                    Vec<TDim, Idx<TAcc>> const & blockThreadExtent,
+                    Vec<TDim, Idx<TAcc>> const & threadElemExtent,
                     TArgs const & ... args)
                 -> std::size_t
                 {
@@ -119,8 +119,8 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto getBlockSharedMemDynSizeBytes(
             TKernelFnObj const & kernelFnObj,
-            Vec<TDim, idx::Idx<TAcc>> const & blockThreadExtent,
-            Vec<TDim, idx::Idx<TAcc>> const & threadElemExtent,
+            Vec<TDim, Idx<TAcc>> const & blockThreadExtent,
+            Vec<TDim, Idx<TAcc>> const & threadElemExtent,
             TArgs const & ... args)
         -> std::size_t
         {
@@ -195,7 +195,7 @@ namespace alpaka
                 dim::Dim<std::decay_t<TWorkDiv>>::value == dim::Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");
             static_assert(
-                std::is_same<idx::Idx<std::decay_t<TWorkDiv>>, idx::Idx<TAcc>>::value,
+                std::is_same<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>::value,
                 "The idx type of TAcc and the idx type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
