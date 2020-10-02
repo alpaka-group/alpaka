@@ -260,7 +260,7 @@ auto main()
 
     FillBufferKernel fillBufferKernel;
 
-    alpaka::kernel::exec<Host>(
+    alpaka::exec<Host>(
         hostQueue,
         hostWorkDiv,
         fillBufferKernel,
@@ -300,7 +300,7 @@ auto main()
     Data const * const pDeviceBuffer2 = alpaka::mem::view::getPtrNative(deviceBuffer2);
 
     TestBufferKernel testBufferKernel;
-    alpaka::kernel::exec<Acc>(
+    alpaka::exec<Acc>(
         devQueue,
         devWorkDiv,
         testBufferKernel,
@@ -308,7 +308,7 @@ auto main()
         extents,                                        // 2nd kernel argument
         deviceBuffer1Pitch);                            // 3rd kernel argument
 
-    alpaka::kernel::exec<Acc>(
+    alpaka::exec<Acc>(
         devQueue,
         devWorkDiv,
         testBufferKernel,
@@ -328,7 +328,7 @@ auto main()
     // completely distorted.
 
     PrintBufferKernel printBufferKernel;
-    alpaka::kernel::exec<Acc>(
+    alpaka::exec<Acc>(
         devQueue,
         devWorkDiv,
         printBufferKernel,
@@ -338,7 +338,7 @@ auto main()
     alpaka::wait::wait(devQueue);
     std::cout << std::endl;
 
-    alpaka::kernel::exec<Acc>(
+    alpaka::exec<Acc>(
         devQueue,
         devWorkDiv,
         printBufferKernel,
@@ -348,7 +348,7 @@ auto main()
     alpaka::wait::wait(devQueue);
     std::cout << std::endl;
 
-    alpaka::kernel::exec<Host>(
+    alpaka::exec<Host>(
         hostQueue,
         hostWorkDiv,
         printBufferKernel,
@@ -358,7 +358,7 @@ auto main()
     alpaka::wait::wait(hostQueue);
     std::cout << std::endl;
 
-    alpaka::kernel::exec<Host>(
+    alpaka::exec<Host>(
         hostQueue,
         hostWorkDiv,
         printBufferKernel,

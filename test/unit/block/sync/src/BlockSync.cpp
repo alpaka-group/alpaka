@@ -56,38 +56,35 @@ public:
 
 namespace alpaka
 {
-    namespace kernel
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The trait for getting the size of the block shared dynamic memory for a kernel.
+        template<
+            typename TAcc>
+        struct BlockSharedMemDynSizeBytes<
+            BlockSyncTestKernel,
+            TAcc>
         {
-            //#############################################################################
-            //! The trait for getting the size of the block shared dynamic memory for a kernel.
+            //-----------------------------------------------------------------------------
+            //! \return The size of the shared memory allocated for a block.
             template<
-                typename TAcc>
-            struct BlockSharedMemDynSizeBytes<
-                BlockSyncTestKernel,
-                TAcc>
+                typename TVec>
+            ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
+                BlockSyncTestKernel const & blockSharedMemDyn,
+                TVec const & blockThreadExtent,
+                TVec const & threadElemExtent,
+                bool * success)
+            -> std::size_t
             {
-                //-----------------------------------------------------------------------------
-                //! \return The size of the shared memory allocated for a block.
-                template<
-                    typename TVec>
-                ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
-                    BlockSyncTestKernel const & blockSharedMemDyn,
-                    TVec const & blockThreadExtent,
-                    TVec const & threadElemExtent,
-                    bool * success)
-                -> std::size_t
-                {
-                    using Idx = alpaka::Idx<TAcc>;
+                using Idx = alpaka::Idx<TAcc>;
 
-                    alpaka::ignore_unused(blockSharedMemDyn);
-                    alpaka::ignore_unused(threadElemExtent);
-                    alpaka::ignore_unused(success);
-                    return static_cast<std::size_t>(blockThreadExtent.prod()) * sizeof(Idx);
-                }
-            };
-        }
+                alpaka::ignore_unused(blockSharedMemDyn);
+                alpaka::ignore_unused(threadElemExtent);
+                alpaka::ignore_unused(success);
+                return static_cast<std::size_t>(blockThreadExtent.prod()) * sizeof(Idx);
+            }
+        };
     }
 }
 

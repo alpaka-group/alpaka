@@ -122,7 +122,7 @@ auto main()
     // This example passes the number exclamation marks, that should
     // be written after we greet the world, to the
     // lambda function.
-    alpaka::kernel::exec<Acc>(
+    alpaka::exec<Acc>(
         queue,
         workDiv,
         [] ALPAKA_FN_ACC (Acc const & acc, size_t const nExclamationMarksAsArg) -> void {

@@ -247,7 +247,7 @@ auto main( ) -> int
     for( uint32_t step = 0; step < numTimeSteps; step++ )
     {
         // Compute next values
-        alpaka::kernel::exec< Acc >(
+        alpaka::exec< Acc >(
             queue,
             workdiv,
             kernel,

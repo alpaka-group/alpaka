@@ -190,7 +190,7 @@ auto main()
     // The queue can be blocking or non-blocking
     // depending on the choosen queue type (see type definitions above).
     // Here it is synchronous which means that the kernel is directly executed.
-    alpaka::kernel::exec<Acc>(
+    alpaka::exec<Acc>(
         queue,
         workDiv,
         helloWorldKernel

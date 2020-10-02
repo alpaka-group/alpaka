@@ -52,16 +52,14 @@
 
 namespace alpaka
 {
-    namespace kernel
-    {
-        template<
-            typename TAcc,
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelGpuUniformCudaHipRt;
-    }
+    template<
+        typename TAcc,
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelGpuUniformCudaHipRt;
+
     //#############################################################################
     //! The GPU CUDA accelerator.
     //!
@@ -303,71 +301,68 @@ namespace alpaka
             using type = TDim;
         };
     }
-    namespace kernel
+    namespace detail
     {
-        namespace detail
+        //#############################################################################
+        //! specialization of the TKernelFnObj return type evaluation
+        //
+        // It is not possible to determine the result type of a __device__ lambda for CUDA on the host side.
+        // https://github.com/alpaka-group/alpaka/pull/695#issuecomment-446103194
+        // The execution task TaskKernelGpuUniformCudaHipRt is therefore performing this check on device side.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct CheckFnReturnType<
+            AccGpuUniformCudaHipRt<
+                TDim,
+                TIdx>>
         {
-            //#############################################################################
-            //! specialization of the TKernelFnObj return type evaluation
-            //
-            // It is not possible to determine the result type of a __device__ lambda for CUDA on the host side.
-            // https://github.com/alpaka-group/alpaka/pull/695#issuecomment-446103194
-            // The execution task TaskKernelGpuUniformCudaHipRt is therefore performing this check on device side.
             template<
-                typename TDim,
-                typename TIdx>
-            struct CheckFnReturnType<
-                AccGpuUniformCudaHipRt<
-                    TDim,
-                    TIdx>>
-            {
-                template<
-                    typename TKernelFnObj,
-                    typename... TArgs>
-                void operator()(
-                    TKernelFnObj const &,
-                    TArgs const & ...)
-                {
-
-                }
-            };
-        }
-
-        namespace traits
-        {
-            //#############################################################################
-            //! The GPU CUDA accelerator execution task type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TWorkDiv,
                 typename TKernelFnObj,
                 typename... TArgs>
-            struct CreateTaskKernel<
-                AccGpuUniformCudaHipRt<TDim, TIdx>,
-                TWorkDiv,
-                TKernelFnObj,
-                TArgs...>
+            void operator()(
+                TKernelFnObj const &,
+                TArgs const & ...)
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto createTaskKernel(
-                    TWorkDiv const & workDiv,
-                    TKernelFnObj const & kernelFnObj,
-                    TArgs && ... args)
-                {
-                    return
-                        kernel::TaskKernelGpuUniformCudaHipRt<
-                            AccGpuUniformCudaHipRt<TDim, TIdx>,
-                            TDim,
-                            TIdx,
-                            TKernelFnObj,
-                            TArgs...>(
-                                workDiv,
-                                kernelFnObj,
-                                std::forward<TArgs>(args)...);
-                }
-            };
-        }
+
+            }
+        };
+    }
+
+    namespace traits
+    {
+        //#############################################################################
+        //! The GPU CUDA accelerator execution task type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct CreateTaskKernel<
+            AccGpuUniformCudaHipRt<TDim, TIdx>,
+            TWorkDiv,
+            TKernelFnObj,
+            TArgs...>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto createTaskKernel(
+                TWorkDiv const & workDiv,
+                TKernelFnObj const & kernelFnObj,
+                TArgs && ... args)
+            {
+                return
+                    TaskKernelGpuUniformCudaHipRt<
+                        AccGpuUniformCudaHipRt<TDim, TIdx>,
+                        TDim,
+                        TIdx,
+                        TKernelFnObj,
+                        TArgs...>(
+                            workDiv,
+                            kernelFnObj,
+                            std::forward<TArgs>(args)...);
+            }
+        };
     }
     namespace traits
     {

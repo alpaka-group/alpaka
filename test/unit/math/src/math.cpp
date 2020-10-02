@@ -145,7 +145,7 @@ struct TestTemplate
         results.copyToDevice(queue);
 
         auto const taskKernel(
-            alpaka::kernel::createTaskKernel< TAcc >(
+            alpaka::createTaskKernel< TAcc >(
                 workDiv,
                 kernel,
                 results,

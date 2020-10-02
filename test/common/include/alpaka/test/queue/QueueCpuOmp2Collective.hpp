@@ -287,14 +287,14 @@ namespace alpaka
             typename... TArgs>
         struct Enqueue<
             QueueCpuOmp2Collective,
-            kernel::TaskKernelCpuOmp2Blocks<
+            TaskKernelCpuOmp2Blocks<
                 TDim,
                 TIdx,
                 TKernelFnObj,
                 TArgs...>>
         {
         private:
-            using Task = kernel::TaskKernelCpuOmp2Blocks<
+            using Task = TaskKernelCpuOmp2Blocks<
                 TDim,
                 TIdx,
                 TKernelFnObj,

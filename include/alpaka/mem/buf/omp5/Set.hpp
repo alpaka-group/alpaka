@@ -72,7 +72,7 @@ namespace alpaka
 
                         if(pitch[0] == 0)
                         {
-                            return kernel::createTaskKernel<AccOmp5<TDim,Idx>>(
+                            return createTaskKernel<AccOmp5<TDim,Idx>>(
                                     WorkDivMembers<TDim, Idx>(
                                         Vec<TDim, Idx>::zeros(),
                                         Vec<TDim, Idx>::zeros(),
@@ -99,7 +99,7 @@ namespace alpaka
                                 false,
                                 alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
                         return
-                            kernel::createTaskKernel<AccOmp5<TDim,Idx>>(
+                            createTaskKernel<AccOmp5<TDim,Idx>>(
                                     workDiv,
                                     view::MemSetKernel(),
                                     byte,

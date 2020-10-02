@@ -75,7 +75,7 @@ namespace alpaka
                     static_cast<std::uint8_t>(true),
                     bufAccResult);
 
-                alpaka::kernel::exec<Acc>(
+                alpaka::exec<Acc>(
                     m_queue,
                     m_workDiv,
                     kernelFnObj,

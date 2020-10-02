@@ -43,128 +43,125 @@
 
 namespace alpaka
 {
-    namespace kernel
+    //#############################################################################
+    //! The CPU TBB block accelerator execution task.
+    template<
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelCpuTbbBlocks final :
+        public WorkDivMembers<TDim, TIdx>
     {
-        //#############################################################################
-        //! The CPU TBB block accelerator execution task.
+    public:
+        //-----------------------------------------------------------------------------
         template<
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelCpuTbbBlocks final :
-            public WorkDivMembers<TDim, TIdx>
+            typename TWorkDiv>
+        ALPAKA_FN_HOST TaskKernelCpuTbbBlocks(
+            TWorkDiv && workDiv,
+            TKernelFnObj const & kernelFnObj,
+            TArgs && ... args) :
+                WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
+                m_kernelFnObj(kernelFnObj),
+                m_args(std::forward<TArgs>(args)...)
         {
-        public:
-            //-----------------------------------------------------------------------------
-            template<
-                typename TWorkDiv>
-            ALPAKA_FN_HOST TaskKernelCpuTbbBlocks(
-                TWorkDiv && workDiv,
-                TKernelFnObj const & kernelFnObj,
-                TArgs && ... args) :
-                    WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv)),
-                    m_kernelFnObj(kernelFnObj),
-                    m_args(std::forward<TArgs>(args)...)
-            {
-                static_assert(
-                    Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
-                    "The work division and the execution task have to be of the same dimensionality!");
-            }
-            //-----------------------------------------------------------------------------
-            TaskKernelCpuTbbBlocks(TaskKernelCpuTbbBlocks const &) = default;
-            //-----------------------------------------------------------------------------
-            TaskKernelCpuTbbBlocks(TaskKernelCpuTbbBlocks &&) = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelCpuTbbBlocks const &) -> TaskKernelCpuTbbBlocks & = default;
-            //-----------------------------------------------------------------------------
-            auto operator=(TaskKernelCpuTbbBlocks &&) -> TaskKernelCpuTbbBlocks & = default;
-            //-----------------------------------------------------------------------------
-            ~TaskKernelCpuTbbBlocks() = default;
+            static_assert(
+                Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
+                "The work division and the execution task have to be of the same dimensionality!");
+        }
+        //-----------------------------------------------------------------------------
+        TaskKernelCpuTbbBlocks(TaskKernelCpuTbbBlocks const &) = default;
+        //-----------------------------------------------------------------------------
+        TaskKernelCpuTbbBlocks(TaskKernelCpuTbbBlocks &&) = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(TaskKernelCpuTbbBlocks const &) -> TaskKernelCpuTbbBlocks & = default;
+        //-----------------------------------------------------------------------------
+        auto operator=(TaskKernelCpuTbbBlocks &&) -> TaskKernelCpuTbbBlocks & = default;
+        //-----------------------------------------------------------------------------
+        ~TaskKernelCpuTbbBlocks() = default;
 
-            //-----------------------------------------------------------------------------
-            //! Executes the kernel function object.
-            ALPAKA_FN_HOST auto operator()() const
-            -> void
-            {
-                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+        //-----------------------------------------------------------------------------
+        //! Executes the kernel function object.
+        ALPAKA_FN_HOST auto operator()() const
+        -> void
+        {
+            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtent(
-                    getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtent(
-                    getWorkDiv<Block, Threads>(*this));
-                auto const threadElemExtent(
-                    getWorkDiv<Thread, Elems>(*this));
+            auto const gridBlockExtent(
+                getWorkDiv<Grid, Blocks>(*this));
+            auto const blockThreadExtent(
+                getWorkDiv<Block, Threads>(*this));
+            auto const threadElemExtent(
+                getWorkDiv<Thread, Elems>(*this));
 
-                // Get the size of the block shared dynamic memory.
-                auto const blockSharedMemDynSizeBytes(
-                    meta::apply(
-                        [&](ALPAKA_DECAY_T(TArgs) const & ... args)
-                        {
-                            return
-                                kernel::getBlockSharedMemDynSizeBytes<
-                                    AccCpuTbbBlocks<TDim, TIdx>>(
-                                        m_kernelFnObj,
-                                        blockThreadExtent,
-                                        threadElemExtent,
-                                        args...);
-                        },
-                        m_args));
+            // Get the size of the block shared dynamic memory.
+            auto const blockSharedMemDynSizeBytes(
+                meta::apply(
+                    [&](ALPAKA_DECAY_T(TArgs) const & ... args)
+                    {
+                        return
+                            getBlockSharedMemDynSizeBytes<
+                                AccCpuTbbBlocks<TDim, TIdx>>(
+                                    m_kernelFnObj,
+                                    blockThreadExtent,
+                                    threadElemExtent,
+                                    args...);
+                    },
+                    m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                std::cout << __func__
-                    << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
+            std::cout << __func__
+                << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
 #endif
-                // Bind all arguments except the accelerator.
-                // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
-                auto const boundKernelFnObj(
-                    meta::apply(
-                        [this](ALPAKA_DECAY_T(TArgs) const & ... args)
-                        {
-                            return
-                                std::bind(
-                                    std::ref(m_kernelFnObj),
-                                    std::placeholders::_1,
-                                    std::ref(args)...);
-                        },
-                        m_args));
+            // Bind all arguments except the accelerator.
+            // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
+            auto const boundKernelFnObj(
+                meta::apply(
+                    [this](ALPAKA_DECAY_T(TArgs) const & ... args)
+                    {
+                        return
+                            std::bind(
+                                std::ref(m_kernelFnObj),
+                                std::placeholders::_1,
+                                std::ref(args)...);
+                    },
+                    m_args));
 
-                // The number of blocks in the grid.
-                TIdx const numBlocksInGrid(gridBlockExtent.prod());
+            // The number of blocks in the grid.
+            TIdx const numBlocksInGrid(gridBlockExtent.prod());
 
-                if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
-                {
-                    throw std::runtime_error("A block for the TBB accelerator can only ever have one single thread!");
-                }
-
-                tbb::parallel_for(
-                    static_cast<TIdx>(0),
-                    static_cast<TIdx>(numBlocksInGrid),
-                    [&](TIdx i){
-                         AccCpuTbbBlocks<TDim, TIdx> acc(
-                             *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
-                             blockSharedMemDynSizeBytes);
-
-                         acc.m_gridBlockIdx =
-                             mapIdx<TDim::value>(
-                                 Vec<DimInt<1u>, TIdx>(
-                                     static_cast<TIdx>(i)
-                                  ),
-                                  gridBlockExtent
-                             );
-
-                         boundKernelFnObj(acc);
-
-                         block::st::freeMem(acc);
-                });
-
+            if(blockThreadExtent.prod() != static_cast<TIdx>(1u))
+            {
+                throw std::runtime_error("A block for the TBB accelerator can only ever have one single thread!");
             }
 
-        private:
-            TKernelFnObj m_kernelFnObj;
-            std::tuple<std::decay_t<TArgs>...> m_args;
-        };
-    }
+            tbb::parallel_for(
+                static_cast<TIdx>(0),
+                static_cast<TIdx>(numBlocksInGrid),
+                [&](TIdx i){
+                        AccCpuTbbBlocks<TDim, TIdx> acc(
+                            *static_cast<WorkDivMembers<TDim, TIdx> const *>(this),
+                            blockSharedMemDynSizeBytes);
+
+                        acc.m_gridBlockIdx =
+                            mapIdx<TDim::value>(
+                                Vec<DimInt<1u>, TIdx>(
+                                    static_cast<TIdx>(i)
+                                ),
+                                gridBlockExtent
+                            );
+
+                        boundKernelFnObj(acc);
+
+                        block::st::freeMem(acc);
+            });
+
+        }
+
+    private:
+        TKernelFnObj m_kernelFnObj;
+        std::tuple<std::decay_t<TArgs>...> m_args;
+    };
 
     namespace traits
     {
@@ -176,7 +173,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct AccType<
-            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = AccCpuTbbBlocks<TDim, TIdx>;
         };
@@ -191,7 +188,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct DevType<
-            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = DevCpu;
         };
@@ -206,7 +203,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct DimType<
-            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TDim;
         };
@@ -221,7 +218,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct PltfType<
-            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = PltfCpu;
         };
@@ -236,7 +233,7 @@ namespace alpaka
             typename TKernelFnObj,
             typename... TArgs>
         struct IdxType<
-            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
+            TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
             using type = TIdx;
         };
