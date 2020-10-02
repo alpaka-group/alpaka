@@ -932,63 +932,60 @@ namespace alpaka
         }
     }
 
-    namespace offset
+    namespace detail
     {
-        namespace detail
+        //#############################################################################
+        //! A function object that returns the offsets for each index.
+        template<
+            std::size_t Tidx>
+        struct CreateOffset
         {
-            //#############################################################################
-            //! A function object that returns the offsets for each index.
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
-                std::size_t Tidx>
-            struct CreateOffset
+                typename TOffsets>
+            ALPAKA_FN_HOST_ACC static auto create(
+                TOffsets const & offsets)
+            -> Idx<TOffsets>
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                template<
-                    typename TOffsets>
-                ALPAKA_FN_HOST_ACC static auto create(
-                    TOffsets const & offsets)
-                -> Idx<TOffsets>
-                {
-                    return offset::getOffset<Tidx>(offsets);
-                }
-            };
-        }
-        //-----------------------------------------------------------------------------
-        //! \tparam TOffsets has to specialize offset::GetOffset.
-        //! \return The offset vector.
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TOffsets>
-        ALPAKA_FN_HOST_ACC auto getOffsetVec(
-            TOffsets const & offsets = TOffsets())
-        -> Vec<Dim<TOffsets>, Idx<TOffsets>>
-        {
-            return
-                createVecFromIndexedFn<
-                    Dim<TOffsets>,
-                    detail::CreateOffset>(
-                        offsets);
-        }
-        //-----------------------------------------------------------------------------
-        //! \tparam TOffsets has to specialize offset::GetOffset.
-        //! \return The offset vector but only the last N elements.
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TDim,
-            typename TOffsets>
-        ALPAKA_FN_HOST_ACC auto getOffsetVecEnd(
-            TOffsets const & offsets = TOffsets())
-        -> Vec<TDim, Idx<TOffsets>>
-        {
-            using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
-            return
-                createVecFromIndexedFnOffset<
-                    TDim,
-                    detail::CreateOffset,
-                    IdxOffset>(
-                        offsets);
-        }
+                return getOffset<Tidx>(offsets);
+            }
+        };
+    }
+    //-----------------------------------------------------------------------------
+    //! \tparam TOffsets has to specialize GetOffset.
+    //! \return The offset vector.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<
+        typename TOffsets>
+    ALPAKA_FN_HOST_ACC auto getOffsetVec(
+        TOffsets const & offsets = TOffsets())
+    -> Vec<Dim<TOffsets>, Idx<TOffsets>>
+    {
+        return
+            createVecFromIndexedFn<
+                Dim<TOffsets>,
+                detail::CreateOffset>(
+                    offsets);
+    }
+    //-----------------------------------------------------------------------------
+    //! \tparam TOffsets has to specialize GetOffset.
+    //! \return The offset vector but only the last N elements.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<
+        typename TDim,
+        typename TOffsets>
+    ALPAKA_FN_HOST_ACC auto getOffsetVecEnd(
+        TOffsets const & offsets = TOffsets())
+    -> Vec<TDim, Idx<TOffsets>>
+    {
+        using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
+        return
+            createVecFromIndexedFnOffset<
+                TDim,
+                detail::CreateOffset,
+                IdxOffset>(
+                    offsets);
     }
     namespace extent
     {
@@ -1037,51 +1034,48 @@ namespace alpaka
             };
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The Vec offset get trait specialization.
+        template<
+            typename TIdxIntegralConst,
+            typename TDim,
+            typename TVal>
+        struct GetOffset<
+            TIdxIntegralConst,
+            Vec<TDim, TVal>,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
         {
-            //#############################################################################
-            //! The Vec offset get trait specialization.
-            template<
-                typename TIdxIntegralConst,
-                typename TDim,
-                typename TVal>
-            struct GetOffset<
-                TIdxIntegralConst,
-                Vec<TDim, TVal>,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto getOffset(
+                Vec<TDim, TVal> const & offsets)
+            -> TVal
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto getOffset(
-                    Vec<TDim, TVal> const & offsets)
-                -> TVal
-                {
-                    return offsets[TIdxIntegralConst::value];
-                }
-            };
-            //#############################################################################
-            //! The Vec offset set trait specialization.
-            template<
-                typename TIdxIntegralConst,
-                typename TDim,
-                typename TVal,
-                typename TOffset>
-            struct SetOffset<
-                TIdxIntegralConst,
-                Vec<TDim, TVal>,
-                TOffset,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+                return offsets[TIdxIntegralConst::value];
+            }
+        };
+        //#############################################################################
+        //! The Vec offset set trait specialization.
+        template<
+            typename TIdxIntegralConst,
+            typename TDim,
+            typename TVal,
+            typename TOffset>
+        struct SetOffset<
+            TIdxIntegralConst,
+            Vec<TDim, TVal>,
+            TOffset,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto setOffset(
+                Vec<TDim, TVal> & offsets,
+                TOffset const & offset)
+            -> void
             {
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_HOST_ACC static auto setOffset(
-                    Vec<TDim, TVal> & offsets,
-                    TOffset const & offset)
-                -> void
-                {
-                    offsets[TIdxIntegralConst::value] = offset;
-                }
-            };
-        }
+                offsets[TIdxIntegralConst::value] = offset;
+            }
+        };
     }
 }

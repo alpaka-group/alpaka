@@ -622,30 +622,27 @@ namespace alpaka
             };
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufUniformCudaHipRt offset get trait specialization.
+        template<
+            typename TIdxIntegralConst,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetOffset<
+            TIdxIntegralConst,
+            buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufUniformCudaHipRt offset get trait specialization.
-            template<
-                typename TIdxIntegralConst,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetOffset<
-                TIdxIntegralConst,
-                buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getOffset(
+                buf::BufUniformCudaHipRt<TElem, TDim, TIdx> const &)
+            -> TIdx
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getOffset(
-                   buf::BufUniformCudaHipRt<TElem, TDim, TIdx> const &)
-                -> TIdx
-                {
-                    return 0u;
-                }
-            };
-        }
+                return 0u;
+            }
+        };
     }
     namespace traits
     {

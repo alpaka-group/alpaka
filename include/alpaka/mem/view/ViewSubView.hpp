@@ -64,7 +64,7 @@ namespace alpaka
                         extent::getExtentVec(view),
                         view::getPitchBytesVec(view)),
                     m_extentElements(extent::getExtentVec(extentElements)),
-                    m_offsetsElements(offset::getOffsetVec(relativeOffsetsElements))
+                    m_offsetsElements(getOffsetVec(relativeOffsetsElements))
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -113,7 +113,7 @@ namespace alpaka
                         extent::getExtentVec(view),
                         view::getPitchBytesVec(view)),
                     m_extentElements(extent::getExtentVec(extentElements)),
-                    m_offsetsElements(offset::getOffsetVec(relativeOffsetsElements))
+                    m_offsetsElements(getOffsetVec(relativeOffsetsElements))
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -325,9 +325,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! For a 3D vector this calculates:
                 //!
-                //! offset::getOffset<0u>(view) * view::getPitchBytes<1u>(view)
-                //! + offset::getOffset<1u>(view) * view::getPitchBytes<2u>(view)
-                //! + offset::getOffset<2u>(view) * view::getPitchBytes<3u>(view)
+                //! getOffset<0u>(view) * view::getPitchBytes<1u>(view)
+                //! + getOffset<1u>(view) * view::getPitchBytes<2u>(view)
+                //! + getOffset<2u>(view) * view::getPitchBytes<3u>(view)
                 //! while view::getPitchBytes<3u>(view) is equivalent to sizeof(TElem)
                 template<
                     typename TView,
@@ -351,7 +351,7 @@ namespace alpaka
                 -> TIdx
                 {
                     return
-                        offset::getOffset<Tidx>(view)
+                        getOffset<Tidx>(view)
                         * view::getPitchBytes<Tidx + 1u>(view);
                 }
             };
@@ -383,32 +383,29 @@ namespace alpaka
             };
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewSubView x offset get trait specialization.
+        template<
+            typename TIdxIntegralConst,
+            typename TElem,
+            typename TDim,
+            typename TDev,
+            typename TIdx>
+        struct GetOffset<
+            TIdxIntegralConst,
+            view::ViewSubView<TDev, TElem, TDim, TIdx>,
+            std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
         {
-            //#############################################################################
-            //! The ViewSubView x offset get trait specialization.
-            template<
-                typename TIdxIntegralConst,
-                typename TElem,
-                typename TDim,
-                typename TDev,
-                typename TIdx>
-            struct GetOffset<
-                TIdxIntegralConst,
-                view::ViewSubView<TDev, TElem, TDim, TIdx>,
-                std::enable_if_t<(TDim::value > TIdxIntegralConst::value)>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getOffset(
+                view::ViewSubView<TDev, TElem, TDim, TIdx> const & offset)
+            -> TIdx
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getOffset(
-                    view::ViewSubView<TDev, TElem, TDim, TIdx> const & offset)
-                -> TIdx
-                {
-                    return offset.m_offsetsElements[TIdxIntegralConst::value];
-                }
-            };
-        }
+                return offset.m_offsetsElements[TIdxIntegralConst::value];
+            }
+        };
     }
     namespace traits
     {

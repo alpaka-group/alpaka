@@ -167,29 +167,26 @@ namespace alpaka
             };
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The fixed idx array offset get trait specialization.
+        template<
+            typename TIdx,
+            typename TFixedSizeArray>
+        struct GetOffset<
+            TIdx,
+            TFixedSizeArray,
+            std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
         {
-            //#############################################################################
-            //! The fixed idx array offset get trait specialization.
-            template<
-                typename TIdx,
-                typename TFixedSizeArray>
-            struct GetOffset<
-                TIdx,
-                TFixedSizeArray,
-                std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
+            //-----------------------------------------------------------------------------
+            static auto getOffset(
+                TFixedSizeArray const &)
+            -> Idx<TFixedSizeArray>
             {
-                //-----------------------------------------------------------------------------
-                static auto getOffset(
-                    TFixedSizeArray const &)
-                -> Idx<TFixedSizeArray>
-                {
-                    return 0u;
-                }
-            };
-        }
+                return 0u;
+            }
+        };
     }
     namespace traits
     {

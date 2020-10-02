@@ -149,29 +149,26 @@ namespace alpaka
             };
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::vector offset get trait specialization.
+        template<
+            typename TIdx,
+            typename TElem,
+            typename TAllocator>
+        struct GetOffset<
+            TIdx,
+            std::vector<TElem, TAllocator>>
         {
-            //#############################################################################
-            //! The std::vector offset get trait specialization.
-            template<
-                typename TIdx,
-                typename TElem,
-                typename TAllocator>
-            struct GetOffset<
-                TIdx,
-                std::vector<TElem, TAllocator>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getOffset(
+                std::vector<TElem, TAllocator> const &)
+            -> Idx<std::vector<TElem, TAllocator>>
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getOffset(
-                    std::vector<TElem, TAllocator> const &)
-                -> Idx<std::vector<TElem, TAllocator>>
-                {
-                    return 0u;
-                }
-            };
-        }
+                return 0u;
+            }
+        };
     }
     namespace traits
     {

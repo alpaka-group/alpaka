@@ -150,29 +150,26 @@ namespace alpaka
             };
         }
     }
-    namespace offset
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::array offset get trait specialization.
+        template<
+            typename TIdx,
+            typename TElem,
+            std::size_t Tsize>
+        struct GetOffset<
+            TIdx,
+            std::array<TElem, Tsize>>
         {
-            //#############################################################################
-            //! The std::array offset get trait specialization.
-            template<
-                typename TIdx,
-                typename TElem,
-                std::size_t Tsize>
-            struct GetOffset<
-                TIdx,
-                std::array<TElem, Tsize>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getOffset(
+                std::array<TElem, Tsize> const &)
+            -> Idx<std::array<TElem, Tsize>>
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getOffset(
-                    std::array<TElem, Tsize> const &)
-                -> Idx<std::array<TElem, Tsize>>
-                {
-                    return 0u;
-                }
-            };
-        }
+                return 0u;
+            }
+        };
     }
     namespace traits
     {
