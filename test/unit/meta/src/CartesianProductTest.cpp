@@ -21,9 +21,9 @@ TEST_CASE("cartesianProduct", "[meta]")
 {
     using TestDims =
         std::tuple<
-            alpaka::dim::DimInt<1u>,
-            alpaka::dim::DimInt<2u>,
-            alpaka::dim::DimInt<3u>>;
+            alpaka::DimInt<1u>,
+            alpaka::DimInt<2u>,
+            alpaka::DimInt<3u>>;
 
     using TestIdxs =
         std::tuple<
@@ -39,12 +39,12 @@ TEST_CASE("cartesianProduct", "[meta]")
 
     using CartesianProductReference =
         std::tuple<
-            std::tuple<alpaka::dim::DimInt<1u>, std::size_t>,
-            std::tuple<alpaka::dim::DimInt<2u>, std::size_t>,
-            std::tuple<alpaka::dim::DimInt<3u>, std::size_t>,
-            std::tuple<alpaka::dim::DimInt<1u>, std::int64_t>,
-            std::tuple<alpaka::dim::DimInt<2u>, std::int64_t>,
-            std::tuple<alpaka::dim::DimInt<3u>, std::int64_t>>;
+            std::tuple<alpaka::DimInt<1u>, std::size_t>,
+            std::tuple<alpaka::DimInt<2u>, std::size_t>,
+            std::tuple<alpaka::DimInt<3u>, std::size_t>,
+            std::tuple<alpaka::DimInt<1u>, std::int64_t>,
+            std::tuple<alpaka::DimInt<2u>, std::int64_t>,
+            std::tuple<alpaka::DimInt<3u>, std::int64_t>>;
 
     static_assert(
         std::is_same<

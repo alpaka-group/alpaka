@@ -112,21 +112,18 @@ namespace alpaka
             << "}");
     }
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The WorkDivMembers dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            WorkDivMembers<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The WorkDivMembers dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                WorkDivMembers<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {

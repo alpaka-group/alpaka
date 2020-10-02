@@ -115,7 +115,7 @@ auto main( ) -> int
     }
 
     // Set Dim and Idx type
-    using Dim = alpaka::dim::DimInt< 1u >;
+    using Dim = alpaka::DimInt< 1u >;
     using Idx = uint32_t;
 
     // Select accelerator-types for host and device

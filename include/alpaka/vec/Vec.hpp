@@ -604,21 +604,18 @@ namespace alpaka
         return os;
     }
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The Vec dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TVal>
+        struct DimType<
+            Vec<TDim, TVal>>
         {
-            //#############################################################################
-            //! The Vec dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TVal>
-            struct DimType<
-                Vec<TDim, TVal>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {
@@ -655,14 +652,14 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
                 Vec<TDim, TVal> const & vec)
-            -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
+            -> Vec<DimInt<sizeof...(TIndices)>, TVal>
             {
                 // In the case of a zero dimensional vector, vec is unused.
                 alpaka::ignore_unused(vec);
 
                 static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) than the origin vector.");
 
-                return Vec<dim::DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
+                return Vec<DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
             }
         };
         //#############################################################################
@@ -813,12 +810,12 @@ namespace alpaka
         template<
             typename TVal>
         struct Reverse<
-            Vec<dim::DimInt<1u>, TVal>>
+            Vec<DimInt<1u>, TVal>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto reverse(
-                Vec<dim::DimInt<1u>, TVal> const & vec)
-            -> Vec<dim::DimInt<1u>, TVal>
+                Vec<DimInt<1u>, TVal> const & vec)
+            -> Vec<DimInt<1u>, TVal>
             {
                 return vec;
             }
@@ -864,11 +861,11 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC static auto concat(
                 Vec<TDimL, TVal> const & vecL,
                 Vec<TDimR, TVal> const & vecR)
-            -> Vec<dim::DimInt<TDimL::value + TDimR::value>, TVal>
+            -> Vec<DimInt<TDimL::value + TDimR::value>, TVal>
             {
                 return
                     createVecFromIndexedFn<
-                        dim::DimInt<TDimL::value + TDimR::value>,
+                        DimInt<TDimL::value + TDimR::value>,
                         detail::CreateConcat>(
                             vecL,
                             vecR);
@@ -906,11 +903,11 @@ namespace alpaka
             typename TExtent>
         ALPAKA_FN_HOST_ACC auto getExtentVec(
             TExtent const & extent = TExtent())
-        -> Vec<dim::Dim<TExtent>, Idx<TExtent>>
+        -> Vec<Dim<TExtent>, Idx<TExtent>>
         {
             return
                 createVecFromIndexedFn<
-                    dim::Dim<TExtent>,
+                    Dim<TExtent>,
                     detail::CreateExtent>(
                         extent);
         }
@@ -925,7 +922,7 @@ namespace alpaka
             TExtent const & extent = TExtent())
         -> Vec<TDim, Idx<TExtent>>
         {
-            using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
+            using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
             return
                 createVecFromIndexedFnOffset<
                     TDim,
@@ -965,11 +962,11 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetVec(
             TOffsets const & offsets = TOffsets())
-        -> Vec<dim::Dim<TOffsets>, Idx<TOffsets>>
+        -> Vec<Dim<TOffsets>, Idx<TOffsets>>
         {
             return
                 createVecFromIndexedFn<
-                    dim::Dim<TOffsets>,
+                    Dim<TOffsets>,
                     detail::CreateOffset>(
                         offsets);
         }
@@ -984,7 +981,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> Vec<TDim, Idx<TOffsets>>
         {
-            using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(dim::Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
+            using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
             return
                 createVecFromIndexedFnOffset<
                     TDim,

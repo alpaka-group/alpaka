@@ -54,21 +54,18 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The fixed idx array dimension getter trait specialization.
+        template<
+            typename TFixedSizeArray>
+        struct DimType<
+            TFixedSizeArray,
+            std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
         {
-            //#############################################################################
-            //! The fixed idx array dimension getter trait specialization.
-            template<
-                typename TFixedSizeArray>
-            struct DimType<
-                TFixedSizeArray,
-                std::enable_if_t<std::is_array<TFixedSizeArray>::value>>
-            {
-                using type = dim::DimInt<std::rank<TFixedSizeArray>::value>;
-            };
-        }
+            using type = DimInt<std::rank<TFixedSizeArray>::value>;
+        };
     }
     namespace elem
     {
@@ -154,7 +151,7 @@ namespace alpaka
                 template<
                     typename TFixedSizeArray>
                 struct GetPitchBytes<
-                    dim::DimInt<std::rank<TFixedSizeArray>::value - 1u>,
+                    DimInt<std::rank<TFixedSizeArray>::value - 1u>,
                     TFixedSizeArray,
                     std::enable_if_t<
                         std::is_array<TFixedSizeArray>::value

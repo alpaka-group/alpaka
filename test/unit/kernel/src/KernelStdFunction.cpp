@@ -44,7 +44,7 @@ void ALPAKA_FN_ACC kernelFn(
 TEMPLATE_LIST_TEST_CASE( "stdFunctionKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -58,7 +58,7 @@ TEMPLATE_LIST_TEST_CASE( "stdFunctionKernelIsWorking", "[kernel]", alpaka::test:
 TEMPLATE_LIST_TEST_CASE( "stdBindKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -79,7 +79,7 @@ TEMPLATE_LIST_TEST_CASE( "stdBindKernelIsWorking", "[kernel]", alpaka::test::Tes
 TEMPLATE_LIST_TEST_CASE( "nvstdFunctionKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(

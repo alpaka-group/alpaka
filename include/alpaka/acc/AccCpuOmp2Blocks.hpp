@@ -212,21 +212,18 @@ namespace alpaka
             using type = DevCpu;
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block accelerator dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            AccCpuOmp2Blocks<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block accelerator dimension getter trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                AccCpuOmp2Blocks<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace kernel
     {

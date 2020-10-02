@@ -43,9 +43,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
-                Vec<dim::DimInt<TidxDim>, TElem> const & idx,
-                Vec<dim::DimInt<TidxDim>, TElem> const & extent)
-            -> Vec<dim::DimInt<TidxDim>, TElem>
+                Vec<DimInt<TidxDim>, TElem> const & idx,
+                Vec<DimInt<TidxDim>, TElem> const & extent)
+            -> Vec<DimInt<TidxDim>, TElem>
             {
                 alpaka::ignore_unused(extent);
 
@@ -70,11 +70,11 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
-                Vec<dim::DimInt<1u>, TElem> const & idx,
-                Vec<dim::DimInt<TidxDimOut>, TElem> const & extent)
-            -> Vec<dim::DimInt<TidxDimOut>, TElem>
+                Vec<DimInt<1u>, TElem> const & idx,
+                Vec<DimInt<TidxDimOut>, TElem> const & extent)
+            -> Vec<DimInt<TidxDimOut>, TElem>
             {
-                auto idxNd(Vec<dim::DimInt<TidxDimOut>, TElem>::all(0u));
+                auto idxNd(Vec<DimInt<TidxDimOut>, TElem>::all(0u));
 
                 constexpr std::size_t lastIdx(TidxDimOut - 1u);
 
@@ -114,9 +114,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
-                Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
-                Vec<dim::DimInt<TidxDimIn>, TElem> const & extent)
-            -> Vec<dim::DimInt<1u>, TElem>
+                Vec<DimInt<TidxDimIn>, TElem> const & idx,
+                Vec<DimInt<TidxDimIn>, TElem> const & extent)
+            -> Vec<DimInt<1u>, TElem>
             {
                 TElem idx1d(idx[0u]);
                 for(std::size_t d(1u); d < TidxDimIn; ++d)
@@ -140,9 +140,9 @@ namespace alpaka
         std::size_t TidxDimIn,
         typename TElem>
     ALPAKA_FN_HOST_ACC auto mapIdx(
-        Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
-        Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extent)
-    -> Vec<dim::DimInt<TidxDimOut>, TElem>
+        Vec<DimInt<TidxDimIn>, TElem> const & idx,
+        Vec<DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extent)
+    -> Vec<DimInt<TidxDimOut>, TElem>
     {
         static_assert(TidxDimOut > 0u, "The dimension of the output vector has to be greater than zero!");
         static_assert(TidxDimIn > 0u, "The dimension of the input vector has to be greater than zero!");
@@ -182,9 +182,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-                Vec<dim::DimInt<TidxDim>, TElem> const & idx,
-                Vec<dim::DimInt<TidxDim>, TElem> const & pitch)
-            -> Vec<dim::DimInt<TidxDim>, TElem>
+                Vec<DimInt<TidxDim>, TElem> const & idx,
+                Vec<DimInt<TidxDim>, TElem> const & pitch)
+            -> Vec<DimInt<TidxDim>, TElem>
             {
                 alpaka::ignore_unused(pitch);
 
@@ -209,11 +209,11 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-                Vec<dim::DimInt<1u>, TElem> const & idx,
-                Vec<dim::DimInt<TidxDimOut>, TElem> const & pitch)
-            -> Vec<dim::DimInt<TidxDimOut>, TElem>
+                Vec<DimInt<1u>, TElem> const & idx,
+                Vec<DimInt<TidxDimOut>, TElem> const & pitch)
+            -> Vec<DimInt<TidxDimOut>, TElem>
             {
-                auto idxNd(Vec<dim::DimInt<TidxDimOut>, TElem>::all(0u));
+                auto idxNd(Vec<DimInt<TidxDimOut>, TElem>::all(0u));
 
                 constexpr std::size_t lastIdx(TidxDimOut - 1u);
 
@@ -246,9 +246,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdxPitchBytes(
-                Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
-                Vec<dim::DimInt<TidxDimIn>, TElem> const & pitch)
-            -> Vec<dim::DimInt<1u>, TElem>
+                Vec<DimInt<TidxDimIn>, TElem> const & idx,
+                Vec<DimInt<TidxDimIn>, TElem> const & pitch)
+            -> Vec<DimInt<1u>, TElem>
             {
                 constexpr auto lastDim = TidxDimIn - 1;
                 TElem idx1d(idx[lastDim]);
@@ -274,9 +274,9 @@ namespace alpaka
         std::size_t TidxDimIn,
         typename TElem>
     ALPAKA_FN_HOST_ACC auto mapIdxPitchBytes(
-        Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
-        Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & pitch)
-    -> Vec<dim::DimInt<TidxDimOut>, TElem>
+        Vec<DimInt<TidxDimIn>, TElem> const & idx,
+        Vec<DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & pitch)
+    -> Vec<DimInt<TidxDimOut>, TElem>
     {
         static_assert(TidxDimOut > 0u, "The dimension of the output vector has to be greater than zero!");
         static_assert(TidxDimIn > 0u, "The dimension of the input vector has to be greater than zero!");

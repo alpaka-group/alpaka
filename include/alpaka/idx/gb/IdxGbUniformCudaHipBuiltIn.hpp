@@ -62,21 +62,18 @@ namespace alpaka
         };
     }
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP accelerator index dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP accelerator index dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {

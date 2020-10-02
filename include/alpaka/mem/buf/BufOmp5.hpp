@@ -101,7 +101,7 @@ namespace alpaka
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                             static_assert(
-                                TDim::value == dim::Dim<TExtent>::value,
+                                TDim::value == alpaka::Dim<TExtent>::value,
                                 "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                             static_assert(
                                 std::is_same<TIdx, Idx<TExtent>>::value,
@@ -189,22 +189,19 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufOmp5 dimension getter trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            mem::buf::BufOmp5<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufOmp5 dimension getter trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                mem::buf::BufOmp5<TElem, TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace elem
     {
@@ -352,7 +349,7 @@ namespace alpaka
                     typename TIdx>
                 struct Alloc<
                     TElem,
-                    dim::DimInt<1u>,
+                    DimInt<1u>,
                     TIdx,
                     DevOmp5>
                 {
@@ -362,7 +359,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         DevOmp5 const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufOmp5<TElem, dim::DimInt<1u>, TIdx>
+                    -> mem::buf::BufOmp5<TElem, DimInt<1u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -380,7 +377,7 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufOmp5<TElem, dim::DimInt<1u>, TIdx>(
+                            mem::buf::BufOmp5<TElem, DimInt<1u>, TIdx>(
                                 dev,
                                 reinterpret_cast<TElem *>(memPtr),
                                 extent);

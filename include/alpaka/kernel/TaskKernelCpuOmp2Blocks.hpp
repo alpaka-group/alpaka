@@ -70,7 +70,7 @@ namespace alpaka
             {
 
                 static_assert(
-                    dim::Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
+                    Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                     "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
@@ -206,9 +206,9 @@ namespace alpaka
                 {
 #if _OPENMP < 200805
                     auto const i_tidx  = static_cast<TIdx>(i); // for issue #840
-                    auto const index   = Vec<dim::DimInt<1u>, TIdx>( i_tidx ); // for issue #840
+                    auto const index   = Vec<DimInt<1u>, TIdx>( i_tidx ); // for issue #840
 #else
-                    auto const index   = Vec<dim::DimInt<1u>, TIdx>( i ); // for issue #840
+                    auto const index   = Vec<DimInt<1u>, TIdx>( i ); // for issue #840
 #endif
                     acc.m_gridBlockIdx = mapIdx<TDim::value>(index,
                                                                   gridBlockExtent);
@@ -256,23 +256,20 @@ namespace alpaka
             using type = DevCpu;
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 grid block execution task dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct DimType<
+            kernel::TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 grid block execution task dimension getter trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DimType<
-                kernel::TaskKernelCpuOmp2Blocks<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {

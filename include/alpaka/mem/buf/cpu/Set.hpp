@@ -50,10 +50,10 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
-                            dim::Dim<TView>::value == dim::Dim<TExtent>::value,
+                            Dim<TView>::value == Dim<TExtent>::value,
                             "The destination view and the extent are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TView>::value == TDim::value,
+                            Dim<TView>::value == TDim::value,
                             "The destination view and the input TDim are required to have the same dimensionality!");
 
                         static_assert(
@@ -111,7 +111,7 @@ namespace alpaka
                         typename TExtent>
                     struct TaskSetCpu : public TaskSetCpuBase<TDim, TView, TExtent>
                     {
-                        using DimMin1 = dim::DimInt<TDim::value - 1u>;
+                        using DimMin1 = DimInt<TDim::value - 1u>;
                         using typename TaskSetCpuBase<TDim, TView, TExtent>::ExtentSize;
                         using typename TaskSetCpuBase<TDim, TView, TExtent>::DstSize;
 
@@ -154,12 +154,12 @@ namespace alpaka
                         typename TView,
                         typename TExtent>
                     struct TaskSetCpu<
-                        dim::DimInt<1u>,
+                        DimInt<1u>,
                         TView,
-                        TExtent> : public TaskSetCpuBase<dim::DimInt<1u>, TView, TExtent>
+                        TExtent> : public TaskSetCpuBase<DimInt<1u>, TView, TExtent>
                     {
                         //-----------------------------------------------------------------------------
-                        using TaskSetCpuBase<dim::DimInt<1u>, TView, TExtent>::TaskSetCpuBase;
+                        using TaskSetCpuBase<DimInt<1u>, TView, TExtent>::TaskSetCpuBase;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const

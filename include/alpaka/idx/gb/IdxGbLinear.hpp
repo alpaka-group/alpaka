@@ -47,21 +47,18 @@ namespace alpaka
         };
     }
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The IdxGbLinear index dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            gb::IdxGbLinear<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The IdxGbLinear index dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                gb::IdxGbLinear<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {
@@ -86,7 +83,7 @@ namespace alpaka
             {
                 // \TODO: Would it be faster to precompute the index and cache it inside an array?
                 return mapIdx<TDim::value>(
-                    Vec<dim::DimInt<1u>, TIdx>(idx.m_gridBlockIdx),
+                    Vec<DimInt<1u>, TIdx>(idx.m_gridBlockIdx),
                     getWorkDiv<Grid, Blocks>(workDiv));
             }
         };
@@ -94,7 +91,7 @@ namespace alpaka
         template<
             typename TIdx>
         struct GetIdx<
-            gb::IdxGbLinear<dim::DimInt<1u>, TIdx>,
+            gb::IdxGbLinear<DimInt<1u>, TIdx>,
             origin::Grid,
             unit::Blocks>
         {
@@ -103,9 +100,9 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             static auto getIdx(
-                gb::IdxGbLinear<dim::DimInt<1u>, TIdx> const & idx,
+                gb::IdxGbLinear<DimInt<1u>, TIdx> const & idx,
                 TWorkDiv const &)
-            -> Vec<dim::DimInt<1u>, TIdx>
+            -> Vec<DimInt<1u>, TIdx>
             {
                 return idx.m_gridBlockIdx;
             }

@@ -85,7 +85,7 @@ TEMPLATE_LIST_TEST_CASE( "activemask", "[warp]", alpaka::test::TestAccs)
     using Acc = TestType;
     using Dev = alpaka::Dev<Acc>;
     using Pltf = alpaka::Pltf<Dev>;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));

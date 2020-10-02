@@ -210,7 +210,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
         1,
         TestType
     >;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     // fourth-dimension is not supposed to be tested currently
     if(Dim::value == 4)
     {
@@ -279,7 +279,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
         false
     );
     Data *ptrNative = alpaka::mem::view::getPtrNative(correctResults);
-    using Dim1 = alpaka::dim::DimInt<1u>;
+    using Dim1 = alpaka::DimInt<1u>;
 
     for(Idx i(0);i < extentsSubView.prod();++i)
     {

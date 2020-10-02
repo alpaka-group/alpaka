@@ -155,23 +155,20 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewPlainPtr dimension getter trait.
+        template<
+            typename TDev,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewPlainPtr dimension getter trait.
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace elem
     {
@@ -289,7 +286,7 @@ namespace alpaka
                             alpaka::mem::view::ViewPlainPtr<
                                 DevCpu,
                                 TElem,
-                                alpaka::dim::Dim<TExtent>,
+                                alpaka::Dim<TExtent>,
                                 alpaka::Idx<TExtent>>(
                                     pMem,
                                     dev,
@@ -339,7 +336,7 @@ namespace alpaka
                             alpaka::mem::view::ViewPlainPtr<
                                 DevUniformCudaHipRt,
                                 TElem,
-                                alpaka::dim::Dim<TExtent>,
+                                alpaka::Dim<TExtent>,
                                 alpaka::Idx<TExtent>>(
                                     pMemAcc,
                                     dev,
@@ -369,7 +366,7 @@ namespace alpaka
                             alpaka::mem::view::ViewPlainPtr<
                                 DevOmp5,
                                 TElem,
-                                alpaka::dim::Dim<TExtent>,
+                                alpaka::Dim<TExtent>,
                                 alpaka::Idx<TExtent>>(
                                     pMem,
                                     dev,

@@ -192,7 +192,7 @@ namespace alpaka
             detail::CheckFnReturnType<TAcc>{}(kernelFnObj, args...);
 
             static_assert(
-                dim::Dim<std::decay_t<TWorkDiv>>::value == dim::Dim<TAcc>::value,
+                Dim<std::decay_t<TWorkDiv>>::value == Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");
             static_assert(
                 std::is_same<Idx<std::decay_t<TWorkDiv>>, Idx<TAcc>>::value,

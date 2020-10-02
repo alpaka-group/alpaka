@@ -85,13 +85,13 @@ namespace alpaka
                         "The idx type of TOffsets and the TIdx template parameter have to be identical!");
 
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TView>>::value,
+                        std::is_same<TDim, Dim<TView>>::value,
                         "The dim type of TView and the TDim template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TExtent>>::value,
+                        std::is_same<TDim, Dim<TExtent>>::value,
                         "The dim type of TExtent and the TDim template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TOffsets>>::value,
+                        std::is_same<TDim, Dim<TOffsets>>::value,
                         "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
                     ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
@@ -134,13 +134,13 @@ namespace alpaka
                         "The idx type of TOffsets and the TIdx template parameter have to be identical!");
 
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TView>>::value,
+                        std::is_same<TDim, Dim<TView>>::value,
                         "The dim type of TView and the TDim template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TExtent>>::value,
+                        std::is_same<TDim, Dim<TExtent>>::value,
                         "The dim type of TExtent and the TDim template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TOffsets>>::value,
+                        std::is_same<TDim, Dim<TOffsets>>::value,
                         "The dim type of TOffsets and the TDim template parameter have to be identical!");
 
                     ALPAKA_ASSERT(((m_offsetsElements + m_extentElements) <= extent::getExtentVec(view)).foldrAll(std::logical_and<bool>()));
@@ -220,23 +220,20 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewSubView dimension getter trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TDev,
+            typename TIdx>
+        struct DimType<
+            mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewSubView dimension getter trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev,
-                typename TIdx>
-            struct DimType<
-                mem::view::ViewSubView<TDev, TElem, TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace elem
     {

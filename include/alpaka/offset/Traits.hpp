@@ -66,7 +66,7 @@ namespace alpaka
         {
             return
                 traits::GetOffset<
-                    dim::DimInt<Tidx>,
+                    DimInt<Tidx>,
                     TOffsets>
                 ::getOffset(
                     offsets);
@@ -80,7 +80,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> Idx<TOffsets>
         {
-            return getOffset<dim::Dim<TOffsets>::value - 1u>(offsets);
+            return getOffset<Dim<TOffsets>::value - 1u>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in y dimension.
@@ -91,7 +91,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> Idx<TOffsets>
         {
-            return getOffset<dim::Dim<TOffsets>::value - 2u>(offsets);
+            return getOffset<Dim<TOffsets>::value - 2u>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in z dimension.
@@ -102,7 +102,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> Idx<TOffsets>
         {
-            return getOffset<dim::Dim<TOffsets>::value - 3u>(offsets);
+            return getOffset<Dim<TOffsets>::value - 3u>(offsets);
         }
 
         //-----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ namespace alpaka
         -> void
         {
             traits::SetOffset<
-                dim::DimInt<Tidx>,
+                DimInt<Tidx>,
                 TOffsets,
                 TOffset>
             ::setOffset(
@@ -136,7 +136,7 @@ namespace alpaka
             TOffset const & offset)
         -> void
         {
-            setOffset<dim::Dim<TOffsets>::value - 1u>(offsets, offset);
+            setOffset<Dim<TOffsets>::value - 1u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the offset in y dimension.
@@ -149,7 +149,7 @@ namespace alpaka
             TOffset const & offset)
         -> void
         {
-            setOffset<dim::Dim<TOffsets>::value - 2u>(offsets, offset);
+            setOffset<Dim<TOffsets>::value - 2u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the offset in z dimension.
@@ -162,7 +162,7 @@ namespace alpaka
             TOffset const & offset)
         -> void
         {
-            setOffset<dim::Dim<TOffsets>::value - 3u>(offsets, offset);
+            setOffset<Dim<TOffsets>::value - 3u>(offsets, offset);
         }
 
         //-----------------------------------------------------------------------------
@@ -174,7 +174,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::DimInt<0u>,
+                DimInt<0u>,
                 TOffsets,
                 std::enable_if_t<
                     std::is_integral<TOffsets>::value>>
@@ -193,7 +193,7 @@ namespace alpaka
                 typename TOffsets,
                 typename TOffset>
             struct SetOffset<
-                dim::DimInt<0u>,
+                DimInt<0u>,
                 TOffsets,
                 TOffset,
                 std::enable_if_t<

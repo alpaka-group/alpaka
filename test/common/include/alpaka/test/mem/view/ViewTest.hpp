@@ -63,10 +63,10 @@ namespace alpaka
                     }
 
                     //-----------------------------------------------------------------------------
-                    // alpaka::dim::traits::DimType
+                    // alpaka::traits::DimType
                     {
                         static_assert(
-                            alpaka::dim::Dim<TView>::value == TDim::value,
+                            alpaka::Dim<TView>::value == TDim::value,
                             "The dimensionality of the view has to be equal to the specified one.");
                     }
 
@@ -90,7 +90,7 @@ namespace alpaka
                     // alpaka::mem::view::traits::GetPitchBytes
                     {
                         // The pitches have to be at least as large as the values we calculate here.
-                        auto pitchMinimum(alpaka::Vec<alpaka::dim::DimInt<TDim::value + 1u>, TIdx>::ones());
+                        auto pitchMinimum(alpaka::Vec<alpaka::DimInt<TDim::value + 1u>, TIdx>::ones());
                         // Initialize the pitch between two elements of the X dimension ...
                         pitchMinimum[TDim::value] = sizeof(TElem);
                         // ... and fill all the other dimensions.
@@ -191,7 +191,7 @@ namespace alpaka
                     std::uint8_t const & byte)
                 -> void
                 {
-                    using Dim = alpaka::dim::Dim<TView>;
+                    using Dim = alpaka::Dim<TView>;
                     using Idx = alpaka::Idx<TView>;
 
                     alpaka::test::KernelExecutionFixture<TAcc> fixture(
@@ -256,8 +256,8 @@ namespace alpaka
                     TViewB const & viewB)
                 -> void
                 {
-                    using DimA = alpaka::dim::Dim<TViewA>;
-                    using DimB = alpaka::dim::Dim<TViewB>;
+                    using DimA = alpaka::Dim<TViewA>;
+                    using DimB = alpaka::Dim<TViewB>;
                     static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
                     using IdxA = alpaka::Idx<TViewA>;
                     using IdxB = alpaka::Idx<TViewB>;
@@ -286,7 +286,7 @@ namespace alpaka
                     TView & view)
                 -> void
                 {
-                    using Dim = alpaka::dim::Dim<TView>;
+                    using Dim = alpaka::Dim<TView>;
                     using Idx = alpaka::Idx<TView>;
 
                     using DevHost = alpaka::DevCpu;

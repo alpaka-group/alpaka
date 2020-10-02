@@ -136,7 +136,7 @@ public:
     -> void
     {
         static_assert(
-            alpaka::dim::Dim<TAcc>::value == 2,
+            alpaka::Dim<TAcc>::value == 2,
             "The MandelbrotKernel expects 2-dimensional indices!");
 
         auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc));
@@ -234,7 +234,7 @@ auto writeTgaColorImage(
 -> void
 {
     static_assert(
-        alpaka::dim::Dim<TBuf>::value == 2,
+        alpaka::Dim<TBuf>::value == 2,
         "The buffer has to be 2 dimensional!");
     static_assert(
         std::is_integral<alpaka::elem::Elem<TBuf>>::value,
@@ -250,7 +250,7 @@ auto writeTgaColorImage(
     ALPAKA_ASSERT(bufWidthColors >= 1);
     auto const bufHeightColors(alpaka::extent::getHeight(bufRgba));
     ALPAKA_ASSERT(bufHeightColors >= 1);
-    auto const bufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::Dim<TBuf>::value - 1u>(bufRgba));
+    auto const bufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::Dim<TBuf>::value - 1u>(bufRgba));
     ALPAKA_ASSERT(bufPitchBytes >= bufWidthBytes);
 
     std::ofstream ofs(
@@ -303,13 +303,13 @@ auto writeTgaColorImage(
 }
 
 using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::dim::DimInt<2u>,
+    alpaka::DimInt<2u>,
     std::uint32_t>;
 
 TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
 #ifdef ALPAKA_CI

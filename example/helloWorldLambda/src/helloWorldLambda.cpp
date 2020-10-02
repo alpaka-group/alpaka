@@ -34,10 +34,10 @@ void ALPAKA_FN_ACC hiWorldFunction(
     TAcc const & acc,
     size_t const nExclamationMarks)
 {
-    using Dim = alpaka::dim::Dim<TAcc>;
+    using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
     using Vec = alpaka::Vec<Dim, Idx>;
-    using Vec1 = alpaka::Vec<alpaka::dim::DimInt<1u>, Idx>;
+    using Vec1 = alpaka::Vec<alpaka::DimInt<1u>, Idx>;
 
     Vec const globalThreadIdx    = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
     Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
@@ -66,7 +66,7 @@ auto main()
     (!defined(ALPAKA_CI) || defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED))
 
     // Define the index domain
-    using Dim = alpaka::dim::DimInt<3>;
+    using Dim = alpaka::DimInt<3>;
     using Idx = std::size_t;
 
     // Define the accelerator

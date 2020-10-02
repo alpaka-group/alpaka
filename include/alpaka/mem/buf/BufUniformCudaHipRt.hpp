@@ -98,7 +98,7 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        TDim::value == dim::Dim<TExtent>::value,
+                        TDim::value == alpaka::Dim<TExtent>::value,
                         "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                     static_assert(
                         std::is_same<TIdx, Idx<TExtent>>::value,
@@ -163,22 +163,19 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufUniformCudaHipRt dimension getter trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufUniformCudaHipRt dimension getter trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace elem
     {
@@ -301,7 +298,7 @@ namespace alpaka
                     typename TDim,
                     typename TIdx>
                 struct GetPitchBytes<
-                    dim::DimInt<TDim::value - 1u>,
+                    DimInt<TDim::value - 1u>,
                     mem::buf::BufUniformCudaHipRt<TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------
@@ -325,7 +322,7 @@ namespace alpaka
                     typename TIdx>
                 struct Alloc<
                     TElem,
-                    dim::DimInt<1u>,
+                    DimInt<1u>,
                     TIdx,
                     DevUniformCudaHipRt>
                 {
@@ -335,7 +332,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<1u>, TIdx>
+                    -> mem::buf::BufUniformCudaHipRt<TElem, DimInt<1u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -361,7 +358,7 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<1u>, TIdx>(
+                            mem::buf::BufUniformCudaHipRt<TElem, DimInt<1u>, TIdx>(
                                 dev,
                                 reinterpret_cast<TElem *>(memPtr),
                                 static_cast<TIdx>(widthBytes),
@@ -375,7 +372,7 @@ namespace alpaka
                     typename TIdx>
                 struct Alloc<
                     TElem,
-                    dim::DimInt<2u>,
+                    DimInt<2u>,
                     TIdx,
                     DevUniformCudaHipRt>
                 {
@@ -385,7 +382,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<2u>, TIdx>
+                    -> mem::buf::BufUniformCudaHipRt<TElem, DimInt<2u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -428,7 +425,7 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<2u>, TIdx>(
+                            mem::buf::BufUniformCudaHipRt<TElem, DimInt<2u>, TIdx>(
                                 dev,
                                 reinterpret_cast<TElem *>(memPtr),
                                 static_cast<TIdx>(pitchBytes),
@@ -442,7 +439,7 @@ namespace alpaka
                     typename TIdx>
                 struct Alloc<
                     TElem,
-                    dim::DimInt<3u>,
+                    DimInt<3u>,
                     TIdx,
                     DevUniformCudaHipRt>
                 {
@@ -452,7 +449,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         DevUniformCudaHipRt const & dev,
                         TExtent const & extent)
-                    -> mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<3u>, TIdx>
+                    -> mem::buf::BufUniformCudaHipRt<TElem, DimInt<3u>, TIdx>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -498,7 +495,7 @@ namespace alpaka
 #endif
 
                         return
-                            mem::buf::BufUniformCudaHipRt<TElem, dim::DimInt<3u>, TIdx>(
+                            mem::buf::BufUniformCudaHipRt<TElem, DimInt<3u>, TIdx>(
                                 dev,
                                 reinterpret_cast<TElem *>(pitchedPtrVal.ptr),
                                 static_cast<TIdx>(pitchedPtrVal.pitch),

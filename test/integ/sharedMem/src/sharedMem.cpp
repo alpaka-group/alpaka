@@ -40,7 +40,7 @@ public:
         using Idx = alpaka::Idx<TAcc>;
 
         static_assert(
-            alpaka::dim::Dim<TAcc>::value == 1,
+            alpaka::Dim<TAcc>::value == 1,
             "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
@@ -135,13 +135,13 @@ namespace alpaka
 }
 
 using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::dim::DimInt<1u>,
+    alpaka::DimInt<1u>,
     std::uint32_t>;
 
 TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     Idx const numElements = 1u<<16u;

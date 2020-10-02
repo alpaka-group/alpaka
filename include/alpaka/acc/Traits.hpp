@@ -75,7 +75,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getAccDevProps(
                 typename alpaka::traits::DevType<TAcc>::type const & dev)
-            -> AccDevProps<typename dim::traits::DimType<TAcc>::type, typename traits::IdxType<TAcc>::type>
+            -> AccDevProps<typename traits::DimType<TAcc>::type, typename traits::IdxType<TAcc>::type>
             {
                 using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
                 return GetAccDevProps<ImplementationBase>::getAccDevProps(dev);
@@ -96,7 +96,7 @@ namespace alpaka
         typename TDev>
     ALPAKA_FN_HOST auto getAccDevProps(
         TDev const & dev)
-    -> AccDevProps<dim::Dim<TAcc>, Idx<TAcc>>
+    -> AccDevProps<Dim<TAcc>, Idx<TAcc>>
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptAcc, TAcc>;
         return
@@ -179,23 +179,20 @@ namespace alpaka
                 using type = typename PltfType<ImplementationBase>::type;
             };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU HIP accelerator dimension getter trait specialization.
+        template<typename TAcc>
+        struct DimType<
+            TAcc,
+            typename std::enable_if<
+                concepts::ImplementsConcept<ConceptUniformCudaHip, TAcc>::value
+            >::type>
         {
-            //#############################################################################
-            //! The GPU HIP accelerator dimension getter trait specialization.
-            template<typename TAcc>
-            struct DimType<
-                TAcc,
-                typename std::enable_if<
-                    concepts::ImplementsConcept<ConceptUniformCudaHip, TAcc>::value
-                >::type>
-            {
-                    using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
-                    using type = typename DimType<ImplementationBase>::type;
-            };
-        }
+                using ImplementationBase = typename concepts::ImplementationBase<ConceptUniformCudaHip, TAcc>;
+                using type = typename DimType<ImplementationBase>::type;
+        };
     }
     namespace traits
     {

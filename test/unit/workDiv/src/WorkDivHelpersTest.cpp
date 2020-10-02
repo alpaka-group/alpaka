@@ -24,7 +24,7 @@ namespace
     {
         using Dev = alpaka::Dev<TAcc>;
         using Pltf = alpaka::Pltf<Dev>;
-        using Dim = alpaka::dim::Dim<TAcc>;
+        using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));

@@ -50,21 +50,18 @@ namespace alpaka
         };
     }
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP accelerator index dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            bt::IdxBtOmp<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The OpenMP accelerator index dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                bt::IdxBtOmp<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {
@@ -92,7 +89,7 @@ namespace alpaka
                 ALPAKA_ASSERT(::omp_get_thread_num()>=0);
                 // \TODO: Would it be faster to precompute the index and cache it inside an array?
                 return mapIdx<TDim::value>(
-                    Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
+                    Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num())),
                     getWorkDiv<Block, Threads>(workDiv));
             }
         };
@@ -100,7 +97,7 @@ namespace alpaka
         template<
             typename TIdx>
         struct GetIdx<
-            bt::IdxBtOmp<dim::DimInt<1u>, TIdx>,
+            bt::IdxBtOmp<DimInt<1u>, TIdx>,
             origin::Block,
             unit::Threads>
         {
@@ -109,12 +106,12 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             static auto getIdx(
-                bt::IdxBtOmp<dim::DimInt<1u>, TIdx> const & idx,
+                bt::IdxBtOmp<DimInt<1u>, TIdx> const & idx,
                 TWorkDiv const &)
-            -> Vec<dim::DimInt<1u>, TIdx>
+            -> Vec<DimInt<1u>, TIdx>
             {
                 alpaka::ignore_unused(idx);
-                return Vec<dim::DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
+                return Vec<DimInt<1u>, TIdx>(static_cast<TIdx>(::omp_get_thread_num()));
             }
         };
     }

@@ -185,110 +185,107 @@ namespace alpaka
             {};
         }
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA vectors 1D dimension get trait specialization.
+        template<
+            typename T>
+        struct DimType<
+            T,
+            std::enable_if_t<
+                std::is_same<T, char1>::value
+                || std::is_same<T, double1>::value
+                || std::is_same<T, float1>::value
+                || std::is_same<T, int1>::value
+                || std::is_same<T, long1>::value
+                || std::is_same<T, longlong1>::value
+                || std::is_same<T, short1>::value
+                || std::is_same<T, uchar1>::value
+                || std::is_same<T, uint1>::value
+                || std::is_same<T, ulong1>::value
+                || std::is_same<T, ulonglong1>::value
+                || std::is_same<T, ushort1>::value
+            >>
         {
-            //#############################################################################
-            //! The CUDA vectors 1D dimension get trait specialization.
-            template<
-                typename T>
-            struct DimType<
-                T,
-                std::enable_if_t<
-                    std::is_same<T, char1>::value
-                    || std::is_same<T, double1>::value
-                    || std::is_same<T, float1>::value
-                    || std::is_same<T, int1>::value
-                    || std::is_same<T, long1>::value
-                    || std::is_same<T, longlong1>::value
-                    || std::is_same<T, short1>::value
-                    || std::is_same<T, uchar1>::value
-                    || std::is_same<T, uint1>::value
-                    || std::is_same<T, ulong1>::value
-                    || std::is_same<T, ulonglong1>::value
-                    || std::is_same<T, ushort1>::value
-                >>
-            {
-                using type = dim::DimInt<1u>;
-            };
-            //#############################################################################
-            //! The CUDA vectors 2D dimension get trait specialization.
-            template<
-                typename T>
-            struct DimType<
-                T,
-                std::enable_if_t<
-                    std::is_same<T, char2>::value
-                    || std::is_same<T, double2>::value
-                    || std::is_same<T, float2>::value
-                    || std::is_same<T, int2>::value
-                    || std::is_same<T, long2>::value
-                    || std::is_same<T, longlong2>::value
-                    || std::is_same<T, short2>::value
-                    || std::is_same<T, uchar2>::value
-                    || std::is_same<T, uint2>::value
-                    || std::is_same<T, ulong2>::value
-                    || std::is_same<T, ulonglong2>::value
-                    || std::is_same<T, ushort2>::value
-                >>
-            {
-                using type = dim::DimInt<2u>;
-            };
-            //#############################################################################
-            //! The CUDA vectors 3D dimension get trait specialization.
-            template<
-                typename T>
-            struct DimType<
-                T,
-                std::enable_if_t<
-                    std::is_same<T, char3>::value
-                    || std::is_same<T, dim3>::value
-                    || std::is_same<T, double3>::value
-                    || std::is_same<T, float3>::value
-                    || std::is_same<T, int3>::value
-                    || std::is_same<T, long3>::value
-                    || std::is_same<T, longlong3>::value
-                    || std::is_same<T, short3>::value
-                    || std::is_same<T, uchar3>::value
-                    || std::is_same<T, uint3>::value
-                    || std::is_same<T, ulong3>::value
-                    || std::is_same<T, ulonglong3>::value
-                    || std::is_same<T, ushort3>::value
+            using type = DimInt<1u>;
+        };
+        //#############################################################################
+        //! The CUDA vectors 2D dimension get trait specialization.
+        template<
+            typename T>
+        struct DimType<
+            T,
+            std::enable_if_t<
+                std::is_same<T, char2>::value
+                || std::is_same<T, double2>::value
+                || std::is_same<T, float2>::value
+                || std::is_same<T, int2>::value
+                || std::is_same<T, long2>::value
+                || std::is_same<T, longlong2>::value
+                || std::is_same<T, short2>::value
+                || std::is_same<T, uchar2>::value
+                || std::is_same<T, uint2>::value
+                || std::is_same<T, ulong2>::value
+                || std::is_same<T, ulonglong2>::value
+                || std::is_same<T, ushort2>::value
+            >>
+        {
+            using type = DimInt<2u>;
+        };
+        //#############################################################################
+        //! The CUDA vectors 3D dimension get trait specialization.
+        template<
+            typename T>
+        struct DimType<
+            T,
+            std::enable_if_t<
+                std::is_same<T, char3>::value
+                || std::is_same<T, dim3>::value
+                || std::is_same<T, double3>::value
+                || std::is_same<T, float3>::value
+                || std::is_same<T, int3>::value
+                || std::is_same<T, long3>::value
+                || std::is_same<T, longlong3>::value
+                || std::is_same<T, short3>::value
+                || std::is_same<T, uchar3>::value
+                || std::is_same<T, uint3>::value
+                || std::is_same<T, ulong3>::value
+                || std::is_same<T, ulonglong3>::value
+                || std::is_same<T, ushort3>::value
 #if BOOST_COMP_CLANG_CUDA
-                    || std::is_same<T, __cuda_builtin_threadIdx_t>::value
-                    || std::is_same<T, __cuda_builtin_blockIdx_t>::value
-                    || std::is_same<T, __cuda_builtin_blockDim_t>::value
-                    || std::is_same<T, __cuda_builtin_gridDim_t>::value
+                || std::is_same<T, __cuda_builtin_threadIdx_t>::value
+                || std::is_same<T, __cuda_builtin_blockIdx_t>::value
+                || std::is_same<T, __cuda_builtin_blockDim_t>::value
+                || std::is_same<T, __cuda_builtin_gridDim_t>::value
 #endif
-                >>
-            {
-                using type = dim::DimInt<3u>;
-            };
-            //#############################################################################
-            //! The CUDA vectors 4D dimension get trait specialization.
-            template<
-                typename T>
-            struct DimType<
-                T,
-                std::enable_if_t<
-                    std::is_same<T, char4>::value
-                    || std::is_same<T, double4>::value
-                    || std::is_same<T, float4>::value
-                    || std::is_same<T, int4>::value
-                    || std::is_same<T, long4>::value
-                    || std::is_same<T, longlong4>::value
-                    || std::is_same<T, short4>::value
-                    || std::is_same<T, uchar4>::value
-                    || std::is_same<T, uint4>::value
-                    || std::is_same<T, ulong4>::value
-                    || std::is_same<T, ulonglong4>::value
-                    || std::is_same<T, ushort4>::value
-                >>
-            {
-                using type = dim::DimInt<4u>;
-            };
-        }
+            >>
+        {
+            using type = DimInt<3u>;
+        };
+        //#############################################################################
+        //! The CUDA vectors 4D dimension get trait specialization.
+        template<
+            typename T>
+        struct DimType<
+            T,
+            std::enable_if_t<
+                std::is_same<T, char4>::value
+                || std::is_same<T, double4>::value
+                || std::is_same<T, float4>::value
+                || std::is_same<T, int4>::value
+                || std::is_same<T, long4>::value
+                || std::is_same<T, longlong4>::value
+                || std::is_same<T, short4>::value
+                || std::is_same<T, uchar4>::value
+                || std::is_same<T, uint4>::value
+                || std::is_same<T, ulong4>::value
+                || std::is_same<T, ulonglong4>::value
+                || std::is_same<T, ushort4>::value
+            >>
+        {
+            using type = DimInt<4u>;
+        };
     }
     namespace elem
     {
@@ -316,11 +313,11 @@ namespace alpaka
             template<
                 typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 1u>,
+                DimInt<Dim<TExtent>::value - 1u>,
                 TExtent,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 1)>>
+                    && (Dim<TExtent>::value >= 1)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
@@ -334,11 +331,11 @@ namespace alpaka
             template<
                 typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 2u>,
+                DimInt<Dim<TExtent>::value - 2u>,
                 TExtent,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 2)>>
+                    && (Dim<TExtent>::value >= 2)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
@@ -352,11 +349,11 @@ namespace alpaka
             template<
                 typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 3u>,
+                DimInt<Dim<TExtent>::value - 3u>,
                 TExtent,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 3)>>
+                    && (Dim<TExtent>::value >= 3)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
@@ -370,11 +367,11 @@ namespace alpaka
             template<
                 typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 4u>,
+                DimInt<Dim<TExtent>::value - 4u>,
                 TExtent,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 4)>>
+                    && (Dim<TExtent>::value >= 4)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
@@ -389,12 +386,12 @@ namespace alpaka
                 typename TExtent,
                 typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 1u>,
+                DimInt<Dim<TExtent>::value - 1u>,
                 TExtent,
                 TExtentVal,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 1)>>
+                    && (Dim<TExtent>::value >= 1)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
@@ -411,12 +408,12 @@ namespace alpaka
                 typename TExtent,
                 typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 2u>,
+                DimInt<Dim<TExtent>::value - 2u>,
                 TExtent,
                 TExtentVal,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 2)>>
+                    && (Dim<TExtent>::value >= 2)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
@@ -433,12 +430,12 @@ namespace alpaka
                 typename TExtent,
                 typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 3u>,
+                DimInt<Dim<TExtent>::value - 3u>,
                 TExtent,
                 TExtentVal,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 3)>>
+                    && (Dim<TExtent>::value >= 3)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
@@ -455,12 +452,12 @@ namespace alpaka
                 typename TExtent,
                 typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtent>::value - 4u>,
+                DimInt<Dim<TExtent>::value - 4u>,
                 TExtent,
                 TExtentVal,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TExtent>::value
-                    && (dim::Dim<TExtent>::value >= 4)>>
+                    && (Dim<TExtent>::value >= 4)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
@@ -482,11 +479,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 1u>,
+                DimInt<Dim<TOffsets>::value - 1u>,
                 TOffsets,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 1)>>
+                    && (Dim<TOffsets>::value >= 1)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
@@ -500,11 +497,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 2u>,
+                DimInt<Dim<TOffsets>::value - 2u>,
                 TOffsets,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 2)>>
+                    && (Dim<TOffsets>::value >= 2)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
@@ -518,11 +515,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 3u>,
+                DimInt<Dim<TOffsets>::value - 3u>,
                 TOffsets,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 3)>>
+                    && (Dim<TOffsets>::value >= 3)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
@@ -536,11 +533,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 4u>,
+                DimInt<Dim<TOffsets>::value - 4u>,
                 TOffsets,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 4)>>
+                    && (Dim<TOffsets>::value >= 4)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
@@ -555,12 +552,12 @@ namespace alpaka
                 typename TOffsets,
                 typename TOffset>
             struct SetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 1u>,
+                DimInt<Dim<TOffsets>::value - 1u>,
                 TOffsets,
                 TOffset,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 1)>>
+                    && (Dim<TOffsets>::value >= 1)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
@@ -577,12 +574,12 @@ namespace alpaka
                 typename TOffsets,
                 typename TOffset>
             struct SetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 2u>,
+                DimInt<Dim<TOffsets>::value - 2u>,
                 TOffsets,
                 TOffset,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 2)>>
+                    && (Dim<TOffsets>::value >= 2)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
@@ -599,12 +596,12 @@ namespace alpaka
                 typename TOffsets,
                 typename TOffset>
             struct SetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 3u>,
+                DimInt<Dim<TOffsets>::value - 3u>,
                 TOffsets,
                 TOffset,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 3)>>
+                    && (Dim<TOffsets>::value >= 3)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
@@ -621,12 +618,12 @@ namespace alpaka
                 typename TOffsets,
                 typename TOffset>
             struct SetOffset<
-                dim::DimInt<dim::Dim<TOffsets>::value - 4u>,
+                DimInt<Dim<TOffsets>::value - 4u>,
                 TOffsets,
                 TOffset,
                 std::enable_if_t<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
-                    && (dim::Dim<TOffsets>::value >= 4)>>
+                    && (Dim<TOffsets>::value >= 4)>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(

@@ -98,7 +98,7 @@ namespace view
         using Dev = alpaka::Dev<TAcc>;
         using Pltf = alpaka::Pltf<Dev>;
 
-        using Dim = alpaka::dim::Dim<TAcc>;
+        using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
@@ -128,7 +128,7 @@ namespace view
         using Dev = alpaka::Dev<TAcc>;
         using Pltf = alpaka::Pltf<Dev>;
 
-        using Dim = alpaka::dim::Dim<TAcc>;
+        using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
@@ -158,7 +158,7 @@ namespace view
         using Dev = alpaka::Dev<TAcc>;
         using Pltf = alpaka::Pltf<Dev>;
 
-        using Dim = alpaka::dim::Dim<TAcc>;
+        using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 

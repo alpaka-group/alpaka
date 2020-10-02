@@ -116,7 +116,7 @@ struct Kernel
 auto main() -> int
 {
     // Defines and setup.
-    using Dim = alpaka::dim::DimInt<1>;
+    using Dim = alpaka::DimInt<1>;
     using Idx = std::size_t;
     using Vec = alpaka::Vec<
         Dim,

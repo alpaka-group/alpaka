@@ -395,13 +395,13 @@ namespace alpaka
         TThreadElemExtent const & threadElemExtents = TThreadElemExtent(),
         bool requireBlockThreadExtentToDivideGridThreadExtent = true,
         GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
-    -> WorkDivMembers<dim::Dim<TGridElemExtent>, Idx<TGridElemExtent>>
+    -> WorkDivMembers<Dim<TGridElemExtent>, Idx<TGridElemExtent>>
     {
         static_assert(
-            dim::Dim<TGridElemExtent>::value == dim::Dim<TAcc>::value,
+            Dim<TGridElemExtent>::value == Dim<TAcc>::value,
             "The dimension of TAcc and the dimension of TGridElemExtent have to be identical!");
         static_assert(
-            dim::Dim<TThreadElemExtent>::value == dim::Dim<TAcc>::value,
+            Dim<TThreadElemExtent>::value == Dim<TAcc>::value,
             "The dimension of TAcc and the dimension of TThreadElemExtent have to be identical!");
         static_assert(
             std::is_same<Idx<TGridElemExtent>, Idx<TAcc>>::value,
@@ -435,9 +435,9 @@ namespace alpaka
     -> bool
     {
         // Store the maxima allowed for extents of grid, blocks and threads.
-        auto const gridBlockExtentMax(subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax));
-        auto const blockThreadExtentMax(subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax));
-        auto const threadElemExtentMax(subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax));
+        auto const gridBlockExtentMax(subVecEnd<Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax));
+        auto const blockThreadExtentMax(subVecEnd<Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax));
+        auto const threadElemExtentMax(subVecEnd<Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax));
 
         // Get the extents of grid, blocks and threads of the work division to check.
         auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(workDiv));
@@ -459,7 +459,7 @@ namespace alpaka
         }
 
         // Check that the extents for all dimensions are correct.
-        for(typename dim::Dim<TWorkDiv>::value_type i(0); i<dim::Dim<TWorkDiv>::value; ++i)
+        for(typename Dim<TWorkDiv>::value_type i(0); i<Dim<TWorkDiv>::value; ++i)
         {
             // No extent is allowed to be zero or greater then the allowed maximum.
             if((gridBlockExtent[i] < 1)

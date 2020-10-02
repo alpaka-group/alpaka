@@ -47,7 +47,7 @@ public:
     -> void
     {
         static_assert(
-            alpaka::dim::Dim<TAcc>::value == 1,
+            alpaka::Dim<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
         auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
@@ -70,7 +70,7 @@ public:
 };
 
 using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::dim::DimInt<1u>,
+    alpaka::DimInt<1u>,
     std::size_t>;
 
 TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestAccs)
@@ -103,11 +103,11 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     QueueAcc queueAcc(devAcc);
 
     // The data extent.
-    alpaka::Vec<alpaka::dim::DimInt<1u>, Idx> const extent(
+    alpaka::Vec<alpaka::DimInt<1u>, Idx> const extent(
         numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<alpaka::dim::DimInt<1u>, Idx> const workDiv(
+    alpaka::WorkDivMembers<alpaka::DimInt<1u>, Idx> const workDiv(
         alpaka::getValidWorkDiv<Acc>(
             devAcc,
             extent,

@@ -51,7 +51,7 @@ public:
     -> void
     {
         static_assert(
-            alpaka::dim::Dim<TAcc>::value == 1,
+            alpaka::Dim<TAcc>::value == 1,
             "The AxpyKernel expects 1-dimensional indices!");
 
         auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
@@ -74,13 +74,13 @@ public:
 };
 
 using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::dim::DimInt<1u>,
+    alpaka::DimInt<1u>,
     std::size_t>;
 
 TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
 #ifdef ALPAKA_CI

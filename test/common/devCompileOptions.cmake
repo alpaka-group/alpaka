@@ -116,7 +116,7 @@ ELSE()
         ENDIF()
         IF(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7.0)
             # This warning might be useful but it is triggered by comile-time code where it does not make any sense:
-            # E.g. "Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem>" when both values are equal
+            # E.g. "Vec<DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem>" when both values are equal
             #LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Wduplicated-branches")
             LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Walloc-zero")
             LIST(APPEND ALPAKA_DEV_COMPILE_OPTIONS "-Walloca")

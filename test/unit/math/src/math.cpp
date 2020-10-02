@@ -19,7 +19,7 @@
 #include <catch2/catch.hpp>
 
 using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::dim::DimInt< 1u >,
+    alpaka::DimInt< 1u >,
     std::size_t
 >;
 
@@ -92,7 +92,7 @@ struct TestTemplate
         using PltfAcc = alpaka::Pltf< DevAcc >;
         using PltfHost = alpaka::Pltf< DevHost >;
 
-        using Dim = alpaka::dim::DimInt< 1u >;
+        using Dim = alpaka::DimInt< 1u >;
         using Idx = std::size_t;
         using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
         using QueueAcc = alpaka::test::DefaultQueue< DevAcc >;
