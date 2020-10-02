@@ -50,21 +50,18 @@ namespace alpaka
         };
     }
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The IdxGbRef grid block index dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            gb::IdxGbRef<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The IdxGbRef grid block index dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                gb::IdxGbRef<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {

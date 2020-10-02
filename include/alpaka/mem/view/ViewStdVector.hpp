@@ -50,21 +50,18 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::vector dimension getter trait specialization.
+        template<
+            typename TElem,
+            typename TAllocator>
+        struct DimType<
+            std::vector<TElem, TAllocator>>
         {
-            //#############################################################################
-            //! The std::vector dimension getter trait specialization.
-            template<
-                typename TElem,
-                typename TAllocator>
-            struct DimType<
-                std::vector<TElem, TAllocator>>
-            {
-                using type = dim::DimInt<1u>;
-            };
-        }
+            using type = DimInt<1u>;
+        };
     }
     namespace elem
     {
@@ -92,7 +89,7 @@ namespace alpaka
                 typename TElem,
                 typename TAllocator>
             struct GetExtent<
-                dim::DimInt<0u>,
+                DimInt<0u>,
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
@@ -141,7 +138,7 @@ namespace alpaka
                     typename TElem,
                     typename TAllocator>
                 struct GetPitchBytes<
-                    dim::DimInt<0u>,
+                    DimInt<0u>,
                     std::vector<TElem, TAllocator>>
                 {
                     //-----------------------------------------------------------------------------

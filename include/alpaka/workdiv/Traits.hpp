@@ -46,7 +46,7 @@ namespace alpaka
         typename TWorkDiv>
     ALPAKA_FN_HOST_ACC auto getWorkDiv(
         TWorkDiv const & workDiv)
-    -> Vec<dim::Dim<TWorkDiv>, Idx<TWorkDiv>>
+    -> Vec<Dim<TWorkDiv>, Idx<TWorkDiv>>
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptWorkDiv, TWorkDiv>;
         return

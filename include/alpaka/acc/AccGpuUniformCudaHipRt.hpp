@@ -204,7 +204,7 @@ namespace alpaka
                     alpaka::core::clipCast<TIdx>(multiProcessorCount),
                     // m_gridBlockExtentMax
                     extent::getExtentVecEnd<TDim>(
-                        Vec<dim::DimInt<3u>, TIdx>(
+                        Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(maxGridSize[2u]),
                             alpaka::core::clipCast<TIdx>(maxGridSize[1u]),
                             alpaka::core::clipCast<TIdx>(maxGridSize[0u]))),
@@ -212,7 +212,7 @@ namespace alpaka
                     std::numeric_limits<TIdx>::max(),
                     // m_blockThreadExtentMax
                     extent::getExtentVecEnd<TDim>(
-                        Vec<dim::DimInt<3u>, TIdx>(
+                        Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(maxBlockDim[2u]),
                             alpaka::core::clipCast<TIdx>(maxBlockDim[1u]),
                             alpaka::core::clipCast<TIdx>(maxBlockDim[0u]))),
@@ -237,7 +237,7 @@ namespace alpaka
                     alpaka::core::clipCast<TIdx>(hipDevProp.multiProcessorCount),
                     // m_gridBlockExtentMax
                     extent::getExtentVecEnd<TDim>(
-                        Vec<dim::DimInt<3u>, TIdx>(
+                        Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[2u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[1u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxGridSize[0u]))),
@@ -245,7 +245,7 @@ namespace alpaka
                     std::numeric_limits<TIdx>::max(),
                     // m_blockThreadExtentMax
                     extent::getExtentVecEnd<TDim>(
-                        Vec<dim::DimInt<3u>, TIdx>(
+                        Vec<DimInt<3u>, TIdx>(
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[2u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[1u]),
                             alpaka::core::clipCast<TIdx>(hipDevProp.maxThreadsDim[0u]))),
@@ -290,21 +290,18 @@ namespace alpaka
             using type = DevUniformCudaHipRt;
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA accelerator dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA accelerator dimension getter trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                AccGpuUniformCudaHipRt<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace kernel
     {

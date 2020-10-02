@@ -58,7 +58,7 @@ public:
 TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromValue", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -74,7 +74,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromValue", "[kern
 TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstValue", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -90,7 +90,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstValue", "
 TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstReference", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -143,7 +143,7 @@ public:
 TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointer", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -160,7 +160,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointer", "[ke
 TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointerToConst", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -177,7 +177,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointerToConst
 TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromStaticArray", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -193,7 +193,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromStaticArray", 
 TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstStaticArray", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(

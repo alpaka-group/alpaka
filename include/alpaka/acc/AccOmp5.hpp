@@ -233,21 +233,18 @@ namespace alpaka
             using type = DevOmp5;
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 accelerator dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            AccOmp5<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 accelerator dimension getter trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                AccOmp5<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace kernel
     {

@@ -50,21 +50,18 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::array dimension getter trait specialization.
+        template<
+            typename TElem,
+            std::size_t Tsize>
+        struct DimType<
+            std::array<TElem, Tsize>>
         {
-            //#############################################################################
-            //! The std::array dimension getter trait specialization.
-            template<
-                typename TElem,
-                std::size_t Tsize>
-            struct DimType<
-                std::array<TElem, Tsize>>
-            {
-                using type = dim::DimInt<1u>;
-            };
-        }
+            using type = DimInt<1u>;
+        };
     }
     namespace elem
     {
@@ -92,7 +89,7 @@ namespace alpaka
                 typename TElem,
                 std::size_t Tsize>
             struct GetExtent<
-                dim::DimInt<0u>,
+                DimInt<0u>,
                 std::array<TElem, Tsize>>
             {
                 //-----------------------------------------------------------------------------
@@ -142,7 +139,7 @@ namespace alpaka
                     typename TElem,
                     std::size_t Tsize>
                 struct GetPitchBytes<
-                    dim::DimInt<0u>,
+                    DimInt<0u>,
                     std::array<TElem, Tsize>>
                 {
                     //-----------------------------------------------------------------------------

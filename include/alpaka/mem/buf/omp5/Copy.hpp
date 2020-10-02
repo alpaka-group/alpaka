@@ -55,13 +55,13 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
-                            dim::Dim<TViewSrc>::value == TDim::value,
+                            Dim<TViewSrc>::value == TDim::value,
                             "The source view is required to have dimensionality TDim!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            Dim<TViewDst>::value == Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            Dim<TViewDst>::value == Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
                         // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
@@ -175,7 +175,7 @@ namespace alpaka
                         typename TViewSrc,
                         typename TExtent>
                     struct TaskCopyOmp5<
-                        dim::DimInt<1>,
+                        DimInt<1>,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -185,13 +185,13 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
-                            dim::Dim<TViewSrc>::value == 1,
+                            Dim<TViewSrc>::value == 1,
                             "The source view is required to have dimensionality 1!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == 1,
+                            Dim<TViewDst>::value == 1,
                             "The source view is required to have dimensionality 1!");
                         static_assert(
-                            dim::Dim<TExtent>::value == 1,
+                            Dim<TExtent>::value == 1,
                             "The extent is required to have dimensionality 1!");
                         // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(

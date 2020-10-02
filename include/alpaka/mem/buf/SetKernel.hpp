@@ -54,8 +54,8 @@ namespace alpaka
                     auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc));
                     auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
                     auto const idxThreadFirstElem = getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
-                    auto idx = mapIdxPitchBytes<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
-                    constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
+                    auto idx = mapIdxPitchBytes<1u, Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
+                    constexpr auto lastDim = Dim<TAcc>::value - 1;
                     const auto lastIdx = idx +
                         std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim]-idxThreadFirstElem[lastDim]));
 

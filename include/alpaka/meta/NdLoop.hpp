@@ -70,13 +70,13 @@ namespace alpaka
                 -> void
                 {
                     static_assert(
-                        dim::Dim<TIndex>::value > 0u,
+                        Dim<TIndex>::value > 0u,
                         "The dimension given to ndLoop has to be larger than zero!");
                     static_assert(
-                        dim::Dim<TIndex>::value == dim::Dim<TExtentVec>::value,
+                        Dim<TIndex>::value == Dim<TExtentVec>::value,
                         "The dimensions of the iteration vector and the extent vector have to be identical!");
                     static_assert(
-                        dim::Dim<TIndex>::value > Tdim,
+                        Dim<TIndex>::value > Tdim,
                         "The current dimension has to be in the range [0,dim-1]!");
 
                     for(idx[Tdim] = 0u; idx[Tdim] < extent[Tdim]; ++idx[Tdim])
@@ -107,13 +107,13 @@ namespace alpaka
                 -> void
                 {
                     static_assert(
-                        dim::Dim<TIndex>::value > 0u,
+                        Dim<TIndex>::value > 0u,
                         "The dimension given to ndLoop has to be larger than zero!");
                     static_assert(
-                        dim::Dim<TIndex>::value == dim::Dim<TExtentVec>::value,
+                        Dim<TIndex>::value == Dim<TExtentVec>::value,
                         "The dimensions of the iteration vector and the extent vector have to be identical!");
                     static_assert(
-                        dim::Dim<TIndex>::value > Tdim0,
+                        Dim<TIndex>::value > Tdim0,
                         "The current dimension has to be in the range [0,dim-1]!");
 
                     for(idx[Tdim0] = 0u; idx[Tdim0] < extent[Tdim0]; ++idx[Tdim0])
@@ -149,17 +149,17 @@ namespace alpaka
             alpaka::ignore_unused(indexSequence);
 
             static_assert(
-                dim::Dim<TExtentVec>::value > 0u,
+                Dim<TExtentVec>::value > 0u,
                 "The dimension of the extent given to ndLoop has to be larger than zero!");
             static_assert(
-                meta::IntegerSequenceValuesInRange<std::index_sequence<Tdims...>, std::size_t, 0, dim::Dim<TExtentVec>::value>::value,
+                meta::IntegerSequenceValuesInRange<std::index_sequence<Tdims...>, std::size_t, 0, Dim<TExtentVec>::value>::value,
                 "The values in the index_sequence have to be in the range [0,dim-1]!");
             static_assert(
                 meta::IntegerSequenceValuesUnique<std::index_sequence<Tdims...>>::value,
                 "The values in the index_sequence have to be unique!");
 
             auto idx(
-                Vec<dim::Dim<TExtentVec>, Idx<TExtentVec>>::zeros());
+                Vec<Dim<TExtentVec>, Idx<TExtentVec>>::zeros());
 
             detail::NdLoop<
                 std::index_sequence<Tdims...>>
@@ -184,7 +184,7 @@ namespace alpaka
         -> void
         {
             ndLoop(
-                std::make_index_sequence<dim::Dim<TExtentVec>::value>(),
+                std::make_index_sequence<Dim<TExtentVec>::value>(),
                 extent,
                 f);
         }

@@ -85,7 +85,7 @@ namespace alpaka
         TVec const & vec)
     {
         static_assert(
-            TSubDim::value <= dim::Dim<TVec>::value,
+            TSubDim::value <= Dim<TVec>::value,
             "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
         //! A sequence of integers from 0 to dim-1.
@@ -109,10 +109,10 @@ namespace alpaka
         TVec const & vec)
     {
         static_assert(
-            TSubDim::value <= dim::Dim<TVec>::value,
+            TSubDim::value <= Dim<TVec>::value,
             "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
-        constexpr std::size_t idxOffset = dim::Dim<TVec>::value - TSubDim::value;
+        constexpr std::size_t idxOffset = Dim<TVec>::value - TSubDim::value;
 
         //! A sequence of integers from 0 to dim-1.
         using IdxSubSequence =

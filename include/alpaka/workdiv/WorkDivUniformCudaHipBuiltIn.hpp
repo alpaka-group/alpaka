@@ -66,21 +66,18 @@ namespace alpaka
         Vec<TDim, TIdx> const & m_threadElemExtent;
     };
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP accelerator work division dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP accelerator work division dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                WorkDivUniformCudaHipBuiltIn<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {

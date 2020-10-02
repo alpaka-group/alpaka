@@ -70,7 +70,7 @@ namespace alpaka
                     m_args(std::forward<TArgs>(args)...)
             {
                 static_assert(
-                    dim::Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
+                    Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                     "The work division and the execution task have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
@@ -270,23 +270,20 @@ namespace alpaka
             using type = DevOmp5;
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 execution task dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct DimType<
+            kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 execution task dimension getter trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct DimType<
-                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {

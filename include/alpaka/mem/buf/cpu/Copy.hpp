@@ -54,13 +54,13 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            Dim<TViewDst>::value == Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            Dim<TViewDst>::value == Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == TDim::value,
+                            Dim<TViewDst>::value == TDim::value,
                             "The destination view and the input TDim are required to have the same dimensionality!");
 
                         static_assert(
@@ -139,7 +139,7 @@ namespace alpaka
                         typename TExtent>
                     struct TaskCopyCpu : public TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>
                     {
-                        using DimMin1 = dim::DimInt<TDim::value - 1u>;
+                        using DimMin1 = DimInt<TDim::value - 1u>;
                         using typename TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>::ExtentSize;
                         using typename TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>::DstSize;
                         using typename TaskCopyCpuBase<TDim, TViewDst, TViewSrc, TExtent>::SrcSize;
@@ -184,13 +184,13 @@ namespace alpaka
                         typename TViewSrc,
                         typename TExtent>
                     struct TaskCopyCpu<
-                        dim::DimInt<1u>,
+                        DimInt<1u>,
                         TViewDst,
                         TViewSrc,
-                        TExtent> : public TaskCopyCpuBase<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>
+                        TExtent> : public TaskCopyCpuBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>
                     {
                         //-----------------------------------------------------------------------------
-                        using TaskCopyCpuBase<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopyCpuBase;
+                        using TaskCopyCpuBase<DimInt<1u>, TViewDst, TViewSrc, TExtent>::TaskCopyCpuBase;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST auto operator()() const

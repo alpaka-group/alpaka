@@ -221,21 +221,18 @@ namespace alpaka
             using type = DevCpu;
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU threads accelerator dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            AccCpuThreads<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU threads accelerator dimension getter trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                AccCpuThreads<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace kernel
     {

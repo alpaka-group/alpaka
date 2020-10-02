@@ -960,7 +960,7 @@ struct TestAtomicOperations
     static auto testAtomicOperations()
     -> void
     {
-        using Dim = alpaka::dim::Dim<TAcc>;
+        using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
 
         alpaka::test::KernelExecutionFixture<TAcc> fixture(
@@ -974,7 +974,7 @@ struct TestAtomicOperations
 };
 
 using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::dim::DimInt<1u>,
+    alpaka::DimInt<1u>,
     std::size_t>;
 
 //-----------------------------------------------------------------------------

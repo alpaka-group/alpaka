@@ -76,7 +76,7 @@ namespace alpaka
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                             static_assert(
-                                TDim::value == dim::Dim<TExtent>::value,
+                                TDim::value == Dim<TExtent>::value,
                                 "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                             static_assert(
                                 std::is_same<TIdx, Idx<TExtent>>::value,
@@ -200,22 +200,19 @@ namespace alpaka
             }
         };
     }
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The BufCpu dimension getter trait.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            mem::buf::BufCpu<TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The BufCpu dimension getter trait.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                mem::buf::BufCpu<TElem, TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace elem
     {
@@ -338,7 +335,7 @@ namespace alpaka
                     typename TDim,
                     typename TIdx>
                 struct GetPitchBytes<
-                    dim::DimInt<TDim::value - 1u>,
+                    DimInt<TDim::value - 1u>,
                     mem::buf::BufCpu<TElem, TDim, TIdx>>
                 {
                     //-----------------------------------------------------------------------------

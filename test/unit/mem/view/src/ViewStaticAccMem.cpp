@@ -18,7 +18,7 @@
 #include <catch2/catch.hpp>
 
 using Elem = std::uint32_t;
-using Dim = alpaka::dim::DimInt<2u>;
+using Dim = alpaka::DimInt<2u>;
 using Idx = std::uint32_t;
 
 // These forward declarations are only necessary when you want to access those variables

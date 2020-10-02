@@ -57,21 +57,18 @@ namespace alpaka
         };
     }
 
-    namespace dim
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU threads accelerator index dimension get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            bt::IdxBtRefThreadIdMap<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU threads accelerator index dimension get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                bt::IdxBtRefThreadIdMap<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
+            using type = TDim;
+        };
     }
     namespace traits
     {

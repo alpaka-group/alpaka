@@ -55,8 +55,8 @@ namespace alpaka
             {
                 namespace detail
                 {
-                    using vec3D = alpaka::Vec<alpaka::dim::DimInt<3u>, size_t>;
-                    using vec2D = alpaka::Vec<alpaka::dim::DimInt<2u>, size_t>;
+                    using vec3D = alpaka::Vec<alpaka::DimInt<3u>, size_t>;
+                    using vec2D = alpaka::Vec<alpaka::DimInt<2u>, size_t>;
 
                     ///! copy 3D memory
                     ///
@@ -75,7 +75,7 @@ namespace alpaka
                         // blockDim.[y,z] is always 1 and is not needed for index calculations
                         // gridDim and blockIdx is already in alpaka index order [z,y,x]
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                        alpaka::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
+                        alpaka::Vec<alpaka::DimInt<3u>, uint32_t> const tid(
                             blockIdx.x,
                             blockIdx.y,
                             blockIdx.z * blockDim.x + threadIdx.x);
@@ -83,7 +83,7 @@ namespace alpaka
                         size_t const bytePerBlock = sizeof(T) * blockDim.x;
                         size_t const bytePerRow = gridDim.z * bytePerBlock;
 #else
-                        alpaka::Vec<alpaka::dim::DimInt<3u>, uint32_t> const tid(
+                        alpaka::Vec<alpaka::DimInt<3u>, uint32_t> const tid(
                             hipBlockIdx_x,
                             hipBlockIdx_y,
                             hipBlockIdx_z * hipBlockDim_x + hipThreadIdx_x);
@@ -251,7 +251,7 @@ namespace alpaka
                         typename TViewSrc,
                         typename TExtent>
                     struct TaskCopyUniformCudaHip<
-                        dim::DimInt<1>,
+                        DimInt<1>,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -263,10 +263,10 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            Dim<TViewDst>::value == Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            Dim<TViewDst>::value == Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
                         // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
@@ -387,7 +387,7 @@ namespace alpaka
                         typename TViewSrc,
                         typename TExtent>
                     struct TaskCopyUniformCudaHip<
-                        dim::DimInt<2>,
+                        DimInt<2>,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -399,10 +399,10 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            Dim<TViewDst>::value == Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            Dim<TViewDst>::value == Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
                         // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
@@ -433,10 +433,10 @@ namespace alpaka
                                 m_dstHeight(static_cast<Idx>(extent::getHeight(viewDst))),    // required for 3D peer copy
                                 m_srcHeight(static_cast<Idx>(extent::getHeight(viewSrc))),    // required for 3D peer copy
 
-                                m_dstpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
-                                m_srcpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
-                                m_dstPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
-                                m_srcPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
+                                m_dstpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewDst>::value - (2u % Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewSrc>::value - (2u % Dim<TViewDst>::value)>(viewSrc))),
 
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(viewSrc)))
@@ -593,7 +593,7 @@ namespace alpaka
                         typename TViewSrc,
                         typename TExtent>
                     struct TaskCopyUniformCudaHip<
-                        dim::DimInt<3>,
+                        DimInt<3>,
                         TViewDst,
                         TViewSrc,
                         TExtent>
@@ -605,10 +605,10 @@ namespace alpaka
                             "The destination view can not be const!");
 
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                            Dim<TViewDst>::value == Dim<TViewSrc>::value,
                             "The source and the destination view are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                            Dim<TViewDst>::value == Dim<TExtent>::value,
                             "The views and the extent are required to have the same dimensionality!");
                         // TODO: Maybe check for Idx of TViewDst and TViewSrc to have greater or equal range than TExtent.
                         static_assert(
@@ -643,10 +643,10 @@ namespace alpaka
                                 m_dstDepth(static_cast<Idx>(extent::getDepth(viewDst))),
                                 m_srcDepth(static_cast<Idx>(extent::getDepth(viewSrc))),
 #endif
-                                m_dstpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - 1u>(viewDst))),
-                                m_srcpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - 1u>(viewSrc))),
-                                m_dstPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewDst>::value - (2u % dim::Dim<TViewDst>::value)>(viewDst))),
-                                m_srcPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<dim::Dim<TViewSrc>::value - (2u % dim::Dim<TViewDst>::value)>(viewSrc))),
+                                m_dstpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewDst>::value - 1u>(viewDst))),
+                                m_srcpitchBytesX(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewSrc>::value - 1u>(viewSrc))),
+                                m_dstPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewDst>::value - (2u % Dim<TViewDst>::value)>(viewDst))),
+                                m_srcPitchBytesY(static_cast<Idx>(mem::view::getPitchBytes<Dim<TViewSrc>::value - (2u % Dim<TViewDst>::value)>(viewSrc))),
 
 
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(viewDst))),
@@ -997,12 +997,12 @@ namespace alpaka
             typename TViewDst>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
-            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<1u>, TViewDst, TViewSrc, TExtent>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking & queue,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
             -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -1018,12 +1018,12 @@ namespace alpaka
             typename TViewDst>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
-            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<1u>, TViewDst, TViewSrc, TExtent>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking & queue,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
             -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -1043,12 +1043,12 @@ namespace alpaka
             typename TViewDst>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
-            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<2u>, TViewDst, TViewSrc, TExtent>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking & queue,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
             -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -1064,12 +1064,12 @@ namespace alpaka
             typename TViewDst>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
-            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<2u>, TViewDst, TViewSrc, TExtent>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking & queue,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
             -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -1089,12 +1089,12 @@ namespace alpaka
             typename TViewDst>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
-            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<3u>, TViewDst, TViewSrc, TExtent>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking & queue,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
             -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -1110,12 +1110,12 @@ namespace alpaka
             typename TViewDst>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
-            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<3u>, TViewDst, TViewSrc, TExtent>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking & queue,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
             -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;

@@ -125,7 +125,7 @@ public:
 TEMPLATE_LIST_TEST_CASE( "defaultRandomGeneratorIsWorking", "[rand]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(

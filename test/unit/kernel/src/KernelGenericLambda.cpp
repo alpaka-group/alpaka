@@ -21,7 +21,7 @@
 TEMPLATE_LIST_TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
@@ -45,7 +45,7 @@ TEMPLATE_LIST_TEST_CASE( "genericLambdaKernelIsWorking", "[kernel]", alpaka::tes
 TEMPLATE_LIST_TEST_CASE( "variadicGenericLambdaKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(

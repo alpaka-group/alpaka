@@ -53,7 +53,7 @@ namespace alpaka
                     class IteratorView
                     {
                         using TViewDecayed = std::decay_t<TView>;
-                        using Dim = alpaka::dim::Dim<TViewDecayed>;
+                        using Dim = alpaka::Dim<TViewDecayed>;
                         using Idx = alpaka::Idx<TViewDecayed>;
                         using Elem = MimicConst<alpaka::elem::Elem<TViewDecayed>, TView>;
 
@@ -132,8 +132,8 @@ namespace alpaka
                         ALPAKA_FN_HOST_ACC auto operator*() const
                         -> Elem &
                         {
-                            using Dim1 = alpaka::dim::DimInt<1>;
-                            using DimMin1 = alpaka::dim::DimInt<Dim::value - 1u>;
+                            using Dim1 = alpaka::DimInt<1>;
+                            using DimMin1 = alpaka::DimInt<Dim::value - 1u>;
 
                             Vec<Dim1, Idx> const currentIdxDim1{m_currentIdx};
                             Vec<Dim, Idx> const currentIdxDimx(alpaka::mapIdx<Dim::value>(currentIdxDim1, m_extents));

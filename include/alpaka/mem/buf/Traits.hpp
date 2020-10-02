@@ -124,7 +124,7 @@ namespace alpaka
                 return
                     traits::Alloc<
                         TElem,
-                        dim::Dim<TExtent>,
+                        Dim<TExtent>,
                         TIdx,
                         TDev>
                     ::alloc(

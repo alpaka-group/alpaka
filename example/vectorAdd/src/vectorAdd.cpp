@@ -52,7 +52,7 @@ public:
     -> void
     {
         static_assert(
-            alpaka::dim::Dim<TAcc>::value == 1,
+            alpaka::Dim<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
         TIdx const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
@@ -83,7 +83,7 @@ auto main()
 #else
 
     // Define the index domain
-    using Dim = alpaka::dim::DimInt<1u>;
+    using Dim = alpaka::DimInt<1u>;
     using Idx = std::size_t;
 
     // Define the accelerator

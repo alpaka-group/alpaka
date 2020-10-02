@@ -159,7 +159,7 @@ namespace alpaka
                 typename TIdx>
             using AccGpuHipRtIfAvailableElseInt = typename
                 std::conditional<
-                std::is_same<TDim,alpaka::dim::DimInt<3u>>::value==false,
+                std::is_same<TDim,alpaka::DimInt<3u>>::value==false,
                 alpaka::AccGpuHipRt<TDim, TIdx>,
                 int>::type;
 #else
@@ -251,7 +251,7 @@ namespace alpaka
             using TestDimIdxTuples =
                 alpaka::meta::CartesianProduct<
                     std::tuple,
-                    dim::TestDims,
+                    TestDims,
                     TestIdxs
                 >;
 

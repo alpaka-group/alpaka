@@ -40,7 +40,7 @@ struct QueueCollectiveTestKernel
 TEST_CASE("queueCollective", "[queue]")
 {
     // Define the index domain
-    using Dim = alpaka::dim::DimInt<1>;
+    using Dim = alpaka::DimInt<1>;
     using Idx = size_t;
 
     // Define the accelerator
@@ -88,7 +88,7 @@ TEST_CASE("queueCollective", "[queue]")
 TEST_CASE("TestCollectiveMemcpy", "[queue]")
 {
      // Define the index domain
-    using Dim = alpaka::dim::DimInt<1>;
+    using Dim = alpaka::DimInt<1>;
     using Idx = size_t;
 
     // Define the accelerator

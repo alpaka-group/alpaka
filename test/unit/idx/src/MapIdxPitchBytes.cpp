@@ -20,7 +20,7 @@
 #include <catch2/catch.hpp>
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "mapIdxPitchBytes", "[idx]", alpaka::test::dim::TestDims)
+TEMPLATE_LIST_TEST_CASE( "mapIdxPitchBytes", "[idx]", alpaka::test::TestDims)
 {
     using Dim = TestType;
     using Idx = std::size_t;

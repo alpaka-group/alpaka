@@ -60,7 +60,7 @@ public:
         TIndex const & ldc) const
     -> void
     {
-        static_assert(alpaka::dim::Dim<TAcc>::value == 2u,
+        static_assert(alpaka::Dim<TAcc>::value == 2u,
             "The accelerator used for the GemmAlpakaKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
@@ -199,13 +199,13 @@ namespace alpaka
 }
 
 using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::dim::DimInt<2u>,
+    alpaka::DimInt<2u>,
     std::uint32_t>;
 
 TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
 {
     using Acc = TestType;
-    using Dim = alpaka::dim::Dim<Acc>;
+    using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
     Idx const m(64u);

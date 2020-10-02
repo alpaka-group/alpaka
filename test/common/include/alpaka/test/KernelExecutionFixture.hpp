@@ -26,7 +26,7 @@ namespace alpaka
         {
         public:
             using Acc = TAcc;
-            using Dim = alpaka::dim::Dim<Acc>;
+            using Dim = alpaka::Dim<Acc>;
             using Idx = alpaka::Idx<Acc>;
             using DevAcc = alpaka::Dev<Acc>;
             using PltfAcc = alpaka::Pltf<DevAcc>;

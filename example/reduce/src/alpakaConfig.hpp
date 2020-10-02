@@ -21,7 +21,7 @@
 #include <alpaka/alpaka.hpp>
 
 // Defines for dimensions and types.
-using Dim = alpaka::dim::DimInt<1u>;
+using Dim = alpaka::DimInt<1u>;
 using Idx = uint64_t;
 using Extent = uint64_t;
 using WorkDiv = alpaka::WorkDivMembers<Dim, Extent>;
@@ -64,8 +64,8 @@ struct CpuOmp2Blocks
 {
     using Host = alpaka::AccCpuOmp2Blocks<Dim, Extent>;
     using Acc = alpaka::AccCpuOmp2Blocks<Dim, Extent>;
-    using SmCount = alpaka::dim::DimInt<1u>;
-    using MaxBlockSize = alpaka::dim::DimInt<1u>;
+    using SmCount = alpaka::DimInt<1u>;
+    using MaxBlockSize = alpaka::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
@@ -92,7 +92,7 @@ struct Omp5
     using PltfAcc = alpaka::Pltf<DevAcc>;
     using Stream = alpaka::QueueCpuBlocking;
     using Event = alpaka::event::Event<Stream>;
-    using MaxBlockSize = alpaka::dim::DimInt<1u>;
+    using MaxBlockSize = alpaka::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
@@ -112,7 +112,7 @@ struct CpuSerial
 {
     using Host = alpaka::AccCpuSerial<Dim, Extent>;
     using Acc = alpaka::AccCpuSerial<Dim, Extent>;
-    using MaxBlockSize = alpaka::dim::DimInt<1u>;
+    using MaxBlockSize = alpaka::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
@@ -131,7 +131,7 @@ struct CpuThreads
 {
     using Host = alpaka::AccCpuThreads<Dim, Extent>;
     using Acc = alpaka::AccCpuThreads<Dim, Extent>;
-    using MaxBlockSize = alpaka::dim::DimInt<1u>;
+    using MaxBlockSize = alpaka::DimInt<1u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>
@@ -151,7 +151,7 @@ struct GpuCudaRt
 {
     using Host = alpaka::AccCpuSerial<Dim, Extent>;
     using Acc = alpaka::AccGpuCudaRt<Dim, Extent>;
-    using MaxBlockSize = alpaka::dim::DimInt<1024u>;
+    using MaxBlockSize = alpaka::DimInt<1024u>;
 };
 
 template <typename T, typename TBuf, typename... TArgs>

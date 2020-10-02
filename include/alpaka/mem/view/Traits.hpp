@@ -90,7 +90,7 @@ namespace alpaka
                     struct GetPitchBytesDefault<
                         TIdx,
                         TView,
-                        std::enable_if_t<TIdx::value < (dim::Dim<TView>::value - 1)>>
+                        std::enable_if_t<TIdx::value < (Dim<TView>::value - 1)>>
                     {
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST static auto getPitchBytesDefault(
@@ -99,14 +99,14 @@ namespace alpaka
                         {
                             return
                                 extent::getExtent<TIdx::value>(view)
-                                * GetPitchBytes<dim::DimInt<TIdx::value+1>, TView>::getPitchBytes(view);
+                                * GetPitchBytes<DimInt<TIdx::value+1>, TView>::getPitchBytes(view);
                         }
                     };
                     //#############################################################################
                     template<
                         typename TView>
                     struct GetPitchBytesDefault<
-                        dim::DimInt<dim::Dim<TView>::value - 1u>,
+                        DimInt<Dim<TView>::value - 1u>,
                         TView>
                     {
                         //-----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace alpaka
                         -> Idx<TView>
                         {
                             return
-                                extent::getExtent<dim::Dim<TView>::value - 1u>(view)
+                                extent::getExtent<Dim<TView>::value - 1u>(view)
                                 * sizeof(elem::Elem<TView>);
                         }
                     };
@@ -123,7 +123,7 @@ namespace alpaka
                     template<
                         typename TView>
                     struct GetPitchBytesDefault<
-                        dim::DimInt<dim::Dim<TView>::value>,
+                        DimInt<Dim<TView>::value>,
                         TView>
                     {
                         //-----------------------------------------------------------------------------
@@ -259,7 +259,7 @@ namespace alpaka
             {
                 return
                     traits::GetPitchBytes<
-                        dim::DimInt<Tidx>,
+                        DimInt<Tidx>,
                         TView>
                     ::getPitchBytes(
                         view);
@@ -280,12 +280,12 @@ namespace alpaka
                 TExtent const & extent)
             {
                 static_assert(
-                    dim::Dim<TView>::value == dim::Dim<TExtent>::value,
+                    Dim<TView>::value == Dim<TExtent>::value,
                     "The view and the extent are required to have the same dimensionality!");
 
                 return
                     traits::CreateTaskSet<
-                        dim::Dim<TView>,
+                        Dim<TView>,
                         Dev<TView>>
                     ::createTaskSet(
                         view,
@@ -335,10 +335,10 @@ namespace alpaka
                 TExtent const & extent)
             {
                 static_assert(
-                    dim::Dim<TViewDst>::value == dim::Dim<TViewSrc>::value,
+                    Dim<TViewDst>::value == Dim<TViewSrc>::value,
                     "The source and the destination view are required to have the same dimensionality!");
                 static_assert(
-                    dim::Dim<TViewDst>::value == dim::Dim<TExtent>::value,
+                    Dim<TViewDst>::value == Dim<TExtent>::value,
                     "The destination view and the extent are required to have the same dimensionality!");
                 static_assert(
                     std::is_same<elem::Elem<TViewDst>, std::remove_const_t<elem::Elem<TViewSrc>>>::value,
@@ -346,7 +346,7 @@ namespace alpaka
 
                 return
                     traits::CreateTaskCopy<
-                        dim::Dim<TViewDst>,
+                        Dim<TViewDst>,
                         Dev<TViewDst>,
                         Dev<TViewSrc>>
                     ::createTaskCopy(
@@ -393,7 +393,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        Vec<dim::Dim<TView>, Idx<TView>> const & extent,
+                        Vec<Dim<TView>, Idx<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -408,7 +408,7 @@ namespace alpaka
                         for(auto i(decltype(lastIdx)(0)); i<=lastIdx ;++i)
                         {
                             Print<
-                                dim::DimInt<TDim::value+1u>,
+                                DimInt<TDim::value+1u>,
                                 TView>
                             ::print(
                                 view,
@@ -434,13 +434,13 @@ namespace alpaka
                 template<
                     typename TView>
                 struct Print<
-                    dim::DimInt<dim::Dim<TView>::value-1u>,
+                    DimInt<Dim<TView>::value-1u>,
                     TView>
                 {
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         elem::Elem<TView> const * const ptr,
-                        Vec<dim::Dim<TView>, Idx<TView>> const & extent,
+                        Vec<Dim<TView>, Idx<TView>> const & extent,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -453,7 +453,7 @@ namespace alpaka
 
                         os << rowPrefix;
 
-                        auto const lastIdx(extent[dim::Dim<TView>::value-1u]-1u);
+                        auto const lastIdx(extent[Dim<TView>::value-1u]-1u);
                         for(auto i(decltype(lastIdx)(0)); i<=lastIdx ;++i)
                         {
                             // Add the current element.
@@ -486,7 +486,7 @@ namespace alpaka
             -> void
             {
                 detail::Print<
-                    dim::DimInt<0u>,
+                    DimInt<0u>,
                     TView>
                 ::print(
                     view,
@@ -526,11 +526,11 @@ namespace alpaka
                 typename TPitch>
             auto getPitchBytesVec(
                 TPitch const & pitch = TPitch())
-            -> Vec<dim::Dim<TPitch>, Idx<TPitch>>
+            -> Vec<Dim<TPitch>, Idx<TPitch>>
             {
                 return
                     createVecFromIndexedFn<
-                        dim::Dim<TPitch>,
+                        Dim<TPitch>,
                         detail::CreatePitchBytes>(
                             pitch);
             }
@@ -543,7 +543,7 @@ namespace alpaka
                 TPitch const & pitch = TPitch())
             -> Vec<TDim, Idx<TPitch>>
             {
-                using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TPitch>::value) - static_cast<std::intmax_t>(TDim::value)>;
+                using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(Dim<TPitch>::value) - static_cast<std::intmax_t>(TDim::value)>;
                 return
                     createVecFromIndexedFnOffset<
                         TDim,

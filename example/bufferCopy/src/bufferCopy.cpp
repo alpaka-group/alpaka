@@ -136,7 +136,7 @@ auto main()
     return EXIT_SUCCESS;
 #else
     // Define the index domain
-    using Dim = alpaka::dim::DimInt<3u>;
+    using Dim = alpaka::DimInt<3u>;
     using Idx = std::size_t;
 
     // Define the device accelerator

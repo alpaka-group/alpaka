@@ -28,7 +28,7 @@
 //!
 //! Currently, the only possible way to solve this is to make the function call operator a template nonetheless by providing an unused template parameter.
 
-using Dim = alpaka::dim::DimInt<2u>;
+using Dim = alpaka::DimInt<2u>;
 using Idx = std::uint32_t;
 #if defined(ALPAKA_ACC_CPU_SERIAL_ENABLED)
 using AccCpu = alpaka::AccCpuSerial<Dim, Idx>;

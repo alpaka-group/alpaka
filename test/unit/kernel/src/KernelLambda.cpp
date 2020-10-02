@@ -24,7 +24,7 @@ struct TestTemplateLambda
 template< typename TAcc >
 void operator()()
 {
-    using Dim = alpaka::dim::Dim<TAcc>;
+    using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
@@ -58,7 +58,7 @@ struct TestTemplateArg
 template< typename TAcc >
 void operator()()
 {
-    using Dim = alpaka::dim::Dim<TAcc>;
+    using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(
@@ -87,7 +87,7 @@ struct TestTemplateCapture
 template< typename TAcc >
 void operator()()
 {
-    using Dim = alpaka::dim::Dim<TAcc>;
+    using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
     alpaka::test::KernelExecutionFixture<TAcc> fixture(

@@ -33,10 +33,10 @@ struct HelloWorldKernel
         TAcc const & acc) const
     -> void
     {
-        using Dim = alpaka::dim::Dim<TAcc>;
+        using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
         using Vec = alpaka::Vec<Dim, Idx>;
-        using Vec1 = alpaka::Vec<alpaka::dim::DimInt<1u>, Idx>;
+        using Vec1 = alpaka::Vec<alpaka::DimInt<1u>, Idx>;
 
         // In the most cases the parallel work distibution depends
         // on the current index of a thread and how many threads
@@ -80,7 +80,7 @@ auto main()
     // the dimensionality as well as the type used for indices.
     // For small index domains 16 or 32 bit indices may be enough
     // and may be faster to calculate depending on the accelerator.
-    using Dim = alpaka::dim::DimInt<3>;
+    using Dim = alpaka::DimInt<3>;
     using Idx = std::size_t;
 
     // Define the accelerator
