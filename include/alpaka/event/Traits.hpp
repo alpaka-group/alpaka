@@ -35,7 +35,7 @@ namespace alpaka
             template<
                 typename TEvent,
                 typename TSfinae = void>
-            struct Test;
+            struct IsComplete;
         }
 
         //#############################################################################
@@ -48,14 +48,14 @@ namespace alpaka
         //! Tests if the given event has already been completed.
         template<
             typename TEvent>
-        ALPAKA_FN_HOST auto test(
+        ALPAKA_FN_HOST auto isComplete(
             TEvent const & event)
         -> bool
         {
             return
-                traits::Test<
+                traits::IsComplete<
                     TEvent>
-                ::test(
+                ::isComplete(
                     event);
         }
     }

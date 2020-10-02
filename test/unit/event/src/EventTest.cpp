@@ -34,7 +34,7 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldInitiallyBeTrue", "[event]", TestQueues
     Fixture f;
     alpaka::event::Event<Queue> event(f.m_dev);
 
-    REQUIRE(alpaka::event::test(event));
+    REQUIRE(alpaka::event::isComplete(event));
 }
 
 //-----------------------------------------------------------------------------
@@ -61,14 +61,14 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingPro
 
         if(!alpaka::test::IsBlockingQueue<Queue>::value)
         {
-            REQUIRE(alpaka::event::test(e1) == false);
+            REQUIRE(alpaka::event::isComplete(e1) == false);
 
             k1.trigger();
 
             alpaka::wait(q1);
         }
 
-        REQUIRE(alpaka::event::test(e1));
+        REQUIRE(alpaka::event::isComplete(e1));
     }
     else
     {
@@ -96,37 +96,37 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[eve
 
             // q1 = [k1]
             alpaka::enqueue(q1, k1);
-            REQUIRE(!alpaka::event::test(k1));
+            REQUIRE(!alpaka::event::isComplete(k1));
 
             // q1 = [k1, e1]
             alpaka::enqueue(q1, e1);
-            REQUIRE(!alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(e1));
+            REQUIRE(!alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(e1));
 
             // q1 = [k1, e1, k2]
             alpaka::enqueue(q1, k2);
-            REQUIRE(!alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(e1));
-            REQUIRE(!alpaka::event::test(k2));
+            REQUIRE(!alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(e1));
+            REQUIRE(!alpaka::event::isComplete(k2));
 
             // re-enqueue should be possible
             // q1 = [k1, k2, e1]
             alpaka::enqueue(q1, e1);
-            REQUIRE(!alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(k2));
-            REQUIRE(!alpaka::event::test(e1));
+            REQUIRE(!alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(k2));
+            REQUIRE(!alpaka::event::isComplete(e1));
 
             // q1 = [k2, e1]
             k1.trigger();
-            REQUIRE(alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(k2));
-            REQUIRE(!alpaka::event::test(e1));
+            REQUIRE(alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(k2));
+            REQUIRE(!alpaka::event::isComplete(e1));
 
             // q1 = [e1]
             k2.trigger();
-            REQUIRE(alpaka::event::test(k2));
+            REQUIRE(alpaka::event::isComplete(k2));
             alpaka::wait(e1);
-            REQUIRE(alpaka::event::test(e1));
+            REQUIRE(alpaka::event::isComplete(e1));
         }
         else
         {
@@ -159,18 +159,18 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
 
             // q1 = [k1]
             alpaka::enqueue(q1, k1);
-            REQUIRE(!alpaka::event::test(k1));
+            REQUIRE(!alpaka::event::isComplete(k1));
 
             // q1 = [k1, e1]
             alpaka::enqueue(q1, e1);
-            REQUIRE(!alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(e1));
+            REQUIRE(!alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(e1));
 
             // q1 = [k1, e1, k2]
             alpaka::enqueue(q1, k2);
-            REQUIRE(!alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(e1));
-            REQUIRE(!alpaka::event::test(k2));
+            REQUIRE(!alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(e1));
+            REQUIRE(!alpaka::event::isComplete(k2));
 
             // wait for e1
             // q2 = [->e1]
@@ -178,30 +178,30 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
 
             // q2 = [->e1, e2]
             alpaka::enqueue(q2, e2);
-            REQUIRE(!alpaka::event::test(e2));
+            REQUIRE(!alpaka::event::isComplete(e2));
 
             // re-enqueue should be possible
             // q1 = [k1, e1-old, k2, e1]
             alpaka::enqueue(q1, e1);
-            REQUIRE(!alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(k2));
-            REQUIRE(!alpaka::event::test(e1));
-            REQUIRE(!alpaka::event::test(e2));
+            REQUIRE(!alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(k2));
+            REQUIRE(!alpaka::event::isComplete(e1));
+            REQUIRE(!alpaka::event::isComplete(e2));
 
             // q1 = [k2, e1]
             k1.trigger();
-            REQUIRE(alpaka::event::test(k1));
-            REQUIRE(!alpaka::event::test(k2));
-            REQUIRE(!alpaka::event::test(e1));
-            REQUIRE(!alpaka::event::test(e2));
+            REQUIRE(alpaka::event::isComplete(k1));
+            REQUIRE(!alpaka::event::isComplete(k2));
+            REQUIRE(!alpaka::event::isComplete(e1));
+            REQUIRE(!alpaka::event::isComplete(e2));
 
             // q1 = [e1]
             k2.trigger();
-            REQUIRE(alpaka::event::test(k2));
+            REQUIRE(alpaka::event::isComplete(k2));
             alpaka::wait(e1);
-            REQUIRE(alpaka::event::test(e1));
+            REQUIRE(alpaka::event::isComplete(e1));
             alpaka::wait(e2);
-            REQUIRE(alpaka::event::test(e2));
+            REQUIRE(alpaka::event::isComplete(e2));
         }
         else
         {
@@ -255,7 +255,7 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
             // 6. e1 is finished
             // q1 = []
             alpaka::wait(e1);
-            REQUIRE(alpaka::event::test(e1));
+            REQUIRE(alpaka::event::isComplete(e1));
 
             // 7. e1 is re-enqueued again but this time into q2
             // q2 = [k2, ->e1, e1]
