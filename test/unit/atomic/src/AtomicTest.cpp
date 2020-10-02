@@ -33,8 +33,8 @@ ALPAKA_FN_ACC auto testAtomicAdd(
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Add>(
+        alpaka::atomicOp<
+            alpaka::op::Add>(
                 acc,
                 &operand,
                 value);
@@ -58,8 +58,8 @@ ALPAKA_FN_ACC auto testAtomicSub(
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Sub>(
+        alpaka::atomicOp<
+            alpaka::op::Sub>(
                 acc,
                 &operand,
                 value);
@@ -83,8 +83,8 @@ ALPAKA_FN_ACC auto testAtomicMin(
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Min>(
+        alpaka::atomicOp<
+            alpaka::op::Min>(
                 acc,
                 &operand,
                 value);
@@ -108,8 +108,8 @@ ALPAKA_FN_ACC auto testAtomicMax(
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Max>(
+        alpaka::atomicOp<
+            alpaka::op::Max>(
                 acc,
                 &operand,
                 value);
@@ -133,8 +133,8 @@ ALPAKA_FN_ACC auto testAtomicExch(
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Exch>(
+        alpaka::atomicOp<
+            alpaka::op::Exch>(
                 acc,
                 &operand,
                 value);
@@ -159,8 +159,8 @@ ALPAKA_FN_ACC auto testAtomicInc(
     operand = operandOrig;
     T const value = static_cast<T>(42);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Inc>(
+        alpaka::atomicOp<
+            alpaka::op::Inc>(
                 acc,
                 &operand,
                 value);
@@ -185,8 +185,8 @@ ALPAKA_FN_ACC auto testAtomicDec(
     operand = operandOrig;
     T const value = static_cast<T>(42);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Dec>(
+        alpaka::atomicOp<
+            alpaka::op::Dec>(
                 acc,
                 &operand,
                 value);
@@ -210,8 +210,8 @@ ALPAKA_FN_ACC auto testAtomicAnd(
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::And>(
+        alpaka::atomicOp<
+            alpaka::op::And>(
                 acc,
                 &operand,
                 value);
@@ -235,8 +235,8 @@ ALPAKA_FN_ACC auto testAtomicOr(
     operand = operandOrig;
     T const value = static_cast<T>(4);
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Or>(
+        alpaka::atomicOp<
+            alpaka::op::Or>(
                 acc,
                 &operand,
                 value);
@@ -260,8 +260,8 @@ ALPAKA_FN_ACC auto testAtomicXor(
     operand = operandOrig;
     T const value = static_cast<T>(operandOrig + static_cast<T>(4));
     T const ret =
-        alpaka::atomic::atomicOp<
-            alpaka::atomic::op::Xor>(
+        alpaka::atomicOp<
+            alpaka::op::Xor>(
                 acc,
                 &operand,
                 value);
@@ -290,8 +290,8 @@ ALPAKA_FN_ACC auto testAtomicCas(
         T const compare = operandOrig;
         T const value = static_cast<T>(4);
         T const ret =
-            alpaka::atomic::atomicOp<
-                alpaka::atomic::op::Cas>(
+            alpaka::atomicOp<
+                alpaka::op::Cas>(
                     acc,
                     &operand,
                     compare,
@@ -308,8 +308,8 @@ ALPAKA_FN_ACC auto testAtomicCas(
         T const compare = static_cast<T>(operandOrig + static_cast<T>(1));
         T const value = static_cast<T>(4);
         T const ret =
-            alpaka::atomic::atomicOp<
-                alpaka::atomic::op::Cas>(
+            alpaka::atomicOp<
+                alpaka::op::Cas>(
                     acc,
                     &operand,
                     compare,

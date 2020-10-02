@@ -68,10 +68,10 @@ namespace alpaka
         public WorkDivMembers<TDim, TIdx>,
         public idx::gb::IdxGbLinear<TDim, TIdx>,
         public idx::bt::IdxBtOmp<TDim, TIdx>,
-        public atomic::AtomicHierarchy<
-            atomic::AtomicOmpBuiltIn,   // grid atomics
-            atomic::AtomicOmpBuiltIn,    // block atomics
-            atomic::AtomicOmpBuiltIn     // thread atomics
+        public AtomicHierarchy<
+            AtomicOmpBuiltIn,   // grid atomics
+            AtomicOmpBuiltIn,    // block atomics
+            AtomicOmpBuiltIn     // thread atomics
         >,
         public math::MathStdLib,
         public block::dyn::BlockSharedMemDynMember<>,
@@ -105,10 +105,10 @@ namespace alpaka
                 WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
                 idx::gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
                 idx::bt::IdxBtOmp<TDim, TIdx>(),
-                atomic::AtomicHierarchy<
-                    atomic::AtomicOmpBuiltIn,// atomics between grids
-                    atomic::AtomicOmpBuiltIn, // atomics between blocks
-                    atomic::AtomicOmpBuiltIn  // atomics between threads
+                AtomicHierarchy<
+                    AtomicOmpBuiltIn,// atomics between grids
+                    AtomicOmpBuiltIn, // atomics between blocks
+                    AtomicOmpBuiltIn  // atomics between threads
                 >(),
                 math::MathStdLib(),
                 block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),

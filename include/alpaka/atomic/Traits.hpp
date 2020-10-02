@@ -17,134 +17,129 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! The atomic operation traits specifics.
-    namespace atomic
+    struct ConceptAtomicGrids{};
+    struct ConceptAtomicBlocks{};
+    struct ConceptAtomicThreads{};
+
+    namespace detail
     {
-        struct ConceptAtomicGrids{};
-        struct ConceptAtomicBlocks{};
-        struct ConceptAtomicThreads{};
-
-        namespace detail
-        {
-            template<
-                typename THierarchy
-            >
-            struct AtomicHierarchyConceptType;
-
-            template<>
-            struct AtomicHierarchyConceptType<
-                hierarchy::Threads>
-            {
-                using type = ConceptAtomicThreads;
-            };
-
-            template<>
-            struct AtomicHierarchyConceptType<
-                hierarchy::Blocks>
-            {
-                using type = ConceptAtomicBlocks;
-            };
-
-            template<>
-            struct AtomicHierarchyConceptType<
-                hierarchy::Grids>
-            {
-                using type = ConceptAtomicGrids;
-            };
-        }
-
         template<
             typename THierarchy
         >
-        using AtomicHierarchyConcept = typename detail::AtomicHierarchyConceptType<THierarchy>::type;
+        struct AtomicHierarchyConceptType;
 
-        //-----------------------------------------------------------------------------
-        //! The atomic operation traits.
-        namespace traits
+        template<>
+        struct AtomicHierarchyConceptType<
+            hierarchy::Threads>
         {
-            //#############################################################################
-            //! The atomic operation trait.
-            template<
-                typename TOp,
-                typename TAtomic,
-                typename T,
-                typename THierarchy,
-                typename TSfinae = void>
-            struct AtomicOp;
-        }
+            using type = ConceptAtomicThreads;
+        };
 
-        //-----------------------------------------------------------------------------
-        //! Executes the given operation atomically.
-        //!
-        //! \tparam TOp The operation type.
-        //! \tparam T The value type.
-        //! \tparam TAtomic The atomic implementation type.
-        //! \param addr The value to change atomically.
-        //! \param value The value used in the atomic operation.
-        //! \param atomic The atomic implementation.
-        ALPAKA_NO_HOST_ACC_WARNING
+        template<>
+        struct AtomicHierarchyConceptType<
+            hierarchy::Blocks>
+        {
+            using type = ConceptAtomicBlocks;
+        };
+
+        template<>
+        struct AtomicHierarchyConceptType<
+            hierarchy::Grids>
+        {
+            using type = ConceptAtomicGrids;
+        };
+    }
+
+    template<
+        typename THierarchy
+    >
+    using AtomicHierarchyConcept = typename detail::AtomicHierarchyConceptType<THierarchy>::type;
+
+    //-----------------------------------------------------------------------------
+    //! The atomic operation traits.
+    namespace traits
+    {
+        //#############################################################################
+        //! The atomic operation trait.
         template<
             typename TOp,
             typename TAtomic,
             typename T,
-            typename THierarchy = hierarchy::Grids>
-        ALPAKA_FN_HOST_ACC auto atomicOp(
-            TAtomic const & atomic,
-            T * const addr,
-            T const & value,
-            THierarchy const & = THierarchy())
-        -> T
-        {
-            using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
-            return
-                traits::AtomicOp<
-                    TOp,
-                    ImplementationBase,
-                    T,
-                    THierarchy>
-                ::atomicOp(
-                    atomic,
-                    addr,
-                    value);
-        }
+            typename THierarchy,
+            typename TSfinae = void>
+        struct AtomicOp;
+    }
 
-        //-----------------------------------------------------------------------------
-        //! Executes the given operation atomically.
-        //!
-        //! \tparam TOp The operation type.
-        //! \tparam TAtomic The atomic implementation type.
-        //! \tparam T The value type.
-        //! \param atomic The atomic implementation.
-        //! \param addr The value to change atomically.
-        //! \param compare The comparison value used in the atomic operation.
-        //! \param value The value used in the atomic operation.
-        ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TOp,
-            typename TAtomic,
-            typename T,
-            typename THierarchy = hierarchy::Grids>
-        ALPAKA_FN_HOST_ACC auto atomicOp(
-            TAtomic const & atomic,
-            T * const addr,
-            T const & compare,
-            T const & value,
-            THierarchy const & = THierarchy())
-        -> T
-        {
-            using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
-            return
-                traits::AtomicOp<
-                    TOp,
-                    ImplementationBase,
-                    T,
-                    THierarchy>
-                ::atomicOp(
-                    atomic,
-                    addr,
-                    compare,
-                    value);
-        }
+    //-----------------------------------------------------------------------------
+    //! Executes the given operation atomically.
+    //!
+    //! \tparam TOp The operation type.
+    //! \tparam T The value type.
+    //! \tparam TAtomic The atomic implementation type.
+    //! \param addr The value to change atomically.
+    //! \param value The value used in the atomic operation.
+    //! \param atomic The atomic implementation.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<
+        typename TOp,
+        typename TAtomic,
+        typename T,
+        typename THierarchy = hierarchy::Grids>
+    ALPAKA_FN_HOST_ACC auto atomicOp(
+        TAtomic const & atomic,
+        T * const addr,
+        T const & value,
+        THierarchy const & = THierarchy())
+    -> T
+    {
+        using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
+        return
+            traits::AtomicOp<
+                TOp,
+                ImplementationBase,
+                T,
+                THierarchy>
+            ::atomicOp(
+                atomic,
+                addr,
+                value);
+    }
+
+    //-----------------------------------------------------------------------------
+    //! Executes the given operation atomically.
+    //!
+    //! \tparam TOp The operation type.
+    //! \tparam TAtomic The atomic implementation type.
+    //! \tparam T The value type.
+    //! \param atomic The atomic implementation.
+    //! \param addr The value to change atomically.
+    //! \param compare The comparison value used in the atomic operation.
+    //! \param value The value used in the atomic operation.
+    ALPAKA_NO_HOST_ACC_WARNING
+    template<
+        typename TOp,
+        typename TAtomic,
+        typename T,
+        typename THierarchy = hierarchy::Grids>
+    ALPAKA_FN_HOST_ACC auto atomicOp(
+        TAtomic const & atomic,
+        T * const addr,
+        T const & compare,
+        T const & value,
+        THierarchy const & = THierarchy())
+    -> T
+    {
+        using ImplementationBase = typename concepts::ImplementationBase<AtomicHierarchyConcept<THierarchy>, TAtomic>;
+        return
+            traits::AtomicOp<
+                TOp,
+                ImplementationBase,
+                T,
+                THierarchy>
+            ::atomicOp(
+                atomic,
+                addr,
+                compare,
+                value);
     }
 }

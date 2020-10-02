@@ -73,10 +73,10 @@ namespace alpaka
         public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
         public idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
         public idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
-        public atomic::AtomicHierarchy<
-            atomic::AtomicUniformCudaHipBuiltIn, // grid atomics
-            atomic::AtomicUniformCudaHipBuiltIn, // block atomics
-            atomic::AtomicUniformCudaHipBuiltIn  // thread atomics
+        public AtomicHierarchy<
+            AtomicUniformCudaHipBuiltIn, // grid atomics
+            AtomicUniformCudaHipBuiltIn, // block atomics
+            AtomicUniformCudaHipBuiltIn  // thread atomics
         >,
         public math::MathUniformCudaHipBuiltIn,
         public block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn,
@@ -96,10 +96,10 @@ namespace alpaka
                 WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent),
                 idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>(),
                 idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>(),
-                atomic::AtomicHierarchy<
-                    atomic::AtomicUniformCudaHipBuiltIn, // atomics between grids
-                    atomic::AtomicUniformCudaHipBuiltIn, // atomics between blocks
-                    atomic::AtomicUniformCudaHipBuiltIn  // atomics between threads
+                AtomicHierarchy<
+                    AtomicUniformCudaHipBuiltIn, // atomics between grids
+                    AtomicUniformCudaHipBuiltIn, // atomics between blocks
+                    AtomicUniformCudaHipBuiltIn  // atomics between threads
                 >(),
                 math::MathUniformCudaHipBuiltIn(),
                 block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn(),
