@@ -162,7 +162,7 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
 
     // Copy back the result.
     alpaka::mem::view::copy(queueAcc, memBufHostC, memBufAccC, extent);
-    alpaka::wait::wait(queueAcc);
+    alpaka::wait(queueAcc);
 
     bool resultCorrect(true);
     auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));

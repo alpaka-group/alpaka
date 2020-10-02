@@ -401,7 +401,7 @@ namespace alpaka
 
                 task.enqueue(queue);
 
-                wait::wait(queue);
+                wait(queue);
             }
         };
         //#############################################################################
@@ -443,7 +443,7 @@ namespace alpaka
 
                 task.enqueue(queue);
 
-                wait::wait(queue);
+                wait(queue);
             }
         };
         //#############################################################################
@@ -485,7 +485,7 @@ namespace alpaka
 
                 task.enqueue(queue);
 
-                wait::wait(queue);
+                wait(queue);
             }
         };
     }

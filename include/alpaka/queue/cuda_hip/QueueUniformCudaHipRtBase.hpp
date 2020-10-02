@@ -112,7 +112,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA RT blocking queue.
             class QueueUniformCudaHipRtBase
-                : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueUniformCudaHipRtBase>
+                : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueUniformCudaHipRtBase>
                 , public concepts::Implements<ConceptQueue, QueueUniformCudaHipRtBase>
                 , public concepts::Implements<ConceptGetDev, QueueUniformCudaHipRtBase>
             {
@@ -192,31 +192,28 @@ namespace alpaka
             }
         };
     }
-    namespace wait
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT blocking queue thread wait trait specialization.
+        //!
+        //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
+        template<>
+        struct CurrentThreadWaitFor<
+            uniform_cuda_hip::detail::QueueUniformCudaHipRtBase>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT blocking queue thread wait trait specialization.
-            //!
-            //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
-            template<>
-            struct CurrentThreadWaitFor<
-                uniform_cuda_hip::detail::QueueUniformCudaHipRtBase>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+                uniform_cuda_hip::detail::QueueUniformCudaHipRtBase const & queue)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    uniform_cuda_hip::detail::QueueUniformCudaHipRtBase const & queue)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Sync is allowed even for queues on non current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK( ALPAKA_API_PREFIX(StreamSynchronize)(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                }
-            };
-        }
+                // Sync is allowed even for queues on non current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK( ALPAKA_API_PREFIX(StreamSynchronize)(
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
     }
 }
 

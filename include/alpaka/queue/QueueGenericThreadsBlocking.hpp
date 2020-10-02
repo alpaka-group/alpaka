@@ -77,7 +77,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 void wait(event::EventGenericThreads<TDev> const & ev) final
                 {
-                    wait::wait(*this, ev);
+                    alpaka::wait(*this, ev);
                 }
 
             public:
@@ -93,7 +93,7 @@ namespace alpaka
     template<
         typename TDev>
     class QueueGenericThreadsBlocking final
-        : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericThreadsBlocking<TDev>>
+        : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericThreadsBlocking<TDev>>
         , public concepts::Implements<ConceptQueue, QueueGenericThreadsBlocking<TDev>>
         , public concepts::Implements<ConceptGetDev, QueueGenericThreadsBlocking<TDev>>
     {
@@ -220,28 +220,25 @@ namespace alpaka
         };
     }
 
-    namespace wait
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU blocking device queue thread wait trait specialization.
+        //!
+        //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
+        template<
+            typename TDev>
+        struct CurrentThreadWaitFor<
+            QueueGenericThreadsBlocking<TDev>>
         {
-            //#############################################################################
-            //! The CPU blocking device queue thread wait trait specialization.
-            //!
-            //! Blocks execution of the calling thread until the queue has finished processing all previously requested tasks (kernels, data copies, ...)
-            template<
-                typename TDev>
-            struct CurrentThreadWaitFor<
-                QueueGenericThreadsBlocking<TDev>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+                QueueGenericThreadsBlocking<TDev> const & queue)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    QueueGenericThreadsBlocking<TDev> const & queue)
-                -> void
-                {
-                    std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
-                }
-            };
-        }
+                std::lock_guard<std::mutex> lk(queue.m_spQueueImpl->m_mutex);
+            }
+        };
     }
 }
 

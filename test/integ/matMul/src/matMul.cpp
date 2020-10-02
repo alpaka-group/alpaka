@@ -298,7 +298,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     // Copy Host -> Acc.
     alpaka::mem::view::copy(queueAcc, bufAAcc, bufAHost, extentA);
     alpaka::mem::view::copy(queueAcc, bufBAcc, bufBHost, extentB);
-    alpaka::wait::wait(queueHost);
+    alpaka::wait(queueHost);
     alpaka::mem::view::copy(queueAcc, bufCAcc, bufCHost, extentC);
 
     // Create the kernel execution task.
@@ -329,7 +329,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     alpaka::mem::view::copy(queueAcc, bufCHost, bufCAcc, extentC);
 
     // Wait for the queue to finish the memory operation.
-    alpaka::wait::wait(queueAcc);
+    alpaka::wait(queueAcc);
 
     // Assert that the results are correct.
     // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.

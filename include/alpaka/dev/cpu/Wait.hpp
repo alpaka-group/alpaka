@@ -16,29 +16,26 @@
 
 namespace alpaka
 {
-    namespace wait
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU device thread wait specialization.
+        //!
+        //! Blocks until the device has completed all preceding requested tasks.
+        //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
+        template<>
+        struct CurrentThreadWaitFor<
+            DevCpu>
         {
-            //#############################################################################
-            //! The CPU device thread wait specialization.
-            //!
-            //! Blocks until the device has completed all preceding requested tasks.
-            //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
-            template<>
-            struct CurrentThreadWaitFor<
-                DevCpu>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+                DevCpu const & dev)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    DevCpu const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    generic::currentThreadWaitForDevice(dev);
-                }
-            };
-        }
+                generic::currentThreadWaitForDevice(dev);
+            }
+        };
     }
 }

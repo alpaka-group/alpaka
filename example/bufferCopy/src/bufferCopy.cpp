@@ -335,7 +335,7 @@ auto main()
         pDeviceBuffer1,                                 // 1st kernel argument
         extents,                                        // 2nd kernel argument
         deviceBuffer1Pitch);                            // 3rd kernel argument
-    alpaka::wait::wait(devQueue);
+    alpaka::wait(devQueue);
     std::cout << std::endl;
 
     alpaka::exec<Acc>(
@@ -345,7 +345,7 @@ auto main()
         pDeviceBuffer2,                                 // 1st kernel argument
         extents,                                        // 2nd kernel argument
         deviceBuffer2Pitch);                            // 3rd kernel argument
-    alpaka::wait::wait(devQueue);
+    alpaka::wait(devQueue);
     std::cout << std::endl;
 
     alpaka::exec<Host>(
@@ -355,7 +355,7 @@ auto main()
         pHostBuffer,                                    // 1st kernel argument
         extents,                                        // 2nd kernel argument
         hostBuffer1Pitch);                              // 3rd kernel argument
-    alpaka::wait::wait(hostQueue);
+    alpaka::wait(hostQueue);
     std::cout << std::endl;
 
     alpaka::exec<Host>(
@@ -365,7 +365,7 @@ auto main()
         pHostViewPlainPtr,                              // 1st kernel argument
         extents,                                        // 2nd kernel argument
         hostViewPlainPtrPitch);                         // 3rd kernel argument
-    alpaka::wait::wait(hostQueue);
+    alpaka::wait(hostQueue);
     std::cout << std::endl;
 
     return EXIT_SUCCESS;

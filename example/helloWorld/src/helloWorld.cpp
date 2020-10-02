@@ -195,7 +195,7 @@ auto main()
         workDiv,
         helloWorldKernel
         /* put kernel arguments here */);
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     return EXIT_SUCCESS;
 #endif

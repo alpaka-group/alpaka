@@ -196,7 +196,7 @@ auto main() -> int
         bufHost,
         bufAcc,
         extent);
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     // Check the result.
     uint32_t globalCount = *ptrBufHost;

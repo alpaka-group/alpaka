@@ -172,7 +172,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     alpaka::mem::view::copy(queue, memBufAccY, memBufHostOrigY, extent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     std::cout << __func__ << " X_Dev: ";
     alpaka::mem::view::print(memBufHostX, std::cout);
@@ -203,7 +203,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     alpaka::mem::view::copy(queue, memBufHostY, memBufAccY, extent);
 
     // Wait for the queue to finish the memory operation.
-    alpaka::wait::wait(queue);
+    alpaka::wait(queue);
 
     bool resultCorrect(true);
     for(Idx i(0u); i < numElements; ++i)

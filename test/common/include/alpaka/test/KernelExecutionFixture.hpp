@@ -85,7 +85,7 @@ namespace alpaka
                 // Copy the result value to the host
                 auto bufHostResult(alpaka::mem::buf::alloc<bool, Idx>(m_devHost, static_cast<Idx>(1u)));
                 alpaka::mem::view::copy(m_queue, bufHostResult, bufAccResult, bufAccResult);
-                alpaka::wait::wait(m_queue);
+                alpaka::wait(m_queue);
 
                 auto const result(*alpaka::mem::view::getPtrNative(bufHostResult));
 

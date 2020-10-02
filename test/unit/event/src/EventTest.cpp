@@ -65,7 +65,7 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingPro
 
             k1.trigger();
 
-            alpaka::wait::wait(q1);
+            alpaka::wait(q1);
         }
 
         REQUIRE(alpaka::event::test(e1));
@@ -125,7 +125,7 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[eve
             // q1 = [e1]
             k2.trigger();
             REQUIRE(alpaka::event::test(k2));
-            alpaka::wait::wait(e1);
+            alpaka::wait(e1);
             REQUIRE(alpaka::event::test(e1));
         }
         else
@@ -174,7 +174,7 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
 
             // wait for e1
             // q2 = [->e1]
-            alpaka::wait::wait(q2, e1);
+            alpaka::wait(q2, e1);
 
             // q2 = [->e1, e2]
             alpaka::enqueue(q2, e2);
@@ -198,9 +198,9 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
             // q1 = [e1]
             k2.trigger();
             REQUIRE(alpaka::event::test(k2));
-            alpaka::wait::wait(e1);
+            alpaka::wait(e1);
             REQUIRE(alpaka::event::test(e1));
-            alpaka::wait::wait(e2);
+            alpaka::wait(e2);
             REQUIRE(alpaka::event::test(e2));
         }
         else
@@ -246,7 +246,7 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
 
             // 4. q2 waits for e1
             // q2 = [k2, ->e1]
-            alpaka::wait::wait(q2, e1);
+            alpaka::wait(q2, e1);
 
             // 5. kernel k1 finishes
             // q1 = [e1]
@@ -254,7 +254,7 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
 
             // 6. e1 is finished
             // q1 = []
-            alpaka::wait::wait(e1);
+            alpaka::wait(e1);
             REQUIRE(alpaka::event::test(e1));
 
             // 7. e1 is re-enqueued again but this time into q2
@@ -269,9 +269,9 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
             // q2 = [e1]
 
             // Both queues should successfully finish
-            alpaka::wait::wait(q1);
+            alpaka::wait(q1);
             // q2 = []
-            alpaka::wait::wait(q2);
+            alpaka::wait(q2);
         }
         else
         {

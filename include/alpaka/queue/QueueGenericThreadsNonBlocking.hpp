@@ -90,7 +90,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 void wait(event::EventGenericThreads<TDev> const & ev) final
                 {
-                    wait::wait(*this, ev);
+                    alpaka::wait(*this, ev);
                 }
 
             public:
@@ -106,7 +106,7 @@ namespace alpaka
     template<
         typename TDev>
     class QueueGenericThreadsNonBlocking final
-        : public concepts::Implements<wait::ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
+        : public concepts::Implements<ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking<TDev>>
         , public concepts::Implements<ConceptQueue, QueueGenericThreadsNonBlocking<TDev>>
         , public concepts::Implements<ConceptGetDev, QueueGenericThreadsNonBlocking<TDev>>
     {

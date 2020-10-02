@@ -52,7 +52,7 @@ namespace alpaka
     //#############################################################################
     //! The CUDA/HIP RT device handle.
     class DevUniformCudaHipRt :
-        public concepts::Implements<wait::ConceptCurrentThreadWaitFor, DevUniformCudaHipRt>,
+        public concepts::Implements<ConceptCurrentThreadWaitFor, DevUniformCudaHipRt>,
         public concepts::Implements<ConceptDev, DevUniformCudaHipRt>
     {
         friend struct traits::GetDevByIdx<PltfUniformCudaHipRt>;
@@ -266,33 +266,30 @@ namespace alpaka
             using type = PltfUniformCudaHipRt;
         };
     }
-    namespace wait
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The thread CUDA/HIP device wait specialization.
+        //!
+        //! Blocks until the device has completed all preceding requested tasks.
+        //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
+        template<>
+        struct CurrentThreadWaitFor<
+            DevUniformCudaHipRt>
         {
-            //#############################################################################
-            //! The thread CUDA/HIP device wait specialization.
-            //!
-            //! Blocks until the device has completed all preceding requested tasks.
-            //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
-            template<>
-            struct CurrentThreadWaitFor<
-                DevUniformCudaHipRt>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(
+                DevUniformCudaHipRt const & dev)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    DevUniformCudaHipRt const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    // Set the current device to wait for.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(
-                        dev.m_iDevice));
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceSynchronize)());
-                }
-            };
-        }
+                // Set the current device to wait for.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(
+                    dev.m_iDevice));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(DeviceSynchronize)());
+            }
+        };
     }
     namespace traits
     {
