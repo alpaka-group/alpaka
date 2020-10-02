@@ -197,51 +197,48 @@ namespace alpaka
             };
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP RT queue enqueue trait specialization.
+        template<>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            event::EventUniformCudaHipRt>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT queue enqueue trait specialization.
-            template<>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                event::EventUniformCudaHipRt>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                event::EventUniformCudaHipRt & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    event::EventUniformCudaHipRt & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP RT queue enqueue trait specialization.
-            template<>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                event::EventUniformCudaHipRt>
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
+                    event.m_spEventImpl->m_UniformCudaHipEvent,
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP RT queue enqueue trait specialization.
+        template<>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            event::EventUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                event::EventUniformCudaHipRt & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    event::EventUniformCudaHipRt & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
-                        event.m_spEventImpl->m_UniformCudaHipEvent,
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                }
-            };
-        }
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(EventRecord)(
+                    event.m_spEventImpl->m_UniformCudaHipEvent,
+                    queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
     }
     namespace wait
     {
@@ -272,12 +269,12 @@ namespace alpaka
             //! The CUDA/HIP RT queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                queue::QueueUniformCudaHipRtNonBlocking,
+                QueueUniformCudaHipRtNonBlocking,
                 event::EventUniformCudaHipRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
+                    QueueUniformCudaHipRtNonBlocking & queue,
                     event::EventUniformCudaHipRt const & event)
                 -> void
                 {
@@ -293,12 +290,12 @@ namespace alpaka
             //! The CUDA/HIP RT queue event wait trait specialization.
             template<>
             struct WaiterWaitFor<
-                queue::QueueUniformCudaHipRtBlocking,
+                QueueUniformCudaHipRtBlocking,
                 event::EventUniformCudaHipRt>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
+                    QueueUniformCudaHipRtBlocking & queue,
                     event::EventUniformCudaHipRt const & event)
                 -> void
                 {

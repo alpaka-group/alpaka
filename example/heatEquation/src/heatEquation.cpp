@@ -150,8 +150,8 @@ auto main( ) -> int
     };
 
     // Select queue
-    using QueueProperty = alpaka::queue::Blocking;
-    using QueueAcc = alpaka::queue::Queue<
+    using QueueProperty = alpaka::Blocking;
+    using QueueAcc = alpaka::Queue<
         Acc,
         QueueProperty
     >;

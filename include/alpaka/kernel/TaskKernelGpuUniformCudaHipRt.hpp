@@ -272,296 +272,293 @@ namespace alpaka
             };
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP non-blocking kernel enqueue trait specialization.
+        template<
+            typename TAcc,
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CUDA/HIP non-blocking kernel enqueue trait specialization.
-            template<
-                typename TAcc,
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    //std::size_t printfFifoSize;
-                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
-                    //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
-                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
+                //std::size_t printfFifoSize;
+                //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                //std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
+                //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
-                    auto const gridBlockExtent(
-                        getWorkDiv<Grid, Blocks>(task));
-                    auto const blockThreadExtent(
-                        getWorkDiv<Block, Threads>(task));
-                    auto const threadElemExtent(
-                        getWorkDiv<Thread, Elems>(task));
+                auto const gridBlockExtent(
+                    getWorkDiv<Grid, Blocks>(task));
+                auto const blockThreadExtent(
+                    getWorkDiv<Block, Threads>(task));
+                auto const threadElemExtent(
+                    getWorkDiv<Thread, Elems>(task));
 
-                    dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                    dim3 const blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                    kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+                dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
+                dim3 const blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
+                kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << __func__
-                        << " gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x
-                        << " blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x
-                        << std::endl;
+                std::cout << __func__
+                    << " gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x
+                    << " blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x
+                    << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!isValidWorkDiv<TAcc>(getDev(queue), task))
-                    {
-                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
-                    }
+                // This checks for a valid work division that is also compliant with the maxima of the accelerator.
+                if(!isValidWorkDiv<TAcc>(getDev(queue), task))
+                {
+                    throw std::runtime_error("The given work division is not valid or not supported by the device of type " + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
+                }
 #endif
 
-                    // Get the size of the block shared dynamic memory.
-                    auto const blockSharedMemDynSizeBytes(
-                        meta::apply(
-                            [&](ALPAKA_DECAY_T(TArgs) const & ... args)
-                            {
-                                return
-                                    kernel::getBlockSharedMemDynSizeBytes<
-                                        TAcc>(
-                                            task.m_kernelFnObj,
-                                            blockThreadExtent,
-                                            threadElemExtent,
-                                            args...);
-                            },
-                            task.m_args));
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    // Log the block shared memory idx.
-                    std::cout << __func__
-                        << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
-#endif
-                    auto kernelName = kernel::uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-
-                    // Log the function attributes.
-                    cudaFuncAttributes funcAttrs;
-                    cudaFuncGetAttributes(&funcAttrs, kernelName);
-                    std::cout << __func__
-                        << " binaryVersion: " << funcAttrs.binaryVersion
-                        << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
-                        << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
-                        << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
-                        << " numRegs: " << funcAttrs.numRegs
-                        << " ptxVersion: " << funcAttrs.ptxVersion
-                        << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
-                        << std::endl;
-    #endif
-#endif
-
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(SetDevice)(
-                            queue.m_spQueueImpl->m_dev.m_iDevice));
-                    // Enqueue the kernel execution.
-                    // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
-                    // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
-                    // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
+                // Get the size of the block shared dynamic memory.
+                auto const blockSharedMemDynSizeBytes(
                     meta::apply(
                         [&](ALPAKA_DECAY_T(TArgs) const & ... args)
                         {
+                            return
+                                kernel::getBlockSharedMemDynSizeBytes<
+                                    TAcc>(
+                                        task.m_kernelFnObj,
+                                        blockThreadExtent,
+                                        threadElemExtent,
+                                        args...);
+                        },
+                        task.m_args));
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                // Log the block shared memory idx.
+                std::cout << __func__
+                    << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
+#endif
+                auto kernelName = kernel::uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                            kernelName<<<
-                                gridDim,
-                                blockDim,
-                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue>>>(
-                                    threadElemExtent,
-                                    task.m_kernelFnObj,
-                                    args...);
-#else
-                            hipLaunchKernelGGL(
-                                HIP_KERNEL_NAME(kernelName),
-                                gridDim,
-                                blockDim,
-                                static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue,
+
+                // Log the function attributes.
+                cudaFuncAttributes funcAttrs;
+                cudaFuncGetAttributes(&funcAttrs, kernelName);
+                std::cout << __func__
+                    << " binaryVersion: " << funcAttrs.binaryVersion
+                    << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
+                    << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
+                    << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
+                    << " numRegs: " << funcAttrs.numRegs
+                    << " ptxVersion: " << funcAttrs.ptxVersion
+                    << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
+                    << std::endl;
+#endif
+#endif
+
+                // Set the current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(SetDevice)(
+                        queue.m_spQueueImpl->m_dev.m_iDevice));
+                // Enqueue the kernel execution.
+                // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
+                // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
+                // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
+                meta::apply(
+                    [&](ALPAKA_DECAY_T(TArgs) const & ... args)
+                    {
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                        kernelName<<<
+                            gridDim,
+                            blockDim,
+                            static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+                            queue.m_spQueueImpl->m_UniformCudaHipQueue>>>(
                                 threadElemExtent,
                                 task.m_kernelFnObj,
-                                args...
-                            );
+                                args...);
+#else
+                        hipLaunchKernelGGL(
+                            HIP_KERNEL_NAME(kernelName),
+                            gridDim,
+                            blockDim,
+                            static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
+                            queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                            threadElemExtent,
+                            task.m_kernelFnObj,
+                            args...
+                        );
 #endif
-                        },
-                        task.m_args);
+                    },
+                    task.m_args);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+            // Wait for the kernel execution to finish but do not check error return of this call.
+            // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
+            ALPAKA_API_PREFIX(StreamSynchronize)(
+                queue.m_spQueueImpl->m_UniformCudaHipQueue);
+            std::string const msg("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
+            ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
+#endif
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP synchronous kernel enqueue trait specialization.
+        template<
+            typename TAcc,
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
+            -> void
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                //std::size_t printfFifoSize;
+                //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                //std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
+                //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
+#endif
+                auto const gridBlockExtent(
+                    getWorkDiv<Grid, Blocks>(task));
+                auto const blockThreadExtent(
+                    getWorkDiv<Block, Threads>(task));
+                auto const threadElemExtent(
+                    getWorkDiv<Thread, Elems>(task));
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
+                dim3 const blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
+                kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+#else
+                dim3 gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
+                dim3 blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
+                kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
+#endif
+
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << __func__ << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
+                std::cout << __func__ << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
+#endif
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                // This checks for a valid work division that is also compliant with the maxima of the accelerator.
+                if(!isValidWorkDiv<TAcc>(getDev(queue), task))
+                {
+                    throw std::runtime_error("The given work division is not valid or not supported by the device of type " + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
+                }
+#endif
+
+                // Get the size of the block shared dynamic memory.
+                auto const blockSharedMemDynSizeBytes(
+                    meta::apply(
+                        [&](ALPAKA_DECAY_T(TArgs) const & ... args)
+                        {
+                            return
+                                kernel::getBlockSharedMemDynSizeBytes<
+                                    TAcc>(
+                                        task.m_kernelFnObj,
+                                        blockThreadExtent,
+                                        threadElemExtent,
+                                        args...);
+                        },
+                        task.m_args));
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                // Log the block shared memory idx.
+                std::cout << __func__
+                    << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
+#endif
+
+                auto kernelName = kernel::uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                // hipFuncAttributes not ported from HIP to HIP.
+                // TODO why this is currently not possible
+                //
+                // Log the function attributes.
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                ALPAKA_API_PREFIX(FuncAttributes) funcAttrs;
+                ALPAKA_API_PREFIX(FuncGetAttributes)(&funcAttrs, kernelName);
+                std::cout << __func__
+                    << " binaryVersion: " << funcAttrs.binaryVersion
+                    << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
+                    << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
+                    << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
+                    << " numRegs: " << funcAttrs.numRegs
+                    << " ptxVersion: " << funcAttrs.ptxVersion
+                    << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
+                    << std::endl;
+#endif
+#endif
+
+                // Set the current device.
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(SetDevice)(
+                        queue.m_spQueueImpl->m_dev.m_iDevice));
+
+                // Enqueue the kernel execution.
+                meta::apply(
+                    [&](ALPAKA_DECAY_T(TArgs) const & ... args)
+                    {
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                        kernelName<<<
+                            gridDim,
+                            blockDim,
+                            static_cast<std::size_t>(blockSharedMemDynSizeBytes),
+                            queue.m_spQueueImpl->m_UniformCudaHipQueue>>>(
+                                threadElemExtent,
+                                task.m_kernelFnObj,
+                                args...);
+#else
+                        hipLaunchKernelGGL(
+                            HIP_KERNEL_NAME(kernelName),
+                            gridDim,
+                            blockDim,
+                            static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
+                            queue.m_spQueueImpl->m_UniformCudaHipQueue,
+                            threadElemExtent,
+                            task.m_kernelFnObj,
+                            args...
+                        );
+#endif
+                    },
+                    task.m_args);
+
                 // Wait for the kernel execution to finish but do not check error return of this call.
                 // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
                 ALPAKA_API_PREFIX(StreamSynchronize)(
                     queue.m_spQueueImpl->m_UniformCudaHipQueue);
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                 std::string const msg("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
                 ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
 #endif
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP synchronous kernel enqueue trait specialization.
-            template<
-                typename TAcc,
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory idx
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    //std::size_t printfFifoSize;
-                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << __func__ << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
-                    //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
-                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << __func__ << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
-#endif
-                    auto const gridBlockExtent(
-                        getWorkDiv<Grid, Blocks>(task));
-                    auto const blockThreadExtent(
-                        getWorkDiv<Block, Threads>(task));
-                    auto const threadElemExtent(
-                        getWorkDiv<Thread, Elems>(task));
-
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    dim3 const gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                    dim3 const blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                    kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
-#else
-                    dim3 gridDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(gridBlockExtent));
-                    dim3 blockDim(kernel::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim(blockThreadExtent));
-                    kernel::uniform_cuda_hip::detail::checkVecOnly3Dim(threadElemExtent);
-#endif
-
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << __func__ << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
-                    std::cout << __func__ << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
-#endif
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-                    if(!isValidWorkDiv<TAcc>(getDev(queue), task))
-                    {
-                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + getAccName<AccGpuUniformCudaHipRt<TDim, TIdx>>() + "!");
-                    }
-#endif
-
-                    // Get the size of the block shared dynamic memory.
-                    auto const blockSharedMemDynSizeBytes(
-                        meta::apply(
-                            [&](ALPAKA_DECAY_T(TArgs) const & ... args)
-                            {
-                                return
-                                    kernel::getBlockSharedMemDynSizeBytes<
-                                        TAcc>(
-                                            task.m_kernelFnObj,
-                                            blockThreadExtent,
-                                            threadElemExtent,
-                                            args...);
-                            },
-                            task.m_args));
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    // Log the block shared memory idx.
-                    std::cout << __func__
-                        << " BlockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B" << std::endl;
-#endif
-
-                    auto kernelName = kernel::uniform_cuda_hip::detail::uniformCudaHipKernel<TAcc, TDim, TIdx, TKernelFnObj, std::decay_t<TArgs>...>;
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    // hipFuncAttributes not ported from HIP to HIP.
-                    // TODO why this is currently not possible
-                    //
-                    // Log the function attributes.
-    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    ALPAKA_API_PREFIX(FuncAttributes) funcAttrs;
-                    ALPAKA_API_PREFIX(FuncGetAttributes)(&funcAttrs, kernelName);
-                    std::cout << __func__
-                        << " binaryVersion: " << funcAttrs.binaryVersion
-                        << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
-                        << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
-                        << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
-                        << " numRegs: " << funcAttrs.numRegs
-                        << " ptxVersion: " << funcAttrs.ptxVersion
-                        << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
-                        << std::endl;
-    #endif
-#endif
-
-                    // Set the current device.
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(SetDevice)(
-                            queue.m_spQueueImpl->m_dev.m_iDevice));
-
-                    // Enqueue the kernel execution.
-                    meta::apply(
-                        [&](ALPAKA_DECAY_T(TArgs) const & ... args)
-                        {
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                            kernelName<<<
-                                gridDim,
-                                blockDim,
-                                static_cast<std::size_t>(blockSharedMemDynSizeBytes),
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue>>>(
-                                    threadElemExtent,
-                                    task.m_kernelFnObj,
-                                    args...);
-#else
-                            hipLaunchKernelGGL(
-                                HIP_KERNEL_NAME(kernelName),
-                                gridDim,
-                                blockDim,
-                                static_cast<std::uint32_t>(blockSharedMemDynSizeBytes),
-                                queue.m_spQueueImpl->m_UniformCudaHipQueue,
-                                threadElemExtent,
-                                task.m_kernelFnObj,
-                                args...
-                            );
-#endif
-                        },
-                        task.m_args);
-
-                    // Wait for the kernel execution to finish but do not check error return of this call.
-                    // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
-                    ALPAKA_API_PREFIX(StreamSynchronize)(
-                        queue.m_spQueueImpl->m_UniformCudaHipQueue);
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    std::string const msg("'execution of kernel: '" + std::string(typeid(TKernelFnObj).name()) + "' failed with");
-                    ::alpaka::uniform_cuda_hip::detail::rtCheckLastError(msg.c_str(), __FILE__, __LINE__);
-#endif
-                }
-            };
-        }
+            }
+        };
     }
 }
 

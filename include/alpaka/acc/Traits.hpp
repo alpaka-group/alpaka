@@ -216,26 +216,23 @@ namespace alpaka
         }
     }
 
-    namespace queue
+    namespace traits
     {
-        namespace traits
-        {
-            template<
-                typename TAcc,
-                typename TProperty>
-            struct QueueType<
-                TAcc,
-                TProperty,
-                std::enable_if_t<
-                    concepts::ImplementsConcept<ConceptAcc, TAcc>::value
-                >
+        template<
+            typename TAcc,
+            typename TProperty>
+        struct QueueType<
+            TAcc,
+            TProperty,
+            std::enable_if_t<
+                concepts::ImplementsConcept<ConceptAcc, TAcc>::value
             >
-            {
-                using type = typename QueueType<
-                    typename alpaka::traits::PltfType<TAcc>::type,
-                    TProperty
-                >::type;
-            };
-        }
+        >
+        {
+            using type = typename QueueType<
+                typename alpaka::traits::PltfType<TAcc>::type,
+                TProperty
+            >::type;
+        };
     }
 }

@@ -105,8 +105,8 @@ auto main()
     // Defines the synchronization behavior of a queue
     //
     // choose between Blocking and NonBlocking
-    using QueueProperty = alpaka::queue::Blocking;
-    using QueueAcc = alpaka::queue::Queue<Acc, QueueProperty>;
+    using QueueProperty = alpaka::Blocking;
+    using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
 
     // Select a device
     auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
@@ -184,7 +184,7 @@ auto main()
     // Enqueue the kernel execution task
     {
         const auto beginT = std::chrono::high_resolution_clock::now();
-        alpaka::queue::enqueue(queue, taskKernel);
+        alpaka::enqueue(queue, taskKernel);
         alpaka::wait::wait(queue); // wait in case we are using an asynchronous queue to time actual kernel runtime
         const auto endT = std::chrono::high_resolution_clock::now();
         std::cout << "Time for kernel execution: " << std::chrono::duration<double>(endT-beginT).count() << 's' << std::endl;

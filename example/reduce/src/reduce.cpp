@@ -38,8 +38,8 @@ using Accelerator = CpuSerial;
 
 using Acc = Accelerator::Acc;
 using Host = Accelerator::Host;
-using QueueProperty = alpaka::queue::Blocking;
-using QueueAcc = alpaka::queue::Queue<Acc, QueueProperty>;
+using QueueProperty = alpaka::Blocking;
+using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
 using MaxBlockSize = Accelerator::MaxBlockSize;
 
 //-----------------------------------------------------------------------------
@@ -110,8 +110,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::mem
         func));
 
     // enqueue both kernel execution tasks
-    alpaka::queue::enqueue(queue, taskKernelReduceMain);
-    alpaka::queue::enqueue(queue, taskKernelReduceLastBlock);
+    alpaka::enqueue(queue, taskKernelReduceMain);
+    alpaka::enqueue(queue, taskKernelReduceLastBlock);
 
     //  download result from GPU
     T resultGpuHost;

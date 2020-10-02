@@ -29,7 +29,7 @@ static auto testP2P(
 {
     using Dev = alpaka::Dev<TAcc>;
     using Pltf = alpaka::Pltf<Dev>;
-    using Queue = alpaka::test::queue::DefaultQueue<Dev>;
+    using Queue = alpaka::test::DefaultQueue<Dev>;
 
     using Elem = std::uint32_t;
     using Idx = alpaka::idx::Idx<TAcc>;

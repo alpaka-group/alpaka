@@ -243,7 +243,7 @@ namespace alpaka
             TArgs && ... args)
         -> void
         {
-            queue::enqueue(
+            enqueue(
                 queue,
                 kernel::createTaskKernel<
                     TAcc>(

@@ -92,7 +92,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     using Val = float;
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
-    using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+    using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
     using PltfHost = alpaka::PltfCpu;
 
     // Create the kernel function object.

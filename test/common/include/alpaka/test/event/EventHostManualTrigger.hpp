@@ -285,110 +285,107 @@ namespace alpaka
             };
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<typename TDev>
+        struct Enqueue<
+            QueueGenericThreadsNonBlocking<TDev>,
+            test::event::EventHostManualTriggerCpu<TDev>>
         {
-            //#############################################################################
-            //!
-            //#############################################################################
-            template<typename TDev>
-            struct Enqueue<
-                queue::QueueGenericThreadsNonBlocking<TDev>,
-                test::event::EventHostManualTriggerCpu<TDev>>
-            {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
+            //-----------------------------------------------------------------------------
+            //
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
 #if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    queue::QueueGenericThreadsNonBlocking<TDev> & queue,
+                QueueGenericThreadsNonBlocking<TDev> & queue,
 #else
-                    queue::QueueGenericThreadsNonBlocking<TDev> &,
+                QueueGenericThreadsNonBlocking<TDev> &,
 #endif
-                    test::event::EventHostManualTriggerCpu<TDev> & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventImpl(event.m_spEventImpl);
-
-                    // Setting the event state and enqueuing it has to be atomic.
-                    std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
-
-                    // The event should not yet be enqueued.
-                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
-
-                    // Set its state to enqueued.
-                    spEventImpl->m_bIsReady = false;
-
-                    // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
-                    ++spEventImpl->m_enqueueCount;
-
-                    // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
-                    auto const enqueueCount = spEventImpl->m_enqueueCount;
-
-                    // Enqueue a task that only resets the events flag if it is completed.
-                    queue.m_spQueueImpl->m_workerThread.enqueueTask(
-                        [spEventImpl, enqueueCount]()
-                        {
-                            std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
-                            spEventImpl->m_conditionVariable.wait(
-                                lk2,
-                                [spEventImpl, enqueueCount]
-                                {
-                                    return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady;
-                                });
-                        });
-#endif
-                }
-            };
-            //#############################################################################
-            //!
-            //#############################################################################
-            template<typename TDev>
-            struct Enqueue<
-                queue::QueueGenericThreadsBlocking<TDev>,
-                test::event::EventHostManualTriggerCpu<TDev>>
+                test::event::EventHostManualTriggerCpu<TDev> & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                //
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueGenericThreadsBlocking<TDev> &,
-                    test::event::EventHostManualTriggerCpu<TDev> & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventImpl(event.m_spEventImpl);
+                // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
+                auto spEventImpl(event.m_spEventImpl);
 
-                    // Setting the event state and enqueuing it has to be atomic.
-                    std::unique_lock<std::mutex> lk(spEventImpl->m_mutex);
+                // Setting the event state and enqueuing it has to be atomic.
+                std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                    // The event should not yet be enqueued.
-                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
+                // The event should not yet be enqueued.
+                ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
-                    // Set its state to enqueued.
-                    spEventImpl->m_bIsReady = false;
+                // Set its state to enqueued.
+                spEventImpl->m_bIsReady = false;
 
-                    // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
-                    ++spEventImpl->m_enqueueCount;
+                // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
+                ++spEventImpl->m_enqueueCount;
 
-                    auto const enqueueCount = spEventImpl->m_enqueueCount;
+                // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
+                auto const enqueueCount = spEventImpl->m_enqueueCount;
 
-                    spEventImpl->m_conditionVariable.wait(
-                        lk,
-                        [spEventImpl, enqueueCount]
-                        {
-                            return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady;
-                        });
-                }
-            };
-        }
+                // Enqueue a task that only resets the events flag if it is completed.
+                queue.m_spQueueImpl->m_workerThread.enqueueTask(
+                    [spEventImpl, enqueueCount]()
+                    {
+                        std::unique_lock<std::mutex> lk2(spEventImpl->m_mutex);
+                        spEventImpl->m_conditionVariable.wait(
+                            lk2,
+                            [spEventImpl, enqueueCount]
+                            {
+                                return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady;
+                            });
+                    });
+#endif
+            }
+        };
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<typename TDev>
+        struct Enqueue<
+            QueueGenericThreadsBlocking<TDev>,
+            test::event::EventHostManualTriggerCpu<TDev>>
+        {
+            //-----------------------------------------------------------------------------
+            //
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueGenericThreadsBlocking<TDev> &,
+                test::event::EventHostManualTriggerCpu<TDev> & event)
+            -> void
+            {
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
+                auto spEventImpl(event.m_spEventImpl);
+
+                // Setting the event state and enqueuing it has to be atomic.
+                std::unique_lock<std::mutex> lk(spEventImpl->m_mutex);
+
+                // The event should not yet be enqueued.
+                ALPAKA_ASSERT(spEventImpl->m_bIsReady);
+
+                // Set its state to enqueued.
+                spEventImpl->m_bIsReady = false;
+
+                // Increment the enqueue counter. This is used to skip waits for events that had already been finished and re-enqueued which would lead to deadlocks.
+                ++spEventImpl->m_enqueueCount;
+
+                auto const enqueueCount = spEventImpl->m_enqueueCount;
+
+                spEventImpl->m_conditionVariable.wait(
+                    lk,
+                    [spEventImpl, enqueueCount]
+                    {
+                        return (enqueueCount != spEventImpl->m_enqueueCount) || spEventImpl->m_bIsReady;
+                    });
+            }
+        };
     }
 }
 
@@ -608,91 +605,88 @@ namespace alpaka
             };
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        template<>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            test::event::EventHostManualTriggerCuda>
         {
-            //#############################################################################
-            template<>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                test::event::EventHostManualTriggerCuda>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                test::event::EventHostManualTriggerCuda & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    test::event::EventHostManualTriggerCuda & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventImpl(event.m_spEventImpl);
+                // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
+                auto spEventImpl(event.m_spEventImpl);
 
-                    // Setting the event state and enqueuing it has to be atomic.
-                    std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
+                // Setting the event state and enqueuing it has to be atomic.
+                std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                    // The event should not yet be enqueued.
-                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
+                // The event should not yet be enqueued.
+                ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
-                    // Set its state to enqueued.
-                    spEventImpl->m_bIsReady = false;
+                // Set its state to enqueued.
+                spEventImpl->m_bIsReady = false;
 
-                    // PGI Profiler`s User Guide:
-                    // The following are known issues related to Events and Metrics:
-                    // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
-                    //   on host updates may hang. This includes synchronization between the host and
-                    //   the device build upon value-based CUDA queue synchronization APIs such as
-                    //   cuStreamWaitValue32() and cuStreamWriteValue32().
-                    ALPAKA_CUDA_DRV_CHECK(
-                        cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
-                            reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
-                            0x01010101u,
-                            CU_STREAM_WAIT_VALUE_GEQ));
-                }
-            };
-            //#############################################################################
-            template<>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                test::event::EventHostManualTriggerCuda>
+                // PGI Profiler`s User Guide:
+                // The following are known issues related to Events and Metrics:
+                // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
+                //   on host updates may hang. This includes synchronization between the host and
+                //   the device build upon value-based CUDA queue synchronization APIs such as
+                //   cuStreamWaitValue32() and cuStreamWriteValue32().
+                ALPAKA_CUDA_DRV_CHECK(
+                    cuStreamWaitValue32(
+                        static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                        reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
+                        0x01010101u,
+                        CU_STREAM_WAIT_VALUE_GEQ));
+            }
+        };
+        //#############################################################################
+        template<>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            test::event::EventHostManualTriggerCuda>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                test::event::EventHostManualTriggerCuda & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    test::event::EventHostManualTriggerCuda & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventImpl(event.m_spEventImpl);
+                // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
+                auto spEventImpl(event.m_spEventImpl);
 
-                    // Setting the event state and enqueuing it has to be atomic.
-                    std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
+                // Setting the event state and enqueuing it has to be atomic.
+                std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                    // The event should not yet be enqueued.
-                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
+                // The event should not yet be enqueued.
+                ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
-                    // Set its state to enqueued.
-                    spEventImpl->m_bIsReady = false;
+                // Set its state to enqueued.
+                spEventImpl->m_bIsReady = false;
 
-                    // PGI Profiler`s User Guide:
-                    // The following are known issues related to Events and Metrics:
-                    // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
-                    //   on host updates may hang. This includes synchronization between the host and
-                    //   the device build upon value-based CUDA queue synchronization APIs such as
-                    //   cuStreamWaitValue32() and cuStreamWriteValue32().
-                    ALPAKA_CUDA_DRV_CHECK(
-                        cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
-                            reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
-                            0x01010101u,
-                            CU_STREAM_WAIT_VALUE_GEQ));
-                }
-            };
-        }
+                // PGI Profiler`s User Guide:
+                // The following are known issues related to Events and Metrics:
+                // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
+                //   on host updates may hang. This includes synchronization between the host and
+                //   the device build upon value-based CUDA queue synchronization APIs such as
+                //   cuStreamWaitValue32() and cuStreamWriteValue32().
+                ALPAKA_CUDA_DRV_CHECK(
+                    cuStreamWaitValue32(
+                        static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                        reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
+                        0x01010101u,
+                        CU_STREAM_WAIT_VALUE_GEQ));
+            }
+        };
     }
 }
 #endif
@@ -909,106 +903,103 @@ namespace alpaka
             };
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        template<>
+        struct Enqueue<
+            QueueHipRtNonBlocking,
+            test::event::EventHostManualTriggerHip>
         {
-            //#############################################################################
-            template<>
-            struct Enqueue<
-                queue::QueueHipRtNonBlocking,
-                test::event::EventHostManualTriggerHip>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueHipRtNonBlocking & queue,
+                test::event::EventHostManualTriggerHip & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueHipRtNonBlocking & queue,
-                    test::event::EventHostManualTriggerHip & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventImpl(event.m_spEventImpl);
+                // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
+                auto spEventImpl(event.m_spEventImpl);
 
-                    // Setting the event state and enqueuing it has to be atomic.
-                    std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
+                // Setting the event state and enqueuing it has to be atomic.
+                std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                    // The event should not yet be enqueued.
-                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
+                // The event should not yet be enqueued.
+                ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
-                    // Set its state to enqueued.
-                    spEventImpl->m_bIsReady = false;
+                // Set its state to enqueued.
+                spEventImpl->m_bIsReady = false;
 
-                    // PGI Profiler`s User Guide:
-                    // The following are known issues related to Events and Metrics:
-                    // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
-                    //   on host updates may hang. This includes synchronization between the host and
-                    //   the device build upon value-based CUDA queue synchronization APIs such as
-                    //   cuStreamWaitValue32() and cuStreamWriteValue32().
-                    int32_t hostMem=0;
+                // PGI Profiler`s User Guide:
+                // The following are known issues related to Events and Metrics:
+                // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
+                //   on host updates may hang. This includes synchronization between the host and
+                //   the device build upon value-based CUDA queue synchronization APIs such as
+                //   cuStreamWaitValue32() and cuStreamWriteValue32().
+                int32_t hostMem=0;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    std::cerr << "[Workaround] polling of device-located value in stream, as hipStreamWaitValue32 is not available.\n";
+                std::cerr << "[Workaround] polling of device-located value in stream, as hipStreamWaitValue32 is not available.\n";
 #endif
-                    while(hostMem<0x01010101u) {
-                      ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMemcpyDtoHAsync(&hostMem,
-                                                             reinterpret_cast<hipDeviceptr_t>(event.m_spEventImpl->m_devMem),
-                                                             sizeof(int32_t),
-                                                             queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                      ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                    }
+                while(hostMem<0x01010101u) {
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMemcpyDtoHAsync(&hostMem,
+                                                            reinterpret_cast<hipDeviceptr_t>(event.m_spEventImpl->m_devMem),
+                                                            sizeof(int32_t),
+                                                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipStreamSynchronize(queue.m_spQueueImpl->m_UniformCudaHipQueue));
                 }
-            };
-            //#############################################################################
-            template<>
-            struct Enqueue<
-                queue::QueueHipRtBlocking,
-                test::event::EventHostManualTriggerHip>
+            }
+        };
+        //#############################################################################
+        template<>
+        struct Enqueue<
+            QueueHipRtBlocking,
+            test::event::EventHostManualTriggerHip>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueHipRtBlocking & queue,
+                test::event::EventHostManualTriggerHip & event)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueHipRtBlocking & queue,
-                    test::event::EventHostManualTriggerHip & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventImpl(event.m_spEventImpl);
+                // Copy the shared pointer to ensure that the event implementation is alive as long as it is enqueued.
+                auto spEventImpl(event.m_spEventImpl);
 
-                    // Setting the event state and enqueuing it has to be atomic.
-                    std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
+                // Setting the event state and enqueuing it has to be atomic.
+                std::lock_guard<std::mutex> lk(spEventImpl->m_mutex);
 
-                    // The event should not yet be enqueued.
-                    ALPAKA_ASSERT(spEventImpl->m_bIsReady);
+                // The event should not yet be enqueued.
+                ALPAKA_ASSERT(spEventImpl->m_bIsReady);
 
-                    // Set its state to enqueued.
-                    spEventImpl->m_bIsReady = false;
+                // Set its state to enqueued.
+                spEventImpl->m_bIsReady = false;
 
-                    // PGI Profiler`s User Guide:
-                    // The following are known issues related to Events and Metrics:
-                    // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
-                    //   on host updates may hang. This includes synchronization between the host and
-                    //   the device build upon value-based HIP queue synchronization APIs such as
-                    //   cuStreamWaitValue32() and cuStreamWriteValue32().
+                // PGI Profiler`s User Guide:
+                // The following are known issues related to Events and Metrics:
+                // * In event or metric profiling, kernel launches are blocking. Thus kernels waiting
+                //   on host updates may hang. This includes synchronization between the host and
+                //   the device build upon value-based HIP queue synchronization APIs such as
+                //   cuStreamWaitValue32() and cuStreamWriteValue32().
 #if BOOST_COMP_NVCC
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipCUResultTohipError(
-                        cuStreamWaitValue32(
-                            static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
-                            reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
-                            0x01010101u,
-                            CU_STREAM_WAIT_VALUE_GEQ)));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipCUResultTohipError(
+                    cuStreamWaitValue32(
+                        static_cast<CUstream>(queue.m_spQueueImpl->m_UniformCudaHipQueue),
+                        reinterpret_cast<CUdeviceptr>(event.m_spEventImpl->m_devMem),
+                        0x01010101u,
+                        CU_STREAM_WAIT_VALUE_GEQ)));
 #else
-                    // workaround for missing cuStreamWaitValue32 in HIP
-                    std::uint32_t hmem = 0;
-                    do {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(10u));
-                        ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMemcpy(&hmem, event.m_spEventImpl->m_devMem, sizeof(std::uint32_t), hipMemcpyDefault));
-                    } while(hmem < 0x01010101u);
+                // workaround for missing cuStreamWaitValue32 in HIP
+                std::uint32_t hmem = 0;
+                do {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(10u));
+                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(hipMemcpy(&hmem, event.m_spEventImpl->m_devMem, sizeof(std::uint32_t), hipMemcpyDefault));
+                } while(hmem < 0x01010101u);
 
 #endif
-                }
-            };
-        }
+            }
+        };
     }
 }
 #endif

@@ -151,7 +151,7 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
 
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
-    using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+    using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
 
 
     // Create the kernel function object.

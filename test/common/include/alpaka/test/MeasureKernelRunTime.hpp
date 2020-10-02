@@ -44,7 +44,7 @@ namespace alpaka
                 auto const tpStart(std::chrono::high_resolution_clock::now());
 
                 // Enqueue the task.
-                alpaka::queue::enqueue(queue, std::forward<TTask>(task));
+                alpaka::enqueue(queue, std::forward<TTask>(task));
 
                 // Wait for the queue to finish the task execution to measure its run time.
                 alpaka::wait::wait(queue);

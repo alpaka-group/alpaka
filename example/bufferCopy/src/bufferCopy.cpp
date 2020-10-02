@@ -157,8 +157,8 @@ auto main()
     // Defines the synchronization behavior of a queue
     //
     // choose between Blocking and NonBlocking
-    using AccQueueProperty = alpaka::queue::Blocking;
-    using DevQueue = alpaka::queue::Queue<Acc, AccQueueProperty>;
+    using AccQueueProperty = alpaka::Blocking;
+    using DevQueue = alpaka::Queue<Acc, AccQueueProperty>;
 
     // Define the device accelerator
     //
@@ -173,8 +173,8 @@ auto main()
     // Defines the synchronization behavior of a queue
     //
     // choose between Blocking and NonBlocking
-    using HostQueueProperty = alpaka::queue::Blocking;
-    using HostQueue = alpaka::queue::Queue<Host, HostQueueProperty>;
+    using HostQueueProperty = alpaka::Blocking;
+    using HostQueue = alpaka::Queue<Host, HostQueueProperty>;
 
     // Select devices
     auto const devAcc = alpaka::getDevByIdx<Acc>(0u);

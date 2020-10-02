@@ -987,149 +987,146 @@ namespace alpaka
             }
         }
     }
-    namespace queue
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CUDA/HIP non-blocking device queue 1D copy enqueue trait specialization.
+        template<
+            typename TExtent,
+            typename TViewSrc,
+            typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
         {
-            //#############################################################################
-            //! The CUDA/HIP non-blocking device queue 1D copy enqueue trait specialization.
-            template<
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    task.enqueue(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP blocking device queue 1D copy enqueue trait specialization.
-            template<
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+                task.enqueue(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP blocking device queue 1D copy enqueue trait specialization.
+        template<
+            typename TExtent,
+            typename TViewSrc,
+            typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<1u>, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    task.enqueue(queue);
+                task.enqueue(queue);
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(StreamSynchronize)(
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP non-blocking device queue 2D copy enqueue trait specialization.
-            template<
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(StreamSynchronize)(
+                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP non-blocking device queue 2D copy enqueue trait specialization.
+        template<
+            typename TExtent,
+            typename TViewSrc,
+            typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    task.enqueue(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP blocking device queue 2D copy enqueue trait specialization.
-            template<
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+                task.enqueue(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP blocking device queue 2D copy enqueue trait specialization.
+        template<
+            typename TExtent,
+            typename TViewSrc,
+            typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<2u>, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    task.enqueue(queue);
+                task.enqueue(queue);
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(StreamSynchronize)(
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP non-blocking device queue 3D copy enqueue trait specialization.
-            template<
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtNonBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(StreamSynchronize)(
+                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP non-blocking device queue 3D copy enqueue trait specialization.
+        template<
+            typename TExtent,
+            typename TViewSrc,
+            typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtNonBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtNonBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtNonBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    task.enqueue(queue);
-                }
-            };
-            //#############################################################################
-            //! The CUDA/HIP blocking device queue 3D copy enqueue trait specialization.
-            template<
-                typename TExtent,
-                typename TViewSrc,
-                typename TViewDst>
-            struct Enqueue<
-                queue::QueueUniformCudaHipRtBlocking,
-                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+                task.enqueue(queue);
+            }
+        };
+        //#############################################################################
+        //! The CUDA/HIP blocking device queue 3D copy enqueue trait specialization.
+        template<
+            typename TExtent,
+            typename TViewSrc,
+            typename TViewDst>
+        struct Enqueue<
+            QueueUniformCudaHipRtBlocking,
+            mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto enqueue(
+                QueueUniformCudaHipRtBlocking & queue,
+                mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto enqueue(
-                    queue::QueueUniformCudaHipRtBlocking & queue,
-                    mem::view::uniform_cuda_hip::detail::TaskCopyUniformCudaHip<dim::DimInt<3u>, TViewDst, TViewSrc, TExtent> const & task)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    task.enqueue(queue);
+                task.enqueue(queue);
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(StreamSynchronize)(
-                            queue.m_spQueueImpl->m_UniformCudaHipQueue));
-                }
-            };
-        }
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(StreamSynchronize)(
+                        queue.m_spQueueImpl->m_UniformCudaHipQueue));
+            }
+        };
     }
 }
 

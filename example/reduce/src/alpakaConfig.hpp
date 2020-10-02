@@ -90,7 +90,7 @@ struct Omp5
     using DevAcc = alpaka::Dev<Acc>;
     using PltfHost = alpaka::Pltf<DevHost>;
     using PltfAcc = alpaka::Pltf<DevAcc>;
-    using Stream = alpaka::queue::QueueCpuBlocking;
+    using Stream = alpaka::QueueCpuBlocking;
     using Event = alpaka::event::Event<Stream>;
     using MaxBlockSize = alpaka::dim::DimInt<1u>;
 };

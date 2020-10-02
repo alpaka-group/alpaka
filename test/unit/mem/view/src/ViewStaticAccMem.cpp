@@ -99,7 +99,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestA
         using PltfHost = alpaka::PltfCpu;
         auto devHost(alpaka::getDevByIdx<PltfHost>(0u));
 
-        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+        using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
         QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
@@ -174,7 +174,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
         using PltfHost = alpaka::PltfCpu;
         auto devHost(alpaka::getDevByIdx<PltfHost>(0u));
 
-        using QueueAcc = alpaka::test::queue::DefaultQueue<DevAcc>;
+        using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
         QueueAcc queueAcc(devAcc);
 
         std::vector<Elem> const data{0u, 1u, 2u, 3u, 4u, 5u};
