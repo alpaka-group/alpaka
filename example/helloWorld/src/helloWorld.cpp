@@ -34,7 +34,7 @@ struct HelloWorldKernel
     -> void
     {
         using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
         using Vec = alpaka::Vec<Dim, Idx>;
         using Vec1 = alpaka::Vec<alpaka::dim::DimInt<1u>, Idx>;
 
@@ -43,13 +43,13 @@ struct HelloWorldKernel
         // exist overall. These information can be obtained by
         // getIdx() and getWorkDiv(). In this example these
         // values are obtained for a global scope.
-        Vec const globalThreadIdx = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        Vec const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
         // Map the three dimensional thread index into a
         // one dimensional thread index space. We call it
         // linearize the thread index.
-        Vec1 const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
+        Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent);
 

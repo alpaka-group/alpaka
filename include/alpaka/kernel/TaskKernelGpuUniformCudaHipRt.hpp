@@ -253,24 +253,21 @@ namespace alpaka
             using type = PltfUniformCudaHipRt;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA/HIP execution task idx type trait specialization.
+        template<
+            typename TAcc,
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct IdxType<
+            kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The GPU CUDA/HIP execution task idx type trait specialization.
-            template<
-                typename TAcc,
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct IdxType<
-                kernel::TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
     namespace traits
     {

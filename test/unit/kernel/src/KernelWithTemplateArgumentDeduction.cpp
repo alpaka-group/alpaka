@@ -39,7 +39,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByValue, TExpected>::value,
@@ -59,7 +59,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromValue", "[kern
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -75,7 +75,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstValue", "
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -91,7 +91,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstReference
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -127,7 +127,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<Acc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<TByPointer, TExpectedFirst>::value,
@@ -144,7 +144,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointer", "[ke
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -161,7 +161,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromPointerToConst
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -178,7 +178,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromStaticArray", 
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -194,7 +194,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplateDeductionFromConstStaticArr
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());

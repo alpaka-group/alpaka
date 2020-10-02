@@ -34,7 +34,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<std::int32_t, T>::value,
@@ -47,7 +47,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectTemplate", "[kernel]", alpaka::test
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -74,7 +74,7 @@ public:
     {
         ALPAKA_CHECK(
             *success,
-            static_cast<alpaka::idx::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
+            static_cast<alpaka::Idx<TAcc>>(1) == (alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc)).prod());
 
         static_assert(
             std::is_same<std::int32_t, T>::value,
@@ -87,7 +87,7 @@ TEMPLATE_LIST_TEST_CASE( "kernelFuntionObjectExtraTemplate", "[kernel]", alpaka:
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());

@@ -620,21 +620,18 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The Vec idx type trait specialization.
+        template<
+            typename TDim,
+            typename TVal>
+        struct IdxType<
+            Vec<TDim, TVal>>
         {
-            //#############################################################################
-            //! The Vec idx type trait specialization.
-            template<
-                typename TDim,
-                typename TVal>
-            struct IdxType<
-                Vec<TDim, TVal>>
-            {
-                using type = TVal;
-            };
-        }
+            using type = TVal;
+        };
     }
 
     namespace traits
@@ -895,7 +892,7 @@ namespace alpaka
                     typename TExtent>
                 ALPAKA_FN_HOST_ACC static auto create(
                     TExtent const & extent)
-                -> idx::Idx<TExtent>
+                -> Idx<TExtent>
                 {
                     return extent::getExtent<Tidx>(extent);
                 }
@@ -909,7 +906,7 @@ namespace alpaka
             typename TExtent>
         ALPAKA_FN_HOST_ACC auto getExtentVec(
             TExtent const & extent = TExtent())
-        -> Vec<dim::Dim<TExtent>, idx::Idx<TExtent>>
+        -> Vec<dim::Dim<TExtent>, Idx<TExtent>>
         {
             return
                 createVecFromIndexedFn<
@@ -926,7 +923,7 @@ namespace alpaka
             typename TExtent>
         ALPAKA_FN_HOST_ACC auto getExtentVecEnd(
             TExtent const & extent = TExtent())
-        -> Vec<TDim, idx::Idx<TExtent>>
+        -> Vec<TDim, Idx<TExtent>>
         {
             using IdxOffset = std::integral_constant<std::intmax_t, static_cast<std::intmax_t>(dim::Dim<TExtent>::value) - static_cast<std::intmax_t>(TDim::value)>;
             return
@@ -954,7 +951,7 @@ namespace alpaka
                     typename TOffsets>
                 ALPAKA_FN_HOST_ACC static auto create(
                     TOffsets const & offsets)
-                -> idx::Idx<TOffsets>
+                -> Idx<TOffsets>
                 {
                     return offset::getOffset<Tidx>(offsets);
                 }
@@ -968,7 +965,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetVec(
             TOffsets const & offsets = TOffsets())
-        -> Vec<dim::Dim<TOffsets>, idx::Idx<TOffsets>>
+        -> Vec<dim::Dim<TOffsets>, Idx<TOffsets>>
         {
             return
                 createVecFromIndexedFn<
@@ -985,7 +982,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetVecEnd(
             TOffsets const & offsets = TOffsets())
-        -> Vec<TDim, idx::Idx<TOffsets>>
+        -> Vec<TDim, Idx<TOffsets>>
         {
             using IdxOffset = std::integral_constant<std::size_t, static_cast<std::size_t>(static_cast<std::intmax_t>(dim::Dim<TOffsets>::value) - static_cast<std::intmax_t>(TDim::value))>;
             return

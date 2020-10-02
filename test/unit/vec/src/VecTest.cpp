@@ -101,7 +101,7 @@ TEST_CASE("basicVecTraits", "[vec]")
         using VecCast = std::decay_t<VecCastConst>;
         static_assert(
             std::is_same<
-                alpaka::idx::Idx<VecCast>,
+                alpaka::Idx<VecCast>,
                 SizeCast
             >::value,
             "The idx type of the casted vec is wrong");*/
@@ -168,7 +168,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 "Result dimension type of operator <= incorrect!");
 
             static_assert(
-                std::is_same<alpaka::idx::Idx<std::decay<decltype(vecLessEqual)>::type>, Idx>::value,
+                std::is_same<alpaka::Idx<std::decay<decltype(vecLessEqual)>::type>, Idx>::value,
                 "Result idx type of operator <= incorrect!");
 
             alpaka::Vec<Dim, Idx> const referenceVec(
@@ -189,7 +189,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 "Result dimension type of operator <= incorrect!");
 
             static_assert(
-                std::is_same<alpaka::idx::Idx<std::decay<decltype(vecLessEqual)>::type>, Idx>::value,
+                std::is_same<alpaka::Idx<std::decay<decltype(vecLessEqual)>::type>, Idx>::value,
                 "Result idx type of operator <= incorrect!");
 
             alpaka::Vec<Dim, Idx> const referenceVec(
@@ -210,7 +210,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 "Result dimension type of operator <= incorrect!");
 
             static_assert(
-                std::is_same<alpaka::idx::Idx<std::decay<decltype(vecLessEqual)>::type>, Idx>::value,
+                std::is_same<alpaka::Idx<std::decay<decltype(vecLessEqual)>::type>, Idx>::value,
                 "Result idx type of operator <= incorrect!");
 
             alpaka::Vec<Dim, Idx> const referenceVec(
@@ -231,7 +231,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 "Result dimension type of operator <= incorrect!");
 
             static_assert(
-                std::is_same<alpaka::idx::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
+                std::is_same<alpaka::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
                 "Result idx type of operator <= incorrect!");
 
             alpaka::Vec<Dim, bool> const referenceVec(
@@ -252,7 +252,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 "Result dimension type of operator <= incorrect!");
 
             static_assert(
-                std::is_same<alpaka::idx::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
+                std::is_same<alpaka::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
                 "Result idx type of operator <= incorrect!");
 
             alpaka::Vec<Dim, bool> const referenceVec(
@@ -273,7 +273,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 "Result dimension type of operator <= incorrect!");
 
             static_assert(
-                std::is_same<alpaka::idx::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
+                std::is_same<alpaka::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
                 "Result idx type of operator <= incorrect!");
 
             alpaka::Vec<Dim, bool> const referenceVec(
@@ -294,7 +294,7 @@ TEST_CASE("basicVecTraits", "[vec]")
                 "Result dimension type of operator <= incorrect!");
 
             static_assert(
-                std::is_same<alpaka::idx::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
+                std::is_same<alpaka::Idx<std::decay<decltype(vecLessEqual)>::type>, bool>::value,
                 "Result idx type of operator <= incorrect!");
 
             alpaka::Vec<Dim, bool> const referenceVec(

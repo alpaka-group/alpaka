@@ -55,7 +55,7 @@ public:
             alpaka::dim::Dim<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
-        TIdx const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        TIdx const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
         TIdx const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
         TIdx const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 

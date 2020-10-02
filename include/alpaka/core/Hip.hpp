@@ -596,22 +596,19 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The HIP vectors idx type trait specialization.
+        template<
+            typename TIdx>
+        struct IdxType<
+            TIdx,
+            std::enable_if_t<
+                hip::traits::IsHipBuiltInType<TIdx>::value>>
         {
-            //#############################################################################
-            //! The HIP vectors idx type trait specialization.
-            template<
-                typename TIdx>
-            struct IdxType<
-                TIdx,
-                std::enable_if_t<
-                    hip::traits::IsHipBuiltInType<TIdx>::value>>
-            {
-                using type = std::size_t;
-            };
-        }
+            using type = std::size_t;
+        };
     }
 }
 

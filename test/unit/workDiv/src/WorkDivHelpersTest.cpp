@@ -25,7 +25,7 @@ namespace
         using Dev = alpaka::Dev<TAcc>;
         using Pltf = alpaka::Pltf<Dev>;
         using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
         auto const gridThreadExtent = alpaka::Vec<Dim, Idx>::all(10);

@@ -290,7 +290,7 @@ namespace alpaka
                                 DevCpu,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
-                                alpaka::idx::Idx<TExtent>>(
+                                alpaka::Idx<TExtent>>(
                                     pMem,
                                     dev,
                                     extent);
@@ -340,7 +340,7 @@ namespace alpaka
                                 DevUniformCudaHipRt,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
-                                alpaka::idx::Idx<TExtent>>(
+                                alpaka::Idx<TExtent>>(
                                     pMemAcc,
                                     dev,
                                     extent);
@@ -370,7 +370,7 @@ namespace alpaka
                                 DevOmp5,
                                 TElem,
                                 alpaka::dim::Dim<TExtent>,
-                                alpaka::idx::Idx<TExtent>>(
+                                alpaka::Idx<TExtent>>(
                                     pMem,
                                     dev,
                                     extent);
@@ -408,22 +408,19 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The ViewPlainPtr idx type trait specialization.
+        template<
+            typename TDev,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
         {
-            //#############################################################################
-            //! The ViewPlainPtr idx type trait specialization.
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                mem::view::ViewPlainPtr<TDev, TElem, TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }

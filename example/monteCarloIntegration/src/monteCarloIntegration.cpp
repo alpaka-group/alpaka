@@ -67,14 +67,14 @@ struct Kernel
         TFunctor functor) const -> void
     {
         // Get the global linearized thread idx.
-        auto const globalThreadIdx = alpaka::idx::getIdx<
+        auto const globalThreadIdx = alpaka::getIdx<
             alpaka::Grid,
             alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::getWorkDiv<
             alpaka::Grid,
             alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(
+        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(
             globalThreadIdx,
             globalThreadExtent)[0];
         // Setup generator and distribution.

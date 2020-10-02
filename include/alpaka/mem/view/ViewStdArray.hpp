@@ -98,7 +98,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static constexpr auto getExtent(
                     std::array<TElem, Tsize> const & extent)
-                -> idx::Idx<std::array<TElem, Tsize>>
+                -> Idx<std::array<TElem, Tsize>>
                 {
                     alpaka::ignore_unused(extent);
                     return Tsize;
@@ -148,7 +148,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
                         std::array<TElem, Tsize> const & pitch)
-                    -> idx::Idx<std::array<TElem, Tsize>>
+                    -> Idx<std::array<TElem, Tsize>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -173,27 +173,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
                     std::array<TElem, Tsize> const &)
-                -> idx::Idx<std::array<TElem, Tsize>>
+                -> Idx<std::array<TElem, Tsize>>
                 {
                     return 0u;
                 }
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The std::vector idx type trait specialization.
+        template<
+            typename TElem,
+            std::size_t Tsize>
+        struct IdxType<
+            std::array<TElem, Tsize>>
         {
-            //#############################################################################
-            //! The std::vector idx type trait specialization.
-            template<
-                typename TElem,
-                std::size_t Tsize>
-            struct IdxType<
-                std::array<TElem, Tsize>>
-            {
-                using type = std::size_t;
-            };
-        }
+            using type = std::size_t;
+        };
     }
 }

@@ -24,7 +24,7 @@
 template<
     typename TAcc>
 static auto testP2P(
-    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::idx::Idx<TAcc>> const & extent)
+    alpaka::Vec<alpaka::dim::Dim<TAcc>, alpaka::Idx<TAcc>> const & extent)
 -> void
 {
     using Dev = alpaka::Dev<TAcc>;
@@ -32,7 +32,7 @@ static auto testP2P(
     using Queue = alpaka::test::DefaultQueue<Dev>;
 
     using Elem = std::uint32_t;
-    using Idx = alpaka::idx::Idx<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
 
     if(alpaka::getDevCount<Pltf>()<2) {
       std::cerr << "No two devices found to test peer-to-peer copy." << std::endl;
@@ -70,7 +70,7 @@ TEMPLATE_LIST_TEST_CASE( "memP2PTest", "[memP2P]", alpaka::test::TestAccs)
 #else
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     auto const extent(alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
 

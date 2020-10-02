@@ -128,21 +128,18 @@ namespace alpaka
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The WorkDivMembers idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            WorkDivMembers<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The WorkDivMembers idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                WorkDivMembers<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
     namespace traits
     {

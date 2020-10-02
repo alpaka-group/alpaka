@@ -145,10 +145,10 @@ namespace alpaka
                     }
 
                     //-----------------------------------------------------------------------------
-                    // alpaka::idx::traits::IdxType
+                    // alpaka::traits::IdxType
                     {
                         static_assert(
-                            std::is_same<alpaka::idx::Idx<TView>, TIdx>::value,
+                            std::is_same<alpaka::Idx<TView>, TIdx>::value,
                             "The idx type of the view has to be equal to the specified one.");
                     }
                 }
@@ -192,7 +192,7 @@ namespace alpaka
                 -> void
                 {
                     using Dim = alpaka::dim::Dim<TView>;
-                    using Idx = alpaka::idx::Idx<TView>;
+                    using Idx = alpaka::Idx<TView>;
 
                     alpaka::test::KernelExecutionFixture<TAcc> fixture(
                         alpaka::Vec<Dim, Idx>::ones());
@@ -259,8 +259,8 @@ namespace alpaka
                     using DimA = alpaka::dim::Dim<TViewA>;
                     using DimB = alpaka::dim::Dim<TViewB>;
                     static_assert(DimA::value == DimB::value, "viewA and viewB are required to have identical Dim");
-                    using IdxA = alpaka::idx::Idx<TViewA>;
-                    using IdxB = alpaka::idx::Idx<TViewB>;
+                    using IdxA = alpaka::Idx<TViewA>;
+                    using IdxB = alpaka::Idx<TViewB>;
                     static_assert(std::is_same<IdxA, IdxB>::value, "viewA and viewB are required to have identical Idx");
 
                     alpaka::test::KernelExecutionFixture<TAcc> fixture(
@@ -287,7 +287,7 @@ namespace alpaka
                 -> void
                 {
                     using Dim = alpaka::dim::Dim<TView>;
-                    using Idx = alpaka::idx::Idx<TView>;
+                    using Idx = alpaka::Idx<TView>;
 
                     using DevHost = alpaka::DevCpu;
                     using PltfHost = alpaka::Pltf<DevHost>;
@@ -349,7 +349,7 @@ namespace alpaka
                     // alpaka::mem::view::copy
                     {
                         using Elem = alpaka::elem::Elem<TView>;
-                        using Idx = alpaka::idx::Idx<TView>;
+                        using Idx = alpaka::Idx<TView>;
 
                         auto const devAcc = alpaka::getDev(view);
 

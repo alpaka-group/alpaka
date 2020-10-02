@@ -40,7 +40,7 @@ TEMPLATE_LIST_TEST_CASE("KernelWithAdditionalParamByValue", "[kernel]", alpaka::
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -77,7 +77,7 @@ TEMPLATE_LIST_TEST_CASE("KernelWithAdditionalParamByRef", "[kernel]", alpaka::te
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -110,7 +110,7 @@ TEMPLATE_LIST_TEST_CASE("KernelWithAdditionalParamByConstRef", "[kernel]", alpak
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());

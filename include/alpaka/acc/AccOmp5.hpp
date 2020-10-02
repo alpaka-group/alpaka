@@ -66,8 +66,8 @@ namespace alpaka
         typename TIdx>
     class AccOmp5 final :
         public WorkDivMembers<TDim, TIdx>,
-        public idx::gb::IdxGbLinear<TDim, TIdx>,
-        public idx::bt::IdxBtOmp<TDim, TIdx>,
+        public gb::IdxGbLinear<TDim, TIdx>,
+        public bt::IdxBtOmp<TDim, TIdx>,
         public AtomicHierarchy<
             AtomicOmpBuiltIn,   // grid atomics
             AtomicOmpBuiltIn,    // block atomics
@@ -103,8 +103,8 @@ namespace alpaka
             TIdx const & gridBlockIdx,
             std::size_t const & blockSharedMemDynSizeBytes) :
                 WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
-                idx::gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
-                idx::bt::IdxBtOmp<TDim, TIdx>(),
+                gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
+                bt::IdxBtOmp<TDim, TIdx>(),
                 AtomicHierarchy<
                     AtomicOmpBuiltIn,// atomics between grids
                     AtomicOmpBuiltIn, // atomics between blocks
@@ -299,21 +299,18 @@ namespace alpaka
             using type = PltfOmp5;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccOmp5<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                AccOmp5<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

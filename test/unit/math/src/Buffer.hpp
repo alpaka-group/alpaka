@@ -39,7 +39,7 @@ struct Buffer
     using value_type = TData;
     static constexpr size_t capacity = Tcapacity;
     using Dim = typename alpaka::dim::traits::DimType<TAcc>::type;
-    using Idx = typename alpaka::idx::traits::IdxType<TAcc>::type;
+    using Idx = typename alpaka::traits::IdxType<TAcc>::type;
 
     // Defines using's for alpaka-buffer.
     using DevAcc = alpaka::Dev< TAcc >;

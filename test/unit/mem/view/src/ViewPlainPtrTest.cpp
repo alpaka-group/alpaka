@@ -99,7 +99,7 @@ namespace view
         using Pltf = alpaka::Pltf<Dev>;
 
         using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
@@ -129,7 +129,7 @@ namespace view
         using Pltf = alpaka::Pltf<Dev>;
 
         using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
@@ -159,7 +159,7 @@ namespace view
         using Pltf = alpaka::Pltf<Dev>;
 
         using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
         using View = alpaka::mem::view::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
         Dev const dev(alpaka::getDevByIdx<Pltf>(0u));

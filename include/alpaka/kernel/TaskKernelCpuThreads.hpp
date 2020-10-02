@@ -364,23 +364,20 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU threads execution task idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct IdxType<
+            kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU threads execution task idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct IdxType<
-                kernel::TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

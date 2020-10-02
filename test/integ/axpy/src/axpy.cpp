@@ -54,7 +54,7 @@ public:
             alpaka::dim::Dim<TAcc>::value == 1,
             "The AxpyKernel expects 1-dimensional indices!");
 
-        auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
         auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
         auto const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
@@ -81,7 +81,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
 #ifdef ALPAKA_CI
     Idx const numElements = 1u<<9u;

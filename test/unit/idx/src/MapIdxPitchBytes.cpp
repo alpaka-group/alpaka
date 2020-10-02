@@ -40,11 +40,11 @@ TEMPLATE_LIST_TEST_CASE( "mapIdxPitchBytes", "[idx]", alpaka::test::dim::TestDim
     alpaka::mem::view::ViewSubView<Dev, Elem, Dim, Idx> view( parentView, extent, offset );
     auto pitch = alpaka::mem::view::getPitchBytesVec(view);
 
-    auto const idx1d(alpaka::idx::mapIdxPitchBytes<1u>(idxNd, pitch));
-    auto const idx1dDelta(alpaka::idx::mapIdx<1u>(idxNd+offset, extentNd)
-            - alpaka::idx::mapIdx<1u>(offset, extentNd));
+    auto const idx1d(alpaka::mapIdxPitchBytes<1u>(idxNd, pitch));
+    auto const idx1dDelta(alpaka::mapIdx<1u>(idxNd+offset, extentNd)
+            - alpaka::mapIdx<1u>(offset, extentNd));
 
-    auto const idxNdResult(alpaka::idx::mapIdxPitchBytes<Dim::value>(idx1d, pitch));
+    auto const idxNdResult(alpaka::mapIdxPitchBytes<Dim::value>(idx1d, pitch));
 
     // linear index in pitched offset box should be the difference between
     // linear index in parent box and linear index of offset

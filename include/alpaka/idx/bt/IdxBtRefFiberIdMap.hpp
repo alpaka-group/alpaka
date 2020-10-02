@@ -24,40 +24,37 @@
 
 namespace alpaka
 {
-    namespace idx
+    namespace bt
     {
-        namespace bt
+        //#############################################################################
+        //! The fibers accelerator index provider.
+        template<
+            typename TDim,
+            typename TIdx>
+        class IdxBtRefFiberIdMap : public concepts::Implements<ConceptIdxBt, IdxBtRefFiberIdMap<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The fibers accelerator index provider.
-            template<
-                typename TDim,
-                typename TIdx>
-            class IdxBtRefFiberIdMap : public concepts::Implements<ConceptIdxBt, IdxBtRefFiberIdMap<TDim, TIdx>>
-            {
-            public:
-                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<TDim, TIdx>>;
+        public:
+            using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<TDim, TIdx>>;
 
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxBtRefFiberIdMap(
-                    FiberIdToIdxMap const & mFibersToIndices) :
-                    m_fibersToIndices(mFibersToIndices)
-                {}
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxBtRefFiberIdMap(IdxBtRefFiberIdMap const &) = delete;
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST IdxBtRefFiberIdMap(IdxBtRefFiberIdMap &&) = delete;
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxBtRefFiberIdMap const &) -> IdxBtRefFiberIdMap & = delete;
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST auto operator=(IdxBtRefFiberIdMap &&) -> IdxBtRefFiberIdMap & = delete;
-                //-----------------------------------------------------------------------------
-                /*virtual*/ ~IdxBtRefFiberIdMap() = default;
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST IdxBtRefFiberIdMap(
+                FiberIdToIdxMap const & mFibersToIndices) :
+                m_fibersToIndices(mFibersToIndices)
+            {}
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST IdxBtRefFiberIdMap(IdxBtRefFiberIdMap const &) = delete;
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST IdxBtRefFiberIdMap(IdxBtRefFiberIdMap &&) = delete;
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator=(IdxBtRefFiberIdMap const &) -> IdxBtRefFiberIdMap & = delete;
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST auto operator=(IdxBtRefFiberIdMap &&) -> IdxBtRefFiberIdMap & = delete;
+            //-----------------------------------------------------------------------------
+            /*virtual*/ ~IdxBtRefFiberIdMap() = default;
 
-            public:
-                FiberIdToIdxMap const & m_fibersToIndices; //!< The mapping of fiber id's to fiber indices.
-            };
-        }
+        public:
+            FiberIdToIdxMap const & m_fibersToIndices; //!< The mapping of fiber id's to fiber indices.
+        };
     }
 
     namespace dim
@@ -70,59 +67,53 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct DimType<
-                idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>>
+                bt::IdxBtRefFiberIdMap<TDim, TIdx>>
             {
                 using type = TDim;
             };
         }
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU fibers accelerator block thread index get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetIdx<
+            bt::IdxBtRefFiberIdMap<TDim, TIdx>,
+            origin::Block,
+            unit::Threads>
         {
-            //#############################################################################
-            //! The CPU fibers accelerator block thread index get trait specialization.
+            //-----------------------------------------------------------------------------
+            //! \return The index of the current thread in the block.
             template<
-                typename TDim,
-                typename TIdx>
-            struct GetIdx<
-                idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>,
-                origin::Block,
-                unit::Threads>
+                typename TWorkDiv>
+            ALPAKA_FN_HOST static auto getIdx(
+                bt::IdxBtRefFiberIdMap<TDim, TIdx> const & idx,
+                TWorkDiv const & workDiv)
+            -> Vec<TDim, TIdx>
             {
-                //-----------------------------------------------------------------------------
-                //! \return The index of the current thread in the block.
-                template<
-                    typename TWorkDiv>
-                ALPAKA_FN_HOST static auto getIdx(
-                    idx::bt::IdxBtRefFiberIdMap<TDim, TIdx> const & idx,
-                    TWorkDiv const & workDiv)
-                -> Vec<TDim, TIdx>
-                {
-                    alpaka::ignore_unused(workDiv);
-                    auto const fiberId(boost::this_fiber::get_id());
-                    auto const fiberEntry(idx.m_fibersToIndices.find(fiberId));
-                    ALPAKA_ASSERT(fiberEntry != idx.m_fibersToIndices.end());
-                    return fiberEntry->second;
-                }
-            };
-        }
+                alpaka::ignore_unused(workDiv);
+                auto const fiberId(boost::this_fiber::get_id());
+                auto const fiberEntry(idx.m_fibersToIndices.find(fiberId));
+                ALPAKA_ASSERT(fiberEntry != idx.m_fibersToIndices.end());
+                return fiberEntry->second;
+            }
+        };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU fibers accelerator block thread index idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            bt::IdxBtRefFiberIdMap<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU fibers accelerator block thread index idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                idx::bt::IdxBtRefFiberIdMap<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

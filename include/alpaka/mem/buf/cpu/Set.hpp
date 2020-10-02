@@ -41,8 +41,8 @@ namespace alpaka
                         typename TExtent>
                     struct TaskSetCpuBase
                     {
-                        using ExtentSize = idx::Idx<TExtent>;
-                        using DstSize = idx::Idx<TView>;
+                        using ExtentSize = Idx<TExtent>;
+                        using DstSize = Idx<TView>;
                         using Elem = elem::Elem<TView>;
 
                         static_assert(

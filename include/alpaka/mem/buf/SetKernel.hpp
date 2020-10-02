@@ -50,11 +50,11 @@ namespace alpaka
                     TPitch pitch) const
                 -> void
                 {
-                    using Idx = typename idx::traits::IdxType<TExtent>::type;
-                    auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
+                    using Idx = typename alpaka::traits::IdxType<TExtent>::type;
+                    auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc));
                     auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc));
-                    auto const idxThreadFirstElem = idx::getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
-                    auto idx = idx::mapIdxPitchBytes<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
+                    auto const idxThreadFirstElem = getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
+                    auto idx = mapIdxPitchBytes<1u, dim::Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
                     constexpr auto lastDim = dim::Dim<TAcc>::value - 1;
                     const auto lastIdx = idx +
                         std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim]-idxThreadFirstElem[lastDim]));

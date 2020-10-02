@@ -64,7 +64,7 @@ namespace alpaka
                         std::uint8_t const & byte,
                         TExtent const & extent)
                     {
-                        using Idx = typename idx::traits::IdxType<TExtent>::type;
+                        using Idx = typename alpaka::traits::IdxType<TExtent>::type;
                         auto pitch = view::getPitchBytesVec(view);
                         auto byteExtent = extent::getExtentVec(extent);
                         constexpr auto lastDim = TDim::value - 1;

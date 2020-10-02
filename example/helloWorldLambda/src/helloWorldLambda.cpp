@@ -35,13 +35,13 @@ void ALPAKA_FN_ACC hiWorldFunction(
     size_t const nExclamationMarks)
 {
     using Dim = alpaka::dim::Dim<TAcc>;
-    using Idx = alpaka::idx::Idx<TAcc>;
+    using Idx = alpaka::Idx<TAcc>;
     using Vec = alpaka::Vec<Dim, Idx>;
     using Vec1 = alpaka::Vec<alpaka::dim::DimInt<1u>, Idx>;
 
-    Vec const globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+    Vec const globalThreadIdx    = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
     Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
-    Vec1 const linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(globalThreadIdx,
+    Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx,
                                                               globalThreadExtent);
 
     printf("[z:%u, y:%u, x:%u][linear:%u] Hi world from a function",
@@ -126,9 +126,9 @@ auto main()
         queue,
         workDiv,
         [] ALPAKA_FN_ACC (Acc const & acc, size_t const nExclamationMarksAsArg) -> void {
-            auto globalThreadIdx    = alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+            auto globalThreadIdx    = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
             auto globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
-            auto linearizedGlobalThreadIdx = alpaka::idx::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
+            auto linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
 
             printf("[z:%u, y:%u, x:%u][linear:%u] Hello world from a lambda",
                static_cast<unsigned>(globalThreadIdx[0]),

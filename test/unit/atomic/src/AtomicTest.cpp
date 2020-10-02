@@ -961,7 +961,7 @@ struct TestAtomicOperations
     -> void
     {
         using Dim = alpaka::dim::Dim<TAcc>;
-        using Idx = alpaka::idx::Idx<TAcc>;
+        using Idx = alpaka::Idx<TAcc>;
 
         alpaka::test::KernelExecutionFixture<TAcc> fixture(
             alpaka::Vec<Dim, Idx>::ones());

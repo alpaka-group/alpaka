@@ -54,7 +54,7 @@ namespace alpaka
                     {
                         using TViewDecayed = std::decay_t<TView>;
                         using Dim = alpaka::dim::Dim<TViewDecayed>;
-                        using Idx = alpaka::idx::Idx<TViewDecayed>;
+                        using Idx = alpaka::Idx<TViewDecayed>;
                         using Elem = MimicConst<alpaka::elem::Elem<TViewDecayed>, TView>;
 
                     public:
@@ -136,7 +136,7 @@ namespace alpaka
                             using DimMin1 = alpaka::dim::DimInt<Dim::value - 1u>;
 
                             Vec<Dim1, Idx> const currentIdxDim1{m_currentIdx};
-                            Vec<Dim, Idx> const currentIdxDimx(alpaka::idx::mapIdx<Dim::value>(currentIdxDim1, m_extents));
+                            Vec<Dim, Idx> const currentIdxDimx(alpaka::mapIdx<Dim::value>(currentIdxDim1, m_extents));
 
                             // [pz, py, px] -> [py, px]
                             auto const pitchWithoutOutermost(subVecEnd<DimMin1>(m_pitchBytes));

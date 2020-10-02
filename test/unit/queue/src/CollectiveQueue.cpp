@@ -30,7 +30,7 @@ struct QueueCollectiveTestKernel
         int* resultsPtr) const
     -> void
     {
-        size_t threadId = alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
+        size_t threadId = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
         // avoid that one thread is doing all the work
         std::this_thread::sleep_for(std::chrono::milliseconds(200u * threadId));
         resultsPtr[threadId] = static_cast<int>(threadId);

@@ -139,7 +139,7 @@ public:
             alpaka::dim::Dim<TAcc>::value == 2,
             "The MandelbrotKernel expects 2-dimensional indices!");
 
-        auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
+        auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc));
         auto const & gridThreadIdxX(gridThreadIdx[1u]);
         auto const & gridThreadIdxY(gridThreadIdx[0u]);
 
@@ -310,7 +310,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
 #ifdef ALPAKA_CI
     Idx const imageSize(1u<<5u);

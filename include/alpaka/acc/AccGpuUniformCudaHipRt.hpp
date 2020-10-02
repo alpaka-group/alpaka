@@ -71,8 +71,8 @@ namespace alpaka
         typename TIdx>
     class AccGpuUniformCudaHipRt :
         public WorkDivUniformCudaHipBuiltIn<TDim, TIdx>,
-        public idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
-        public idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
+        public gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>,
+        public bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>,
         public AtomicHierarchy<
             AtomicUniformCudaHipBuiltIn, // grid atomics
             AtomicUniformCudaHipBuiltIn, // block atomics
@@ -94,8 +94,8 @@ namespace alpaka
         __device__ AccGpuUniformCudaHipRt(
             Vec<TDim, TIdx> const & threadElemExtent) :
                 WorkDivUniformCudaHipBuiltIn<TDim, TIdx>(threadElemExtent),
-                idx::gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>(),
-                idx::bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>(),
+                gb::IdxGbUniformCudaHipBuiltIn<TDim, TIdx>(),
+                bt::IdxBtUniformCudaHipBuiltIn<TDim, TIdx>(),
                 AtomicHierarchy<
                     AtomicUniformCudaHipBuiltIn, // atomics between grids
                     AtomicUniformCudaHipBuiltIn, // atomics between blocks
@@ -385,21 +385,18 @@ namespace alpaka
             using type = PltfUniformCudaHipRt;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The GPU CUDA accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccGpuUniformCudaHipRt<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The GPU CUDA accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                AccGpuUniformCudaHipRt<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

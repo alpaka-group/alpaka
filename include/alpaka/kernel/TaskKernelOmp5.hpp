@@ -303,23 +303,20 @@ namespace alpaka
             using type = PltfOmp5;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The OpenMP 5.0 execution task idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct IdxType<
+            kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The OpenMP 5.0 execution task idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct IdxType<
-                kernel::TaskKernelOmp5<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 
     namespace traits

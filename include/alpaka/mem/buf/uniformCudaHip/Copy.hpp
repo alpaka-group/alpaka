@@ -273,7 +273,7 @@ namespace alpaka
                             std::is_same<elem::Elem<TViewDst>, std::remove_const_t<elem::Elem<TViewSrc>>>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Idx = idx::Idx<TExtent>;
+                        using Idx = Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopyUniformCudaHip(
@@ -409,7 +409,7 @@ namespace alpaka
                             std::is_same<elem::Elem<TViewDst>, std::remove_const_t<elem::Elem<TViewSrc>>>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Idx = idx::Idx<TExtent>;
+                        using Idx = Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopyUniformCudaHip(
@@ -615,7 +615,7 @@ namespace alpaka
                             std::is_same<elem::Elem<TViewDst>, std::remove_const_t<elem::Elem<TViewSrc>>>::value,
                             "The source and the destination view are required to have the same element type!");
 
-                        using Idx = idx::Idx<TExtent>;
+                        using Idx = Idx<TExtent>;
 
                         //-----------------------------------------------------------------------------
                         ALPAKA_FN_HOST TaskCopyUniformCudaHip(

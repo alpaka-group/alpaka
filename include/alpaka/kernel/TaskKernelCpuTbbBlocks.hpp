@@ -146,7 +146,7 @@ namespace alpaka
                              blockSharedMemDynSizeBytes);
 
                          acc.m_gridBlockIdx =
-                             idx::mapIdx<TDim::value>(
+                             mapIdx<TDim::value>(
                                  Vec<dim::DimInt<1u>, TIdx>(
                                      static_cast<TIdx>(i)
                                   ),
@@ -229,23 +229,20 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU TBB block execution task idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct IdxType<
+            kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //#############################################################################
-            //! The CPU TBB block execution task idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct IdxType<
-                kernel::TaskKernelCpuTbbBlocks<TDim, TIdx, TKernelFnObj, TArgs...>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 

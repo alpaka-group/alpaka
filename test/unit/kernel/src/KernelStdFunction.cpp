@@ -45,7 +45,7 @@ TEMPLATE_LIST_TEST_CASE( "stdFunctionKernelIsWorking", "[kernel]", alpaka::test:
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -59,7 +59,7 @@ TEMPLATE_LIST_TEST_CASE( "stdBindKernelIsWorking", "[kernel]", alpaka::test::Tes
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());
@@ -80,7 +80,7 @@ TEMPLATE_LIST_TEST_CASE( "nvstdFunctionKernelIsWorking", "[kernel]", alpaka::tes
 {
     using Acc = TestType;
     using Dim = alpaka::dim::Dim<Acc>;
-    using Idx = alpaka::idx::Idx<Acc>;
+    using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(
         alpaka::Vec<Dim, Idx>::ones());

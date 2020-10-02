@@ -69,8 +69,8 @@ namespace alpaka
         typename TIdx>
     class AccCpuOmp2Blocks final :
         public WorkDivMembers<TDim, TIdx>,
-        public idx::gb::IdxGbRef<TDim, TIdx>,
-        public idx::bt::IdxBtZero<TDim, TIdx>,
+        public gb::IdxGbRef<TDim, TIdx>,
+        public bt::IdxBtZero<TDim, TIdx>,
         public AtomicHierarchy<
             AtomicStdLibLock<16>,   // grid atomics
             AtomicOmpBuiltIn,    // block atomics
@@ -104,8 +104,8 @@ namespace alpaka
             TWorkDiv const & workDiv,
             std::size_t const & blockSharedMemDynSizeBytes) :
                 WorkDivMembers<TDim, TIdx>(workDiv),
-                idx::gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
-                idx::bt::IdxBtZero<TDim, TIdx>(),
+                gb::IdxGbRef<TDim, TIdx>(m_gridBlockIdx),
+                bt::IdxBtZero<TDim, TIdx>(),
                 AtomicHierarchy<
                     AtomicStdLibLock<16>,// atomics between grids
                     AtomicOmpBuiltIn, // atomics between blocks
@@ -278,21 +278,18 @@ namespace alpaka
             using type = PltfCpu;
         };
     }
-    namespace idx
+    namespace traits
     {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenMP 2.0 block accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccCpuOmp2Blocks<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                AccCpuOmp2Blocks<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = TIdx;
+        };
     }
 }
 
