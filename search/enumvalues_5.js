@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unrestricted',['Unrestricted',['../namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870',1,'alpaka::workdiv']]]
+  ['unrestricted',['Unrestricted',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870',1,'alpaka']]]
 ];

@@ -1,9 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1math_1_1traits_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01float_01_4.html":[3,0,0,16,0,31],
-"structalpaka_1_1math_1_1traits_1_1Cos_3_01CosUniformCudaHipBuiltIn_00_01float_01_4.html#ab18e31adadc543493dd7aadbbf397840":[3,0,0,16,0,31,0],
-"structalpaka_1_1math_1_1traits_1_1Erf.html":[3,0,0,16,0,33],
-"structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b.html":[3,0,0,16,0,34],
 "structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_4de26d289406c8044ef1d88921cfc33b.html#a063fa03042df4c50ad2f6b9168963a55":[3,0,0,16,0,34,0],
 "structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_23ca83b350a09aa1663439a053c1894c.html":[3,0,0,16,0,36],
 "structalpaka_1_1math_1_1traits_1_1Erf_3_01ErfUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_23ca83b350a09aa1663439a053c1894c.html#a9ab01d8a784cb2739817e3a883ce993a":[3,0,0,16,0,36,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpuBase.html#ac882ffa898c05b34c2333ddc4e47c8c9":[3,0,0,17,2,0,0,5,7],
 "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpuBase.html#ade584e064436b766059eaf9f6c790853":[3,0,0,17,2,0,0,5,6],
 "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html":[3,0,0,17,2,0,0,4],
-"structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#aa1c8637d944d459b1cf6161a655460f1":[3,0,0,17,2,0,0,4,0]
+"structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpu_3_01dim_1_1DimInt_3_011u_01_4_00_01TView_00_01TExtent_01_4.html#aa1c8637d944d459b1cf6161a655460f1":[3,0,0,17,2,0,0,4,0],
+"structalpaka_1_1mem_1_1view_1_1detail_1_1CreatePitchBytes.html":[3,0,0,17,2,1,0],
+"structalpaka_1_1mem_1_1view_1_1detail_1_1CreatePitchBytes.html#a5c71101f170e8087d70a394671373d97":[3,0,0,17,2,1,0,0],
+"structalpaka_1_1mem_1_1view_1_1detail_1_1Print.html":[3,0,0,17,2,1,1],
+"structalpaka_1_1mem_1_1view_1_1detail_1_1Print.html#aab6517e65795d2312d5bc67fe64aff55":[3,0,0,17,2,1,1,0]
 };

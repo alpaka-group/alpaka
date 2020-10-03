@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gridblockextentsubdivrestrictions',['GridBlockExtentSubDivRestrictions',['../namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010',1,'alpaka::workdiv']]]
+  ['gridblockextentsubdivrestrictions',['GridBlockExtentSubDivRestrictions',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27',1,'alpaka']]]
 ];

@@ -11,6 +11,6 @@ var searchData=
   ['waiterwaitfor_3c_20tdev_2c_20event_3a_3aeventgenericthreads_3c_20tdev_20_3e_20_3e',['WaiterWaitFor&lt; TDev, event::EventGenericThreads&lt; TDev &gt; &gt;',['../structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01TDev_00_01event_1_1EventGenericThreads_3_01TDev_01_4_01_4.html',1,'alpaka::wait::traits']]],
   ['warpsinglethread',['WarpSingleThread',['../classalpaka_1_1warp_1_1WarpSingleThread.html',1,'alpaka::warp']]],
   ['warpuniformcudahipbuiltin',['WarpUniformCudaHipBuiltIn',['../classalpaka_1_1warp_1_1WarpUniformCudaHipBuiltIn.html',1,'alpaka::warp']]],
-  ['workdivmembers',['WorkDivMembers',['../classalpaka_1_1workdiv_1_1WorkDivMembers.html',1,'alpaka::workdiv']]],
-  ['workdivuniformcudahipbuiltin',['WorkDivUniformCudaHipBuiltIn',['../classalpaka_1_1workdiv_1_1WorkDivUniformCudaHipBuiltIn.html',1,'alpaka::workdiv']]]
+  ['workdivmembers',['WorkDivMembers',['../classalpaka_1_1WorkDivMembers.html',1,'alpaka']]],
+  ['workdivuniformcudahipbuiltin',['WorkDivUniformCudaHipBuiltIn',['../classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html',1,'alpaka']]]
 ];

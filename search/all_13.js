@@ -29,7 +29,7 @@ var searchData=
   ['unpin_3c_20mem_3a_3abuf_3a_3abufomp5_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Unpin&lt; mem::buf::BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1Unpin_3_01mem_1_1buf_1_1BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::mem::buf::traits']]],
   ['unpin_3c_20mem_3a_3abuf_3a_3abufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Unpin&lt; mem::buf::BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1Unpin_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::mem::buf::traits']]],
   ['unpin_3c_20mem_3a_3abuf_3a_3acpu_3a_3adetail_3a_3abufcpuimpl_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Unpin&lt; mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1Unpin_3_01mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl_3_01fd59d76f036bbbfb69cc29117f576471.html',1,'alpaka::mem::buf::traits']]],
-  ['unrestricted',['Unrestricted',['../namespacealpaka_1_1workdiv.html#a2c1867744ccffdf8be1e07a50d9c0010a89c6caacc7047b0a535412d7f939f870',1,'alpaka::workdiv']]],
+  ['unrestricted',['Unrestricted',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870',1,'alpaka']]],
   ['unroll_2ehpp',['Unroll.hpp',['../Unroll_8hpp.html',1,'']]],
   ['unused_2ehpp',['Unused.hpp',['../Unused_8hpp.html',1,'']]],
   ['utility_2ehpp',['Utility.hpp',['../Utility_8hpp.html',1,'']]]

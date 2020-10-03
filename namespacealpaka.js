@@ -28,13 +28,15 @@ var namespacealpaka =
     [ "uniform_cuda_hip", "namespacealpaka_1_1uniform__cuda__hip.html", null ],
     [ "wait", "namespacealpaka_1_1wait.html", "namespacealpaka_1_1wait" ],
     [ "warp", "namespacealpaka_1_1warp.html", "namespacealpaka_1_1warp" ],
-    [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ],
     [ "ConceptPltf", "structalpaka_1_1ConceptPltf.html", null ],
+    [ "ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],
     [ "DevCpu", "classalpaka_1_1DevCpu.html", "classalpaka_1_1DevCpu" ],
     [ "DevOmp5", "classalpaka_1_1DevOmp5.html", "classalpaka_1_1DevOmp5" ],
     [ "DevUniformCudaHipRt", "classalpaka_1_1DevUniformCudaHipRt.html", "classalpaka_1_1DevUniformCudaHipRt" ],
     [ "PltfCpu", "classalpaka_1_1PltfCpu.html", "classalpaka_1_1PltfCpu" ],
     [ "PltfOmp5", "classalpaka_1_1PltfOmp5.html", "classalpaka_1_1PltfOmp5" ],
     [ "PltfUniformCudaHipRt", "classalpaka_1_1PltfUniformCudaHipRt.html", "classalpaka_1_1PltfUniformCudaHipRt" ],
-    [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ]
+    [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ],
+    [ "WorkDivMembers", "classalpaka_1_1WorkDivMembers.html", "classalpaka_1_1WorkDivMembers" ],
+    [ "WorkDivUniformCudaHipBuiltIn", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn" ]
 ];
