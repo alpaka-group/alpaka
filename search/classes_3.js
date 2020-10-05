@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['dec',['Dec',['../structalpaka_1_1atomic_1_1op_1_1Dec.html',1,'alpaka::atomic::op']]],
+  ['dec',['Dec',['../structalpaka_1_1op_1_1Dec.html',1,'alpaka::op']]],
   ['dependentfalsetype',['DependentFalseType',['../structalpaka_1_1meta_1_1DependentFalseType.html',1,'alpaka::meta']]],
   ['devcpu',['DevCpu',['../classalpaka_1_1DevCpu.html',1,'alpaka']]],
   ['devcpuimpl',['DevCpuImpl',['../classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html',1,'alpaka::cpu::detail']]],

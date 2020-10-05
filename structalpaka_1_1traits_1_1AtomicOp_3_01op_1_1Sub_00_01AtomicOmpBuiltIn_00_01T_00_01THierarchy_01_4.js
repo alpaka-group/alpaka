@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1AtomicOp_3_01op_1_1Sub_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4 =
+[
+    [ "atomicOp", "structalpaka_1_1traits_1_1AtomicOp_3_01op_1_1Sub_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#a4b5f74f2f8945bb61002bc7f474b322f", null ]
+];

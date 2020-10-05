@@ -186,7 +186,7 @@ var searchData=
   ['implements_3c_20wait_3a_3aconceptcurrentthreadwaitfor_2c_20queuegenericthreadsnonblocking_3c_20tdev_20_3e_20_3e',['Implements&lt; wait::ConceptCurrentThreadWaitFor, QueueGenericThreadsNonBlocking&lt; TDev &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20wait_3a_3aconceptcurrentthreadwaitfor_2c_20queueuniformcudahiprtbase_20_3e',['Implements&lt; wait::ConceptCurrentThreadWaitFor, QueueUniformCudaHipRtBase &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implementsconcept',['ImplementsConcept',['../structalpaka_1_1concepts_1_1ImplementsConcept.html',1,'alpaka::concepts']]],
-  ['inc',['Inc',['../structalpaka_1_1atomic_1_1op_1_1Inc.html',1,'alpaka::atomic::op']]],
+  ['inc',['Inc',['../structalpaka_1_1op_1_1Inc.html',1,'alpaka::op']]],
   ['inheritfromlist',['InheritFromList',['../classalpaka_1_1meta_1_1InheritFromList.html',1,'alpaka::meta']]],
   ['inheritfromlist_2ehpp',['InheritFromList.hpp',['../InheritFromList_8hpp.html',1,'']]],
   ['inheritfromlist_3c_20tlist_3c_20tbases_2e_2e_2e_20_3e_20_3e',['InheritFromList&lt; TList&lt; TBases... &gt; &gt;',['../classalpaka_1_1meta_1_1InheritFromList_3_01TList_3_01TBases_8_8_8_01_4_01_4.html',1,'alpaka::meta']]],

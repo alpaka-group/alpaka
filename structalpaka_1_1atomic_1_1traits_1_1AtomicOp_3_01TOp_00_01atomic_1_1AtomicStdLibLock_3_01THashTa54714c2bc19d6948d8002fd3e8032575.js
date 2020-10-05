@@ -1,5 +1,0 @@
-var structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicStdLibLock_3_01THashTa54714c2bc19d6948d8002fd3e8032575 =
-[
-    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicStdLibLock_3_01THashTa54714c2bc19d6948d8002fd3e8032575.html#aed1f13970e646f2c60794f1bf6648f06", null ],
-    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicStdLibLock_3_01THashTa54714c2bc19d6948d8002fd3e8032575.html#a2cff5b73511ac14c1f2d67b47b3a825c", null ]
-];

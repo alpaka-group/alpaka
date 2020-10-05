@@ -1,5 +1,0 @@
-var structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4 =
-[
-    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#ab57d2a9a6a475919e9931d03ec52b7e0", null ],
-    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html#ad6a7c6b4381c48079acf0ba3799f4eef", null ]
-];

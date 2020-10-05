@@ -46,7 +46,7 @@ var searchData=
   ['staticmembegin',['staticMemBegin',['../classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynMember.html#a358e5dd53521ad9b0e70749483c30c3e',1,'alpaka::block::dyn::BlockSharedMemDynMember']]],
   ['staticmemcapacity',['staticMemCapacity',['../classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynMember.html#a0b46e5cc5290297e53129e096079c389',1,'alpaka::block::dyn::BlockSharedMemDynMember']]],
   ['status',['status',['../structTINYMT32__T.html#a483a2a359c18dd5315396958bb694eb6',1,'TINYMT32_T']]],
-  ['sub',['Sub',['../structalpaka_1_1atomic_1_1op_1_1Sub.html',1,'alpaka::atomic::op']]],
+  ['sub',['Sub',['../structalpaka_1_1op_1_1Sub.html',1,'alpaka::op']]],
   ['subdividegridelems',['subDivideGridElems',['../namespacealpaka.html#affc77d4ef026e07e11d1fe82ec83b819',1,'alpaka']]],
   ['subvecbegin',['subVecBegin',['../namespacealpaka.html#a1fb281be5e276c272c312ac4466d9274',1,'alpaka']]],
   ['subvecend',['subVecEnd',['../namespacealpaka.html#ae9150bbecec9af2a3fb957a89498d985',1,'alpaka']]],
