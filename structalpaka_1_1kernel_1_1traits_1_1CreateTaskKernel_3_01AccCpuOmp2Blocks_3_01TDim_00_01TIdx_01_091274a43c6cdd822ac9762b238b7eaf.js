@@ -1,0 +1,4 @@
+var structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_091274a43c6cdd822ac9762b238b7eaf =
+[
+    [ "createTaskKernel", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_091274a43c6cdd822ac9762b238b7eaf.html#a9822caedaeb6a7c4a9a169533ba967c1", null ]
+];

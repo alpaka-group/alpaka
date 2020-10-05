@@ -1,4 +1,0 @@
-var structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "getAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1AccCpuOmp2Threads_3_01TDim_00_01TIdx_01_4_01_4.html#aa6a3bcbd71d779d1858f9b52ac6bcf3c", null ]
-];

@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1AccType_3_01kernel_1_1TaskKernelCpuOmp2Threads_3_01TDim_00_01TIdx_00_0f92c0f999d530a9d45d0731b89d7280a =
+[
+    [ "type", "structalpaka_1_1traits_1_1AccType_3_01kernel_1_1TaskKernelCpuOmp2Threads_3_01TDim_00_01TIdx_00_0f92c0f999d530a9d45d0731b89d7280a.html#ac005d2eea93cb716dded9d772cb5ce1b", null ]
+];

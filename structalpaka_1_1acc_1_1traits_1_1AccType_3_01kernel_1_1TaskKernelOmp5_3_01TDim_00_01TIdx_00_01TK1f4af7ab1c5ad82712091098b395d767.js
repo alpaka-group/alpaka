@@ -1,4 +1,0 @@
-var structalpaka_1_1acc_1_1traits_1_1AccType_3_01kernel_1_1TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TK1f4af7ab1c5ad82712091098b395d767 =
-[
-    [ "type", "structalpaka_1_1acc_1_1traits_1_1AccType_3_01kernel_1_1TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TK1f4af7ab1c5ad82712091098b395d767.html#a6aafbc6c1ab933235a2d4a0b1c59ba6b", null ]
-];

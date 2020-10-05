@@ -1,4 +1,0 @@
-var structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__if50315b9b2b1c1260ca8ed9e89ed6afe1 =
-[
-    [ "operator()", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__if50315b9b2b1c1260ca8ed9e89ed6afe1.html#af9482e5b5159ae71971f849f786e0243", null ]
-];
