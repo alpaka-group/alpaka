@@ -1,0 +1,6 @@
+var structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData =
+[
+    [ "m_event", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#aba43585eea3b0f615e4be7c1edd578f9", null ],
+    [ "m_mutex", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#a66b7518a378033b2e29f6cf4914e094d", null ],
+    [ "state", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#afb9bed80d42e60392fa7bb12bc5234af", null ]
+];

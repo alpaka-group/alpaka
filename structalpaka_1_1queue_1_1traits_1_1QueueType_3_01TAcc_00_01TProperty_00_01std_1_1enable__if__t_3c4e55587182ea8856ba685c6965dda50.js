@@ -1,4 +1,0 @@
-var structalpaka_1_1queue_1_1traits_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3c4e55587182ea8856ba685c6965dda50 =
-[
-    [ "type", "structalpaka_1_1queue_1_1traits_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3c4e55587182ea8856ba685c6965dda50.html#a6cac8e63b6fe25bdd23cfaff37b3c5aa", null ]
-];

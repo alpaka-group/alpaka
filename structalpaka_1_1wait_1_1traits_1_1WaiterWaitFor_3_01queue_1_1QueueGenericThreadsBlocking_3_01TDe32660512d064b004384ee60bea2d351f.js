@@ -1,4 +1,0 @@
-var structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDe32660512d064b004384ee60bea2d351f =
-[
-    [ "waiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01queue_1_1QueueGenericThreadsBlocking_3_01TDe32660512d064b004384ee60bea2d351f.html#afd23a1cd60374ce019eca88b2c5b2025", null ]
-];

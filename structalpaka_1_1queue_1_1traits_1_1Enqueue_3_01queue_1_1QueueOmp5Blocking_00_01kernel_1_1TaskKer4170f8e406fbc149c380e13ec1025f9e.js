@@ -1,4 +1,0 @@
-var structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueOmp5Blocking_00_01kernel_1_1TaskKer4170f8e406fbc149c380e13ec1025f9e =
-[
-    [ "enqueue", "structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueOmp5Blocking_00_01kernel_1_1TaskKer4170f8e406fbc149c380e13ec1025f9e.html#a0bf5cd85593b914cd4de0f863e9c400c", null ]
-];

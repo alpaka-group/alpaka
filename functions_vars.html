@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classalpaka_1_1block_1_1BlockSyncBarrierThread.html#a9164c2bc8369a596cd14af23c33214a7">alpaka::block::BlockSyncBarrierThread&lt; TIdx &gt;</a>
 </li>
 <li>m_bCurrentlyExecutingTask
-: <a class="el" href="classalpaka_1_1queue_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a382e18313bb27cc75ce288d3d517000a">alpaka::queue::generic::detail::QueueGenericThreadsBlockingImpl&lt; TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a1db2100f72b696537eb19250adbb17c6">alpaka::generic::detail::QueueGenericThreadsBlockingImpl&lt; TDev &gt;</a>
 </li>
 <li>m_blockSharedMemDyn
 : <a class="el" href="classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynAlignedAlloc.html#a4faf00210171b78b75821b5c1435e86c">alpaka::block::dyn::BlockSharedMemDynAlignedAlloc</a>
@@ -119,13 +119,13 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>m_dev
 : <a class="el" href="classalpaka_1_1event_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#a29c02cf02a0cd373c01324980da7336f">alpaka::event::generic::detail::EventGenericThreadsImpl&lt; TDev &gt;</a>
 , <a class="el" href="classalpaka_1_1event_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html#afdda3beb9c6c5e589e0c53902a935f26">alpaka::event::uniform_cuda_hip::detail::EventUniformCudaHipImpl</a>
+, <a class="el" href="classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a1be03d77049a42eaf3dd6b7c989a0c37">alpaka::generic::detail::QueueGenericThreadsBlockingImpl&lt; TDev &gt;</a>
+, <a class="el" href="classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#afe35ba5696923c4e5efdda2c9847b9d3">alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl&lt; TDev &gt;</a>
 , <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html#a0d93cb648d227517a3e7408aa9c4333f">alpaka::mem::buf::BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt;</a>
 , <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a2f1789975b1385cd4b021a6ebfa6ccc1">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt;</a>
 , <a class="el" href="classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html#ab791aa0348b28eb387c924c476ff14f5">alpaka::mem::buf::omp5::detail::BufOmp5Impl&lt; TElem, TDim, TIdx &gt;</a>
 , <a class="el" href="classalpaka_1_1mem_1_1view_1_1ViewPlainPtr.html#a16a331f1946b97e283c4258c82800342">alpaka::mem::view::ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt;</a>
-, <a class="el" href="classalpaka_1_1queue_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#ad7883945ce4ed6b9321a010bfb38f716">alpaka::queue::generic::detail::QueueGenericThreadsBlockingImpl&lt; TDev &gt;</a>
-, <a class="el" href="classalpaka_1_1queue_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a8e3f91a5a7443fd92e6347ea4cf0b321">alpaka::queue::generic::detail::QueueGenericThreadsNonBlockingImpl&lt; TDev &gt;</a>
-, <a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#ac8401d066d06e01ed6ca1f030de454c7">alpaka::queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl</a>
+, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtImpl.html#ab9531e83c80df756a543f8116a85aa13">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRtImpl</a>
 </li>
 <li>m_dist
 : <a class="el" href="classalpaka_1_1rand_1_1distribution_1_1cpu_1_1NormalReal.html#a5cdf128e21c2fde9f8e85c3268646656">alpaka::rand::distribution::cpu::NormalReal&lt; T &gt;</a>
@@ -154,8 +154,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classalpaka_1_1event_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#aef35d629b070735cf7d3a340758530bd">alpaka::event::generic::detail::EventGenericThreadsImpl&lt; TDev &gt;</a>
 </li>
 <li>m_event
-: <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01TTask5482395a4e10c3d0d2669ffabf30b032.html#a8138e973bf046a3bfadc590d3fd4e6ef">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtBlocking, TTask &gt;::CallbackSynchronizationData</a>
-, <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TT8e1e26d5b93135d4b06a0de7c2f1351c.html#ad7ffd9f4afab46bb3a4033d75e08019d">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtNonBlocking, TTask &gt;::CallbackSynchronizationData</a>
+: <a class="el" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#a4ef5918a15047444b3ab4be8da4de344">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtBlocking, TTask &gt;::CallbackSynchronizationData</a>
+, <a class="el" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#aba43585eea3b0f615e4be7c1edd578f9">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtNonBlocking, TTask &gt;::CallbackSynchronizationData</a>
 </li>
 <li>m_extent
 : <a class="el" href="structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html#aa9448072eab75851c04504e314b9fb4a">alpaka::mem::view::cpu::detail::TaskCopyCpuBase&lt; TDim, TViewDst, TViewSrc, TExtent &gt;</a>
@@ -227,9 +227,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>m_mutex
 : <a class="el" href="classalpaka_1_1event_1_1generic_1_1detail_1_1EventGenericThreadsImpl.html#a5f09cfab71866117ef4b1c2431f509e8">alpaka::event::generic::detail::EventGenericThreadsImpl&lt; TDev &gt;</a>
-, <a class="el" href="classalpaka_1_1queue_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a7e931762252ad19e99d70bacbe2e8c67">alpaka::queue::generic::detail::QueueGenericThreadsBlockingImpl&lt; TDev &gt;</a>
-, <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01TTask5482395a4e10c3d0d2669ffabf30b032.html#a20fcb021c5bec313157001fb58f01140">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtBlocking, TTask &gt;::CallbackSynchronizationData</a>
-, <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TT8e1e26d5b93135d4b06a0de7c2f1351c.html#a53d592a9ef7fe24994dd2e2a96cf5682">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtNonBlocking, TTask &gt;::CallbackSynchronizationData</a>
+, <a class="el" href="classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a36bfd4aa8eff934a8319aa567c427ee5">alpaka::generic::detail::QueueGenericThreadsBlockingImpl&lt; TDev &gt;</a>
+, <a class="el" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#a09693db69a6effdb9b5dc0ce432e5c57">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtBlocking, TTask &gt;::CallbackSynchronizationData</a>
+, <a class="el" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#a66b7518a378033b2e29f6cf4914e094d">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtNonBlocking, TTask &gt;::CallbackSynchronizationData</a>
 </li>
 <li>m_offsetsElements
 : <a class="el" href="classalpaka_1_1mem_1_1view_1_1ViewSubView.html#a004fe01791c1b22fdd51ef13e5b843a1">alpaka::mem::view::ViewSubView&lt; TDev, TElem, TDim, TIdx &gt;</a>
@@ -278,9 +278,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html#a0e84ca881f87b72c5322b3013b19274d">alpaka::mem::buf::BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt;</a>
 </li>
 <li>m_spQueueImpl
-: <a class="el" href="classalpaka_1_1queue_1_1QueueGenericThreadsBlocking.html#a490675731c5b827b7031ad59819dc301">alpaka::queue::QueueGenericThreadsBlocking&lt; TDev &gt;</a>
-, <a class="el" href="classalpaka_1_1queue_1_1QueueGenericThreadsNonBlocking.html#a7b4b456098a8848163d57eff6ebd3a0a">alpaka::queue::QueueGenericThreadsNonBlocking&lt; TDev &gt;</a>
-, <a class="el" href="classalpaka_1_1queue_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html#a148e1ff8aec0d4ca0ae4d4f8c0e14ac5">alpaka::queue::uniform_cuda_hip::detail::QueueUniformCudaHipRtBase</a>
+: <a class="el" href="classalpaka_1_1QueueGenericThreadsBlocking.html#a31e1ce7bd8d4fb142f0ba50ec8ea14c7">alpaka::QueueGenericThreadsBlocking&lt; TDev &gt;</a>
+, <a class="el" href="classalpaka_1_1QueueGenericThreadsNonBlocking.html#a727c170c268ba3b17fda6f2481f1f49c">alpaka::QueueGenericThreadsNonBlocking&lt; TDev &gt;</a>
+, <a class="el" href="classalpaka_1_1uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase.html#a9f5d65b1e459ce6b92072102a659c51d">alpaka::uniform_cuda_hip::detail::QueueUniformCudaHipRtBase</a>
 </li>
 <li>m_srcExtent
 : <a class="el" href="structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html#a6e1e0e2670386e5293df9ce76d216496">alpaka::mem::view::cpu::detail::TaskCopyCpuBase&lt; TDim, TViewDst, TViewSrc, TExtent &gt;</a>
@@ -329,7 +329,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 : <a class="el" href="classalpaka_1_1mem_1_1view_1_1ViewSubView.html#ab0644f2d4f42b067a913610b2a71f763">alpaka::mem::view::ViewSubView&lt; TDev, TElem, TDim, TIdx &gt;</a>
 </li>
 <li>m_workerThread
-: <a class="el" href="classalpaka_1_1queue_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a8b112d6ecd8f73b5013a5d3f9a331c4d">alpaka::queue::generic::detail::QueueGenericThreadsNonBlockingImpl&lt; TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#af3e94ffbe9ce33d230531a95eb342298">alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl&lt; TDev &gt;</a>
 </li>
 <li>mat1
 : <a class="el" href="structTINYMT32__T.html#acf77c595614bef9df4c285b8682dd304">TINYMT32_T</a>
@@ -349,8 +349,8 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 
 <h3><a id="index_s"></a>- s -</h3><ul>
 <li>state
-: <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtBlocking_00_01TTask5482395a4e10c3d0d2669ffabf30b032.html#a53b3faf2692419dab0b93e980d6b1aac">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtBlocking, TTask &gt;::CallbackSynchronizationData</a>
-, <a class="el" href="structalpaka_1_1queue_1_1traits_1_1Enqueue_3_01queue_1_1QueueUniformCudaHipRtNonBlocking_00_01TT8e1e26d5b93135d4b06a0de7c2f1351c.html#afaaeab02ea70091c05f4446d72555714">alpaka::queue::traits::Enqueue&lt; queue::QueueUniformCudaHipRtNonBlocking, TTask &gt;::CallbackSynchronizationData</a>
+: <a class="el" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#a506af74660984a2763ba8fc0aa5ed487">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtBlocking, TTask &gt;::CallbackSynchronizationData</a>
+, <a class="el" href="structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4_1_1CallbackSynchronizationData.html#afb9bed80d42e60392fa7bb12bc5234af">alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtNonBlocking, TTask &gt;::CallbackSynchronizationData</a>
 </li>
 <li>staticAllocBytes
 : <a class="el" href="structalpaka_1_1block_1_1dyn_1_1detail_1_1BlockSharedMemDynMemberStatic.html#a0a55d41754c3d5559cb9ef22c93b31cb">alpaka::block::dyn::detail::BlockSharedMemDynMemberStatic&lt; TStaticAllocKiB &gt;</a>
@@ -397,7 +397,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Oct 5 2020 11:26:52 for alpaka by
+    <li class="footer">Generated on Mon Oct 5 2020 11:56:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

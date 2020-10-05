@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1Enqueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01event_1_1Ev0ba90284b928fda06851bbbc788ee8fa =
+[
+    [ "enqueue", "structalpaka_1_1traits_1_1Enqueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01event_1_1Ev0ba90284b928fda06851bbbc788ee8fa.html#a5ff8c29663e86e2447afe6659181abf5", null ]
+];
