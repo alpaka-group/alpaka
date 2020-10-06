@@ -53,7 +53,7 @@ namespace alpaka
             typename TVecL,
             typename TVecR,
             typename TSfinae = void>
-        struct Concat;
+        struct ConcatVec;
     }
 
     //-----------------------------------------------------------------------------
@@ -164,15 +164,15 @@ namespace alpaka
     template<
         typename TVecL,
         typename TVecR>
-    ALPAKA_FN_HOST_ACC auto concat(
+    ALPAKA_FN_HOST_ACC auto concatVec(
         TVecL const & vecL,
         TVecR const & vecR)
     {
         return
-            traits::Concat<
+            traits::ConcatVec<
                 TVecL,
                 TVecR>
-            ::concat(
+            ::concatVec(
                 vecL,
                 vecR);
     }

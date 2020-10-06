@@ -853,12 +853,12 @@ namespace alpaka
             typename TDimL,
             typename TDimR,
             typename TVal>
-        struct Concat<
+        struct ConcatVec<
             Vec<TDimL, TVal>,
             Vec<TDimR, TVal>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto concat(
+            ALPAKA_FN_HOST_ACC static auto concatVec(
                 Vec<TDimL, TVal> const & vecL,
                 Vec<TDimR, TVal> const & vecR)
             -> Vec<DimInt<TDimL::value + TDimR::value>, TVal>
