@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1GetAccDevProps_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conceptsfc0000353bc330f98a859b92671871db =
 [
-    [ "getAccDevProps", "structalpaka_1_1traits_1_1GetAccDevProps_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conceptsfc0000353bc330f98a859b92671871db.html#afcbec5b70f4c32daf80c53ff01d9be5f", null ]
+    [ "getAccDevProps", "structalpaka_1_1traits_1_1GetAccDevProps_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conceptsfc0000353bc330f98a859b92671871db.html#a67de4b2f60bfe700f546451f4ae39bae", null ]
 ];

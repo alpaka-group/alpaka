@@ -2,10 +2,10 @@ var acc_2Traits_8hpp =
 [
     [ "ConceptAcc", "structalpaka_1_1ConceptAcc.html", null ],
     [ "ConceptUniformCudaHip", "structalpaka_1_1ConceptUniformCudaHip.html", null ],
-    [ "DimType< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conceptsf0420269b1aad4696f7c01fd8726f14a.html", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conceptsf0420269b1aad4696f7c01fd8726f14a" ],
     [ "CheckFnReturnType< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__ifb910a60661fd172c569be67860993ff7.html", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__ifb910a60661fd172c569be67860993ff7" ],
     [ "AccType", "structalpaka_1_1traits_1_1AccType.html", null ],
     [ "DevType< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1traits_1_1DevType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impae09fee5074ee45ddfea1cd68a1d41c2.html", "structalpaka_1_1traits_1_1DevType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impae09fee5074ee45ddfea1cd68a1d41c2" ],
+    [ "DimType< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impb71be0be072a11f2f496ac1e8ea12c04.html", "structalpaka_1_1traits_1_1DimType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impb71be0be072a11f2f496ac1e8ea12c04" ],
     [ "GetAccDevProps", "structalpaka_1_1traits_1_1GetAccDevProps.html", null ],
     [ "GetAccDevProps< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1traits_1_1GetAccDevProps_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conceptsfc0000353bc330f98a859b92671871db.html", "structalpaka_1_1traits_1_1GetAccDevProps_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conceptsfc0000353bc330f98a859b92671871db" ],
     [ "GetAccName", "structalpaka_1_1traits_1_1GetAccName.html", "structalpaka_1_1traits_1_1GetAccName" ],
@@ -13,6 +13,6 @@ var acc_2Traits_8hpp =
     [ "PltfType< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1traits_1_1PltfType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Imaf362c7bc7e1ffc5cd74b8e7772d6131.html", "structalpaka_1_1traits_1_1PltfType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Imaf362c7bc7e1ffc5cd74b8e7772d6131" ],
     [ "QueueType< TAcc, TProperty, std::enable_if_t< concepts::ImplementsConcept< ConceptAcc, TAcc >::value > >", "structalpaka_1_1traits_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concepa5c773b943c1fc91fcd9a3ab227af622.html", "structalpaka_1_1traits_1_1QueueType_3_01TAcc_00_01TProperty_00_01std_1_1enable__if__t_3_01concepa5c773b943c1fc91fcd9a3ab227af622" ],
     [ "Acc", "acc_2Traits_8hpp.html#a0668b792050a8ae5f1575da61ffe6217", null ],
-    [ "getAccDevProps", "acc_2Traits_8hpp.html#a6d5e94302780580a23c1fd62a2a6d42d", null ],
+    [ "getAccDevProps", "acc_2Traits_8hpp.html#a3fa7ad40eda1f1fc3b26d8945ff882a0", null ],
     [ "getAccName", "acc_2Traits_8hpp.html#ac49b3c4b09c8a7455e8f88faa51484df", null ]
 ];

@@ -1,9 +1,9 @@
 var extent_2Traits_8hpp =
 [
     [ "GetExtent", "structalpaka_1_1extent_1_1traits_1_1GetExtent.html", "structalpaka_1_1extent_1_1traits_1_1GetExtent" ],
-    [ "GetExtent< dim::DimInt< 0u >, TExtent, std::enable_if_t< std::is_integral< TExtent >::value > >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01stad6ddc0c7f18ea94ff0b413397b31f13.html", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01stad6ddc0c7f18ea94ff0b413397b31f13" ],
+    [ "GetExtent< DimInt< 0u >, TExtent, std::enable_if_t< std::is_integral< TExtent >::value > >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01std_1_1ena3a6f42a9805f89aa94fd59a30ee4e4f.html", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01std_1_1ena3a6f42a9805f89aa94fd59a30ee4e4f" ],
     [ "SetExtent", "structalpaka_1_1extent_1_1traits_1_1SetExtent.html", null ],
-    [ "SetExtent< dim::DimInt< 0u >, TExtent, TExtentVal, std::enable_if_t< std::is_integral< TExtent >::value > >", "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01TE95a83a96ef5ab9ec7e4c9fc9ddae9f0d.html", "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01dim_1_1DimInt_3_010u_01_4_00_01TExtent_00_01TE95a83a96ef5ab9ec7e4c9fc9ddae9f0d" ],
+    [ "SetExtent< DimInt< 0u >, TExtent, TExtentVal, std::enable_if_t< std::is_integral< TExtent >::value > >", "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01TExtentVac029606cb8b2217077dd5af543cda781.html", "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01DimInt_3_010u_01_4_00_01TExtent_00_01TExtentVac029606cb8b2217077dd5af543cda781" ],
     [ "getDepth", "extent_2Traits_8hpp.html#af1e4ce2041e79fb72eea259256036975", null ],
     [ "getExtent", "extent_2Traits_8hpp.html#acd41dd4212ab1d312e2d32934c7da73d", null ],
     [ "getExtentProduct", "extent_2Traits_8hpp.html#a481e301cb6fbf3b1e0d0bd82cff06084", null ],

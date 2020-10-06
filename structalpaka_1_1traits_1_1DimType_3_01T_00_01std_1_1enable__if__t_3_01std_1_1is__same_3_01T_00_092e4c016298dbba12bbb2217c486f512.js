@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__same_3_01T_00_092e4c016298dbba12bbb2217c486f512 =
+[
+    [ "type", "structalpaka_1_1traits_1_1DimType_3_01T_00_01std_1_1enable__if__t_3_01std_1_1is__same_3_01T_00_092e4c016298dbba12bbb2217c486f512.html#a1d915f3130703a37f883a20b8a704a63", null ]
+];

@@ -1,9 +1,9 @@
 var offset_2Traits_8hpp =
 [
     [ "GetOffset", "structalpaka_1_1offset_1_1traits_1_1GetOffset.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset" ],
-    [ "GetOffset< dim::DimInt< 0u >, TOffsets, std::enable_if_t< std::is_integral< TOffsets >::value > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01dim_1_1DimInt_3_010u_01_4_00_01TOffsets_00_01s6ead9eabba6bed4944754637be4a0fc8.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01dim_1_1DimInt_3_010u_01_4_00_01TOffsets_00_01s6ead9eabba6bed4944754637be4a0fc8" ],
+    [ "GetOffset< DimInt< 0u >, TOffsets, std::enable_if_t< std::is_integral< TOffsets >::value > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01DimInt_3_010u_01_4_00_01TOffsets_00_01std_1_1e25ef42902455d09b073dc7600e92952e.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01DimInt_3_010u_01_4_00_01TOffsets_00_01std_1_1e25ef42902455d09b073dc7600e92952e" ],
     [ "SetOffset", "structalpaka_1_1offset_1_1traits_1_1SetOffset.html", null ],
-    [ "SetOffset< dim::DimInt< 0u >, TOffsets, TOffset, std::enable_if_t< std::is_integral< TOffsets >::value > >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_010u_01_4_00_01TOffsets_00_01T91bb9083fc44a32006b62ed41cdc1b25.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01dim_1_1DimInt_3_010u_01_4_00_01TOffsets_00_01T91bb9083fc44a32006b62ed41cdc1b25" ],
+    [ "SetOffset< DimInt< 0u >, TOffsets, TOffset, std::enable_if_t< std::is_integral< TOffsets >::value > >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01DimInt_3_010u_01_4_00_01TOffsets_00_01TOffset_f8e44b1e928331cce624d57723b6279b.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01DimInt_3_010u_01_4_00_01TOffsets_00_01TOffset_f8e44b1e928331cce624d57723b6279b" ],
     [ "getOffset", "offset_2Traits_8hpp.html#a18bb1fea2f72954bf8cc083adad5fda1", null ],
     [ "getOffsetX", "offset_2Traits_8hpp.html#a282555d97200f1779032e401205aa951", null ],
     [ "getOffsetY", "offset_2Traits_8hpp.html#a83c3462e5dfcb0c8014d8aacc388ebba", null ],

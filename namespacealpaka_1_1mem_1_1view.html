@@ -139,9 +139,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a7590cdd04b34567fa563050687e3487f"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TView &gt; </td></tr>
 <tr class="memitem:a7590cdd04b34567fa563050687e3487f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a7590cdd04b34567fa563050687e3487f">getPitchBytes</a> (TView const &amp;view) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TView &gt;</td></tr>
 <tr class="separator:a7590cdd04b34567fa563050687e3487f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab83e36506e720fb5446b14ce2e8615cd"><td class="memTemplParams" colspan="2">template&lt;typename TPitch &gt; </td></tr>
-<tr class="memitem:ab83e36506e720fb5446b14ce2e8615cd"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#ab83e36506e720fb5446b14ce2e8615cd">getPitchBytesVec</a> (TPitch const &amp;pitch=TPitch()) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TPitch &gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TPitch &gt;&gt;</td></tr>
-<tr class="separator:ab83e36506e720fb5446b14ce2e8615cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b575f50ce46345565157a6f723e820"><td class="memTemplParams" colspan="2">template&lt;typename TPitch &gt; </td></tr>
+<tr class="memitem:ab7b575f50ce46345565157a6f723e820"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#ab7b575f50ce46345565157a6f723e820">getPitchBytesVec</a> (TPitch const &amp;pitch=TPitch()) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt; TPitch &gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TPitch &gt;&gt;</td></tr>
+<tr class="separator:ab7b575f50ce46345565157a6f723e820"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1984af8ef3592b64d7e7b30bf3830092"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TPitch &gt; </td></tr>
 <tr class="memitem:a1984af8ef3592b64d7e7b30bf3830092"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html#a1984af8ef3592b64d7e7b30bf3830092">getPitchBytesVecEnd</a> (TPitch const &amp;pitch=TPitch()) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TPitch &gt;&gt;</td></tr>
 <tr class="separator:a1984af8ef3592b64d7e7b30bf3830092"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -388,8 +388,8 @@ template&lt;std::size_t Tidx, typename TView &gt; </div>
 
 </div>
 </div>
-<a id="ab83e36506e720fb5446b14ce2e8615cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab83e36506e720fb5446b14ce2e8615cd">&#9670;&nbsp;</a></span>getPitchBytesVec()</h2>
+<a id="ab7b575f50ce46345565157a6f723e820"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7b575f50ce46345565157a6f723e820">&#9670;&nbsp;</a></span>getPitchBytesVec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -401,7 +401,7 @@ template&lt;typename TPitch &gt; </div>
           <td>(</td>
           <td class="paramtype">TPitch const &amp;&#160;</td>
           <td class="paramname"><em>pitch</em> = <code>TPitch()</code></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TPitch&gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt;TPitch&gt;&gt;
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt;TPitch&gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt;TPitch&gt;&gt;
             </td>
         </tr>
       </table>
@@ -707,7 +707,7 @@ template&lt;typename TExtent , typename TView , typename TQueue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1view.html">view</a></li>
-    <li class="footer">Generated on Tue Oct 6 2020 08:07:24 for alpaka by
+    <li class="footer">Generated on Tue Oct 6 2020 15:31:56 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
