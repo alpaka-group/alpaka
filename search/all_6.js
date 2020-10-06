@@ -5,7 +5,7 @@ var searchData=
   ['ffs_3c_20intrinsicfallback_20_3e',['Ffs&lt; IntrinsicFallback &gt;',['../structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicFallback_01_4.html',1,'alpaka::intrinsic::traits']]],
   ['ffs_3c_20intrinsicuniformcudahipbuiltin_20_3e',['Ffs&lt; IntrinsicUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html',1,'alpaka::intrinsic::traits']]],
   ['ffsfallback',['ffsFallback',['../namespacealpaka_1_1intrinsic_1_1detail.html#ae350834103fb5a8c61e99475361666e1',1,'alpaka::intrinsic::detail']]],
-  ['fiberidtoidxmap',['FiberIdToIdxMap',['../classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#aa7e17cbbe183c9a104dd4887e8244f0c',1,'alpaka::idx::bt::IdxBtRefFiberIdMap']]],
+  ['fiberidtoidxmap',['FiberIdToIdxMap',['../classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html#a7aa8f59738c88bf194e3f670537847fa',1,'alpaka::bt::IdxBtRefFiberIdMap']]],
   ['fibers_2ehpp',['Fibers.hpp',['../Fibers_8hpp.html',1,'']]],
   ['filter',['Filter',['../namespacealpaka_1_1meta.html#a65e851602fef62781ed5eb23fb1d8fd6',1,'alpaka::meta']]],
   ['filter_2ehpp',['Filter.hpp',['../Filter_8hpp.html',1,'']]],

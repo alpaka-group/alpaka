@@ -1,6 +1,7 @@
 var namespacealpaka =
 [
     [ "block", "namespacealpaka_1_1block.html", "namespacealpaka_1_1block" ],
+    [ "bt", "namespacealpaka_1_1bt.html", "namespacealpaka_1_1bt" ],
     [ "concepts", "namespacealpaka_1_1concepts.html", "namespacealpaka_1_1concepts" ],
     [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cpu", "namespacealpaka_1_1cpu.html", "namespacealpaka_1_1cpu" ],
@@ -10,9 +11,9 @@ var namespacealpaka =
     [ "elem", "namespacealpaka_1_1elem.html", "namespacealpaka_1_1elem" ],
     [ "event", "namespacealpaka_1_1event.html", "namespacealpaka_1_1event" ],
     [ "extent", "namespacealpaka_1_1extent.html", "namespacealpaka_1_1extent" ],
+    [ "gb", "namespacealpaka_1_1gb.html", "namespacealpaka_1_1gb" ],
     [ "generic", "namespacealpaka_1_1generic.html", "namespacealpaka_1_1generic" ],
     [ "hierarchy", "namespacealpaka_1_1hierarchy.html", "namespacealpaka_1_1hierarchy" ],
-    [ "idx", "namespacealpaka_1_1idx.html", "namespacealpaka_1_1idx" ],
     [ "intrinsic", "namespacealpaka_1_1intrinsic.html", "namespacealpaka_1_1intrinsic" ],
     [ "kernel", "namespacealpaka_1_1kernel.html", "namespacealpaka_1_1kernel" ],
     [ "math", "namespacealpaka_1_1math.html", "namespacealpaka_1_1math" ],
@@ -44,6 +45,8 @@ var namespacealpaka =
     [ "ConceptAtomicBlocks", "structalpaka_1_1ConceptAtomicBlocks.html", null ],
     [ "ConceptAtomicGrids", "structalpaka_1_1ConceptAtomicGrids.html", null ],
     [ "ConceptAtomicThreads", "structalpaka_1_1ConceptAtomicThreads.html", null ],
+    [ "ConceptIdxBt", "structalpaka_1_1ConceptIdxBt.html", null ],
+    [ "ConceptIdxGb", "structalpaka_1_1ConceptIdxGb.html", null ],
     [ "ConceptPltf", "structalpaka_1_1ConceptPltf.html", null ],
     [ "ConceptUniformCudaHip", "structalpaka_1_1ConceptUniformCudaHip.html", null ],
     [ "ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],

@@ -1,4 +1,0 @@
-var structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1gb_1_1IdxGbLinear_3_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1gb_1_1IdxGbLinear_3_01TDim_00_01TIdx_01_4_01_4.html#a5ebe6c091e10fe57b30ff8fdf942d67b", null ]
-];

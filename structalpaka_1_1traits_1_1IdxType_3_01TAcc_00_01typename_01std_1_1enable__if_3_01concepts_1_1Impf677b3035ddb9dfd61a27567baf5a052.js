@@ -1,0 +1,5 @@
+var structalpaka_1_1traits_1_1IdxType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impf677b3035ddb9dfd61a27567baf5a052 =
+[
+    [ "ImplementationBase", "structalpaka_1_1traits_1_1IdxType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impf677b3035ddb9dfd61a27567baf5a052.html#a0b83742eb750213be842536b70fe3d47", null ],
+    [ "type", "structalpaka_1_1traits_1_1IdxType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01concepts_1_1Impf677b3035ddb9dfd61a27567baf5a052.html#aa6a19c6e475c31826307c5901e143e34", null ]
+];

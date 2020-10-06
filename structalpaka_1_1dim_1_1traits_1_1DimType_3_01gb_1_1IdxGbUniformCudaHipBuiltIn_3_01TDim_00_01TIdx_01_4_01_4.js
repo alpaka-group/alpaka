@@ -1,0 +1,4 @@
+var structalpaka_1_1dim_1_1traits_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4 =
+[
+    [ "type", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01gb_1_1IdxGbUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html#aae0ebb7a529e785c42b985b3fa0b079a", null ]
+];

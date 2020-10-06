@@ -1,6 +1,6 @@
 var structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f =
 [
-    [ "Idx", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a1eb70d14edc76743c04756059c5e94f6", null ],
+    [ "Idx", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a541e305d69105213a378656fe2c9fb13", null ],
     [ "MemcpyKind", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a380080ef7fddae13e8f03298342e9041", null ],
     [ "TaskCopyUniformCudaHip", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#a3079c72e64cd4e5b237aeb9942c3a0c3", null ],
     [ "enqueue", "structalpaka_1_1mem_1_1view_1_1uniform__cuda__hip_1_1detail_1_1TaskCopyUniformCudaHip_3_01dim_1_2efdf378c7cab3dc2b6b093e79813a5f.html#ad0dbf857597de91f92af043c5cfe9115", null ]

@@ -85,5 +85,5 @@ var searchData=
   ['expuniformcudahipbuiltin',['ExpUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1ExpUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
   ['expuniformcudahipbuiltin_2ehpp',['ExpUniformCudaHipBuiltIn.hpp',['../ExpUniformCudaHipBuiltIn_8hpp.html',1,'']]],
   ['extentelements',['extentElements',['../classalpaka_1_1mem_1_1buf_1_1BufOmp5.html#a594f75e51179878e8dcfe56e09af90ef',1,'alpaka::mem::buf::BufOmp5']]],
-  ['extentsize',['ExtentSize',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html#afe755b487436ee3fdf7972c0c0c3dfbd',1,'alpaka::mem::view::cpu::detail::TaskCopyCpuBase::ExtentSize()'],['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpuBase.html#a1bdbb79e1ec46f5ca27974096d2db18e',1,'alpaka::mem::view::cpu::detail::TaskSetCpuBase::ExtentSize()']]]
+  ['extentsize',['ExtentSize',['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpuBase.html#aaccca1ebd089d1c5850f7cdf4093fc39',1,'alpaka::mem::view::cpu::detail::TaskCopyCpuBase::ExtentSize()'],['../structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskSetCpuBase.html#ace0260b0649e31669224dfe3db061376',1,'alpaka::mem::view::cpu::detail::TaskSetCpuBase::ExtentSize()']]]
 ];

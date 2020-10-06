@@ -1,4 +1,0 @@
-var structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1idx_1_1traits_1_1IdxType_3_01idx_1_1bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html#ab8c52c96a3355c9c007f0d937023cf5a", null ]
-];

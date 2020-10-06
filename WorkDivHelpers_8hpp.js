@@ -6,7 +6,7 @@ var WorkDivHelpers_8hpp =
       [ "Unrestricted", "WorkDivHelpers_8hpp.html#a7ddf8c34b0f9662a298069afe5494b27a89c6caacc7047b0a535412d7f939f870", null ]
     ] ],
     [ "allDivisorsLessOrEqual", "WorkDivHelpers_8hpp.html#ab1d31914161c1f5c4cf6f71e7d1bfe50", null ],
-    [ "getValidWorkDiv", "WorkDivHelpers_8hpp.html#a3007d69476bca1632728411fd5feaf3a", null ],
+    [ "getValidWorkDiv", "WorkDivHelpers_8hpp.html#a10ac7c52f8ded0fb135547a87460f2f8", null ],
     [ "isValidAccDevProps", "WorkDivHelpers_8hpp.html#a49da61db606743ad5f75c6db33cfc043", null ],
     [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#abe4c3a3b90386720d53c5a5fc9426ce1", null ],
     [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#a378a4ed1bdce40639b3204d84a004d1c", null ],
