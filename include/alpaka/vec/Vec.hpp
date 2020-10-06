@@ -785,15 +785,15 @@ namespace alpaka
     namespace traits
     {
         //#############################################################################
-        //! Reverse specialization for Vec.
+        //! ReverseVec specialization for Vec.
         template<
             typename TDim,
             typename TVal>
-        struct Reverse<
+        struct ReverseVec<
             Vec<TDim, TVal>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto reverse(
+            ALPAKA_FN_HOST_ACC static auto reverseVec(
                 Vec<TDim, TVal> const & vec)
             -> Vec<TDim, TVal>
             {
@@ -806,14 +806,14 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! (Non-)Reverse specialization for 1D Vec.
+        //! (Non-)ReverseVec specialization for 1D Vec.
         template<
             typename TVal>
-        struct Reverse<
+        struct ReverseVec<
             Vec<DimInt<1u>, TVal>>
         {
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto reverse(
+            ALPAKA_FN_HOST_ACC static auto reverseVec(
                 Vec<DimInt<1u>, TVal> const & vec)
             -> Vec<DimInt<1u>, TVal>
             {
