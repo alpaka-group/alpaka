@@ -126,7 +126,7 @@ TEST_CASE("basicVecTraits", "[vec]")
     }
 
     //-----------------------------------------------------------------------------
-    // alpaka::concat
+    // alpaka::concatVec
     {
         using Dim2 = alpaka::DimInt<2u>;
         alpaka::Vec<Dim2, Idx> const vec2(
@@ -134,7 +134,7 @@ TEST_CASE("basicVecTraits", "[vec]")
             static_cast<Idx>(11u));
 
         auto const vecConcat(
-            alpaka::concat(
+            alpaka::concatVec(
                 vec,
                 vec2));
 

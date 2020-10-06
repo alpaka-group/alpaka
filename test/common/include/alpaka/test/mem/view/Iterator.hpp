@@ -139,7 +139,7 @@ namespace alpaka
                         // [ElemSize]
                         Vec<Dim1, Idx> const elementSizeVec(static_cast<Idx>(sizeof(Elem)));
                         // [py, px] ++ [ElemSize] -> [py, px, ElemSize]
-                        Vec<Dim, Idx> const dstPitchBytes(concat(pitchWithoutOutermost, elementSizeVec));
+                        Vec<Dim, Idx> const dstPitchBytes(concatVec(pitchWithoutOutermost, elementSizeVec));
                         // [py, px, ElemSize] [z, y, x] -> [py*z, px*y, ElemSize*x]
                         auto const dimensionalOffsetsInByte(currentIdxDimx * dstPitchBytes);
                         // sum{[py*z, px*y, ElemSize*x]} -> offset in byte
