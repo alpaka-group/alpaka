@@ -78,7 +78,7 @@ namespace alpaka
         // cannot determine which intrinsics are safe to use (depends on target), using fallback
         public IntrinsicFallback,
         public rand::RandStdLib,
-        public time::TimeOmp,
+        public TimeOmp,
         public warp::WarpSingleThread,
         public concepts::Implements<ConceptAcc, AccOmp5<TDim, TIdx>>
     {
@@ -114,7 +114,7 @@ namespace alpaka
                 block::st::BlockSharedMemStOmp5(staticMemBegin(), staticMemCapacity()),
                 block::BlockSyncBarrierOmp(),
                 rand::RandStdLib(),
-                time::TimeOmp()
+                TimeOmp()
         {}
 
     public:
