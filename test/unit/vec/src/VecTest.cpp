@@ -89,11 +89,11 @@ TEST_CASE("basicVecTraits", "[vec]")
     }
 
     //-----------------------------------------------------------------------------
-    // alpaka::cast
+    // alpaka::castVec
     {
         using SizeCast = std::uint16_t;
         auto const vecCast(
-            alpaka::cast<
+            alpaka::castVec<
                 SizeCast>(
                     vec));
 

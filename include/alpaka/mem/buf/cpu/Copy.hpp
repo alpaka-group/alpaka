@@ -89,8 +89,8 @@ namespace alpaka
                             m_dstMemNative(reinterpret_cast<std::uint8_t *>(view::getPtrNative(viewDst))),
                             m_srcMemNative(reinterpret_cast<std::uint8_t const *>(view::getPtrNative(viewSrc)))
                     {
-                        ALPAKA_ASSERT((cast<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
-                        ALPAKA_ASSERT((cast<SrcSize>(m_extent) <= m_srcExtent).foldrAll(std::logical_or<bool>()));
+                        ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
+                        ALPAKA_ASSERT((castVec<SrcSize>(m_extent) <= m_srcExtent).foldrAll(std::logical_or<bool>()));
                         ALPAKA_ASSERT(static_cast<DstSize>(m_extentWidthBytes) <= m_dstPitchBytes[TDim::value - 1u]);
                         ALPAKA_ASSERT(static_cast<SrcSize>(m_extentWidthBytes) <= m_srcPitchBytes[TDim::value - 1u]);
                     }
@@ -167,8 +167,8 @@ namespace alpaka
                                 [&](Vec<DimMin1, ExtentSize> const & idx)
                                 {
                                     std::memcpy(
-                                        reinterpret_cast<void *>(this->m_dstMemNative + (cast<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
-                                        reinterpret_cast<void const *>(this->m_srcMemNative + (cast<SrcSize>(idx) * srcPitchBytesWithoutOutmost).foldrAll(std::plus<SrcSize>())),
+                                        reinterpret_cast<void *>(this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
+                                        reinterpret_cast<void const *>(this->m_srcMemNative + (castVec<SrcSize>(idx) * srcPitchBytesWithoutOutmost).foldrAll(std::plus<SrcSize>())),
                                         static_cast<std::size_t>(this->m_extentWidthBytes));
                                 });
                         }

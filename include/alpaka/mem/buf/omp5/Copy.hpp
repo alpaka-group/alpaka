@@ -77,15 +77,15 @@ namespace alpaka
                         int const & iSrcDevice) :
                             m_iDstDevice(iDstDevice),
                             m_iSrcDevice(iSrcDevice),
-                            m_extent(cast<size_t>(extent::getExtentVec(extent))),
-                            m_dstPitchBytes(cast<size_t>(view::getPitchBytesVec(viewDst))),
-                            m_srcPitchBytes(cast<size_t>(view::getPitchBytesVec(viewSrc))),
+                            m_extent(castVec<size_t>(extent::getExtentVec(extent))),
+                            m_dstPitchBytes(castVec<size_t>(view::getPitchBytesVec(viewDst))),
+                            m_srcPitchBytes(castVec<size_t>(view::getPitchBytesVec(viewSrc))),
                             m_dstMemNative(reinterpret_cast<void *>(view::getPtrNative(viewDst))),
                             m_srcMemNative(reinterpret_cast<void const *>(view::getPtrNative(viewSrc)))
                     {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        const auto dstExtent(cast<size_t>(extent::getExtentVec(viewDst)));
-                        const auto srcExtent(cast<size_t>(extent::getExtentVec(viewSrc)));
+                        const auto dstExtent(castVec<size_t>(extent::getExtentVec(viewDst)));
+                        const auto srcExtent(castVec<size_t>(extent::getExtentVec(viewSrc)));
                         for(auto i = static_cast<decltype(TDim::value)>(0u); i < TDim::value; ++i)
                         {
                             ALPAKA_ASSERT(m_extent[i] <= dstExtent[i]);

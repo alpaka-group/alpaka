@@ -716,18 +716,18 @@ namespace alpaka
     namespace traits
     {
         //#############################################################################
-        //! Cast specialization for Vec.
+        //! CastVec specialization for Vec.
         template<
             typename TSizeNew,
             typename TDim,
             typename TVal>
-        struct Cast<
+        struct CastVec<
             TSizeNew,
             Vec<TDim, TVal>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto cast(
+            ALPAKA_FN_HOST_ACC static auto castVec(
                 Vec<TDim, TVal> const & vec)
             -> Vec<TDim, TSizeNew>
             {
@@ -741,18 +741,18 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! (Non-)Cast specialization for Vec when src and dst types are identical.
+        //! (Non-)CastVec specialization for Vec when src and dst types are identical.
         //#############################################################################
         template<
             typename TDim,
             typename TVal>
-        struct Cast<
+        struct CastVec<
             TVal,
             Vec<TDim, TVal>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto cast(
+            ALPAKA_FN_HOST_ACC static auto castVec(
                 Vec<TDim, TVal> const & vec)
             -> Vec<TDim, TVal>
             {

@@ -112,7 +112,7 @@ namespace alpaka
             {
                 alpaka::ignore_unused(workDiv);
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                return cast<TIdx>(extent::getExtentVecEnd<TDim>(gridDim));
+                return castVec<TIdx>(extent::getExtentVecEnd<TDim>(gridDim));
 #else
                 return extent::getExtentVecEnd<TDim>(
                     Vec<
@@ -142,7 +142,7 @@ namespace alpaka
             {
                 alpaka::ignore_unused(workDiv);
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
-                return cast<TIdx>(extent::getExtentVecEnd<TDim>(blockDim));
+                return castVec<TIdx>(extent::getExtentVecEnd<TDim>(blockDim));
 #else
                 return extent::getExtentVecEnd<TDim>(
                     Vec<
