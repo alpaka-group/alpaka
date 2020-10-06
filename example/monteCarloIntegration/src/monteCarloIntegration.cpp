@@ -121,7 +121,7 @@ auto main() -> int
     using Vec = alpaka::Vec<
         Dim,
         Idx>;
-    using Acc = alpaka::example::ExampleDefaultAcc<
+    using Acc = alpaka::ExampleDefaultAcc<
         Dim,
         Idx>;
     using Host = alpaka::DevCpu;

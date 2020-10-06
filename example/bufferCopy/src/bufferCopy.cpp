@@ -152,7 +152,7 @@ auto main()
     // - AccCpuTbbBlocks
     // - AccCpuSerial
     // using Acc = alpaka::AccCpuSerial<Dim, Idx>;
-    using Acc = alpaka::example::ExampleDefaultAcc<Dim, Idx>;
+    using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     std::cout << "Using alpaka accelerator: " << alpaka::getAccName<Acc>() << std::endl;
     // Defines the synchronization behavior of a queue
     //
