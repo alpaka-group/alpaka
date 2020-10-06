@@ -45,7 +45,7 @@ namespace alpaka
         template<
             typename TVec,
             typename TSfinae = void>
-        struct Reverse;
+        struct ReverseVec;
 
         //#############################################################################
         //! Trait for concatenating two vectors.
@@ -144,17 +144,17 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    //! \return The reverse vector.
+    //! \return The reverseVec vector.
     ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TVec>
-    ALPAKA_FN_HOST_ACC auto reverse(
+    ALPAKA_FN_HOST_ACC auto reverseVec(
         TVec const & vec)
     {
         return
-            traits::Reverse<
+            traits::ReverseVec<
                 TVec>
-            ::reverse(
+            ::reverseVec(
                 vec);
     }
 

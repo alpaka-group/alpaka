@@ -113,10 +113,10 @@ TEST_CASE("basicVecTraits", "[vec]")
     }
 
     //-----------------------------------------------------------------------------
-    // alpaka::reverse
+    // alpaka::reverseVec
     {
         auto const vecReverse(
-            alpaka::reverse(
+            alpaka::reverseVec(
                 vec));
 
         for(typename Dim::value_type i(0); i < Dim::value; ++i)
