@@ -38,7 +38,7 @@ namespace alpaka
             typename TVal,
             typename TVec,
             typename TSfinae = void>
-        struct Cast;
+        struct CastVec;
 
         //#############################################################################
         //! Trait for reversing a vector.
@@ -132,14 +132,14 @@ namespace alpaka
     template<
         typename TVal,
         typename TVec>
-    ALPAKA_FN_HOST_ACC auto cast(
+    ALPAKA_FN_HOST_ACC auto castVec(
         TVec const & vec)
     {
         return
-            traits::Cast<
+            traits::CastVec<
                 TVal,
                 TVec>
-            ::cast(
+            ::castVec(
                 vec);
     }
 

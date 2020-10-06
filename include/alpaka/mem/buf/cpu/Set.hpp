@@ -72,7 +72,7 @@ namespace alpaka
                             m_dstPitchBytes(view::getPitchBytesVec(view)),
                             m_dstMemNative(reinterpret_cast<std::uint8_t *>(view::getPtrNative(view)))
                     {
-                        ALPAKA_ASSERT((cast<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
+                        ALPAKA_ASSERT((castVec<DstSize>(m_extent) <= m_dstExtent).foldrAll(std::logical_or<bool>()));
                         ALPAKA_ASSERT(m_extentWidthBytes <= m_dstPitchBytes[TDim::value - 1u]);
                     }
 
@@ -138,7 +138,7 @@ namespace alpaka
                                 {
 
                                     memset(
-                                        reinterpret_cast<void *>(this->m_dstMemNative + (cast<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
+                                        reinterpret_cast<void *>(this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
                                         this->m_byte,
                                         static_cast<std::size_t>(this->m_extentWidthBytes));
                                 });
