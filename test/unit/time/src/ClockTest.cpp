@@ -28,11 +28,11 @@ public:
     -> void
     {
         std::uint64_t const start(
-            alpaka::time::clock(acc));
+            alpaka::clock(acc));
         ALPAKA_CHECK(*success, 0u != start);
 
         std::uint64_t const end(
-            alpaka::time::clock(acc));
+            alpaka::clock(acc));
         ALPAKA_CHECK(*success, 0u != end);
 
         // 'end' has to be greater equal 'start'.

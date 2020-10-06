@@ -25,48 +25,45 @@
 
 namespace alpaka
 {
-    namespace time
+    //#############################################################################
+    //! The GPU CUDA accelerator time implementation.
+    class TimeUniformCudaHipBuiltIn : public concepts::Implements<ConceptTime, TimeUniformCudaHipBuiltIn>
+    {
+    public:
+        //-----------------------------------------------------------------------------
+        TimeUniformCudaHipBuiltIn() = default;
+        //-----------------------------------------------------------------------------
+        __device__ TimeUniformCudaHipBuiltIn(TimeUniformCudaHipBuiltIn const &) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ TimeUniformCudaHipBuiltIn(TimeUniformCudaHipBuiltIn &&) = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(TimeUniformCudaHipBuiltIn const &) -> TimeUniformCudaHipBuiltIn & = delete;
+        //-----------------------------------------------------------------------------
+        __device__ auto operator=(TimeUniformCudaHipBuiltIn &&) -> TimeUniformCudaHipBuiltIn & = delete;
+        //-----------------------------------------------------------------------------
+        /*virtual*/ ~TimeUniformCudaHipBuiltIn() = default;
+    };
+
+    namespace traits
     {
         //#############################################################################
-        //! The GPU CUDA accelerator time implementation.
-        class TimeUniformCudaHipBuiltIn : public concepts::Implements<ConceptTime, TimeUniformCudaHipBuiltIn>
+        //! The CUDA built-in clock operation.
+        template<>
+        struct Clock<
+            TimeUniformCudaHipBuiltIn>
         {
-        public:
             //-----------------------------------------------------------------------------
-            TimeUniformCudaHipBuiltIn() = default;
-            //-----------------------------------------------------------------------------
-            __device__ TimeUniformCudaHipBuiltIn(TimeUniformCudaHipBuiltIn const &) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ TimeUniformCudaHipBuiltIn(TimeUniformCudaHipBuiltIn &&) = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(TimeUniformCudaHipBuiltIn const &) -> TimeUniformCudaHipBuiltIn & = delete;
-            //-----------------------------------------------------------------------------
-            __device__ auto operator=(TimeUniformCudaHipBuiltIn &&) -> TimeUniformCudaHipBuiltIn & = delete;
-            //-----------------------------------------------------------------------------
-            /*virtual*/ ~TimeUniformCudaHipBuiltIn() = default;
-        };
-
-        namespace traits
-        {
-            //#############################################################################
-            //! The CUDA built-in clock operation.
-            template<>
-            struct Clock<
-                time::TimeUniformCudaHipBuiltIn>
+            __device__ static auto clock(
+                TimeUniformCudaHipBuiltIn const &)
+            -> std::uint64_t
             {
-                //-----------------------------------------------------------------------------
-                __device__ static auto clock(
-                    time::TimeUniformCudaHipBuiltIn const &)
-                -> std::uint64_t
-                {
-                    // This can be converted to a wall-clock time in seconds by dividing through the shader clock rate given by uniformCudaHipDeviceProp::clockRate.
-                    // This clock rate is double the main clock rate on Fermi and older cards. 
-                    return
-                        static_cast<std::uint64_t>(
-                            clock64());
-                }
-            };
-        }
+                // This can be converted to a wall-clock time in seconds by dividing through the shader clock rate given by uniformCudaHipDeviceProp::clockRate.
+                // This clock rate is double the main clock rate on Fermi and older cards. 
+                return
+                    static_cast<std::uint64_t>(
+                        clock64());
+            }
+        };
     }
 }
 

@@ -81,7 +81,7 @@ namespace alpaka
         public block::BlockSyncBarrierOmp,
         public IntrinsicCpu,
         public rand::RandStdLib,
-        public time::TimeOmp,
+        public TimeOmp,
         public warp::WarpSingleThread,
         public concepts::Implements<ConceptAcc, AccCpuOmp2Threads<TDim, TIdx>>
     {
@@ -117,7 +117,7 @@ namespace alpaka
                     [](){return (::omp_get_thread_num() == 0);}),
                 block::BlockSyncBarrierOmp(),
                 rand::RandStdLib(),
-                time::TimeOmp(),
+                TimeOmp(),
                 m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {}
 

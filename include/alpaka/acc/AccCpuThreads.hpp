@@ -76,7 +76,7 @@ namespace alpaka
         public block::BlockSyncBarrierThread<TIdx>,
         public IntrinsicCpu,
         public rand::RandStdLib,
-        public time::TimeStdLib,
+        public TimeStdLib,
         public warp::WarpSingleThread,
         public concepts::Implements<ConceptAcc, AccCpuThreads<TDim, TIdx>>
     {
@@ -113,7 +113,7 @@ namespace alpaka
                 block::BlockSyncBarrierThread<TIdx>(
                     getWorkDiv<Block, Threads>(workDiv).prod()),
                 rand::RandStdLib(),
-                time::TimeStdLib(),
+                TimeStdLib(),
                 m_gridBlockIdx(Vec<TDim, TIdx>::zeros())
         {}
 
