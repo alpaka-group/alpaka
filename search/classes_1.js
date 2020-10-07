@@ -10,7 +10,7 @@ var searchData=
   ['blocksharedmemdynmember',['BlockSharedMemDynMember',['../classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynMember.html',1,'alpaka::block::dyn']]],
   ['blocksharedmemdynmember_3c_3e',['BlockSharedMemDynMember&lt;&gt;',['../classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynMember.html',1,'alpaka::block::dyn']]],
   ['blocksharedmemdynmemberstatic',['BlockSharedMemDynMemberStatic',['../structalpaka_1_1block_1_1dyn_1_1detail_1_1BlockSharedMemDynMemberStatic.html',1,'alpaka::block::dyn::detail']]],
-  ['blocksharedmemdynsizebytes',['BlockSharedMemDynSizeBytes',['../structalpaka_1_1kernel_1_1traits_1_1BlockSharedMemDynSizeBytes.html',1,'alpaka::kernel::traits']]],
+  ['blocksharedmemdynsizebytes',['BlockSharedMemDynSizeBytes',['../structalpaka_1_1traits_1_1BlockSharedMemDynSizeBytes.html',1,'alpaka::traits']]],
   ['blocksharedmemdynuniformcudahipbuiltin',['BlockSharedMemDynUniformCudaHipBuiltIn',['../classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynUniformCudaHipBuiltIn.html',1,'alpaka::block::dyn']]],
   ['blocksharedmemstmastersync',['BlockSharedMemStMasterSync',['../classalpaka_1_1block_1_1st_1_1BlockSharedMemStMasterSync.html',1,'alpaka::block::st']]],
   ['blocksharedmemstmember',['BlockSharedMemStMember',['../classalpaka_1_1block_1_1st_1_1BlockSharedMemStMember.html',1,'alpaka::block::st']]],

@@ -106,6 +106,12 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:af9741bdf6dda9699e1dd8ca18d81d16a"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:af9741bdf6dda9699e1dd8ca18d81d16a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#af9741bdf6dda9699e1dd8ca18d81d16a">checkVecOnly3Dim</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;vec) -&gt; void</td></tr>
+<tr class="separator:af9741bdf6dda9699e1dd8ca18d81d16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a552124cfd6ee8654baa53bc1710c0974"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a552124cfd6ee8654baa53bc1710c0974"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">convertVecToUniformCudaHipDim</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;vec) -&gt; dim3</td></tr>
+<tr class="separator:a552124cfd6ee8654baa53bc1710c0974"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4036712750530f0a63110f5bff29bb65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a4036712750530f0a63110f5bff29bb65">rtCheck</a> (<a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a48180eda98f53c8391a17fa921d7b958">Error_t</a> const &amp;error, char const *desc, char const *file, int const &amp;line) -&gt; void</td></tr>
 <tr class="memdesc:a4036712750530f0a63110f5bff29bb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA/HIP runtime API error checking with log and exception, ignoring specific error values.  <a href="#a4036712750530f0a63110f5bff29bb65">More...</a><br /></td></tr>
 <tr class="separator:a4036712750530f0a63110f5bff29bb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,6 +122,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a9d839d8290f20b3b3ad31cf9340f3fe7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">rtCheckLastError</a> (char const *desc, char const *file, int const &amp;line) -&gt; void</td></tr>
 <tr class="memdesc:a9d839d8290f20b3b3ad31cf9340f3fe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA runtime API last error checking with log and exception.  <a href="#a9d839d8290f20b3b3ad31cf9340f3fe7">More...</a><br /></td></tr>
 <tr class="separator:a9d839d8290f20b3b3ad31cf9340f3fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94f1a94fcf60238ad55f243f42d46219"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a94f1a94fcf60238ad55f243f42d46219"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a94f1a94fcf60238ad55f243f42d46219">uniformCudaHipKernel</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs ... args)</td></tr>
+<tr class="memdesc:a94f1a94fcf60238ad55f243f42d46219"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP kernel entry point.  <a href="#a94f1a94fcf60238ad55f243f42d46219">More...</a><br /></td></tr>
+<tr class="separator:a94f1a94fcf60238ad55f243f42d46219"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a48180eda98f53c8391a17fa921d7b958"></a>
@@ -135,6 +145,52 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="af9741bdf6dda9699e1dd8ca18d81d16a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9741bdf6dda9699e1dd8ca18d81d16a">&#9670;&nbsp;</a></span>checkVecOnly3Dim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TIdx &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::uniform_cuda_hip::detail::checkVecOnly3Dim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td> -&gt; void
+            </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00111">111</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a552124cfd6ee8654baa53bc1710c0974"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a552124cfd6ee8654baa53bc1710c0974">&#9670;&nbsp;</a></span>convertVecToUniformCudaHipDim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim , typename TIdx &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>vec</em></td><td>)</td>
+          <td> -&gt; dim3
+            </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00129">129</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a4036712750530f0a63110f5bff29bb65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4036712750530f0a63110f5bff29bb65">&#9670;&nbsp;</a></span>rtCheck()</h2>
 
@@ -288,13 +344,53 @@ template&lt;typename... TErrors&gt; </div>
 
 </div>
 </div>
+<a id="a94f1a94fcf60238ad55f243f42d46219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94f1a94fcf60238ad55f243f42d46219">&#9670;&nbsp;</a></span>uniformCudaHipKernel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">__global__ void alpaka::uniform_cuda_hip::detail::uniformCudaHipKernel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TIdx &gt; const&#160;</td>
+          <td class="paramname"><em>threadElemExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TKernelFnObj const&#160;</td>
+          <td class="paramname"><em>kernelFnObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The GPU CUDA/HIP kernel entry point. </p>
+
+<p class="definition">Definition at line <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html#l00080">80</a> of file <a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp_source.html">TaskKernelGpuUniformCudaHipRt.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip.html">uniform_cuda_hip</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Oct 6 2020 15:31:57 for alpaka by
+    <li class="footer">Generated on Wed Oct 7 2020 06:55:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

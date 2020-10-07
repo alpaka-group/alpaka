@@ -5,5 +5,5 @@ var classalpaka_1_1AccCpuThreads =
     [ "~AccCpuThreads", "classalpaka_1_1AccCpuThreads.html#ad7d4aaa0cf049aae832912bc92e7cc8a", null ],
     [ "operator=", "classalpaka_1_1AccCpuThreads.html#a9fbf237b44b3c0f272fa89bc6ed1056e", null ],
     [ "operator=", "classalpaka_1_1AccCpuThreads.html#a440beddab5e6ca95d0521470453680fa", null ],
-    [ "::alpaka::kernel::TaskKernelCpuThreads", "classalpaka_1_1AccCpuThreads.html#abf606adfbab23375e243ad5d5e2f3d8c", null ]
+    [ "::alpaka::TaskKernelCpuThreads", "classalpaka_1_1AccCpuThreads.html#a57c0413533842a81c69635331c9ea56d", null ]
 ];

@@ -1,4 +1,0 @@
-var structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "operator()", "structalpaka_1_1kernel_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#af75f2aa1a11cbe65734da4c77668b424", null ]
-];

@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDi82d64ffa93836efd4ab131c824f37a87 =
-[
-    [ "type", "structalpaka_1_1traits_1_1PltfType_3_01kernel_1_1TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDi82d64ffa93836efd4ab131c824f37a87.html#a476b1569813e4ff111fd3b2ae05d7ca9", null ]
-];

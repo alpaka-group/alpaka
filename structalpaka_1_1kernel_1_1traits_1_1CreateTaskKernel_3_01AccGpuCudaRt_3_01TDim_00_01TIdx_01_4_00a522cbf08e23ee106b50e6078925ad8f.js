@@ -1,4 +1,0 @@
-var structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_00a522cbf08e23ee106b50e6078925ad8f =
-[
-    [ "createTaskKernel", "structalpaka_1_1kernel_1_1traits_1_1CreateTaskKernel_3_01AccGpuCudaRt_3_01TDim_00_01TIdx_01_4_00a522cbf08e23ee106b50e6078925ad8f.html#a09b0c4ba266259ec06179f0301c483dc", null ]
-];
