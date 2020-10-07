@@ -1,4 +1,0 @@
-var structalpaka_1_1mem_1_1buf_1_1traits_1_1Unmap_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01a09236dde6ac517b629e255997afb115 =
-[
-    [ "unmap", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Unmap_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01a09236dde6ac517b629e255997afb115.html#ae778a956d21990af547c245aacb58548", null ]
-];

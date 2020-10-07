@@ -1,0 +1,4 @@
+var structalpaka_1_1buf_1_1traits_1_1Map_3_01buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdc71afe0d5ef28205665193c1fb7091a4 =
+[
+    [ "map", "structalpaka_1_1buf_1_1traits_1_1Map_3_01buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdc71afe0d5ef28205665193c1fb7091a4.html#a51352f4d1b0c6a1d3e1ee6bc4e492518", null ]
+];

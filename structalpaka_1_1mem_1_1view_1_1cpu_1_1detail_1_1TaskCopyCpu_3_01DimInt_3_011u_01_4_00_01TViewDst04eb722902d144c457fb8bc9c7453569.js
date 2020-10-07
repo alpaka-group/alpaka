@@ -1,4 +1,0 @@
-var structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst04eb722902d144c457fb8bc9c7453569 =
-[
-    [ "operator()", "structalpaka_1_1mem_1_1view_1_1cpu_1_1detail_1_1TaskCopyCpu_3_01DimInt_3_011u_01_4_00_01TViewDst04eb722902d144c457fb8bc9c7453569.html#a2b5bd6480118ee82a27ab77b7c75e96c", null ]
-];

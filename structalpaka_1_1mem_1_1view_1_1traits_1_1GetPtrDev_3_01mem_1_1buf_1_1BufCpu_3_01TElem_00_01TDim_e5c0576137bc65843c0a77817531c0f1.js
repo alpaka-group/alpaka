@@ -1,5 +1,0 @@
-var structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_e5c0576137bc65843c0a77817531c0f1 =
-[
-    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_e5c0576137bc65843c0a77817531c0f1.html#a3684c1449aada639b4450aba2bbf416f", null ],
-    [ "getPtrDev", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrDev_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_e5c0576137bc65843c0a77817531c0f1.html#a61f67b93761f5f9a5b0148326e06b1b9", null ]
-];

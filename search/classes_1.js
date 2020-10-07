@@ -26,13 +26,13 @@ var searchData=
   ['blocksyncbarrierthread',['BlockSyncBarrierThread',['../classalpaka_1_1block_1_1BlockSyncBarrierThread.html',1,'alpaka::block']]],
   ['blocksyncnoop',['BlockSyncNoOp',['../classalpaka_1_1block_1_1BlockSyncNoOp.html',1,'alpaka::block']]],
   ['blocksyncuniformcudahipbuiltin',['BlockSyncUniformCudaHipBuiltIn',['../classalpaka_1_1block_1_1BlockSyncUniformCudaHipBuiltIn.html',1,'alpaka::block']]],
-  ['bufcpu',['BufCpu',['../classalpaka_1_1mem_1_1buf_1_1BufCpu.html',1,'alpaka::mem::buf']]],
-  ['bufcpuimpl',['BufCpuImpl',['../classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html',1,'alpaka::mem::buf::cpu::detail']]],
-  ['bufomp5',['BufOmp5',['../classalpaka_1_1mem_1_1buf_1_1BufOmp5.html',1,'alpaka::mem::buf']]],
-  ['bufomp5impl',['BufOmp5Impl',['../classalpaka_1_1mem_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html',1,'alpaka::mem::buf::omp5::detail']]],
-  ['buftype',['BufType',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType.html',1,'alpaka::mem::buf::traits']]],
-  ['buftype_3c_20devcpu_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevCpu, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
-  ['buftype_3c_20devomp5_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevOmp5, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
-  ['buftype_3c_20devuniformcudahiprt_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevUniformCudaHipRt, TElem, TDim, TIdx &gt;',['../structalpaka_1_1mem_1_1buf_1_1traits_1_1BufType_3_01DevUniformCudaHipRt_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::mem::buf::traits']]],
-  ['bufuniformcudahiprt',['BufUniformCudaHipRt',['../classalpaka_1_1mem_1_1buf_1_1BufUniformCudaHipRt.html',1,'alpaka::mem::buf']]]
+  ['bufcpu',['BufCpu',['../classalpaka_1_1buf_1_1BufCpu.html',1,'alpaka::buf']]],
+  ['bufcpuimpl',['BufCpuImpl',['../classalpaka_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html',1,'alpaka::buf::cpu::detail']]],
+  ['bufomp5',['BufOmp5',['../classalpaka_1_1buf_1_1BufOmp5.html',1,'alpaka::buf']]],
+  ['bufomp5impl',['BufOmp5Impl',['../classalpaka_1_1buf_1_1omp5_1_1detail_1_1BufOmp5Impl.html',1,'alpaka::buf::omp5::detail']]],
+  ['buftype',['BufType',['../structalpaka_1_1buf_1_1traits_1_1BufType.html',1,'alpaka::buf::traits']]],
+  ['buftype_3c_20devcpu_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevCpu, TElem, TDim, TIdx &gt;',['../structalpaka_1_1buf_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::buf::traits']]],
+  ['buftype_3c_20devomp5_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevOmp5, TElem, TDim, TIdx &gt;',['../structalpaka_1_1buf_1_1traits_1_1BufType_3_01DevOmp5_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::buf::traits']]],
+  ['buftype_3c_20devuniformcudahiprt_2c_20telem_2c_20tdim_2c_20tidx_20_3e',['BufType&lt; DevUniformCudaHipRt, TElem, TDim, TIdx &gt;',['../structalpaka_1_1buf_1_1traits_1_1BufType_3_01DevUniformCudaHipRt_00_01TElem_00_01TDim_00_01TIdx_01_4.html',1,'alpaka::buf::traits']]],
+  ['bufuniformcudahiprt',['BufUniformCudaHipRt',['../classalpaka_1_1buf_1_1BufUniformCudaHipRt.html',1,'alpaka::buf']]]
 ];

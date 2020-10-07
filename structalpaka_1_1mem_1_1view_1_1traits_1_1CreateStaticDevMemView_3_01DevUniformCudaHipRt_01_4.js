@@ -1,4 +1,0 @@
-var structalpaka_1_1mem_1_1view_1_1traits_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_01_4 =
-[
-    [ "createStaticDevMemView", "structalpaka_1_1mem_1_1view_1_1traits_1_1CreateStaticDevMemView_3_01DevUniformCudaHipRt_01_4.html#abda6d3e9be10a5870219c61f80209ccc", null ]
-];

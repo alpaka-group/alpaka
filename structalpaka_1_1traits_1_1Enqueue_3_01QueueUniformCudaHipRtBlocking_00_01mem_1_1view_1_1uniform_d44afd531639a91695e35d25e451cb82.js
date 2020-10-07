@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01mem_1_1view_1_1uniform_d44afd531639a91695e35d25e451cb82 =
-[
-    [ "enqueue", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01mem_1_1view_1_1uniform_d44afd531639a91695e35d25e451cb82.html#a220267bdc75448f3928949962fc481df", null ]
-];

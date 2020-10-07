@@ -1,4 +1,0 @@
-var structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufOmp5_3608381fab4de819a62e592fe7a9713fa =
-[
-    [ "getOffset", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdxIntegralConst_00_01mem_1_1buf_1_1BufOmp5_3608381fab4de819a62e592fe7a9713fa.html#a1548734ceea6d5b99b462d69705ff4cb", null ]
-];

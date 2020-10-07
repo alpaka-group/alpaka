@@ -1,7 +1,9 @@
 var namespacealpaka =
 [
+    [ "alloc", "namespacealpaka_1_1alloc.html", "namespacealpaka_1_1alloc" ],
     [ "block", "namespacealpaka_1_1block.html", "namespacealpaka_1_1block" ],
     [ "bt", "namespacealpaka_1_1bt.html", "namespacealpaka_1_1bt" ],
+    [ "buf", "namespacealpaka_1_1buf.html", "namespacealpaka_1_1buf" ],
     [ "concepts", "namespacealpaka_1_1concepts.html", "namespacealpaka_1_1concepts" ],
     [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cpu", "namespacealpaka_1_1cpu.html", "namespacealpaka_1_1cpu" ],
@@ -15,7 +17,6 @@ var namespacealpaka =
     [ "hierarchy", "namespacealpaka_1_1hierarchy.html", "namespacealpaka_1_1hierarchy" ],
     [ "intrinsic", "namespacealpaka_1_1intrinsic.html", "namespacealpaka_1_1intrinsic" ],
     [ "math", "namespacealpaka_1_1math.html", "namespacealpaka_1_1math" ],
-    [ "mem", "namespacealpaka_1_1mem.html", "namespacealpaka_1_1mem" ],
     [ "meta", "namespacealpaka_1_1meta.html", "namespacealpaka_1_1meta" ],
     [ "offset", "namespacealpaka_1_1offset.html", "namespacealpaka_1_1offset" ],
     [ "omp5", "namespacealpaka_1_1omp5.html", "namespacealpaka_1_1omp5" ],
@@ -24,6 +25,7 @@ var namespacealpaka =
     [ "time", "namespacealpaka_1_1time.html", "namespacealpaka_1_1time" ],
     [ "traits", "namespacealpaka_1_1traits.html", "namespacealpaka_1_1traits" ],
     [ "uniform_cuda_hip", "namespacealpaka_1_1uniform__cuda__hip.html", "namespacealpaka_1_1uniform__cuda__hip" ],
+    [ "view", "namespacealpaka_1_1view.html", "namespacealpaka_1_1view" ],
     [ "warp", "namespacealpaka_1_1warp.html", "namespacealpaka_1_1warp" ],
     [ "AccCpuFibers", "classalpaka_1_1AccCpuFibers.html", "classalpaka_1_1AccCpuFibers" ],
     [ "AccCpuOmp2Blocks", "classalpaka_1_1AccCpuOmp2Blocks.html", "classalpaka_1_1AccCpuOmp2Blocks" ],

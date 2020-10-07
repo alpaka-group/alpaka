@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1GetDev_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "getDev", "structalpaka_1_1traits_1_1GetDev_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a0c251e6f708d3620c8d584b0ac01269b", null ]
-];

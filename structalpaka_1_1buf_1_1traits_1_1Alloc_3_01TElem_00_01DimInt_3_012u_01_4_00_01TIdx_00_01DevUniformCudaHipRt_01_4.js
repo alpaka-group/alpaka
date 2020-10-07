@@ -1,0 +1,4 @@
+var structalpaka_1_1buf_1_1traits_1_1Alloc_3_01TElem_00_01DimInt_3_012u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4 =
+[
+    [ "alloc", "structalpaka_1_1buf_1_1traits_1_1Alloc_3_01TElem_00_01DimInt_3_012u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html#a1f10a2e5d902a4eaa5ee800e00bb3529", null ]
+];
