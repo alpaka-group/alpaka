@@ -1,4 +1,0 @@
-var structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericTe3bdd2013e9f60131143d51c4e4292a7 =
-[
-    [ "waiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01alpaka_1_1generic_1_1detail_1_1QueueGenericTe3bdd2013e9f60131143d51c4e4292a7.html#a45dd46d8de2979522918de1b56439139", null ]
-];

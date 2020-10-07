@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4 =
+[
+    [ "currentThreadWaitFor", "structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01uniform__cuda__hip_1_1detail_1_1QueueUniformCudaHipRtBase_01_4.html#a79d369add6e5765fc9a86cdbf39fcdaf", null ]
+];

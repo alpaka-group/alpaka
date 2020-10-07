@@ -1,8 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structalpaka_1_1block_1_1st_1_1traits_1_1AllocVar.html":[3,0,0,0,2,1,0],
-"structalpaka_1_1block_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html":[3,0,0,0,2,1,1],
-"structalpaka_1_1block_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html#ac86c80829008c28964bf747e51809559":[3,0,0,0,2,1,1,0],
 "structalpaka_1_1block_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemba3b315a870b1f05db909e796bb53d248.html":[3,0,0,0,2,1,2],
 "structalpaka_1_1block_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemba3b315a870b1f05db909e796bb53d248.html#ab31f0d3f9d5eaf5b367b921d23498329":[3,0,0,0,2,1,2,0],
 "structalpaka_1_1block_1_1st_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4.html":[3,0,0,0,2,1,3],
@@ -249,5 +246,8 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1math_1_1ConceptMathLog.html":[3,0,0,14,27],
 "structalpaka_1_1math_1_1ConceptMathMax.html":[3,0,0,14,28],
 "structalpaka_1_1math_1_1ConceptMathMin.html":[3,0,0,14,29],
-"structalpaka_1_1math_1_1ConceptMathPow.html":[3,0,0,14,30]
+"structalpaka_1_1math_1_1ConceptMathPow.html":[3,0,0,14,30],
+"structalpaka_1_1math_1_1ConceptMathRemainder.html":[3,0,0,14,31],
+"structalpaka_1_1math_1_1ConceptMathRound.html":[3,0,0,14,32],
+"structalpaka_1_1math_1_1ConceptMathRsqrt.html":[3,0,0,14,33]
 };

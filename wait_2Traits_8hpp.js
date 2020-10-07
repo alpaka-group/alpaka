@@ -1,8 +1,8 @@
 var wait_2Traits_8hpp =
 [
-    [ "ConceptCurrentThreadWaitFor", "structalpaka_1_1wait_1_1ConceptCurrentThreadWaitFor.html", null ],
-    [ "CurrentThreadWaitFor", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor.html", null ],
-    [ "WaiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor.html", null ],
-    [ "wait", "wait_2Traits_8hpp.html#ae25cb34b78259b569c6af88afe8456ec", null ],
-    [ "wait", "wait_2Traits_8hpp.html#a7e154839968489e62ac5ca552b4c9f3c", null ]
+    [ "ConceptCurrentThreadWaitFor", "structalpaka_1_1ConceptCurrentThreadWaitFor.html", null ],
+    [ "CurrentThreadWaitFor", "structalpaka_1_1traits_1_1CurrentThreadWaitFor.html", null ],
+    [ "WaiterWaitFor", "structalpaka_1_1traits_1_1WaiterWaitFor.html", null ],
+    [ "wait", "wait_2Traits_8hpp.html#ad9138b33fed58f04b121274d4a6e2806", null ],
+    [ "wait", "wait_2Traits_8hpp.html#a751547dd588408ae790584281af1775f", null ]
 ];

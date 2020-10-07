@@ -171,9 +171,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1unit"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1unit.html">unit</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1unit"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the units available for getting extent and indices of kernel executions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1wait"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1wait.html">wait</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1wait"><td class="mdescLeft">&#160;</td><td class="mdescRight">The wait specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1warp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1warp.html">warp</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1warp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The thread warp specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,6 +223,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptAtomicGrids.html">ConceptAtomicGrids</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptAtomicThreads.html">ConceptAtomicThreads</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptCurrentThreadWaitFor.html">ConceptCurrentThreadWaitFor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptIdxBt.html">ConceptIdxBt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -540,6 +539,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a9691cd72d5c39a51b8422078edeeacaf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9691cd72d5c39a51b8422078edeeacaf">subVecFromIndices</a> (TVec const &amp;vec)</td></tr>
 <tr class="memdesc:a9691cd72d5c39a51b8422078edeeacaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a new vector by selecting the elements of the source vector in the given order. Repeating and swizzling elements is allowed.  <a href="#a9691cd72d5c39a51b8422078edeeacaf">More...</a><br /></td></tr>
 <tr class="separator:a9691cd72d5c39a51b8422078edeeacaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9138b33fed58f04b121274d4a6e2806"><td class="memTemplParams" colspan="2">template&lt;typename TAwaited &gt; </td></tr>
+<tr class="memitem:ad9138b33fed58f04b121274d4a6e2806"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad9138b33fed58f04b121274d4a6e2806">wait</a> (TAwaited const &amp;awaited) -&gt; void</td></tr>
+<tr class="memdesc:ad9138b33fed58f04b121274d4a6e2806"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits the thread for the completion of the given awaited action to complete.  <a href="#ad9138b33fed58f04b121274d4a6e2806">More...</a><br /></td></tr>
+<tr class="separator:ad9138b33fed58f04b121274d4a6e2806"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751547dd588408ae790584281af1775f"><td class="memTemplParams" colspan="2">template&lt;typename TWaiter , typename TAwaited &gt; </td></tr>
+<tr class="memitem:a751547dd588408ae790584281af1775f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a751547dd588408ae790584281af1775f">wait</a> (TWaiter &amp;waiter, TAwaited const &amp;awaited) -&gt; void</td></tr>
+<tr class="memdesc:a751547dd588408ae790584281af1775f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The waiter waits for the given awaited action to complete.  <a href="#a751547dd588408ae790584281af1775f">More...</a><br /></td></tr>
+<tr class="separator:a751547dd588408ae790584281af1775f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Suggests vectorization of the directly following loop to the compiler. </p>
@@ -2633,13 +2640,73 @@ template&lt;typename TIndexSequence , typename TVec &gt; </div>
 
 </div>
 </div>
+<a id="ad9138b33fed58f04b121274d4a6e2806"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9138b33fed58f04b121274d4a6e2806">&#9670;&nbsp;</a></span>wait() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAwaited &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::wait </td>
+          <td>(</td>
+          <td class="paramtype">TAwaited const &amp;&#160;</td>
+          <td class="paramname"><em>awaited</em></td><td>)</td>
+          <td> -&gt; void
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Waits the thread for the completion of the given awaited action to complete. </p>
+
+<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00043">43</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a751547dd588408ae790584281af1775f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a751547dd588408ae790584281af1775f">&#9670;&nbsp;</a></span>wait() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TWaiter , typename TAwaited &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::wait </td>
+          <td>(</td>
+          <td class="paramtype">TWaiter &amp;&#160;</td>
+          <td class="paramname"><em>waiter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TAwaited const &amp;&#160;</td>
+          <td class="paramname"><em>awaited</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; void
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The waiter waits for the given awaited action to complete. </p>
+
+<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00059">59</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Oct 7 2020 06:55:11 for alpaka by
+    <li class="footer">Generated on Wed Oct 7 2020 07:27:16 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -1,8 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy.html":[3,0,0,15,1,2,26],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,1,2,27],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a2f443ae4f120ce43510d1dd12b47611a":[3,0,0,15,1,2,27,0],
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,1,2,28],
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#ac028776c649fb8d544009aebd39c13d1":[3,0,0,15,1,2,28,0],
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufUniformCudaHipR50edb0c958c8c5064ad41ebbeeacc7d7.html":[3,0,0,15,1,2,29],
@@ -249,5 +246,8 @@ var NAVTREEINDEX10 =
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01Hea7af78f4401b00b9807a90329b86c81b4.html#a3b3646696934d81fcf64b19f5b8d727b":[3,0,0,16,0,9,0],
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01Hea7af78f4401b00b9807a90329b86c81b4.html#a997e5189d07b31bb113d12f58c6d75a6":[3,0,0,16,0,9,3],
 "structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01TLi73423b143ff881ce72a987de38dd0c43.html":[3,0,0,16,0,10],
-"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01TLi73423b143ff881ce72a987de38dd0c43.html#a8411ee9d74770749367ec01690964727":[3,0,0,16,0,10,0]
+"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01TLi73423b143ff881ce72a987de38dd0c43.html#a8411ee9d74770749367ec01690964727":[3,0,0,16,0,10,0],
+"structalpaka_1_1meta_1_1detail_1_1CartesianProductImplHelper_3_01TList_3_01X_8_8_8_01_4_00_01TLi73423b143ff881ce72a987de38dd0c43.html#add352b7dc269c30b88787a5ffbe5a4a3":[3,0,0,16,0,10,1],
+"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_00_01Head_3_01Ts_8_8_8_01_4_00_01Tail_8_8_8_01_4.html":[3,0,0,16,0,4],
+"structalpaka_1_1meta_1_1detail_1_1CartesianProductImpl_3_01TList_00_01Head_3_01Ts_8_8_8_01_4_00_01Tail_8_8_8_01_4.html#a122b71d2e26deaec5ee5acc77c329936":[3,0,0,16,0,4,0]
 };

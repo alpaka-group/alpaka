@@ -10,11 +10,11 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
       [ "EventType< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ],
       [ "QueueGenericThreadsBlockingImpl", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl" ],
       [ "QueueGenericThreadsBlocking", "classalpaka_1_1QueueGenericThreadsBlocking.html", "classalpaka_1_1QueueGenericThreadsBlocking" ],
+      [ "CurrentThreadWaitFor< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1CurrentThreadWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ],
       [ "DevType< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1traits_1_1DevType_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1DevType_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ],
       [ "Empty< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1traits_1_1Empty_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1Empty_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ],
       [ "Enqueue< QueueGenericThreadsBlocking< TDev >, TTask >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01TTask_01_4.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01TTask_01_4" ],
-      [ "GetDev< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ],
-      [ "CurrentThreadWaitFor< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ]
+      [ "GetDev< QueueGenericThreadsBlocking< TDev > >", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_01_4" ]
     ] ],
     [ "QueueGenericThreadsNonBlocking.hpp", "QueueGenericThreadsNonBlocking_8hpp.html", [
       [ "EventGenericThreads", "classalpaka_1_1event_1_1EventGenericThreads.html", "classalpaka_1_1event_1_1EventGenericThreads" ],

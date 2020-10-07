@@ -1,8 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"structalpaka_1_1math_1_1ConceptMathRemainder.html":[3,0,0,14,31],
-"structalpaka_1_1math_1_1ConceptMathRound.html":[3,0,0,14,32],
-"structalpaka_1_1math_1_1ConceptMathRsqrt.html":[3,0,0,14,33],
 "structalpaka_1_1math_1_1ConceptMathSin.html":[3,0,0,14,34],
 "structalpaka_1_1math_1_1ConceptMathSinCos.html":[3,0,0,14,35],
 "structalpaka_1_1math_1_1ConceptMathSqrt.html":[3,0,0,14,36],
@@ -249,5 +246,8 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,1,2,24],
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a47f439e307fd8733ce520b3eac67b188":[3,0,0,15,1,2,24,0],
 "structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,1,2,25],
-"structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a6ef5624365578e063cb4b2d66030d128":[3,0,0,15,1,2,25,0]
+"structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01mem_1_1buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a6ef5624365578e063cb4b2d66030d128":[3,0,0,15,1,2,25,0],
+"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy.html":[3,0,0,15,1,2,26],
+"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,15,1,2,27],
+"structalpaka_1_1mem_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a2f443ae4f120ce43510d1dd12b47611a":[3,0,0,15,1,2,27,0]
 };
