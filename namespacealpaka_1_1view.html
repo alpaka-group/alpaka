@@ -145,22 +145,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a67240ff859eb1b9fc708f8630e9de367"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TPitch &gt; </td></tr>
 <tr class="memitem:a67240ff859eb1b9fc708f8630e9de367"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a67240ff859eb1b9fc708f8630e9de367">getPitchBytesVecEnd</a> (TPitch const &amp;pitch=TPitch()) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TPitch &gt;&gt;</td></tr>
 <tr class="separator:a67240ff859eb1b9fc708f8630e9de367"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37a3f185817d24156629fdfe53405078"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TDev &gt; </td></tr>
-<tr class="memitem:a37a3f185817d24156629fdfe53405078"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a37a3f185817d24156629fdfe53405078">getPtrDev</a> (TView const &amp;view, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt; TView &gt; const *</td></tr>
-<tr class="memdesc:a37a3f185817d24156629fdfe53405078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the view on the given device.  <a href="#a37a3f185817d24156629fdfe53405078">More...</a><br /></td></tr>
-<tr class="separator:a37a3f185817d24156629fdfe53405078"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d3501039ece901c0cc999d428953e43"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TDev &gt; </td></tr>
-<tr class="memitem:a6d3501039ece901c0cc999d428953e43"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a6d3501039ece901c0cc999d428953e43">getPtrDev</a> (TView &amp;view, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt; TView &gt; *</td></tr>
-<tr class="memdesc:a6d3501039ece901c0cc999d428953e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the view on the given device.  <a href="#a6d3501039ece901c0cc999d428953e43">More...</a><br /></td></tr>
-<tr class="separator:a6d3501039ece901c0cc999d428953e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f440720980c58ee6b2dc030b8659771"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:a0f440720980c58ee6b2dc030b8659771"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a0f440720980c58ee6b2dc030b8659771">getPtrNative</a> (TView const &amp;view) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt; TView &gt; const *</td></tr>
-<tr class="memdesc:a0f440720980c58ee6b2dc030b8659771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory view.  <a href="#a0f440720980c58ee6b2dc030b8659771">More...</a><br /></td></tr>
-<tr class="separator:a0f440720980c58ee6b2dc030b8659771"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a4d1902f4e18f5323b3b3cb3b7e61e3"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:a3a4d1902f4e18f5323b3b3cb3b7e61e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a3a4d1902f4e18f5323b3b3cb3b7e61e3">getPtrNative</a> (TView &amp;view) -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt; TView &gt; *</td></tr>
-<tr class="memdesc:a3a4d1902f4e18f5323b3b3cb3b7e61e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory view.  <a href="#a3a4d1902f4e18f5323b3b3cb3b7e61e3">More...</a><br /></td></tr>
-<tr class="separator:a3a4d1902f4e18f5323b3b3cb3b7e61e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a645ab34347b8d8d7bf92e4c9ca7d6b97"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TDev &gt; </td></tr>
+<tr class="memitem:a645ab34347b8d8d7bf92e4c9ca7d6b97"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a645ab34347b8d8d7bf92e4c9ca7d6b97">getPtrDev</a> (TView const &amp;view, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt; TView &gt; const *</td></tr>
+<tr class="memdesc:a645ab34347b8d8d7bf92e4c9ca7d6b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the view on the given device.  <a href="#a645ab34347b8d8d7bf92e4c9ca7d6b97">More...</a><br /></td></tr>
+<tr class="separator:a645ab34347b8d8d7bf92e4c9ca7d6b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3227d3a7abc24f45af569c6cf3bef044"><td class="memTemplParams" colspan="2">template&lt;typename TView , typename TDev &gt; </td></tr>
+<tr class="memitem:a3227d3a7abc24f45af569c6cf3bef044"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a3227d3a7abc24f45af569c6cf3bef044">getPtrDev</a> (TView &amp;view, TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt; TView &gt; *</td></tr>
+<tr class="memdesc:a3227d3a7abc24f45af569c6cf3bef044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the pointer to the view on the given device.  <a href="#a3227d3a7abc24f45af569c6cf3bef044">More...</a><br /></td></tr>
+<tr class="separator:a3227d3a7abc24f45af569c6cf3bef044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3678058ecbe7cd92f4ca9af233fa7644"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:a3678058ecbe7cd92f4ca9af233fa7644"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#a3678058ecbe7cd92f4ca9af233fa7644">getPtrNative</a> (TView const &amp;view) -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt; TView &gt; const *</td></tr>
+<tr class="memdesc:a3678058ecbe7cd92f4ca9af233fa7644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory view.  <a href="#a3678058ecbe7cd92f4ca9af233fa7644">More...</a><br /></td></tr>
+<tr class="separator:a3678058ecbe7cd92f4ca9af233fa7644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af12a51765d731da1abb49e5408334d09"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:af12a51765d731da1abb49e5408334d09"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#af12a51765d731da1abb49e5408334d09">getPtrNative</a> (TView &amp;view) -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt; TView &gt; *</td></tr>
+<tr class="memdesc:af12a51765d731da1abb49e5408334d09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory view.  <a href="#af12a51765d731da1abb49e5408334d09">More...</a><br /></td></tr>
+<tr class="separator:af12a51765d731da1abb49e5408334d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8b3b2b3e1b0e81e8542f22228b93fce"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
 <tr class="memitem:ac8b3b2b3e1b0e81e8542f22228b93fce"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1view.html#ac8b3b2b3e1b0e81e8542f22228b93fce">print</a> (TView const &amp;view, std::ostream &amp;os, std::string const &amp;elementSeparator=&quot;, &quot;, std::string const &amp;rowSeparator=&quot;\, std::string const &amp;rowPrefix=&quot;[&quot;, std::string const &amp;rowSuffix=&quot;]&quot;) -&gt; void</td></tr>
 <tr class="memdesc:ac8b3b2b3e1b0e81e8542f22228b93fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the content of the view to the given queue.  <a href="#ac8b3b2b3e1b0e81e8542f22228b93fce">More...</a><br /></td></tr>
@@ -436,8 +436,8 @@ template&lt;typename TDim , typename TPitch &gt; </div>
 
 </div>
 </div>
-<a id="a37a3f185817d24156629fdfe53405078"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37a3f185817d24156629fdfe53405078">&#9670;&nbsp;</a></span>getPtrDev() <span class="overload">[1/2]</span></h2>
+<a id="a645ab34347b8d8d7bf92e4c9ca7d6b97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a645ab34347b8d8d7bf92e4c9ca7d6b97">&#9670;&nbsp;</a></span>getPtrDev() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -459,7 +459,7 @@ template&lt;typename TView , typename TDev &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt;TView&gt; const *
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; const *
         </td>
         </tr>
       </table>
@@ -479,8 +479,8 @@ template&lt;typename TView , typename TDev &gt; </div>
 
 </div>
 </div>
-<a id="a6d3501039ece901c0cc999d428953e43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d3501039ece901c0cc999d428953e43">&#9670;&nbsp;</a></span>getPtrDev() <span class="overload">[2/2]</span></h2>
+<a id="a3227d3a7abc24f45af569c6cf3bef044"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3227d3a7abc24f45af569c6cf3bef044">&#9670;&nbsp;</a></span>getPtrDev() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -502,7 +502,7 @@ template&lt;typename TView , typename TDev &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt;TView&gt; *
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; *
         </td>
         </tr>
       </table>
@@ -522,8 +522,8 @@ template&lt;typename TView , typename TDev &gt; </div>
 
 </div>
 </div>
-<a id="a0f440720980c58ee6b2dc030b8659771"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f440720980c58ee6b2dc030b8659771">&#9670;&nbsp;</a></span>getPtrNative() <span class="overload">[1/2]</span></h2>
+<a id="a3678058ecbe7cd92f4ca9af233fa7644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3678058ecbe7cd92f4ca9af233fa7644">&#9670;&nbsp;</a></span>getPtrNative() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -535,7 +535,7 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView const &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt;TView&gt; const *
+          <td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; const *
         </td>
         </tr>
       </table>
@@ -554,8 +554,8 @@ template&lt;typename TView &gt; </div>
 
 </div>
 </div>
-<a id="a3a4d1902f4e18f5323b3b3cb3b7e61e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a4d1902f4e18f5323b3b3cb3b7e61e3">&#9670;&nbsp;</a></span>getPtrNative() <span class="overload">[2/2]</span></h2>
+<a id="af12a51765d731da1abb49e5408334d09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af12a51765d731da1abb49e5408334d09">&#9670;&nbsp;</a></span>getPtrNative() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -567,7 +567,7 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1elem.html#a31b9eadbbf14a8f6da872f86218d070c">elem::Elem</a>&lt;TView&gt; *
+          <td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; *
         </td>
         </tr>
       </table>
@@ -707,7 +707,7 @@ template&lt;typename TExtent , typename TView , typename TQueue &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1view.html">view</a></li>
-    <li class="footer">Generated on Thu Oct 8 2020 08:33:02 for alpaka by
+    <li class="footer">Generated on Thu Oct 8 2020 09:07:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

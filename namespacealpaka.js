@@ -9,7 +9,6 @@ var namespacealpaka =
     [ "cpu", "namespacealpaka_1_1cpu.html", "namespacealpaka_1_1cpu" ],
     [ "cuda", "namespacealpaka_1_1cuda.html", "namespacealpaka_1_1cuda" ],
     [ "detail", "namespacealpaka_1_1detail.html", "namespacealpaka_1_1detail" ],
-    [ "elem", "namespacealpaka_1_1elem.html", "namespacealpaka_1_1elem" ],
     [ "event", "namespacealpaka_1_1event.html", "namespacealpaka_1_1event" ],
     [ "extent", "namespacealpaka_1_1extent.html", "namespacealpaka_1_1extent" ],
     [ "gb", "namespacealpaka_1_1gb.html", "namespacealpaka_1_1gb" ],

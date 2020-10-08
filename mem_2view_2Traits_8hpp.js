@@ -20,10 +20,10 @@ var mem_2view_2Traits_8hpp =
     [ "getPitchBytes", "mem_2view_2Traits_8hpp.html#aa48d6317dbd0685e9c15ce9fe1cceb25", null ],
     [ "getPitchBytesVec", "mem_2view_2Traits_8hpp.html#ab3e84ee1576d0b9dc0d0ef97f307904b", null ],
     [ "getPitchBytesVecEnd", "mem_2view_2Traits_8hpp.html#a67240ff859eb1b9fc708f8630e9de367", null ],
-    [ "getPtrDev", "mem_2view_2Traits_8hpp.html#a37a3f185817d24156629fdfe53405078", null ],
-    [ "getPtrDev", "mem_2view_2Traits_8hpp.html#a6d3501039ece901c0cc999d428953e43", null ],
-    [ "getPtrNative", "mem_2view_2Traits_8hpp.html#a0f440720980c58ee6b2dc030b8659771", null ],
-    [ "getPtrNative", "mem_2view_2Traits_8hpp.html#a3a4d1902f4e18f5323b3b3cb3b7e61e3", null ],
+    [ "getPtrDev", "mem_2view_2Traits_8hpp.html#a645ab34347b8d8d7bf92e4c9ca7d6b97", null ],
+    [ "getPtrDev", "mem_2view_2Traits_8hpp.html#a3227d3a7abc24f45af569c6cf3bef044", null ],
+    [ "getPtrNative", "mem_2view_2Traits_8hpp.html#a3678058ecbe7cd92f4ca9af233fa7644", null ],
+    [ "getPtrNative", "mem_2view_2Traits_8hpp.html#af12a51765d731da1abb49e5408334d09", null ],
     [ "print", "mem_2view_2Traits_8hpp.html#ac8b3b2b3e1b0e81e8542f22228b93fce", null ],
     [ "set", "mem_2view_2Traits_8hpp.html#a0083732d184c61d2b5e897432e05c487", null ]
 ];
