@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4 =
+[
+    [ "waiterWaitFor", "structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4.html#a991e51ddc8073e6f4b7629ec6be4301b", null ]
+];

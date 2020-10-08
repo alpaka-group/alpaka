@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1Enqueue_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01event_1_85733368932a04a86766e6a1d03bdcf0 =
-[
-    [ "enqueue", "structalpaka_1_1traits_1_1Enqueue_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_00_01event_1_85733368932a04a86766e6a1d03bdcf0.html#ab4b96029943ad6b99484f085a46b3ac1", null ]
-];

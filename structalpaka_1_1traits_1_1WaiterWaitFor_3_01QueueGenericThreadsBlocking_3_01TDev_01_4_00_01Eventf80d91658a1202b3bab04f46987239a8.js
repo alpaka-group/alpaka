@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01Eventf80d91658a1202b3bab04f46987239a8 =
+[
+    [ "waiterWaitFor", "structalpaka_1_1traits_1_1WaiterWaitFor_3_01QueueGenericThreadsBlocking_3_01TDev_01_4_00_01Eventf80d91658a1202b3bab04f46987239a8.html#a040baeebd29060e0e8ab4233366f5648", null ]
+];
