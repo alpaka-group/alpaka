@@ -135,9 +135,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1hierarchy"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1hierarchy.html">hierarchy</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1hierarchy"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the parallelism hierarchy levels of alpaka. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1intrinsic"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1intrinsic.html">intrinsic</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1intrinsic"><td class="mdescLeft">&#160;</td><td class="mdescRight">The intrinsic specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1math"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1math.html">math</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1math"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mathematical operation specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,6 +227,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptIdxGb.html">ConceptIdxGb</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptIntrinsic.html">ConceptIntrinsic</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptPltf.html">ConceptPltf</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptUniformCudaHip.html">ConceptUniformCudaHip</a></td></tr>
@@ -247,6 +246,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1IGenericThreadsQueue.html">IGenericThreadsQueue</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU queue interface.  <a href="classalpaka_1_1IGenericThreadsQueue.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1IntrinsicCpu.html">IntrinsicCpu</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU intrinsic.  <a href="classalpaka_1_1IntrinsicCpu.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1IntrinsicFallback.html">IntrinsicFallback</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Fallback intrinsic.  <a href="classalpaka_1_1IntrinsicFallback.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html">IntrinsicUniformCudaHipBuiltIn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP intrinsic.  <a href="classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1PltfCpu.html">PltfCpu</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device platform.  <a href="classalpaka_1_1PltfCpu.html#details">More...</a><br /></td></tr>
@@ -411,6 +419,14 @@ Functions</h2></td></tr>
 <tr class="memitem:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aba309bace6bd6e1cf4c564bbe396a9ba">exec</a> (TQueue &amp;queue, TWorkDiv const &amp;workDiv, TKernelFnObj const &amp;kernelFnObj, TArgs &amp;&amp;... args) -&gt; void</td></tr>
 <tr class="memdesc:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given kernel in the given queue.  <a href="#aba309bace6bd6e1cf4c564bbe396a9ba">More...</a><br /></td></tr>
 <tr class="separator:aba309bace6bd6e1cf4c564bbe396a9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b0054207293a75e2187ebcd2dc1c7fd"><td class="memTemplParams" colspan="2">template&lt;typename TIntrinsic &gt; </td></tr>
+<tr class="memitem:a8b0054207293a75e2187ebcd2dc1c7fd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8b0054207293a75e2187ebcd2dc1c7fd">ffs</a> (TIntrinsic const &amp;intrinsic, std::int32_t value) -&gt; std::int32_t</td></tr>
+<tr class="memdesc:a8b0054207293a75e2187ebcd2dc1c7fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the 1-based position of the least significant bit set to 1 in the given 32-bit value. Returns 0 for input value 0.  <a href="#a8b0054207293a75e2187ebcd2dc1c7fd">More...</a><br /></td></tr>
+<tr class="separator:a8b0054207293a75e2187ebcd2dc1c7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67995b6d001811d321496aab52684356"><td class="memTemplParams" colspan="2">template&lt;typename TIntrinsic &gt; </td></tr>
+<tr class="memitem:a67995b6d001811d321496aab52684356"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a67995b6d001811d321496aab52684356">ffs</a> (TIntrinsic const &amp;intrinsic, std::int64_t value) -&gt; std::int32_t</td></tr>
+<tr class="memdesc:a67995b6d001811d321496aab52684356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the 1-based position of the least significant bit set to 1 in the given 64-bit value. Returns 0 for input value 0.  <a href="#a67995b6d001811d321496aab52684356">More...</a><br /></td></tr>
+<tr class="separator:a67995b6d001811d321496aab52684356"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev &gt; </td></tr>
 <tr class="memitem:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3fa7ad40eda1f1fc3b26d8945ff882a0">getAccDevProps</a> (TDev const &amp;dev) -&gt; <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; <a class="el" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt;</td></tr>
 <tr class="separator:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -540,6 +556,14 @@ Functions</h2></td></tr>
 <tr class="memitem:ab78d2caecca495409c72d739be847926"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal &gt; </td></tr>
 <tr class="memitem:ab78d2caecca495409c72d739be847926"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab78d2caecca495409c72d739be847926">operator&gt;=</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;p, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;q) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, bool &gt;</td></tr>
 <tr class="separator:ab78d2caecca495409c72d739be847926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5de33521502710a7ca0a2b2cfc02e1"><td class="memTemplParams" colspan="2">template&lt;typename TIntrinsic &gt; </td></tr>
+<tr class="memitem:aac5de33521502710a7ca0a2b2cfc02e1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#aac5de33521502710a7ca0a2b2cfc02e1">popcount</a> (TIntrinsic const &amp;intrinsic, std::uint32_t value) -&gt; std::int32_t</td></tr>
+<tr class="memdesc:aac5de33521502710a7ca0a2b2cfc02e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of 1 bits in the given 32-bit value.  <a href="#aac5de33521502710a7ca0a2b2cfc02e1">More...</a><br /></td></tr>
+<tr class="separator:aac5de33521502710a7ca0a2b2cfc02e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a62cce3174fe200218ab6bc06b134ed"><td class="memTemplParams" colspan="2">template&lt;typename TIntrinsic &gt; </td></tr>
+<tr class="memitem:a2a62cce3174fe200218ab6bc06b134ed"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2a62cce3174fe200218ab6bc06b134ed">popcount</a> (TIntrinsic const &amp;intrinsic, std::uint64_t value) -&gt; std::int32_t</td></tr>
+<tr class="memdesc:a2a62cce3174fe200218ab6bc06b134ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of 1 bits in the given 64-bit value.  <a href="#a2a62cce3174fe200218ab6bc06b134ed">More...</a><br /></td></tr>
+<tr class="separator:a2a62cce3174fe200218ab6bc06b134ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943">reset</a> (TDev const &amp;dev) -&gt; void</td></tr>
 <tr class="memdesc:a41ac82cec34e8e887aaa4d8e4e064943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the device. What this method does is dependent on the accelerator.  <a href="#a41ac82cec34e8e887aaa4d8e4e064943">More...</a><br /></td></tr>
@@ -1387,6 +1411,102 @@ template&lt;typename TAcc , typename TQueue , typename TWorkDiv , typename TKern
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00235">235</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a8b0054207293a75e2187ebcd2dc1c7fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b0054207293a75e2187ebcd2dc1c7fd">&#9670;&nbsp;</a></span>ffs() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIntrinsic &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::ffs </td>
+          <td>(</td>
+          <td class="paramtype">TIntrinsic const &amp;&#160;</td>
+          <td class="paramname"><em>intrinsic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::int32_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::int32_t
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the 1-based position of the least significant bit set to 1 in the given 32-bit value. Returns 0 for input value 0. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TIntrinsic</td><td>The intrinsic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intrinsic</td><td>The intrinsic implementation. </td></tr>
+    <tr><td class="paramname">value</td><td>The input value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00095">95</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a67995b6d001811d321496aab52684356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67995b6d001811d321496aab52684356">&#9670;&nbsp;</a></span>ffs() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIntrinsic &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::ffs </td>
+          <td>(</td>
+          <td class="paramtype">TIntrinsic const &amp;&#160;</td>
+          <td class="paramname"><em>intrinsic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::int64_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::int32_t
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the 1-based position of the least significant bit set to 1 in the given 64-bit value. Returns 0 for input value 0. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TIntrinsic</td><td>The intrinsic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intrinsic</td><td>The intrinsic implementation. </td></tr>
+    <tr><td class="paramname">value</td><td>The input value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00118">118</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2653,6 +2773,102 @@ template&lt;typename TDim , typename TVal &gt; </div>
 
 </div>
 </div>
+<a id="aac5de33521502710a7ca0a2b2cfc02e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac5de33521502710a7ca0a2b2cfc02e1">&#9670;&nbsp;</a></span>popcount() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIntrinsic &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::popcount </td>
+          <td>(</td>
+          <td class="paramtype">TIntrinsic const &amp;&#160;</td>
+          <td class="paramname"><em>intrinsic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint32_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::int32_t
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of 1 bits in the given 32-bit value. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TIntrinsic</td><td>The intrinsic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intrinsic</td><td>The intrinsic implementation. </td></tr>
+    <tr><td class="paramname">value</td><td>The input value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00050">50</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a2a62cce3174fe200218ab6bc06b134ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a62cce3174fe200218ab6bc06b134ed">&#9670;&nbsp;</a></span>popcount() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIntrinsic &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::popcount </td>
+          <td>(</td>
+          <td class="paramtype">TIntrinsic const &amp;&#160;</td>
+          <td class="paramname"><em>intrinsic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint64_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::int32_t
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the number of 1 bits in the given 64-bit value. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TIntrinsic</td><td>The intrinsic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intrinsic</td><td>The intrinsic implementation. </td></tr>
+    <tr><td class="paramname">value</td><td>The input value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a41ac82cec34e8e887aaa4d8e4e064943"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a41ac82cec34e8e887aaa4d8e4e064943">&#9670;&nbsp;</a></span>reset()</h2>
 
@@ -3060,7 +3276,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Thu Oct 8 2020 09:07:23 for alpaka by
+    <li class="footer">Generated on Thu Oct 8 2020 19:22:24 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

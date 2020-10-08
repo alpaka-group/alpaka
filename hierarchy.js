@@ -108,6 +108,7 @@ var hierarchy =
     [ "alpaka::ConceptCurrentThreadWaitFor", "structalpaka_1_1ConceptCurrentThreadWaitFor.html", null ],
     [ "alpaka::ConceptIdxBt", "structalpaka_1_1ConceptIdxBt.html", null ],
     [ "alpaka::ConceptIdxGb", "structalpaka_1_1ConceptIdxGb.html", null ],
+    [ "alpaka::ConceptIntrinsic", "structalpaka_1_1ConceptIntrinsic.html", null ],
     [ "alpaka::ConceptPltf", "structalpaka_1_1ConceptPltf.html", null ],
     [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, Sfinae >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType.html", null ],
     [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, std::enable_if_t< ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std686c4360b26b64ddd5bd70ecd2ee8374.html", null ],
@@ -206,15 +207,6 @@ var hierarchy =
       [ "alpaka::generic::detail::QueueGenericThreadsBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html", null ],
       [ "alpaka::generic::detail::QueueGenericThreadsNonBlockingImpl< TDev >", "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html", null ]
     ] ],
-    [ "alpaka::intrinsic::ConceptIntrinsic", "structalpaka_1_1intrinsic_1_1ConceptIntrinsic.html", null ],
-    [ "alpaka::intrinsic::traits::Ffs< TWarp, TSfinae >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs.html", null ],
-    [ "alpaka::intrinsic::traits::Ffs< IntrinsicCpu >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicCpu_01_4.html", null ],
-    [ "alpaka::intrinsic::traits::Ffs< IntrinsicFallback >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicFallback_01_4.html", null ],
-    [ "alpaka::intrinsic::traits::Ffs< IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1intrinsic_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html", null ],
-    [ "alpaka::intrinsic::traits::Popcount< TWarp, TSfinae >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount.html", null ],
-    [ "alpaka::intrinsic::traits::Popcount< IntrinsicCpu >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicCpu_01_4.html", null ],
-    [ "alpaka::intrinsic::traits::Popcount< IntrinsicFallback >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicFallback_01_4.html", null ],
-    [ "alpaka::intrinsic::traits::Popcount< IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1intrinsic_1_1traits_1_1Popcount_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::math::ConceptMathAbs", "structalpaka_1_1math_1_1ConceptMathAbs.html", null ],
     [ "alpaka::math::ConceptMathAcos", "structalpaka_1_1math_1_1ConceptMathAcos.html", null ],
     [ "alpaka::math::ConceptMathAsin", "structalpaka_1_1math_1_1ConceptMathAsin.html", null ],
@@ -661,6 +653,10 @@ var hierarchy =
     [ "alpaka::traits::Enqueue< QueueUniformCudaHipRtNonBlocking, view::uniform_cuda_hip::detail::TaskSetUniformCudaHip< DimInt< 1u >, TView, TExtent > >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01view_1_1uniform__cud8ac1a892bddc01b54e1a5d103ad59d65.html", null ],
     [ "alpaka::traits::Enqueue< QueueUniformCudaHipRtNonBlocking, view::uniform_cuda_hip::detail::TaskSetUniformCudaHip< DimInt< 2u >, TView, TExtent > >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01view_1_1uniform__cud94c6c9497ef467569bcc1792d9ac0cc1.html", null ],
     [ "alpaka::traits::Enqueue< QueueUniformCudaHipRtNonBlocking, view::uniform_cuda_hip::detail::TaskSetUniformCudaHip< DimInt< 3u >, TView, TExtent > >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01view_1_1uniform__cude58f62b803226d6ebd5cf007d803feb1.html", null ],
+    [ "alpaka::traits::Ffs< TWarp, TSfinae >", "structalpaka_1_1traits_1_1Ffs.html", null ],
+    [ "alpaka::traits::Ffs< IntrinsicCpu >", "structalpaka_1_1traits_1_1Ffs_3_01IntrinsicCpu_01_4.html", null ],
+    [ "alpaka::traits::Ffs< IntrinsicFallback >", "structalpaka_1_1traits_1_1Ffs_3_01IntrinsicFallback_01_4.html", null ],
+    [ "alpaka::traits::Ffs< IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::traits::GetAccDevProps< TAcc, TSfinae >", "structalpaka_1_1traits_1_1GetAccDevProps.html", null ],
     [ "alpaka::traits::GetAccDevProps< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1traits_1_1GetAccDevProps_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::traits::GetAccDevProps< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1traits_1_1GetAccDevProps_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
@@ -810,6 +806,10 @@ var hierarchy =
     [ "alpaka::traits::PltfType< TaskKernelGpuUniformCudaHipRt< TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdfd923213c49744a75c9f1ef4acceaeec.html", null ],
     [ "alpaka::traits::PltfType< TaskKernelOmp5< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", null ],
     [ "alpaka::traits::PltfType< TPltf, typename std::enable_if< concepts::ImplementsConcept< ConceptPltf, TPltf >::value >::type >", "structalpaka_1_1traits_1_1PltfType_3_01TPltf_00_01typename_01std_1_1enable__if_3_01concepts_1_1Ie8a6f02685e5e992a3aa550717803db6.html", null ],
+    [ "alpaka::traits::Popcount< TWarp, TSfinae >", "structalpaka_1_1traits_1_1Popcount.html", null ],
+    [ "alpaka::traits::Popcount< IntrinsicCpu >", "structalpaka_1_1traits_1_1Popcount_3_01IntrinsicCpu_01_4.html", null ],
+    [ "alpaka::traits::Popcount< IntrinsicFallback >", "structalpaka_1_1traits_1_1Popcount_3_01IntrinsicFallback_01_4.html", null ],
+    [ "alpaka::traits::Popcount< IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1Popcount_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::traits::QueueType< TAcc, TProperty, TSfinae >", "structalpaka_1_1traits_1_1QueueType.html", null ],
     [ "alpaka::traits::QueueType< DevCpu, Blocking >", "structalpaka_1_1traits_1_1QueueType_3_01DevCpu_00_01Blocking_01_4.html", null ],
     [ "alpaka::traits::QueueType< DevCpu, NonBlocking >", "structalpaka_1_1traits_1_1QueueType_3_01DevCpu_00_01NonBlocking_01_4.html", null ],
@@ -1138,7 +1138,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicCpu >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::intrinsic::IntrinsicCpu", "classalpaka_1_1intrinsic_1_1IntrinsicCpu.html", [
+      [ "alpaka::IntrinsicCpu", "classalpaka_1_1IntrinsicCpu.html", [
         [ "alpaka::AccCpuFibers< TDim, TIdx >", "classalpaka_1_1AccCpuFibers.html", null ],
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
@@ -1147,12 +1147,12 @@ var hierarchy =
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicFallback >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::intrinsic::IntrinsicFallback", "classalpaka_1_1intrinsic_1_1IntrinsicFallback.html", [
+      [ "alpaka::IntrinsicFallback", "classalpaka_1_1IntrinsicFallback.html", [
         [ "alpaka::AccOmp5< TDim, TIdx >", "classalpaka_1_1AccOmp5.html", null ]
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptIntrinsic, IntrinsicUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::intrinsic::IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1intrinsic_1_1IntrinsicUniformCudaHipBuiltIn.html", [
+      [ "alpaka::IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],

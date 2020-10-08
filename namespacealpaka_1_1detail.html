@@ -177,9 +177,17 @@ Functions</h2></td></tr>
 <tr class="memitem:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral&lt;T&gt;::value&gt;&gt; </td></tr>
 <tr class="memitem:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#ab1d31914161c1f5c4cf6f71e7d1bfe50">allDivisorsLessOrEqual</a> (T const &amp;val, T const &amp;maxDivisor) -&gt; std::set&lt; T &gt;</td></tr>
 <tr class="separator:ab1d31914161c1f5c4cf6f71e7d1bfe50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adceeaf4e5d3925a71381d74cd1e78bad"><td class="memTemplParams" colspan="2">template&lt;typename TValue &gt; </td></tr>
+<tr class="memitem:adceeaf4e5d3925a71381d74cd1e78bad"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#adceeaf4e5d3925a71381d74cd1e78bad">ffsFallback</a> (TValue value) -&gt; std::int32_t</td></tr>
+<tr class="memdesc:adceeaf4e5d3925a71381d74cd1e78bad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback implementaion of ffs.  <a href="#adceeaf4e5d3925a71381d74cd1e78bad">More...</a><br /></td></tr>
+<tr class="separator:adceeaf4e5d3925a71381d74cd1e78bad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50fc53e415bd36a86f7ec64a284618d7"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral&lt;T&gt;::value&gt;&gt; </td></tr>
 <tr class="memitem:a50fc53e415bd36a86f7ec64a284618d7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a50fc53e415bd36a86f7ec64a284618d7">nextDivisorLowerOrEqual</a> (T const &amp;maxDivisor, T const &amp;dividend) -&gt; T</td></tr>
 <tr class="separator:a50fc53e415bd36a86f7ec64a284618d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67dc480b31ee420646bf5c6cc9799ccf"><td class="memTemplParams" colspan="2">template&lt;typename TValue &gt; </td></tr>
+<tr class="memitem:a67dc480b31ee420646bf5c6cc9799ccf"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a67dc480b31ee420646bf5c6cc9799ccf">popcountFallback</a> (TValue value) -&gt; std::int32_t</td></tr>
+<tr class="memdesc:a67dc480b31ee420646bf5c6cc9799ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback implementaion of popcount.  <a href="#a67dc480b31ee420646bf5c6cc9799ccf">More...</a><br /></td></tr>
+<tr class="separator:a67dc480b31ee420646bf5c6cc9799ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a8d6ec05ae3944637016495c02a9accfd"></a>
@@ -350,6 +358,39 @@ template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral&lt;T&g
 
 </div>
 </div>
+<a id="adceeaf4e5d3925a71381d74cd1e78bad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adceeaf4e5d3925a71381d74cd1e78bad">&#9670;&nbsp;</a></span>ffsFallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TValue &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static auto alpaka::detail::ffsFallback </td>
+          <td>(</td>
+          <td class="paramtype">TValue&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> -&gt; std::int32_t
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fallback implementaion of ffs. </p>
+
+<p class="definition">Definition at line <a class="el" href="IntrinsicFallback_8hpp_source.html#l00038">38</a> of file <a class="el" href="IntrinsicFallback_8hpp_source.html">IntrinsicFallback.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a50fc53e415bd36a86f7ec64a284618d7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50fc53e415bd36a86f7ec64a284618d7">&#9670;&nbsp;</a></span>nextDivisorLowerOrEqual()</h2>
 
@@ -391,13 +432,46 @@ template&lt;typename T , typename  = std::enable_if_t&lt;std::is_integral&lt;T&g
 
 </div>
 </div>
+<a id="a67dc480b31ee420646bf5c6cc9799ccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67dc480b31ee420646bf5c6cc9799ccf">&#9670;&nbsp;</a></span>popcountFallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TValue &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static auto alpaka::detail::popcountFallback </td>
+          <td>(</td>
+          <td class="paramtype">TValue&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> -&gt; std::int32_t
+        </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fallback implementaion of popcount. </p>
+
+<p class="definition">Definition at line <a class="el" href="IntrinsicFallback_8hpp_source.html#l00022">22</a> of file <a class="el" href="IntrinsicFallback_8hpp_source.html">IntrinsicFallback.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Thu Oct 8 2020 09:07:24 for alpaka by
+    <li class="footer">Generated on Thu Oct 8 2020 19:22:24 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
