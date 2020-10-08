@@ -1,9 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html":[3,0,0,10,1,2],
-"structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html#aa2bf7b4c8d797739f10b977c7a021d3b":[3,0,0,10,1,2,0],
-"structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtBlocking_01_4.html":[3,0,0,10,1,3],
-"structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtBlocking_01_4.html#a4166bc78ed9013907e39be828cba86fb":[3,0,0,10,1,3,0],
 "structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtNonBlocking_01_4.html":[3,0,0,10,1,4],
 "structalpaka_1_1event_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtNonBlocking_01_4.html#a33580692169f3c32ee565a012e916ddc":[3,0,0,10,1,4,0],
 "structalpaka_1_1event_1_1traits_1_1Test.html":[3,0,0,10,1,5],
@@ -249,5 +245,9 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1math_1_1traits_1_1Sin_3_01SinStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_db7a0f7c20ba5c69434ca84f7abb06b9.html#a47c9a32f582793c95ba1de634a840488":[3,0,0,16,0,86,0],
 "structalpaka_1_1math_1_1traits_1_1Sin_3_01SinUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_2751d3e2dc56803b055ffb90798e21e0.html":[3,0,0,16,0,88],
 "structalpaka_1_1math_1_1traits_1_1Sin_3_01SinUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_2751d3e2dc56803b055ffb90798e21e0.html#a8bf054bd1c18e9c074068dc326210cfb":[3,0,0,16,0,88,0],
-"structalpaka_1_1math_1_1traits_1_1Sin_3_01SinUniformCudaHipBuiltIn_00_01float_01_4.html":[3,0,0,16,0,87]
+"structalpaka_1_1math_1_1traits_1_1Sin_3_01SinUniformCudaHipBuiltIn_00_01float_01_4.html":[3,0,0,16,0,87],
+"structalpaka_1_1math_1_1traits_1_1Sin_3_01SinUniformCudaHipBuiltIn_00_01float_01_4.html#a58d77a47737685f528e891bed6e38f91":[3,0,0,16,0,87,0],
+"structalpaka_1_1math_1_1traits_1_1Sqrt.html":[3,0,0,16,0,93],
+"structalpaka_1_1math_1_1traits_1_1Sqrt_3_01SqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st249cdd228f3c91bfec62c7f09cd61b6b.html":[3,0,0,16,0,94],
+"structalpaka_1_1math_1_1traits_1_1Sqrt_3_01SqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st249cdd228f3c91bfec62c7f09cd61b6b.html#adcdc8b22dab64633bbefdb0a034b3025":[3,0,0,16,0,94,0]
 };

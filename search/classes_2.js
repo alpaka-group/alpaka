@@ -106,7 +106,7 @@ var searchData=
   ['createnormalreal',['CreateNormalReal',['../structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html',1,'alpaka::rand::distribution::traits']]],
   ['createnormalreal_3c_20randstdlib_2c_20t_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_3c_20t_20_3e_3a_3avalue_20_3e_20_3e',['CreateNormalReal&lt; RandStdLib, T, std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value &gt; &gt;',['../structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandStdLib_00_01T_00_01st4c48488aa852f0d23ec5f6b6c9459319.html',1,'alpaka::rand::distribution::traits']]],
   ['createnormalreal_3c_20randuniformcudahiprand_2c_20t_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_3c_20t_20_3e_3a_3avalue_20_3e_20_3e',['CreateNormalReal&lt; RandUniformCudaHipRand, T, std::enable_if_t&lt; std::is_floating_point&lt; T &gt;::value &gt; &gt;',['../structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01RandUniformCudaHipRand_0086567834de9cf84a32d3daf4aeb557af.html',1,'alpaka::rand::distribution::traits']]],
-  ['createoffset',['CreateOffset',['../structalpaka_1_1offset_1_1detail_1_1CreateOffset.html',1,'alpaka::offset::detail']]],
+  ['createoffset',['CreateOffset',['../structalpaka_1_1detail_1_1CreateOffset.html',1,'alpaka::detail']]],
   ['createpitchbytes',['CreatePitchBytes',['../structalpaka_1_1view_1_1detail_1_1CreatePitchBytes.html',1,'alpaka::view::detail']]],
   ['createreverse',['CreateReverse',['../structalpaka_1_1detail_1_1CreateReverse.html',1,'alpaka::detail']]],
   ['createstaticdevmemview',['CreateStaticDevMemView',['../structalpaka_1_1view_1_1traits_1_1CreateStaticDevMemView.html',1,'alpaka::view::traits']]],

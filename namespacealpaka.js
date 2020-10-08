@@ -18,7 +18,6 @@ var namespacealpaka =
     [ "intrinsic", "namespacealpaka_1_1intrinsic.html", "namespacealpaka_1_1intrinsic" ],
     [ "math", "namespacealpaka_1_1math.html", "namespacealpaka_1_1math" ],
     [ "meta", "namespacealpaka_1_1meta.html", "namespacealpaka_1_1meta" ],
-    [ "offset", "namespacealpaka_1_1offset.html", "namespacealpaka_1_1offset" ],
     [ "omp5", "namespacealpaka_1_1omp5.html", "namespacealpaka_1_1omp5" ],
     [ "op", "namespacealpaka_1_1op.html", "namespacealpaka_1_1op" ],
     [ "rand", "namespacealpaka_1_1rand.html", "namespacealpaka_1_1rand" ],
