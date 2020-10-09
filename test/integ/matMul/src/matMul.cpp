@@ -276,7 +276,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     std::vector<Val> bufBHost1d(k * n, static_cast<Val>(1));
     // Wrap the std::vectors into a memory buffer object.
     // For 1D data this would not be required because alpaka::view::copy is specialized for std::vector and std::array.
-    // For multi dimensional data you could directly create them using alpaka::alloc<Type>(devHost, extent), which is not used here.
+    // For multi dimensional data you could directly create them using alpaka::malloc<Type>(devHost, extent), which is not used here.
     // Instead we use ViewPlainPtr to wrap the data.
     using BufWrapper = alpaka::view::ViewPlainPtr<
         DevHost,
