@@ -1,8 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structalpaka_1_1block_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html":[3,0,0,1,2,1,11],
-"structalpaka_1_1block_1_1st_1_1traits_1_1FreeMem_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#af191282d138f761fd2a02305378bb6bb":[3,0,0,1,2,1,11,0],
-"structalpaka_1_1block_1_1traits_1_1SyncBlockThreads.html":[3,0,0,1,3,1],
 "structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate.html":[3,0,0,1,3,7],
 "structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html":[3,0,0,1,3,11],
 "structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html#a845af06e94e458c370d92150ffed16db":[3,0,0,1,3,11,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1math_1_1ConceptMathFloor.html":[3,0,0,13,25],
 "structalpaka_1_1math_1_1ConceptMathFmod.html":[3,0,0,13,26],
 "structalpaka_1_1math_1_1ConceptMathLog.html":[3,0,0,13,27],
-"structalpaka_1_1math_1_1ConceptMathMax.html":[3,0,0,13,28]
+"structalpaka_1_1math_1_1ConceptMathMax.html":[3,0,0,13,28],
+"structalpaka_1_1math_1_1ConceptMathMin.html":[3,0,0,13,29],
+"structalpaka_1_1math_1_1ConceptMathPow.html":[3,0,0,13,30],
+"structalpaka_1_1math_1_1ConceptMathRemainder.html":[3,0,0,13,31]
 };

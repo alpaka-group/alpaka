@@ -115,6 +115,7 @@ var hierarchy =
     [ "alpaka::concepts::detail::ImplementationBaseType< TConcept, TDerived, std::enable_if_t<!ImplementsConcept< TConcept, TDerived >::value > >", "structalpaka_1_1concepts_1_1detail_1_1ImplementationBaseType_3_01TConcept_00_01TDerived_00_01std4d6cb00252914bb9a01c7d9b43bde14a.html", null ],
     [ "alpaka::concepts::Implements< TConcept, TBase >", "structalpaka_1_1concepts_1_1Implements.html", null ],
     [ "alpaka::concepts::ImplementsConcept< TConcept, TDerived >", "structalpaka_1_1concepts_1_1ImplementsConcept.html", null ],
+    [ "alpaka::ConceptTime", "structalpaka_1_1ConceptTime.html", null ],
     [ "alpaka::ConceptUniformCudaHip", "structalpaka_1_1ConceptUniformCudaHip.html", null ],
     [ "alpaka::ConceptWorkDiv", "structalpaka_1_1ConceptWorkDiv.html", null ],
     [ "alpaka::core::AlignedDelete", "structalpaka_1_1core_1_1AlignedDelete.html", null ],
@@ -434,11 +435,6 @@ var hierarchy =
     [ "alpaka::rand::generator::traits::CreateDefault< RandUniformCudaHipRand >", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html", null ],
     [ "alpaka::rand::generator::traits::CreateDefault< TinyMersenneTwister >", "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html", null ],
     [ "alpaka::rand::generator::uniform_cuda_hip::Xor", "classalpaka_1_1rand_1_1generator_1_1uniform__cuda__hip_1_1Xor.html", null ],
-    [ "alpaka::time::ConceptTime", "structalpaka_1_1time_1_1ConceptTime.html", null ],
-    [ "alpaka::time::traits::Clock< TTime, TSfinae >", "structalpaka_1_1time_1_1traits_1_1Clock.html", null ],
-    [ "alpaka::time::traits::Clock< time::TimeOmp >", "structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeOmp_01_4.html", null ],
-    [ "alpaka::time::traits::Clock< time::TimeUniformCudaHipBuiltIn >", "structalpaka_1_1time_1_1traits_1_1Clock_3_01time_1_1TimeUniformCudaHipBuiltIn_01_4.html", null ],
-    [ "alpaka::time::traits::Clock< TimeStdLib >", "structalpaka_1_1time_1_1traits_1_1Clock_3_01TimeStdLib_01_4.html", null ],
     [ "alpaka::traits::AccType< T, TSfinae >", "structalpaka_1_1traits_1_1AccType.html", null ],
     [ "alpaka::traits::AccType< AccCpuFibers< TDim, TIdx > >", "structalpaka_1_1traits_1_1AccType_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
     [ "alpaka::traits::AccType< AccCpuOmp2Blocks< TDim, TIdx > >", "structalpaka_1_1traits_1_1AccType_3_01AccCpuOmp2Blocks_3_01TDim_00_01TIdx_01_4_01_4.html", null ],
@@ -512,6 +508,10 @@ var hierarchy =
     [ "alpaka::traits::Cast< TVal, TVec, TSfinae >", "structalpaka_1_1traits_1_1Cast.html", null ],
     [ "alpaka::traits::Cast< TSizeNew, Vec< TDim, TVal > >", "structalpaka_1_1traits_1_1Cast_3_01TSizeNew_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
     [ "alpaka::traits::Cast< TVal, Vec< TDim, TVal > >", "structalpaka_1_1traits_1_1Cast_3_01TVal_00_01Vec_3_01TDim_00_01TVal_01_4_01_4.html", null ],
+    [ "alpaka::traits::Clock< TTime, TSfinae >", "structalpaka_1_1traits_1_1Clock.html", null ],
+    [ "alpaka::traits::Clock< TimeOmp >", "structalpaka_1_1traits_1_1Clock_3_01TimeOmp_01_4.html", null ],
+    [ "alpaka::traits::Clock< TimeStdLib >", "structalpaka_1_1traits_1_1Clock_3_01TimeStdLib_01_4.html", null ],
+    [ "alpaka::traits::Clock< TimeUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1Clock_3_01TimeUniformCudaHipBuiltIn_01_4.html", null ],
     [ "alpaka::traits::Concat< TVecL, TVecR, TSfinae >", "structalpaka_1_1traits_1_1Concat.html", null ],
     [ "alpaka::traits::Concat< Vec< TDimL, TVal >, Vec< TDimR, TVal > >", "structalpaka_1_1traits_1_1Concat_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4.html", null ],
     [ "alpaka::traits::CreateTaskKernel< TAcc, TWorkDiv, TKernelFnObj, TArgs >", "structalpaka_1_1traits_1_1CreateTaskKernel.html", null ],
@@ -1456,21 +1456,21 @@ var hierarchy =
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptTime, TimeOmp >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::time::TimeOmp", "classalpaka_1_1time_1_1TimeOmp.html", [
+      [ "alpaka::TimeOmp", "classalpaka_1_1TimeOmp.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuOmp2Threads< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Threads.html", null ],
         [ "alpaka::AccOmp5< TDim, TIdx >", "classalpaka_1_1AccOmp5.html", null ]
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptTime, TimeStdLib >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::time::TimeStdLib", "classalpaka_1_1time_1_1TimeStdLib.html", [
+      [ "alpaka::TimeStdLib", "classalpaka_1_1TimeStdLib.html", [
         [ "alpaka::AccCpuFibers< TDim, TIdx >", "classalpaka_1_1AccCpuFibers.html", null ],
         [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ],
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
     [ "alpaka::concepts::Implements< ConceptTime, TimeUniformCudaHipBuiltIn >", "structalpaka_1_1concepts_1_1Implements.html", [
-      [ "alpaka::time::TimeUniformCudaHipBuiltIn", "classalpaka_1_1time_1_1TimeUniformCudaHipBuiltIn.html", [
+      [ "alpaka::TimeUniformCudaHipBuiltIn", "classalpaka_1_1TimeUniformCudaHipBuiltIn.html", [
         [ "alpaka::AccGpuUniformCudaHipRt< TDim, TIdx >", "classalpaka_1_1AccGpuUniformCudaHipRt.html", null ]
       ] ]
     ] ],
