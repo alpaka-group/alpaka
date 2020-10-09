@@ -45,7 +45,7 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             class BufCpuImpl final :
-                public alloc::AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
+                public AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
             {
                 static_assert(
                     !std::is_const<TElem>::value,
@@ -60,10 +60,10 @@ namespace alpaka
                 ALPAKA_FN_HOST BufCpuImpl(
                     DevCpu const & dev,
                     TExtent const & extent) :
-                        alloc::AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
+                        AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
                         m_dev(dev),
                         m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                        m_pMem(alloc::alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
+                        m_pMem(alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
                         m_pitchBytes(static_cast<TIdx>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
 #if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
                         ,m_bPinned(false)
@@ -104,7 +104,7 @@ namespace alpaka
                     buf::unpin(*this);
 #endif
                     // NOTE: m_pMem is allowed to be a nullptr here.
-                    alloc::free(*this, m_pMem);
+                    alpaka::free(*this, m_pMem);
                 }
 
             private:

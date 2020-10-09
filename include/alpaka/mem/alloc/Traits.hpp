@@ -18,70 +18,65 @@
 
 namespace alpaka
 {
+    struct ConceptMemAlloc{};
+
     //-----------------------------------------------------------------------------
-    //! The allocator specifics.
-    namespace alloc
+    //! The allocator traits.
+    namespace traits
     {
-        struct ConceptMemAlloc{};
-
-        //-----------------------------------------------------------------------------
-        //! The allocator traits.
-        namespace traits
-        {
-            //#############################################################################
-            //! The memory allocation trait.
-            template<
-                typename T,
-                typename TAlloc,
-                typename TSfinae = void>
-            struct Alloc;
-
-            //#############################################################################
-            //! The memory free trait.
-            template<
-                typename T,
-                typename TAlloc,
-                typename TSfinae = void>
-            struct Free;
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The pointer to the allocated memory.
+        //#############################################################################
+        //! The memory allocation trait.
         template<
             typename T,
-            typename TAlloc>
-        ALPAKA_FN_HOST auto alloc(
-            TAlloc const & alloc,
-            std::size_t const & sizeElems)
-        -> T *
-        {
-            using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
-            return
-                traits::Alloc<
-                    T,
-                    ImplementationBase>
-                ::alloc(
-                    alloc,
-                    sizeElems);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! Frees the memory identified by the given pointer.
-        template<
             typename TAlloc,
-            typename T>
-        ALPAKA_FN_HOST auto free(
-            TAlloc const & alloc,
-            T const * const ptr)
-        -> void
-        {
-            using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
-            traits::Free<
+            typename TSfinae = void>
+        struct Alloc;
+
+        //#############################################################################
+        //! The memory free trait.
+        template<
+            typename T,
+            typename TAlloc,
+            typename TSfinae = void>
+        struct Free;
+    }
+
+    //-----------------------------------------------------------------------------
+    //! \return The pointer to the allocated memory.
+    template<
+        typename T,
+        typename TAlloc>
+    ALPAKA_FN_HOST auto alloc(
+        TAlloc const & alloc,
+        std::size_t const & sizeElems)
+    -> T *
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
+        return
+            traits::Alloc<
                 T,
                 ImplementationBase>
-            ::free(
+            ::alloc(
                 alloc,
-                ptr);
-        }
+                sizeElems);
+    }
+
+    //-----------------------------------------------------------------------------
+    //! Frees the memory identified by the given pointer.
+    template<
+        typename TAlloc,
+        typename T>
+    ALPAKA_FN_HOST auto free(
+        TAlloc const & alloc,
+        T const * const ptr)
+    -> void
+    {
+        using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
+        traits::Free<
+            T,
+            ImplementationBase>
+        ::free(
+            alloc,
+            ptr);
     }
 }
