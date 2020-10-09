@@ -226,34 +226,30 @@ namespace alpaka
             }
         };
     }
-    namespace buf
+
+    template<
+        typename TElem,
+        typename TDim,
+        typename TIdx>
+    class BufUniformCudaHipRt;
+
+    namespace traits
     {
+        //#############################################################################
+        //! The CUDA/HIP RT device memory buffer type trait specialization.
         template<
             typename TElem,
             typename TDim,
             typename TIdx>
-        class BufUniformCudaHipRt;
-
-        namespace traits
+        struct BufType<
+            DevUniformCudaHipRt,
+            TElem,
+            TDim,
+            TIdx>
         {
-            //#############################################################################
-            //! The CUDA/HIP RT device memory buffer type trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct BufType<
-                DevUniformCudaHipRt,
-                TElem,
-                TDim,
-                TIdx>
-            {
-                using type = buf::BufUniformCudaHipRt<TElem, TDim, TIdx>;
-            };
-        }
-    }
-    namespace traits
-    {
+            using type = BufUniformCudaHipRt<TElem, TDim, TIdx>;
+        };
+
         //#############################################################################
         //! The CUDA/HIP RT device platform type trait specialization.
         template<>

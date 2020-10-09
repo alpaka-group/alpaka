@@ -352,7 +352,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::view::copy into given view
                     {
-                        auto srcBufAcc(alpaka::buf::alloc<Elem, Idx>(devAcc, extent));
+                        auto srcBufAcc(alpaka::alloc<Elem, Idx>(devAcc, extent));
                         iotaFillView(queue, srcBufAcc);
                         alpaka::view::copy(queue, view, srcBufAcc, extent);
                         alpaka::wait(queue);
@@ -362,7 +362,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     // alpaka::view::copy from given view
                     {
-                        auto dstBufAcc(alpaka::buf::alloc<Elem, Idx>(devAcc, extent));
+                        auto dstBufAcc(alpaka::alloc<Elem, Idx>(devAcc, extent));
                         alpaka::view::copy(queue, dstBufAcc, view, extent);
                         alpaka::wait(queue);
                         verifyViewsEqual<TAcc>(dstBufAcc, view);

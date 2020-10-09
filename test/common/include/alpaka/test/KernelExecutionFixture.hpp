@@ -68,7 +68,7 @@ namespace alpaka
             -> bool
             {
                 // Allocate the result value
-                auto bufAccResult(alpaka::buf::alloc<bool, Idx>(m_devAcc, static_cast<Idx>(1u)));
+                auto bufAccResult(alpaka::alloc<bool, Idx>(m_devAcc, static_cast<Idx>(1u)));
                 alpaka::view::set(
                     m_queue,
                     bufAccResult,
@@ -83,7 +83,7 @@ namespace alpaka
                     std::forward<TArgs>(args)...);
 
                 // Copy the result value to the host
-                auto bufHostResult(alpaka::buf::alloc<bool, Idx>(m_devHost, static_cast<Idx>(1u)));
+                auto bufHostResult(alpaka::alloc<bool, Idx>(m_devHost, static_cast<Idx>(1u)));
                 alpaka::view::copy(m_queue, bufHostResult, bufAccResult, bufAccResult);
                 alpaka::wait(m_queue);
 

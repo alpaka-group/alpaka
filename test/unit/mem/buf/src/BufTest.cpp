@@ -38,8 +38,8 @@ static auto testBufferMutable(
     Queue queue(dev);
 
     //-----------------------------------------------------------------------------
-    // alpaka::buf::alloc
-    auto buf(alpaka::buf::alloc<Elem, Idx>(dev, extent));
+    // alpaka::alloc
+    auto buf(alpaka::alloc<Elem, Idx>(dev, extent));
 
     //-----------------------------------------------------------------------------
     auto const offset(alpaka::Vec<Dim, Idx>::zeros());
@@ -103,8 +103,8 @@ static auto testBufferImmutable(
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
     //-----------------------------------------------------------------------------
-    // alpaka::buf::alloc
-    auto const buf(alpaka::buf::alloc<Elem, Idx>(dev, extent));
+    // alpaka::alloc
+    auto const buf(alpaka::alloc<Elem, Idx>(dev, extent));
 
     //-----------------------------------------------------------------------------
     auto const offset(alpaka::Vec<Dim, Idx>::zeros());
