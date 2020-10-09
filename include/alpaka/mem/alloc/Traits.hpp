@@ -30,7 +30,7 @@ namespace alpaka
             typename T,
             typename TAlloc,
             typename TSfinae = void>
-        struct Alloc;
+        struct Malloc;
 
         //#############################################################################
         //! The memory free trait.
@@ -46,17 +46,17 @@ namespace alpaka
     template<
         typename T,
         typename TAlloc>
-    ALPAKA_FN_HOST auto alloc(
+    ALPAKA_FN_HOST auto malloc(
         TAlloc const & alloc,
         std::size_t const & sizeElems)
     -> T *
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptMemAlloc, TAlloc>;
         return
-            traits::Alloc<
+            traits::Malloc<
                 T,
                 ImplementationBase>
-            ::alloc(
+            ::malloc(
                 alloc,
                 sizeElems);
     }

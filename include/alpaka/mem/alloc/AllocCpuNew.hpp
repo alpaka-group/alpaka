@@ -28,12 +28,12 @@ namespace alpaka
         //! The CPU new allocator memory allocation trait specialization.
         template<
             typename T>
-        struct Alloc<
+        struct Malloc<
             T,
             AllocCpuNew>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto malloc(
                 AllocCpuNew const & alloc,
                 std::size_t const & sizeElems)
             -> T *

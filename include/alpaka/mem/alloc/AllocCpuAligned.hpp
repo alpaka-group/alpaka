@@ -36,12 +36,12 @@ namespace alpaka
         template<
             typename T,
             typename TAlignment>
-        struct Alloc<
+        struct Malloc<
             T,
             AllocCpuAligned<TAlignment>>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto malloc(
                 AllocCpuAligned<TAlignment> const & alloc,
                 std::size_t const & sizeElems)
             -> T *

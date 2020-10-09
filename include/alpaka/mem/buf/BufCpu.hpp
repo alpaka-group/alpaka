@@ -61,7 +61,7 @@ namespace alpaka
                     AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
                     m_dev(dev),
                     m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                    m_pMem(alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
+                    m_pMem(alpaka::malloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
                     m_pitchBytes(static_cast<TIdx>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
 #if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
                     ,m_bPinned(false)
