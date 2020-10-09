@@ -133,12 +133,12 @@ auto main() -> int
         QueueProperty>;
     QueueAcc queue{devAcc};
 
-    using BufHost = alpaka::buf::Buf<
+    using BufHost = alpaka::Buf<
         Host,
         uint32_t,
         Dim,
         Idx>;
-    using BufAcc = alpaka::buf::Buf<
+    using BufAcc = alpaka::Buf<
         Acc,
         uint32_t,
         Dim,
@@ -161,14 +161,14 @@ auto main() -> int
 
     // Setup buffer.
     BufHost bufHost{
-        alpaka::buf::alloc<
+        alpaka::alloc<
             uint32_t,
             Idx>(
             devHost,
             extent)};
     uint32_t *const ptrBufHost{alpaka::view::getPtrNative(bufHost)};
     BufAcc bufAcc{
-        alpaka::buf::alloc<
+        alpaka::alloc<
             uint32_t,
             Idx>(
             devAcc,

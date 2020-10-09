@@ -276,7 +276,7 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     std::vector<Val> bufBHost1d(k * n, static_cast<Val>(1));
     // Wrap the std::vectors into a memory buffer object.
     // For 1D data this would not be required because alpaka::view::copy is specialized for std::vector and std::array.
-    // For multi dimensional data you could directly create them using alpaka::buf::alloc<Type>(devHost, extent), which is not used here.
+    // For multi dimensional data you could directly create them using alpaka::alloc<Type>(devHost, extent), which is not used here.
     // Instead we use ViewPlainPtr to wrap the data.
     using BufWrapper = alpaka::view::ViewPlainPtr<
         DevHost,
@@ -287,13 +287,13 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     BufWrapper bufBHost(bufBHost1d.data(), devHost, extentB);
 
     // Allocate C and set it to zero.
-    auto bufCHost(alpaka::buf::alloc<Val, Idx>(devHost, extentC));
+    auto bufCHost(alpaka::alloc<Val, Idx>(devHost, extentC));
     alpaka::view::set(queueHost, bufCHost, 0u, extentC);
 
     // Allocate the buffers on the accelerator.
-    auto bufAAcc(alpaka::buf::alloc<Val, Idx>(devAcc, extentA));
-    auto bufBAcc(alpaka::buf::alloc<Val, Idx>(devAcc, extentB));
-    auto bufCAcc(alpaka::buf::alloc<Val, Idx>(devAcc, extentC));
+    auto bufAAcc(alpaka::alloc<Val, Idx>(devAcc, extentA));
+    auto bufBAcc(alpaka::alloc<Val, Idx>(devAcc, extentB));
+    auto bufCAcc(alpaka::alloc<Val, Idx>(devAcc, extentC));
 
     // Copy Host -> Acc.
     alpaka::view::copy(queueAcc, bufAAcc, bufAHost, extentA);

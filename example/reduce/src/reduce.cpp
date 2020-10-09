@@ -57,7 +57,7 @@ using MaxBlockSize = Accelerator::MaxBlockSize;
 //!
 //! Returns true if the reduction was correct and false otherwise.
 template<typename T, typename DevHost, typename DevAcc, typename TFunc>
-T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::buf::Buf<DevHost, T, Dim, Idx> hostMemory, TFunc func)
+T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf<DevHost, T, Dim, Idx> hostMemory, TFunc func)
 {
     static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
 
@@ -72,11 +72,11 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::buf
     if (blockCount > maxBlockCount)
         blockCount = maxBlockCount;
 
-    alpaka::buf::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory =
-        alpaka::buf::alloc<T, Idx>(devAcc, n);
+    alpaka::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory =
+        alpaka::alloc<T, Idx>(devAcc, n);
 
-    alpaka::buf::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory =
-        alpaka::buf::alloc<T, Idx>(
+    alpaka::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory =
+        alpaka::alloc<T, Idx>(
             devAcc, static_cast<Extent>(blockCount));
 
     // copy the data to the GPU
@@ -149,7 +149,7 @@ int main()
         blockCount = maxBlockCount;
 
     // allocate memory
-    auto hostMemory = alpaka::buf::alloc<T, Idx>(devHost, n);
+    auto hostMemory = alpaka::alloc<T, Idx>(devHost, n);
 
     T *nativeHostMemory = alpaka::view::getPtrNative(hostMemory);
 

@@ -39,13 +39,13 @@ struct TestContainer
     using DevHost = alpaka::DevCpu;
     using PltfHost = alpaka::Pltf<DevHost>;
 
-    using BufHost = alpaka::buf::Buf<
+    using BufHost = alpaka::Buf<
         DevHost,
         TData,
         TDim,
         TIdx
     >;
-    using BufDevice = alpaka::buf::Buf<
+    using BufDevice = alpaka::Buf<
         DevAcc,
         TData,
         TDim,
@@ -78,7 +78,7 @@ struct TestContainer
     ) -> BufHost
     {
         BufHost bufHost(
-            alpaka::buf::alloc<
+            alpaka::alloc<
                 TData,
                 TIdx
             >(
@@ -100,7 +100,7 @@ struct TestContainer
     auto createDeviceBuffer(Vec extents) -> BufDevice
     {
         BufDevice bufDevice(
-            alpaka::buf::alloc<
+            alpaka::alloc<
                 TData,
                 TIdx
             >(

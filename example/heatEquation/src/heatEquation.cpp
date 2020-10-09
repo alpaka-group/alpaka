@@ -158,7 +158,7 @@ auto main( ) -> int
     QueueAcc queue { devAcc };
 
     // Initialize host-buffer
-    using BufHost = alpaka::buf::Buf<
+    using BufHost = alpaka::Buf<
         DevHost,
         double,
         Dim,
@@ -166,7 +166,7 @@ auto main( ) -> int
     >;
     // This buffer holds the calculated values
     auto uNextBufHost = BufHost{
-        alpaka::buf::alloc<
+        alpaka::alloc<
             double,
             Idx
         >(
@@ -176,7 +176,7 @@ auto main( ) -> int
     };
     // This buffer will hold the current values (used for the next step)
     auto uCurrBufHost = BufHost{
-        alpaka::buf::alloc<
+        alpaka::alloc<
             double,
             Idx
         >(
@@ -189,14 +189,14 @@ auto main( ) -> int
     double * const pNextHost = alpaka::view::getPtrNative( uNextBufHost );
 
     // Accelerator buffer
-    using BufAcc = alpaka::buf::Buf<
+    using BufAcc = alpaka::Buf<
         Acc,
         double,
         Dim,
         Idx
     >;
     auto uNextBufAcc = BufAcc{
-        alpaka::buf::alloc<
+        alpaka::alloc<
             double,
             Idx
         >(
@@ -205,7 +205,7 @@ auto main( ) -> int
         )
     };
     auto uCurrBufAcc = BufAcc{
-        alpaka::buf::alloc<
+        alpaka::alloc<
             double,
             Idx
         >(
