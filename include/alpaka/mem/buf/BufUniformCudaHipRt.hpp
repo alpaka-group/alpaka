@@ -309,7 +309,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto allocBuf(
                 DevUniformCudaHipRt const & dev,
                 TExtent const & extent)
             -> BufUniformCudaHipRt<TElem, DimInt<1u>, TIdx>
@@ -359,7 +359,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto allocBuf(
                 DevUniformCudaHipRt const & dev,
                 TExtent const & extent)
             -> BufUniformCudaHipRt<TElem, DimInt<2u>, TIdx>
@@ -426,7 +426,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto allocBuf(
                 DevUniformCudaHipRt const & dev,
                 TExtent const & extent)
             -> BufUniformCudaHipRt<TElem, DimInt<3u>, TIdx>

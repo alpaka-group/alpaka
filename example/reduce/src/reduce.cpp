@@ -73,10 +73,10 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
         blockCount = maxBlockCount;
 
     alpaka::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory =
-        alpaka::alloc<T, Idx>(devAcc, n);
+        alpaka::allocBuf<T, Idx>(devAcc, n);
 
     alpaka::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory =
-        alpaka::alloc<T, Idx>(
+        alpaka::allocBuf<T, Idx>(
             devAcc, static_cast<Extent>(blockCount));
 
     // copy the data to the GPU
@@ -149,7 +149,7 @@ int main()
         blockCount = maxBlockCount;
 
     // allocate memory
-    auto hostMemory = alpaka::alloc<T, Idx>(devHost, n);
+    auto hostMemory = alpaka::allocBuf<T, Idx>(devHost, n);
 
     T *nativeHostMemory = alpaka::view::getPtrNative(hostMemory);
 

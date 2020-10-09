@@ -79,11 +79,11 @@ struct Buffer
         devHost{ alpaka::getDevByIdx< PltfHost >( 0u ) },
         hostBuffer
         {
-            alpaka::alloc<TData, Idx>(devHost, Tcapacity)
+            alpaka::allocBuf<TData, Idx>(devHost, Tcapacity)
         },
         devBuffer
         {
-            alpaka::alloc<TData, Idx>(devAcc, Tcapacity)
+            alpaka::allocBuf<TData, Idx>(devAcc, Tcapacity)
         },
         pHostBuffer{ alpaka::view::getPtrNative( hostBuffer ) },
         pDevBuffer{ alpaka::view::getPtrNative( devBuffer ) }

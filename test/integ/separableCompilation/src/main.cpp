@@ -123,9 +123,9 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
         << ")" << std::endl;
 
     // Allocate host memory buffers.
-    auto memBufHostA(alpaka::alloc<Val, Idx>(devHost, extent));
-    auto memBufHostB(alpaka::alloc<Val, Idx>(devHost, extent));
-    auto memBufHostC(alpaka::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostA(alpaka::allocBuf<Val, Idx>(devHost, extent));
+    auto memBufHostB(alpaka::allocBuf<Val, Idx>(devHost, extent));
+    auto memBufHostC(alpaka::allocBuf<Val, Idx>(devHost, extent));
 
     // Initialize the host input vectors
     for (Idx i(0); i < numElements; ++i)
@@ -135,9 +135,9 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     }
 
     // Allocate the buffers on the accelerator.
-    auto memBufAccA(alpaka::alloc<Val, Idx>(devAcc, extent));
-    auto memBufAccB(alpaka::alloc<Val, Idx>(devAcc, extent));
-    auto memBufAccC(alpaka::alloc<Val, Idx>(devAcc, extent));
+    auto memBufAccA(alpaka::allocBuf<Val, Idx>(devAcc, extent));
+    auto memBufAccB(alpaka::allocBuf<Val, Idx>(devAcc, extent));
+    auto memBufAccC(alpaka::allocBuf<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
     alpaka::view::copy(queueAcc, memBufAccA, memBufHostA, extent);

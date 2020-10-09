@@ -371,11 +371,11 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
 
     // allocate host memory
     auto bufColorHost(
-        alpaka::alloc<Val, Idx>(devHost, extent));
+        alpaka::allocBuf<Val, Idx>(devHost, extent));
 
     // Allocate the buffer on the accelerator.
     auto bufColorAcc(
-        alpaka::alloc<Val, Idx>(devAcc, extent));
+        alpaka::allocBuf<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
     alpaka::view::copy(queue, bufColorAcc, bufColorHost, extent);

@@ -166,7 +166,7 @@ auto main( ) -> int
     >;
     // This buffer holds the calculated values
     auto uNextBufHost = BufHost{
-        alpaka::alloc<
+        alpaka::allocBuf<
             double,
             Idx
         >(
@@ -176,7 +176,7 @@ auto main( ) -> int
     };
     // This buffer will hold the current values (used for the next step)
     auto uCurrBufHost = BufHost{
-        alpaka::alloc<
+        alpaka::allocBuf<
             double,
             Idx
         >(
@@ -196,7 +196,7 @@ auto main( ) -> int
         Idx
     >;
     auto uNextBufAcc = BufAcc{
-        alpaka::alloc<
+        alpaka::allocBuf<
             double,
             Idx
         >(
@@ -205,7 +205,7 @@ auto main( ) -> int
         )
     };
     auto uCurrBufAcc = BufAcc{
-        alpaka::alloc<
+        alpaka::allocBuf<
             double,
             Idx
         >(
