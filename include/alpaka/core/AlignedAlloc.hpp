@@ -48,7 +48,7 @@ namespace alpaka
             _aligned_free(ptr);
 #else
             // linux and macos
-            free(ptr);
+            ::free(ptr);
 #endif
         }
 
