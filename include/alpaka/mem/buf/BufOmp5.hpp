@@ -38,88 +38,84 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         class BufCpu;
-    }
-    namespace buf
-    {
-        namespace omp5
+
+        namespace detail
         {
-            namespace detail
+            //#############################################################################
+            //! The OMP5 memory buffer detail.
+            template<
+                typename TElem,
+                typename TDim,
+                typename TIdx>
+            class BufOmp5Impl
             {
-                //#############################################################################
-                //! The OMP5 memory buffer detail.
+                static_assert(
+                    !std::is_const<TElem>::value,
+                    "The elem type of the buffer can not be const because the C++ Standard forbids containers of const elements!");
+                static_assert(
+                    !std::is_const<TIdx>::value,
+                    "The idx type of the buffer can not be const!");
+            private:
+                using Elem = TElem;
+                using Dim = TDim;
+                //-----------------------------------------------------------------------------
+                //! Calculate the pitches purely from the extents.
                 template<
-                    typename TElem,
-                    typename TDim,
-                    typename TIdx>
-                class BufOmp5Impl
+                    typename TExtent>
+                ALPAKA_FN_HOST static auto calculatePitchesFromExtents(
+                    TExtent const & extent)
+                -> Vec<TDim, TIdx>
                 {
+                    Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
+                    pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
+                    for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
+                    {
+                        pitchBytes[i-1] = extent[i-1] * pitchBytes[i];
+                    }
+                    return pitchBytes;
+                }
+
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor
+                template<
+                    typename TExtent>
+                ALPAKA_FN_HOST BufOmp5Impl(
+                    DevOmp5 const & dev,
+                    TElem * const pMem,
+                    TExtent const & extent) :
+                        m_dev(dev),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
+                        m_pitchBytes(calculatePitchesFromExtents(m_extentElements)),
+                        m_pMem(pMem)
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
-                        !std::is_const<TElem>::value,
-                        "The elem type of the buffer can not be const because the C++ Standard forbids containers of const elements!");
+                        TDim::value == alpaka::Dim<TExtent>::value,
+                        "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                     static_assert(
-                        !std::is_const<TIdx>::value,
-                        "The idx type of the buffer can not be const!");
-                private:
-                    using Elem = TElem;
-                    using Dim = TDim;
-                    //-----------------------------------------------------------------------------
-                    //! Calculate the pitches purely from the extents.
-                    template<
-                        typename TExtent>
-                    ALPAKA_FN_HOST static auto calculatePitchesFromExtents(
-                        TExtent const & extent)
-                    -> Vec<TDim, TIdx>
-                    {
-                        Vec<TDim, TIdx> pitchBytes(Vec<TDim, TIdx>::all(0));
-                        pitchBytes[TDim::value - 1u] = extent[TDim::value - 1u] * static_cast<TIdx>(sizeof(TElem));
-                        for(TIdx i = TDim::value - 1u; i > static_cast<TIdx>(0u); --i)
-                        {
-                            pitchBytes[i-1] = extent[i-1] * pitchBytes[i];
-                        }
-                        return pitchBytes;
-                    }
+                        std::is_same<TIdx, Idx<TExtent>>::value,
+                        "The idx type of TExtent and the TIdx template parameter have to be identical!");
+                }
 
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor
-                    template<
-                        typename TExtent>
-                    ALPAKA_FN_HOST BufOmp5Impl(
-                        DevOmp5 const & dev,
-                        TElem * const pMem,
-                        TExtent const & extent) :
-                            m_dev(dev),
-                            m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                            m_pitchBytes(calculatePitchesFromExtents(m_extentElements)),
-                            m_pMem(pMem)
-                    {
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+            public:
+                DevOmp5 m_dev;
+                Vec<TDim, TIdx> m_extentElements;
+                Vec<TDim, TIdx> m_pitchBytes;
+                TElem* m_pMem;
 
-                        static_assert(
-                            TDim::value == alpaka::Dim<TExtent>::value,
-                            "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
-                        static_assert(
-                            std::is_same<TIdx, Idx<TExtent>>::value,
-                            "The idx type of TExtent and the TIdx template parameter have to be identical!");
-                    }
-
-                public:
-                    DevOmp5 m_dev;
-                    Vec<TDim, TIdx> m_extentElements;
-                    Vec<TDim, TIdx> m_pitchBytes;
-                    TElem* m_pMem;
-
-                    BufOmp5Impl(const BufOmp5Impl&) = delete;
-                    BufOmp5Impl(BufOmp5Impl &&) = default;
-                    BufOmp5Impl& operator=(const BufOmp5Impl&) = delete;
-                    BufOmp5Impl& operator=(BufOmp5Impl&&) = default;
-                    ~BufOmp5Impl()
-                    {
-                        omp_target_free(m_pMem, m_dev.m_spDevOmp5Impl->iDevice());
-                    }
-                };
-            }
+                BufOmp5Impl(const BufOmp5Impl&) = delete;
+                BufOmp5Impl(BufOmp5Impl &&) = default;
+                BufOmp5Impl& operator=(const BufOmp5Impl&) = delete;
+                BufOmp5Impl& operator=(BufOmp5Impl&&) = default;
+                ~BufOmp5Impl()
+                {
+                    omp_target_free(m_pMem, m_dev.m_spDevOmp5Impl->iDevice());
+                }
+            };
         }
+
         template<
             typename TElem,
             typename TDim,
@@ -135,7 +131,7 @@ namespace alpaka
                 DevOmp5 const & dev,
                 TElem * const pMem,
                 TExtent const & extent) :
-                    m_spBufImpl(std::make_shared<omp5::detail::BufOmp5Impl<TElem, TDim, TIdx>>(dev, pMem, extent))
+                    m_spBufImpl(std::make_shared<detail::BufOmp5Impl<TElem, TDim, TIdx>>(dev, pMem, extent))
             {}
 
                 BufOmp5(const BufOmp5&) = default;
@@ -143,13 +139,13 @@ namespace alpaka
             BufOmp5& operator=(const BufOmp5&) = default;
             BufOmp5& operator=(BufOmp5&&) = default;
 
-            omp5::detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*() {return *m_spBufImpl;}
-            const omp5::detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*() const {return *m_spBufImpl;}
+            detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*() {return *m_spBufImpl;}
+            const detail::BufOmp5Impl<TElem, TDim, TIdx>& operator*() const {return *m_spBufImpl;}
 
             inline const Vec<TDim, TIdx>& extentElements() const {return m_spBufImpl->m_extentElements;}
 
         private:
-            std::shared_ptr<omp5::detail::BufOmp5Impl<TElem, TDim, TIdx>> m_spBufImpl;
+            std::shared_ptr<detail::BufOmp5Impl<TElem, TDim, TIdx>> m_spBufImpl;
         };
     }
 
