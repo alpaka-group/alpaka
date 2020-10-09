@@ -120,8 +120,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1example"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1example.html">example</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1extent"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html">extent</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1extent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -357,6 +355,10 @@ Typedefs</h2></td></tr>
 <tr class="separator:acc8723b925f6ddf8b27631b71a7c22c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0173206e98595f605bffe9a6198da754"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0173206e98595f605bffe9a6198da754">EventOmp5</a> = <a class="el" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads</a>&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> &gt;</td></tr>
 <tr class="separator:a0173206e98595f605bffe9a6198da754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a523f99728e8595fab50c09883a2f13b1"><td class="memTemplParams" colspan="2">template&lt;class TDim , class TIdx &gt; </td></tr>
+<tr class="memitem:a523f99728e8595fab50c09883a2f13b1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a523f99728e8595fab50c09883a2f13b1">ExampleDefaultAcc</a> = <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt; TDim, TIdx &gt;</td></tr>
+<tr class="memdesc:a523f99728e8595fab50c09883a2f13b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the default accelerator used by examples. From a list of all accelerators the first one which is enabled is chosen. <a class="el" href="classalpaka_1_1AccCpuSerial.html" title="The CPU serial accelerator. ">AccCpuSerial</a> is selected last.  <a href="#a523f99728e8595fab50c09883a2f13b1">More...</a><br /></td></tr>
+<tr class="separator:a523f99728e8595fab50c09883a2f13b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dc8244519a754f60c4c8186a26a82fc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0dc8244519a754f60c4c8186a26a82fc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a> = typename <a class="el" href="structalpaka_1_1traits_1_1IdxType.html">traits::IdxType</a>&lt; T &gt;::type</td></tr>
 <tr class="separator:a0dc8244519a754f60c4c8186a26a82fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -843,6 +845,26 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EventOmp5_8hpp_source.html#l00023">23</a> of file <a class="el" href="EventOmp5_8hpp_source.html">EventOmp5.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a523f99728e8595fab50c09883a2f13b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a523f99728e8595fab50c09883a2f13b1">&#9670;&nbsp;</a></span>ExampleDefaultAcc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class TDim , class TIdx &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a523f99728e8595fab50c09883a2f13b1">alpaka::ExampleDefaultAcc</a> = typedef <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt;TDim,TIdx&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Alias for the default accelerator used by examples. From a list of all accelerators the first one which is enabled is chosen. <a class="el" href="classalpaka_1_1AccCpuSerial.html" title="The CPU serial accelerator. ">AccCpuSerial</a> is selected last. </p>
+
+<p class="definition">Definition at line <a class="el" href="ExampleDefaultAcc_8hpp_source.html#l00029">29</a> of file <a class="el" href="ExampleDefaultAcc_8hpp_source.html">ExampleDefaultAcc.hpp</a>.</p>
 
 </div>
 </div>
@@ -3415,7 +3437,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Fri Oct 9 2020 13:03:27 for alpaka by
+    <li class="footer">Generated on Fri Oct 9 2020 14:13:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate.html":[3,0,0,1,3,7],
 "structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html":[3,0,0,1,3,11],
 "structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierFiber_3_01TIdx_01_4_01_4.html#a845af06e94e458c370d92150ffed16db":[3,0,0,1,3,11,0],
 "structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierOmp_01_4.html":[3,0,0,1,3,12],
@@ -249,5 +248,6 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1math_1_1ConceptMathMax.html":[3,0,0,13,28],
 "structalpaka_1_1math_1_1ConceptMathMin.html":[3,0,0,13,29],
 "structalpaka_1_1math_1_1ConceptMathPow.html":[3,0,0,13,30],
-"structalpaka_1_1math_1_1ConceptMathRemainder.html":[3,0,0,13,31]
+"structalpaka_1_1math_1_1ConceptMathRemainder.html":[3,0,0,13,31],
+"structalpaka_1_1math_1_1ConceptMathRound.html":[3,0,0,13,32]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"structalpaka_1_1traits_1_1Clock_3_01TimeUniformCudaHipBuiltIn_01_4.html":[3,0,0,18,76],
 "structalpaka_1_1traits_1_1Clock_3_01TimeUniformCudaHipBuiltIn_01_4.html#a395b75254f028485c08e54463e62dad9":[3,0,0,18,76,0],
 "structalpaka_1_1traits_1_1ConcatVec.html":[3,0,0,18,77],
 "structalpaka_1_1traits_1_1ConcatVec_3_01Vec_3_01TDimL_00_01TVal_01_4_00_01Vec_3_01TDimR_00_01TVal_01_4_01_4.html":[3,0,0,18,78],
@@ -249,5 +248,6 @@ var NAVTREEINDEX11 =
 "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01view_1_1uniform__cuda__fe12929b31d88bba163fb45d481d2b7e.html#a375595ea173fff6651f49a7478219e64":[3,0,0,18,195,0],
 "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4.html":[3,0,0,18,200],
 "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01EventUniformCudaHipRt_01_4.html#a982a8159d4e0cf6e012d47f744c69013":[3,0,0,18,200,0],
-"structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html":[3,0,0,18,202]
+"structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html":[3,0,0,18,202],
+"structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html#a3d9a5a709bc7aa057c7ac011c5aeca13":[3,0,0,18,202,2]
 };

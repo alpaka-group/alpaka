@@ -1,6 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"structalpaka_1_1view_1_1traits_1_1CreateTaskSet_3_01TDim_00_01DevUniformCudaHipRt_01_4.html":[3,0,0,20,3,17],
 "structalpaka_1_1view_1_1traits_1_1CreateTaskSet_3_01TDim_00_01DevUniformCudaHipRt_01_4.html#a466934a0130d5730c03fc73e2fc7ff53":[3,0,0,20,3,17,0],
 "structalpaka_1_1view_1_1traits_1_1GetPitchBytes.html":[3,0,0,20,3,18],
 "structalpaka_1_1view_1_1traits_1_1GetPitchBytes.html#a39074fc893f61eaa74551d5a89663b81":[3,0,0,20,3,18,0],
