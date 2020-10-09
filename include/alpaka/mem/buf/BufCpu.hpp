@@ -349,7 +349,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto allocBuf(
                 DevCpu const & dev,
                 TExtent const & extent)
             -> BufCpu<TElem, TDim, TIdx>

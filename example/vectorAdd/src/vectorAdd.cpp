@@ -137,9 +137,9 @@ auto main()
 
     // Allocate 3 host memory buffers
     using BufHost = alpaka::Buf<DevHost, Data, Dim, Idx>;
-    BufHost bufHostA(alpaka::alloc<Data, Idx>(devHost, extent));
-    BufHost bufHostB(alpaka::alloc<Data, Idx>(devHost, extent));
-    BufHost bufHostC(alpaka::alloc<Data, Idx>(devHost, extent));
+    BufHost bufHostA(alpaka::allocBuf<Data, Idx>(devHost, extent));
+    BufHost bufHostB(alpaka::allocBuf<Data, Idx>(devHost, extent));
+    BufHost bufHostC(alpaka::allocBuf<Data, Idx>(devHost, extent));
 
     // Initialize the host input vectors A and B
     Data * const pBufHostA(alpaka::view::getPtrNative(bufHostA));
@@ -160,9 +160,9 @@ auto main()
 
     // Allocate 3 buffers on the accelerator
     using BufAcc = alpaka::Buf<Acc, Data, Dim, Idx>;
-    BufAcc bufAccA(alpaka::alloc<Data, Idx>(devAcc, extent));
-    BufAcc bufAccB(alpaka::alloc<Data, Idx>(devAcc, extent));
-    BufAcc bufAccC(alpaka::alloc<Data, Idx>(devAcc, extent));
+    BufAcc bufAccA(alpaka::allocBuf<Data, Idx>(devAcc, extent));
+    BufAcc bufAccB(alpaka::allocBuf<Data, Idx>(devAcc, extent));
+    BufAcc bufAccC(alpaka::allocBuf<Data, Idx>(devAcc, extent));
 
     // Copy Host -> Acc
     alpaka::view::copy(queue, bufAccA, bufHostA, extent);

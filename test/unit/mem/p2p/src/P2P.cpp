@@ -45,8 +45,8 @@ static auto testP2P(
     Queue queue0(dev0);
 
     //-----------------------------------------------------------------------------
-    auto buf0(alpaka::alloc<Elem, Idx>(dev0, extent));
-    auto buf1(alpaka::alloc<Elem, Idx>(dev1, extent));
+    auto buf0(alpaka::allocBuf<Elem, Idx>(dev0, extent));
+    auto buf1(alpaka::allocBuf<Elem, Idx>(dev1, extent));
 
     //-----------------------------------------------------------------------------
     std::uint8_t const byte(static_cast<uint8_t>(42u));

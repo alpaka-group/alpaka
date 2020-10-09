@@ -287,13 +287,13 @@ TEMPLATE_LIST_TEST_CASE( "matMul", "[matMul]", TestAccs)
     BufWrapper bufBHost(bufBHost1d.data(), devHost, extentB);
 
     // Allocate C and set it to zero.
-    auto bufCHost(alpaka::alloc<Val, Idx>(devHost, extentC));
+    auto bufCHost(alpaka::allocBuf<Val, Idx>(devHost, extentC));
     alpaka::view::set(queueHost, bufCHost, 0u, extentC);
 
     // Allocate the buffers on the accelerator.
-    auto bufAAcc(alpaka::alloc<Val, Idx>(devAcc, extentA));
-    auto bufBAcc(alpaka::alloc<Val, Idx>(devAcc, extentB));
-    auto bufCAcc(alpaka::alloc<Val, Idx>(devAcc, extentC));
+    auto bufAAcc(alpaka::allocBuf<Val, Idx>(devAcc, extentA));
+    auto bufBAcc(alpaka::allocBuf<Val, Idx>(devAcc, extentB));
+    auto bufCAcc(alpaka::allocBuf<Val, Idx>(devAcc, extentC));
 
     // Copy Host -> Acc.
     alpaka::view::copy(queueAcc, bufAAcc, bufAHost, extentA);

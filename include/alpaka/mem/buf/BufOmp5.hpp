@@ -333,7 +333,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto allocBuf(
                 DevOmp5 const & dev,
                 TExtent const & extent)
             -> BufOmp5<TElem, DimInt<1u>, TIdx>
@@ -376,7 +376,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            ALPAKA_FN_HOST static auto alloc(
+            ALPAKA_FN_HOST static auto allocBuf(
                 DevOmp5 const & dev,
                 TExtent const & extent)
             -> BufOmp5<TElem, TDim, TIdx>

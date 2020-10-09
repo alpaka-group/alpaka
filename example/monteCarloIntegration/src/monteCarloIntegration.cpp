@@ -161,14 +161,14 @@ auto main() -> int
 
     // Setup buffer.
     BufHost bufHost{
-        alpaka::alloc<
+        alpaka::allocBuf<
             uint32_t,
             Idx>(
             devHost,
             extent)};
     uint32_t *const ptrBufHost{alpaka::view::getPtrNative(bufHost)};
     BufAcc bufAcc{
-        alpaka::alloc<
+        alpaka::allocBuf<
             uint32_t,
             Idx>(
             devAcc,

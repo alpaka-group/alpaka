@@ -109,7 +109,7 @@ namespace alpaka
         typename TIdx,
         typename TExtent,
         typename TDev>
-    ALPAKA_FN_HOST auto alloc(
+    ALPAKA_FN_HOST auto allocBuf(
         TDev const & dev,
         TExtent const & extent = TExtent())
     {
@@ -119,7 +119,7 @@ namespace alpaka
                 Dim<TExtent>,
                 TIdx,
                 TDev>
-            ::alloc(
+            ::allocBuf(
                 dev,
                 extent);
     }

@@ -39,7 +39,7 @@ static auto testBufferMutable(
 
     //-----------------------------------------------------------------------------
     // alpaka::malloc
-    auto buf(alpaka::alloc<Elem, Idx>(dev, extent));
+    auto buf(alpaka::allocBuf<Elem, Idx>(dev, extent));
 
     //-----------------------------------------------------------------------------
     auto const offset(alpaka::Vec<Dim, Idx>::zeros());
@@ -104,7 +104,7 @@ static auto testBufferImmutable(
 
     //-----------------------------------------------------------------------------
     // alpaka::malloc
-    auto const buf(alpaka::alloc<Elem, Idx>(dev, extent));
+    auto const buf(alpaka::allocBuf<Elem, Idx>(dev, extent));
 
     //-----------------------------------------------------------------------------
     auto const offset(alpaka::Vec<Dim, Idx>::zeros());

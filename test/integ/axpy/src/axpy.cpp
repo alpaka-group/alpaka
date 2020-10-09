@@ -130,9 +130,9 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
         << ")" << std::endl;
 
     // Allocate host memory buffers.
-    auto memBufHostX(alpaka::alloc<Val, Idx>(devHost, extent));
-    auto memBufHostOrigY(alpaka::alloc<Val, Idx>(devHost, extent));
-    auto memBufHostY(alpaka::alloc<Val, Idx>(devHost, extent));
+    auto memBufHostX(alpaka::allocBuf<Val, Idx>(devHost, extent));
+    auto memBufHostOrigY(alpaka::allocBuf<Val, Idx>(devHost, extent));
+    auto memBufHostY(alpaka::allocBuf<Val, Idx>(devHost, extent));
     Val * const pBufHostX = alpaka::view::getPtrNative(memBufHostX);
     Val * const pBufHostOrigY = alpaka::view::getPtrNative(memBufHostOrigY);
     Val * const pBufHostY = alpaka::view::getPtrNative(memBufHostY);
@@ -164,8 +164,8 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
 #endif
 
     // Allocate the buffer on the accelerator.
-    auto memBufAccX(alpaka::alloc<Val, Idx>(devAcc, extent));
-    auto memBufAccY(alpaka::alloc<Val, Idx>(devAcc, extent));
+    auto memBufAccX(alpaka::allocBuf<Val, Idx>(devAcc, extent));
+    auto memBufAccY(alpaka::allocBuf<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
     alpaka::view::copy(queue, memBufAccX, memBufHostX, extent);

@@ -78,7 +78,7 @@ struct TestContainer
     ) -> BufHost
     {
         BufHost bufHost(
-            alpaka::alloc<
+            alpaka::allocBuf<
                 TData,
                 TIdx
             >(
@@ -100,7 +100,7 @@ struct TestContainer
     auto createDeviceBuffer(Vec extents) -> BufDevice
     {
         BufDevice bufDevice(
-            alpaka::alloc<
+            alpaka::allocBuf<
                 TData,
                 TIdx
             >(
