@@ -36,104 +36,102 @@ namespace alpaka
 {
     namespace buf
     {
-        namespace cpu
+        namespace detail
         {
-            namespace detail
+            //#############################################################################
+            //! The CPU memory buffer.
+            template<
+                typename TElem,
+                typename TDim,
+                typename TIdx>
+            class BufCpuImpl final :
+                public alloc::AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
             {
-                //#############################################################################
-                //! The CPU memory buffer.
+                static_assert(
+                    !std::is_const<TElem>::value,
+                    "The elem type of the buffer can not be const because the C++ Standard forbids containers of const elements!");
+                static_assert(
+                    !std::is_const<TIdx>::value,
+                    "The idx type of the buffer can not be const!");
+            public:
+                //-----------------------------------------------------------------------------
                 template<
-                    typename TElem,
-                    typename TDim,
-                    typename TIdx>
-                class BufCpuImpl final :
-                    public alloc::AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>
-                {
-                    static_assert(
-                        !std::is_const<TElem>::value,
-                        "The elem type of the buffer can not be const because the C++ Standard forbids containers of const elements!");
-                    static_assert(
-                        !std::is_const<TIdx>::value,
-                        "The idx type of the buffer can not be const!");
-                public:
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TExtent>
-                    ALPAKA_FN_HOST BufCpuImpl(
-                        DevCpu const & dev,
-                        TExtent const & extent) :
-                            alloc::AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
-                            m_dev(dev),
-                            m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
-                            m_pMem(alloc::alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
-                            m_pitchBytes(static_cast<TIdx>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
+                    typename TExtent>
+                ALPAKA_FN_HOST BufCpuImpl(
+                    DevCpu const & dev,
+                    TExtent const & extent) :
+                        alloc::AllocCpuAligned<std::integral_constant<std::size_t, core::vectorization::defaultAlignment>>(),
+                        m_dev(dev),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
+                        m_pMem(alloc::alloc<TElem>(*this, static_cast<std::size_t>(computeElementCount(extent)))),
+                        m_pitchBytes(static_cast<TIdx>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))))
 #if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
-                            ,m_bPinned(false)
+                        ,m_bPinned(false)
 #endif
-                    {
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        static_assert(
-                            TDim::value == Dim<TExtent>::value,
-                            "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
-                        static_assert(
-                            std::is_same<TIdx, Idx<TExtent>>::value,
-                            "The idx type of TExtent and the TIdx template parameter have to be identical!");
+                    static_assert(
+                        TDim::value == Dim<TExtent>::value,
+                        "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
+                    static_assert(
+                        std::is_same<TIdx, Idx<TExtent>>::value,
+                        "The idx type of TExtent and the TIdx template parameter have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << __func__
-                            << " e: " << m_extentElements
-                            << " ptr: " << static_cast<void *>(m_pMem)
-                            << " pitch: " << m_pitchBytes
-                            << std::endl;
+                    std::cout << __func__
+                        << " e: " << m_extentElements
+                        << " ptr: " << static_cast<void *>(m_pMem)
+                        << " pitch: " << m_pitchBytes
+                        << std::endl;
 #endif
-                    }
-                    //-----------------------------------------------------------------------------
-                    BufCpuImpl(BufCpuImpl const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    BufCpuImpl(BufCpuImpl &&) = default;
-                    //-----------------------------------------------------------------------------
-                    auto operator=(BufCpuImpl const &) -> BufCpuImpl & = delete;
-                    //-----------------------------------------------------------------------------
-                    auto operator=(BufCpuImpl &&) -> BufCpuImpl & = default;
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~BufCpuImpl()
-                    {
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                }
+                //-----------------------------------------------------------------------------
+                BufCpuImpl(BufCpuImpl const &) = delete;
+                //-----------------------------------------------------------------------------
+                BufCpuImpl(BufCpuImpl &&) = default;
+                //-----------------------------------------------------------------------------
+                auto operator=(BufCpuImpl const &) -> BufCpuImpl & = delete;
+                //-----------------------------------------------------------------------------
+                auto operator=(BufCpuImpl &&) -> BufCpuImpl & = default;
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST ~BufCpuImpl()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
-                        // Unpin this memory if it is currently pinned.
-                        buf::unpin(*this);
+                    // Unpin this memory if it is currently pinned.
+                    buf::unpin(*this);
 #endif
-                        // NOTE: m_pMem is allowed to be a nullptr here.
-                        alloc::free(*this, m_pMem);
-                    }
+                    // NOTE: m_pMem is allowed to be a nullptr here.
+                    alloc::free(*this, m_pMem);
+                }
 
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! \return The number of elements to allocate.
-                    template<
-                        typename TExtent>
-                    ALPAKA_FN_HOST static auto computeElementCount(
-                        TExtent const & extent)
-                    -> TIdx
-                    {
-                        auto const extentElementCount(extent::getExtentProduct(extent));
+            private:
+                //-----------------------------------------------------------------------------
+                //! \return The number of elements to allocate.
+                template<
+                    typename TExtent>
+                ALPAKA_FN_HOST static auto computeElementCount(
+                    TExtent const & extent)
+                -> TIdx
+                {
+                    auto const extentElementCount(extent::getExtentProduct(extent));
 
-                        return extentElementCount;
-                    }
+                    return extentElementCount;
+                }
 
-                public:
-                    DevCpu const m_dev;
-                    Vec<TDim, TIdx> const m_extentElements;
-                    TElem * const m_pMem;
-                    TIdx const m_pitchBytes;
+            public:
+                DevCpu const m_dev;
+                Vec<TDim, TIdx> const m_extentElements;
+                TElem * const m_pMem;
+                TIdx const m_pitchBytes;
 #if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
-                    bool m_bPinned;
+                bool m_bPinned;
 #endif
-                };
-            }
+            };
         }
+
         //#############################################################################
         //! The CPU memory buffer.
         template<
@@ -149,7 +147,7 @@ namespace alpaka
             ALPAKA_FN_HOST BufCpu(
                 DevCpu const & dev,
                 TExtent const & extent) :
-                    m_spBufCpuImpl(std::make_shared<cpu::detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, extent))
+                    m_spBufCpuImpl(std::make_shared<detail::BufCpuImpl<TElem, TDim, TIdx>>(dev, extent))
             {}
             //-----------------------------------------------------------------------------
             BufCpu(BufCpu const &) = default;
@@ -163,7 +161,7 @@ namespace alpaka
             ~BufCpu() = default;
 
         public:
-            std::shared_ptr<cpu::detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
+            std::shared_ptr<detail::BufCpuImpl<TElem, TDim, TIdx>> m_spBufCpuImpl;
         };
     }
 
@@ -486,11 +484,11 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct Unpin<
-                buf::cpu::detail::BufCpuImpl<TElem, TDim, TIdx>>
+                buf::detail::BufCpuImpl<TElem, TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto unpin(
-                    buf::cpu::detail::BufCpuImpl<TElem, TDim, TIdx> & bufImpl)
+                    buf::detail::BufCpuImpl<TElem, TDim, TIdx> & bufImpl)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -536,11 +534,11 @@ namespace alpaka
                 typename TDim,
                 typename TIdx>
             struct IsPinned<
-                buf::cpu::detail::BufCpuImpl<TElem, TDim, TIdx>>
+                buf::detail::BufCpuImpl<TElem, TDim, TIdx>>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto isPinned(
-                    buf::cpu::detail::BufCpuImpl<TElem, TDim, TIdx> const & bufImpl)
+                    buf::detail::BufCpuImpl<TElem, TDim, TIdx> const & bufImpl)
                 -> bool
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
