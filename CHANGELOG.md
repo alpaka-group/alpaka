@@ -5,7 +5,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ## [Unreleased]
-
+### Breaking changes:
+- removed namespace `alpaka::dev`
+- removed namespace `alpaka::pltf`
+- renamed function `alpaka::vec::cast` to `alpaka::castVec`
+- renamed function `alpaka::vec::reverse` to `alpaka::reverseVec`
+- renamed function `alpaka::vec::concat` to `alpaka::concatVec`
+- removed namespace `alpaka::vec`
+- removed namespace `alpaka::workdiv`
+- removed namespace `alpaka::acc`
+- removed namespace `alpaka::atomic`
+- removed namespace `alpaka::queue`
+- removed namespace `alpaka::idx`
+- removed namespace `alpaka::dim`
+- removed namespace `alpaka::kernel`
+- removed namespace `alpaka::wait`
+- removed namespace `alpaka::mem`
+- removed namespace `alpaka::offset`
+- removed namespace `alpaka::elem`
+- removed namespace `alpaka::intrinsic`
+- renamed function `alpaka::event::test` to `alpaka::isComplete`
+- removed namespace `alpaka::event`
+- removed namespace `alpaka::time`
+- removed namespace `alpaka::example`
+- renamed function `alpaka::alloc::alloc` to `alpaka::malloc`
+- renamed function `alpaka::buf::alloc` to `alpaka::allocBuf`
+- removed namespace `alpaka::alloc`
+- removed namespace `alpaka::buf`
 
 ## [0.5.0] - 2020-06-26
 ### Compatibility Changes:
