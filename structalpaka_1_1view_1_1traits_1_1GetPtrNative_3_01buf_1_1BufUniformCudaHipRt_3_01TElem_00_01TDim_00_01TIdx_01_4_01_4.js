@@ -1,5 +1,0 @@
-var structalpaka_1_1view_1_1traits_1_1GetPtrNative_3_01buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
-[
-    [ "getPtrNative", "structalpaka_1_1view_1_1traits_1_1GetPtrNative_3_01buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a85afb868179302bd5eba6707d705c1fb", null ],
-    [ "getPtrNative", "structalpaka_1_1view_1_1traits_1_1GetPtrNative_3_01buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a582678214471460471100a7ae0c95aa9", null ]
-];

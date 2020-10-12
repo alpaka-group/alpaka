@@ -99,13 +99,13 @@ $(document).ready(function(){initNavTree('mem_2alloc_2Traits_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1alloc_1_1ConceptMemAlloc.html">alpaka::alloc::ConceptMemAlloc</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptMemAlloc.html">alpaka::ConceptMemAlloc</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1alloc_1_1traits_1_1Alloc.html">alpaka::alloc::traits::Alloc&lt; T, TAlloc, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory allocation trait.  <a href="structalpaka_1_1alloc_1_1traits_1_1Alloc.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1Free.html">alpaka::traits::Free&lt; T, TAlloc, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory free trait.  <a href="structalpaka_1_1traits_1_1Free.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1alloc_1_1traits_1_1Free.html">alpaka::alloc::traits::Free&lt; T, TAlloc, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory free trait.  <a href="structalpaka_1_1alloc_1_1traits_1_1Free.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1Malloc.html">alpaka::traits::Malloc&lt; T, TAlloc, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory allocation trait.  <a href="structalpaka_1_1traits_1_1Malloc.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -113,22 +113,19 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests vectorization of the directly following loop to the compiler. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1alloc"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1alloc.html">alpaka::alloc</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1alloc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The allocator specifics. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1alloc_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1alloc_1_1traits.html">alpaka::alloc::traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1alloc_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The allocator traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a0cdeab14c4f0d557a9587e6494a1697a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAlloc &gt; </td></tr>
-<tr class="memitem:a0cdeab14c4f0d557a9587e6494a1697a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1alloc.html#a0cdeab14c4f0d557a9587e6494a1697a">alpaka::alloc::alloc</a> (TAlloc const &amp;alloc, std::size_t const &amp;sizeElems) -&gt; T *</td></tr>
-<tr class="separator:a0cdeab14c4f0d557a9587e6494a1697a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4756d801a968f1ccec18d9534ad3c3e9"><td class="memTemplParams" colspan="2">template&lt;typename TAlloc , typename T &gt; </td></tr>
-<tr class="memitem:a4756d801a968f1ccec18d9534ad3c3e9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1alloc.html#a4756d801a968f1ccec18d9534ad3c3e9">alpaka::alloc::free</a> (TAlloc const &amp;alloc, T const *const ptr) -&gt; void</td></tr>
-<tr class="memdesc:a4756d801a968f1ccec18d9534ad3c3e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory identified by the given pointer.  <a href="namespacealpaka_1_1alloc.html#a4756d801a968f1ccec18d9534ad3c3e9">More...</a><br /></td></tr>
-<tr class="separator:a4756d801a968f1ccec18d9534ad3c3e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="memTemplParams" colspan="2">template&lt;typename TAlloc , typename T &gt; </td></tr>
+<tr class="memitem:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">alpaka::free</a> (TAlloc const &amp;alloc, T const *const ptr) -&gt; void</td></tr>
+<tr class="memdesc:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory identified by the given pointer.  <a href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">More...</a><br /></td></tr>
+<tr class="separator:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAlloc &gt; </td></tr>
+<tr class="memitem:a30687ca1eaba239c74afd1bb2f26831c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a30687ca1eaba239c74afd1bb2f26831c">alpaka::malloc</a> (TAlloc const &amp;alloc, std::size_t const &amp;sizeElems) -&gt; T *</td></tr>
+<tr class="separator:a30687ca1eaba239c74afd1bb2f26831c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -136,7 +133,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_aa5c7be85b62141dab4191e7fe585875.html">alloc</a></li><li class="navelem"><a class="el" href="mem_2alloc_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Sat Oct 10 2020 14:53:23 for alpaka by
+    <li class="footer">Generated on Mon Oct 12 2020 13:05:19 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

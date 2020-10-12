@@ -1,4 +1,0 @@
-var structalpaka_1_1buf_1_1traits_1_1Map_3_01buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4 =
-[
-    [ "map", "structalpaka_1_1buf_1_1traits_1_1Map_3_01buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4.html#a2ef0d3eff2fe396adc07406937057307", null ]
-];

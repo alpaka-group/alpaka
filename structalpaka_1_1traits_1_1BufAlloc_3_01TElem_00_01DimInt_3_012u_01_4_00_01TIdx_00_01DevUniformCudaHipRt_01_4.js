@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_012u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4 =
+[
+    [ "allocBuf", "structalpaka_1_1traits_1_1BufAlloc_3_01TElem_00_01DimInt_3_012u_01_4_00_01TIdx_00_01DevUniformCudaHipRt_01_4.html#abcae49b684d56ec16bfd5e6910df84ab", null ]
+];

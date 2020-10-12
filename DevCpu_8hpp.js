@@ -1,9 +1,9 @@
 var DevCpu_8hpp =
 [
-    [ "BufCpu", "classalpaka_1_1buf_1_1BufCpu.html", "classalpaka_1_1buf_1_1BufCpu" ],
-    [ "BufType< DevCpu, TElem, TDim, TIdx >", "structalpaka_1_1buf_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1buf_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
+    [ "BufCpu", "classalpaka_1_1BufCpu.html", "classalpaka_1_1BufCpu" ],
     [ "DevCpuImpl", "classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html", "classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl" ],
     [ "DevCpu", "classalpaka_1_1DevCpu.html", "classalpaka_1_1DevCpu" ],
+    [ "BufType< DevCpu, TElem, TDim, TIdx >", "structalpaka_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4.html", "structalpaka_1_1traits_1_1BufType_3_01DevCpu_00_01TElem_00_01TDim_00_01TIdx_01_4" ],
     [ "GetDevByIdx", "structalpaka_1_1traits_1_1GetDevByIdx.html", null ],
     [ "GetFreeMemBytes< DevCpu >", "structalpaka_1_1traits_1_1GetFreeMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1GetFreeMemBytes_3_01DevCpu_01_4" ],
     [ "GetMemBytes< DevCpu >", "structalpaka_1_1traits_1_1GetMemBytes_3_01DevCpu_01_4.html", "structalpaka_1_1traits_1_1GetMemBytes_3_01DevCpu_01_4" ],

@@ -4,6 +4,8 @@ var namespacealpaka_1_1detail =
     [ "AtomicHierarchyConceptType< hierarchy::Blocks >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4" ],
     [ "AtomicHierarchyConceptType< hierarchy::Grids >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4" ],
     [ "AtomicHierarchyConceptType< hierarchy::Threads >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4" ],
+    [ "BufCpuImpl", "classalpaka_1_1detail_1_1BufCpuImpl.html", "classalpaka_1_1detail_1_1BufCpuImpl" ],
+    [ "BufOmp5Impl", "classalpaka_1_1detail_1_1BufOmp5Impl.html", "classalpaka_1_1detail_1_1BufOmp5Impl" ],
     [ "CheckFnReturnType", "structalpaka_1_1detail_1_1CheckFnReturnType.html", "structalpaka_1_1detail_1_1CheckFnReturnType" ],
     [ "CheckFnReturnType< AccGpuUniformCudaHipRt< TDim, TIdx > >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4" ],
     [ "CheckFnReturnType< TAcc, typename std::enable_if< concepts::ImplementsConcept< ConceptUniformCudaHip, TAcc >::value >::type >", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conce350336f6fc499ffdfde102bd2daf9525.html", "structalpaka_1_1detail_1_1CheckFnReturnType_3_01TAcc_00_01typename_01std_1_1enable__if_3_01conce350336f6fc499ffdfde102bd2daf9525" ],

@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['pin',['Pin',['../structalpaka_1_1buf_1_1traits_1_1Pin.html',1,'alpaka::buf::traits']]],
-  ['pin_3c_20buf_3a_3abufcpu_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Pin&lt; buf::BufCpu&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1buf_1_1traits_1_1Pin_3_01buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::buf::traits']]],
-  ['pin_3c_20buf_3a_3abufomp5_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Pin&lt; buf::BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1buf_1_1traits_1_1Pin_3_01buf_1_1BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::buf::traits']]],
-  ['pin_3c_20buf_3a_3abufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Pin&lt; buf::BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1buf_1_1traits_1_1Pin_3_01buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::buf::traits']]],
+  ['pin',['Pin',['../structalpaka_1_1traits_1_1Pin.html',1,'alpaka::traits']]],
+  ['pin_3c_20bufcpu_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Pin&lt; BufCpu&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1Pin_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['pin_3c_20bufomp5_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Pin&lt; BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1Pin_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['pin_3c_20bufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['Pin&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1Pin_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['pltfcpu',['PltfCpu',['../classalpaka_1_1PltfCpu.html',1,'alpaka']]],
   ['pltfomp5',['PltfOmp5',['../classalpaka_1_1PltfOmp5.html',1,'alpaka']]],
   ['pltftype',['PltfType',['../structalpaka_1_1traits_1_1PltfType.html',1,'alpaka::traits']]],
@@ -37,10 +37,10 @@ var searchData=
   ['pow_3c_20powuniformcudahipbuiltin_2c_20tbase_2c_20texp_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5ffloating_5fpoint_3c_20tbase_20_3e_3a_3avalue_20_26_26std_3a_3ais_5ffloating_5fpoint_3c_20texp_20_3e_3a_3avalue_20_3e_20_3e',['Pow&lt; PowUniformCudaHipBuiltIn, TBase, TExp, std::enable_if_t&lt; std::is_floating_point&lt; TBase &gt;::value &amp;&amp;std::is_floating_point&lt; TExp &gt;::value &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Pow_3_01PowUniformCudaHipBuiltIn_00_01TBase_00_01TExp_00_01stde6e1a877c2a954bfdbd90e6b2d96dd37.html',1,'alpaka::math::traits']]],
   ['powstdlib',['PowStdLib',['../classalpaka_1_1math_1_1PowStdLib.html',1,'alpaka::math']]],
   ['powuniformcudahipbuiltin',['PowUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1PowUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
-  ['prepareforasynccopy',['PrepareForAsyncCopy',['../structalpaka_1_1buf_1_1traits_1_1PrepareForAsyncCopy.html',1,'alpaka::buf::traits']]],
-  ['prepareforasynccopy_3c_20buf_3a_3abufcpu_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; buf::BufCpu&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::buf::traits']]],
-  ['prepareforasynccopy_3c_20buf_3a_3abufomp5_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; buf::BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01buf_1_1BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::buf::traits']]],
-  ['prepareforasynccopy_3c_20buf_3a_3abufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; buf::BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1buf_1_1traits_1_1PrepareForAsyncCopy_3_01buf_1_1BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::buf::traits']]],
+  ['prepareforasynccopy',['PrepareForAsyncCopy',['../structalpaka_1_1traits_1_1PrepareForAsyncCopy.html',1,'alpaka::traits']]],
+  ['prepareforasynccopy_3c_20bufcpu_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; BufCpu&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1PrepareForAsyncCopy_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['prepareforasynccopy_3c_20bufomp5_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1PrepareForAsyncCopy_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['prepareforasynccopy_3c_20bufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1PrepareForAsyncCopy_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['print',['Print',['../structalpaka_1_1view_1_1detail_1_1Print.html',1,'alpaka::view::detail']]],
   ['print_3c_20dimint_3c_20dim_3c_20tview_20_3e_3a_3avalue_2d1u_20_3e_2c_20tview_20_3e',['Print&lt; DimInt&lt; Dim&lt; TView &gt;::value-1u &gt;, TView &gt;',['../structalpaka_1_1view_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value-1u_01_4_00_01TView_01_4.html',1,'alpaka::view::detail']]]
 ];

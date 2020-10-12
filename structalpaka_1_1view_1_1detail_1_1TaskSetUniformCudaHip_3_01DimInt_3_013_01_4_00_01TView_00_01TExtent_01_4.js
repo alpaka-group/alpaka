@@ -1,0 +1,5 @@
+var structalpaka_1_1view_1_1detail_1_1TaskSetUniformCudaHip_3_01DimInt_3_013_01_4_00_01TView_00_01TExtent_01_4 =
+[
+    [ "TaskSetUniformCudaHip", "structalpaka_1_1view_1_1detail_1_1TaskSetUniformCudaHip_3_01DimInt_3_013_01_4_00_01TView_00_01TExtent_01_4.html#a39ae313e5eace01c1c25811fe226a33f", null ],
+    [ "enqueue", "structalpaka_1_1view_1_1detail_1_1TaskSetUniformCudaHip_3_01DimInt_3_013_01_4_00_01TView_00_01TExtent_01_4.html#ac240e49c0441647dfadf504cf95db970", null ]
+];
