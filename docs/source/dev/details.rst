@@ -100,7 +100,7 @@ The ``TSfinae`` template parameter will be explained in a `following section <#T
 
 .. code-block::
 
-   namespace queue
+   namespace alpaka
    {
      template<
        typename TQueue,
@@ -133,7 +133,7 @@ The example given in the following code shows this by specializing the ``Enqueue
 
    struct UserQueue{};
 
-   namespace queue
+   namespace alpaka
    {
      // partial specialization
      template<
@@ -159,7 +159,7 @@ In addition the subsequent code shows a full specialization of the ``Enqueue`` t
    struct UserQueue{};
    struct UserTask{};
 
-   namespace queue
+   namespace alpaka
    {
      // full specialization
      template<>
@@ -179,8 +179,8 @@ In addition the subsequent code shows a full specialization of the ``Enqueue`` t
 
 When the ``enqueue`` function template is called with an instance of ``UserQueue``, the most specialized version of the ``Enqueue`` template is selected depending on the type of the task ``TTask`` it is called with.
 
-A type can model the queue concept completely by defining specializations for ``alpaka::queue::Enqueue`` and ``alpaka::queue::Empty``.
-This functionality can be accessed by the corresponding ``alpaka::queue::enqueue`` and ``alpaka::queue::empty`` template functions.
+A type can model the queue concept completely by defining specializations for ``alpaka::Enqueue`` and ``alpaka::Empty``.
+This functionality can be accessed by the corresponding ``alpaka::enqueue`` and ``alpaka::empty`` template functions.
 
 Currently there is no native language support for describing and checking concepts in C++ at compile time.
 A study group (SG8) is working on the ISO `specification for conecpts <http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4377.pdf>`_ and compiler forks implementing them do exist.
@@ -212,7 +212,7 @@ An example in the context of the ``Enqueue`` template type is shown in the follo
 
    struct UserQueue{};
 
-   namespace queue
+   namespace alpaka
    {
      template<
        typename TQueue,
