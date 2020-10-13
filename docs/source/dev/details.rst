@@ -84,11 +84,10 @@ This function simply forwards its arguments *"to a class template containing a s
 This template class can fully or partially be specialized without affecting overload resolution.
 
 The way the *alpaka* library implements this is by not using the C++ inherent object orientation but lifting those abstractions to a higher level.
-Instead of using a non-extensible``class``/``struct`` for defining the interface, a namespace is utilized.
-In place of abstract virtual member functions of the interface, *alpaka* defines free functions within those namespaces.
+Instead of using a non-extensible``class``/``struct`` and abstract virtual member functions for the interface, *alpaka* defines free functions.
 All those functions are templates allowing the user to call them with arbitrary self defined types and not only those inheriting from a special interface type.
 Unlike member functions, they have no implicit ``this`` pointer, so the object instance has to be explicitly given as a parameter.
-Overriding the abstract virtual interface methods is replaced by the specialization of a template type that is defined for each such namespace function.
+Overriding the abstract virtual interface methods is replaced by the specialization of a template type that is defined for each such function.
 
 A concept is completely implemented by specializing the predefined template types.
 This allows to extend and fine-tune the implementation non-intrusively.
