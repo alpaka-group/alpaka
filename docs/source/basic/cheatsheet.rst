@@ -252,7 +252,7 @@ Atomic operations
 
      auto result = atomicOp<Operation>(acc,
                                                arguments,
-                                               OperationHierarchy);
+                                               OperationHierarchy{});
 
   Operation (all in `op`):
      .. code-block:: c++
