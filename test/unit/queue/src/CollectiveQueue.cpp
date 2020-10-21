@@ -138,7 +138,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
 
         // only one thread will perform this memcpy
-        alpaka::copy(queue, dst, src, Vec(static_cast<Idx>(1u)));
+        alpaka::memcpy(queue, dst, src, Vec(static_cast<Idx>(1u)));
 
         alpaka::wait(queue);
     }

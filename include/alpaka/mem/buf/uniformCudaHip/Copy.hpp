@@ -848,14 +848,14 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for CreateTaskCopy.
+    // Trait specializations for CreateTaskMemcpy.
     namespace traits
     {
         //#############################################################################
         //! The CUDA/HIP to CPU memory copy trait specialization.
         template<
             typename TDim>
-        struct CreateTaskCopy<
+        struct CreateTaskMemcpy<
             TDim,
             DevCpu,
             DevUniformCudaHipRt>
@@ -865,7 +865,7 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST static auto createTaskCopy(
+            ALPAKA_FN_HOST static auto createTaskMemcpy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
@@ -898,7 +898,7 @@ namespace alpaka
         //! The CPU to CUDA/HIP memory copy trait specialization.
         template<
             typename TDim>
-        struct CreateTaskCopy<
+        struct CreateTaskMemcpy<
             TDim,
             DevUniformCudaHipRt,
             DevCpu>
@@ -908,7 +908,7 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST static auto createTaskCopy(
+            ALPAKA_FN_HOST static auto createTaskMemcpy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
@@ -941,7 +941,7 @@ namespace alpaka
         //! The CUDA/HIP to CUDA/HIP memory copy trait specialization.
         template<
             typename TDim>
-        struct CreateTaskCopy<
+        struct CreateTaskMemcpy<
             TDim,
             DevUniformCudaHipRt,
             DevUniformCudaHipRt>
@@ -951,7 +951,7 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST static auto createTaskCopy(
+            ALPAKA_FN_HOST static auto createTaskMemcpy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)

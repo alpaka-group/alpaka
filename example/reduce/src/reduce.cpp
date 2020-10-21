@@ -80,7 +80,7 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
             devAcc, static_cast<Extent>(blockCount));
 
     // copy the data to the GPU
-    alpaka::copy(queue, sourceDeviceMemory, hostMemory, n);
+    alpaka::memcpy(queue, sourceDeviceMemory, hostMemory, n);
 
     // create kernels with their workdivs
     ReduceKernel<blockSize, T, TFunc> kernel1, kernel2;
@@ -119,7 +119,7 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
         alpaka::ViewPlainPtr<DevHost, T, Dim, Idx>(
             &resultGpuHost, devHost, static_cast<Extent>(blockSize));
 
-    alpaka::copy(queue, resultGpuDevice, destinationDeviceMemory, 1);
+    alpaka::memcpy(queue, resultGpuDevice, destinationDeviceMemory, 1);
 
     return resultGpuHost;
 }

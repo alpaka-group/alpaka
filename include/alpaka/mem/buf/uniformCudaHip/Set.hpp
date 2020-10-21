@@ -321,7 +321,7 @@ namespace alpaka
         //! The CUDA device memory set trait specialization.
         template<
             typename TDim>
-        struct CreateTaskSet<
+        struct CreateTaskMemset<
             TDim,
             DevUniformCudaHipRt>
         {
@@ -329,7 +329,7 @@ namespace alpaka
             template<
                 typename TExtent,
                 typename TView>
-            ALPAKA_FN_HOST static auto createTaskSet(
+            ALPAKA_FN_HOST static auto createTaskMemset(
                 TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)

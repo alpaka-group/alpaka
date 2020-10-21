@@ -111,7 +111,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryGlobal", "[viewStaticAccMem]", TestA
                 devAcc,
                 extent));
 
-        alpaka::copy(queueAcc, viewConstantMemUninitialized, bufHost, extent);
+        alpaka::memcpy(queueAcc, viewConstantMemUninitialized, bufHost, extent);
         alpaka::wait(queueAcc);
 
         REQUIRE(fixture(
@@ -186,7 +186,7 @@ TEMPLATE_LIST_TEST_CASE( "staticDeviceMemoryConstant", "[viewStaticAccMem]", Tes
                 devAcc,
                 extent));
 
-        alpaka::copy(queueAcc, viewGlobalMemUninitialized, bufHost, extent);
+        alpaka::memcpy(queueAcc, viewGlobalMemUninitialized, bufHost, extent);
         alpaka::wait(queueAcc);
 
         REQUIRE(

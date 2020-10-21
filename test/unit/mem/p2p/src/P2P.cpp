@@ -50,10 +50,10 @@ static auto testP2P(
 
     //-----------------------------------------------------------------------------
     std::uint8_t const byte(static_cast<uint8_t>(42u));
-    alpaka::set(queue0, buf0, byte, extent);
+    alpaka::memset(queue0, buf0, byte, extent);
 
     //-----------------------------------------------------------------------------
-    alpaka::copy(queue0, buf1, buf0, extent);
+    alpaka::memcpy(queue0, buf1, buf0, extent);
     alpaka::wait(queue0);
     alpaka::test::verifyBytesSet<TAcc>(buf1, byte);
 }

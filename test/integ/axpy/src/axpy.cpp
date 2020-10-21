@@ -168,8 +168,8 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     auto memBufAccY(alpaka::allocBuf<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
-    alpaka::copy(queue, memBufAccX, memBufHostX, extent);
-    alpaka::copy(queue, memBufAccY, memBufHostOrigY, extent);
+    alpaka::memcpy(queue, memBufAccX, memBufHostX, extent);
+    alpaka::memcpy(queue, memBufAccY, memBufHostOrigY, extent);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     alpaka::wait(queue);
@@ -200,7 +200,7 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
         << std::endl;
 
     // Copy back the result.
-    alpaka::copy(queue, memBufHostY, memBufAccY, extent);
+    alpaka::memcpy(queue, memBufHostY, memBufAccY, extent);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queue);

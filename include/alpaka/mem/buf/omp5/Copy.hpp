@@ -271,7 +271,7 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for CreateTaskCopy.
+    // Trait specializations for CreateTaskMemcpy.
     namespace traits
     {
         namespace detail
@@ -289,7 +289,7 @@ namespace alpaka
                     typename TExtent,
                     typename TViewSrc,
                     typename TViewDst>
-                ALPAKA_FN_HOST static auto createTaskCopy(
+                ALPAKA_FN_HOST static auto createTaskMemcpy(
                     TViewDst & viewDst,
                     TViewSrc const & viewSrc,
                     TExtent const & extent,
@@ -323,7 +323,7 @@ namespace alpaka
         //! The CPU to Omp5 memory copy trait specialization.
         template<
             typename TDim>
-        struct CreateTaskCopy<
+        struct CreateTaskMemcpy<
             TDim,
             DevOmp5,
             DevCpu>
@@ -333,7 +333,7 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST static auto createTaskCopy(
+            ALPAKA_FN_HOST static auto createTaskMemcpy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
@@ -364,7 +364,7 @@ namespace alpaka
         //! The Omp5 to CPU memory copy trait specialization.
         template<
             typename TDim>
-        struct CreateTaskCopy<
+        struct CreateTaskMemcpy<
             TDim,
             DevCpu,
             DevOmp5>
@@ -374,7 +374,7 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST static auto createTaskCopy(
+            ALPAKA_FN_HOST static auto createTaskMemcpy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
@@ -405,7 +405,7 @@ namespace alpaka
         //! The Omp5 to Omp5 memory copy trait specialization.
         template<
             typename TDim>
-        struct CreateTaskCopy<
+        struct CreateTaskMemcpy<
             TDim,
             DevOmp5,
             DevOmp5>
@@ -415,7 +415,7 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST static auto createTaskCopy(
+            ALPAKA_FN_HOST static auto createTaskMemcpy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)
