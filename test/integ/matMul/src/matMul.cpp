@@ -81,7 +81,7 @@ public:
         auto const & blockThreadExtentVal(blockThreadExtentX);
 
         // Shared memory used to store the current blocks of A and B.
-        auto * const pBlockSharedA(alpaka::block::getMem<TElem>(acc));
+        auto * const pBlockSharedA(alpaka::getMem<TElem>(acc));
         auto * const pBlockSharedB(pBlockSharedA + blockThreadExtentX*blockThreadExtentY);
 
         auto const sharedBlockIdx1d(blockThreadIdxY*blockThreadExtentX + blockThreadIdxX);
@@ -115,7 +115,7 @@ public:
                 : B[BIdx1d]);
 
             // Synchronize to make sure the complete blocks are loaded before starting the computation.
-            alpaka::block::syncBlockThreads(acc);
+            alpaka::syncBlockThreads(acc);
 
             // Not really necessary because we wrote zeros into those cells.
             //if(insideC)
@@ -129,7 +129,7 @@ public:
             //}
 
             // Synchronize to make sure that the preceding computation is done before loading the next blocks of A and B.
-            alpaka::block::syncBlockThreads(acc);
+            alpaka::syncBlockThreads(acc);
         }
 
         // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results.

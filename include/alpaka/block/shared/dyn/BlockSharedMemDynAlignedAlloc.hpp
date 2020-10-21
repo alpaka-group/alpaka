@@ -20,70 +20,67 @@
 
 namespace alpaka
 {
-    namespace block
+    //#############################################################################
+    //! The block shared dynamic memory allocator without synchronization.
+    class BlockSharedMemDynAlignedAlloc : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynAlignedAlloc>
     {
-        //#############################################################################
-        //! The block shared dynamic memory allocator without synchronization.
-        class BlockSharedMemDynAlignedAlloc : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynAlignedAlloc>
+    public:
+        //-----------------------------------------------------------------------------
+        BlockSharedMemDynAlignedAlloc(
+            std::size_t const & blockSharedMemDynSizeBytes)
         {
-        public:
-            //-----------------------------------------------------------------------------
-            BlockSharedMemDynAlignedAlloc(
-                std::size_t const & blockSharedMemDynSizeBytes)
+            if(blockSharedMemDynSizeBytes > 0u)
             {
-                if(blockSharedMemDynSizeBytes > 0u)
-                {
-                    m_blockSharedMemDyn.reset(
-                        reinterpret_cast<uint8_t *>(
-                            core::alignedAlloc(core::vectorization::defaultAlignment, blockSharedMemDynSizeBytes)));
-                }
+                m_blockSharedMemDyn.reset(
+                    reinterpret_cast<uint8_t *>(
+                        core::alignedAlloc(core::vectorization::defaultAlignment, blockSharedMemDynSizeBytes)));
             }
-            //-----------------------------------------------------------------------------
-            BlockSharedMemDynAlignedAlloc(BlockSharedMemDynAlignedAlloc const &) = delete;
-            //-----------------------------------------------------------------------------
-            BlockSharedMemDynAlignedAlloc(BlockSharedMemDynAlignedAlloc &&) = delete;
-            //-----------------------------------------------------------------------------
-            auto operator=(BlockSharedMemDynAlignedAlloc const &) -> BlockSharedMemDynAlignedAlloc & = delete;
-            //-----------------------------------------------------------------------------
-            auto operator=(BlockSharedMemDynAlignedAlloc &&) -> BlockSharedMemDynAlignedAlloc & = delete;
-            //-----------------------------------------------------------------------------
-            /*virtual*/ ~BlockSharedMemDynAlignedAlloc() = default;
+        }
+        //-----------------------------------------------------------------------------
+        BlockSharedMemDynAlignedAlloc(BlockSharedMemDynAlignedAlloc const &) = delete;
+        //-----------------------------------------------------------------------------
+        BlockSharedMemDynAlignedAlloc(BlockSharedMemDynAlignedAlloc &&) = delete;
+        //-----------------------------------------------------------------------------
+        auto operator=(BlockSharedMemDynAlignedAlloc const &) -> BlockSharedMemDynAlignedAlloc & = delete;
+        //-----------------------------------------------------------------------------
+        auto operator=(BlockSharedMemDynAlignedAlloc &&) -> BlockSharedMemDynAlignedAlloc & = delete;
+        //-----------------------------------------------------------------------------
+        /*virtual*/ ~BlockSharedMemDynAlignedAlloc() = default;
 
-        public:
-            std::unique_ptr<
-                uint8_t,
-                core::AlignedDelete> mutable
-                    m_blockSharedMemDyn;  //!< Block shared dynamic memory.
-        };
+    public:
+        std::unique_ptr<
+            uint8_t,
+            core::AlignedDelete> mutable
+                m_blockSharedMemDyn;  //!< Block shared dynamic memory.
+    };
 
-        namespace traits
-        {
+    namespace traits
+    {
 #if BOOST_COMP_GNUC
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
 #endif
-            //#############################################################################
-            template<
-                typename T>
-            struct GetMem<
-                T,
-                BlockSharedMemDynAlignedAlloc>
+        //#############################################################################
+        template<
+            typename T>
+        struct GetMem<
+            T,
+            BlockSharedMemDynAlignedAlloc>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getMem(
+                BlockSharedMemDynAlignedAlloc const & blockSharedMemDyn)
+            -> T *
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getMem(
-                    block::BlockSharedMemDynAlignedAlloc const & blockSharedMemDyn)
-                -> T *
-                {
-                    static_assert(
-                        core::vectorization::defaultAlignment >= alignof(T),
-                        "Unable to get block shared dynamic memory for types with alignment higher than defaultAlignment!");
+                static_assert(
+                    core::vectorization::defaultAlignment >= alignof(T),
+                    "Unable to get block shared dynamic memory for types with alignment higher than defaultAlignment!");
 
-                    return reinterpret_cast<T*>(blockSharedMemDyn.m_blockSharedMemDyn.get());
-                }
-            };
+                return reinterpret_cast<T*>(blockSharedMemDyn.m_blockSharedMemDyn.get());
+            }
+        };
 #if BOOST_COMP_GNUC
 #pragma GCC diagnostic pop
 #endif
-        }
     }
 }

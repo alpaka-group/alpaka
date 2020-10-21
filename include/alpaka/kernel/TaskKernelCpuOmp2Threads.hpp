@@ -184,11 +184,11 @@ namespace alpaka
 
                         // Wait for all threads to finish before deleting the shared memory.
                         // This is done by default if the omp 'nowait' clause is missing on the omp parallel directive
-                        //block::syncBlockThreads(acc);
+                        //syncBlockThreads(acc);
                     }
 
                     // After a block has been processed, the shared memory has to be deleted.
-                    block::freeMem(acc);
+                    freeMem(acc);
                 });
 
             // Reset the dynamic thread number setting.
