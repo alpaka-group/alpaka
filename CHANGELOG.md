@@ -32,6 +32,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - renamed function `alpaka::buf::alloc` to `alpaka::allocBuf`
 - removed namespace `alpaka::alloc`
 - removed namespace `alpaka::buf`
+- renamed function `alpaka::view::set` to `alpaka::memset`
+- renamed function `alpaka::view::copy` to `alpaka::memcpy`
+- removed namespace `alpaka::view`
 
 ## [0.5.0] - 2020-06-26
 ### Compatibility Changes:
