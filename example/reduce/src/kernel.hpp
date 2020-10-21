@@ -80,7 +80,7 @@ struct ReduceKernel
                                   TFunc func) const -> void
     {
         auto &sdata(
-            alpaka::block::st::allocVar<cheapArray<T, TBlockSize>,
+            alpaka::block::allocVar<cheapArray<T, TBlockSize>,
                                                 __COUNTER__>(acc));
 
         const uint32_t blockIndex(static_cast<uint32_t>(

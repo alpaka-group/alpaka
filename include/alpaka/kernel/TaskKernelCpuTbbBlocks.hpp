@@ -153,7 +153,7 @@ namespace alpaka
 
                         boundKernelFnObj(acc);
 
-                        block::st::freeMem(acc);
+                        block::freeMem(acc);
             });
 
         }

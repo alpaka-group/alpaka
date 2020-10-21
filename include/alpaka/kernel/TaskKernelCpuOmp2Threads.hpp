@@ -188,7 +188,7 @@ namespace alpaka
                     }
 
                     // After a block has been processed, the shared memory has to be deleted.
-                    block::st::freeMem(acc);
+                    block::freeMem(acc);
                 });
 
             // Reset the dynamic thread number setting.

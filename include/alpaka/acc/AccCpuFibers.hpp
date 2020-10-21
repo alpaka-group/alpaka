@@ -74,8 +74,8 @@ namespace alpaka
             AtomicNoOp         // thread atomics
         >,
         public math::MathStdLib,
-        public block::dyn::BlockSharedMemDynAlignedAlloc,
-        public block::st::BlockSharedMemStMasterSync,
+        public block::BlockSharedMemDynAlignedAlloc,
+        public block::BlockSharedMemStMasterSync,
         public block::BlockSyncBarrierFiber<TIdx>,
         public IntrinsicCpu,
         public rand::RandStdLib,
@@ -109,8 +109,8 @@ namespace alpaka
                     AtomicNoOp         // atomics between threads
                 >(),
                 math::MathStdLib(),
-                block::dyn::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
-                block::st::BlockSharedMemStMasterSync(
+                block::BlockSharedMemDynAlignedAlloc(blockSharedMemDynSizeBytes),
+                block::BlockSharedMemStMasterSync(
                     [this](){block::syncBlockThreads(*this);},
                     [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
                 block::BlockSyncBarrierFiber<TIdx>(
