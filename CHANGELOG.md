@@ -35,6 +35,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - renamed function `alpaka::view::set` to `alpaka::memset`
 - renamed function `alpaka::view::copy` to `alpaka::memcpy`
 - removed namespace `alpaka::view`
+- removed namespace `alpaka::block::st`
+- removed namespace `alpaka::block::dyn`
+- renamed namespace `alpaka::block::op` to `alpaka::blockOp`
+- removed namespace `alpaka::block`
 
 ## [0.5.0] - 2020-06-26
 ### Compatibility Changes:
