@@ -80,7 +80,7 @@ struct ReduceKernel
                                   TFunc func) const -> void
     {
         auto &sdata(
-            alpaka::block::allocVar<cheapArray<T, TBlockSize>,
+            alpaka::allocVar<cheapArray<T, TBlockSize>,
                                                 __COUNTER__>(acc));
 
         const uint32_t blockIndex(static_cast<uint32_t>(
@@ -125,7 +125,7 @@ struct ReduceKernel
         if (threadIndex < n)
             sdata[threadIndex] = result;
 
-        alpaka::block::syncBlockThreads(acc);
+        alpaka::syncBlockThreads(acc);
 
         // --------
         // Level 2: block + warp reduce, reading from shared memory
@@ -155,7 +155,7 @@ struct ReduceKernel
                     func(sdata[threadIndex],
                          sdata[threadIndex + currentBlockSizeUp]);
 
-            alpaka::block::syncBlockThreads(acc);
+            alpaka::syncBlockThreads(acc);
         }
 
         // store block result to gmem

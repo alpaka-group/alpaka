@@ -219,7 +219,7 @@ namespace alpaka
             acc.m_fibersToIndices.clear();
 
             // After a block has been processed, the shared memory has to be deleted.
-            block::freeMem(acc);
+            freeMem(acc);
         }
         //-----------------------------------------------------------------------------
         //! The function executed for each block thread.

@@ -16,63 +16,60 @@
 
 namespace alpaka
 {
-    namespace block
+    //#############################################################################
+    //! The no op block synchronization.
+    class BlockSyncNoOp : public concepts::Implements<ConceptBlockSync, BlockSyncNoOp>
+    {
+    public:
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_ACC BlockSyncNoOp() = default;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp const &) = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp &&) = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp const &) -> BlockSyncNoOp & = delete;
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp &&) -> BlockSyncNoOp & = delete;
+        //-----------------------------------------------------------------------------
+        /*virtual*/ ALPAKA_FN_ACC ~BlockSyncNoOp() = default;
+    };
+
+    namespace traits
     {
         //#############################################################################
-        //! The no op block synchronization.
-        class BlockSyncNoOp : public concepts::Implements<ConceptBlockSync, BlockSyncNoOp>
+        template<>
+        struct SyncBlockThreads<
+            BlockSyncNoOp>
         {
-        public:
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC BlockSyncNoOp() = default;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp const &) = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp &&) = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC auto operator=(BlockSyncNoOp const &) -> BlockSyncNoOp & = delete;
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC auto operator=(BlockSyncNoOp &&) -> BlockSyncNoOp & = delete;
-            //-----------------------------------------------------------------------------
-            /*virtual*/ ALPAKA_FN_ACC ~BlockSyncNoOp() = default;
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_ACC static auto syncBlockThreads(
+                BlockSyncNoOp const & blockSync)
+            -> void
+            {
+                alpaka::ignore_unused(blockSync);
+                // Nothing to do.
+            }
         };
 
-        namespace traits
+        //#############################################################################
+        template<
+            typename TOp>
+        struct SyncBlockThreadsPredicate<
+            TOp,
+            BlockSyncNoOp>
         {
-            //#############################################################################
-            template<>
-            struct SyncBlockThreads<
-                BlockSyncNoOp>
+            //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
+                BlockSyncNoOp const & blockSync,
+                int predicate)
+            -> int
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_ACC static auto syncBlockThreads(
-                    block::BlockSyncNoOp const & blockSync)
-                -> void
-                {
-                    alpaka::ignore_unused(blockSync);
-                    // Nothing to do.
-                }
-            };
-
-            //#############################################################################
-            template<
-                typename TOp>
-            struct SyncBlockThreadsPredicate<
-                TOp,
-                BlockSyncNoOp>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_NO_HOST_ACC_WARNING
-                ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
-                    block::BlockSyncNoOp const & blockSync,
-                    int predicate)
-                -> int
-                {
-                    alpaka::ignore_unused(blockSync);
-                    return predicate;
-                }
-            };
-        }
+                alpaka::ignore_unused(blockSync);
+                return predicate;
+            }
+        };
     }
 }

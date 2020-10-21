@@ -141,7 +141,7 @@ namespace alpaka
                         acc);
 
                     // After a block has been processed, the shared memory has to be deleted.
-                    block::freeMem(acc);
+                    freeMem(acc);
                 });
         }
 

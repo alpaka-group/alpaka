@@ -47,7 +47,7 @@ public:
         Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the dynamically allocated shared memory.
-        Val * const pBlockShared(alpaka::block::getMem<Val>(acc));
+        Val * const pBlockShared(alpaka::getMem<Val>(acc));
 
         // Calculate linearized index of the thread in the block.
         Idx const blockThreadIdx1d(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
@@ -63,7 +63,7 @@ public:
 
 
         // Synchronize all threads because now we are writing to the memory again but inverse.
-        alpaka::block::syncBlockThreads(acc);
+        alpaka::syncBlockThreads(acc);
 
         // Do something useless.
         auto sum2 = static_cast<Val>(blockThreadIdx1d);
@@ -76,7 +76,7 @@ public:
 
 
         // Synchronize all threads again.
-        alpaka::block::syncBlockThreads(acc);
+        alpaka::syncBlockThreads(acc);
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(blockThreadIdx1d > 0)
@@ -85,7 +85,7 @@ public:
         }
 
 
-        alpaka::block::syncBlockThreads(acc);
+        alpaka::syncBlockThreads(acc);
 
         // Only master writes result to global memory.
         if(blockThreadIdx1d==0)
