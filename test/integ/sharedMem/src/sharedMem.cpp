@@ -47,7 +47,7 @@ public:
         Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the dynamically allocated shared memory.
-        Val * const pBlockShared(alpaka::block::dyn::getMem<Val>(acc));
+        Val * const pBlockShared(alpaka::block::getMem<Val>(acc));
 
         // Calculate linearized index of the thread in the block.
         Idx const blockThreadIdx1d(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);

@@ -26,54 +26,51 @@ namespace alpaka
 {
     namespace block
     {
-        namespace st
+        //#############################################################################
+        //! The OpenMP 5 block shared memory allocator.
+        class BlockSharedMemStOmp5 :
+            public detail::BlockSharedMemStMemberImpl<4>,
+            public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStOmp5>
+        {
+        public:
+            using BlockSharedMemStMemberImpl<4>::BlockSharedMemStMemberImpl;
+        };
+
+        namespace traits
         {
             //#############################################################################
-            //! The OpenMP 5 block shared memory allocator.
-            class BlockSharedMemStOmp5 :
-                public detail::BlockSharedMemStMemberImpl<4>,
-                public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStOmp5>
+            template<
+                typename T,
+                std::size_t TuniqueId>
+            struct AllocVar<
+                T,
+                TuniqueId,
+                BlockSharedMemStOmp5>
             {
-            public:
-                using BlockSharedMemStMemberImpl<4>::BlockSharedMemStMemberImpl;
+                //-----------------------------------------------------------------------------
+                static auto allocVar(
+                    block::BlockSharedMemStOmp5 const &smem)
+                -> T &
+                {
+                    #pragma omp barrier
+                    smem.alloc<T>();
+                    #pragma omp barrier
+                    return smem.getLatestVar<T>();
+                }
             };
-
-            namespace traits
+            //#############################################################################
+            template<>
+            struct FreeMem<
+                BlockSharedMemStOmp5>
             {
-                //#############################################################################
-                template<
-                    typename T,
-                    std::size_t TuniqueId>
-                struct AllocVar<
-                    T,
-                    TuniqueId,
-                    BlockSharedMemStOmp5>
+                //-----------------------------------------------------------------------------
+                static auto freeMem(
+                    block::BlockSharedMemStOmp5 const &mem)
+                -> void
                 {
-                    //-----------------------------------------------------------------------------
-                    static auto allocVar(
-                        block::st::BlockSharedMemStOmp5 const &smem)
-                    -> T &
-                    {
-                        #pragma omp barrier
-                        smem.alloc<T>();
-                        #pragma omp barrier
-                        return smem.getLatestVar<T>();
-                    }
-                };
-                //#############################################################################
-                template<>
-                struct FreeMem<
-                    BlockSharedMemStOmp5>
-                {
-                    //-----------------------------------------------------------------------------
-                    static auto freeMem(
-                        block::st::BlockSharedMemStOmp5 const &mem)
-                    -> void
-                    {
-                        mem.free();
-                    }
-                };
-            }
+                    mem.free();
+                }
+            };
         }
     }
 }

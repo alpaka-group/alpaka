@@ -38,7 +38,7 @@ public:
         auto const blockThreadExtent1D = blockThreadExtent.prod();
 
         // Allocate shared memory.
-        Idx * const pBlockSharedArray = alpaka::block::dyn::getMem<Idx>(acc);
+        Idx * const pBlockSharedArray = alpaka::block::getMem<Idx>(acc);
    
         // Write the thread index into the shared memory.
         pBlockSharedArray[blockThreadIdx1D] = blockThreadIdx1D;

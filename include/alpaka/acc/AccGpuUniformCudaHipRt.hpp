@@ -77,8 +77,8 @@ namespace alpaka
             AtomicUniformCudaHipBuiltIn  // thread atomics
         >,
         public math::MathUniformCudaHipBuiltIn,
-        public block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn,
-        public block::st::BlockSharedMemStUniformCudaHipBuiltIn,
+        public block::BlockSharedMemDynUniformCudaHipBuiltIn,
+        public block::BlockSharedMemStUniformCudaHipBuiltIn,
         public block::BlockSyncUniformCudaHipBuiltIn,
         public IntrinsicUniformCudaHipBuiltIn,
         public rand::RandUniformCudaHipRand,
@@ -100,8 +100,8 @@ namespace alpaka
                     AtomicUniformCudaHipBuiltIn  // atomics between threads
                 >(),
                 math::MathUniformCudaHipBuiltIn(),
-                block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn(),
-                block::st::BlockSharedMemStUniformCudaHipBuiltIn(),
+                block::BlockSharedMemDynUniformCudaHipBuiltIn(),
+                block::BlockSharedMemStUniformCudaHipBuiltIn(),
                 block::BlockSyncUniformCudaHipBuiltIn(),
                 rand::RandUniformCudaHipRand(),
                 TimeUniformCudaHipBuiltIn()

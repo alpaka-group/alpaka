@@ -66,8 +66,8 @@ namespace alpaka
             AtomicNoOp         // thread atomics
         >,
         public math::MathStdLib,
-        public block::dyn::BlockSharedMemDynMember<>,
-        public block::st::BlockSharedMemStMember<>,
+        public block::BlockSharedMemDynMember<>,
+        public block::BlockSharedMemStMember<>,
         public block::BlockSyncNoOp,
         public IntrinsicCpu,
         public rand::RandStdLib,
@@ -101,8 +101,8 @@ namespace alpaka
                     AtomicNoOp         // atomics between threads
                 >(),
                 math::MathStdLib(),
-                block::dyn::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
-                block::st::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
+                block::BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
+                block::BlockSharedMemStMember<>(staticMemBegin(), staticMemCapacity()),
                 block::BlockSyncNoOp(),
                 rand::RandStdLib(),
                 TimeStdLib(),

@@ -29,50 +29,47 @@ namespace alpaka
 {
     namespace block
     {
-        namespace dyn
+        //#############################################################################
+        //! The GPU CUDA/HIP block shared memory allocator.
+        class BlockSharedMemDynUniformCudaHipBuiltIn : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynUniformCudaHipBuiltIn>
+        {
+        public:
+            //-----------------------------------------------------------------------------
+            BlockSharedMemDynUniformCudaHipBuiltIn() = default;
+            //-----------------------------------------------------------------------------
+            __device__ BlockSharedMemDynUniformCudaHipBuiltIn(BlockSharedMemDynUniformCudaHipBuiltIn const &) = delete;
+            //-----------------------------------------------------------------------------
+            __device__ BlockSharedMemDynUniformCudaHipBuiltIn(BlockSharedMemDynUniformCudaHipBuiltIn &&) = delete;
+            //-----------------------------------------------------------------------------
+            __device__ auto operator=(BlockSharedMemDynUniformCudaHipBuiltIn const &) -> BlockSharedMemDynUniformCudaHipBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            __device__ auto operator=(BlockSharedMemDynUniformCudaHipBuiltIn &&) -> BlockSharedMemDynUniformCudaHipBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            /*virtual*/ ~BlockSharedMemDynUniformCudaHipBuiltIn() = default;
+        };
+
+        namespace traits
         {
             //#############################################################################
-            //! The GPU CUDA/HIP block shared memory allocator.
-            class BlockSharedMemDynUniformCudaHipBuiltIn : public concepts::Implements<ConceptBlockSharedDyn, BlockSharedMemDynUniformCudaHipBuiltIn>
+            template<
+                typename T>
+            struct GetMem<
+                T,
+                BlockSharedMemDynUniformCudaHipBuiltIn>
             {
-            public:
                 //-----------------------------------------------------------------------------
-                BlockSharedMemDynUniformCudaHipBuiltIn() = default;
-                //-----------------------------------------------------------------------------
-                __device__ BlockSharedMemDynUniformCudaHipBuiltIn(BlockSharedMemDynUniformCudaHipBuiltIn const &) = delete;
-                //-----------------------------------------------------------------------------
-                __device__ BlockSharedMemDynUniformCudaHipBuiltIn(BlockSharedMemDynUniformCudaHipBuiltIn &&) = delete;
-                //-----------------------------------------------------------------------------
-                __device__ auto operator=(BlockSharedMemDynUniformCudaHipBuiltIn const &) -> BlockSharedMemDynUniformCudaHipBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                __device__ auto operator=(BlockSharedMemDynUniformCudaHipBuiltIn &&) -> BlockSharedMemDynUniformCudaHipBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                /*virtual*/ ~BlockSharedMemDynUniformCudaHipBuiltIn() = default;
-            };
-
-            namespace traits
-            {
-                //#############################################################################
-                template<
-                    typename T>
-                struct GetMem<
-                    T,
-                    BlockSharedMemDynUniformCudaHipBuiltIn>
+                __device__ static auto getMem(
+                    block::BlockSharedMemDynUniformCudaHipBuiltIn const &)
+                -> T *
                 {
-                    //-----------------------------------------------------------------------------
-                    __device__ static auto getMem(
-                        block::dyn::BlockSharedMemDynUniformCudaHipBuiltIn const &)
-                    -> T *
-                    {
-                        // Because unaligned access to variables is not allowed in device code,
-                        // we have to use the widest possible type to have all types aligned correctly.
-                        // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
-                        // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
-                        extern __shared__ float4 shMem[];
-                        return reinterpret_cast<T *>(shMem);
-                    }
-                };
-            }
+                    // Because unaligned access to variables is not allowed in device code,
+                    // we have to use the widest possible type to have all types aligned correctly.
+                    // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
+                    // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
+                    extern __shared__ float4 shMem[];
+                    return reinterpret_cast<T *>(shMem);
+                }
+            };
         }
     }
 }
