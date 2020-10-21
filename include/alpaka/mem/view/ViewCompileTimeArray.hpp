@@ -106,62 +106,57 @@ namespace alpaka
             };
         }
     }
-    namespace view
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The fixed idx array native pointer get trait specialization.
-            template<
-                typename TFixedSizeArray>
-            struct GetPtrNative<
-                TFixedSizeArray,
-                std::enable_if_t<
-                    std::is_array<TFixedSizeArray>::value>>
-            {
-                using TElem = std::remove_all_extent_t<TFixedSizeArray>;
-
-                //-----------------------------------------------------------------------------
-                static auto getPtrNative(
-                    TFixedSizeArray const & view)
-                -> TElem const *
-                {
-                    return view;
-                }
-                //-----------------------------------------------------------------------------
-                static auto getPtrNative(
-                    TFixedSizeArray & view)
-                -> TElem *
-                {
-                    return view;
-                }
-            };
-
-            //#############################################################################
-            //! The fixed idx array pitch get trait specialization.
-            template<
-                typename TFixedSizeArray>
-            struct GetPitchBytes<
-                DimInt<std::rank<TFixedSizeArray>::value - 1u>,
-                TFixedSizeArray,
-                std::enable_if_t<
-                    std::is_array<TFixedSizeArray>::value
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>>
-            {
-                using TElem = std::remove_all_extent_t<TFixedSizeArray>;
-
-                //-----------------------------------------------------------------------------
-                static constexpr auto getPitchBytes(
-                    TFixedSizeArray const &)
-                -> Idx<TFixedSizeArray>
-                {
-                    return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
-                }
-            };
-        }
-    }
     namespace traits
     {
+        //#############################################################################
+        //! The fixed idx array native pointer get trait specialization.
+        template<
+            typename TFixedSizeArray>
+        struct GetPtrNative<
+            TFixedSizeArray,
+            std::enable_if_t<
+                std::is_array<TFixedSizeArray>::value>>
+        {
+            using TElem = std::remove_all_extent_t<TFixedSizeArray>;
+
+            //-----------------------------------------------------------------------------
+            static auto getPtrNative(
+                TFixedSizeArray const & view)
+            -> TElem const *
+            {
+                return view;
+            }
+            //-----------------------------------------------------------------------------
+            static auto getPtrNative(
+                TFixedSizeArray & view)
+            -> TElem *
+            {
+                return view;
+            }
+        };
+
+        //#############################################################################
+        //! The fixed idx array pitch get trait specialization.
+        template<
+            typename TFixedSizeArray>
+        struct GetPitchBytes<
+            DimInt<std::rank<TFixedSizeArray>::value - 1u>,
+            TFixedSizeArray,
+            std::enable_if_t<
+                std::is_array<TFixedSizeArray>::value
+                && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>>
+        {
+            using TElem = std::remove_all_extent_t<TFixedSizeArray>;
+
+            //-----------------------------------------------------------------------------
+            static constexpr auto getPitchBytes(
+                TFixedSizeArray const &)
+            -> Idx<TFixedSizeArray>
+            {
+                return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
+            }
+        };
+
         //#############################################################################
         //! The fixed idx array offset get trait specialization.
         template<

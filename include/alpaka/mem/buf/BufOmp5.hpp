@@ -227,98 +227,93 @@ namespace alpaka
             };
         }
     }
-    namespace view
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The BufOmp5 native pointer get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrNative<
-                BufOmp5<TElem, TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrNative(
-                    BufOmp5<TElem, TDim, TIdx> const & buf)
-                -> TElem const *
-                {
-                    return (*buf).m_pMem;
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrNative(
-                    BufOmp5<TElem, TDim, TIdx> & buf)
-                -> TElem *
-                {
-                    return (*buf).m_pMem;
-                }
-            };
-            //#############################################################################
-            //! The BufOmp5 pointer on device get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrDev<
-                BufOmp5<TElem, TDim, TIdx>,
-                DevOmp5>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufOmp5<TElem, TDim, TIdx> const & buf,
-                    DevOmp5 const & dev)
-                -> TElem const *
-                {
-                    if(dev == getDev(buf))
-                    {
-                        return *buf.m_pMem;
-                    }
-                    else
-                    {
-                        throw std::runtime_error("The buffer is not accessible from the given device!");
-                    }
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufOmp5<TElem, TDim, TIdx> & buf,
-                    DevOmp5 const & dev)
-                -> TElem *
-                {
-                    if(dev == getDev(buf))
-                    {
-                        return *buf.m_pMem;
-                    }
-                    else
-                    {
-                        throw std::runtime_error("The buffer is not accessible from the given device!");
-                    }
-                }
-            };
-            //#############################################################################
-            //! The BufOmp5 pitch get trait specialization.
-            template<
-                typename TIdxIntegralConst,
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPitchBytes<
-                TIdxIntegralConst,
-                BufOmp5<TElem, TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPitchBytes(
-                    BufOmp5<TElem, TDim, TIdx> const & pitch)
-                -> TIdx
-                {
-                    return (*pitch).m_pitchBytes[TIdxIntegralConst::value];
-                }
-            };
-        }
-    }
     namespace traits
     {
+        //#############################################################################
+        //! The BufOmp5 native pointer get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrNative<
+            BufOmp5<TElem, TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrNative(
+                BufOmp5<TElem, TDim, TIdx> const & buf)
+            -> TElem const *
+            {
+                return (*buf).m_pMem;
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrNative(
+                BufOmp5<TElem, TDim, TIdx> & buf)
+            -> TElem *
+            {
+                return (*buf).m_pMem;
+            }
+        };
+        //#############################################################################
+        //! The BufOmp5 pointer on device get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrDev<
+            BufOmp5<TElem, TDim, TIdx>,
+            DevOmp5>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufOmp5<TElem, TDim, TIdx> const & buf,
+                DevOmp5 const & dev)
+            -> TElem const *
+            {
+                if(dev == getDev(buf))
+                {
+                    return *buf.m_pMem;
+                }
+                else
+                {
+                    throw std::runtime_error("The buffer is not accessible from the given device!");
+                }
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufOmp5<TElem, TDim, TIdx> & buf,
+                DevOmp5 const & dev)
+            -> TElem *
+            {
+                if(dev == getDev(buf))
+                {
+                    return *buf.m_pMem;
+                }
+                else
+                {
+                    throw std::runtime_error("The buffer is not accessible from the given device!");
+                }
+            }
+        };
+        //#############################################################################
+        //! The BufOmp5 pitch get trait specialization.
+        template<
+            typename TIdxIntegralConst,
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPitchBytes<
+            TIdxIntegralConst,
+            BufOmp5<TElem, TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPitchBytes(
+                BufOmp5<TElem, TDim, TIdx> const & pitch)
+            -> TIdx
+            {
+                return (*pitch).m_pitchBytes[TIdxIntegralConst::value];
+            }
+        };
+
         //#############################################################################
         //! The BufOmp5 1D memory allocation trait specialization.
         template<
@@ -616,39 +611,34 @@ namespace alpaka
                 // If it is already the same device, nothing has to be unmapped.
             }
         };
-    }
-    namespace view
-    {
-        namespace traits
+
+        //#############################################################################
+        //! The BufCpu pointer on CUDA device get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrDev<
+            BufCpu<TElem, TDim, TIdx>,
+            DevOmp5>
         {
-            //#############################################################################
-            //! The BufCpu pointer on CUDA device get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrDev<
-                BufCpu<TElem, TDim, TIdx>,
-                DevOmp5>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufCpu<TElem, TDim, TIdx> const &,
+                DevOmp5 const &)
+            -> TElem const *
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufCpu<TElem, TDim, TIdx> const &,
-                    DevOmp5 const &)
-                -> TElem const *
-                {
-                    throw std::runtime_error("Mapping host memory to OMP5 device not implemented!");
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufCpu<TElem, TDim, TIdx> &,
-                    DevOmp5 const &)
-                -> TElem *
-                {
-                    throw std::runtime_error("Mapping host memory to OMP5 device not implemented!");
-                }
-            };
-        }
+                throw std::runtime_error("Mapping host memory to OMP5 device not implemented!");
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufCpu<TElem, TDim, TIdx> &,
+                DevOmp5 const &)
+            -> TElem *
+            {
+                throw std::runtime_error("Mapping host memory to OMP5 device not implemented!");
+            }
+        };
     }
 }
 

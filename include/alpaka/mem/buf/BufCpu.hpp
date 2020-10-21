@@ -242,98 +242,92 @@ namespace alpaka
             };
         }
     }
-    namespace view
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The BufCpu native pointer get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrNative<
-                BufCpu<TElem, TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrNative(
-                    BufCpu<TElem, TDim, TIdx> const & buf)
-                -> TElem const *
-                {
-                    return buf.m_spBufCpuImpl->m_pMem;
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrNative(
-                    BufCpu<TElem, TDim, TIdx> & buf)
-                -> TElem *
-                {
-                    return buf.m_spBufCpuImpl->m_pMem;
-                }
-            };
-            //#############################################################################
-            //! The BufCpu pointer on device get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrDev<
-                BufCpu<TElem, TDim, TIdx>,
-                DevCpu>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufCpu<TElem, TDim, TIdx> const & buf,
-                    DevCpu const & dev)
-                -> TElem const *
-                {
-                    if(dev == getDev(buf))
-                    {
-                        return buf.m_spBufCpuImpl->m_pMem;
-                    }
-                    else
-                    {
-                        throw std::runtime_error("The buffer is not accessible from the given device!");
-                    }
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufCpu<TElem, TDim, TIdx> & buf,
-                    DevCpu const & dev)
-                -> TElem *
-                {
-                    if(dev == getDev(buf))
-                    {
-                        return buf.m_spBufCpuImpl->m_pMem;
-                    }
-                    else
-                    {
-                        throw std::runtime_error("The buffer is not accessible from the given device!");
-                    }
-                }
-            };
-            //#############################################################################
-            //! The BufCpu pitch get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPitchBytes<
-                DimInt<TDim::value - 1u>,
-                BufCpu<TElem, TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPitchBytes(
-                    BufCpu<TElem, TDim, TIdx> const & pitch)
-                -> TIdx
-                {
-                    return pitch.m_spBufCpuImpl->m_pitchBytes;
-                }
-            };
-        }
-    }
-
     namespace traits
     {
+        //#############################################################################
+        //! The BufCpu native pointer get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrNative<
+            BufCpu<TElem, TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrNative(
+                BufCpu<TElem, TDim, TIdx> const & buf)
+            -> TElem const *
+            {
+                return buf.m_spBufCpuImpl->m_pMem;
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrNative(
+                BufCpu<TElem, TDim, TIdx> & buf)
+            -> TElem *
+            {
+                return buf.m_spBufCpuImpl->m_pMem;
+            }
+        };
+        //#############################################################################
+        //! The BufCpu pointer on device get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrDev<
+            BufCpu<TElem, TDim, TIdx>,
+            DevCpu>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufCpu<TElem, TDim, TIdx> const & buf,
+                DevCpu const & dev)
+            -> TElem const *
+            {
+                if(dev == getDev(buf))
+                {
+                    return buf.m_spBufCpuImpl->m_pMem;
+                }
+                else
+                {
+                    throw std::runtime_error("The buffer is not accessible from the given device!");
+                }
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufCpu<TElem, TDim, TIdx> & buf,
+                DevCpu const & dev)
+            -> TElem *
+            {
+                if(dev == getDev(buf))
+                {
+                    return buf.m_spBufCpuImpl->m_pMem;
+                }
+                else
+                {
+                    throw std::runtime_error("The buffer is not accessible from the given device!");
+                }
+            }
+        };
+        //#############################################################################
+        //! The BufCpu pitch get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPitchBytes<
+            DimInt<TDim::value - 1u>,
+            BufCpu<TElem, TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPitchBytes(
+                BufCpu<TElem, TDim, TIdx> const & pitch)
+            -> TIdx
+            {
+                return pitch.m_spBufCpuImpl->m_pitchBytes;
+            }
+        };
+
         //#############################################################################
         //! The BufCpu memory allocation trait specialization.
         template<
@@ -441,7 +435,7 @@ namespace alpaka
                         //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
                         ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK_IGNORE(
                             ALPAKA_API_PREFIX(HostRegister)(
-                                const_cast<void *>(reinterpret_cast<void const *>(view::getPtrNative(buf))),
+                                const_cast<void *>(reinterpret_cast<void const *>(getPtrNative(buf))),
                                 extent::getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
                                 ALPAKA_API_PREFIX(HostRegisterDefault)),
                             ALPAKA_API_PREFIX(ErrorHostMemoryAlreadyRegistered));
@@ -480,11 +474,11 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct Unpin<
-            detail::BufCpuImpl<TElem, TDim, TIdx>>
+            alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto unpin(
-                detail::BufCpuImpl<TElem, TDim, TIdx> & bufImpl)
+                alpaka::detail::BufCpuImpl<TElem, TDim, TIdx> & bufImpl)
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -530,11 +524,11 @@ namespace alpaka
             typename TDim,
             typename TIdx>
         struct IsPinned<
-            detail::BufCpuImpl<TElem, TDim, TIdx>>
+            alpaka::detail::BufCpuImpl<TElem, TDim, TIdx>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto isPinned(
-                detail::BufCpuImpl<TElem, TDim, TIdx> const & bufImpl)
+                alpaka::detail::BufCpuImpl<TElem, TDim, TIdx> const & bufImpl)
             -> bool
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

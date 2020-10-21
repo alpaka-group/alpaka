@@ -142,9 +142,9 @@ auto main()
     BufHost bufHostC(alpaka::allocBuf<Data, Idx>(devHost, extent));
 
     // Initialize the host input vectors A and B
-    Data * const pBufHostA(alpaka::view::getPtrNative(bufHostA));
-    Data * const pBufHostB(alpaka::view::getPtrNative(bufHostB));
-    Data * const pBufHostC(alpaka::view::getPtrNative(bufHostC));
+    Data * const pBufHostA(alpaka::getPtrNative(bufHostA));
+    Data * const pBufHostB(alpaka::getPtrNative(bufHostB));
+    Data * const pBufHostC(alpaka::getPtrNative(bufHostC));
 
     // C++14 random generator for uniformly distributed numbers in {1,..,42}
     std::random_device rd{};
@@ -165,9 +165,9 @@ auto main()
     BufAcc bufAccC(alpaka::allocBuf<Data, Idx>(devAcc, extent));
 
     // Copy Host -> Acc
-    alpaka::view::copy(queue, bufAccA, bufHostA, extent);
-    alpaka::view::copy(queue, bufAccB, bufHostB, extent);
-    alpaka::view::copy(queue, bufAccC, bufHostC, extent);
+    alpaka::copy(queue, bufAccA, bufHostA, extent);
+    alpaka::copy(queue, bufAccB, bufHostB, extent);
+    alpaka::copy(queue, bufAccC, bufHostC, extent);
 
     // Instantiate the kernel function object
     VectorAddKernel kernel;
@@ -176,9 +176,9 @@ auto main()
     auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::view::getPtrNative(bufAccA),
-        alpaka::view::getPtrNative(bufAccB),
-        alpaka::view::getPtrNative(bufAccC),
+        alpaka::getPtrNative(bufAccA),
+        alpaka::getPtrNative(bufAccB),
+        alpaka::getPtrNative(bufAccC),
         numElements));
 
     // Enqueue the kernel execution task
@@ -193,7 +193,7 @@ auto main()
     // Copy back the result
     {
         auto beginT = std::chrono::high_resolution_clock::now();
-        alpaka::view::copy(queue, bufHostC, bufAccC, extent);
+        alpaka::copy(queue, bufHostC, bufAccC, extent);
         alpaka::wait(queue);
         const auto endT = std::chrono::high_resolution_clock::now();
         std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT-beginT).count() << 's' << std::endl;

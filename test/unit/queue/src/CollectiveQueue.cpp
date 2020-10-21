@@ -119,7 +119,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     {
         int threadId = omp_get_thread_num();
 
-        using View = alpaka::view::ViewPlainPtr<Dev, int, Dim, Idx>;
+        using View = alpaka::ViewPlainPtr<Dev, int, Dim, Idx>;
 
         View dst(
             results.data() + threadId,
@@ -138,7 +138,7 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
 
         // only one thread will perform this memcpy
-        alpaka::view::copy(queue, dst, src, Vec(static_cast<Idx>(1u)));
+        alpaka::copy(queue, dst, src, Vec(static_cast<Idx>(1u)));
 
         alpaka::wait(queue);
     }

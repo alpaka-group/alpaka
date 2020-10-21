@@ -166,18 +166,18 @@ auto main() -> int
             Idx>(
             devHost,
             extent)};
-    uint32_t *const ptrBufHost{alpaka::view::getPtrNative(bufHost)};
+    uint32_t *const ptrBufHost{alpaka::getPtrNative(bufHost)};
     BufAcc bufAcc{
         alpaka::allocBuf<
             uint32_t,
             Idx>(
             devAcc,
             extent)};
-    uint32_t *const ptrBufAcc{alpaka::view::getPtrNative(bufAcc)};
+    uint32_t *const ptrBufAcc{alpaka::getPtrNative(bufAcc)};
 
     // Initialize the global count to 0.
     ptrBufHost[0] = 0.0f;
-    alpaka::view::copy(
+    alpaka::copy(
         queue,
         bufAcc,
         bufHost,
@@ -191,7 +191,7 @@ auto main() -> int
         numPoints,
         ptrBufAcc,
         Function{});
-    alpaka::view::copy(
+    alpaka::copy(
         queue,
         bufHost,
         bufAcc,

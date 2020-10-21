@@ -85,15 +85,15 @@ struct Buffer
         {
             alpaka::allocBuf<TData, Idx>(devAcc, Tcapacity)
         },
-        pHostBuffer{ alpaka::view::getPtrNative( hostBuffer ) },
-        pDevBuffer{ alpaka::view::getPtrNative( devBuffer ) }
+        pHostBuffer{ alpaka::getPtrNative( hostBuffer ) },
+        pDevBuffer{ alpaka::getPtrNative( devBuffer ) }
     {}
 
     // Copy Host -> Acc.
     template< typename Queue >
     auto copyToDevice( Queue queue ) -> void
     {
-        alpaka::view::copy(
+        alpaka::copy(
             queue,
             devBuffer,
             hostBuffer,
@@ -105,7 +105,7 @@ struct Buffer
     template< typename Queue >
     auto copyFromDevice( Queue queue ) -> void
     {
-        alpaka::view::copy(
+        alpaka::copy(
             queue,
             hostBuffer,
             devBuffer,

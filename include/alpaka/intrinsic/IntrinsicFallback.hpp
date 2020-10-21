@@ -82,7 +82,7 @@ namespace alpaka
                 std::uint32_t value)
             -> std::int32_t
             {
-                return detail::popcountFallback(value);
+                return alpaka::detail::popcountFallback(value);
             }
 
             //-----------------------------------------------------------------------------
@@ -91,7 +91,7 @@ namespace alpaka
                 std::uint64_t value)
             -> std::int32_t
             {
-                return detail::popcountFallback(value);
+                return alpaka::detail::popcountFallback(value);
             }
         };
 
@@ -106,7 +106,7 @@ namespace alpaka
                 std::int32_t value)
             -> std::int32_t
             {
-                return detail::ffsFallback(value);
+                return alpaka::detail::ffsFallback(value);
             }
 
             //-----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace alpaka
                 std::int64_t value)
             -> std::int32_t
             {
-                return detail::ffsFallback(value);
+                return alpaka::detail::ffsFallback(value);
             }
         };
     }

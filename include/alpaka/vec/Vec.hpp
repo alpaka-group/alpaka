@@ -729,7 +729,7 @@ namespace alpaka
                 return
                     createVecFromIndexedFn<
                         TDim,
-                        detail::CreateCast>(
+                        alpaka::detail::CreateCast>(
                             TSizeNew(),
                             vec);
             }
@@ -861,7 +861,7 @@ namespace alpaka
                 return
                     createVecFromIndexedFn<
                         DimInt<TDimL::value + TDimR::value>,
-                        detail::CreateConcat>(
+                        alpaka::detail::CreateConcat>(
                             vecL,
                             vecR);
             }

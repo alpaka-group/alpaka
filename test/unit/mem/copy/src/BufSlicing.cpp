@@ -52,7 +52,7 @@ struct TestContainer
         TIdx
     >;
 
-    using SubView = alpaka::view::ViewSubView<
+    using SubView = alpaka::ViewSubView<
         DevAcc,
         TData,
         TDim,
@@ -87,7 +87,7 @@ struct TestContainer
             ));
         if(indexed)
         {
-            TData *const ptr = alpaka::view::getPtrNative(bufHost);
+            TData *const ptr = alpaka::getPtrNative(bufHost);
             for(TIdx i(0);i < extents.prod();++i)
             {
                 ptr[i] = static_cast<TData>(i);
@@ -117,7 +117,7 @@ struct TestContainer
         Vec extents
     ) -> void
     {
-        alpaka::view::copy(
+        alpaka::copy(
             devQueue,
             bufAcc,
             bufHost,
@@ -132,7 +132,7 @@ struct TestContainer
         Vec extents
     ) -> void
     {
-        alpaka::view::copy(
+        alpaka::copy(
             devQueue,
             bufHost,
             bufAcc,
@@ -155,7 +155,7 @@ struct TestContainer
             offsets
         );
         // Copy the subView into a new buffer.
-        alpaka::view::copy(
+        alpaka::copy(
             devQueue,
             slicedBuffer,
             subView,
@@ -171,8 +171,8 @@ struct TestContainer
         Vec const & extents
     ) const
     {
-        TData const *const ptrA = alpaka::view::getPtrNative(bufferA);
-        TData const *const ptrB = alpaka::view::getPtrNative(bufferB);
+        TData const *const ptrA = alpaka::getPtrNative(bufferA);
+        TData const *const ptrB = alpaka::getPtrNative(bufferB);
         for(TIdx i(0);i < extents.prod();++i)
         {
             INFO("Dim: " << TDim::value)
@@ -278,7 +278,7 @@ TEMPLATE_LIST_TEST_CASE("memBufSlicingTest",
         extentsSubView,
         false
     );
-    Data *ptrNative = alpaka::view::getPtrNative(correctResults);
+    Data *ptrNative = alpaka::getPtrNative(correctResults);
     using Dim1 = alpaka::DimInt<1u>;
 
     for(Idx i(0);i < extentsSubView.prod();++i)

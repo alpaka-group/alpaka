@@ -250,7 +250,7 @@ auto writeTgaColorImage(
     ALPAKA_ASSERT(bufWidthColors >= 1);
     auto const bufHeightColors(alpaka::extent::getHeight(bufRgba));
     ALPAKA_ASSERT(bufHeightColors >= 1);
-    auto const bufPitchBytes(alpaka::view::getPitchBytes<alpaka::Dim<TBuf>::value - 1u>(bufRgba));
+    auto const bufPitchBytes(alpaka::getPitchBytes<alpaka::Dim<TBuf>::value - 1u>(bufRgba));
     ALPAKA_ASSERT(bufPitchBytes >= bufWidthBytes);
 
     std::ofstream ofs(
@@ -282,7 +282,7 @@ auto writeTgaColorImage(
     ofs.put(0x20);                      // Image Descriptor Byte.
 
     // Write the data.
-    char const * pData(reinterpret_cast<char const *>(alpaka::view::getPtrNative(bufRgba)));
+    char const * pData(reinterpret_cast<char const *>(alpaka::getPtrNative(bufRgba)));
     // If there is no padding, we can directly write the whole buffer data ...
     if(bufPitchBytes == bufWidthBytes)
     {
@@ -378,16 +378,16 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
         alpaka::allocBuf<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
-    alpaka::view::copy(queue, bufColorAcc, bufColorHost, extent);
+    alpaka::copy(queue, bufColorAcc, bufColorHost, extent);
 
     // Create the kernel execution task.
     auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::view::getPtrNative(bufColorAcc),
+        alpaka::getPtrNative(bufColorAcc),
         numRows,
         numCols,
-        alpaka::view::getPitchBytes<1u>(bufColorAcc),
+        alpaka::getPitchBytes<1u>(bufColorAcc),
         fMinR,
         fMaxR,
         fMinI,
@@ -403,7 +403,7 @@ TEMPLATE_LIST_TEST_CASE( "mandelbrot", "[mandelbrot]", TestAccs)
         << std::endl;
 
     // Copy back the result.
-    alpaka::view::copy(queue, bufColorHost, bufColorAcc, extent);
+    alpaka::copy(queue, bufColorHost, bufColorAcc, extent);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queue);
