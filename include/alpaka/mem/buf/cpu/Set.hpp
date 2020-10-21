@@ -130,7 +130,7 @@ namespace alpaka
                         [&](Vec<DimMin1, ExtentSize> const & idx)
                         {
 
-                            memset(
+                            std::memset(
                                 reinterpret_cast<void *>(this->m_dstMemNative + (castVec<DstSize>(idx) * dstPitchBytesWithoutOutmost).foldrAll(std::plus<DstSize>())),
                                 this->m_byte,
                                 static_cast<std::size_t>(this->m_extentWidthBytes));
@@ -178,7 +178,7 @@ namespace alpaka
         //! The CPU device memory set trait specialization.
         template<
             typename TDim>
-        struct CreateTaskSet<
+        struct CreateTaskMemset<
             TDim,
             DevCpu>
         {
@@ -186,7 +186,7 @@ namespace alpaka
             template<
                 typename TExtent,
                 typename TView>
-            ALPAKA_FN_HOST static auto createTaskSet(
+            ALPAKA_FN_HOST static auto createTaskMemset(
                 TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)

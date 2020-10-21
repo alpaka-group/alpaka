@@ -214,7 +214,7 @@ namespace alpaka
         //! Copies from CPU memory into CPU memory.
         template<
             typename TDim>
-        struct CreateTaskCopy<
+        struct CreateTaskMemcpy<
             TDim,
             DevCpu,
             DevCpu>
@@ -224,7 +224,7 @@ namespace alpaka
                 typename TExtent,
                 typename TViewSrc,
                 typename TViewDst>
-            ALPAKA_FN_HOST static auto createTaskCopy(
+            ALPAKA_FN_HOST static auto createTaskMemcpy(
                 TViewDst & viewDst,
                 TViewSrc const & viewSrc,
                 TExtent const & extent)

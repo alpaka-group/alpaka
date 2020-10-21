@@ -140,8 +140,8 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     auto memBufAccC(alpaka::allocBuf<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
-    alpaka::copy(queueAcc, memBufAccA, memBufHostA, extent);
-    alpaka::copy(queueAcc, memBufAccB, memBufHostB, extent);
+    alpaka::memcpy(queueAcc, memBufAccA, memBufHostA, extent);
+    alpaka::memcpy(queueAcc, memBufAccB, memBufHostB, extent);
 
     // Create the executor task.
     auto const taskKernel(alpaka::createTaskKernel<Acc>(
@@ -161,7 +161,7 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
         << std::endl;
 
     // Copy back the result.
-    alpaka::copy(queueAcc, memBufHostC, memBufAccC, extent);
+    alpaka::memcpy(queueAcc, memBufHostC, memBufAccC, extent);
     alpaka::wait(queueAcc);
 
     bool resultCorrect(true);

@@ -177,7 +177,7 @@ auto main() -> int
 
     // Initialize the global count to 0.
     ptrBufHost[0] = 0.0f;
-    alpaka::copy(
+    alpaka::memcpy(
         queue,
         bufAcc,
         bufHost,
@@ -191,7 +191,7 @@ auto main() -> int
         numPoints,
         ptrBufAcc,
         Function{});
-    alpaka::copy(
+    alpaka::memcpy(
         queue,
         bufHost,
         bufAcc,

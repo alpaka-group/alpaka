@@ -139,7 +139,7 @@ namespace alpaka
             typename TDim,
             typename TDev,
             typename TSfinae = void>
-        struct CreateTaskSet;
+        struct CreateTaskMemset;
 
         //#############################################################################
         //! The memory copy task trait.
@@ -150,7 +150,7 @@ namespace alpaka
             typename TDevDst,
             typename TDevSrc,
             typename TSfinae = void>
-        struct CreateTaskCopy;
+        struct CreateTaskMemcpy;
 
         //#############################################################################
         //! The static device memory view creation trait.
@@ -268,7 +268,7 @@ namespace alpaka
     template<
         typename TExtent,
         typename TView>
-    ALPAKA_FN_HOST auto createTaskSet(
+    ALPAKA_FN_HOST auto createTaskMemset(
         TView & view,
         std::uint8_t const & byte,
         TExtent const & extent)
@@ -278,10 +278,10 @@ namespace alpaka
             "The view and the extent are required to have the same dimensionality!");
 
         return
-            traits::CreateTaskSet<
+            traits::CreateTaskMemset<
                 Dim<TView>,
                 Dev<TView>>
-            ::createTaskSet(
+            ::createTaskMemset(
                 view,
                 byte,
                 extent);
@@ -298,7 +298,7 @@ namespace alpaka
         typename TExtent,
         typename TView,
         typename TQueue>
-    ALPAKA_FN_HOST auto set(
+    ALPAKA_FN_HOST auto memset(
         TQueue & queue,
         TView & view,
         std::uint8_t const & byte,
@@ -307,7 +307,7 @@ namespace alpaka
     {
         enqueue(
             queue,
-            createTaskSet(
+            createTaskMemset(
                 view,
                 byte,
                 extent));
@@ -323,7 +323,7 @@ namespace alpaka
         typename TExtent,
         typename TViewSrc,
         typename TViewDst>
-    ALPAKA_FN_HOST auto createTaskCopy(
+    ALPAKA_FN_HOST auto createTaskMemcpy(
         TViewDst & viewDst,
         TViewSrc const & viewSrc,
         TExtent const & extent)
@@ -339,11 +339,11 @@ namespace alpaka
             "The source and the destination view are required to have the same element type!");
 
         return
-            traits::CreateTaskCopy<
+            traits::CreateTaskMemcpy<
                 Dim<TViewDst>,
                 Dev<TViewDst>,
                 Dev<TViewSrc>>
-            ::createTaskCopy(
+            ::createTaskMemcpy(
                 viewDst,
                 viewSrc,
                 extent);
@@ -361,7 +361,7 @@ namespace alpaka
         typename TViewSrc,
         typename TViewDst,
         typename TQueue>
-    ALPAKA_FN_HOST auto copy(
+    ALPAKA_FN_HOST auto memcpy(
         TQueue & queue,
         TViewDst & viewDst,
         TViewSrc const & viewSrc,
@@ -370,7 +370,7 @@ namespace alpaka
     {
         enqueue(
             queue,
-            createTaskCopy(
+            createTaskMemcpy(
                 viewDst,
                 viewSrc,
                 extent));

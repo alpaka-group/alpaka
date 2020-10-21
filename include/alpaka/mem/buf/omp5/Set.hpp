@@ -44,7 +44,7 @@ namespace alpaka
         //! The OMP5 device memory set trait specialization.
         template<
             typename TDim>
-        struct CreateTaskSet<
+        struct CreateTaskMemset<
             TDim,
             DevOmp5>
         {
@@ -52,7 +52,7 @@ namespace alpaka
             template<
                 typename TExtent,
                 typename TView>
-            ALPAKA_FN_HOST static auto createTaskSet(
+            ALPAKA_FN_HOST static auto createTaskMemset(
                 TView & view,
                 std::uint8_t const & byte,
                 TExtent const & extent)

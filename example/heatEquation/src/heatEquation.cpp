@@ -229,14 +229,14 @@ auto main( ) -> int
     HeatEquationKernel kernel;
 
     // Copy host -> device
-    alpaka::copy(
+    alpaka::memcpy(
         queue,
         uCurrBufAcc,
         uCurrBufHost,
         extent
     );
     // Copy to the buffer for next as well to have boundary values set
-    alpaka::copy(
+    alpaka::memcpy(
         queue,
         uNextBufAcc,
         uCurrBufAcc,
@@ -268,7 +268,7 @@ auto main( ) -> int
     }
 
     // Copy device -> host
-    alpaka::copy(
+    alpaka::memcpy(
         queue,
         uNextBufHost,
         uNextBufAcc,

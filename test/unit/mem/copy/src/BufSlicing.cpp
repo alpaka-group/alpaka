@@ -117,7 +117,7 @@ struct TestContainer
         Vec extents
     ) -> void
     {
-        alpaka::copy(
+        alpaka::memcpy(
             devQueue,
             bufAcc,
             bufHost,
@@ -132,7 +132,7 @@ struct TestContainer
         Vec extents
     ) -> void
     {
-        alpaka::copy(
+        alpaka::memcpy(
             devQueue,
             bufHost,
             bufAcc,
@@ -155,7 +155,7 @@ struct TestContainer
             offsets
         );
         // Copy the subView into a new buffer.
-        alpaka::copy(
+        alpaka::memcpy(
             devQueue,
             slicedBuffer,
             subView,
