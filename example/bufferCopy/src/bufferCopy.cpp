@@ -225,7 +225,7 @@ auto main()
     // The view does not own the underlying memory. So you have to make sure that
     // the view does not outlive its underlying memory.
     std::array<Data, nElementsPerDim * nElementsPerDim * nElementsPerDim> plainBuffer;
-    using ViewHost = alpaka::view::ViewPlainPtr<Host, Data, Dim, Idx>;
+    using ViewHost = alpaka::ViewPlainPtr<Host, Data, Dim, Idx>;
     ViewHost hostViewPlainPtr(plainBuffer.data(), devHost, extents);
 
     // Allocate accelerator memory buffers
@@ -242,7 +242,7 @@ auto main()
     // elements of a buffer directly, but
     // you can get the pointer to the memory
     // (getPtrNative).
-    Data * const pHostBuffer = alpaka::view::getPtrNative(hostBuffer);
+    Data * const pHostBuffer = alpaka::getPtrNative(hostBuffer);
 
     // This pointer can be used to directly write
     // some values into the buffer memory.
@@ -256,7 +256,7 @@ auto main()
     // Memory views and buffers can also be initialized by executing a kernel.
     // To pass a buffer into a kernel, you can pass the
     // native pointer into the kernel invocation.
-    Data * const pHostViewPlainPtr = alpaka::view::getPtrNative(hostViewPlainPtr);
+    Data * const pHostViewPlainPtr = alpaka::getPtrNative(hostViewPlainPtr);
 
     FillBufferKernel fillBufferKernel;
 
@@ -279,25 +279,25 @@ auto main()
     // not currently supported.
     // In this example both host buffers are copied
     // into device buffers.
-    alpaka::view::copy(devQueue, deviceBuffer1, hostViewPlainPtr, extents);
-    alpaka::view::copy(devQueue, deviceBuffer2, hostBuffer, extents);
+    alpaka::copy(devQueue, deviceBuffer1, hostViewPlainPtr, extents);
+    alpaka::copy(devQueue, deviceBuffer2, hostBuffer, extents);
 
     // Depending on the accelerator, the allocation function may introduce
     // padding between rows/planes of multidimensional memory allocations.
     // Therefore the pitch (distance between consecutive rows/planes) may be
     // greater than the space required for the data.
-    Idx const deviceBuffer1Pitch(alpaka::view::getPitchBytes<2u>(deviceBuffer1) / sizeof(Data));
-    Idx const deviceBuffer2Pitch(alpaka::view::getPitchBytes<2u>(deviceBuffer2) / sizeof(Data));
-    Idx const hostBuffer1Pitch(alpaka::view::getPitchBytes<2u>(hostBuffer) / sizeof(Data));
-    Idx const hostViewPlainPtrPitch(alpaka::view::getPitchBytes<2u>(hostViewPlainPtr) / sizeof(Data));
+    Idx const deviceBuffer1Pitch(alpaka::getPitchBytes<2u>(deviceBuffer1) / sizeof(Data));
+    Idx const deviceBuffer2Pitch(alpaka::getPitchBytes<2u>(deviceBuffer2) / sizeof(Data));
+    Idx const hostBuffer1Pitch(alpaka::getPitchBytes<2u>(hostBuffer) / sizeof(Data));
+    Idx const hostViewPlainPtrPitch(alpaka::getPitchBytes<2u>(hostViewPlainPtr) / sizeof(Data));
 
     // Test device Buffer
     //
     // This kernel tests if the copy operations
     // were successful. In the case something
     // went wrong an assert will fail.
-    Data const * const pDeviceBuffer1 = alpaka::view::getPtrNative(deviceBuffer1);
-    Data const * const pDeviceBuffer2 = alpaka::view::getPtrNative(deviceBuffer2);
+    Data const * const pDeviceBuffer1 = alpaka::getPtrNative(deviceBuffer1);
+    Data const * const pDeviceBuffer2 = alpaka::getPtrNative(deviceBuffer2);
 
     TestBufferKernel testBufferKernel;
     alpaka::exec<Acc>(

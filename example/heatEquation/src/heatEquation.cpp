@@ -185,8 +185,8 @@ auto main( ) -> int
         )
     };
 
-    double * const pCurrHost = alpaka::view::getPtrNative( uCurrBufHost );
-    double * const pNextHost = alpaka::view::getPtrNative( uNextBufHost );
+    double * const pCurrHost = alpaka::getPtrNative( uCurrBufHost );
+    double * const pNextHost = alpaka::getPtrNative( uNextBufHost );
 
     // Accelerator buffer
     using BufAcc = alpaka::Buf<
@@ -214,8 +214,8 @@ auto main( ) -> int
         )
     };
 
-    double * pCurrAcc = alpaka::view::getPtrNative( uCurrBufAcc );
-    double * pNextAcc = alpaka::view::getPtrNative( uNextBufAcc );
+    double * pCurrAcc = alpaka::getPtrNative( uCurrBufAcc );
+    double * pNextAcc = alpaka::getPtrNative( uNextBufAcc );
 
     // Apply initial conditions for the test problem
     for( uint32_t i = 0; i < numNodesX; i++ )
@@ -229,14 +229,14 @@ auto main( ) -> int
     HeatEquationKernel kernel;
 
     // Copy host -> device
-    alpaka::view::copy(
+    alpaka::copy(
         queue,
         uCurrBufAcc,
         uCurrBufHost,
         extent
     );
     // Copy to the buffer for next as well to have boundary values set
-    alpaka::view::copy(
+    alpaka::copy(
         queue,
         uNextBufAcc,
         uCurrBufAcc,
@@ -268,7 +268,7 @@ auto main( ) -> int
     }
 
     // Copy device -> host
-    alpaka::view::copy(
+    alpaka::copy(
         queue,
         uNextBufHost,
         uNextBufAcc,

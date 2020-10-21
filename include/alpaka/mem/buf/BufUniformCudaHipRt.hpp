@@ -203,98 +203,92 @@ namespace alpaka
             };
         }
     }
-    namespace view
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The BufUniformCudaHipRt native pointer get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrNative<
-                BufUniformCudaHipRt<TElem, TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrNative(
-                    BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf)
-                -> TElem const *
-                {
-                    return buf.m_spMem.get();
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrNative(
-                    BufUniformCudaHipRt<TElem, TDim, TIdx> & buf)
-                -> TElem *
-                {
-                    return buf.m_spMem.get();
-                }
-            };
-            //#############################################################################
-            //! The BufUniformCudaHipRt pointer on device get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrDev<
-                BufUniformCudaHipRt<TElem, TDim, TIdx>,
-                DevUniformCudaHipRt>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf,
-                    DevUniformCudaHipRt const & dev)
-                -> TElem const *
-                {
-                    if(dev == getDev(buf))
-                    {
-                        return buf.m_spMem.get();
-                    }
-                    else
-                    {
-                        throw std::runtime_error("The buffer is not accessible from the given device!");
-                    }
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufUniformCudaHipRt<TElem, TDim, TIdx> & buf,
-                    DevUniformCudaHipRt const & dev)
-                -> TElem *
-                {
-                    if(dev == getDev(buf))
-                    {
-                        return buf.m_spMem.get();
-                    }
-                    else
-                    {
-                        throw std::runtime_error("The buffer is not accessible from the given device!");
-                    }
-                }
-            };
-            //#############################################################################
-            //! The BufUniformCudaHipRt pitch get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPitchBytes<
-                DimInt<TDim::value - 1u>,
-                BufUniformCudaHipRt<TElem, TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPitchBytes(
-                    BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf)
-                -> TIdx
-                {
-                    return buf.m_pitchBytes;
-                }
-            };
-        }
-    }
-
     namespace traits
     {
+        //#############################################################################
+        //! The BufUniformCudaHipRt native pointer get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrNative<
+            BufUniformCudaHipRt<TElem, TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrNative(
+                BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf)
+            -> TElem const *
+            {
+                return buf.m_spMem.get();
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrNative(
+                BufUniformCudaHipRt<TElem, TDim, TIdx> & buf)
+            -> TElem *
+            {
+                return buf.m_spMem.get();
+            }
+        };
+        //#############################################################################
+        //! The BufUniformCudaHipRt pointer on device get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrDev<
+            BufUniformCudaHipRt<TElem, TDim, TIdx>,
+            DevUniformCudaHipRt>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf,
+                DevUniformCudaHipRt const & dev)
+            -> TElem const *
+            {
+                if(dev == getDev(buf))
+                {
+                    return buf.m_spMem.get();
+                }
+                else
+                {
+                    throw std::runtime_error("The buffer is not accessible from the given device!");
+                }
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufUniformCudaHipRt<TElem, TDim, TIdx> & buf,
+                DevUniformCudaHipRt const & dev)
+            -> TElem *
+            {
+                if(dev == getDev(buf))
+                {
+                    return buf.m_spMem.get();
+                }
+                else
+                {
+                    throw std::runtime_error("The buffer is not accessible from the given device!");
+                }
+            }
+        };
+        //#############################################################################
+        //! The BufUniformCudaHipRt pitch get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPitchBytes<
+            DimInt<TDim::value - 1u>,
+            BufUniformCudaHipRt<TElem, TDim, TIdx>>
+        {
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPitchBytes(
+                BufUniformCudaHipRt<TElem, TDim, TIdx> const & buf)
+            -> TIdx
+            {
+                return buf.m_pitchBytes;
+            }
+        };
+
         //#############################################################################
         //! The CUDA/HIP 1D memory allocation trait specialization.
         template<
@@ -668,7 +662,7 @@ namespace alpaka
                     //   This feature is available only on GPUs with compute capability greater than or equal to 1.1.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                         ALPAKA_API_PREFIX(HostRegister)(
-                            const_cast<void *>(reinterpret_cast<void const *>(view::getPtrNative(buf))),
+                            const_cast<void *>(reinterpret_cast<void const *>(getPtrNative(buf))),
                             extent::getExtentProduct(buf) * sizeof(Elem<BufCpu<TElem, TDim, TIdx>>),
                             ALPAKA_API_PREFIX(HostRegisterMapped)));
                 }
@@ -698,62 +692,57 @@ namespace alpaka
                     // \FIXME: If the memory has separately been pinned before we destroy the pinning state.
                     ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
                         ALPAKA_API_PREFIX(HostUnregister)(
-                            const_cast<void *>(reinterpret_cast<void const *>(view::getPtrNative(buf)))));
+                            const_cast<void *>(reinterpret_cast<void const *>(getPtrNative(buf)))));
                 }
                 // If it is already the same device, nothing has to be unmapped.
             }
         };
-    }
-    namespace view
-    {
-        namespace traits
+
+        //#############################################################################
+        //! The BufCpu pointer on CUDA/HIP device get trait specialization.
+        template<
+            typename TElem,
+            typename TDim,
+            typename TIdx>
+        struct GetPtrDev<
+            BufCpu<TElem, TDim, TIdx>,
+            DevUniformCudaHipRt>
         {
-            //#############################################################################
-            //! The BufCpu pointer on CUDA/HIP device get trait specialization.
-            template<
-                typename TElem,
-                typename TDim,
-                typename TIdx>
-            struct GetPtrDev<
-                BufCpu<TElem, TDim, TIdx>,
-                DevUniformCudaHipRt>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufCpu<TElem, TDim, TIdx> const & buf,
+                DevUniformCudaHipRt const &)
+            -> TElem const *
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufCpu<TElem, TDim, TIdx> const & buf,
-                    DevUniformCudaHipRt const &)
-                -> TElem const *
-                {
-                    // TODO: Check if the memory is mapped at all!
-                    TElem * pDev(nullptr);
+                // TODO: Check if the memory is mapped at all!
+                TElem * pDev(nullptr);
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(HostGetDevicePointer)(
-                            &pDev,
-                            const_cast<void *>(reinterpret_cast<void const *>(view::getPtrNative(buf))),
-                            0));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(HostGetDevicePointer)(
+                        &pDev,
+                        const_cast<void *>(reinterpret_cast<void const *>(getPtrNative(buf))),
+                        0));
 
-                    return pDev;
-                }
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getPtrDev(
-                    BufCpu<TElem, TDim, TIdx> & buf,
-                    DevUniformCudaHipRt const &)
-                -> TElem *
-                {
-                    // TODO: Check if the memory is mapped at all!
-                    TElem * pDev(nullptr);
+                return pDev;
+            }
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getPtrDev(
+                BufCpu<TElem, TDim, TIdx> & buf,
+                DevUniformCudaHipRt const &)
+            -> TElem *
+            {
+                // TODO: Check if the memory is mapped at all!
+                TElem * pDev(nullptr);
 
-                    ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
-                        ALPAKA_API_PREFIX(HostGetDevicePointer)(
-                            &pDev,
-                            view::getPtrNative(buf),
-                            0));
+                ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(
+                    ALPAKA_API_PREFIX(HostGetDevicePointer)(
+                        &pDev,
+                        getPtrNative(buf),
+                        0));
 
-                    return pDev;
-                }
-            };
-        }
+                return pDev;
+            }
+        };
     }
 }
 

@@ -189,13 +189,13 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
     // Allocate accelerator buffers and copy.
     Idx const resultElemCount(gridBlocksCount);
     auto blockRetValsAcc(alpaka::allocBuf<Val, Idx>(devAcc, resultElemCount));
-    alpaka::view::copy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
+    alpaka::copy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
     // Create the kernel execution task.
     auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::view::getPtrNative(blockRetValsAcc)));
+        alpaka::getPtrNative(blockRetValsAcc)));
 
     // Profile the kernel execution.
     std::cout << "Execution time: "
@@ -206,7 +206,7 @@ TEMPLATE_LIST_TEST_CASE( "sharedMem", "[sharedMem]", TestAccs)
         << std::endl;
 
     // Copy back the result.
-    alpaka::view::copy(queue, blockRetVals, blockRetValsAcc, resultElemCount);
+    alpaka::copy(queue, blockRetVals, blockRetValsAcc, resultElemCount);
 
     // Wait for the queue to finish the memory operation.
     alpaka::wait(queue);

@@ -80,7 +80,7 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
             devAcc, static_cast<Extent>(blockCount));
 
     // copy the data to the GPU
-    alpaka::view::copy(queue, sourceDeviceMemory, hostMemory, n);
+    alpaka::copy(queue, sourceDeviceMemory, hostMemory, n);
 
     // create kernels with their workdivs
     ReduceKernel<blockSize, T, TFunc> kernel1, kernel2;
@@ -95,8 +95,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
     auto const taskKernelReduceMain(alpaka::createTaskKernel<Acc>(
         workDiv1,
         kernel1,
-        alpaka::view::getPtrNative(sourceDeviceMemory),
-        alpaka::view::getPtrNative(destinationDeviceMemory),
+        alpaka::getPtrNative(sourceDeviceMemory),
+        alpaka::getPtrNative(destinationDeviceMemory),
         n,
         func));
 
@@ -104,8 +104,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
     auto const taskKernelReduceLastBlock(alpaka::createTaskKernel<Acc>(
         workDiv2,
         kernel2,
-        alpaka::view::getPtrNative(destinationDeviceMemory),
-        alpaka::view::getPtrNative(destinationDeviceMemory),
+        alpaka::getPtrNative(destinationDeviceMemory),
+        alpaka::getPtrNative(destinationDeviceMemory),
         blockCount,
         func));
 
@@ -116,10 +116,10 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
     //  download result from GPU
     T resultGpuHost;
     auto resultGpuDevice =
-        alpaka::view::ViewPlainPtr<DevHost, T, Dim, Idx>(
+        alpaka::ViewPlainPtr<DevHost, T, Dim, Idx>(
             &resultGpuHost, devHost, static_cast<Extent>(blockSize));
 
-    alpaka::view::copy(queue, resultGpuDevice, destinationDeviceMemory, 1);
+    alpaka::copy(queue, resultGpuDevice, destinationDeviceMemory, 1);
 
     return resultGpuHost;
 }
@@ -151,7 +151,7 @@ int main()
     // allocate memory
     auto hostMemory = alpaka::allocBuf<T, Idx>(devHost, n);
 
-    T *nativeHostMemory = alpaka::view::getPtrNative(hostMemory);
+    T *nativeHostMemory = alpaka::getPtrNative(hostMemory);
 
     // fill array with data
     for (uint64_t i = 0; i < n; i++)

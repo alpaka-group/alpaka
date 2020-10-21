@@ -102,7 +102,7 @@ namespace alpaka
                 else
                     return 0;
 #else
-                return detail::ffsFallback(value);
+                return alpaka::detail::ffsFallback(value);
 #endif
             }
 
@@ -123,7 +123,7 @@ namespace alpaka
                 else
                     return 0;
 #else
-                return detail::ffsFallback(value);
+                return alpaka::detail::ffsFallback(value);
 #endif
             }
         };

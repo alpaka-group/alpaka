@@ -43,7 +43,7 @@ static auto testBufferMutable(
 
     //-----------------------------------------------------------------------------
     auto const offset(alpaka::Vec<Dim, Idx>::zeros());
-    alpaka::test::view::testViewImmutable<
+    alpaka::test::testViewImmutable<
         Elem>(
             buf,
             dev,
@@ -51,7 +51,7 @@ static auto testBufferMutable(
             offset);
 
     //-----------------------------------------------------------------------------
-    alpaka::test::view::testViewMutable<
+    alpaka::test::testViewMutable<
         TAcc>(
             queue,
             buf);
@@ -108,7 +108,7 @@ static auto testBufferImmutable(
 
     //-----------------------------------------------------------------------------
     auto const offset(alpaka::Vec<Dim, Idx>::zeros());
-    alpaka::test::view::testViewImmutable<
+    alpaka::test::testViewImmutable<
         Elem>(
             buf,
             dev,

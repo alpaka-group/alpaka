@@ -130,8 +130,8 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     // Initialize the host input vectors
     for (Idx i(0); i < numElements; ++i)
     {
-        alpaka::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
-        alpaka::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+        alpaka::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+        alpaka::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
     }
 
     // Allocate the buffers on the accelerator.
@@ -140,16 +140,16 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     auto memBufAccC(alpaka::allocBuf<Val, Idx>(devAcc, extent));
 
     // Copy Host -> Acc.
-    alpaka::view::copy(queueAcc, memBufAccA, memBufHostA, extent);
-    alpaka::view::copy(queueAcc, memBufAccB, memBufHostB, extent);
+    alpaka::copy(queueAcc, memBufAccA, memBufHostA, extent);
+    alpaka::copy(queueAcc, memBufAccB, memBufHostB, extent);
 
     // Create the executor task.
     auto const taskKernel(alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::view::getPtrNative(memBufAccA),
-        alpaka::view::getPtrNative(memBufAccB),
-        alpaka::view::getPtrNative(memBufAccC),
+        alpaka::getPtrNative(memBufAccA),
+        alpaka::getPtrNative(memBufAccB),
+        alpaka::getPtrNative(memBufAccC),
         numElements));
 
     // Profile the kernel execution.
@@ -161,17 +161,17 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
         << std::endl;
 
     // Copy back the result.
-    alpaka::view::copy(queueAcc, memBufHostC, memBufAccC, extent);
+    alpaka::copy(queueAcc, memBufHostC, memBufAccC, extent);
     alpaka::wait(queueAcc);
 
     bool resultCorrect(true);
-    auto const pHostData(alpaka::view::getPtrNative(memBufHostC));
+    auto const pHostData(alpaka::getPtrNative(memBufHostC));
     for(Idx i(0u);
         i < numElements;
         ++i)
     {
         auto const & val(pHostData[i]);
-        auto const correctResult(std::sqrt(alpaka::view::getPtrNative(memBufHostA)[i]) + std::sqrt(alpaka::view::getPtrNative(memBufHostB)[i]));
+        auto const correctResult(std::sqrt(alpaka::getPtrNative(memBufHostA)[i]) + std::sqrt(alpaka::getPtrNative(memBufHostB)[i]));
         auto const absDiff = (val - correctResult);
         if( absDiff > std::numeric_limits<Val>::epsilon() )
         {
