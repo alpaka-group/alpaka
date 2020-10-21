@@ -58,8 +58,8 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    //! Defines operation functors.
-    namespace op
+    //! Defines block operation functors.
+    namespace blockOp
     {
         //#############################################################################
         //! The addition function object.
