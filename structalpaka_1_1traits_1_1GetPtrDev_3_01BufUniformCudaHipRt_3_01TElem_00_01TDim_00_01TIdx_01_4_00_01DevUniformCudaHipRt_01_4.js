@@ -1,0 +1,5 @@
+var structalpaka_1_1traits_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4 =
+[
+    [ "getPtrDev", "structalpaka_1_1traits_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4.html#a5ff2b850029d8361fe5e2dd68b05c372", null ],
+    [ "getPtrDev", "structalpaka_1_1traits_1_1GetPtrDev_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_00_01DevUniformCudaHipRt_01_4.html#a18df584bd7ccf00e7ea0555bd2d4f96c", null ]
+];

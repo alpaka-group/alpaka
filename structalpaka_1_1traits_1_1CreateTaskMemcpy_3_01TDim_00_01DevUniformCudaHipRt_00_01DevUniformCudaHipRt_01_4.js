@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1CreateTaskMemcpy_3_01TDim_00_01DevUniformCudaHipRt_00_01DevUniformCudaHipRt_01_4 =
+[
+    [ "createTaskMemcpy", "structalpaka_1_1traits_1_1CreateTaskMemcpy_3_01TDim_00_01DevUniformCudaHipRt_00_01DevUniformCudaHipRt_01_4.html#a13e6f43ba1e27b5b6bbac9086a672399", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01alpaka_1_1detail_1_1Tasccef1abe401adaaa200e8a7d638203d8 =
+[
+    [ "enqueue", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01alpaka_1_1detail_1_1Tasccef1abe401adaaa200e8a7d638203d8.html#a067820ad2ac3316f01f2ef82f74450d7", null ]
+];

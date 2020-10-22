@@ -1,4 +1,0 @@
-var structalpaka_1_1view_1_1traits_1_1detail_1_1GetPitchBytesDefault_3_01DimInt_3_01Dim_3_01TView_019789aee65556fed8a4b8e25ea75e5def =
-[
-    [ "getPitchBytesDefault", "structalpaka_1_1view_1_1traits_1_1detail_1_1GetPitchBytesDefault_3_01DimInt_3_01Dim_3_01TView_019789aee65556fed8a4b8e25ea75e5def.html#a42ad4784063221b86bfb0d444db5adc4", null ]
-];

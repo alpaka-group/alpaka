@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
+[
+    [ "type", "structalpaka_1_1traits_1_1ElemType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a6f4e4f5ef305e3535de5a2c584b0cdb4", null ]
+];

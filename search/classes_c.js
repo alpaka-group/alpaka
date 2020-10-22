@@ -41,6 +41,6 @@ var searchData=
   ['prepareforasynccopy_3c_20bufcpu_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; BufCpu&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1PrepareForAsyncCopy_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['prepareforasynccopy_3c_20bufomp5_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1PrepareForAsyncCopy_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['prepareforasynccopy_3c_20bufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['PrepareForAsyncCopy&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1PrepareForAsyncCopy_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
-  ['print',['Print',['../structalpaka_1_1view_1_1detail_1_1Print.html',1,'alpaka::view::detail']]],
-  ['print_3c_20dimint_3c_20dim_3c_20tview_20_3e_3a_3avalue_2d1u_20_3e_2c_20tview_20_3e',['Print&lt; DimInt&lt; Dim&lt; TView &gt;::value-1u &gt;, TView &gt;',['../structalpaka_1_1view_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value-1u_01_4_00_01TView_01_4.html',1,'alpaka::view::detail']]]
+  ['print',['Print',['../structalpaka_1_1detail_1_1Print.html',1,'alpaka::detail']]],
+  ['print_3c_20dimint_3c_20dim_3c_20tview_20_3e_3a_3avalue_2d1u_20_3e_2c_20tview_20_3e',['Print&lt; DimInt&lt; Dim&lt; TView &gt;::value-1u &gt;, TView &gt;',['../structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value-1u_01_4_00_01TView_01_4.html',1,'alpaka::detail']]]
 ];

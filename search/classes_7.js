@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['idx_3c_20tview_20_3e',['Idx&lt; TView &gt;',['../structalpaka_1_1view_1_1traits_1_1detail_1_1Idx_3_01TView_01_4.html',1,'alpaka::view::traits::detail']]],
+  ['idx_3c_20tview_20_3e',['Idx&lt; TView &gt;',['../structalpaka_1_1traits_1_1detail_1_1Idx_3_01TView_01_4.html',1,'alpaka::traits::detail']]],
   ['idxbtomp',['IdxBtOmp',['../classalpaka_1_1bt_1_1IdxBtOmp.html',1,'alpaka::bt']]],
   ['idxbtreffiberidmap',['IdxBtRefFiberIdMap',['../classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html',1,'alpaka::bt']]],
   ['idxbtrefthreadidmap',['IdxBtRefThreadIdMap',['../classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html',1,'alpaka::bt']]],
@@ -41,8 +41,8 @@ var searchData=
   ['idxtype_3c_20taskkernelomp5_3c_20tdim_2c_20tidx_2c_20tkernelfnobj_2c_20targs_2e_2e_2e_20_3e_20_3e',['IdxType&lt; TaskKernelOmp5&lt; TDim, TIdx, TKernelFnObj, TArgs... &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20tidx_2c_20std_3a_3aenable_5fif_5ft_3c_20cuda_3a_3atraits_3a_3aiscudabuiltintype_3c_20tidx_20_3e_3a_3avalue_20_3e_20_3e',['IdxType&lt; TIdx, std::enable_if_t&lt; cuda::traits::IsCudaBuiltInType&lt; TIdx &gt;::value &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01TIdx_00_01std_1_1enable__if__t_3_01cuda_1_1traits_1_1IsCudaaef3a1fed513672aee045b0f391790b.html',1,'alpaka::traits']]],
   ['idxtype_3c_20vec_3c_20tdim_2c_20tval_20_3e_20_3e',['IdxType&lt; Vec&lt; TDim, TVal &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01Vec_3_01TDim_00_01TVal_01_4_01_4.html',1,'alpaka::traits']]],
-  ['idxtype_3c_20view_3a_3aviewplainptr_3c_20tdev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; view::ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01view_1_1ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
-  ['idxtype_3c_20view_3a_3aviewsubview_3c_20tdev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; view::ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01view_1_1ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['idxtype_3c_20viewplainptr_3c_20tdev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; ViewPlainPtr&lt; TDev, TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['idxtype_3c_20viewsubview_3c_20tdev_2c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; ViewSubView&lt; TDev, TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01ViewSubView_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20workdivmembers_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; WorkDivMembers&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20workdivuniformcudahipbuiltin_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; WorkDivUniformCudaHipBuiltIn&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['igenericthreadsqueue',['IGenericThreadsQueue',['../classalpaka_1_1IGenericThreadsQueue.html',1,'alpaka']]],
@@ -194,10 +194,10 @@ var searchData=
   ['isparameterpacksetimpl_3c_20ts_2e_2e_2e_20_3e',['IsParameterPackSetImpl&lt; Ts... &gt;',['../structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html',1,'alpaka::meta::detail']]],
   ['isparameterpacksetimpl_3c_3e',['IsParameterPackSetImpl&lt;&gt;',['../structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl_3_4.html',1,'alpaka::meta::detail']]],
   ['ispinned',['IsPinned',['../structalpaka_1_1traits_1_1IsPinned.html',1,'alpaka::traits']]],
+  ['ispinned_3c_20alpaka_3a_3adetail_3a_3abufcpuimpl_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IsPinned&lt; alpaka::detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IsPinned_3_01alpaka_1_1detail_1_1BufCpuImpl_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['ispinned_3c_20bufcpu_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IsPinned&lt; BufCpu&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IsPinned_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['ispinned_3c_20bufomp5_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IsPinned&lt; BufOmp5&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IsPinned_3_01BufOmp5_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['ispinned_3c_20bufuniformcudahiprt_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IsPinned&lt; BufUniformCudaHipRt&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IsPinned_3_01BufUniformCudaHipRt_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
-  ['ispinned_3c_20detail_3a_3abufcpuimpl_3c_20telem_2c_20tdim_2c_20tidx_20_3e_20_3e',['IsPinned&lt; detail::BufCpuImpl&lt; TElem, TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IsPinned_3_01detail_1_1BufCpuImpl_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['issetimpl',['IsSetImpl',['../structalpaka_1_1meta_1_1detail_1_1IsSetImpl.html',1,'alpaka::meta::detail']]],
   ['issetimpl_3c_20tlist_3c_20ts_2e_2e_2e_20_3e_20_3e',['IsSetImpl&lt; TList&lt; Ts... &gt; &gt;',['../structalpaka_1_1meta_1_1detail_1_1IsSetImpl_3_01TList_3_01Ts_8_8_8_01_4_01_4.html',1,'alpaka::meta::detail']]],
   ['itaskpkg',['ITaskPkg',['../classalpaka_1_1core_1_1detail_1_1ITaskPkg.html',1,'alpaka::core::detail']]]

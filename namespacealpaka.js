@@ -18,7 +18,6 @@ var namespacealpaka =
     [ "rand", "namespacealpaka_1_1rand.html", "namespacealpaka_1_1rand" ],
     [ "traits", "namespacealpaka_1_1traits.html", "namespacealpaka_1_1traits" ],
     [ "uniform_cuda_hip", "namespacealpaka_1_1uniform__cuda__hip.html", "namespacealpaka_1_1uniform__cuda__hip" ],
-    [ "view", "namespacealpaka_1_1view.html", "namespacealpaka_1_1view" ],
     [ "warp", "namespacealpaka_1_1warp.html", "namespacealpaka_1_1warp" ],
     [ "AccCpuFibers", "classalpaka_1_1AccCpuFibers.html", "classalpaka_1_1AccCpuFibers" ],
     [ "AccCpuOmp2Blocks", "classalpaka_1_1AccCpuOmp2Blocks.html", "classalpaka_1_1AccCpuOmp2Blocks" ],
@@ -60,6 +59,7 @@ var namespacealpaka =
     [ "IntrinsicCpu", "classalpaka_1_1IntrinsicCpu.html", "classalpaka_1_1IntrinsicCpu" ],
     [ "IntrinsicFallback", "classalpaka_1_1IntrinsicFallback.html", "classalpaka_1_1IntrinsicFallback" ],
     [ "IntrinsicUniformCudaHipBuiltIn", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn.html", "classalpaka_1_1IntrinsicUniformCudaHipBuiltIn" ],
+    [ "MemSetKernel", "classalpaka_1_1MemSetKernel.html", "classalpaka_1_1MemSetKernel" ],
     [ "PltfCpu", "classalpaka_1_1PltfCpu.html", "classalpaka_1_1PltfCpu" ],
     [ "PltfOmp5", "classalpaka_1_1PltfOmp5.html", "classalpaka_1_1PltfOmp5" ],
     [ "PltfUniformCudaHipRt", "classalpaka_1_1PltfUniformCudaHipRt.html", "classalpaka_1_1PltfUniformCudaHipRt" ],
@@ -78,6 +78,8 @@ var namespacealpaka =
     [ "TimeStdLib", "classalpaka_1_1TimeStdLib.html", "classalpaka_1_1TimeStdLib" ],
     [ "TimeUniformCudaHipBuiltIn", "classalpaka_1_1TimeUniformCudaHipBuiltIn.html", "classalpaka_1_1TimeUniformCudaHipBuiltIn" ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ],
+    [ "ViewPlainPtr", "classalpaka_1_1ViewPlainPtr.html", "classalpaka_1_1ViewPlainPtr" ],
+    [ "ViewSubView", "classalpaka_1_1ViewSubView.html", "classalpaka_1_1ViewSubView" ],
     [ "WorkDivMembers", "classalpaka_1_1WorkDivMembers.html", "classalpaka_1_1WorkDivMembers" ],
     [ "WorkDivUniformCudaHipBuiltIn", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn.html", "classalpaka_1_1WorkDivUniformCudaHipBuiltIn" ]
 ];

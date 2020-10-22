@@ -1,7 +1,0 @@
-var structalpaka_1_1view_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_011_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4 =
-[
-    [ "Idx", "structalpaka_1_1view_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_011_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a8026ddeaf6b3af6768ae754692eb9f7f", null ],
-    [ "MemcpyKind", "structalpaka_1_1view_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_011_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a7b69ebcc259b230a153b785d3245fbf1", null ],
-    [ "TaskCopyUniformCudaHip", "structalpaka_1_1view_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_011_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a4d69e91b777302f0291d1f69589e18cc", null ],
-    [ "enqueue", "structalpaka_1_1view_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_011_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a547cec606bc63b39dbcad1c47e3eedff", null ]
-];
