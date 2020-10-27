@@ -29,18 +29,26 @@ ALPAKA_FN_ACC auto testAtomicAdd(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(4);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = static_cast<T>(operandOrig + value);
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Add>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = static_cast<T>(operandOrig + value);
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicAdd(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -54,18 +62,26 @@ ALPAKA_FN_ACC auto testAtomicSub(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(4);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = static_cast<T>(operandOrig - value);
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Sub>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = static_cast<T>(operandOrig - value);
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicSub(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -79,18 +95,26 @@ ALPAKA_FN_ACC auto testAtomicMin(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(4);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = (operandOrig < value) ? operandOrig : value;
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Min>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = (operandOrig < value) ? operandOrig : value;
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicMin(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -104,18 +128,26 @@ ALPAKA_FN_ACC auto testAtomicMax(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(4);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = (operandOrig > value) ? operandOrig : value;
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Max>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = (operandOrig > value) ? operandOrig : value;
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicMax(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -129,18 +161,26 @@ ALPAKA_FN_ACC auto testAtomicExch(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(4);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = value;
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Exch>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = value;
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicExch(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -155,18 +195,26 @@ ALPAKA_FN_ACC auto testAtomicInc(
 -> void
 {
     // \TODO: Check reset to 0 at 'value'.
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(42);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = static_cast<T>(operandOrig + 1);
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Inc>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = static_cast<T>(operandOrig + 1);
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicInc(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -181,18 +229,26 @@ ALPAKA_FN_ACC auto testAtomicDec(
 -> void
 {
     // \TODO: Check reset to 'value' at 0.
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(42);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = static_cast<T>(operandOrig - 1);
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Dec>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = static_cast<T>(operandOrig - 1);
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicDec(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -206,18 +262,26 @@ ALPAKA_FN_ACC auto testAtomicAnd(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(4);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = operandOrig & value;
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::And>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = operandOrig & value;
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicAnd(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -231,18 +295,26 @@ ALPAKA_FN_ACC auto testAtomicOr(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(4);
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = operandOrig | value;
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Or>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = operandOrig | value;
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicOr(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -256,18 +328,26 @@ ALPAKA_FN_ACC auto testAtomicXor(
     T operandOrig)
 -> void
 {
-    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
-    operand = operandOrig;
     T const value = static_cast<T>(operandOrig + static_cast<T>(4));
-    T const ret =
-        alpaka::atomicOp<
+    T const reference = operandOrig ^ value;
+    auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    {
+        operand = operandOrig;
+        T const ret =
+            alpaka::atomicOp<
             alpaka::op::Xor>(
                 acc,
                 &operand,
                 value);
-    ALPAKA_CHECK(*success, operandOrig == ret);
-    T const reference = operandOrig ^ value;
-    ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
+    {
+        operand = operandOrig;
+        T const ret = alpaka::atomicXor(acc, &operand, value);
+        ALPAKA_CHECK(*success, operandOrig == ret);
+        ALPAKA_CHECK(*success, operand == reference);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -281,42 +361,57 @@ ALPAKA_FN_ACC auto testAtomicCas(
     T operandOrig)
 -> void
 {
+    T const value = static_cast<T>(4);
     auto & operand = alpaka::allocVar<T, __COUNTER__>(acc);
 
     //-----------------------------------------------------------------------------
     // with match
     {
-        operand = operandOrig;
         T const compare = operandOrig;
-        T const value = static_cast<T>(4);
-        T const ret =
-            alpaka::atomicOp<
+        T const reference = value;
+        {
+            operand = operandOrig;
+            T const ret =
+                alpaka::atomicOp<
                 alpaka::op::Cas>(
                     acc,
                     &operand,
                     compare,
                     value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        T const reference = value;
-        ALPAKA_CHECK(*success, operand == reference);
+            ALPAKA_CHECK(*success, operandOrig == ret);
+            ALPAKA_CHECK(*success, operand == reference);
+        }
+        {
+            operand = operandOrig;
+            T const ret = alpaka::atomicCas(acc, &operand, compare, value);
+            ALPAKA_CHECK(*success, operandOrig == ret);
+            ALPAKA_CHECK(*success, operand == reference);
+        }
     }
 
     //-----------------------------------------------------------------------------
     // without match
     {
-        operand = operandOrig;
         T const compare = static_cast<T>(operandOrig + static_cast<T>(1));
-        T const value = static_cast<T>(4);
-        T const ret =
-            alpaka::atomicOp<
+        T const reference = operandOrig;
+        {
+            operand = operandOrig;
+            T const ret =
+                alpaka::atomicOp<
                 alpaka::op::Cas>(
                     acc,
                     &operand,
                     compare,
                     value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        T const reference = operandOrig;
-        ALPAKA_CHECK(*success, operand == reference);
+            ALPAKA_CHECK(*success, operandOrig == ret);
+            ALPAKA_CHECK(*success, operand == reference);
+        }
+        {
+            operand = operandOrig;
+            T const ret = alpaka::atomicCas(acc, &operand, compare, value);
+            ALPAKA_CHECK(*success, operandOrig == ret);
+            ALPAKA_CHECK(*success, operand == reference);
+        }
     }
 }
 
