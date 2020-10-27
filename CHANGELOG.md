@@ -40,6 +40,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - renamed namespace `alpaka::block::op` to `alpaka::blockOp`
 - removed namespace `alpaka::block`
 
+### New Features:
+- add functions `alpaka::atomicAdd` et. al. as shortcuts to `alpaka::atomicOp<alpaka::op::Add>` et. al. #1005
+
 ## [0.5.0] - 2020-06-26
 ### Compatibility Changes:
 - the minimum required C++ version has been raised from C++11 to C++14 #900
