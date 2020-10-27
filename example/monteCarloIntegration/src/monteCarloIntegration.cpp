@@ -103,12 +103,7 @@ struct Kernel
         }
 
         // Add the local result to the sum of the other results.
-        alpaka::atomicOp<
-            alpaka::op::Add>(
-            acc,
-            globalCounter,
-            localCount,
-            alpaka::hierarchy::Blocks{});
+        alpaka::atomicAdd(acc, globalCounter, localCount, alpaka::hierarchy::Blocks{});
     }
 };
 

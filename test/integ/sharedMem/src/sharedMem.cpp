@@ -81,7 +81,7 @@ public:
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(blockThreadIdx1d > 0)
         {
-            alpaka::atomicOp<alpaka::op::Add>(acc, &pBlockShared[0], pBlockShared[blockThreadIdx1d]);
+            alpaka::atomicAdd(acc, &pBlockShared[0], pBlockShared[blockThreadIdx1d]);
         }
 
 
