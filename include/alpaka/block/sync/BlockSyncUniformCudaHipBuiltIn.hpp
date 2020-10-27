@@ -80,7 +80,7 @@ namespace alpaka
                     tmp=0;
                 __syncthreads();
                 if(predicate)
-                    atomicAdd(&tmp, 1);
+                    ::atomicAdd(&tmp, 1);
                 __syncthreads();
 
                 return tmp;
@@ -110,7 +110,7 @@ namespace alpaka
                     tmp=1;
                 __syncthreads();
                 if(!predicate)
-                    atomicAnd(&tmp, 0);
+                    ::atomicAnd(&tmp, 0);
                 __syncthreads();
 
                 return tmp;
@@ -140,7 +140,7 @@ namespace alpaka
                     tmp=0;
                 __syncthreads();
                 if(predicate)
-                    atomicOr(&tmp, 1);
+                    ::atomicOr(&tmp, 1);
                 __syncthreads();
 
                 return tmp;
