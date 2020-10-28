@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - removed namespace `alpaka::vec`
 - removed namespace `alpaka::workdiv`
 - removed namespace `alpaka::acc`
+- renamed functors `alpaka::atomic::op::And` et. al. to `alpaka::AtomicAnd` et. al.
+- removed namespace `alpaka::atomic::op`
 - removed namespace `alpaka::atomic`
 - removed namespace `alpaka::queue`
 - removed namespace `alpaka::idx`
@@ -37,11 +39,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - removed namespace `alpaka::view`
 - removed namespace `alpaka::block::st`
 - removed namespace `alpaka::block::dyn`
-- renamed namespace `alpaka::block::op` to `alpaka::blockOp`
+- renamed functors `alpaka::block::op::LogicalAnd` et. al. to `alpaka::BlockAnd` et. al.
+- removed namespace `alpaka::block::op`
 - removed namespace `alpaka::block`
 
 ### New Features:
-- add functions `alpaka::atomicAdd` et. al. as shortcuts to `alpaka::atomicOp<alpaka::op::Add>` et. al. #1005
+- add functions `alpaka::atomicAnd` et. al. as shortcuts to `alpaka::atomicOp<alpaka::AtomicAnd>` et. al. #1005
 
 ## [0.5.0] - 2020-06-26
 ### Compatibility Changes:
