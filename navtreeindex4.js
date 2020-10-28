@@ -1,5 +1,16 @@
 var NAVTREEINDEX4 =
 {
+"classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03":[3,0,0,93,19],
+"classalpaka_1_1Vec.html#a12d4017fe620a87aeaa2c5dbb6607d44":[3,0,0,93,12],
+"classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc":[3,0,0,93,20],
+"classalpaka_1_1Vec.html#a25e7462e7884e400ee270dc5d2709b96":[3,0,0,93,3],
+"classalpaka_1_1Vec.html#a3195b448ba710d42dc8307bae8907b05":[3,0,0,93,21],
+"classalpaka_1_1Vec.html#a355c5ce6736991aa22eda20b9d4384e8":[3,0,0,93,17],
+"classalpaka_1_1Vec.html#a374d1237d61fba704d419935a3fb42c7":[3,0,0,93,13],
+"classalpaka_1_1Vec.html#a4eeeb636d56c785f5969748e0009d668":[3,0,0,93,18],
+"classalpaka_1_1Vec.html#a79cd10bdf0f58e103e43275a258399fd":[3,0,0,93,0],
+"classalpaka_1_1Vec.html#a7fcd2d8489fa49ccb3f19ab7b7d5e02d":[3,0,0,93,5],
+"classalpaka_1_1Vec.html#a88e66f65fd471ecdc55b4116e19d84a8":[3,0,0,93,6],
 "classalpaka_1_1Vec.html#a8ba1d21778eba24f0ada0ec057204c8b":[3,0,0,93,1],
 "classalpaka_1_1Vec.html#a919bb6d04bd90b3d23ed68f0f9491b1b":[3,0,0,93,14],
 "classalpaka_1_1Vec.html#a922917e0dc086cee70fe2de4ccd94798":[3,0,0,93,16],
@@ -238,16 +249,5 @@ var NAVTREEINDEX4 =
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a2fd8e0401d2078fca727f434a3a4393f":[3,0,0,9,0,1,6],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a36bfd4aa8eff934a8319aa567c427ee5":[3,0,0,9,0,1,9],
 "classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a83941b86d3ff5a32067c864ad5919eab":[3,0,0,9,0,1,1],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a8751611de589a14327b1b6d477bc36ac":[3,0,0,9,0,1,3],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#ab9d3561c6c58715231904563b17d437f":[3,0,0,9,0,1,2],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#ada8f1828bf15910afc52083d09422a01":[3,0,0,9,0,1,5],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#ae610e4bb02393d2aef7a14c7224d81da":[3,0,0,9,0,1,0],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html":[3,0,0,9,0,2],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a1913698751fed94c6780a1f0f2c01a4a":[3,0,0,9,0,2,0],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#a8f4b68601a15a80b6d74d214332384b2":[3,0,0,9,0,2,1],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#aa8e37e71c6156e7881d41607e7d0b236":[3,0,0,9,0,2,3],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#ac849ff9ff02c546023a7df1372f8aab8":[3,0,0,9,0,2,5],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#adaaef9be95ffab8e505bf59cc273ebaf":[3,0,0,9,0,2,6],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#adc02b4159567ddf1fa7931a5ebf67651":[3,0,0,9,0,2,2],
-"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsNonBlockingImpl.html#aeb2432b0fc83d7d03649e15062b29dab":[3,0,0,9,0,2,4]
+"classalpaka_1_1generic_1_1detail_1_1QueueGenericThreadsBlockingImpl.html#a8751611de589a14327b1b6d477bc36ac":[3,0,0,9,0,1,3]
 };

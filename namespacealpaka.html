@@ -471,6 +471,38 @@ Functions</h2></td></tr>
 <tr class="memitem:a3b43295094993ff6b3cf214640dce660"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3b43295094993ff6b3cf214640dce660">allocVar</a> (TBlockSharedMemSt const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
 <tr class="memdesc:a3b43295094993ff6b3cf214640dce660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a variable in block shared static memory.  <a href="#a3b43295094993ff6b3cf214640dce660">More...</a><br /></td></tr>
 <tr class="separator:a3b43295094993ff6b3cf214640dce660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">atomicAdd</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic add operation.  <a href="#ac8d44ae90fcfe2fdb973c49542fd0db5">More...</a><br /></td></tr>
+<tr class="separator:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcb672dfb9494d1e3907cc68ac9f6bdc"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:afcb672dfb9494d1e3907cc68ac9f6bdc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#afcb672dfb9494d1e3907cc68ac9f6bdc">atomicAnd</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:afcb672dfb9494d1e3907cc68ac9f6bdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic and operation.  <a href="#afcb672dfb9494d1e3907cc68ac9f6bdc">More...</a><br /></td></tr>
+<tr class="separator:afcb672dfb9494d1e3907cc68ac9f6bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87ead6541b9d6971fdbdc2d2e38e9676"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a87ead6541b9d6971fdbdc2d2e38e9676"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676">atomicCas</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;compare, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a87ead6541b9d6971fdbdc2d2e38e9676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic compare-and-swap operation.  <a href="#a87ead6541b9d6971fdbdc2d2e38e9676">More...</a><br /></td></tr>
+<tr class="separator:a87ead6541b9d6971fdbdc2d2e38e9676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d18cb6aa5ffef8f6326ec2d9ac6eb12"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a7d18cb6aa5ffef8f6326ec2d9ac6eb12"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">atomicDec</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a7d18cb6aa5ffef8f6326ec2d9ac6eb12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic decrement operation.  <a href="#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">More...</a><br /></td></tr>
+<tr class="separator:a7d18cb6aa5ffef8f6326ec2d9ac6eb12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148285a6d01c5470b8a96a3c2987dc26"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a148285a6d01c5470b8a96a3c2987dc26"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">atomicExch</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a148285a6d01c5470b8a96a3c2987dc26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic exchange operation.  <a href="#a148285a6d01c5470b8a96a3c2987dc26">More...</a><br /></td></tr>
+<tr class="separator:a148285a6d01c5470b8a96a3c2987dc26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63cfc71f3e70ac355d00d5d72c22c155"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a63cfc71f3e70ac355d00d5d72c22c155"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a63cfc71f3e70ac355d00d5d72c22c155">atomicInc</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a63cfc71f3e70ac355d00d5d72c22c155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic increment operation.  <a href="#a63cfc71f3e70ac355d00d5d72c22c155">More...</a><br /></td></tr>
+<tr class="separator:a63cfc71f3e70ac355d00d5d72c22c155"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e505040bed456f94ca7d67c410b3fdb"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a7e505040bed456f94ca7d67c410b3fdb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7e505040bed456f94ca7d67c410b3fdb">atomicMax</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a7e505040bed456f94ca7d67c410b3fdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic max operation.  <a href="#a7e505040bed456f94ca7d67c410b3fdb">More...</a><br /></td></tr>
+<tr class="separator:a7e505040bed456f94ca7d67c410b3fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f18d8a56f1420bf97c3ae420c50b1ee"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a4f18d8a56f1420bf97c3ae420c50b1ee"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4f18d8a56f1420bf97c3ae420c50b1ee">atomicMin</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a4f18d8a56f1420bf97c3ae420c50b1ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic min operation.  <a href="#a4f18d8a56f1420bf97c3ae420c50b1ee">More...</a><br /></td></tr>
+<tr class="separator:a4f18d8a56f1420bf97c3ae420c50b1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc0cabb316d5524d381a35c8c67edf81"><td class="memTemplParams" colspan="2">template&lt;typename TOp , typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
 <tr class="memitem:afc0cabb316d5524d381a35c8c67edf81"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</td></tr>
 <tr class="memdesc:afc0cabb316d5524d381a35c8c67edf81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given operation atomically.  <a href="#afc0cabb316d5524d381a35c8c67edf81">More...</a><br /></td></tr>
@@ -479,6 +511,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a4c6a0197f66257d016d1250a05030def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">atomicOp</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;compare, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</td></tr>
 <tr class="memdesc:a4c6a0197f66257d016d1250a05030def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given operation atomically.  <a href="#a4c6a0197f66257d016d1250a05030def">More...</a><br /></td></tr>
 <tr class="separator:a4c6a0197f66257d016d1250a05030def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0db95671aafbe9c7fe480f45d226041"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:af0db95671aafbe9c7fe480f45d226041"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041">atomicOr</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:af0db95671aafbe9c7fe480f45d226041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic or operation.  <a href="#af0db95671aafbe9c7fe480f45d226041">More...</a><br /></td></tr>
+<tr class="separator:af0db95671aafbe9c7fe480f45d226041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd6532dee901bf4d991c2912d48b6fc"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a3fd6532dee901bf4d991c2912d48b6fc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3fd6532dee901bf4d991c2912d48b6fc">atomicSub</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a3fd6532dee901bf4d991c2912d48b6fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic sub operation.  <a href="#a3fd6532dee901bf4d991c2912d48b6fc">More...</a><br /></td></tr>
+<tr class="separator:a3fd6532dee901bf4d991c2912d48b6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c8304545460e9c2aedf08a91626185d"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
+<tr class="memitem:a0c8304545460e9c2aedf08a91626185d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0c8304545460e9c2aedf08a91626185d">atomicXor</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
+<tr class="memdesc:a0c8304545460e9c2aedf08a91626185d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic xor operation.  <a href="#a0c8304545460e9c2aedf08a91626185d">More...</a><br /></td></tr>
+<tr class="separator:a0c8304545460e9c2aedf08a91626185d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd854aaa4e945ebc99016210406b9b99"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TVec &gt; </td></tr>
 <tr class="memitem:acd854aaa4e945ebc99016210406b9b99"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#acd854aaa4e945ebc99016210406b9b99">castVec</a> (TVec const &amp;vec)</td></tr>
 <tr class="separator:acd854aaa4e945ebc99016210406b9b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -866,7 +910,7 @@ template&lt;typename THierarchy &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00056">56</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00057">57</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1344,6 +1388,509 @@ template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; 
 
 </div>
 </div>
+<a id="ac8d44ae90fcfe2fdb973c49542fd0db5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8d44ae90fcfe2fdb973c49542fd0db5">&#9670;&nbsp;</a></span>atomicAdd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicAdd </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic add operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00160">160</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="afcb672dfb9494d1e3907cc68ac9f6bdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcb672dfb9494d1e3907cc68ac9f6bdc">&#9670;&nbsp;</a></span>atomicAnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicAnd </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic and operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00321">321</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a87ead6541b9d6971fdbdc2d2e38e9676"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87ead6541b9d6971fdbdc2d2e38e9676">&#9670;&nbsp;</a></span>atomicCas()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicCas </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>compare</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic compare-and-swap operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">compare</td><td>The comparison value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00391">391</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a7d18cb6aa5ffef8f6326ec2d9ac6eb12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">&#9670;&nbsp;</a></span>atomicDec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicDec </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic decrement operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00298">298</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a148285a6d01c5470b8a96a3c2987dc26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a148285a6d01c5470b8a96a3c2987dc26">&#9670;&nbsp;</a></span>atomicExch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicExch </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic exchange operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00252">252</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a63cfc71f3e70ac355d00d5d72c22c155"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63cfc71f3e70ac355d00d5d72c22c155">&#9670;&nbsp;</a></span>atomicInc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicInc </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic increment operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00275">275</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a7e505040bed456f94ca7d67c410b3fdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e505040bed456f94ca7d67c410b3fdb">&#9670;&nbsp;</a></span>atomicMax()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicMax </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic max operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00229">229</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a4f18d8a56f1420bf97c3ae420c50b1ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f18d8a56f1420bf97c3ae420c50b1ee">&#9670;&nbsp;</a></span>atomicMin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicMin </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic min operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00206">206</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="afc0cabb316d5524d381a35c8c67edf81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc0cabb316d5524d381a35c8c67edf81">&#9670;&nbsp;</a></span>atomicOp() <span class="overload">[1/2]</span></h2>
 
@@ -1403,7 +1950,7 @@ template&lt;typename TOp , typename TAtomic , typename T , typename THierarchy  
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00088">88</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00089">89</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1473,7 +2020,193 @@ template&lt;typename TOp , typename TAtomic , typename T , typename THierarchy  
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00124">124</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00125">125</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="af0db95671aafbe9c7fe480f45d226041"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0db95671aafbe9c7fe480f45d226041">&#9670;&nbsp;</a></span>atomicOr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicOr </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic or operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00344">344</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a3fd6532dee901bf4d991c2912d48b6fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fd6532dee901bf4d991c2912d48b6fc">&#9670;&nbsp;</a></span>atomicSub()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicSub </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic sub operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00183">183</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a0c8304545460e9c2aedf08a91626185d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c8304545460e9c2aedf08a91626185d">&#9670;&nbsp;</a></span>atomicXor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomicXor </td>
+          <td>(</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">THierarchy const &amp;&#160;</td>
+          <td class="paramname"><em>hier</em> = <code>THierarchy()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; T
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Executes an atomic xor operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The value type. </td></tr>
+    <tr><td class="paramname">TAtomic</td><td>The atomic implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">addr</td><td>The value to change atomically. </td></tr>
+    <tr><td class="paramname">value</td><td>The value used in the atomic operation. </td></tr>
+    <tr><td class="paramname">atomic</td><td>The atomic implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00367">367</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4720,7 +5453,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Wed Oct 28 2020 09:58:25 for alpaka by
+    <li class="footer">Generated on Wed Oct 28 2020 12:47:23 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

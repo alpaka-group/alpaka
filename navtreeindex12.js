@@ -1,5 +1,16 @@
 var NAVTREEINDEX12 =
 {
+"structalpaka_1_1traits_1_1EventType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html#ab4ffb9d160437674c9b8f8f5d23ac871":[3,0,0,16,245,0],
+"structalpaka_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtBlocking_01_4.html":[3,0,0,16,246],
+"structalpaka_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtBlocking_01_4.html#a2fa31b1926031db9f4a016c209d940d5":[3,0,0,16,246,0],
+"structalpaka_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtNonBlocking_01_4.html":[3,0,0,16,247],
+"structalpaka_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtNonBlocking_01_4.html#a38e26e737c550737e5652812809bc3ca":[3,0,0,16,247,0],
+"structalpaka_1_1traits_1_1Ffs.html":[3,0,0,16,248],
+"structalpaka_1_1traits_1_1Ffs_3_01IntrinsicCpu_01_4.html":[3,0,0,16,249],
+"structalpaka_1_1traits_1_1Ffs_3_01IntrinsicCpu_01_4.html#a16dfc650573fdf0506922513b29680a2":[3,0,0,16,249,0],
+"structalpaka_1_1traits_1_1Ffs_3_01IntrinsicCpu_01_4.html#aea0e2a46f547cca05d31abc37980b4d1":[3,0,0,16,249,1],
+"structalpaka_1_1traits_1_1Ffs_3_01IntrinsicFallback_01_4.html":[3,0,0,16,250],
+"structalpaka_1_1traits_1_1Ffs_3_01IntrinsicFallback_01_4.html#a2718acb51c7cccd931d05a1919745dd7":[3,0,0,16,250,1],
 "structalpaka_1_1traits_1_1Ffs_3_01IntrinsicFallback_01_4.html#a6b8c2e97be05600dbb5cb1f33f1afecd":[3,0,0,16,250,0],
 "structalpaka_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html":[3,0,0,16,251],
 "structalpaka_1_1traits_1_1Ffs_3_01IntrinsicUniformCudaHipBuiltIn_01_4.html#ace026c636ecc169fb907f305f7fef170":[3,0,0,16,251,1],
@@ -238,16 +249,5 @@ var NAVTREEINDEX12 =
 "structalpaka_1_1traits_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Elems_01_4.html":[3,0,0,16,371],
 "structalpaka_1_1traits_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Elems_01_4.html#ae8c720b507369281db22e473641d591c":[3,0,0,16,371,0],
 "structalpaka_1_1traits_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html":[3,0,0,16,372],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#a1e9888f2ca21b4bfdc1c8a35853a5aea":[3,0,0,16,372,0],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html":[3,0,0,16,373],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Block_00_01unit_1_1Threads_01_4.html#ac04507ebc964f553fa9344482f039803":[3,0,0,16,373,0],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html":[3,0,0,16,374],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Grid_00_01unit_1_1Blocks_01_4.html#ac2d21078c1321e8f57ef6e9db827cbfa":[3,0,0,16,374,0],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Thread_00_01unit_1_1Elems_01_4.html":[3,0,0,16,375],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivMembers_3_01TDim_00_01TIdx_01_4_00_01origin_1_1Thread_00_01unit_1_1Elems_01_4.html#a241c65c7c74325f721e069ceb3215a3b":[3,0,0,16,375,0],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00029541df3ca78ca36868b2da2ba35e65.html":[3,0,0,16,378],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00029541df3ca78ca36868b2da2ba35e65.html#a1a5267eecbf3c0f4e2c08ef91558f94d":[3,0,0,16,378,0],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00e8855fd6f639be1659913e6dcbdf9208.html":[3,0,0,16,377],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00e8855fd6f639be1659913e6dcbdf9208.html#a7626d0ba39e5b4209c7d8b03e996560b":[3,0,0,16,377,0],
-"structalpaka_1_1traits_1_1GetWorkDiv_3_01WorkDivUniformCudaHipBuiltIn_3_01TDim_00_01TIdx_01_4_00f775706d39185127596412943d6c5c50.html":[3,0,0,16,376]
+"structalpaka_1_1traits_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#a1e9888f2ca21b4bfdc1c8a35853a5aea":[3,0,0,16,372,0]
 };

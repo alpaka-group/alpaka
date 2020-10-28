@@ -1,5 +1,16 @@
 var NAVTREEINDEX8 =
 {
+"structalpaka_1_1detail_1_1MapIdxPitchBytes_3_011u_00_01TidxDimIn_00_01typename_01std_1_1enable__ad969cdef5093017eb3da36d3ff11ca8.html#ad07b068f9410018edd584987a104dbaf":[3,0,0,6,22,0],
+"structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01typename_01std_1_1enable_3beab296efa3bf3686b8089fc8df7d70.html":[3,0,0,6,24],
+"structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDimOut_00_011u_00_01typename_01std_1_1enable_3beab296efa3bf3686b8089fc8df7d70.html#a43587561e3971d3022844c1711e79cf6":[3,0,0,6,24,0],
+"structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDim_00_01TidxDim_01_4.html":[3,0,0,6,23],
+"structalpaka_1_1detail_1_1MapIdxPitchBytes_3_01TidxDim_00_01TidxDim_01_4.html#a0c42d87070a0196189dc1a736b9fe576":[3,0,0,6,23,0],
+"structalpaka_1_1detail_1_1MapIdx_3_011u_00_01TidxDimIn_00_01std_1_1enable__if__t_3_01TidxDimIn_01_9_0A1u_01_4_01_4.html":[3,0,0,6,18],
+"structalpaka_1_1detail_1_1MapIdx_3_011u_00_01TidxDimIn_00_01std_1_1enable__if__t_3_01TidxDimIn_01_9_0A1u_01_4_01_4.html#a1c0a22ee1dd282f50148c4949ef7cfd1":[3,0,0,6,18,0],
+"structalpaka_1_1detail_1_1MapIdx_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_01TidxDimOut_01_9_0A1u_01_4_01_4.html":[3,0,0,6,20],
+"structalpaka_1_1detail_1_1MapIdx_3_01TidxDimOut_00_011u_00_01std_1_1enable__if__t_3_01TidxDimOut_01_9_0A1u_01_4_01_4.html#a1d8fa7dee5ddab3a01456043bcff8d8e":[3,0,0,6,20,0],
+"structalpaka_1_1detail_1_1MapIdx_3_01TidxDim_00_01TidxDim_01_4.html":[3,0,0,6,19],
+"structalpaka_1_1detail_1_1MapIdx_3_01TidxDim_00_01TidxDim_01_4.html#a25fbbee7b44afa0b1fb8dad6b962bda7":[3,0,0,6,19,0],
 "structalpaka_1_1detail_1_1Print.html":[3,0,0,6,25],
 "structalpaka_1_1detail_1_1Print.html#a4ec495e56b1611200ef2491e3483b229":[3,0,0,6,25,0],
 "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value-1u_01_4_00_01TView_01_4.html":[3,0,0,6,26],
@@ -238,16 +249,5 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodStdLib_00_01Tx_00_01Ty_00_01std_1_1enable__if__t_1e3992ec5d7497c79273d493839fc600.html#aca65e0d2eed9013e501985934670bbaa":[3,0,0,11,0,46,0],
 "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_b44b41490d5667e770c9a877ec97185e.html":[3,0,0,11,0,48],
 "structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_b44b41490d5667e770c9a877ec97185e.html#a8ddc06ed21974170cefd8662df5687d4":[3,0,0,11,0,48,0],
-"structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodUniformCudaHipBuiltIn_00_01float_00_01float_01_4.html":[3,0,0,11,0,47],
-"structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodUniformCudaHipBuiltIn_00_01float_00_01float_01_4.html#a2ad8b6bf25b60090f01943f98c803a5e":[3,0,0,11,0,47,0],
-"structalpaka_1_1math_1_1traits_1_1Llround.html":[3,0,0,11,0,49],
-"structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_1479f77b8e2b897b6ab5bc184777bb0d.html":[3,0,0,11,0,50],
-"structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundStdLib_00_01TArg_00_01std_1_1enable__if__t_3_1479f77b8e2b897b6ab5bc184777bb0d.html#a36d8a8dec81568a4241d9ff425fd25cc":[3,0,0,11,0,50,0],
-"structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1e574a51f56f64fcd8b52af964ab4bd706.html":[3,0,0,11,0,51],
-"structalpaka_1_1math_1_1traits_1_1Llround_3_01RoundUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1e574a51f56f64fcd8b52af964ab4bd706.html#acabfc84d8e093038ce4e1d28068a7e01":[3,0,0,11,0,51,0],
-"structalpaka_1_1math_1_1traits_1_1Log.html":[3,0,0,11,0,52],
-"structalpaka_1_1math_1_1traits_1_1Log_3_01LogStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_8df4c1f66ecb23f8845b52e63c287a0f.html":[3,0,0,11,0,53],
-"structalpaka_1_1math_1_1traits_1_1Log_3_01LogStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_8df4c1f66ecb23f8845b52e63c287a0f.html#a3db65eb3dd8fde97838f305832af2185":[3,0,0,11,0,53,0],
-"structalpaka_1_1math_1_1traits_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_2c78bed3ed49a88138bd6a34c4249e8c.html":[3,0,0,11,0,55],
-"structalpaka_1_1math_1_1traits_1_1Log_3_01LogUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_2c78bed3ed49a88138bd6a34c4249e8c.html#a5a1fe8dc297ba20e85ec35e27770ed55":[3,0,0,11,0,55,0]
+"structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodUniformCudaHipBuiltIn_00_01float_00_01float_01_4.html":[3,0,0,11,0,47]
 };

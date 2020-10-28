@@ -1,5 +1,16 @@
 var NAVTREEINDEX3 =
 {
+"classalpaka_1_1BlockSyncBarrierThread.html#a75a6c11af5243dfeadd6b5626ef9548d":[3,0,0,44,6],
+"classalpaka_1_1BlockSyncBarrierThread.html#a81ec3525d46d40d12759c8220d5b5603":[3,0,0,44,9],
+"classalpaka_1_1BlockSyncBarrierThread.html#a978868fe23b4060c395b92885f7fdfff":[3,0,0,44,4],
+"classalpaka_1_1BlockSyncBarrierThread.html#ab76509f5a5dbbbd655e30434f7c543a2":[3,0,0,44,5],
+"classalpaka_1_1BlockSyncBarrierThread.html#ab7d2a67f80f56e7b4e720f7018a813f9":[3,0,0,44,7],
+"classalpaka_1_1BlockSyncBarrierThread.html#abfe9d8b35eafc127233a33e9a34096fd":[3,0,0,44,2],
+"classalpaka_1_1BlockSyncNoOp.html":[3,0,0,45],
+"classalpaka_1_1BlockSyncNoOp.html#a12c9147135e7539d415b2f76ffc8ac73":[3,0,0,45,1],
+"classalpaka_1_1BlockSyncNoOp.html#a325339ac55816888f96b0a7d62752925":[3,0,0,45,5],
+"classalpaka_1_1BlockSyncNoOp.html#a75192c4f725131b9d4aadcdc926faeea":[3,0,0,45,0],
+"classalpaka_1_1BlockSyncNoOp.html#ae5ec659a807dd829d3709391b6928475":[3,0,0,45,2],
 "classalpaka_1_1BlockSyncNoOp.html#af5797b58bdcaebd863fde7d7e4e1cfd6":[3,0,0,45,3],
 "classalpaka_1_1BlockSyncNoOp.html#af5e00a9eefc888cb4d64ab926e50d9f6":[3,0,0,45,4],
 "classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html":[3,0,0,46],
@@ -238,16 +249,5 @@ var NAVTREEINDEX3 =
 "classalpaka_1_1TimeUniformCudaHipBuiltIn.html#a9a241b3b88705ecabee7e2387ada3c73":[3,0,0,92,3],
 "classalpaka_1_1TimeUniformCudaHipBuiltIn.html#aeb78dfccc7e3e3a0240841d8482248e5":[3,0,0,92,1],
 "classalpaka_1_1TimeUniformCudaHipBuiltIn.html#afbb47c77f0475f311706b200970f6fab":[3,0,0,92,5],
-"classalpaka_1_1Vec.html":[3,0,0,93],
-"classalpaka_1_1Vec.html#a030db9e1fffebfd1ac1c0c771f55fa03":[3,0,0,93,19],
-"classalpaka_1_1Vec.html#a12d4017fe620a87aeaa2c5dbb6607d44":[3,0,0,93,12],
-"classalpaka_1_1Vec.html#a1b9b0a77603eab65b1365e13f33152cc":[3,0,0,93,20],
-"classalpaka_1_1Vec.html#a25e7462e7884e400ee270dc5d2709b96":[3,0,0,93,3],
-"classalpaka_1_1Vec.html#a3195b448ba710d42dc8307bae8907b05":[3,0,0,93,21],
-"classalpaka_1_1Vec.html#a355c5ce6736991aa22eda20b9d4384e8":[3,0,0,93,17],
-"classalpaka_1_1Vec.html#a374d1237d61fba704d419935a3fb42c7":[3,0,0,93,13],
-"classalpaka_1_1Vec.html#a4eeeb636d56c785f5969748e0009d668":[3,0,0,93,18],
-"classalpaka_1_1Vec.html#a79cd10bdf0f58e103e43275a258399fd":[3,0,0,93,0],
-"classalpaka_1_1Vec.html#a7fcd2d8489fa49ccb3f19ab7b7d5e02d":[3,0,0,93,5],
-"classalpaka_1_1Vec.html#a88e66f65fd471ecdc55b4116e19d84a8":[3,0,0,93,6]
+"classalpaka_1_1Vec.html":[3,0,0,93]
 };
