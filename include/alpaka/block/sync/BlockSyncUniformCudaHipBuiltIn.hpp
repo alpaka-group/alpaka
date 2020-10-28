@@ -63,7 +63,7 @@ namespace alpaka
         //#############################################################################
         template<>
         struct SyncBlockThreadsPredicate<
-            blockOp::Count,
+            BlockCount,
             BlockSyncUniformCudaHipBuiltIn>
         {
             //-----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace alpaka
         //#############################################################################
         template<>
         struct SyncBlockThreadsPredicate<
-            blockOp::LogicalAnd,
+            BlockAnd,
             BlockSyncUniformCudaHipBuiltIn>
         {
             //-----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ namespace alpaka
         //#############################################################################
         template<>
         struct SyncBlockThreadsPredicate<
-            blockOp::LogicalOr,
+            BlockOr,
             BlockSyncUniformCudaHipBuiltIn>
         {
             //-----------------------------------------------------------------------------
