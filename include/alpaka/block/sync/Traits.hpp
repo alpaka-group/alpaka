@@ -57,62 +57,57 @@ namespace alpaka
             blockSync);
     }
 
-    //-----------------------------------------------------------------------------
-    //! Defines block operation functors.
-    namespace blockOp
+    //#############################################################################
+    //! The addition function object.
+    struct BlockCount
     {
-        //#############################################################################
-        //! The addition function object.
-        struct Count
-        {
-            enum { InitialValue = 0u};
+        enum { InitialValue = 0u};
 
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                typename T>
-            ALPAKA_FN_HOST_ACC auto operator()(
-                T const & currentResult,
-                T const & value) const
-            -> T
-            {
-                return currentResult + static_cast<T>(value != static_cast<T>(0));
-            }
-        };
-        //#############################################################################
-        //! The logical and function object.
-        struct LogicalAnd
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(
+            T const & currentResult,
+            T const & value) const
+        -> T
         {
-            enum { InitialValue = 1u};
+            return currentResult + static_cast<T>(value != static_cast<T>(0));
+        }
+    };
+    //#############################################################################
+    //! The logical and function object.
+    struct BlockAnd
+    {
+        enum { InitialValue = 1u};
 
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                typename T>
-            ALPAKA_FN_HOST_ACC auto operator()(
-                T const & currentResult,
-                T const & value) const
-            -> T
-            {
-                return static_cast<T>(currentResult && (value != static_cast<T>(0)));
-            }
-        };
-        //#############################################################################
-        //! The logical or function object.
-        struct LogicalOr
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(
+            T const & currentResult,
+            T const & value) const
+        -> T
         {
-            enum { InitialValue = 0u};
+            return static_cast<T>(currentResult && (value != static_cast<T>(0)));
+        }
+    };
+    //#############################################################################
+    //! The logical or function object.
+    struct BlockOr
+    {
+        enum { InitialValue = 0u};
 
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                typename T>
-            ALPAKA_FN_HOST_ACC auto operator()(
-                T const & currentResult,
-                T const & value) const
-            -> T
-            {
-                return static_cast<T>(currentResult || (value != static_cast<T>(0)));
-            }
-        };
-    }
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(
+            T const & currentResult,
+            T const & value) const
+        -> T
+        {
+            return static_cast<T>(currentResult || (value != static_cast<T>(0)));
+        }
+    };
 
     //-----------------------------------------------------------------------------
     //! Synchronizes all threads within the current block (independently for all blocks),
