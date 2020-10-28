@@ -36,7 +36,7 @@ ALPAKA_FN_ACC auto testAtomicAdd(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Add>(
+            alpaka::AtomicAdd>(
                 acc,
                 &operand,
                 value);
@@ -69,7 +69,7 @@ ALPAKA_FN_ACC auto testAtomicSub(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Sub>(
+            alpaka::AtomicSub>(
                 acc,
                 &operand,
                 value);
@@ -102,7 +102,7 @@ ALPAKA_FN_ACC auto testAtomicMin(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Min>(
+            alpaka::AtomicMin>(
                 acc,
                 &operand,
                 value);
@@ -135,7 +135,7 @@ ALPAKA_FN_ACC auto testAtomicMax(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Max>(
+            alpaka::AtomicMax>(
                 acc,
                 &operand,
                 value);
@@ -168,7 +168,7 @@ ALPAKA_FN_ACC auto testAtomicExch(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Exch>(
+            alpaka::AtomicExch>(
                 acc,
                 &operand,
                 value);
@@ -202,7 +202,7 @@ ALPAKA_FN_ACC auto testAtomicInc(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Inc>(
+            alpaka::AtomicInc>(
                 acc,
                 &operand,
                 value);
@@ -236,7 +236,7 @@ ALPAKA_FN_ACC auto testAtomicDec(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Dec>(
+            alpaka::AtomicDec>(
                 acc,
                 &operand,
                 value);
@@ -269,7 +269,7 @@ ALPAKA_FN_ACC auto testAtomicAnd(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::And>(
+            alpaka::AtomicAnd>(
                 acc,
                 &operand,
                 value);
@@ -302,7 +302,7 @@ ALPAKA_FN_ACC auto testAtomicOr(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Or>(
+            alpaka::AtomicOr>(
                 acc,
                 &operand,
                 value);
@@ -335,7 +335,7 @@ ALPAKA_FN_ACC auto testAtomicXor(
         operand = operandOrig;
         T const ret =
             alpaka::atomicOp<
-            alpaka::op::Xor>(
+            alpaka::AtomicXor>(
                 acc,
                 &operand,
                 value);
@@ -373,7 +373,7 @@ ALPAKA_FN_ACC auto testAtomicCas(
             operand = operandOrig;
             T const ret =
                 alpaka::atomicOp<
-                alpaka::op::Cas>(
+                alpaka::AtomicCas>(
                     acc,
                     &operand,
                     compare,
@@ -398,7 +398,7 @@ ALPAKA_FN_ACC auto testAtomicCas(
             operand = operandOrig;
             T const ret =
                 alpaka::atomicOp<
-                alpaka::op::Cas>(
+                alpaka::AtomicCas>(
                     acc,
                     &operand,
                     compare,

@@ -164,7 +164,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Add>(atomic, addr, value, hier);
+        return atomicOp<AtomicAdd>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -187,7 +187,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Sub>(atomic, addr, value, hier);
+        return atomicOp<AtomicSub>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -210,7 +210,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Min>(atomic, addr, value, hier);
+        return atomicOp<AtomicMin>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -233,7 +233,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Max>(atomic, addr, value, hier);
+        return atomicOp<AtomicMax>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Exch>(atomic, addr, value, hier);
+        return atomicOp<AtomicExch>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -279,7 +279,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Inc>(atomic, addr, value, hier);
+        return atomicOp<AtomicInc>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -302,7 +302,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Dec>(atomic, addr, value, hier);
+        return atomicOp<AtomicDec>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -325,7 +325,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::And>(atomic, addr, value, hier);
+        return atomicOp<AtomicAnd>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -348,7 +348,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Or>(atomic, addr, value, hier);
+        return atomicOp<AtomicOr>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -371,7 +371,7 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Xor>(atomic, addr, value, hier);
+        return atomicOp<AtomicXor>(atomic, addr, value, hier);
     }
 
     //-----------------------------------------------------------------------------
@@ -396,6 +396,6 @@ namespace alpaka
             THierarchy const& hier = THierarchy())
         -> T
     {
-        return atomicOp<op::Cas>(atomic, addr, compare, value, hier);
+        return atomicOp<AtomicCas>(atomic, addr, compare, value, hier);
     }
 }
