@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4 =
+[
+    [ "allocVar", "structalpaka_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html#ac97fa717e8cb0508a4a6ea762909b8ac", null ]
+];

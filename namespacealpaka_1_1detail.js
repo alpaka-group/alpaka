@@ -4,6 +4,8 @@ var namespacealpaka_1_1detail =
     [ "AtomicHierarchyConceptType< hierarchy::Blocks >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Blocks_01_4" ],
     [ "AtomicHierarchyConceptType< hierarchy::Grids >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Grids_01_4" ],
     [ "AtomicHierarchyConceptType< hierarchy::Threads >", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4.html", "structalpaka_1_1detail_1_1AtomicHierarchyConceptType_3_01hierarchy_1_1Threads_01_4" ],
+    [ "BlockSharedMemDynMemberStatic", "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html", "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic" ],
+    [ "BlockSharedMemStMemberImpl", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl" ],
     [ "BufCpuImpl", "classalpaka_1_1detail_1_1BufCpuImpl.html", "classalpaka_1_1detail_1_1BufCpuImpl" ],
     [ "BufOmp5Impl", "classalpaka_1_1detail_1_1BufOmp5Impl.html", "classalpaka_1_1detail_1_1BufOmp5Impl" ],
     [ "CheckFnReturnType", "structalpaka_1_1detail_1_1CheckFnReturnType.html", "structalpaka_1_1detail_1_1CheckFnReturnType" ],

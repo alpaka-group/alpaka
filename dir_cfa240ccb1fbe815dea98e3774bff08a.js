@@ -7,9 +7,9 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
       [ "BarrierThread", "classalpaka_1_1core_1_1threads_1_1BarrierThread.html", "classalpaka_1_1core_1_1threads_1_1BarrierThread" ],
       [ "BarrierThreadWithPredicate", "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate.html", "classalpaka_1_1core_1_1threads_1_1BarrierThreadWithPredicate" ],
       [ "AtomicOp", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp.html", null ],
-      [ "AtomicOp< block::op::Count >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01block_1_1op_1_1Count_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01block_1_1op_1_1Count_01_4" ],
-      [ "AtomicOp< block::op::LogicalAnd >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01block_1_1op_1_1LogicalAnd_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01block_1_1op_1_1LogicalAnd_01_4" ],
-      [ "AtomicOp< block::op::LogicalOr >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01block_1_1op_1_1LogicalOr_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01block_1_1op_1_1LogicalOr_01_4" ]
+      [ "AtomicOp< blockOp::Count >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01blockOp_1_1Count_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01blockOp_1_1Count_01_4" ],
+      [ "AtomicOp< blockOp::LogicalAnd >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalAnd_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalAnd_01_4" ],
+      [ "AtomicOp< blockOp::LogicalOr >", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalOr_01_4.html", "structalpaka_1_1core_1_1threads_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalOr_01_4" ]
     ] ],
     [ "BoostPredef.hpp", "BoostPredef_8hpp.html", "BoostPredef_8hpp" ],
     [ "ClipCast.hpp", "ClipCast_8hpp.html", "ClipCast_8hpp" ],

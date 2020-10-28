@@ -97,8 +97,8 @@ $(document).ready(function(){initNavTree('namespacealpaka.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacealpaka_1_1block"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1block.html">block</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1block"><td class="mdescLeft">&#160;</td><td class="mdescRight">The grid block specifics. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1blockOp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1blockOp.html">blockOp</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1blockOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines block operation functors. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1bt"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1bt.html">bt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +202,45 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1AtomicUniformCudaHipBuiltIn.html">AtomicUniformCudaHipBuiltIn</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP accelerator atomic ops.  <a href="classalpaka_1_1AtomicUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynAlignedAlloc.html">BlockSharedMemDynAlignedAlloc</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block shared dynamic memory allocator without synchronization.  <a href="classalpaka_1_1BlockSharedMemDynAlignedAlloc.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html">BlockSharedMemDynMember</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic block shared memory provider using fixed-size member array to allocate memory on the stack or in shared memory.  <a href="classalpaka_1_1BlockSharedMemDynMember.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynUniformCudaHipBuiltIn.html">BlockSharedMemDynUniformCudaHipBuiltIn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP block shared memory allocator.  <a href="classalpaka_1_1BlockSharedMemDynUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemStMasterSync.html">BlockSharedMemStMasterSync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block shared memory allocator allocating memory with synchronization on the master thread.  <a href="classalpaka_1_1BlockSharedMemStMasterSync.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemStMember.html">BlockSharedMemStMember</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static block shared memory provider using a pointer to externally allocated fixed-size memory, likely provided by <a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html" title="Dynamic block shared memory provider using fixed-size member array to allocate memory on the stack or...">BlockSharedMemDynMember</a>.  <a href="classalpaka_1_1BlockSharedMemStMember.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemStNoSync.html">BlockSharedMemStNoSync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block shared memory allocator without synchronization.  <a href="classalpaka_1_1BlockSharedMemStNoSync.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemStOmp5.html">BlockSharedMemStOmp5</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The OpenMP 5 block shared memory allocator.  <a href="classalpaka_1_1BlockSharedMemStOmp5.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemStUniformCudaHipBuiltIn.html">BlockSharedMemStUniformCudaHipBuiltIn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP block shared memory allocator.  <a href="classalpaka_1_1BlockSharedMemStUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSyncBarrierFiber.html">BlockSyncBarrierFiber</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The thread id map barrier block synchronization.  <a href="classalpaka_1_1BlockSyncBarrierFiber.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSyncBarrierOmp.html">BlockSyncBarrierOmp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The OpenMP barrier block synchronization.  <a href="classalpaka_1_1BlockSyncBarrierOmp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSyncBarrierThread.html">BlockSyncBarrierThread</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The thread id map barrier block synchronization.  <a href="classalpaka_1_1BlockSyncBarrierThread.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSyncNoOp.html">BlockSyncNoOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The no op block synchronization.  <a href="classalpaka_1_1BlockSyncNoOp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html">BlockSyncUniformCudaHipBuiltIn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP block synchronization.  <a href="classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BufCpu.html">BufCpu</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU memory buffer.  <a href="classalpaka_1_1BufCpu.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,6 +256,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptAtomicGrids.html">ConceptAtomicGrids</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptAtomicThreads.html">ConceptAtomicThreads</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptBlockSharedDyn.html">ConceptBlockSharedDyn</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptBlockSharedSt.html">ConceptBlockSharedSt</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptBlockSync.html">ConceptBlockSync</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptCurrentThreadWaitFor.html">ConceptCurrentThreadWaitFor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -422,6 +467,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">allocBuf</a> (TDev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:a7ff762720c64dc454a53faa6622c227d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="#a7ff762720c64dc454a53faa6622c227d">More...</a><br /></td></tr>
 <tr class="separator:a7ff762720c64dc454a53faa6622c227d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b43295094993ff6b3cf214640dce660"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </td></tr>
+<tr class="memitem:a3b43295094993ff6b3cf214640dce660"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3b43295094993ff6b3cf214640dce660">allocVar</a> (TBlockSharedMemSt const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
+<tr class="memdesc:a3b43295094993ff6b3cf214640dce660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a variable in block shared static memory.  <a href="#a3b43295094993ff6b3cf214640dce660">More...</a><br /></td></tr>
+<tr class="separator:a3b43295094993ff6b3cf214640dce660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc0cabb316d5524d381a35c8c67edf81"><td class="memTemplParams" colspan="2">template&lt;typename TOp , typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
 <tr class="memitem:afc0cabb316d5524d381a35c8c67edf81"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</td></tr>
 <tr class="memdesc:afc0cabb316d5524d381a35c8c67edf81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given operation atomically.  <a href="#afc0cabb316d5524d381a35c8c67edf81">More...</a><br /></td></tr>
@@ -490,6 +539,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">free</a> (TAlloc const &amp;alloc, T const *const ptr) -&gt; void</td></tr>
 <tr class="memdesc:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory identified by the given pointer.  <a href="#a04896bbcd53fbb9da78612f51a4e1cf4">More...</a><br /></td></tr>
 <tr class="separator:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memTemplParams" colspan="2">template&lt;typename TBlockSharedMemSt &gt; </td></tr>
+<tr class="memitem:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4ef4e22340afb29dfeffb02ae38edf16">freeMem</a> (TBlockSharedMemSt &amp;blockSharedMemSt) -&gt; void</td></tr>
+<tr class="memdesc:a4ef4e22340afb29dfeffb02ae38edf16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all block shared static memory.  <a href="#a4ef4e22340afb29dfeffb02ae38edf16">More...</a><br /></td></tr>
+<tr class="separator:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev &gt; </td></tr>
 <tr class="memitem:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3fa7ad40eda1f1fc3b26d8945ff882a0">getAccDevProps</a> (TDev const &amp;dev) -&gt; <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; <a class="el" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt;</td></tr>
 <tr class="separator:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -534,6 +587,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a970df5ef44782fd7ed9040897ba2f6d8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a970df5ef44782fd7ed9040897ba2f6d8">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
 <tr class="memdesc:a970df5ef44782fd7ed9040897ba2f6d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#a970df5ef44782fd7ed9040897ba2f6d8">More...</a><br /></td></tr>
 <tr class="separator:a970df5ef44782fd7ed9040897ba2f6d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a414041872995e7872e5a0c5698c15209"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TBlockSharedMemDyn &gt; </td></tr>
+<tr class="memitem:a414041872995e7872e5a0c5698c15209"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a414041872995e7872e5a0c5698c15209">getMem</a> (TBlockSharedMemDyn const &amp;blockSharedMemDyn) -&gt; T *</td></tr>
+<tr class="memdesc:a414041872995e7872e5a0c5698c15209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointr to the block shared dynamic memory.  <a href="#a414041872995e7872e5a0c5698c15209">More...</a><br /></td></tr>
+<tr class="separator:a414041872995e7872e5a0c5698c15209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69d68a30000dc80ea5a1c09139f2b789"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a69d68a30000dc80ea5a1c09139f2b789"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a69d68a30000dc80ea5a1c09139f2b789">getMemBytes</a> (TDev const &amp;dev) -&gt; std::size_t</td></tr>
 <tr class="separator:a69d68a30000dc80ea5a1c09139f2b789"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -724,6 +781,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a9691cd72d5c39a51b8422078edeeacaf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9691cd72d5c39a51b8422078edeeacaf">subVecFromIndices</a> (TVec const &amp;vec)</td></tr>
 <tr class="memdesc:a9691cd72d5c39a51b8422078edeeacaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a new vector by selecting the elements of the source vector in the given order. Repeating and swizzling elements is allowed.  <a href="#a9691cd72d5c39a51b8422078edeeacaf">More...</a><br /></td></tr>
 <tr class="separator:a9691cd72d5c39a51b8422078edeeacaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8abf917f5b376cf0c5a91f5d98c92af1"><td class="memTemplParams" colspan="2">template&lt;typename TBlockSync &gt; </td></tr>
+<tr class="memitem:a8abf917f5b376cf0c5a91f5d98c92af1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8abf917f5b376cf0c5a91f5d98c92af1">syncBlockThreads</a> (TBlockSync const &amp;blockSync) -&gt; void</td></tr>
+<tr class="memdesc:a8abf917f5b376cf0c5a91f5d98c92af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronizes all threads within the current block (independently for all blocks).  <a href="#a8abf917f5b376cf0c5a91f5d98c92af1">More...</a><br /></td></tr>
+<tr class="separator:a8abf917f5b376cf0c5a91f5d98c92af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada1e5add594d3a2699a818b6a87cabee"><td class="memTemplParams" colspan="2">template&lt;typename TOp , typename TBlockSync &gt; </td></tr>
+<tr class="memitem:ada1e5add594d3a2699a818b6a87cabee"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ada1e5add594d3a2699a818b6a87cabee">syncBlockThreadsPredicate</a> (TBlockSync const &amp;blockSync, int predicate) -&gt; int</td></tr>
+<tr class="memdesc:ada1e5add594d3a2699a818b6a87cabee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronizes all threads within the current block (independently for all blocks), evaluates the predicate for all threads and returns the combination of all the results computed via TOp.  <a href="#ada1e5add594d3a2699a818b6a87cabee">More...</a><br /></td></tr>
+<tr class="separator:ada1e5add594d3a2699a818b6a87cabee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f43b3bce664426a2f439c6a4071e88a"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
 <tr class="memitem:a3f43b3bce664426a2f439c6a4071e88a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3f43b3bce664426a2f439c6a4071e88a">unmap</a> (TBuf &amp;buf, TDev const &amp;dev) -&gt; void</td></tr>
 <tr class="memdesc:a3f43b3bce664426a2f439c6a4071e88a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unmaps the buffer from the memory of the given device.  <a href="#a3f43b3bce664426a2f439c6a4071e88a">More...</a><br /></td></tr>
@@ -1236,6 +1301,46 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &g
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00112">112</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a3b43295094993ff6b3cf214640dce660"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b43295094993ff6b3cf214640dce660">&#9670;&nbsp;</a></span>allocVar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::allocVar </td>
+          <td>(</td>
+          <td class="paramtype">TBlockSharedMemSt const &amp;&#160;</td>
+          <td class="paramname"><em>blockSharedMemSt</em></td><td>)</td>
+          <td> -&gt; T &amp;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Allocates a variable in block shared static memory. </p>
+<p>The allocated variable is uninitialized and not default constructed!</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The element type. </td></tr>
+    <tr><td class="paramname">TuniqueId</td><td>id those is unique inside a kernel </td></tr>
+    <tr><td class="paramname">TBlockSharedMemSt</td><td>The block shared allocator implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSharedMemSt</td><td>The block shared allocator implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html#l00055">55</a> of file <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1990,6 +2095,43 @@ template&lt;typename TAlloc , typename T &gt; </div>
 
 </div>
 </div>
+<a id="a4ef4e22340afb29dfeffb02ae38edf16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ef4e22340afb29dfeffb02ae38edf16">&#9670;&nbsp;</a></span>freeMem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TBlockSharedMemSt &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::freeMem </td>
+          <td>(</td>
+          <td class="paramtype">TBlockSharedMemSt &amp;&#160;</td>
+          <td class="paramname"><em>blockSharedMemSt</em></td><td>)</td>
+          <td> -&gt; void
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Frees all block shared static memory. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBlockSharedMemSt</td><td>The block shared allocator implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSharedMemSt</td><td>The block shared allocator implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html#l00077">77</a> of file <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a3fa7ad40eda1f1fc3b26d8945ff882a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3fa7ad40eda1f1fc3b26d8945ff882a0">&#9670;&nbsp;</a></span>getAccDevProps()</h2>
 
@@ -2378,6 +2520,44 @@ template&lt;typename TIdxWorkDiv &gt; </div>
 <p>Get the index of the first element this thread computes. </p>
 
 <p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00197">197</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a414041872995e7872e5a0c5698c15209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a414041872995e7872e5a0c5698c15209">&#9670;&nbsp;</a></span>getMem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TBlockSharedMemDyn &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::getMem </td>
+          <td>(</td>
+          <td class="paramtype">TBlockSharedMemDyn const &amp;&#160;</td>
+          <td class="paramname"><em>blockSharedMemDyn</em></td><td>)</td>
+          <td> -&gt; T *
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the pointr to the block shared dynamic memory. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The element type. </td></tr>
+    <tr><td class="paramname">TBlockSharedMemDyn</td><td>The block shared dynamic memory implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSharedMemDyn</td><td>The block shared dynamic memory implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="block_2shared_2dyn_2Traits_8hpp_source.html#l00044">44</a> of file <a class="el" href="block_2shared_2dyn_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4302,6 +4482,92 @@ template&lt;typename TIndexSequence , typename TVec &gt; </div>
 
 </div>
 </div>
+<a id="a8abf917f5b376cf0c5a91f5d98c92af1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8abf917f5b376cf0c5a91f5d98c92af1">&#9670;&nbsp;</a></span>syncBlockThreads()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TBlockSync &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::syncBlockThreads </td>
+          <td>(</td>
+          <td class="paramtype">TBlockSync const &amp;&#160;</td>
+          <td class="paramname"><em>blockSync</em></td><td>)</td>
+          <td> -&gt; void
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Synchronizes all threads within the current block (independently for all blocks). </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBlockSync</td><td>The block synchronization implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSync</td><td>The block synchronization implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="block_2sync_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="block_2sync_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ada1e5add594d3a2699a818b6a87cabee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada1e5add594d3a2699a818b6a87cabee">&#9670;&nbsp;</a></span>syncBlockThreadsPredicate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TOp , typename TBlockSync &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::syncBlockThreadsPredicate </td>
+          <td>(</td>
+          <td class="paramtype">TBlockSync const &amp;&#160;</td>
+          <td class="paramname"><em>blockSync</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>predicate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; int
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Synchronizes all threads within the current block (independently for all blocks), evaluates the predicate for all threads and returns the combination of all the results computed via TOp. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TOp</td><td>The operation used to combine the predicate values of all threads. </td></tr>
+    <tr><td class="paramname">TBlockSync</td><td>The block synchronization implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSync</td><td>The block synchronization implementation. </td></tr>
+    <tr><td class="paramname">predicate</td><td>The predicate value of the current thread. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="block_2sync_2Traits_8hpp_source.html#l00130">130</a> of file <a class="el" href="block_2sync_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a3f43b3bce664426a2f439c6a4071e88a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3f43b3bce664426a2f439c6a4071e88a">&#9670;&nbsp;</a></span>unmap()</h2>
 
@@ -4454,7 +4720,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Thu Oct 22 2020 18:55:48 for alpaka by
+    <li class="footer">Generated on Wed Oct 28 2020 09:58:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

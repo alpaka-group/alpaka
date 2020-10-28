@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1traits_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4 =
-[
-    [ "syncBlockThreads", "structalpaka_1_1block_1_1traits_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html#a9758795fd07c6547432aafa64b566bbf", null ]
-];

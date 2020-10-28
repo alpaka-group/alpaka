@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate_3_01block_1_1op_1_1Count_00_01BlockSyncUniformCudaHipBuiltIn_01_4 =
-[
-    [ "syncBlockThreadsPredicate", "structalpaka_1_1block_1_1traits_1_1SyncBlockThreadsPredicate_3_01block_1_1op_1_1Count_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html#a6dc2624b0a0ddfb8861ccf5a2162abe2", null ]
-];

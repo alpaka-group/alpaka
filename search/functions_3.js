@@ -8,5 +8,5 @@ var searchData=
   ['devuniformcudahiprt',['DevUniformCudaHipRt',['../classalpaka_1_1DevUniformCudaHipRt.html#a3d8d36091ed190b48d705823c2ea9237',1,'alpaka::DevUniformCudaHipRt::DevUniformCudaHipRt()=default'],['../classalpaka_1_1DevUniformCudaHipRt.html#a2c486420c0150e7287013b7f998d0f65',1,'alpaka::DevUniformCudaHipRt::DevUniformCudaHipRt(DevUniformCudaHipRt const &amp;)=default'],['../classalpaka_1_1DevUniformCudaHipRt.html#abc7f009629f4d10c8424c394ba326410',1,'alpaka::DevUniformCudaHipRt::DevUniformCudaHipRt(DevUniformCudaHipRt &amp;&amp;)=default']]],
   ['discard',['discard',['../structalpaka_1_1rand_1_1generator_1_1cpu_1_1TinyMTengine.html#ad50b328639bc2a53bc331b8810317427',1,'alpaka::rand::generator::cpu::TinyMTengine']]],
   ['divup',['divUp',['../namespacealpaka_1_1detail.html#a6651f9a72da8d5da355faa02fcf3c204',1,'alpaka::detail']]],
-  ['dynmembegin',['dynMemBegin',['../classalpaka_1_1block_1_1dyn_1_1BlockSharedMemDynMember.html#a82ac096cf1d9cfefbf91da9b437e7efa',1,'alpaka::block::dyn::BlockSharedMemDynMember']]]
+  ['dynmembegin',['dynMemBegin',['../classalpaka_1_1BlockSharedMemDynMember.html#a4c97f20cb71d7947d0dc18fc9126ea36',1,'alpaka::BlockSharedMemDynMember']]]
 ];

@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4 =
+[
+    [ "allocVar", "structalpaka_1_1traits_1_1AllocVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#aa49bc4e656b7797a0575999551ee202b", null ]
+];
