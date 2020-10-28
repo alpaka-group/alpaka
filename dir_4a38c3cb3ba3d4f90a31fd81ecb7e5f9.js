@@ -8,9 +8,9 @@ var dir_4a38c3cb3ba3d4f90a31fd81ecb7e5f9 =
     [ "BlockSyncBarrierOmp.hpp", "BlockSyncBarrierOmp_8hpp.html", [
       [ "BlockSyncBarrierOmp", "classalpaka_1_1BlockSyncBarrierOmp.html", "classalpaka_1_1BlockSyncBarrierOmp" ],
       [ "AtomicOp", "structalpaka_1_1traits_1_1detail_1_1AtomicOp.html", null ],
-      [ "AtomicOp< blockOp::Count >", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01blockOp_1_1Count_01_4.html", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01blockOp_1_1Count_01_4" ],
-      [ "AtomicOp< blockOp::LogicalAnd >", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalAnd_01_4.html", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalAnd_01_4" ],
-      [ "AtomicOp< blockOp::LogicalOr >", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalOr_01_4.html", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01blockOp_1_1LogicalOr_01_4" ],
+      [ "AtomicOp< BlockAnd >", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4.html", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01BlockAnd_01_4" ],
+      [ "AtomicOp< BlockCount >", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01BlockCount_01_4.html", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01BlockCount_01_4" ],
+      [ "AtomicOp< BlockOr >", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01BlockOr_01_4.html", "structalpaka_1_1traits_1_1detail_1_1AtomicOp_3_01BlockOr_01_4" ],
       [ "SyncBlockThreads< BlockSyncBarrierOmp >", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncBarrierOmp_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncBarrierOmp_01_4" ],
       [ "SyncBlockThreadsPredicate< TOp, BlockSyncBarrierOmp >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierOmp_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01TOp_00_01BlockSyncBarrierOmp_01_4" ]
     ] ],
@@ -27,9 +27,9 @@ var dir_4a38c3cb3ba3d4f90a31fd81ecb7e5f9 =
     [ "BlockSyncUniformCudaHipBuiltIn.hpp", "BlockSyncUniformCudaHipBuiltIn_8hpp.html", [
       [ "BlockSyncUniformCudaHipBuiltIn", "classalpaka_1_1BlockSyncUniformCudaHipBuiltIn.html", "classalpaka_1_1BlockSyncUniformCudaHipBuiltIn" ],
       [ "SyncBlockThreads< BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreads_3_01BlockSyncUniformCudaHipBuiltIn_01_4" ],
-      [ "SyncBlockThreadsPredicate< blockOp::Count, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01blockOp_1_1Count_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01blockOp_1_1Count_00_01BlockSyncUniformCudaHipBuiltIn_01_4" ],
-      [ "SyncBlockThreadsPredicate< blockOp::LogicalAnd, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01blockOp_1_1LogicalAnd_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01blockOp_1_1LogicalAnd_00_01BlockSyncUniformCudaHipBuiltIn_01_4" ],
-      [ "SyncBlockThreadsPredicate< blockOp::LogicalOr, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01blockOp_1_1LogicalOr_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01blockOp_1_1LogicalOr_00_01BlockSyncUniformCudaHipBuiltIn_01_4" ]
+      [ "SyncBlockThreadsPredicate< BlockAnd, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01BlockAnd_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01BlockAnd_00_01BlockSyncUniformCudaHipBuiltIn_01_4" ],
+      [ "SyncBlockThreadsPredicate< BlockCount, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01BlockCount_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01BlockCount_00_01BlockSyncUniformCudaHipBuiltIn_01_4" ],
+      [ "SyncBlockThreadsPredicate< BlockOr, BlockSyncUniformCudaHipBuiltIn >", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01BlockOr_00_01BlockSyncUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate_3_01BlockOr_00_01BlockSyncUniformCudaHipBuiltIn_01_4" ]
     ] ],
     [ "Traits.hpp", "block_2sync_2Traits_8hpp.html", "block_2sync_2Traits_8hpp" ]
 ];

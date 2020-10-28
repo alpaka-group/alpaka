@@ -2,7 +2,6 @@ var searchData=
 [
   ['align',['align',['../namespacealpaka_1_1core_1_1align.html',1,'alpaka::core']]],
   ['alpaka',['alpaka',['../namespacealpaka.html',1,'']]],
-  ['blockop',['blockOp',['../namespacealpaka_1_1blockOp.html',1,'alpaka']]],
   ['bt',['bt',['../namespacealpaka_1_1bt.html',1,'alpaka']]],
   ['concepts',['concepts',['../namespacealpaka_1_1concepts.html',1,'alpaka']]],
   ['core',['core',['../namespacealpaka_1_1core.html',1,'alpaka']]],
@@ -18,7 +17,6 @@ var searchData=
   ['math',['math',['../namespacealpaka_1_1math.html',1,'alpaka']]],
   ['meta',['meta',['../namespacealpaka_1_1meta.html',1,'alpaka']]],
   ['omp5',['omp5',['../namespacealpaka_1_1omp5.html',1,'alpaka']]],
-  ['op',['op',['../namespacealpaka_1_1op.html',1,'alpaka']]],
   ['origin',['origin',['../namespacealpaka_1_1origin.html',1,'alpaka']]],
   ['property',['property',['../namespacealpaka_1_1property.html',1,'alpaka']]],
   ['rand',['rand',['../namespacealpaka_1_1rand.html',1,'alpaka']]],

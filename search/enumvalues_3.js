@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['initialvalue',['InitialValue',['../structalpaka_1_1blockOp_1_1Count.html#ac9439f20764f84f494a486759c41e8bda9f850ee6968c53a12ce5a14276e9ac2b',1,'alpaka::blockOp::Count::InitialValue()'],['../structalpaka_1_1blockOp_1_1LogicalAnd.html#a0b02ea44d2a5637759d7527fd72746b9ac3e417982d4375eb866e971754bdde05',1,'alpaka::blockOp::LogicalAnd::InitialValue()'],['../structalpaka_1_1blockOp_1_1LogicalOr.html#a0b488cef1994eb0c07dedd3e3b9779c5a155d7b93076be00435c517f89d09f0cf',1,'alpaka::blockOp::LogicalOr::InitialValue()']]]
+  ['initialvalue',['InitialValue',['../structalpaka_1_1BlockCount.html#a3c51953064389b5560b244ff3c5fffc3ae9dc43ed436ca2ec349321cb53897adc',1,'alpaka::BlockCount::InitialValue()'],['../structalpaka_1_1BlockAnd.html#acfec2d7f8eb656a11fdc456bcda81076a7187d01d673dfc31a62b38c573d7a983',1,'alpaka::BlockAnd::InitialValue()'],['../structalpaka_1_1BlockOr.html#ab11ca7ce0304229a874c679b46ea426fa4aea6f7d66a8bdc4a1640f65fcd0e4e9',1,'alpaka::BlockOr::InitialValue()']]]
 ];

@@ -1,8 +1,8 @@
 var block_2sync_2Traits_8hpp =
 [
-    [ "Count", "structalpaka_1_1blockOp_1_1Count.html", "structalpaka_1_1blockOp_1_1Count" ],
-    [ "LogicalAnd", "structalpaka_1_1blockOp_1_1LogicalAnd.html", "structalpaka_1_1blockOp_1_1LogicalAnd" ],
-    [ "LogicalOr", "structalpaka_1_1blockOp_1_1LogicalOr.html", "structalpaka_1_1blockOp_1_1LogicalOr" ],
+    [ "BlockAnd", "structalpaka_1_1BlockAnd.html", "structalpaka_1_1BlockAnd" ],
+    [ "BlockCount", "structalpaka_1_1BlockCount.html", "structalpaka_1_1BlockCount" ],
+    [ "BlockOr", "structalpaka_1_1BlockOr.html", "structalpaka_1_1BlockOr" ],
     [ "ConceptBlockSync", "structalpaka_1_1ConceptBlockSync.html", null ],
     [ "SyncBlockThreads", "structalpaka_1_1traits_1_1SyncBlockThreads.html", null ],
     [ "SyncBlockThreadsPredicate", "structalpaka_1_1traits_1_1SyncBlockThreadsPredicate.html", null ],

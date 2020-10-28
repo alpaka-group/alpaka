@@ -56,7 +56,6 @@ var searchData=
   ['eventtype_3c_20queueuniformcudahiprtnonblocking_20_3e',['EventType&lt; QueueUniformCudaHipRtNonBlocking &gt;',['../structalpaka_1_1traits_1_1EventType_3_01QueueUniformCudaHipRtNonBlocking_01_4.html',1,'alpaka::traits']]],
   ['eventuniformcudahipimpl',['EventUniformCudaHipImpl',['../classalpaka_1_1uniform__cuda__hip_1_1detail_1_1EventUniformCudaHipImpl.html',1,'alpaka::uniform_cuda_hip::detail']]],
   ['eventuniformcudahiprt',['EventUniformCudaHipRt',['../classalpaka_1_1EventUniformCudaHipRt.html',1,'alpaka']]],
-  ['exch',['Exch',['../structalpaka_1_1op_1_1Exch.html',1,'alpaka::op']]],
   ['exp',['Exp',['../structalpaka_1_1math_1_1traits_1_1Exp.html',1,'alpaka::math::traits']]],
   ['exp_3c_20expstdlib_2c_20targ_2c_20std_3a_3aenable_5fif_5ft_3c_20std_3a_3ais_5farithmetic_3c_20targ_20_3e_3a_3avalue_20_3e_20_3e',['Exp&lt; ExpStdLib, TArg, std::enable_if_t&lt; std::is_arithmetic&lt; TArg &gt;::value &gt; &gt;',['../structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_b591fc53013493bf13a82cfd79a1cfeb.html',1,'alpaka::math::traits']]],
   ['exp_3c_20expuniformcudahipbuiltin_2c_20float_20_3e',['Exp&lt; ExpUniformCudaHipBuiltIn, float &gt;',['../structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01float_01_4.html',1,'alpaka::math::traits']]],
