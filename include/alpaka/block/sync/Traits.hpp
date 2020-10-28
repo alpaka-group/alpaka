@@ -58,7 +58,7 @@ namespace alpaka
     }
 
     //#############################################################################
-    //! The addition function object.
+    //! The counting function object.
     struct BlockCount
     {
         enum { InitialValue = 0u};
