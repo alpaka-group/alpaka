@@ -51,7 +51,7 @@ namespace alpaka
             typename T,
             typename THierarchy>
         struct AtomicOp<
-            op::Add,
+            AtomicAdd,
             AtomicOmpBuiltIn,
             T,
             THierarchy>
@@ -81,7 +81,7 @@ namespace alpaka
             typename T,
             typename THierarchy>
         struct AtomicOp<
-            op::Sub,
+            AtomicSub,
             AtomicOmpBuiltIn,
             T,
             THierarchy>
@@ -111,7 +111,7 @@ namespace alpaka
             typename T,
             typename THierarchy>
         struct AtomicOp<
-            op::Exch,
+            AtomicExch,
             AtomicOmpBuiltIn,
             T,
             THierarchy>
@@ -141,7 +141,7 @@ namespace alpaka
             typename T,
             typename THierarchy>
         struct AtomicOp<
-            op::And,
+            AtomicAnd,
             AtomicOmpBuiltIn,
             T,
             THierarchy>
@@ -171,7 +171,7 @@ namespace alpaka
             typename T,
             typename THierarchy>
         struct AtomicOp<
-            op::Or,
+            AtomicOr,
             AtomicOmpBuiltIn,
             T,
             THierarchy>
@@ -201,7 +201,7 @@ namespace alpaka
             typename T,
             typename THierarchy>
         struct AtomicOp<
-            op::Xor,
+            AtomicXor,
             AtomicOmpBuiltIn,
             T,
             THierarchy>

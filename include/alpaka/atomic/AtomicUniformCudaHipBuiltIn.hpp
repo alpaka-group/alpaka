@@ -66,7 +66,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Add,
+            AtomicAdd,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -86,7 +86,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Add,
+            AtomicAdd,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -106,7 +106,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Add,
+            AtomicAdd,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -135,7 +135,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Add,
+            AtomicAdd,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
@@ -156,7 +156,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Add,
+            AtomicAdd,
             AtomicUniformCudaHipBuiltIn,
             float,
             THierarchy>
@@ -177,7 +177,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Add,
+            AtomicAdd,
             AtomicUniformCudaHipBuiltIn,
             double,
             THierarchy>
@@ -220,7 +220,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Sub,
+            AtomicSub,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -240,7 +240,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Sub,
+            AtomicSub,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -260,7 +260,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Sub,
+            AtomicSub,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -282,7 +282,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Sub, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
+                    "atomicOp<AtomicSub, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
 #endif
             }
         };
@@ -295,7 +295,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Min,
+            AtomicMin,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -315,7 +315,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Min,
+            AtomicMin,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -335,7 +335,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Min,
+            AtomicMin,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -362,7 +362,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Min, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
 #endif
 #endif
             }
@@ -372,7 +372,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Min,
+            AtomicMin,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
@@ -391,7 +391,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Min, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
 #endif
             }
         };
@@ -404,7 +404,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Max,
+            AtomicMax,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -424,7 +424,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Max,
+            AtomicMax,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -443,7 +443,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Max,
+            AtomicMax,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -470,7 +470,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Max, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
 #endif
 #endif
             }
@@ -480,7 +480,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Max,
+            AtomicMax,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
@@ -499,7 +499,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Max, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
 #endif
             }
         };
@@ -512,7 +512,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Exch,
+            AtomicExch,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -532,7 +532,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Exch,
+            AtomicExch,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -552,7 +552,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Exch,
+            AtomicExch,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -581,7 +581,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Exch,
+            AtomicExch,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
@@ -601,7 +601,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Exch,
+            AtomicExch,
             AtomicUniformCudaHipBuiltIn,
             float,
             THierarchy>
@@ -625,7 +625,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Inc,
+            AtomicInc,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -645,7 +645,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Inc,
+            AtomicInc,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -667,7 +667,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Inc, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
+                    "atomicOp<AtomicInc, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
 #endif
             }
         };
@@ -680,7 +680,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Dec,
+            AtomicDec,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -700,7 +700,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Dec,
+            AtomicDec,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -722,7 +722,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Dec, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
+                    "atomicOp<AtomicDec, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
 #endif
             }
         };
@@ -735,7 +735,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::And,
+            AtomicAnd,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -755,7 +755,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::And,
+            AtomicAnd,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -775,7 +775,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::And,
+            AtomicAnd,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -802,7 +802,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::And, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
 #endif
 #endif
             }
@@ -812,7 +812,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::And,
+            AtomicAnd,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
@@ -831,7 +831,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::And, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
 #endif
             }
         };
@@ -844,7 +844,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Or,
+            AtomicOr,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -864,7 +864,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Or,
+            AtomicOr,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -884,7 +884,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Or,
+            AtomicOr,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -911,7 +911,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Or, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
 #endif
 #endif
             }
@@ -921,7 +921,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Or,
+            AtomicOr,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
@@ -940,7 +940,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Or, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
 #endif
             }
         };
@@ -953,7 +953,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Xor,
+            AtomicXor,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -973,7 +973,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Xor,
+            AtomicXor,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -993,7 +993,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Xor,
+            AtomicXor,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -1020,7 +1020,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Xor, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
 #endif
 #endif
             }
@@ -1030,7 +1030,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Xor,
+            AtomicXor,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
@@ -1049,7 +1049,7 @@ namespace alpaka
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<op::Xor, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
+                    "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
 #endif
             }
         };
@@ -1062,7 +1062,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Cas,
+            AtomicCas,
             AtomicUniformCudaHipBuiltIn,
             int,
             THierarchy>
@@ -1083,7 +1083,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Cas,
+            AtomicCas,
             AtomicUniformCudaHipBuiltIn,
             unsigned int,
             THierarchy>
@@ -1104,7 +1104,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Cas,
+            AtomicCas,
             AtomicUniformCudaHipBuiltIn,
             unsigned long int,
             THierarchy>
@@ -1136,7 +1136,7 @@ namespace alpaka
         template<
             typename THierarchy>
         struct AtomicOp<
-            op::Cas,
+            AtomicCas,
             AtomicUniformCudaHipBuiltIn,
             unsigned long long int,
             THierarchy>
