@@ -29,7 +29,9 @@ namespace alpaka
         public:
             //-----------------------------------------------------------------------------
 #ifndef NDEBUG
-            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t capacity) : m_mem(mem), m_capacity(capacity)
+            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t capacity) :
+                m_mem(mem),
+                m_capacity(static_cast<std::uint32_t>(capacity))
             {
 #ifdef ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
                 ALPAKA_ASSERT( ( m_mem == nullptr ) == ( m_capacity == 0u ) );
@@ -53,7 +55,7 @@ namespace alpaka
             void alloc() const
             {
                 m_allocdBytes = allocPitch<T>();
-                m_allocdBytes += sizeof(T);
+                m_allocdBytes += static_cast<std::uint32_t>(sizeof(T));
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
                 ALPAKA_ASSERT(m_allocdBytes <= m_capacity);
 #endif
@@ -78,20 +80,21 @@ namespace alpaka
             }
 
         private:
-            mutable std::size_t m_allocdBytes = 0;
+            mutable std::uint32_t m_allocdBytes = 0;
             mutable uint8_t* m_mem;
 #ifndef NDEBUG
-            const std::size_t m_capacity;
+            const std::uint32_t m_capacity;
 #endif
 
             template<typename T>
-            std::size_t allocPitch() const
+            std::uint32_t allocPitch() const
             {
                 static_assert(
                     core::vectorization::defaultAlignment >= alignof(T),
                     "Unable to get block shared static memory for types with alignment higher than defaultAlignment!");
-                constexpr std::size_t align = std::max(TDataAlignBytes, alignof(T));
-                return (m_allocdBytes/align + (m_allocdBytes%align>0))*align;
+                constexpr std::uint32_t align = static_cast<std::uint32_t>(
+                    std::max(TDataAlignBytes, alignof(T)));
+                return (m_allocdBytes/align + (m_allocdBytes%align>0u))*align;
             }
         };
     }

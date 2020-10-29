@@ -13,6 +13,7 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Vectorize.hpp>
 
+#include <cstdint>
 #include <type_traits>
 #include <array>
 
@@ -32,7 +33,8 @@ namespace alpaka
         struct BlockSharedMemDynMemberStatic
         {
             //! Storage size in bytes
-            static constexpr std::size_t staticAllocBytes = TStaticAllocKiB<<10;
+            static constexpr std::uint32_t staticAllocBytes =
+                static_cast<std::uint32_t>(TStaticAllocKiB<<10u);
         };
     }
 
@@ -51,11 +53,10 @@ namespace alpaka
     public:
         //-----------------------------------------------------------------------------
         BlockSharedMemDynMember(std::size_t sizeBytes)
-            : m_dynPitch((sizeBytes / core::vectorization::defaultAlignment
-                    + (sizeBytes % core::vectorization::defaultAlignment > 0u)) * core::vectorization::defaultAlignment)
+            : m_dynPitch(getPitch(sizeBytes))
         {
 #if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
-            ALPAKA_ASSERT(sizeBytes <= staticAllocBytes());
+            ALPAKA_ASSERT(static_cast<std::uint32_t>(sizeBytes) <= staticAllocBytes());
 #endif
         }
         //-----------------------------------------------------------------------------
@@ -78,20 +79,33 @@ namespace alpaka
             return m_mem.data() + m_dynPitch;
         }
 
-        /*! \return the remaining capacity for static block shared memory.
+        /*! \return the remaining capacity for static block shared memory,
+                    returns a 32-bit type for register efficiency on GPUs
             */
-        std::size_t staticMemCapacity() const
+        std::uint32_t staticMemCapacity() const
         {
             return staticAllocBytes() - m_dynPitch;
         }
 
-        //! Storage size in bytes
-        static constexpr std::size_t staticAllocBytes() {return detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes;}
+        //! \return size of statically allocated memory available for both
+        //!         dynamic and static shared memory. Value is of a 32-bit type
+        //!         for register efficiency on GPUs
+        static constexpr std::uint32_t staticAllocBytes()
+        {
+            return detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes;
+        }
 
     private:
 
+        static std::uint32_t getPitch(std::size_t sizeBytes)
+        {
+            constexpr auto alignment = core::vectorization::defaultAlignment;
+            return static_cast<std::uint32_t>(
+                (sizeBytes / alignment + (sizeBytes % alignment > 0u)) * alignment);
+        }
+
         mutable std::array<uint8_t, detail::BlockSharedMemDynMemberStatic<TStaticAllocKiB>::staticAllocBytes> m_mem;
-        std::size_t m_dynPitch;
+        std::uint32_t m_dynPitch;
     };
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 #pragma warning(pop)
