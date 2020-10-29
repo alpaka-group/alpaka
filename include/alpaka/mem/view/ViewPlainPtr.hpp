@@ -365,7 +365,7 @@ namespace alpaka
         //! The Oacc device CreateStaticDevMemView trait specialization.
         template<>
         struct CreateStaticDevMemView<
-            dev::DevOacc>
+            DevOacc>
         {
             //-----------------------------------------------------------------------------
             template<
@@ -373,15 +373,15 @@ namespace alpaka
                 typename TExtent>
             static auto createStaticDevMemView(
                 TElem * pMem,
-                dev::DevOacc const & dev,
+                DevOacc const & dev,
                 TExtent const & extent)
             {
                 return
-                    alpaka::mem::view::ViewPlainPtr<
-                        dev::DevOacc,
+                    alpaka::ViewPlainPtr<
+                        DevOacc,
                         TElem,
-                        alpaka::dim::Dim<TExtent>,
-                        alpaka::idx::Idx<TExtent>>(
+                        alpaka::Dim<TExtent>,
+                        alpaka::Idx<TExtent>>(
                             pMem,
                             dev,
                             extent);

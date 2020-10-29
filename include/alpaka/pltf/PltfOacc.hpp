@@ -24,80 +24,70 @@
 
 namespace alpaka
 {
-    namespace pltf
+
+    //#############################################################################
+    //! The OpenAcc device platform.
+    class PltfOacc :
+        public concepts::Implements<ConceptPltf, PltfOacc>
+    {
+    public:
+        //-----------------------------------------------------------------------------
+        ALPAKA_FN_HOST PltfOacc() = delete;
+    };
+
+    namespace traits
     {
         //#############################################################################
-        //! The OpenAcc device platform.
-        class PltfOacc :
-            public concepts::Implements<ConceptPltf, PltfOacc>
+        //! The OpenAcc device device type trait specialization.
+        template<>
+        struct DevType<
+            PltfOacc>
         {
-        public:
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST PltfOacc() = delete;
+            using type = DevOacc;
         };
-    }
 
-    namespace dev
-    {
-        namespace traits
+        //#############################################################################
+        //! The OpenACC platform device count get trait specialization.
+        template<>
+        struct GetDevCount<
+            PltfOacc>
         {
-            //#############################################################################
-            //! The OpenAcc device device type trait specialization.
-            template<>
-            struct DevType<
-                pltf::PltfOacc>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getDevCount()
+            -> std::size_t
             {
-                using type = dev::DevOacc;
-            };
-        }
-    }
-    namespace pltf
-    {
-        namespace traits
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                return static_cast<std::size_t>(::acc_get_num_devices(::acc_get_device_type()));
+            }
+        };
+
+        //#############################################################################
+        //! The OpenACC platform device get trait specialization.
+        template<>
+        struct GetDevByIdx<
+            PltfOacc>
         {
-            //#############################################################################
-            //! The OpenACC platform device count get trait specialization.
-            template<>
-            struct GetDevCount<
-                pltf::PltfOacc>
+            //-----------------------------------------------------------------------------
+            //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() if < 0
+            ALPAKA_FN_HOST static auto getDevByIdx(
+                std::size_t devIdx)
+            -> DevOacc
             {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getDevCount()
-                -> std::size_t
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
+                std::size_t const devCount(getDevCount<PltfOacc>());
+                if(devIdx >= devCount)
                 {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    return static_cast<std::size_t>(::acc_get_num_devices(::acc_get_device_type()));
+                    std::stringstream ssErr;
+                    ssErr << "Unable to return device handle for OpenACC device with index "
+                        << devIdx << " because there are only " << devCount << " devices!";
+                    throw std::runtime_error(ssErr.str());
                 }
-            };
 
-            //#############################################################################
-            //! The OpenACC platform device get trait specialization.
-            template<>
-            struct GetDevByIdx<
-                pltf::PltfOacc>
-            {
-                //-----------------------------------------------------------------------------
-                //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() if < 0
-                ALPAKA_FN_HOST static auto getDevByIdx(
-                    std::size_t devIdx)
-                -> dev::DevOacc
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    std::size_t const devCount(pltf::getDevCount<pltf::PltfOacc>());
-                    if(devIdx >= devCount)
-                    {
-                        std::stringstream ssErr;
-                        ssErr << "Unable to return device handle for OpenACC device with index "
-                            << devIdx << " because there are only " << devCount << " devices!";
-                        throw std::runtime_error(ssErr.str());
-                    }
-
-                    return {static_cast<int>(devIdx)};
-                }
-            };
-        }
+                return {static_cast<int>(devIdx)};
+            }
+        };
     }
 }
 

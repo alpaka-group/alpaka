@@ -45,254 +45,221 @@
 
 namespace alpaka
 {
-    namespace kernel
-    {
-        template<
-            typename TDim,
-            typename TIdx,
-            typename TKernelFnObj,
-            typename... TArgs>
-        class TaskKernelOacc;
-    }
-    namespace acc
-    {
-        // define max gang/worker num because there is no standart way in OpenACC to
-        // get this information
+    template<
+        typename TDim,
+        typename TIdx,
+        typename TKernelFnObj,
+        typename... TArgs>
+    class TaskKernelOacc;
+
+    // define max gang/worker num because there is no standart way in OpenACC to
+    // get this information
 #ifndef ALPAKA_OACC_MAX_GANG_NUM
-        constexpr size_t oaccMaxGangNum = std::numeric_limits<unsigned int>::max();
+    constexpr size_t oaccMaxGangNum = std::numeric_limits<unsigned int>::max();
 #else
-        constexpr size_t oaccMaxGangNum = ALPAKA_OACC_MAX_GANG_NUM;
+    constexpr size_t oaccMaxGangNum = ALPAKA_OACC_MAX_GANG_NUM;
 #endif
 #if defined(ALPAKA_OFFLOAD_MAX_BLOCK_SIZE) && ALPAKA_OFFLOAD_MAX_BLOCK_SIZE>0
-        constexpr size_t oaccMaxWorkerNum = ALPAKA_OFFLOAD_MAX_BLOCK_SIZE;
+    constexpr size_t oaccMaxWorkerNum = ALPAKA_OFFLOAD_MAX_BLOCK_SIZE;
 #else
-        constexpr size_t oaccMaxWorkerNum = 1;
+    constexpr size_t oaccMaxWorkerNum = 1;
 #endif
 
+    //#############################################################################
+    //! The OpenACC accelerator.
+    template<
+        typename TDim,
+        typename TIdx>
+    class AccOacc :
+        public gb::IdxGbOaccBuiltIn<TDim, TIdx>, // dummy
+        public bt::IdxBtOaccBuiltIn<TDim, TIdx>,
+        public AtomicHierarchy<
+            AtomicOaccBuiltIn,    // grid atomics
+            AtomicOaccBuiltIn,    // block atomics
+            AtomicOaccBuiltIn     // thread atomics
+        >,
+        public math::MathStdLib,
+        public rand::RandStdLib,
+        public TimeStdLib,
+        public warp::WarpSingleThread,
+        // NVHPC calls a builtin in the STL implementation, which fails in OpenACC offload, using fallback
+        public IntrinsicFallback,
+        public concepts::Implements<ConceptAcc, AccOacc<TDim, TIdx>>
+    {
+
+    protected:
+        //-----------------------------------------------------------------------------
+        AccOacc(
+            TIdx const & blockThreadIdx) :
+                gb::IdxGbOaccBuiltIn<TDim, TIdx>(),
+                bt::IdxBtOaccBuiltIn<TDim, TIdx>(blockThreadIdx),
+                AtomicHierarchy<
+                    AtomicOaccBuiltIn,    // grid atomics
+                    AtomicOaccBuiltIn,    // block atomics
+                    AtomicOaccBuiltIn     // thread atomics
+                >(),
+                math::MathStdLib(),
+                rand::RandStdLib(),
+                TimeStdLib()
+        {}
+
+    public:
+        //-----------------------------------------------------------------------------
+        AccOacc(AccOacc const &) = delete;
+        //-----------------------------------------------------------------------------
+        AccOacc(AccOacc &&) = delete;
+        //-----------------------------------------------------------------------------
+        auto operator=(AccOacc const &) -> AccOacc & = delete;
+        //-----------------------------------------------------------------------------
+        auto operator=(AccOacc &&) -> AccOacc & = delete;
+        //-----------------------------------------------------------------------------
+        /*virtual*/ ~AccOacc() = default;
+    };
+
+    namespace traits
+    {
         //#############################################################################
-        //! The OpenACC accelerator.
+        //! The CPU OpenACC accelerator accelerator type trait specialization.
         template<
             typename TDim,
             typename TIdx>
-        class AccOacc :
-            public idx::gb::IdxGbOaccBuiltIn<TDim, TIdx>, // dummy
-            public idx::bt::IdxBtOaccBuiltIn<TDim, TIdx>,
-            public atomic::AtomicHierarchy<
-                atomic::AtomicOaccBuiltIn,    // grid atomics
-                atomic::AtomicOaccBuiltIn,    // block atomics
-                atomic::AtomicOaccBuiltIn     // thread atomics
-            >,
-            public math::MathStdLib,
-            public rand::RandStdLib,
-            public time::TimeStdLib,
-            public warp::WarpSingleThread,
-            // NVHPC calls a builtin in the STL implementation, which fails in OpenACC offload, using fallback
-            public intrinsic::IntrinsicFallback,
-            public concepts::Implements<ConceptAcc, AccOacc<TDim, TIdx>>
+        struct AccType<
+            AccOacc<TDim, TIdx>>
         {
-
-        protected:
-            //-----------------------------------------------------------------------------
-            AccOacc(
-                TIdx const & blockThreadIdx) :
-                    idx::gb::IdxGbOaccBuiltIn<TDim, TIdx>(),
-                    idx::bt::IdxBtOaccBuiltIn<TDim, TIdx>(blockThreadIdx),
-                    atomic::AtomicHierarchy<
-                        atomic::AtomicOaccBuiltIn,    // grid atomics
-                        atomic::AtomicOaccBuiltIn,    // block atomics
-                        atomic::AtomicOaccBuiltIn     // thread atomics
-                    >(),
-                    math::MathStdLib(),
-                    rand::RandStdLib(),
-                    time::TimeStdLib()
-            {}
-
-        public:
-            //-----------------------------------------------------------------------------
-            AccOacc(AccOacc const &) = delete;
-            //-----------------------------------------------------------------------------
-            AccOacc(AccOacc &&) = delete;
-            //-----------------------------------------------------------------------------
-            auto operator=(AccOacc const &) -> AccOacc & = delete;
-            //-----------------------------------------------------------------------------
-            auto operator=(AccOacc &&) -> AccOacc & = delete;
-            //-----------------------------------------------------------------------------
-            /*virtual*/ ~AccOacc() = default;
+            using type = AccOacc<TDim, TIdx>;
         };
-    }
-
-    namespace acc
-    {
-        namespace traits
+        //#############################################################################
+        //! The CPU OpenACC accelerator device properties get trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccDevProps<
+            AccOacc<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenACC accelerator accelerator type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct AccType<
-                acc::AccOacc<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccDevProps(
+                DevOacc const & dev)
+            -> AccDevProps<TDim, TIdx>
             {
-                using type = acc::AccOacc<TDim, TIdx>;
-            };
-            //#############################################################################
-            //! The CPU OpenACC accelerator device properties get trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccDevProps<
-                acc::AccOacc<TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccDevProps(
-                    dev::DevOacc const & dev)
-                -> acc::AccDevProps<TDim, TIdx>
-                {
-                    alpaka::ignore_unused(dev);
+                alpaka::ignore_unused(dev);
 
 #ifdef ALPAKA_CI
-                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(std::min(static_cast<size_t>(2u), oaccMaxWorkerNum)));
-                    auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(std::min(static_cast<size_t>(2u), oaccMaxGangNum)));
+                auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(std::min(static_cast<size_t>(2u), oaccMaxWorkerNum)));
+                auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(std::min(static_cast<size_t>(2u), oaccMaxGangNum)));
 #else
-                    auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(oaccMaxWorkerNum));
-                    auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(oaccMaxGangNum));
+                auto const blockThreadCountMax(alpaka::core::clipCast<TIdx>(oaccMaxWorkerNum));
+                auto const gridBlockCountMax(alpaka::core::clipCast<TIdx>(oaccMaxGangNum));
 #endif
-                    return {
-                        // m_multiProcessorCount
-                        static_cast<TIdx>(gridBlockCountMax),
-                        // m_gridBlockExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_gridBlockCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_blockThreadExtentMax
-                        vec::Vec<TDim, TIdx>::all(blockThreadCountMax),
-                        // m_blockThreadCountMax
-                        blockThreadCountMax,
-                        // m_threadElemExtentMax
-                        vec::Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
-                        // m_threadElemCountMax
-                        std::numeric_limits<TIdx>::max(),
-                        // m_sharedMemSizeBytes
-                        ctx::CtxBlockOacc<TDim, TIdx>::staticAllocBytes()};
-                }
-            };
-            //#############################################################################
-            //! The OpenACC accelerator name trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct GetAccName<
-                acc::AccOacc<TDim, TIdx>>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getAccName()
-                -> std::string
-                {
-                    return "AccOacc<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
-                }
-            };
-        }
-    }
-    namespace dev
-    {
-        namespace traits
+                return {
+                    // m_multiProcessorCount
+                    static_cast<TIdx>(gridBlockCountMax),
+                    // m_gridBlockExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_gridBlockCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_blockThreadExtentMax
+                    Vec<TDim, TIdx>::all(blockThreadCountMax),
+                    // m_blockThreadCountMax
+                    blockThreadCountMax,
+                    // m_threadElemExtentMax
+                    Vec<TDim, TIdx>::all(std::numeric_limits<TIdx>::max()),
+                    // m_threadElemCountMax
+                    std::numeric_limits<TIdx>::max(),
+                    // m_sharedMemSizeBytes
+                    CtxBlockOacc<TDim, TIdx>::staticAllocBytes()};
+            }
+        };
+        //#############################################################################
+        //! The OpenACC accelerator name trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct GetAccName<
+            AccOacc<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenACC accelerator device type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DevType<
-                acc::AccOacc<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto getAccName()
+            -> std::string
             {
-                using type = dev::DevOacc;
-            };
-        }
-    }
-    namespace dim
-    {
-        namespace traits
+                return "AccOacc<" + std::to_string(TDim::value) + "," + typeid(TIdx).name() + ">";
+            }
+        };
+
+        //#############################################################################
+        //! The CPU OpenACC accelerator device type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DevType<
+            AccOacc<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenACC accelerator dimension getter trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct DimType<
-                acc::AccOacc<TDim, TIdx>>
-            {
-                using type = TDim;
-            };
-        }
-    }
-    namespace kernel
-    {
-        namespace traits
+            using type = DevOacc;
+        };
+
+        //#############################################################################
+        //! The CPU OpenACC accelerator dimension getter trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct DimType<
+            AccOacc<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenACC accelerator execution task type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx,
-                typename TWorkDiv,
-                typename TKernelFnObj,
-                typename... TArgs>
-            struct CreateTaskKernel<
-                acc::AccOacc<TDim, TIdx>,
-                TWorkDiv,
-                TKernelFnObj,
-                TArgs...>
-            {
-                //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto createTaskKernel(
-                    TWorkDiv const & workDiv,
-                    TKernelFnObj const & kernelFnObj,
-                    TArgs && ... args)
-                {
-                    return
-                        kernel::TaskKernelOacc<
-                            TDim,
-                            TIdx,
-                            TKernelFnObj,
-                            TArgs...>(
-                                workDiv,
-                                kernelFnObj,
-                                std::forward<TArgs>(args)...);
-                }
-            };
-        }
-    }
-    namespace pltf
-    {
-        namespace traits
+            using type = TDim;
+        };
+
+        //#############################################################################
+        //! The CPU OpenACC accelerator execution task type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx,
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
+        struct CreateTaskKernel<
+            AccOacc<TDim, TIdx>,
+            TWorkDiv,
+            TKernelFnObj,
+            TArgs...>
         {
-            //#############################################################################
-            //! The CPU OpenACC execution task platform type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct PltfType<
-                acc::AccOacc<TDim, TIdx>>
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_HOST static auto createTaskKernel(
+                TWorkDiv const & workDiv,
+                TKernelFnObj const & kernelFnObj,
+                TArgs && ... args)
             {
-                using type = pltf::PltfOacc;
-            };
-        }
-    }
-    namespace idx
-    {
-        namespace traits
+                return
+                    TaskKernelOacc<
+                        TDim,
+                        TIdx,
+                        TKernelFnObj,
+                        TArgs...>(
+                            workDiv,
+                            kernelFnObj,
+                            std::forward<TArgs>(args)...);
+            }
+        };
+
+        //#############################################################################
+        //! The CPU OpenACC execution task platform type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct PltfType<
+            AccOacc<TDim, TIdx>>
         {
-            //#############################################################################
-            //! The CPU OpenACC accelerator idx type trait specialization.
-            template<
-                typename TDim,
-                typename TIdx>
-            struct IdxType<
-                acc::AccOacc<TDim, TIdx>>
-            {
-                using type = TIdx;
-            };
-        }
+            using type = PltfOacc;
+        };
+
+        //#############################################################################
+        //! The CPU OpenACC accelerator idx type trait specialization.
+        template<
+            typename TDim,
+            typename TIdx>
+        struct IdxType<
+            AccOacc<TDim, TIdx>>
+        {
+            using type = TIdx;
+        };
     }
 }
 
