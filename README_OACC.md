@@ -26,14 +26,14 @@ environment requirements. The cmake package OpenACC is used to detect the
 required OpenACC flags for the compiler. Additional flags can be added, e.g:
 - gcc, target x86:
   ```bash
-    -DCMAKE_CXX_FLAGS="-foffload=disable -fopenacc"
+    -DCMAKE_CXX_FLAGS="-foffload=disable"
   ```
   As of gcc 9.2 no test will compile if the nvptx backend is enabled. If cmake
   fails to set the `-fopenacc` flag, it can be set manually.
 - pgi/nvhpc, target tesla (set `$CC`, `$CXX` and `$CUDA_HOME` to appropriate values
   for your system to use pgi):
   ```bash
-    -DCMAKE_CXX_FLAGS="-acc -ta=tesla -Minfo"
+    -DCMAKE_CXX_FLAGS="-ta=tesla -Minfo"
   ```
 
 ## Limitations

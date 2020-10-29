@@ -1,4 +1,4 @@
-/* Copyright 2019 Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2020 Jeffrey Kelling, Alexander Matthes, Benjamin Worpitz, Matthias Werner, René Widera
  *
  * This file is part of Alpaka.
  *
@@ -12,7 +12,7 @@
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
 #if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC xx or higher!
+    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #endif
 
 #include <alpaka/core/Assert.hpp>
@@ -106,11 +106,11 @@ namespace alpaka
                 Vec<TDim, TIdx> m_pitchBytes;
                 TElem* m_pMem;
 
-                    BufOaccImpl(const BufOaccImpl&) = delete;
-                    BufOaccImpl(BufOaccImpl &&) = default;
+                BufOaccImpl(const BufOaccImpl&) = delete;
+                BufOaccImpl(BufOaccImpl &&) = default;
                 BufOaccImpl& operator=(const BufOaccImpl&) = delete;
                 BufOaccImpl& operator=(BufOaccImpl&&) = default;
-                    ~BufOaccImpl()
+                ~BufOaccImpl()
                 {
                     m_dev.makeCurrent();
                     acc_free(m_pMem);
@@ -137,15 +137,15 @@ namespace alpaka
                 m_spBufImpl(std::make_shared<oacc::detail::BufOaccImpl<TElem, TDim, TIdx>>(dev, pMem, extent))
         {}
 
-            BufOacc(const BufOacc&) = default;
-            BufOacc(BufOacc &&) = default;
+        BufOacc(const BufOacc&) = default;
+        BufOacc(BufOacc &&) = default;
         BufOacc& operator=(const BufOacc&) = default;
         BufOacc& operator=(BufOacc&&) = default;
 
         oacc::detail::BufOaccImpl<TElem, TDim, TIdx>& operator*() {return *m_spBufImpl;}
         const oacc::detail::BufOaccImpl<TElem, TDim, TIdx>& operator*() const {return *m_spBufImpl;}
 
-        inline const Vec<TDim, TIdx>& extentElements() const {return m_spBufImpl->m_extentElements;}
+        const Vec<TDim, TIdx>& extentElements() const {return m_spBufImpl->m_extentElements;}
 
     private:
         std::shared_ptr<oacc::detail::BufOaccImpl<TElem, TDim, TIdx>> m_spBufImpl;
@@ -385,16 +385,14 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                std::size_t size = static_cast<std::size_t>(extent[0]*static_cast<TIdx>(sizeof(TElem)));
-                for (unsigned int a = 1u; a < static_cast<unsigned int>(TDim::value); ++a)
-                    size *= static_cast<std::size_t>(extent[a]);
+                const std::size_t size = static_cast<std::size_t>(extent::getExtentVec(extent).prod()) * sizeof(TElem);
 
                 dev.makeCurrent();
                 void * memPtr = acc_malloc(size);
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << __func__ << "alloc'd " << TDim::value
                     << "D device ptr: " << memPtr << " on device " << dev.m_spDevOaccImpl->iDevice()
-                    << " size " << size << " = " << static_cast<std::size_t>(extent::getExtentVec(extent).prod())*sizeof(TElem) << '\n';
+                    << " size: " << size << std::endl;
 #endif
                 return
                     BufOacc<TElem, TDim, TIdx>(

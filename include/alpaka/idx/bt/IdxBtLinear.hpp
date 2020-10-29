@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2020 Axel Huebl, Jeffrey Kelling, Benjamin Worpitz, René Widera
  *
  * This file is part of Alpaka.
  *
@@ -9,46 +9,39 @@
 
 #pragma once
 
-#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
-
-#if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC xx or higher!
-#endif
-
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/workdiv/Traits.hpp>
-#include <alpaka/workdiv/WorkDivMembers.hpp>
 
+#include <alpaka/core/Concepts.hpp>
 #include <alpaka/vec/Vec.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/idx/MapIdx.hpp>
-#include <alpaka/core/Concepts.hpp>
 
 namespace alpaka
 {
     namespace bt
     {
         //#############################################################################
-        //! The CUDA accelerator ND index provider.
+        //! General ND bt index provider based on a linear index.
         template<
             typename TDim,
             typename TIdx>
-        class IdxBtOaccBuiltIn : public concepts::Implements<ConceptIdxBt, IdxBtOaccBuiltIn<TDim, TIdx>>
+        class IdxBtLinear : public concepts::Implements<ConceptIdxBt, IdxBtLinear<TDim, TIdx>>
         {
         public:
             //-----------------------------------------------------------------------------
-            IdxBtOaccBuiltIn(TIdx blockThreadIdx) : m_blockThreadIdx(blockThreadIdx) {};
+            IdxBtLinear(TIdx blockThreadIdx) : m_blockThreadIdx(blockThreadIdx) {}
             //-----------------------------------------------------------------------------
-            IdxBtOaccBuiltIn(IdxBtOaccBuiltIn const &) = delete;
+            IdxBtLinear(IdxBtLinear const &) = delete;
             //-----------------------------------------------------------------------------
-            IdxBtOaccBuiltIn(IdxBtOaccBuiltIn &&) = delete;
+            IdxBtLinear(IdxBtLinear &&) = delete;
             //-----------------------------------------------------------------------------
-            auto operator=(IdxBtOaccBuiltIn const & ) -> IdxBtOaccBuiltIn & = delete;
+            auto operator=(IdxBtLinear const & ) -> IdxBtLinear & = delete;
             //-----------------------------------------------------------------------------
-            auto operator=(IdxBtOaccBuiltIn &&) -> IdxBtOaccBuiltIn & = delete;
+            auto operator=(IdxBtLinear &&) -> IdxBtLinear & = delete;
             //-----------------------------------------------------------------------------
-            /*virtual*/ ~IdxBtOaccBuiltIn() = default;
+            ~IdxBtLinear() = default;
 
             const TIdx m_blockThreadIdx;
         };
@@ -57,23 +50,23 @@ namespace alpaka
     namespace traits
     {
         //#############################################################################
-        //! The OpenACC accelerator index dimension get trait specialization.
+        //! The IdxBtLinear index dimension get trait specialization.
         template<
             typename TDim,
             typename TIdx>
         struct DimType<
-            bt::IdxBtOaccBuiltIn<TDim, TIdx>>
+            bt::IdxBtLinear<TDim, TIdx>>
         {
             using type = TDim;
         };
 
         //#############################################################################
-        //! The OpenACC accelerator block thread index get trait specialization.
+        //! The IdxBtLinear block thread index get trait specialization.
         template<
             typename TDim,
             typename TIdx>
         struct GetIdx<
-            bt::IdxBtOaccBuiltIn<TDim, TIdx>,
+            bt::IdxBtLinear<TDim, TIdx>,
             origin::Block,
             unit::Threads>
         {
@@ -82,7 +75,7 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             static auto getIdx(
-                bt::IdxBtOaccBuiltIn<TDim, TIdx> const &idx,
+                bt::IdxBtLinear<TDim, TIdx> const &idx,
                 TWorkDiv const & workDiv)
             -> Vec<TDim, TIdx>
             {
@@ -95,7 +88,7 @@ namespace alpaka
         template<
             typename TIdx>
         struct GetIdx<
-            bt::IdxBtOaccBuiltIn<DimInt<1u>, TIdx>,
+            bt::IdxBtLinear<DimInt<1u>, TIdx>,
             origin::Block,
             unit::Threads>
         {
@@ -104,7 +97,7 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             static auto getIdx(
-                bt::IdxBtOaccBuiltIn<DimInt<1u>, TIdx> const & idx,
+                bt::IdxBtLinear<DimInt<1u>, TIdx> const & idx,
                 TWorkDiv const &)
             -> Vec<DimInt<1u>, TIdx>
             {
@@ -113,16 +106,14 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! The OpenACC accelerator block thread index idx type trait specialization.
+        //! The IdxBtLinear block thread index idx type trait specialization.
         template<
             typename TDim,
             typename TIdx>
         struct IdxType<
-            bt::IdxBtOaccBuiltIn<TDim, TIdx>>
+            bt::IdxBtLinear<TDim, TIdx>>
         {
             using type = TIdx;
         };
     }
 }
-
-#endif

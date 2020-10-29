@@ -425,10 +425,8 @@ class AtomicTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TTAcc>
     ALPAKA_FN_ACC auto operator()(
-        TTAcc const & acc,
+        TAcc const & acc,
         bool * success,
         T operandOrig) const
     -> void
