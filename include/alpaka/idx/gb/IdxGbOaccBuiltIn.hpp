@@ -20,34 +20,31 @@
 
 namespace alpaka
 {
-    namespace idx
+    namespace gb
     {
-        namespace gb
+        //#############################################################################
+        //! The OpenACC ND index provider dummy.
+        template<
+            typename TDim,
+            typename TIdx>
+        class IdxGbOaccBuiltIn
         {
-            //#############################################################################
-            //! The OpenACC ND index provider dummy.
-            template<
-                typename TDim,
-                typename TIdx>
-            class IdxGbOaccBuiltIn
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                IdxGbOaccBuiltIn() = default;
-                //-----------------------------------------------------------------------------
-                IdxGbOaccBuiltIn(IdxGbOaccBuiltIn const &) = delete;
-                //-----------------------------------------------------------------------------
-                IdxGbOaccBuiltIn(IdxGbOaccBuiltIn &&) = delete;
-                //-----------------------------------------------------------------------------
-                auto operator=(IdxGbOaccBuiltIn const & ) -> IdxGbOaccBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                auto operator=(IdxGbOaccBuiltIn &&) -> IdxGbOaccBuiltIn & = delete;
-                //-----------------------------------------------------------------------------
-                /*virtual*/ ~IdxGbOaccBuiltIn() = default;
+        public:
+            //-----------------------------------------------------------------------------
+            IdxGbOaccBuiltIn() = default;
+            //-----------------------------------------------------------------------------
+            IdxGbOaccBuiltIn(IdxGbOaccBuiltIn const &) = delete;
+            //-----------------------------------------------------------------------------
+            IdxGbOaccBuiltIn(IdxGbOaccBuiltIn &&) = delete;
+            //-----------------------------------------------------------------------------
+            auto operator=(IdxGbOaccBuiltIn const & ) -> IdxGbOaccBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            auto operator=(IdxGbOaccBuiltIn &&) -> IdxGbOaccBuiltIn & = delete;
+            //-----------------------------------------------------------------------------
+            /*virtual*/ ~IdxGbOaccBuiltIn() = default;
 
-                using BlockShared = IdxGbLinear<TDim, TIdx>;
-            };
-        }
+            using BlockShared = IdxGbLinear<TDim, TIdx>;
+        };
     }
 }
 

@@ -20,10 +20,7 @@
 
 namespace alpaka
 {
-    namespace event
-    {
-        using EventOacc = EventGenericThreads<dev::DevOacc>;
-    }
+    using EventOacc = EventGenericThreads<DevOacc>;
 }
 
 #endif

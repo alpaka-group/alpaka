@@ -36,80 +36,71 @@
 
 namespace alpaka
 {
-    namespace dev
-    {
-        class DevOacc;
-    }
+    class DevOacc;
 }
 
 namespace alpaka
 {
-    namespace mem
+    namespace traits
     {
-        namespace view
+        //#############################################################################
+        //! The OpenACC device memory set trait specialization.
+        template<
+            typename TDim>
+        struct CreateTaskMemset<
+            TDim,
+            DevOacc>
         {
-            namespace traits
+            //-----------------------------------------------------------------------------
+            template<
+                typename TExtent,
+                typename TView>
+            ALPAKA_FN_HOST static auto createTaskMemset(
+                TView & view,
+                std::uint8_t const & byte,
+                TExtent const & extent)
             {
-                //#############################################################################
-                //! The OpenACC device memory set trait specialization.
-                template<
-                    typename TDim>
-                struct CreateTaskSet<
-                    TDim,
-                    dev::DevOacc>
-                {
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TExtent,
-                        typename TView>
-                    ALPAKA_FN_HOST static auto createTaskSet(
-                        TView & view,
-                        std::uint8_t const & byte,
-                        TExtent const & extent)
-                    {
-                        using Idx = typename idx::traits::IdxType<TExtent>::type;
-                        auto pitch = view::getPitchBytesVec(view);
-                        auto byteExtent = extent::getExtentVec(extent);
-                        byteExtent[TDim::value-1] *= static_cast<Idx>(sizeof(elem::Elem<TView>));
-                        constexpr auto lastDim = TDim::value - 1;
+                using Idx = typename traits::IdxType<TExtent>::type;
+                auto pitch = getPitchBytesVec(view);
+                auto byteExtent = extent::getExtentVec(extent);
+                byteExtent[TDim::value-1] *= static_cast<Idx>(sizeof(Elem<TView>));
+                constexpr auto lastDim = TDim::value - 1;
 
-                        if(pitch[0] <= 0)
-                            return kernel::createTaskKernel<acc::AccOacc<TDim,Idx>>(
-                                    workdiv::WorkDivMembers<TDim, Idx>(
-                                        vec::Vec<TDim, Idx>::zeros(),
-                                        vec::Vec<TDim, Idx>::zeros(),
-                                        vec::Vec<TDim, Idx>::zeros()),
-                                    view::MemSetKernel(),
-                                    byte,
-                                    reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
-                                    byteExtent,
-                                    pitch
-                                ); // NOP if size is zero
+                if(pitch[0] <= 0)
+                    return createTaskKernel<AccOacc<TDim,Idx>>(
+                            WorkDivMembers<TDim, Idx>(
+                                Vec<TDim, Idx>::zeros(),
+                                Vec<TDim, Idx>::zeros(),
+                                Vec<TDim, Idx>::zeros()),
+                            MemSetKernel(),
+                            byte,
+                            reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)),
+                            byteExtent,
+                            pitch
+                        ); // NOP if size is zero
 
-                        std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
-                        auto elementsPerThread = vec::Vec<TDim, Idx>::all(static_cast<Idx>(1u));
-                        elementsPerThread[lastDim] = 4;
-                        // Let alpaka calculate good block and grid sizes given our full problem extent
-                        workdiv::WorkDivMembers<TDim, Idx> const workDiv(
-                            workdiv::getValidWorkDiv<acc::AccOacc<TDim,Idx>>(
-                                dev::getDev(view),
-                                byteExtent,
-                                elementsPerThread,
-                                false,
-                                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
-                        return
-                            kernel::createTaskKernel<acc::AccOacc<TDim,Idx>>(
-                                    workDiv,
-                                    view::MemSetKernel(),
-                                    byte,
-                                    reinterpret_cast<std::uint8_t*>(alpaka::mem::view::getPtrNative(view)),
-                                    byteExtent,
-                                    pitch
-                                );
-                    }
-                };
+                std::cout << "Set TDim=" << TDim::value << " pitch=" << pitch << " byteExtent=" << byteExtent << std::endl;
+                auto elementsPerThread = Vec<TDim, Idx>::all(static_cast<Idx>(1u));
+                elementsPerThread[lastDim] = 4;
+                // Let alpaka calculate good block and grid sizes given our full problem extent
+                WorkDivMembers<TDim, Idx> const workDiv(
+                    getValidWorkDiv<AccOacc<TDim,Idx>>(
+                        getDev(view),
+                        byteExtent,
+                        elementsPerThread,
+                        false,
+                        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+                return
+                    createTaskKernel<AccOacc<TDim,Idx>>(
+                            workDiv,
+                            MemSetKernel(),
+                            byte,
+                            reinterpret_cast<std::uint8_t*>(alpaka::getPtrNative(view)),
+                            byteExtent,
+                            pitch
+                        );
             }
-        }
+        };
     }
 }
 

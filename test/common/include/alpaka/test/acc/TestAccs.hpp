@@ -147,7 +147,7 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TIdx>
-            using AccOaccIfAvailableElseInt = alpaka::ctx::CtxThreadOacc<TDim, TIdx>;
+            using AccOaccIfAvailableElseInt = alpaka::CtxThreadOacc<TDim, TIdx>;
 #else
             template<
                 typename TDim,
@@ -169,7 +169,7 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TIdx>
-            using AccOaccIfAvailableElseInt = alpaka::ctx::CtxThreadOacc<TDim, TIdx>;
+            using AccOaccIfAvailableElseInt = alpaka::CtxThreadOacc<TDim, TIdx>;
 #else
             template<
                 typename TDim,

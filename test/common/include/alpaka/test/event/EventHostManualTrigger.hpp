@@ -207,9 +207,9 @@ namespace alpaka
             //#############################################################################
             template<>
             struct EventHostManualTriggerType<
-                alpaka::dev::DevOacc>
+                alpaka::DevOacc>
             {
-                using type = alpaka::test::event::EventHostManualTriggerCpu<alpaka::dev::DevOacc>;
+                using type = alpaka::test::EventHostManualTriggerCpu<alpaka::DevOacc>;
             };
 #endif
             //#############################################################################
@@ -246,11 +246,11 @@ namespace alpaka
             //! The OpenACC event host manual trigger support get trait specialization.
             template<>
             struct IsEventHostManualTriggerSupported<
-                alpaka::dev::DevOacc>
+                alpaka::DevOacc>
             {
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto isSupported(
-                    alpaka::dev::DevOacc const &)
+                    alpaka::DevOacc const &)
                 -> bool
                 {
                     return true;

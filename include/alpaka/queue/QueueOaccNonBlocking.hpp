@@ -21,10 +21,7 @@
 
 namespace alpaka
 {
-    namespace queue
-    {
-        using QueueOaccNonBlocking = QueueGenericThreadsNonBlocking<dev::DevOacc>;
-    }
+    using QueueOaccNonBlocking = QueueGenericThreadsNonBlocking<DevOacc>;
 }
 
 #endif
