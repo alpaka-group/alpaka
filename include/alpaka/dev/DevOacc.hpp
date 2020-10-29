@@ -12,7 +12,7 @@
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
 #if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC xx or higher!
+    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #endif
 
 #include <alpaka/dev/Traits.hpp>
@@ -47,7 +47,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The Oacc device implementation.
+            //! The OpenACC device implementation.
             class DevOaccImpl
             {
             public:
@@ -56,7 +56,6 @@ namespace alpaka
                     m_deviceType(::acc_get_device_type()),
                     m_iDevice(iDevice)
                 {}
-                // DevOaccImpl(int iDevice) : m_iDevice(iDevice) {}
                 //-----------------------------------------------------------------------------
                 DevOaccImpl(DevOaccImpl const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -102,7 +101,7 @@ namespace alpaka
                     std::lock_guard<std::mutex> lk(m_Mutex);
 
                     // Register this queue on the device.
-                    m_queues.push_back(spQueue);
+                    m_queues.push_back(std::move(spQueue));
                 }
 
                 int iDevice() const {return m_iDevice;}
@@ -117,7 +116,7 @@ namespace alpaka
         }
     }
     //#############################################################################
-    //! The Oacc device handle.
+    //! The OpenACC device handle.
     class DevOacc :
         public concepts::Implements<ConceptCurrentThreadWaitFor, DevOacc>,
         public concepts::Implements<ConceptDev, DevOacc>
@@ -318,7 +317,7 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! The thread Oacc device wait specialization.
+        //! The thread OpenACC device wait specialization.
         //!
         //! Blocks until the device has completed all preceding requested tasks.
         //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
@@ -334,7 +333,6 @@ namespace alpaka
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 generic::currentThreadWaitForDevice(dev);
-// #pragma omp taskwait
             }
         };
     }

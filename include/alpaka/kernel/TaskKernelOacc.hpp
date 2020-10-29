@@ -12,7 +12,7 @@
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
 #if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC xx or higher!
+    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #endif
 
 // Specialized traits.
@@ -24,7 +24,7 @@
 
 // Implementation details.
 #include <alpaka/ctx/block/CtxBlockOacc.hpp>
-#include <alpaka/ctx/thread/CtxThreadOacc.hpp>
+#include <alpaka/acc/AccOacc.hpp>
 #include <alpaka/dev/DevOacc.hpp>
 #include <alpaka/idx/MapIdx.hpp>
 #include <alpaka/kernel/Traits.hpp>
@@ -155,8 +155,9 @@ namespace alpaka
 
                         // Execute the threads in parallel.
 
-                        // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
-                        // So we have to spawn one OS thread per thread in a block.
+                        // Parallel execution of the threads in a block is required because when
+                        // syncBlockThreads is called all of them have to be done with their work up
+                        // to this line.  So we have to spawn one OS thread per thread in a block.
                         //! \warning The OpenACC is technically allowed to ignore the value in the num_workers clause
                         //! and could run fewer threads. The standard provides no way to check how many worker threads are running.
                         //! If fewer threads are run, syncBlockThreads will dead-lock. It is up to the developer/user
@@ -164,8 +165,7 @@ namespace alpaka
                         #pragma acc loop worker
                         for(TIdx w = 0; w < blockThreadCount; ++w)
                         {
-                            // blockThreadIdx[0] = w;
-                            CtxThreadOacc<TDim, TIdx> acc(
+                            AccOacc<TDim, TIdx> acc(
                                 w,
                                 blockShared);
 

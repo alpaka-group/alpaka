@@ -12,7 +12,7 @@
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
 #if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC xx or higher!
+    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #endif
 
 #include <alpaka/pltf/Traits.hpp>
@@ -26,7 +26,7 @@ namespace alpaka
 {
 
     //#############################################################################
-    //! The OpenAcc device platform.
+    //! The OpenACC device platform.
     class PltfOacc :
         public concepts::Implements<ConceptPltf, PltfOacc>
     {
@@ -38,7 +38,7 @@ namespace alpaka
     namespace traits
     {
         //#############################################################################
-        //! The OpenAcc device device type trait specialization.
+        //! The OpenACC device device type trait specialization.
         template<>
         struct DevType<
             PltfOacc>
@@ -69,7 +69,7 @@ namespace alpaka
             PltfOacc>
         {
             //-----------------------------------------------------------------------------
-            //! \param devIdx device id, less than GetDevCount, will be set to omp_get_initial_device() if < 0
+            //! \param devIdx device id, less than GetDevCount
             ALPAKA_FN_HOST static auto getDevByIdx(
                 std::size_t devIdx)
             -> DevOacc

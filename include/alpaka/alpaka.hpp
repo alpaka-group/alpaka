@@ -25,8 +25,7 @@
 #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>
 #include <alpaka/acc/AccOmp5.hpp>
-// #include <alpaka/acc/AccOacc.hpp>
-#include <alpaka/ctx/thread/CtxThreadOacc.hpp>
+#include <alpaka/acc/AccOacc.hpp>
 #include <alpaka/acc/AccGpuUniformCudaHipRt.hpp>
 #include <alpaka/acc/AccGpuCudaRt.hpp>
 #include <alpaka/acc/AccGpuHipRt.hpp>

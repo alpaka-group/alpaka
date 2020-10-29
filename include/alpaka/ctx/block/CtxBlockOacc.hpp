@@ -12,12 +12,12 @@
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
 #if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC xx or higher!
+    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #endif
 
 // Base classes.
 #include <alpaka/workdiv/WorkDivMembers.hpp>
-#include <alpaka/idx/gb/IdxGbOaccBuiltIn.hpp>
+#include <alpaka/idx/gb/IdxGbLinear.hpp>
 #include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
 #include <alpaka/block/sync/BlockSyncBarrierOacc.hpp>
@@ -44,10 +44,10 @@ namespace alpaka
         typename TIdx>
     class CtxBlockOacc final :
         public WorkDivMembers<TDim, TIdx>,
-        public gb::IdxGbOaccBuiltIn<TDim, TIdx>::BlockShared,
+        public gb::IdxGbLinear<TDim, TIdx>,
         public BlockSharedMemDynMember<>,
         public detail::BlockSharedMemStMemberImpl<4>,
-        public BlockSyncBarrierOacc::BlockShared,
+        public BlockSyncBarrierOacc,
         public concepts::Implements<ConceptBlockSharedSt, CtxBlockOacc<TDim, TIdx>>
     {
     public:
@@ -68,11 +68,11 @@ namespace alpaka
             TIdx const & gridBlockIdx,
             std::size_t const & blockSharedMemDynSizeBytes) :
                 WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent),
-                gb::IdxGbOaccBuiltIn<TDim, TIdx>::BlockShared(gridBlockIdx),
+                gb::IdxGbLinear<TDim, TIdx>(gridBlockIdx),
                 BlockSharedMemDynMember<>(blockSharedMemDynSizeBytes),
                 //! \TODO can with some TMP determine the amount of statically alloced smem from the kernelFuncObj?
                 detail::BlockSharedMemStMemberImpl<4>(staticMemBegin(), staticMemCapacity()),
-                BlockSyncBarrierOacc::BlockShared()
+                BlockSyncBarrierOacc()
         {}
 
     public:
@@ -85,7 +85,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         auto operator=(CtxBlockOacc &&) -> CtxBlockOacc & = delete;
         //-----------------------------------------------------------------------------
-        /*virtual*/ ~CtxBlockOacc() = default;
+        ~CtxBlockOacc() = default;
     };
 
     namespace traits
@@ -110,12 +110,12 @@ namespace alpaka
                 const auto slot = (acc.m_generation&1)<<1;
                 const int workerNum = static_cast<int>(getWorkDiv<Block, Threads>(acc).prod());
                 int sum;
-// Workaround to use an array in an atomic capture rather than
-// using the data member m_syncCounter array directly.
-// The change is sematically equivlent.
-// However, this should work per the OpenACC standard, but appears to be compiler
-// issue causing a runtime error.  The error was seen the 20.7 release
-// of the NVIDIA HPC Compiler but may be corrected in future releases.
+                // Workaround to use an array in an atomic capture rather than
+                // using the data member m_syncCounter array directly.
+                // The change is semantically equivalent.
+                // However, this should work per the OpenACC standard, but appears to be compiler
+                // issue causing a runtime error.  The error was seen the 20.7 release
+                // of the NVIDIA HPC Compiler but may be corrected in future releases.
                 int * m_syncCounter = acc.m_syncCounter;
                 #pragma acc atomic capture
                 {

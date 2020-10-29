@@ -9,7 +9,11 @@
 
 #pragma once
 
-#ifdef _OPENACC
+#ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
+
+#if _OPENACC < 201306
+    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
+#endif
 
 #include <alpaka/atomic/Traits.hpp>
 #include <alpaka/atomic/Op.hpp>
@@ -35,7 +39,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_FN_HOST_ACC auto operator=(AtomicOaccBuiltIn &&) -> AtomicOaccBuiltIn & = delete;
         //-----------------------------------------------------------------------------
-        /*virtual*/ ~AtomicOaccBuiltIn() = default;
+        ~AtomicOaccBuiltIn() = default;
     };
 
     namespace traits
@@ -128,6 +132,8 @@ namespace alpaka
                 // atomically update ref, but capture the original value in old
 #if !BOOST_COMP_PGI || defined TPR28628 // triggers PGI TPR28628, not atomic until fixed
                 #pragma acc atomic capture
+#else
+                #pragma message ("Atomic exchange will not be atomic because of a compiler bug. Sorry :/")
 #endif
                 {
                     old = ref;
