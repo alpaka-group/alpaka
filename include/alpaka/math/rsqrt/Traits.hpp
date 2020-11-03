@@ -34,6 +34,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the rsqrt.
         //!
+        //! Valid real arguments are positive. For other values the result
+        //! may depend on the backend and compilation options, will likely
+        //! be NaN.
+        //!
         //! \tparam T The type of the object specializing Rsqrt.
         //! \tparam TArg The arg type.
         //! \param rsqrt_ctx The object specializing Rsqrt.
