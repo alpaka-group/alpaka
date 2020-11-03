@@ -486,6 +486,7 @@ template&lt;typename T , typename TArg &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the principal value of the arc cosine. </p>
+<p>The valid real argument range is [-1.0, 1.0]. For other values the result may depend on the backend and compilation options, will likely be NaN.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TArg</td><td>The arg type. </td></tr>
@@ -500,7 +501,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2acos_2Traits_8hpp_source.html#l00044">44</a> of file <a class="el" href="math_2acos_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2acos_2Traits_8hpp_source.html#l00048">48</a> of file <a class="el" href="math_2acos_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -533,6 +534,7 @@ template&lt;typename T , typename TArg &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the principal value of the arc sine. </p>
+<p>The valid real argument range is [-1.0, 1.0]. For other values the result may depend on the backend and compilation options, will likely be NaN.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TArg</td><td>The arg type. </td></tr>
@@ -547,7 +549,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2asin_2Traits_8hpp_source.html#l00044">44</a> of file <a class="el" href="math_2asin_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2asin_2Traits_8hpp_source.html#l00048">48</a> of file <a class="el" href="math_2asin_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1076,6 +1078,7 @@ template&lt;typename T , typename TArg &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the the natural (base e) logarithm of arg. </p>
+<p>Valid real arguments are non-negative. For other values the result may depend on the backend and compilation options, will likely be NaN.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the object specializing Log. </td></tr>
@@ -1091,7 +1094,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2log_2Traits_8hpp_source.html#l00045">45</a> of file <a class="el" href="math_2log_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2log_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="math_2log_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1291,6 +1294,7 @@ template&lt;typename T , typename TBase , typename TExp &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the value of base raised to the power exp. </p>
+<p>Valid real arguments for base are non-negative. For other values the result may depend on the backend and compilation options, will likely be NaN.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the object specializing Pow. </td></tr>
@@ -1308,7 +1312,7 @@ template&lt;typename T , typename TBase , typename TExp &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2pow_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="math_2pow_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2pow_2Traits_8hpp_source.html#l00053">53</a> of file <a class="el" href="math_2pow_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1445,6 +1449,7 @@ template&lt;typename T , typename TArg &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the rsqrt. </p>
+<p>Valid real arguments are positive. For other values the result may depend on the backend and compilation options, will likely be NaN.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the object specializing Rsqrt. </td></tr>
@@ -1460,7 +1465,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2rsqrt_2Traits_8hpp_source.html#l00045">45</a> of file <a class="el" href="math_2rsqrt_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2rsqrt_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="math_2rsqrt_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1604,6 +1609,7 @@ template&lt;typename T , typename TArg &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the square root of arg. </p>
+<p>Valid real arguments are non-negative. For other values the result may depend on the backend and compilation options, will likely be NaN.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the object specializing Sqrt. </td></tr>
@@ -1619,7 +1625,7 @@ template&lt;typename T , typename TArg &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="math_2sqrt_2Traits_8hpp_source.html#l00045">45</a> of file <a class="el" href="math_2sqrt_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="math_2sqrt_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="math_2sqrt_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1725,7 +1731,7 @@ template&lt;typename T , typename TArg &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1math.html">math</a></li>
-    <li class="footer">Generated on Wed Oct 28 2020 17:15:42 for alpaka by
+    <li class="footer">Generated on Tue Nov 3 2020 18:24:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
