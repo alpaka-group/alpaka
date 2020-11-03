@@ -34,6 +34,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc cosine.
         //!
+        //! The valid real argument range is [-1.0, 1.0]. For other values
+        //! the result may depend on the backend and compilation options, will
+        //! likely be NaN.
+        //!
         //! \tparam TArg The arg type.
         //! \param acos_ctx The object specializing Acos.
         //! \param arg The arg.

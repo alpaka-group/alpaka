@@ -35,6 +35,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the value of base raised to the power exp.
         //!
+        //! Valid real arguments for base are non-negative. For other values
+        //! the result may depend on the backend and compilation options, will
+        //! likely be NaN.
+        //!
         //! \tparam T The type of the object specializing Pow.
         //! \tparam TBase The base type.
         //! \tparam TExp The exponent type.

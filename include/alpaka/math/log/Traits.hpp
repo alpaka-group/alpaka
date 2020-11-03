@@ -34,6 +34,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the the natural (base e) logarithm of arg.
         //!
+        //! Valid real arguments are non-negative. For other values the result
+        //! may depend on the backend and compilation options, will likely
+        //! be NaN.
+        //!
         //! \tparam T The type of the object specializing Log.
         //! \tparam TArg The arg type.
         //! \param log_ctx The object specializing Log.

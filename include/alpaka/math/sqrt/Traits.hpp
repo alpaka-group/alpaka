@@ -34,6 +34,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the square root of arg.
         //!
+        //! Valid real arguments are non-negative. For other values the result
+        //! may depend on the backend and compilation options, will likely
+        //! be NaN.
+        //!
         //! \tparam T The type of the object specializing Sqrt.
         //! \tparam TArg The arg type.
         //! \param sqrt_ctx The object specializing Sqrt.
