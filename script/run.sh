@@ -93,6 +93,7 @@ then
     export PATH=${HIP_PATH}/bin:$PATH
     export LD_LIBRARY_PATH=${HIP_PATH}/lib64:${HIP_PATH}/hiprand/lib:${LD_LIBRARY_PATH}
     export CMAKE_PREFIX_PATH=${HIP_PATH}:${HIP_PATH}/hiprand:${CMAKE_PREFIX_PATH:-}
+    export CMAKE_MODULE_PATH=${HIP_PATH}/hip/cmake
     # calls nvcc or clang
     which hipcc
     hipcc --version
