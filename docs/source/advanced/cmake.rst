@@ -230,6 +230,9 @@ ALPAKA_EMU_MEMCPY3D
 HIP
 ---
 
+To enable the HIP backend please provide the path to the CMake find module `FindHIP.cmake`.
+The path can be given via an environment variable `CMAKE_MODULE_PATH` or by providing the CMake flag `-DCMAKE_MODULE_PATH=<path>`.
+
 ALPAKA_ACC_GPU_HIP_ENABLE
   .. code-block::
 

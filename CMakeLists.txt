@@ -70,6 +70,14 @@ include(${_ALPAKA_ADD_LIBRARY_FILE})
 # Add module search path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_ALPAKA_ROOT_DIR}/cmake/modules/")
 
+# parse environment variable `CMAKE_MODULE_PATH`
+if(DEFINED ENV{CMAKE_MODULE_PATH})
+    string(REPLACE ":" ";" ENV_CMAKE_MODULE_PATH $ENV{CMAKE_MODULE_PATH})
+    foreach(_PREFIX_PATH ${ENV_CMAKE_MODULE_PATH})
+        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${_PREFIX_PATH}")
+    endforeach()
+endif()
+
 # Set include directories
 set(_ALPAKA_INCLUDE_DIRECTORY "${_ALPAKA_ROOT_DIR}/include")
 set(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}/alpaka")
