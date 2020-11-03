@@ -220,11 +220,6 @@ ALPAKA_CUDA_SHOW_REGISTER
 
      Show the number of used kernel registers during compilation and create PTX.
 
-ALPAKA_EMU_MEMCPY3D
-  .. code-block::
-
-     Emulate internal used hip/cuda-Memcpy3D(async) with a kernel.
-
 .. _hip:
 
 HIP
@@ -250,8 +245,3 @@ ALPAKA_HIP_KEEP_FILES
 
      Keep all intermediate files that are generated during internal compilation
      steps 'CMakeFiles/<targetname>.dir'.
-
-ALPAKA_EMU_MEMCPY3D
-  .. code-block::
-
-     Emulate internal used hip/cuda-Memcpy3D(async) with a kernel.

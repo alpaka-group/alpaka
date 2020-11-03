@@ -13,7 +13,6 @@ include(CMakePrintHelpers) # for easier printing of variables and properties
 
 #-------------------------------------------------------------------------------
 # Options.
-set(ALPAKA_EMU_MEMCPY3D_DEFAULT OFF)
 
 # HIP and platform selection and warning about unsupported features
 option(ALPAKA_ACC_GPU_HIP_ENABLE "Enable the HIP back-end (all other back-ends must be disabled)" OFF)
@@ -37,10 +36,6 @@ endif()
 option(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU back-end" OFF)
 option(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
 
-if(ALPAKA_ACC_GPU_HIP_ENABLE)
-    set(ALPAKA_EMU_MEMCPY3D_DEFAULT ON)
-endif()
-
 if(ALPAKA_ACC_GPU_CUDA_ONLY_MODE AND NOT ALPAKA_ACC_GPU_CUDA_ENABLE)
     message(FATAL_ERROR "If ALPAKA_ACC_GPU_CUDA_ONLY_MODE is enabled, ALPAKA_ACC_GPU_CUDA_ENABLE has to be enabled as well.")
 endif()
@@ -55,8 +50,6 @@ option(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLE "Enable the TBB CPU grid block back-end
 option(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLE "Enable the OpenMP 2.0 CPU grid block back-end" OFF)
 option(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLE "Enable the OpenMP 2.0 CPU block thread back-end" OFF)
 option(ALPAKA_ACC_ANY_BT_OMP5_ENABLE "Enable the OpenMP 5.0 CPU block and block thread back-end" OFF)
-
-option(ALPAKA_EMU_MEMCPY3D "Emulate internal used hip/cuda-Memcpy3D(async) with a kernel" ${ALPAKA_EMU_MEMCPY3D_DEFAULT})
 
 if((ALPAKA_ACC_GPU_CUDA_ONLY_MODE OR ALPAKA_ACC_GPU_HIP_ONLY_MODE)
    AND
@@ -747,10 +740,6 @@ endif()
 if(ALPAKA_ACC_GPU_HIP_ENABLE)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_ACC_GPU_HIP_ENABLED")
     message(STATUS ALPAKA_ACC_GPU_HIP_ENABLED)
-endif()
-
-if(ALPAKA_EMU_MEMCPY3D)
-    target_compile_definitions(alpaka INTERFACE "ALPAKA_EMU_MEMCPY3D_ENABLED")
 endif()
 
 target_compile_definitions(alpaka INTERFACE "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
