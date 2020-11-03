@@ -11,6 +11,7 @@
 #
 
 source ./script/set.sh
+source ./script/docker_retry.sh
 
 # runtime and compile time options
 ALPAKA_DOCKER_ENV_LIST=()
@@ -159,4 +160,4 @@ then
     ALPAKA_DOCKER_ENV_LIST+=("--env" "ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION=${ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION}")
 fi
 
-docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash -c "./script/install.sh && ./script/run.sh"
+docker_retry docker run -v "$(pwd)":"$(pwd)" -w "$(pwd)" "${ALPAKA_DOCKER_ENV_LIST[@]}" "${ALPAKA_CI_DOCKER_BASE_IMAGE_NAME}" /bin/bash -c "./script/install.sh && ./script/run.sh"
