@@ -124,14 +124,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3e9f11f415806029348ac9f2132470b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3270b5f30feaff786dc436304690bb40"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html#a3270b5f30feaff786dc436304690bb40">staticMemBegin</a> () const</td></tr>
 <tr class="separator:a3270b5f30feaff786dc436304690bb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af73632ba18d72a5119951380ae3c3b98"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html#af73632ba18d72a5119951380ae3c3b98">staticMemCapacity</a> () const</td></tr>
-<tr class="separator:af73632ba18d72a5119951380ae3c3b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1725c0126d547988289f3dd558b51d0"><td class="memItemLeft" align="right" valign="top">std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html#ad1725c0126d547988289f3dd558b51d0">staticMemCapacity</a> () const</td></tr>
+<tr class="separator:ad1725c0126d547988289f3dd558b51d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a045ba7e897eb1f497595040501f617f5"><td class="memItemLeft" align="right" valign="top">static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html#a045ba7e897eb1f497595040501f617f5">staticAllocBytes</a> ()</td></tr>
-<tr class="memdesc:a045ba7e897eb1f497595040501f617f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Storage size in bytes.  <a href="#a045ba7e897eb1f497595040501f617f5">More...</a><br /></td></tr>
-<tr class="separator:a045ba7e897eb1f497595040501f617f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82f87e3f18c5c6af1f900a787cff7a50"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html#a82f87e3f18c5c6af1f900a787cff7a50">staticAllocBytes</a> ()</td></tr>
+<tr class="separator:a82f87e3f18c5c6af1f900a787cff7a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;std::size_t TStaticAllocKiB = 30&gt;<br />
@@ -139,7 +138,7 @@ class alpaka::BlockSharedMemDynMember&lt; TStaticAllocKiB &gt;</h3>
 
 <p>Dynamic block shared memory provider using fixed-size member array to allocate memory on the stack or in shared memory. </p>
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00048">48</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00050">50</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a74123c1e22070b194846c83182f0e5ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74123c1e22070b194846c83182f0e5ad">&#9670;&nbsp;</a></span>BlockSharedMemDynMember() <span class="overload">[1/3]</span></h2>
@@ -167,7 +166,7 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00053">53</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00055">55</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 
 </div>
 </div>
@@ -280,7 +279,7 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00072">72</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00073">73</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 
 </div>
 </div>
@@ -340,8 +339,8 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
 
 </div>
 </div>
-<a id="a045ba7e897eb1f497595040501f617f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a045ba7e897eb1f497595040501f617f5">&#9670;&nbsp;</a></span>staticAllocBytes()</h2>
+<a id="a82f87e3f18c5c6af1f900a787cff7a50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f87e3f18c5c6af1f900a787cff7a50">&#9670;&nbsp;</a></span>staticAllocBytes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -352,7 +351,7 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr std::size_t <a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html">alpaka::BlockSharedMemDynMember</a>&lt; TStaticAllocKiB &gt;::staticAllocBytes </td>
+          <td class="memname">static constexpr std::uint32_t <a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html">alpaka::BlockSharedMemDynMember</a>&lt; TStaticAllocKiB &gt;::staticAllocBytes </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -364,10 +363,9 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>size of statically allocated memory available for both dynamic and static shared memory. Value is of a 32-bit type for register efficiency on GPUs </dd></dl>
 
-<p>Storage size in bytes. </p>
-
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00089">89</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00093">93</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 
 </div>
 </div>
@@ -397,12 +395,12 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the pointer to the begin of data after the portion allocated as dynamical shared memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00076">76</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00077">77</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 
 </div>
 </div>
-<a id="af73632ba18d72a5119951380ae3c3b98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af73632ba18d72a5119951380ae3c3b98">&#9670;&nbsp;</a></span>staticMemCapacity()</h2>
+<a id="ad1725c0126d547988289f3dd558b51d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1725c0126d547988289f3dd558b51d0">&#9670;&nbsp;</a></span>staticMemCapacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -413,7 +411,7 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t <a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html">alpaka::BlockSharedMemDynMember</a>&lt; TStaticAllocKiB &gt;::staticMemCapacity </td>
+          <td class="memname">std::uint32_t <a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html">alpaka::BlockSharedMemDynMember</a>&lt; TStaticAllocKiB &gt;::staticMemCapacity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -425,9 +423,9 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the remaining capacity for static block shared memory. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the remaining capacity for static block shared memory, returns a 32-bit type for register efficiency on GPUs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00083">83</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00085">85</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 
 </div>
 </div>
@@ -440,7 +438,7 @@ template&lt;std::size_t TStaticAllocKiB = 30&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html">BlockSharedMemDynMember</a></li>
-    <li class="footer">Generated on Thu Nov 5 2020 10:18:41 for alpaka by
+    <li class="footer">Generated on Thu Nov 5 2020 12:34:41 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

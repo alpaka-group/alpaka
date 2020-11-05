@@ -96,9 +96,9 @@ $(document).ready(function(){initNavTree('structalpaka_1_1detail_1_1BlockSharedM
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a0f651fa6ca26f344252e41237a636685"><td class="memItemLeft" align="right" valign="top">static constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html#a0f651fa6ca26f344252e41237a636685">staticAllocBytes</a> = TStaticAllocKiB&lt;&lt;10</td></tr>
-<tr class="memdesc:a0f651fa6ca26f344252e41237a636685"><td class="mdescLeft">&#160;</td><td class="mdescRight">Storage size in bytes.  <a href="#a0f651fa6ca26f344252e41237a636685">More...</a><br /></td></tr>
-<tr class="separator:a0f651fa6ca26f344252e41237a636685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac137a7d803f26b0e2d22d6cf0fa775f8"><td class="memItemLeft" align="right" valign="top">static constexpr std::uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html#ac137a7d803f26b0e2d22d6cf0fa775f8">staticAllocBytes</a></td></tr>
+<tr class="memdesc:ac137a7d803f26b0e2d22d6cf0fa775f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Storage size in bytes.  <a href="#ac137a7d803f26b0e2d22d6cf0fa775f8">More...</a><br /></td></tr>
+<tr class="separator:ac137a7d803f26b0e2d22d6cf0fa775f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;std::size_t TStaticAllocKiB&gt;<br />
@@ -106,10 +106,10 @@ struct alpaka::detail::BlockSharedMemDynMemberStatic&lt; TStaticAllocKiB &gt;</h
 
 <p>"namespace" for static constexpr members that should be in <a class="el" href="classalpaka_1_1BlockSharedMemDynMember.html" title="Dynamic block shared memory provider using fixed-size member array to allocate memory on the stack or...">BlockSharedMemDynMember</a> but cannot be because having a static const member breaks GCC 10 OpenMP target and OpenACC: type not mappable. </p>
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00032">32</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00033">33</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a0f651fa6ca26f344252e41237a636685"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f651fa6ca26f344252e41237a636685">&#9670;&nbsp;</a></span>staticAllocBytes</h2>
+<a id="ac137a7d803f26b0e2d22d6cf0fa775f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac137a7d803f26b0e2d22d6cf0fa775f8">&#9670;&nbsp;</a></span>staticAllocBytes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -120,7 +120,7 @@ template&lt;std::size_t TStaticAllocKiB&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr std::size_t <a class="el" href="structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html">alpaka::detail::BlockSharedMemDynMemberStatic</a>&lt; TStaticAllocKiB &gt;::staticAllocBytes = TStaticAllocKiB&lt;&lt;10</td>
+          <td class="memname">constexpr std::uint32_t <a class="el" href="structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html">alpaka::detail::BlockSharedMemDynMemberStatic</a>&lt; TStaticAllocKiB &gt;::staticAllocBytes</td>
         </tr>
       </table>
   </td>
@@ -129,10 +129,10 @@ template&lt;std::size_t TStaticAllocKiB&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">                <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(TStaticAllocKiB&lt;&lt;10u)</div></div><!-- fragment -->
 <p>Storage size in bytes. </p>
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00035">35</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynMember_8hpp_source.html#l00036">36</a> of file <a class="el" href="BlockSharedMemDynMember_8hpp_source.html">BlockSharedMemDynMember.hpp</a>.</p>
 
 </div>
 </div>
@@ -145,7 +145,7 @@ template&lt;std::size_t TStaticAllocKiB&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html">BlockSharedMemDynMemberStatic</a></li>
-    <li class="footer">Generated on Thu Nov 5 2020 10:18:42 for alpaka by
+    <li class="footer">Generated on Thu Nov 5 2020 12:34:41 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
