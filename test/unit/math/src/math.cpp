@@ -41,6 +41,7 @@ using DataTypes = std::tuple<
     double
 >;
 
+template <std::size_t TCapacity>
 struct TestKernel
 {
     //! @tparam TAcc Accelerator.
@@ -54,14 +55,14 @@ struct TestKernel
              typename TArgs>
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
-        TResults const & results,
+        TResults* results,
         TFunctor const & functor,
-        TArgs const & args) const noexcept
+        TArgs const* args) const noexcept
         -> void
     {
-        for( size_t i = 0; i < TArgs::capacity; ++i )
+        for( size_t i = 0; i < TCapacity; ++i )
         {
-          results(i, acc) = functor(args(i, acc), acc);
+            results[i] = functor(args[i], acc);
         }
     }
 };
@@ -120,7 +121,7 @@ struct TestTemplate
 
         QueueAcc queue{ devAcc };
 
-        TestKernel kernel;
+        TestKernel<capacity> kernel;
         TFunctor functor;
         Args args{ devAcc };
         Results results{ devAcc };
@@ -148,9 +149,9 @@ struct TestTemplate
             alpaka::createTaskKernel< TAcc >(
                 workDiv,
                 kernel,
-                results,
+                results.pDevBuffer,
                 functor,
-                args
+                args.pDevBuffer
             )
         );
         // Enqueue the kernel execution task.
