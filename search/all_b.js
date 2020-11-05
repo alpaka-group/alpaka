@@ -103,7 +103,6 @@ var searchData=
   ['maxuniformcudahipbuiltin',['MaxUniformCudaHipBuiltIn',['../classalpaka_1_1math_1_1MaxUniformCudaHipBuiltIn.html',1,'alpaka::math']]],
   ['maxuniformcudahipbuiltin_2ehpp',['MaxUniformCudaHipBuiltIn.hpp',['../MaxUniformCudaHipBuiltIn_8hpp.html',1,'']]],
   ['memcpy',['memcpy',['../namespacealpaka.html#a6f69abad399915756f7b28d19f221ace',1,'alpaka']]],
-  ['memcpy3demulatedd2dasync',['memcpy3DEmulatedD2DAsync',['../namespacealpaka_1_1detail.html#a87f7fa076ed6c3ad6069fc9823f9547f',1,'alpaka::detail']]],
   ['memcpykind',['MemcpyKind',['../structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_011_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a380bfdfb3791fbfb8b89dc08bd9383f5',1,'alpaka::detail::TaskCopyUniformCudaHip&lt; DimInt&lt; 1 &gt;, TViewDst, TViewSrc, TExtent &gt;::MemcpyKind()'],['../structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_012_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#afc0619a370df2f88cda4c1874fef6dba',1,'alpaka::detail::TaskCopyUniformCudaHip&lt; DimInt&lt; 2 &gt;, TViewDst, TViewSrc, TExtent &gt;::MemcpyKind()'],['../structalpaka_1_1detail_1_1TaskCopyUniformCudaHip_3_01DimInt_3_013_01_4_00_01TViewDst_00_01TViewSrc_00_01TExtent_01_4.html#a5053132856ecdd236a49030f2b34a49a',1,'alpaka::detail::TaskCopyUniformCudaHip&lt; DimInt&lt; 3 &gt;, TViewDst, TViewSrc, TExtent &gt;::MemcpyKind()']]],
   ['memset',['memset',['../namespacealpaka.html#a7cf3fa52c3c25aa060540a33fe6e6ee7',1,'alpaka']]],
   ['memsetkernel',['MemSetKernel',['../classalpaka_1_1MemSetKernel.html',1,'alpaka']]],

@@ -1,6 +1,5 @@
 var NAVTREEINDEX9 =
 {
-"structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_b591fc53013493bf13a82cfd79a1cfeb.html#a3def44c6880ff1da27eb8104139854f4":[3,0,0,10,0,38,0],
 "structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_3a4c28c6e6400dac22ac825f8de463fe.html":[3,0,0,10,0,40],
 "structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_3a4c28c6e6400dac22ac825f8de463fe.html#a93bf990f5cc832f5940e29f9c698dd0f":[3,0,0,10,0,40,0],
 "structalpaka_1_1math_1_1traits_1_1Exp_3_01ExpUniformCudaHipBuiltIn_00_01float_01_4.html":[3,0,0,10,0,39],
@@ -249,5 +248,6 @@ var NAVTREEINDEX9 =
 "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html":[3,0,0,13,1,1,3],
 "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandUniformCudaHipRand_01_4.html#a92a68b1cdfe54bec96ad9454360979ae":[3,0,0,13,1,1,3,0],
 "structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandomDevice_01_4.html":[3,0,0,13,1,1,2],
-"structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandomDevice_01_4.html#a29cc0e94c7d8aa63f2baa05d31b3f711":[3,0,0,13,1,1,2,0]
+"structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01RandomDevice_01_4.html#a29cc0e94c7d8aa63f2baa05d31b3f711":[3,0,0,13,1,1,2,0],
+"structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01TinyMersenneTwister_01_4.html":[3,0,0,13,1,1,4]
 };

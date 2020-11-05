@@ -96,7 +96,6 @@ var searchData=
   ['disjunctionimpl',['DisjunctionImpl',['../structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl.html',1,'alpaka::meta::detail']]],
   ['disjunctionimpl_3c_20b1_20_3e',['DisjunctionImpl&lt; B1 &gt;',['../structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl_3_01B1_01_4.html',1,'alpaka::meta::detail']]],
   ['disjunctionimpl_3c_20b1_2c_20bn_2e_2e_2e_20_3e',['DisjunctionImpl&lt; B1, Bn... &gt;',['../structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl_3_01B1_00_01Bn_8_8_8_01_4.html',1,'alpaka::meta::detail']]],
-  ['divup',['divUp',['../namespacealpaka_1_1detail.html#a6651f9a72da8d5da355faa02fcf3c204',1,'alpaka::detail']]],
   ['dstsize',['DstSize',['../structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a8d5896055ba16e39a6b5604610a4da30',1,'alpaka::detail::TaskCopyCpuBase::DstSize()'],['../structalpaka_1_1detail_1_1TaskSetCpuBase.html#a950042e48b666cd16d6565fe1e47480d',1,'alpaka::detail::TaskSetCpuBase::DstSize()']]],
   ['dynmembegin',['dynMemBegin',['../classalpaka_1_1BlockSharedMemDynMember.html#a4c97f20cb71d7947d0dc18fc9126ea36',1,'alpaka::BlockSharedMemDynMember']]]
 ];

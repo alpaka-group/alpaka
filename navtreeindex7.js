@@ -54,8 +54,8 @@ var NAVTREEINDEX7 =
 "namespacealpaka_1_1traits_1_1generic.html":[2,0,0,16,1],
 "namespacealpaka_1_1uniform__cuda__hip.html":[2,0,0,17],
 "namespacealpaka_1_1uniform__cuda__hip.html":[3,0,0,15],
-"namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[3,0,0,15,0],
 "namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[2,0,0,17,0],
+"namespacealpaka_1_1uniform__cuda__hip_1_1detail.html":[3,0,0,15,0],
 "namespacealpaka_1_1unit.html":[2,0,0,18],
 "namespacealpaka_1_1warp.html":[3,0,0,16],
 "namespacealpaka_1_1warp.html":[2,0,0,19],
@@ -84,9 +84,8 @@ var NAVTREEINDEX7 =
 "namespacemembers_t.html":[2,1,0,17],
 "namespacemembers_type.html":[2,1,3],
 "namespacemembers_u.html":[2,1,0,18],
-"namespacemembers_v.html":[2,1,0,19],
 "namespacemembers_vars.html":[2,1,2],
-"namespacemembers_w.html":[2,1,0,20],
+"namespacemembers_w.html":[2,1,0,19],
 "namespaces.html":[2,0],
 "offset_2Traits_8hpp.html":[4,0,0,0,16,0],
 "offset_2Traits_8hpp.html#a3edd539f49247b1802f567aa6c88b47e":[4,0,0,0,16,0,5],
@@ -249,5 +248,6 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1detail_1_1BlockSharedMemDynMemberStatic.html#ac137a7d803f26b0e2d22d6cf0fa775f8":[3,0,0,5,4,0],
 "structalpaka_1_1detail_1_1CheckFnReturnType.html":[3,0,0,5,8],
 "structalpaka_1_1detail_1_1CheckFnReturnType.html#a3b12bd01f5d05073814dc4f6a76c6365":[3,0,0,5,8,0],
-"structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,5,9]
+"structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html":[3,0,0,5,9],
+"structalpaka_1_1detail_1_1CheckFnReturnType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html#ad5ce18dcec55616e7d03eae851ffa772":[3,0,0,5,9,0]
 };

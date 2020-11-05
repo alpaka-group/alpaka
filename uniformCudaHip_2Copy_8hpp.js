@@ -13,10 +13,5 @@ var uniformCudaHip_2Copy_8hpp =
     [ "Enqueue< QueueUniformCudaHipRtNonBlocking, alpaka::detail::TaskCopyUniformCudaHip< DimInt< 1u >, TViewDst, TViewSrc, TExtent > >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01alpaka_1_1detail_1_11f206011de755b4c1aa0c3014b5ea5af.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01alpaka_1_1detail_1_11f206011de755b4c1aa0c3014b5ea5af" ],
     [ "Enqueue< QueueUniformCudaHipRtNonBlocking, alpaka::detail::TaskCopyUniformCudaHip< DimInt< 2u >, TViewDst, TViewSrc, TExtent > >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01alpaka_1_1detail_1_1cb40e78cfa4262edb1aa3bb9bbd8a5bc.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01alpaka_1_1detail_1_1cb40e78cfa4262edb1aa3bb9bbd8a5bc" ],
     [ "Enqueue< QueueUniformCudaHipRtNonBlocking, alpaka::detail::TaskCopyUniformCudaHip< DimInt< 3u >, TViewDst, TViewSrc, TExtent > >", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01alpaka_1_1detail_1_12ca4aa61ca7a61e31f8cf4de3f39166a.html", "structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01alpaka_1_1detail_1_12ca4aa61ca7a61e31f8cf4de3f39166a" ],
-    [ "vec2D", "uniformCudaHip_2Copy_8hpp.html#a647b05ec1646c5c8ff79c14eaedf8336", null ],
-    [ "vec3D", "uniformCudaHip_2Copy_8hpp.html#a18dd2696879f8bb24959465faa1327fc", null ],
-    [ "divUp", "uniformCudaHip_2Copy_8hpp.html#a6651f9a72da8d5da355faa02fcf3c204", null ],
-    [ "enablePeerAccessIfPossible", "uniformCudaHip_2Copy_8hpp.html#abd7f55db5dc905306b98eb481469b07b", null ],
-    [ "hipMemcpy3DEmulatedKernelD2D", "uniformCudaHip_2Copy_8hpp.html#a87419280e04ab597515ca4b62e38cd11", null ],
-    [ "memcpy3DEmulatedD2DAsync", "uniformCudaHip_2Copy_8hpp.html#a87f7fa076ed6c3ad6069fc9823f9547f", null ]
+    [ "enablePeerAccessIfPossible", "uniformCudaHip_2Copy_8hpp.html#abd7f55db5dc905306b98eb481469b07b", null ]
 ];
