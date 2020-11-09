@@ -37,8 +37,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - renamed function `alpaka::view::set` to `alpaka::memset`
 - renamed function `alpaka::view::copy` to `alpaka::memcpy`
 - removed namespace `alpaka::view`
-- removed namespace `alpaka::block::st`
-- removed namespace `alpaka::block::dyn`
+- removed namespace `alpaka::block::shared::st`
+- removed namespace `alpaka::block::shared::dyn`
+- removed namespace `alpaka::block::sync`
 - renamed functors `alpaka::block::op::LogicalAnd` et. al. to `alpaka::BlockAnd` et. al.
 - removed namespace `alpaka::block::op`
 - removed namespace `alpaka::block`
