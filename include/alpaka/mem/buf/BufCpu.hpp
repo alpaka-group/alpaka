@@ -464,7 +464,7 @@ namespace alpaka
                 BufCpu<TElem, TDim, TIdx> & buf)
             -> void
             {
-                unpin(*buf.m_spBufCpuImpl.get());
+                alpaka::unpin(*buf.m_spBufCpuImpl.get());
             }
         };
         //#############################################################################
@@ -514,7 +514,7 @@ namespace alpaka
                 BufCpu<TElem, TDim, TIdx> const & buf)
             -> bool
             {
-                return isPinned(*buf.m_spBufCpuImpl.get());
+                return alpaka::isPinned(*buf.m_spBufCpuImpl.get());
             }
         };
         //#############################################################################
