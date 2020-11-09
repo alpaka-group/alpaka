@@ -122,7 +122,7 @@ Memory Management
 The memory allocation function of the *alpaka* library (``alpaka::allocBuf<TElem>(device, extents)``) is uniform for all devices, even for the host device.
 It does not return raw pointers but reference counted memory buffer objects that remove the necessity for manual freeing and the possibility of memory leaks.
 Additionally the memory buffer objects know their extents, their pitches as well as the device they reside on.
-This allows buffers that possibly reside on different devices with different pitches to be copied only by providing the buffer objects as well as the extents of the region to copy (``alpaka::view::copy(bufDevA, bufDevB, copyExtents``).
+This allows buffers that possibly reside on different devices with different pitches to be copied only by providing the buffer objects as well as the extents of the region to copy (``alpaka::memcpy(bufDevA, bufDevB, copyExtents``).
 
 Kernel Execution
 ````````````````

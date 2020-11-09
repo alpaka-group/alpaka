@@ -135,12 +135,12 @@ Allocate a buffer in device memory
 Enqueue a memory copy from host to device
   .. code-block:: c++
 
-     view::copy(queue, bufDevice, bufHost, extent);
+     memcpy(queue, bufDevice, bufHost, extent);
 
 Enqueue a memory copy from device to host
   .. code-block:: c++
 
-     view::copy(queue, bufHost, bufDevice, extent);
+     memcpy(queue, bufHost, bufDevice, extent);
 
 .. raw:: pdf
 
