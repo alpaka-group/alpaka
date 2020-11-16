@@ -17,15 +17,15 @@
 #include <catch2/catch.hpp>
 
 using TestQueues = alpaka::meta::Concatenate<
-        alpaka::test::TestQueues
- #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
-        ,
-        std::tuple<std::tuple<alpaka::DevCpu, alpaka::QueueCpuOmp2Collective>>
+    alpaka::test::TestQueues
+#ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
+    ,
+    std::tuple<std::tuple<alpaka::DevCpu, alpaka::QueueCpuOmp2Collective>>
 #endif
     >;
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "eventTestShouldInitiallyBeTrue", "[event]", TestQueues)
+TEMPLATE_LIST_TEST_CASE("eventTestShouldInitiallyBeTrue", "[event]", TestQueues)
 {
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
@@ -38,7 +38,7 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldInitiallyBeTrue", "[event]", TestQueues
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingProcessed", "[event]", TestQueues)
+TEMPLATE_LIST_TEST_CASE("eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingProcessed", "[event]", TestQueues)
 {
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
@@ -72,12 +72,13 @@ TEMPLATE_LIST_TEST_CASE( "eventTestShouldBeFalseWhileInQueueAndTrueAfterBeingPro
     }
     else
     {
-        std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!" << std::endl;
+        std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+                  << std::endl;
     }
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[event]", TestQueues)
+TEMPLATE_LIST_TEST_CASE("eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[event]", TestQueues)
 {
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
@@ -130,13 +131,14 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfNobodyWaitsFor", "[eve
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!" << std::endl;
+            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+                      << std::endl;
         }
     }
 }
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[event]", TestQueues)
+TEMPLATE_LIST_TEST_CASE("eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[event]", TestQueues)
 {
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
@@ -148,7 +150,7 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
         Fixture f1;
         Fixture f2;
         if(alpaka::test::isEventHostManualTriggerSupported(f1.m_dev)
-            && alpaka::test::isEventHostManualTriggerSupported(f2.m_dev))
+           && alpaka::test::isEventHostManualTriggerSupported(f2.m_dev))
         {
             auto q1 = f1.m_queue;
             auto q2 = f2.m_queue;
@@ -205,7 +207,8 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!" << std::endl;
+            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+                      << std::endl;
         }
     }
 }
@@ -213,7 +216,7 @@ TEMPLATE_LIST_TEST_CASE( "eventReEnqueueShouldBePossibleIfSomeoneWaitsFor", "[ev
 
 //-----------------------------------------------------------------------------
 // github issue #388
-TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[event]", TestQueues)
+TEMPLATE_LIST_TEST_CASE("waitForEventThatAlreadyFinishedShouldBeSkipped", "[event]", TestQueues)
 {
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
@@ -225,7 +228,7 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
         Fixture f1;
         Fixture f2;
         if(alpaka::test::isEventHostManualTriggerSupported(f1.m_dev)
-            && alpaka::test::isEventHostManualTriggerSupported(f2.m_dev))
+           && alpaka::test::isEventHostManualTriggerSupported(f2.m_dev))
         {
             auto q1 = f1.m_queue;
             auto q2 = f2.m_queue;
@@ -265,8 +268,8 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
             // q2 = [->e1, e1]
             k2.trigger();
 
-            // 9. e1 had already been signaled so there should not be waited even though the event is now reused within q2 and its current state is 'unfinished' again.
-            // q2 = [e1]
+            // 9. e1 had already been signaled so there should not be waited even though the event is now reused within
+            // q2 and its current state is 'unfinished' again. q2 = [e1]
 
             // Both queues should successfully finish
             alpaka::wait(q1);
@@ -275,7 +278,8 @@ TEMPLATE_LIST_TEST_CASE( "waitForEventThatAlreadyFinishedShouldBeSkipped", "[eve
         }
         else
         {
-            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!" << std::endl;
+            std::cerr << "Can not execute test because CU_DEVICE_ATTRIBUTE_CAN_USE_STREAM_MEM_OPS is not supported!"
+                      << std::endl;
         }
     }
 }

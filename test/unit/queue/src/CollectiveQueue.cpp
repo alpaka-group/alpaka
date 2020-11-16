@@ -9,26 +9,23 @@
 
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
 
-#if _OPENMP < 200203
-    #error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
-#endif
+#    if _OPENMP < 200203
+#        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+#    endif
 
-#include <alpaka/alpaka.hpp>
-#include <alpaka/test/queue/Queue.hpp>
-#include <alpaka/test/queue/QueueTestFixture.hpp>
-#include <alpaka/test/queue/QueueCpuOmp2Collective.hpp>
+#    include <alpaka/alpaka.hpp>
+#    include <alpaka/test/queue/Queue.hpp>
+#    include <alpaka/test/queue/QueueTestFixture.hpp>
+#    include <alpaka/test/queue/QueueCpuOmp2Collective.hpp>
 
-#include <vector>
+#    include <vector>
 
-#include <catch2/catch.hpp>
+#    include <catch2/catch.hpp>
 
 struct QueueCollectiveTestKernel
 {
     template<typename TAcc>
-    auto operator()(
-        TAcc const & acc,
-        int* resultsPtr) const
-    -> void
+    auto operator()(TAcc const& acc, int* resultsPtr) const -> void
     {
         size_t threadId = alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0];
         // avoid that one thread is doing all the work
@@ -61,20 +58,13 @@ TEST_CASE("queueCollective", "[queue]")
     Vec const blocksPerGrid(results.size());
 
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv(
-        blocksPerGrid,
-        threadsPerBlock,
-        elementsPerThread);
+    WorkDiv const workDiv(blocksPerGrid, threadsPerBlock, elementsPerThread);
 
-    #pragma omp parallel num_threads(static_cast<int>(results.size()))
+#    pragma omp parallel num_threads(static_cast <int>(results.size()))
     {
         // The kernel will be performed collectively.
         // OpenMP will distribute the work between the threads from the parallel region
-        alpaka::exec<Acc>(
-               queue,
-               workDiv,
-               QueueCollectiveTestKernel{},
-               results.data());
+        alpaka::exec<Acc>(queue, workDiv, QueueCollectiveTestKernel{}, results.data());
 
         alpaka::wait(queue);
     }
@@ -87,7 +77,7 @@ TEST_CASE("queueCollective", "[queue]")
 
 TEST_CASE("TestCollectiveMemcpy", "[queue]")
 {
-     // Define the index domain
+    // Define the index domain
     using Dim = alpaka::DimInt<1>;
     using Idx = size_t;
 
@@ -110,28 +100,17 @@ TEST_CASE("TestCollectiveMemcpy", "[queue]")
     Vec const blocksPerGrid(results.size());
 
     using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-    WorkDiv const workDiv(
-        blocksPerGrid,
-        threadsPerBlock,
-        elementsPerThread);
+    WorkDiv const workDiv(blocksPerGrid, threadsPerBlock, elementsPerThread);
 
-    #pragma omp parallel num_threads(static_cast<int>(results.size()))
+#    pragma omp parallel num_threads(static_cast <int>(results.size()))
     {
         int threadId = omp_get_thread_num();
 
         using View = alpaka::ViewPlainPtr<Dev, int, Dim, Idx>;
 
-        View dst(
-            results.data() + threadId,
-            dev,
-            Vec(static_cast<Idx>(1u)),
-            Vec(sizeof(int)));
+        View dst(results.data() + threadId, dev, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
 
-        View src(
-            &threadId,
-            dev,
-            Vec(static_cast<Idx>(1u)),
-            Vec(sizeof(int)));
+        View src(&threadId, dev, Vec(static_cast<Idx>(1u)), Vec(sizeof(int)));
 
         // avoid that the first thread is executing the copy (can not be guaranteed)
         size_t sleep_ms = (results.size() - static_cast<uint32_t>(threadId)) * 100u;

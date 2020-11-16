@@ -34,21 +34,15 @@ public:
     //! \param C The destination vector.
     //! \param numElements The number of elements.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc,
-        typename TElem,
-        typename TIdx>
+    template<typename TAcc, typename TElem, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        TElem const * const A,
-        TElem const * const B,
-        TElem * const C,
-        TIdx const & numElements) const
-    -> void
+        TAcc const& acc,
+        TElem const* const A,
+        TElem const* const B,
+        TElem* const C,
+        TIdx const& numElements) const -> void
     {
-        static_assert(
-            alpaka::Dim<TAcc>::value == 1,
-            "The VectorAddKernel expects 1-dimensional indices!");
+        static_assert(alpaka::Dim<TAcc>::value == 1, "The VectorAddKernel expects 1-dimensional indices!");
 
         auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
         auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
@@ -58,10 +52,10 @@ public:
         {
             // Calculate the number of elements to compute in this thread.
             // The result is uniform for all but the last thread.
-            auto const threadLastElemIdx(threadFirstElemIdx+threadElemExtent);
+            auto const threadLastElemIdx(threadFirstElemIdx + threadElemExtent);
             auto const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
 
-            for(TIdx i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
+            for(TIdx i(threadFirstElemIdx); i < threadLastElemIdxClipped; ++i)
             {
                 C[i] = mysqrt(A[i]) + mysqrt(B[i]);
             }
@@ -69,11 +63,9 @@ public:
     }
 };
 
-using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::DimInt<1u>,
-    std::size_t>;
+using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 
-TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestAccs)
+TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAccs)
 {
     using Acc = TestType;
     using Idx = alpaka::Idx<Acc>;
@@ -92,35 +84,28 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     SqrtKernel kernel;
 
     // Get the host device.
-    DevHost const devHost(
-        alpaka::getDevByIdx<PltfHost>(0u));
+    DevHost const devHost(alpaka::getDevByIdx<PltfHost>(0u));
 
     // Select a device to execute on.
-    DevAcc const devAcc(
-        alpaka::getDevByIdx<PltfAcc>(0));
+    DevAcc const devAcc(alpaka::getDevByIdx<PltfAcc>(0));
 
     // Get a queue on this device.
     QueueAcc queueAcc(devAcc);
 
     // The data extent.
-    alpaka::Vec<alpaka::DimInt<1u>, Idx> const extent(
-        numElements);
+    alpaka::Vec<alpaka::DimInt<1u>, Idx> const extent(numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<alpaka::DimInt<1u>, Idx> const workDiv(
-        alpaka::getValidWorkDiv<Acc>(
-            devAcc,
-            extent,
-            static_cast<Idx>(3u),
-            false,
-            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+    alpaka::WorkDivMembers<alpaka::DimInt<1u>, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
+        devAcc,
+        extent,
+        static_cast<Idx>(3u),
+        false,
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
-    std::cout
-        << typeid(kernel).name() << "("
-        << "accelerator: " << alpaka::getAccName<Acc>()
-        << ", workDiv: " << workDiv
-        << ", numElements:" << numElements
-        << ")" << std::endl;
+    std::cout << typeid(kernel).name() << "("
+              << "accelerator: " << alpaka::getAccName<Acc>() << ", workDiv: " << workDiv
+              << ", numElements:" << numElements << ")" << std::endl;
 
     // Allocate host memory buffers.
     auto memBufHostA(alpaka::allocBuf<Val, Idx>(devHost, extent));
@@ -128,7 +113,7 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
     auto memBufHostC(alpaka::allocBuf<Val, Idx>(devHost, extent));
 
     // Initialize the host input vectors
-    for (Idx i(0); i < numElements; ++i)
+    for(Idx i(0); i < numElements; ++i)
     {
         alpaka::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
         alpaka::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
@@ -153,12 +138,8 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
         numElements));
 
     // Profile the kernel execution.
-    std::cout << "Execution time: "
-        << alpaka::test::integ::measureTaskRunTimeMs(
-            queueAcc,
-            taskKernel)
-        << " ms"
-        << std::endl;
+    std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"
+              << std::endl;
 
     // Copy back the result.
     alpaka::memcpy(queueAcc, memBufHostC, memBufAccC, extent);
@@ -166,14 +147,13 @@ TEMPLATE_LIST_TEST_CASE( "separableCompilation", "[separableCompilation]", TestA
 
     bool resultCorrect(true);
     auto const pHostData(alpaka::getPtrNative(memBufHostC));
-    for(Idx i(0u);
-        i < numElements;
-        ++i)
+    for(Idx i(0u); i < numElements; ++i)
     {
-        auto const & val(pHostData[i]);
-        auto const correctResult(std::sqrt(alpaka::getPtrNative(memBufHostA)[i]) + std::sqrt(alpaka::getPtrNative(memBufHostB)[i]));
+        auto const& val(pHostData[i]);
+        auto const correctResult(
+            std::sqrt(alpaka::getPtrNative(memBufHostA)[i]) + std::sqrt(alpaka::getPtrNative(memBufHostB)[i]));
         auto const absDiff = (val - correctResult);
-        if( absDiff > std::numeric_limits<Val>::epsilon() )
+        if(absDiff > std::numeric_limits<Val>::epsilon())
         {
             std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;

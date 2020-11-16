@@ -16,7 +16,7 @@
 #include <bitset>
 
 #if BOOST_COMP_MSVC
-#include <intrin.h>
+#    include <intrin.h>
 #endif
 
 namespace alpaka
@@ -29,13 +29,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         IntrinsicCpu() = default;
         //-----------------------------------------------------------------------------
-        IntrinsicCpu(IntrinsicCpu const &) = delete;
+        IntrinsicCpu(IntrinsicCpu const&) = delete;
         //-----------------------------------------------------------------------------
-        IntrinsicCpu(IntrinsicCpu &&) = delete;
+        IntrinsicCpu(IntrinsicCpu&&) = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(IntrinsicCpu const &) -> IntrinsicCpu & = delete;
+        auto operator=(IntrinsicCpu const&) -> IntrinsicCpu& = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(IntrinsicCpu &&) -> IntrinsicCpu & = delete;
+        auto operator=(IntrinsicCpu&&) -> IntrinsicCpu& = delete;
         //-----------------------------------------------------------------------------
         ~IntrinsicCpu() = default;
     };
@@ -44,14 +44,10 @@ namespace alpaka
     {
         //#############################################################################
         template<>
-        struct Popcount<
-            IntrinsicCpu>
+        struct Popcount<IntrinsicCpu>
         {
             //-----------------------------------------------------------------------------
-            static auto popcount(
-                IntrinsicCpu const & /*intrinsic*/,
-                std::uint32_t value)
-            -> std::int32_t
+            static auto popcount(IntrinsicCpu const& /*intrinsic*/, std::uint32_t value) -> std::int32_t
             {
 #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_popcount(value);
@@ -64,10 +60,7 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            static auto popcount(
-                IntrinsicCpu const & /*intrinsic*/,
-                std::uint64_t value)
-            -> std::int32_t
+            static auto popcount(IntrinsicCpu const& /*intrinsic*/, std::uint64_t value) -> std::int32_t
             {
 #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_popcountll(value);
@@ -82,14 +75,10 @@ namespace alpaka
 
         //#############################################################################
         template<>
-        struct Ffs<
-            IntrinsicCpu>
+        struct Ffs<IntrinsicCpu>
         {
             //-----------------------------------------------------------------------------
-            static auto ffs(
-                IntrinsicCpu const & /*intrinsic*/,
-                std::int32_t value)
-            -> std::int32_t
+            static auto ffs(IntrinsicCpu const& /*intrinsic*/, std::int32_t value) -> std::int32_t
             {
 #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_ffs(value);
@@ -97,7 +86,7 @@ namespace alpaka
                 // Implementation based on
                 // https://gitlab.freedesktop.org/cairo/cairo/commit/f5167dc2e1a13d8c4e5d66d7178a24b9b5e7ac7a
                 unsigned long index = 0u;
-                if (_BitScanForward(&index, value) != 0)
+                if(_BitScanForward(&index, value) != 0)
                     return static_cast<std::int32_t>(index + 1u);
                 else
                     return 0;
@@ -107,10 +96,7 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            static auto ffs(
-                IntrinsicCpu const & /*intrinsic*/,
-                std::int64_t value)
-            -> std::int32_t
+            static auto ffs(IntrinsicCpu const& /*intrinsic*/, std::int64_t value) -> std::int32_t
             {
 #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || BOOST_COMP_INTEL
                 return __builtin_ffsll(value);
@@ -118,7 +104,7 @@ namespace alpaka
                 // Implementation based on
                 // https://gitlab.freedesktop.org/cairo/cairo/commit/f5167dc2e1a13d8c4e5d66d7178a24b9b5e7ac7a
                 unsigned long index = 0u;
-                if (_BitScanForward64(&index, value) != 0)
+                if(_BitScanForward64(&index, value) != 0)
                     return static_cast<std::int32_t>(index + 1u);
                 else
                     return 0;
@@ -127,5 +113,5 @@ namespace alpaka
 #endif
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

@@ -17,15 +17,12 @@ namespace alpaka
     {
         //#############################################################################
         //! The dimension getter type trait.
-        template<
-            typename T,
-            typename TSfinae = void>
+        template<typename T, typename TSfinae = void>
         struct DimType;
-    }
+    } // namespace traits
 
     //#############################################################################
     //! The dimension type trait alias template to remove the ::type.
-    template<
-        typename T>
+    template<typename T>
     using Dim = typename traits::DimType<T>::type;
-}
+} // namespace alpaka

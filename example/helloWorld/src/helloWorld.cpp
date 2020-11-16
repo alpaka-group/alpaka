@@ -27,11 +27,8 @@
 struct HelloWorldKernel
 {
     //-----------------------------------------------------------------------------
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc) const -> void
     {
         using Dim = alpaka::Dim<TAcc>;
         using Idx = alpaka::Idx<TAcc>;
@@ -49,9 +46,7 @@ struct HelloWorldKernel
         // Map the three dimensional thread index into a
         // one dimensional thread index space. We call it
         // linearize the thread index.
-        Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(
-            globalThreadIdx,
-            globalThreadExtent);
+        Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
 
         // Each thread prints a hello world to the terminal
         // together with the global index of the thread in
@@ -67,8 +62,7 @@ struct HelloWorldKernel
     }
 };
 
-auto main()
--> int
+auto main() -> int
 {
 // Fallback for the CI with disabled sequential backend
 #if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)

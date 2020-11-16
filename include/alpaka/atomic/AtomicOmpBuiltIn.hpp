@@ -11,8 +11,8 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/atomic/Traits.hpp>
-#include <alpaka/atomic/Op.hpp>
+#    include <alpaka/atomic/Traits.hpp>
+#    include <alpaka/atomic/Op.hpp>
 
 namespace alpaka
 {
@@ -27,46 +27,35 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         AtomicOmpBuiltIn() = default;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST AtomicOmpBuiltIn(AtomicOmpBuiltIn const &) = delete;
+        ALPAKA_FN_HOST AtomicOmpBuiltIn(AtomicOmpBuiltIn const&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST AtomicOmpBuiltIn(AtomicOmpBuiltIn &&) = delete;
+        ALPAKA_FN_HOST AtomicOmpBuiltIn(AtomicOmpBuiltIn&&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(AtomicOmpBuiltIn const &) -> AtomicOmpBuiltIn & = delete;
+        ALPAKA_FN_HOST auto operator=(AtomicOmpBuiltIn const&) -> AtomicOmpBuiltIn& = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(AtomicOmpBuiltIn &&) -> AtomicOmpBuiltIn & = delete;
+        ALPAKA_FN_HOST auto operator=(AtomicOmpBuiltIn&&) -> AtomicOmpBuiltIn& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ~AtomicOmpBuiltIn() = default;
     };
 
     namespace traits
     {
-
 // check for OpenMP 3.1+
 // "omp atomic capture" is not supported before OpenMP 3.1
-#if _OPENMP >= 201107
+#    if _OPENMP >= 201107
 
         //#############################################################################
         //! The OpenMP accelerators atomic operation: ADD
-        template<
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAdd,
-            AtomicOmpBuiltIn,
-            T,
-            THierarchy>
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicOmpBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
             {
                 T old;
-                auto & ref(*addr);
-                // atomically update ref, but capture the original value in old
-                #pragma omp atomic capture
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture
                 {
                     old = ref;
                     ref += value;
@@ -77,26 +66,16 @@ namespace alpaka
 
         //#############################################################################
         //! The OpenMP accelerators atomic operation: SUB
-        template<
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicSub,
-            AtomicOmpBuiltIn,
-            T,
-            THierarchy>
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicSub, AtomicOmpBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
             {
                 T old;
-                auto & ref(*addr);
-                // atomically update ref, but capture the original value in old
-                #pragma omp atomic capture
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture
                 {
                     old = ref;
                     ref -= value;
@@ -107,26 +86,16 @@ namespace alpaka
 
         //#############################################################################
         //! The OpenMP accelerators atomic operation: EXCH
-        template<
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicExch,
-            AtomicOmpBuiltIn,
-            T,
-            THierarchy>
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicOmpBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
             {
                 T old;
-                auto & ref(*addr);
-                // atomically update ref, but capture the original value in old
-                #pragma omp atomic capture
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture
                 {
                     old = ref;
                     ref = value;
@@ -137,26 +106,16 @@ namespace alpaka
 
         //#############################################################################
         //! The OpenMP accelerators atomic operation: AND
-        template<
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAnd,
-            AtomicOmpBuiltIn,
-            T,
-            THierarchy>
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicAnd, AtomicOmpBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
             {
                 T old;
-                auto & ref(*addr);
-                // atomically update ref, but capture the original value in old
-                #pragma omp atomic capture
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture
                 {
                     old = ref;
                     ref &= value;
@@ -167,26 +126,16 @@ namespace alpaka
 
         //#############################################################################
         //! The OpenMP accelerators atomic operation: OR
-        template<
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicOr,
-            AtomicOmpBuiltIn,
-            T,
-            THierarchy>
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicOr, AtomicOmpBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
             {
                 T old;
-                auto & ref(*addr);
-                // atomically update ref, but capture the original value in old
-                #pragma omp atomic capture
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture
                 {
                     old = ref;
                     ref |= value;
@@ -197,26 +146,16 @@ namespace alpaka
 
         //#############################################################################
         //! The OpenMP accelerators atomic operation: XOR
-        template<
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicXor,
-            AtomicOmpBuiltIn,
-            T,
-            THierarchy>
+        template<typename T, typename THierarchy>
+        struct AtomicOp<AtomicXor, AtomicOmpBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
             {
                 T old;
-                auto & ref(*addr);
-                // atomically update ref, but capture the original value in old
-                #pragma omp atomic capture
+                auto& ref(*addr);
+// atomically update ref, but capture the original value in old
+#        pragma omp atomic capture
                 {
                     old = ref;
                     ref ^= value;
@@ -225,32 +164,22 @@ namespace alpaka
             }
         };
 
-#endif // _OPENMP >= 201107
+#    endif // _OPENMP >= 201107
 
         //#############################################################################
         //! The OpenMP accelerators atomic operation
         //
         // generic implementations for operations where native atomics are not available
-        template<
-            typename TOp,
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            TOp,
-            AtomicOmpBuiltIn,
-            T,
-            THierarchy>
+        template<typename TOp, typename T, typename THierarchy>
+        struct AtomicOp<TOp, AtomicOmpBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicOmpBuiltIn const&, T* const addr, T const& value) -> T
             {
                 T old;
-                // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
-                #pragma omp critical (AlpakaOmpAtomicOp)
+// \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all
+// threads.
+#    pragma omp critical(AlpakaOmpAtomicOp)
                 {
                     old = TOp()(addr, value);
                 }
@@ -258,22 +187,22 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto atomicOp(
-                AtomicOmpBuiltIn const &,
-                T * const addr,
-                T const & compare,
-                T const & value)
-            -> T
+                AtomicOmpBuiltIn const&,
+                T* const addr,
+                T const& compare,
+                T const& value) -> T
             {
                 T old;
-                // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
-                #pragma omp critical (AlpakaOmpAtomicOp2)
+// \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all
+// threads.
+#    pragma omp critical(AlpakaOmpAtomicOp2)
                 {
                     old = TOp()(addr, compare, value);
                 }
                 return old;
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif

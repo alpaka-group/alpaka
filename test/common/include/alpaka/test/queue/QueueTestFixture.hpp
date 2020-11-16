@@ -16,8 +16,7 @@ namespace alpaka
     namespace test
     {
         //#############################################################################
-        template<
-            typename TDevQueue>
+        template<typename TDevQueue>
         struct QueueTestFixture
         {
             using Dev = std::tuple_element_t<0, TDevQueue>;
@@ -26,14 +25,12 @@ namespace alpaka
             using Pltf = alpaka::Pltf<Dev>;
 
             //-----------------------------------------------------------------------------
-            QueueTestFixture() :
-                m_dev(alpaka::getDevByIdx<Pltf>(0u)),
-                m_queue(m_dev)
+            QueueTestFixture() : m_dev(alpaka::getDevByIdx<Pltf>(0u)), m_queue(m_dev)
             {
             }
 
             Dev m_dev;
             Queue m_queue;
         };
-    }
-}
+    } // namespace test
+} // namespace alpaka

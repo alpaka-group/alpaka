@@ -38,21 +38,15 @@ public:
     //! \param X Vector of at least n elements.
     //! \param Y Vector of at least n elements.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc,
-        typename TElem,
-        typename TIdx>
+    template<typename TAcc, typename TElem, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        TIdx const & numElements,
-        TElem const & alpha,
-        TElem const * const X,
-        TElem * const Y) const
-    -> void
+        TAcc const& acc,
+        TIdx const& numElements,
+        TElem const& alpha,
+        TElem const* const X,
+        TElem* const Y) const -> void
     {
-        static_assert(
-            alpaka::Dim<TAcc>::value == 1,
-            "The AxpyKernel expects 1-dimensional indices!");
+        static_assert(alpaka::Dim<TAcc>::value == 1, "The AxpyKernel expects 1-dimensional indices!");
 
         auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
         auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
@@ -62,10 +56,10 @@ public:
         {
             // Calculate the number of elements to compute in this thread.
             // The result is uniform for all but the last thread.
-            auto const threadLastElemIdx(threadFirstElemIdx+threadElemExtent);
+            auto const threadLastElemIdx(threadFirstElemIdx + threadElemExtent);
             auto const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
 
-            for(TIdx i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
+            for(TIdx i(threadFirstElemIdx); i < threadLastElemIdxClipped; ++i)
             {
                 Y[i] = alpha * X[i] + Y[i];
             }
@@ -73,20 +67,18 @@ public:
     }
 };
 
-using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::DimInt<1u>,
-    std::size_t>;
+using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 
-TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
+TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
 #ifdef ALPAKA_CI
-    Idx const numElements = 1u<<9u;
+    Idx const numElements = 1u << 9u;
 #else
-    Idx const numElements = 1u<<16u;
+    Idx const numElements = 1u << 16u;
 #endif
 
     using Val = float;
@@ -99,62 +91,53 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     AxpyKernel kernel;
 
     // Get the host device.
-    auto const devHost(
-        alpaka::getDevByIdx<PltfHost>(0u));
+    auto const devHost(alpaka::getDevByIdx<PltfHost>(0u));
 
     // Select a device to execute on.
-    auto const devAcc(
-        alpaka::getDevByIdx<PltfAcc>(0u));
+    auto const devAcc(alpaka::getDevByIdx<PltfAcc>(0u));
 
     // Get a queue on this device.
     QueueAcc queue(devAcc);
 
-    alpaka::Vec<Dim, Idx> const extent(
-        numElements);
+    alpaka::Vec<Dim, Idx> const extent(numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent.
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(
-        alpaka::getValidWorkDiv<Acc>(
-            devAcc,
-            extent,
-            static_cast<Idx>(3u),
-            false,
-            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
+        devAcc,
+        extent,
+        static_cast<Idx>(3u),
+        false,
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
-    std::cout
-        << "AxpyKernel("
-        << " numElements:" << numElements
-        << ", accelerator: " << alpaka::getAccName<Acc>()
-        << ", kernel: " << typeid(kernel).name()
-        << ", workDiv: " << workDiv
-        << ")" << std::endl;
+    std::cout << "AxpyKernel("
+              << " numElements:" << numElements << ", accelerator: " << alpaka::getAccName<Acc>()
+              << ", kernel: " << typeid(kernel).name() << ", workDiv: " << workDiv << ")" << std::endl;
 
     // Allocate host memory buffers.
     auto memBufHostX(alpaka::allocBuf<Val, Idx>(devHost, extent));
     auto memBufHostOrigY(alpaka::allocBuf<Val, Idx>(devHost, extent));
     auto memBufHostY(alpaka::allocBuf<Val, Idx>(devHost, extent));
-    Val * const pBufHostX = alpaka::getPtrNative(memBufHostX);
-    Val * const pBufHostOrigY = alpaka::getPtrNative(memBufHostOrigY);
-    Val * const pBufHostY = alpaka::getPtrNative(memBufHostY);
+    Val* const pBufHostX = alpaka::getPtrNative(memBufHostX);
+    Val* const pBufHostOrigY = alpaka::getPtrNative(memBufHostOrigY);
+    Val* const pBufHostY = alpaka::getPtrNative(memBufHostY);
 
     // random generator for uniformly distributed numbers in [0,1)
     // keep in mind, this can generate different values on different platforms
     std::random_device rd{};
     auto const seed = rd();
-    std::default_random_engine eng{ seed };
+    std::default_random_engine eng{seed};
     std::uniform_real_distribution<Val> dist(0.0, 1.0);
     std::cout << "using seed: " << seed << "\n";
     // Initialize the host input vectors
-    for (Idx i(0); i < numElements; ++i)
+    for(Idx i(0); i < numElements; ++i)
     {
         pBufHostX[i] = dist(eng);
         pBufHostOrigY[i] = dist(eng);
     }
-    Val const alpha( dist(eng) );
+    Val const alpha(dist(eng));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-    std::cout << __func__
-        << " alpha: " << alpha << std::endl;
+    std::cout << __func__ << " alpha: " << alpha << std::endl;
     std::cout << __func__ << " X_host: ";
     alpaka::print(memBufHostX, std::cout);
     std::cout << std::endl;
@@ -192,12 +175,8 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
         alpaka::getPtrNative(memBufAccY)));
 
     // Profile the kernel execution.
-    std::cout << "Execution time: "
-        << alpaka::test::integ::measureTaskRunTimeMs(
-            queue,
-            taskKernel)
-        << " ms"
-        << std::endl;
+    std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"
+              << std::endl;
 
     // Copy back the result.
     alpaka::memcpy(queue, memBufHostY, memBufAccY, extent);
@@ -208,10 +187,10 @@ TEMPLATE_LIST_TEST_CASE( "axpy", "[axpy]", TestAccs)
     bool resultCorrect(true);
     for(Idx i(0u); i < numElements; ++i)
     {
-        auto const & val(pBufHostY[i]);
+        auto const& val(pBufHostY[i]);
         auto const correctResult(alpha * pBufHostX[i] + pBufHostOrigY[i]);
         auto const relDiff = std::abs((val - correctResult) / std::min(val, correctResult));
-        if( relDiff > std::numeric_limits<Val>::epsilon() )
+        if(relDiff > std::numeric_limits<Val>::epsilon())
         {
             std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             resultCorrect = false;

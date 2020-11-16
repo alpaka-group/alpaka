@@ -11,10 +11,10 @@
 
 #ifdef _OPENMP
 
-#include <alpaka/block/sync/Traits.hpp>
+#    include <alpaka/block/sync/Traits.hpp>
 
-#include <alpaka/core/Common.hpp>
-#include <alpaka/core/Unused.hpp>
+#    include <alpaka/core/Common.hpp>
+#    include <alpaka/core/Unused.hpp>
 
 namespace alpaka
 {
@@ -24,17 +24,17 @@ namespace alpaka
     {
     public:
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierOmp() :
-            m_generation(0u)
-        {}
+        ALPAKA_FN_HOST BlockSyncBarrierOmp() : m_generation(0u)
+        {
+        }
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierOmp(BlockSyncBarrierOmp const &) = delete;
+        ALPAKA_FN_HOST BlockSyncBarrierOmp(BlockSyncBarrierOmp const&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierOmp(BlockSyncBarrierOmp &&) = delete;
+        ALPAKA_FN_HOST BlockSyncBarrierOmp(BlockSyncBarrierOmp&&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOmp const &) -> BlockSyncBarrierOmp & = delete;
+        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOmp const&) -> BlockSyncBarrierOmp& = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOmp &&) -> BlockSyncBarrierOmp & = delete;
+        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOmp&&) -> BlockSyncBarrierOmp& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ~BlockSyncBarrierOmp() = default;
 
@@ -46,83 +46,71 @@ namespace alpaka
     {
         //#############################################################################
         template<>
-        struct SyncBlockThreads<
-            BlockSyncBarrierOmp>
+        struct SyncBlockThreads<BlockSyncBarrierOmp>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto syncBlockThreads(
-                BlockSyncBarrierOmp const & blockSync)
-            -> void
+            ALPAKA_FN_HOST static auto syncBlockThreads(BlockSyncBarrierOmp const& blockSync) -> void
             {
                 alpaka::ignore_unused(blockSync);
 
-                // NOTE: This waits for all threads in all blocks.
-                // If multiple blocks are executed in parallel this is not optimal.
-                #pragma omp barrier
+// NOTE: This waits for all threads in all blocks.
+// If multiple blocks are executed in parallel this is not optimal.
+#    pragma omp barrier
             }
         };
 
         namespace detail
         {
             //#############################################################################
-            template<
-                typename TOp>
+            template<typename TOp>
             struct AtomicOp;
             //#############################################################################
             template<>
-            struct AtomicOp<
-                BlockCount>
+            struct AtomicOp<BlockCount>
             {
                 void operator()(int& result, bool value)
                 {
-                    #pragma omp atomic
+#    pragma omp atomic
                     result += static_cast<int>(value);
                 }
             };
             //#############################################################################
             template<>
-            struct AtomicOp<
-                BlockAnd>
+            struct AtomicOp<BlockAnd>
             {
                 void operator()(int& result, bool value)
                 {
-                    #pragma omp atomic
+#    pragma omp atomic
                     result &= static_cast<int>(value);
                 }
             };
             //#############################################################################
             template<>
-            struct AtomicOp<
-                BlockOr>
+            struct AtomicOp<BlockOr>
             {
                 void operator()(int& result, bool value)
                 {
-                    #pragma omp atomic
+#    pragma omp atomic
                     result |= static_cast<int>(value);
                 }
             };
-        }
+        } // namespace detail
 
         //#############################################################################
-        template<
-            typename TOp>
-        struct SyncBlockThreadsPredicate<
-            TOp,
-            BlockSyncBarrierOmp>
+        template<typename TOp>
+        struct SyncBlockThreadsPredicate<TOp, BlockSyncBarrierOmp>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
-                BlockSyncBarrierOmp const & blockSync,
-                int predicate)
-            -> int
+            ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(BlockSyncBarrierOmp const& blockSync, int predicate)
+                -> int
             {
-                // The first thread initializes the value.
-                // There is an implicit barrier at the end of omp single.
-                // NOTE: This code is executed only once for all OpenMP threads.
-                // If multiple blocks with multiple threads are executed in parallel
-                // this reduction is executed only for one block!
-                #pragma omp single
+// The first thread initializes the value.
+// There is an implicit barrier at the end of omp single.
+// NOTE: This code is executed only once for all OpenMP threads.
+// If multiple blocks with multiple threads are executed in parallel
+// this reduction is executed only for one block!
+#    pragma omp single
                 {
                     ++blockSync.m_generation;
                     blockSync.m_result[blockSync.m_generation % 2u] = TOp::InitialValue;
@@ -134,15 +122,15 @@ namespace alpaka
 
                 detail::AtomicOp<TOp>()(result, predicateBool);
 
-                // Wait for all threads to write their predicate into the vector.
-                // NOTE: This waits for all threads in all blocks.
-                // If multiple blocks are executed in parallel this is not optimal.
-                #pragma omp barrier
+// Wait for all threads to write their predicate into the vector.
+// NOTE: This waits for all threads in all blocks.
+// If multiple blocks are executed in parallel this is not optimal.
+#    pragma omp barrier
 
                 return blockSync.m_result[generationMod2];
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif

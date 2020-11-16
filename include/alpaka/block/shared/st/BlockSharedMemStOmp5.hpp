@@ -11,24 +11,24 @@
 
 #ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
-#if _OPENMP < 201307
-    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
-#endif
+#    if _OPENMP < 201307
+#        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#    endif
 
-#include <alpaka/block/shared/st/Traits.hpp>
-#include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
+#    include <alpaka/block/shared/st/Traits.hpp>
+#    include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
 
-#include <type_traits>
-#include <cstdint>
-#include <omp.h>
+#    include <type_traits>
+#    include <cstdint>
+#    include <omp.h>
 
 namespace alpaka
 {
     //#############################################################################
     //! The OpenMP 5 block shared memory allocator.
-    class BlockSharedMemStOmp5 :
-        public detail::BlockSharedMemStMemberImpl<4>,
-        public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStOmp5>
+    class BlockSharedMemStOmp5
+        : public detail::BlockSharedMemStMemberImpl<4>
+        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStOmp5>
     {
     public:
         using BlockSharedMemStMemberImpl<4>::BlockSharedMemStMemberImpl;
@@ -37,39 +37,29 @@ namespace alpaka
     namespace traits
     {
         //#############################################################################
-        template<
-            typename T,
-            std::size_t TuniqueId>
-        struct AllocVar<
-            T,
-            TuniqueId,
-            BlockSharedMemStOmp5>
+        template<typename T, std::size_t TuniqueId>
+        struct AllocVar<T, TuniqueId, BlockSharedMemStOmp5>
         {
             //-----------------------------------------------------------------------------
-            static auto allocVar(
-                BlockSharedMemStOmp5 const &smem)
-            -> T &
+            static auto allocVar(BlockSharedMemStOmp5 const& smem) -> T&
             {
-                #pragma omp barrier
+#    pragma omp barrier
                 smem.alloc<T>();
-                #pragma omp barrier
+#    pragma omp barrier
                 return smem.getLatestVar<T>();
             }
         };
         //#############################################################################
         template<>
-        struct FreeMem<
-            BlockSharedMemStOmp5>
+        struct FreeMem<BlockSharedMemStOmp5>
         {
             //-----------------------------------------------------------------------------
-            static auto freeMem(
-                BlockSharedMemStOmp5 const &mem)
-            -> void
+            static auto freeMem(BlockSharedMemStOmp5 const& mem) -> void
             {
                 mem.free();
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif

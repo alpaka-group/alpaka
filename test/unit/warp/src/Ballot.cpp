@@ -23,12 +23,8 @@ class BallotSingleThreadWarpTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
         ALPAKA_CHECK(*success, warpExtent == 1);
@@ -44,53 +40,40 @@ class BallotMultipleThreadWarpTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
         ALPAKA_CHECK(*success, warpExtent > 1);
 
-        ALPAKA_CHECK(*success, alpaka::warp::ballot(acc, 42) ==
-            (std::uint64_t{1} << warpExtent) - 1);
+        ALPAKA_CHECK(*success, alpaka::warp::ballot(acc, 42) == (std::uint64_t{1} << warpExtent) - 1);
         ALPAKA_CHECK(*success, alpaka::warp::ballot(acc, 0) == 0u);
 
         // Test relies on having a single warp per thread block
         auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const localThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
-        auto const threadIdxInWarp = static_cast<std::int32_t>(alpaka::mapIdx<1u>(
-            localThreadIdx,
-            blockExtent)[0]);
+        auto const threadIdxInWarp = static_cast<std::int32_t>(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
         // Some threads quit the kernel to test that the warp operations
         // properly operate on the active threads only
-        if (threadIdxInWarp >= warpExtent / 2)
+        if(threadIdxInWarp >= warpExtent / 2)
             return;
 
-        for (auto idx = 0; idx < warpExtent / 2; idx++)
+        for(auto idx = 0; idx < warpExtent / 2; idx++)
         {
             ALPAKA_CHECK(
                 *success,
-                alpaka::warp::ballot(acc, threadIdxInWarp == idx ? 1 : 0) ==
-                std::uint64_t{1} << idx);
+                alpaka::warp::ballot(acc, threadIdxInWarp == idx ? 1 : 0) == std::uint64_t{1} << idx);
             // First warpExtent / 2 bits are 1 except bit idx
-            std::uint64_t const expected =
-                ((std::uint64_t{1} << warpExtent / 2) - 1) &
-                ~(std::uint64_t{1} << idx);
-            ALPAKA_CHECK(
-                *success,
-                alpaka::warp::ballot(acc, threadIdxInWarp == idx ? 0 : 1) ==
-                expected);
+            std::uint64_t const expected = ((std::uint64_t{1} << warpExtent / 2) - 1) & ~(std::uint64_t{1} << idx);
+            ALPAKA_CHECK(*success, alpaka::warp::ballot(acc, threadIdxInWarp == idx ? 0 : 1) == expected);
         }
     }
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "ballot", "[warp]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("ballot", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dev = alpaka::Dev<Acc>;
@@ -100,15 +83,12 @@ TEMPLATE_LIST_TEST_CASE( "ballot", "[warp]", alpaka::test::TestAccs)
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
     auto const warpExtent = alpaka::getWarpSize(dev);
-    if (warpExtent == 1)
+    if(warpExtent == 1)
     {
         Idx const gridThreadExtentPerDim = 4;
-        alpaka::test::KernelExecutionFixture<Acc> fixture(
-            alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
+        alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
         BallotSingleThreadWarpTestKernel kernel;
-        REQUIRE(
-            fixture(
-                kernel));
+        REQUIRE(fixture(kernel));
     }
     else
     {
@@ -122,15 +102,10 @@ TEMPLATE_LIST_TEST_CASE( "ballot", "[warp]", alpaka::test::TestAccs)
         auto blockThreadExtent = alpaka::Vec<Dim, Idx>::ones();
         blockThreadExtent[0] = static_cast<Idx>(warpExtent);
         auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
-        auto workDiv = typename ExecutionFixture::WorkDiv{
-            gridBlockExtent,
-            blockThreadExtent,
-            threadElementExtent};
-        auto fixture = ExecutionFixture{ workDiv };
+        auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
+        auto fixture = ExecutionFixture{workDiv};
         BallotMultipleThreadWarpTestKernel kernel;
-        REQUIRE(
-            fixture(
-                kernel));
+        REQUIRE(fixture(kernel));
 #endif
     }
 }

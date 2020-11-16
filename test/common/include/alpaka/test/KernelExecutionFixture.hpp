@@ -20,8 +20,7 @@ namespace alpaka
     {
         //#############################################################################
         //! The fixture for executing a kernel on a given accelerator.
-        template<
-            typename TAcc>
+        template<typename TAcc>
         class KernelExecutionFixture
         {
         public:
@@ -35,45 +34,34 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            template<
-                typename TExtent>
-            KernelExecutionFixture(
-                TExtent const & extent) :
-                    m_devHost(alpaka::getDevByIdx<PltfCpu>(0u)),
-                    m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u)),
-                    m_queue(m_devAcc),
-                    m_workDiv(
-                        alpaka::getValidWorkDiv<Acc>(
-                            m_devAcc,
-                            extent,
-                            alpaka::Vec<Dim, Idx>::ones(),
-                            false,
-                            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted))
-            {}
+            template<typename TExtent>
+            KernelExecutionFixture(TExtent const& extent)
+                : m_devHost(alpaka::getDevByIdx<PltfCpu>(0u))
+                , m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u))
+                , m_queue(m_devAcc)
+                , m_workDiv(alpaka::getValidWorkDiv<Acc>(
+                      m_devAcc,
+                      extent,
+                      alpaka::Vec<Dim, Idx>::ones(),
+                      false,
+                      alpaka::GridBlockExtentSubDivRestrictions::Unrestricted))
+            {
+            }
             //-----------------------------------------------------------------------------
-            KernelExecutionFixture(
-                WorkDiv const & workDiv) :
-                    m_devHost(alpaka::getDevByIdx<PltfCpu>(0u)),
-                    m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u)),
-                    m_queue(m_devAcc),
-                    m_workDiv(workDiv)
-            {}
+            KernelExecutionFixture(WorkDiv const& workDiv)
+                : m_devHost(alpaka::getDevByIdx<PltfCpu>(0u))
+                , m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u))
+                , m_queue(m_devAcc)
+                , m_workDiv(workDiv)
+            {
+            }
             //-----------------------------------------------------------------------------
-            template<
-                typename TKernelFnObj,
-                typename... TArgs>
-            auto operator()(
-                TKernelFnObj const & kernelFnObj,
-                TArgs && ... args)
-            -> bool
+            template<typename TKernelFnObj, typename... TArgs>
+            auto operator()(TKernelFnObj const& kernelFnObj, TArgs&&... args) -> bool
             {
                 // Allocate the result value
                 auto bufAccResult(alpaka::allocBuf<bool, Idx>(m_devAcc, static_cast<Idx>(1u)));
-                alpaka::memset(
-                    m_queue,
-                    bufAccResult,
-                    static_cast<std::uint8_t>(true),
-                    bufAccResult);
+                alpaka::memset(m_queue, bufAccResult, static_cast<std::uint8_t>(true), bufAccResult);
 
                 alpaka::exec<Acc>(
                     m_queue,
@@ -98,5 +86,5 @@ namespace alpaka
             QueueAcc m_queue;
             WorkDiv m_workDiv;
         };
-    }
-}
+    } // namespace test
+} // namespace alpaka

@@ -26,13 +26,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         TimeStdLib() = default;
         //-----------------------------------------------------------------------------
-        TimeStdLib(TimeStdLib const &) = delete;
+        TimeStdLib(TimeStdLib const&) = delete;
         //-----------------------------------------------------------------------------
-        TimeStdLib(TimeStdLib &&) = delete;
+        TimeStdLib(TimeStdLib&&) = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(TimeStdLib const &) -> TimeStdLib & = delete;
+        auto operator=(TimeStdLib const&) -> TimeStdLib& = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(TimeStdLib &&) -> TimeStdLib & = delete;
+        auto operator=(TimeStdLib&&) -> TimeStdLib& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ~TimeStdLib() = default;
     };
@@ -42,24 +42,18 @@ namespace alpaka
         //#############################################################################
         //! The CPU fibers accelerator clock operation.
         template<>
-        struct Clock<
-            TimeStdLib>
+        struct Clock<TimeStdLib>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto clock(
-                TimeStdLib const & time)
-            -> std::uint64_t
+            ALPAKA_FN_HOST static auto clock(TimeStdLib const& time) -> std::uint64_t
             {
                 alpaka::ignore_unused(time);
 
                 // NOTE: high_resolution_clock returns a non-steady wall-clock time!
                 // This means that it is not ensured that the values will always increase monotonically.
-                return
-                    static_cast<std::uint64_t>(
-                        std::chrono::high_resolution_clock::now()
-                            .time_since_epoch()
-                                .count());
+                return static_cast<std::uint64_t>(
+                    std::chrono::high_resolution_clock::now().time_since_epoch().count());
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

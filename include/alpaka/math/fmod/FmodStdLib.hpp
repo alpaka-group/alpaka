@@ -30,26 +30,19 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library fmod trait specialization.
-            template<
-                typename Tx,
-                typename Ty>
+            template<typename Tx, typename Ty>
             struct Fmod<
                 FmodStdLib,
                 Tx,
                 Ty,
-                std::enable_if_t<
-                    std::is_arithmetic<Tx>::value
-                    && std::is_arithmetic<Ty>::value>>
+                std::enable_if_t<std::is_arithmetic<Tx>::value && std::is_arithmetic<Ty>::value>>
             {
-                ALPAKA_FN_HOST static auto fmod(
-                    FmodStdLib const & fmod_ctx,
-                    Tx const & x,
-                    Ty const & y)
+                ALPAKA_FN_HOST static auto fmod(FmodStdLib const& fmod_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(fmod_ctx);
                     return std::fmod(x, y);
                 }
             };
-        }
-    }
-}
+        } // namespace traits
+    } // namespace math
+} // namespace alpaka

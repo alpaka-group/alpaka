@@ -11,12 +11,12 @@
 
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
-#if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
-#endif
+#    if _OPENACC < 201306
+#        error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
+#    endif
 
-#include <alpaka/dev/DevOacc.hpp>
-#include <alpaka/event/EventGenericThreads.hpp>
+#    include <alpaka/dev/DevOacc.hpp>
+#    include <alpaka/event/EventGenericThreads.hpp>
 
 namespace alpaka
 {

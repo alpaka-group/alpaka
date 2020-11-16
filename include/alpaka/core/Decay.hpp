@@ -27,7 +27,7 @@
 // tools, and also for brevity.
 //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL || BOOST_COMP_PGI
-    #define ALPAKA_DECAY_T(Type) typename std::decay<Type>::type
+#    define ALPAKA_DECAY_T(Type) typename std::decay<Type>::type
 #else
-    #define ALPAKA_DECAY_T(Type) std::decay_t<Type>
+#    define ALPAKA_DECAY_T(Type) std::decay_t<Type>
 #endif

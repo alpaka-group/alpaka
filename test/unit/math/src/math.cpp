@@ -18,30 +18,16 @@
 
 #include <catch2/catch.hpp>
 
-using TestAccs = alpaka::test::EnabledAccs<
-    alpaka::DimInt< 1u >,
-    std::size_t
->;
+using TestAccs = alpaka::test::EnabledAccs<alpaka::DimInt<1u>, std::size_t>;
 
-using Functors =
-    alpaka::meta::Concatenate<
-        alpaka::test::unit::math::UnaryFunctors,
-        alpaka::test::unit::math::BinaryFunctors
-    >;
+using Functors
+    = alpaka::meta::Concatenate<alpaka::test::unit::math::UnaryFunctors, alpaka::test::unit::math::BinaryFunctors>;
 
-using TestAccFunctorTuples =
-    alpaka::meta::CartesianProduct<
-        std::tuple,
-        TestAccs,
-        Functors
-    >;
+using TestAccFunctorTuples = alpaka::meta::CartesianProduct<std::tuple, TestAccs, Functors>;
 
-using DataTypes = std::tuple<
-    float,
-    double
->;
+using DataTypes = std::tuple<float, double>;
 
-template <std::size_t TCapacity>
+template<std::size_t TCapacity>
 struct TestKernel
 {
     //! @tparam TAcc Accelerator.
@@ -49,18 +35,11 @@ struct TestKernel
     //! @param acc Accelerator given from alpaka.
     //! @param functor Accessible with operator().
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc,
-             typename TResults,
-             typename TFunctor,
-             typename TArgs>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        TResults* results,
-        TFunctor const & functor,
-        TArgs const* args) const noexcept
-        -> void
+    template<typename TAcc, typename TResults, typename TFunctor, typename TArgs>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TResults* results, TFunctor const& functor, TArgs const* args)
+        const noexcept -> void
     {
-        for( size_t i = 0; i < TCapacity; ++i )
+        for(size_t i = 0; i < TCapacity; ++i)
         {
             results[i] = functor(args[i], acc);
         }
@@ -68,111 +47,86 @@ struct TestKernel
 };
 
 //#############################################################################
-template<
-    typename TAcc,
-    typename TFunctor>
+template<typename TAcc, typename TFunctor>
 struct TestTemplate
 {
-    template<
-        typename TData>
+    template<typename TData>
     auto operator()() -> void
     {
         std::random_device rd{};
         auto const seed = rd();
         std::cout << "testing"
-            << " acc:" << typeid(TAcc).name()
-            << " data type:" << typeid(TData).name()
-            << " functor:" << typeid(TFunctor).name()
-            << " seed:" << seed
-            << std::endl;
+                  << " acc:" << typeid(TAcc).name() << " data type:" << typeid(TData).name()
+                  << " functor:" << typeid(TFunctor).name() << " seed:" << seed << std::endl;
 
         // SETUP (defines and initialising)
         // DevAcc and DevHost are defined in Buffer.hpp too.
-        using DevAcc = alpaka::Dev< TAcc >;
+        using DevAcc = alpaka::Dev<TAcc>;
         using DevHost = alpaka::DevCpu;
-        using PltfAcc = alpaka::Pltf< DevAcc >;
-        using PltfHost = alpaka::Pltf< DevHost >;
+        using PltfAcc = alpaka::Pltf<DevAcc>;
+        using PltfHost = alpaka::Pltf<DevHost>;
 
-        using Dim = alpaka::DimInt< 1u >;
+        using Dim = alpaka::DimInt<1u>;
         using Idx = std::size_t;
         using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
-        using QueueAcc = alpaka::test::DefaultQueue< DevAcc >;
+        using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
         using TArgsItem = alpaka::test::unit::math::ArgsItem<TData, TFunctor::arity>;
 
         static constexpr auto capacity = 1000;
 
-        using Args = alpaka::test::unit::math::Buffer<
-            TAcc,
-            TArgsItem,
-            capacity
-        >;
-        using Results = alpaka::test::unit::math::Buffer<
-            TAcc,
-            TData,
-            capacity
-        >;
+        using Args = alpaka::test::unit::math::Buffer<TAcc, TArgsItem, capacity>;
+        using Results = alpaka::test::unit::math::Buffer<TAcc, TData, capacity>;
 
         // Every functor is executed individual on one kernel.
         static constexpr size_t elementsPerThread = 1u;
         static constexpr size_t sizeExtent = 1u;
 
-        DevAcc const devAcc{ alpaka::getDevByIdx< PltfAcc >( 0u ) };
-        DevHost const devHost{ alpaka::getDevByIdx< PltfHost >( 0u ) };
+        DevAcc const devAcc{alpaka::getDevByIdx<PltfAcc>(0u)};
+        DevHost const devHost{alpaka::getDevByIdx<PltfHost>(0u)};
 
-        QueueAcc queue{ devAcc };
+        QueueAcc queue{devAcc};
 
         TestKernel<capacity> kernel;
         TFunctor functor;
-        Args args{ devAcc };
-        Results results{ devAcc };
+        Args args{devAcc};
+        Results results{devAcc};
 
-        WorkDiv const workDiv{
-            alpaka::getValidWorkDiv< TAcc >(
-                devAcc,
-                sizeExtent,
-                elementsPerThread,
-                false,
-                alpaka::GridBlockExtentSubDivRestrictions::Unrestricted
-            )};
+        WorkDiv const workDiv{alpaka::getValidWorkDiv<TAcc>(
+            devAcc,
+            sizeExtent,
+            elementsPerThread,
+            false,
+            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
         // SETUP COMPLETED.
 
         // Fill the buffer with random test-numbers.
-        alpaka::test::unit::math::fillWithRndArgs<TData>( args, functor, seed );
-        for( size_t i = 0; i < Results::capacity; ++i )
-            results(i) = static_cast<TData>(std::nan( "" ));
+        alpaka::test::unit::math::fillWithRndArgs<TData>(args, functor, seed);
+        for(size_t i = 0; i < Results::capacity; ++i)
+            results(i) = static_cast<TData>(std::nan(""));
 
         // Copy both buffer to the device
         args.copyToDevice(queue);
         results.copyToDevice(queue);
 
         auto const taskKernel(
-            alpaka::createTaskKernel< TAcc >(
-                workDiv,
-                kernel,
-                results.pDevBuffer,
-                functor,
-                args.pDevBuffer
-            )
-        );
+            alpaka::createTaskKernel<TAcc>(workDiv, kernel, results.pDevBuffer, functor, args.pDevBuffer));
         // Enqueue the kernel execution task.
-        alpaka::enqueue( queue, taskKernel );
+        alpaka::enqueue(queue, taskKernel);
         // Copy back the results (encapsulated in the buffer class).
-        results.copyFromDevice( queue );
-        alpaka::wait( queue );
-        std::cout.precision( std::numeric_limits<TData>::digits10 + 1 );
+        results.copyFromDevice(queue);
+        alpaka::wait(queue);
+        std::cout.precision(std::numeric_limits<TData>::digits10 + 1);
 
         INFO("Operator: " << functor)
-        INFO("Type: " << typeid( TData ).name() ) // Compiler specific.
+        INFO("Type: " << typeid(TData).name()) // Compiler specific.
 #if ALPAKA_DEBUG_FULL
-        INFO("The args buffer: \n" << std::setprecision(
-            std::numeric_limits<TData>::digits10 + 1)
-            << args << "\n")
+        INFO("The args buffer: \n" << std::setprecision(std::numeric_limits<TData>::digits10 + 1) << args << "\n")
 #endif
-        for( size_t i = 0; i < Args::capacity; ++i )
+        for(size_t i = 0; i < Args::capacity; ++i)
         {
             INFO("Idx i: " << i)
             TData std_result = functor(args(i));
-            REQUIRE( results(i) == Approx(std_result) );
+            REQUIRE(results(i) == Approx(std_result));
         }
     }
 };
@@ -229,6 +183,5 @@ TEMPLATE_LIST_TEST_CASE("mathOps", "[math] [operator]", TestAccFunctorTuples)
     using Acc = std::tuple_element_t<0u, TestType>;
     using Functor = std::tuple_element_t<1u, TestType>;
 
-    alpaka::meta::forEachType< DataTypes >(
-        TestTemplate< Acc, Functor >());
+    alpaka::meta::forEachType<DataTypes>(TestTemplate<Acc, Functor>());
 }

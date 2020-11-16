@@ -23,8 +23,7 @@ namespace alpaka
     //! The CPU boost aligned allocator.
     //!
     //! \tparam TAlignment An integral constant containing the alignment.
-    template<
-        typename TAlignment>
+    template<typename TAlignment>
     class AllocCpuAligned : public concepts::Implements<ConceptMemAlloc, AllocCpuAligned<TAlignment>>
     {
     };
@@ -33,20 +32,14 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU boost aligned allocator memory allocation trait specialization.
-        template<
-            typename T,
-            typename TAlignment>
-        struct Malloc<
-            T,
-            AllocCpuAligned<TAlignment>>
+        template<typename T, typename TAlignment>
+        struct Malloc<T, AllocCpuAligned<TAlignment>>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto malloc(
-                AllocCpuAligned<TAlignment> const & alloc,
-                std::size_t const & sizeElems)
-            -> T *
+            ALPAKA_FN_HOST static auto malloc(AllocCpuAligned<TAlignment> const& alloc, std::size_t const& sizeElems)
+                -> T*
             {
-#if (defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#if(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA) || (defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
                 // For CUDA host memory must be aligned to 4 kib to pin it with `cudaHostRegister`,
                 // this was described in older programming guides but was removed later.
                 // From testing with PIConGPU and cuda-memcheck we found out that the alignment is still required.
@@ -61,32 +54,22 @@ namespace alpaka
                 constexpr size_t minAlignement = TAlignment::value;
 #endif
                 alpaka::ignore_unused(alloc);
-                return
-                    reinterpret_cast<T *>(
-                        core::alignedAlloc(std::max(TAlignment::value, minAlignement), sizeElems * sizeof(T)));
+                return reinterpret_cast<T*>(
+                    core::alignedAlloc(std::max(TAlignment::value, minAlignement), sizeElems * sizeof(T)));
             }
         };
 
         //#############################################################################
         //! The CPU boost aligned allocator memory free trait specialization.
-        template<
-            typename T,
-            typename TAlignment>
-        struct Free<
-            T,
-            AllocCpuAligned<TAlignment>>
+        template<typename T, typename TAlignment>
+        struct Free<T, AllocCpuAligned<TAlignment>>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto free(
-                AllocCpuAligned<TAlignment> const & alloc,
-                T const * const ptr)
-            -> void
+            ALPAKA_FN_HOST static auto free(AllocCpuAligned<TAlignment> const& alloc, T const* const ptr) -> void
             {
                 alpaka::ignore_unused(alloc);
-                    core::alignedFree(
-                        const_cast<void *>(
-                            reinterpret_cast<void const *>(ptr)));
+                core::alignedFree(const_cast<void*>(reinterpret_cast<void const*>(ptr)));
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

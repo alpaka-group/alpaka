@@ -26,27 +26,27 @@ namespace alpaka
     //! AccCpuSerial is selected last.
     template<class TDim, class TIdx>
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccGpuCudaRt<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccGpuCudaRt<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_GPU_HIP_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccGpuHipRt<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccGpuHipRt<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccCpuOmp2Blocks<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuOmp2Blocks<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccCpuTbbBlocks<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuTbbBlocks<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccCpuFibers<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuFibers<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccCpuOmp2Threads<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuOmp2Threads<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccCpuThreads<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuThreads<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_ANY_BT_OMP5_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccOmp5<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccOmp5<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccOacc<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccOacc<TDim, TIdx>;
 #elif defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
-    using ExampleDefaultAcc = alpaka::AccCpuSerial<TDim,TIdx>;
+    using ExampleDefaultAcc = alpaka::AccCpuSerial<TDim, TIdx>;
 #else
     class ExampleDefaultAcc;
-    #warning "No supported backend selected."
+#    warning "No supported backend selected."
 #endif
-}
+} // namespace alpaka

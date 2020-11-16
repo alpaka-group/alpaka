@@ -34,17 +34,13 @@ namespace alpaka
         //! \param dst target mem ptr.
         //! \param extent area to set.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename TAcc,
-            typename TExtent,
-            typename TPitch>
+        template<typename TAcc, typename TExtent, typename TPitch>
         ALPAKA_FN_ACC auto operator()(
-            TAcc const & acc,
+            TAcc const& acc,
             std::uint8_t const val,
-            std::uint8_t * dst,
+            std::uint8_t* dst,
             TExtent extent,
-            TPitch pitch) const
-        -> void
+            TPitch pitch) const -> void
         {
             using Idx = typename alpaka::traits::IdxType<TExtent>::type;
             auto const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc));
@@ -52,16 +48,16 @@ namespace alpaka
             auto const idxThreadFirstElem = getIdxThreadFirstElem(acc, gridThreadIdx, threadElemExtent);
             auto idx = mapIdxPitchBytes<1u, Dim<TAcc>::value>(idxThreadFirstElem, pitch)[0];
             constexpr auto lastDim = Dim<TAcc>::value - 1;
-            const auto lastIdx = idx +
-                std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim]-idxThreadFirstElem[lastDim]));
+            const auto lastIdx = idx
+                + std::min(threadElemExtent[lastDim], static_cast<Idx>(extent[lastDim] - idxThreadFirstElem[lastDim]));
 
-            if( (idxThreadFirstElem < extent).foldrAll(std::logical_and<bool>()) )
+            if((idxThreadFirstElem < extent).foldrAll(std::logical_and<bool>()))
             {
-                for(; idx<lastIdx; ++idx)
+                for(; idx < lastIdx; ++idx)
                 {
                     *(dst + idx) = val;
                 }
             }
         }
     };
-}
+} // namespace alpaka

@@ -11,11 +11,11 @@
 
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
-#if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
-#endif
+#    if _OPENACC < 201306
+#        error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
+#    endif
 
-#include <alpaka/block/sync/Traits.hpp>
+#    include <alpaka/block/sync/Traits.hpp>
 
 namespace alpaka
 {
@@ -27,13 +27,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_FN_HOST BlockSyncBarrierOacc() = default;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierOacc(BlockSyncBarrierOacc const &) = delete;
+        ALPAKA_FN_HOST BlockSyncBarrierOacc(BlockSyncBarrierOacc const&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierOacc(BlockSyncBarrierOacc &&) = delete;
+        ALPAKA_FN_HOST BlockSyncBarrierOacc(BlockSyncBarrierOacc&&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOacc const &) -> BlockSyncBarrierOacc & = delete;
+        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOacc const&) -> BlockSyncBarrierOacc& = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOacc &&) -> BlockSyncBarrierOacc & = delete;
+        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierOacc&&) -> BlockSyncBarrierOacc& = delete;
         //-----------------------------------------------------------------------------
         ~BlockSyncBarrierOacc() = default;
 
@@ -41,9 +41,9 @@ namespace alpaka
         // NVHPC 20.7: initializer causes warning:
         // NVC++-W-0155-External and Static variables are not supported in acc routine - _T139951818207704_37530
         //! m_synchCounter[ 2 generations  * 2 counters per]
-        int mutable m_syncCounter[2*2] {0,0,0,0};
+        int mutable m_syncCounter[2 * 2]{0, 0, 0, 0};
         int mutable m_result;
     };
-}
+} // namespace alpaka
 
 #endif

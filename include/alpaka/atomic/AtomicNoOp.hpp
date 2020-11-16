@@ -23,13 +23,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         AtomicNoOp() = default;
         //-----------------------------------------------------------------------------
-        AtomicNoOp(AtomicNoOp const &) = delete;
+        AtomicNoOp(AtomicNoOp const&) = delete;
         //-----------------------------------------------------------------------------
-        AtomicNoOp(AtomicNoOp &&) = delete;
+        AtomicNoOp(AtomicNoOp&&) = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
+        auto operator=(AtomicNoOp const&) -> AtomicNoOp& = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
+        auto operator=(AtomicNoOp&&) -> AtomicNoOp& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ~AtomicNoOp() = default;
     };
@@ -38,37 +38,25 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU fibers accelerator atomic operation.
-        template<
-            typename TOp,
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            TOp,
-            AtomicNoOp,
-            T,
-            THierarchy>
+        template<typename TOp, typename T, typename THierarchy>
+        struct AtomicOp<TOp, AtomicNoOp, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto atomicOp(
-                AtomicNoOp const & atomic,
-                T * const addr,
-                T const & value)
-            -> T
+            ALPAKA_FN_HOST static auto atomicOp(AtomicNoOp const& atomic, T* const addr, T const& value) -> T
             {
                 alpaka::ignore_unused(atomic);
                 return TOp()(addr, value);
             }
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto atomicOp(
-                AtomicNoOp const & atomic,
-                T * const addr,
-                T const & compare,
-                T const & value)
-            -> T
+                AtomicNoOp const& atomic,
+                T* const addr,
+                T const& compare,
+                T const& value) -> T
             {
                 alpaka::ignore_unused(atomic);
                 return TOp()(addr, compare, value);
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

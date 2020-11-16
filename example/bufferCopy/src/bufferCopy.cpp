@@ -22,7 +22,7 @@
 #include <cstdint>
 
 //-----------------------------------------------------------------------------
-template <size_t width>
+template<size_t width>
 ALPAKA_FN_ACC size_t linIdxToPitchedIdx(size_t const globalIdx, size_t const pitch)
 {
     const size_t idx_x = globalIdx % width;
@@ -35,28 +35,22 @@ ALPAKA_FN_ACC size_t linIdxToPitchedIdx(size_t const globalIdx, size_t const pit
 struct PrintBufferKernel
 {
     //-----------------------------------------------------------------------------
-    template<
-        typename TAcc,
-        typename TData,
-        typename TExtent>
+    template<typename TAcc, typename TData, typename TExtent>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        TData const * const buffer,
-        TExtent const & extents,
-        size_t const pitch) const
-    -> void
+        TAcc const& acc,
+        TData const* const buffer,
+        TExtent const& extents,
+        size_t const pitch) const -> void
     {
         auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(
-            globalThreadIdx,
-            globalThreadExtent);
+        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
             // NOTE: hard-coded for unsigned int
-            printf("%u:%u ", static_cast<uint32_t>(i), static_cast<uint32_t>(buffer[linIdxToPitchedIdx<2>(i,pitch)]));
+            printf("%u:%u ", static_cast<uint32_t>(i), static_cast<uint32_t>(buffer[linIdxToPitchedIdx<2>(i, pitch)]));
         }
     }
 };
@@ -67,35 +61,29 @@ struct PrintBufferKernel
 struct TestBufferKernel
 {
     //-----------------------------------------------------------------------------
-    template<
-        typename TAcc,
-        typename TData,
-        typename TExtent>
+    template<typename TAcc, typename TData, typename TExtent>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        TData const * const
+        TAcc const& acc,
+        TData const* const
 #ifndef NDEBUG
-        data
+            data
 #endif
         ,
-        TExtent const & extents,
+        TExtent const& extents,
         size_t const
 #ifndef NDEBUG
-        pitch
+            pitch
 #endif
-        ) const
-    -> void
+    ) const -> void
     {
         auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(
-            globalThreadIdx,
-            globalThreadExtent);
+        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
-            ALPAKA_ASSERT(data[linIdxToPitchedIdx<2>(i,pitch)] == i);
+            ALPAKA_ASSERT(data[linIdxToPitchedIdx<2>(i, pitch)] == i);
         }
     }
 };
@@ -104,22 +92,13 @@ struct TestBufferKernel
 //! Fills values of buffer with increasing elements starting from 0
 struct FillBufferKernel
 {
-    template<
-        typename TAcc,
-        typename TData,
-        typename TExtent>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        TData * const data,
-        TExtent const & extents) const
-    -> void
+    template<typename TAcc, typename TData, typename TExtent>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, TData* const data, TExtent const& extents) const -> void
     {
         auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
         auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(
-            globalThreadIdx,
-            globalThreadExtent);
+        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
 
         for(size_t i(linearizedGlobalThreadIdx[0]); i < extents.prod(); i += globalThreadExtent.prod())
         {
@@ -128,8 +107,7 @@ struct FillBufferKernel
     }
 };
 
-auto main()
--> int
+auto main() -> int
 {
 // Fallback for the CI with disabled sequential backend
 #if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
@@ -242,7 +220,7 @@ auto main()
     // elements of a buffer directly, but
     // you can get the pointer to the memory
     // (getPtrNative).
-    Data * const pHostBuffer = alpaka::getPtrNative(hostBuffer);
+    Data* const pHostBuffer = alpaka::getPtrNative(hostBuffer);
 
     // This pointer can be used to directly write
     // some values into the buffer memory.
@@ -256,7 +234,7 @@ auto main()
     // Memory views and buffers can also be initialized by executing a kernel.
     // To pass a buffer into a kernel, you can pass the
     // native pointer into the kernel invocation.
-    Data * const pHostViewPlainPtr = alpaka::getPtrNative(hostViewPlainPtr);
+    Data* const pHostViewPlainPtr = alpaka::getPtrNative(hostViewPlainPtr);
 
     FillBufferKernel fillBufferKernel;
 
@@ -265,7 +243,7 @@ auto main()
         hostWorkDiv,
         fillBufferKernel,
         pHostViewPlainPtr, // 1st kernel argument
-        extents);          // 2nd kernel argument
+        extents); // 2nd kernel argument
 
 
     // Copy host to device Buffer
@@ -296,25 +274,25 @@ auto main()
     // This kernel tests if the copy operations
     // were successful. In the case something
     // went wrong an assert will fail.
-    Data const * const pDeviceBuffer1 = alpaka::getPtrNative(deviceBuffer1);
-    Data const * const pDeviceBuffer2 = alpaka::getPtrNative(deviceBuffer2);
+    Data const* const pDeviceBuffer1 = alpaka::getPtrNative(deviceBuffer1);
+    Data const* const pDeviceBuffer2 = alpaka::getPtrNative(deviceBuffer2);
 
     TestBufferKernel testBufferKernel;
     alpaka::exec<Acc>(
         devQueue,
         devWorkDiv,
         testBufferKernel,
-        pDeviceBuffer1,                                 // 1st kernel argument
-        extents,                                        // 2nd kernel argument
-        deviceBuffer1Pitch);                            // 3rd kernel argument
+        pDeviceBuffer1, // 1st kernel argument
+        extents, // 2nd kernel argument
+        deviceBuffer1Pitch); // 3rd kernel argument
 
     alpaka::exec<Acc>(
         devQueue,
         devWorkDiv,
         testBufferKernel,
-        pDeviceBuffer2,                                 // 1st kernel argument
-        extents,                                        // 2nd kernel argument
-        deviceBuffer2Pitch);                            // 3rd kernel argument
+        pDeviceBuffer2, // 1st kernel argument
+        extents, // 2nd kernel argument
+        deviceBuffer2Pitch); // 3rd kernel argument
 
 
     // Print device Buffer
@@ -332,9 +310,9 @@ auto main()
         devQueue,
         devWorkDiv,
         printBufferKernel,
-        pDeviceBuffer1,                                 // 1st kernel argument
-        extents,                                        // 2nd kernel argument
-        deviceBuffer1Pitch);                            // 3rd kernel argument
+        pDeviceBuffer1, // 1st kernel argument
+        extents, // 2nd kernel argument
+        deviceBuffer1Pitch); // 3rd kernel argument
     alpaka::wait(devQueue);
     std::cout << std::endl;
 
@@ -342,9 +320,9 @@ auto main()
         devQueue,
         devWorkDiv,
         printBufferKernel,
-        pDeviceBuffer2,                                 // 1st kernel argument
-        extents,                                        // 2nd kernel argument
-        deviceBuffer2Pitch);                            // 3rd kernel argument
+        pDeviceBuffer2, // 1st kernel argument
+        extents, // 2nd kernel argument
+        deviceBuffer2Pitch); // 3rd kernel argument
     alpaka::wait(devQueue);
     std::cout << std::endl;
 
@@ -352,9 +330,9 @@ auto main()
         hostQueue,
         hostWorkDiv,
         printBufferKernel,
-        pHostBuffer,                                    // 1st kernel argument
-        extents,                                        // 2nd kernel argument
-        hostBuffer1Pitch);                              // 3rd kernel argument
+        pHostBuffer, // 1st kernel argument
+        extents, // 2nd kernel argument
+        hostBuffer1Pitch); // 3rd kernel argument
     alpaka::wait(hostQueue);
     std::cout << std::endl;
 
@@ -362,9 +340,9 @@ auto main()
         hostQueue,
         hostWorkDiv,
         printBufferKernel,
-        pHostViewPlainPtr,                              // 1st kernel argument
-        extents,                                        // 2nd kernel argument
-        hostViewPlainPtrPitch);                         // 3rd kernel argument
+        pHostViewPlainPtr, // 1st kernel argument
+        extents, // 2nd kernel argument
+        hostViewPlainPtrPitch); // 3rd kernel argument
     alpaka::wait(hostQueue);
     std::cout << std::endl;
 

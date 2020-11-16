@@ -12,26 +12,26 @@
 #include <alpaka/core/BoostPredef.hpp>
 
 #if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
-    #ifndef NOMINMAX
-        #define NOMINMAX
-    #endif
-    #ifndef WIN32_LEAN_AND_MEAN
-        #define WIN32_LEAN_AND_MEAN
-    #endif
-    // We could use some more macros to reduce the number of sub-headers included, but this would restrict user code.
-    #include <windows.h>
+#    ifndef NOMINMAX
+#        define NOMINMAX
+#    endif
+#    ifndef WIN32_LEAN_AND_MEAN
+#        define WIN32_LEAN_AND_MEAN
+#    endif
+// We could use some more macros to reduce the number of sub-headers included, but this would restrict user code.
+#    include <windows.h>
 #elif BOOST_OS_UNIX || BOOST_OS_MACOS
-    #include <cstdint>
-    #include <unistd.h>
-    #include <sys/types.h>
-    #include <sys/param.h>
-    #if BOOST_OS_BSD || BOOST_OS_MACOS
-        #include <sys/sysctl.h>
-    #endif
+#    include <cstdint>
+#    include <unistd.h>
+#    include <sys/types.h>
+#    include <sys/param.h>
+#    if BOOST_OS_BSD || BOOST_OS_MACOS
+#        include <sys/sysctl.h>
+#    endif
 #endif
 
 #if BOOST_OS_LINUX
-    #include <fstream>
+#    include <fstream>
 #endif
 
 #include <stdexcept>
@@ -48,35 +48,32 @@ namespace alpaka
             constexpr int UNKNOWN_CPU = 0;
             constexpr int UNKNOWN_COMPILER = 1;
 #if BOOST_ARCH_X86
-#if BOOST_COMP_GNUC || BOOST_COMP_CLANG || (!BOOST_COMP_MSVC_EMULATED && defined(__INTEL_COMPILER)) || BOOST_COMP_PGI
-    #include <cpuid.h>
+#    if BOOST_COMP_GNUC || BOOST_COMP_CLANG || (!BOOST_COMP_MSVC_EMULATED && defined(__INTEL_COMPILER))               \
+        || BOOST_COMP_PGI
+#        include <cpuid.h>
             //-----------------------------------------------------------------------------
-            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
-            -> void
+            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4]) -> void
             {
                 __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
             }
 
-#elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED) || defined(__INTEL_COMPILER)
-    #include <intrin.h>
+#    elif BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED) || defined(__INTEL_COMPILER)
+#        include <intrin.h>
             //-----------------------------------------------------------------------------
-            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
-            -> void
+            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4]) -> void
             {
                 __cpuidex(reinterpret_cast<int*>(ex), level, subfunction);
             }
-#else
+#    else
             //-----------------------------------------------------------------------------
-            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
-            -> void
+            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4]) -> void
             {
                 ex[0] = ex[2] = ex[3] = NO_CPUID;
                 ex[1] = UNKNOWN_COMPILER;
             }
-#endif
+#    endif
 #else
-            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
-            -> void
+            inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4]) -> void
             {
                 ex[0] = ex[2] = ex[3] = NO_CPUID;
                 ex[1] = UNKNOWN_CPU;
@@ -84,8 +81,7 @@ namespace alpaka
 #endif
             //-----------------------------------------------------------------------------
             //! \return The name of the CPU the code is running on.
-            inline auto getCpuName()
-            -> std::string
+            inline auto getCpuName() -> std::string
             {
                 // Get extended ids.
                 std::uint32_t ex[4] = {0};
@@ -96,18 +92,18 @@ namespace alpaka
                 {
                     switch(ex[1])
                     {
-                        case UNKNOWN_COMPILER:
-                            return "<unknown: compiler>";
-                        case UNKNOWN_CPU:
-                            return "<unknown: CPU>";
-                        default:
-                            return "<unknown>";
+                    case UNKNOWN_COMPILER:
+                        return "<unknown: compiler>";
+                    case UNKNOWN_CPU:
+                        return "<unknown: CPU>";
+                    default:
+                        return "<unknown>";
                     }
                 }
 #if BOOST_ARCH_X86
                 // Get the information associated with each extended ID.
                 char cpuBrandString[0x40] = {0};
-                for(std::uint32_t i(0x80000000); i<=nExIds; ++i)
+                for(std::uint32_t i(0x80000000); i <= nExIds; ++i)
                 {
                     cpuid(i, 0, ex);
 
@@ -132,9 +128,9 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             //! \return The total number of bytes of global memory.
-            //! Adapted from David Robert Nadeau: http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system
-            inline auto getTotalGlobalMemSizeBytes()
-            -> std::size_t
+            //! Adapted from David Robert Nadeau:
+            //! http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system
+            inline auto getTotalGlobalMemSizeBytes() -> std::size_t
             {
 #if BOOST_OS_WINDOWS
                 MEMORYSTATUSEX status;
@@ -150,15 +146,17 @@ namespace alpaka
                 return static_cast<std::size_t>(status.dwTotalPhys);
 
 #elif BOOST_OS_UNIX || BOOST_OS_MACOS
-                // Unix : Prefer sysctl() over sysconf() except sysctl() with HW_REALMEM and HW_PHYSMEM which are not always reliable
-#if defined(CTL_HW) && (defined(HW_MEMSIZE) || defined(HW_PHYSMEM64))
-                int mib[2] = {CTL_HW,
-    #if defined(HW_MEMSIZE)                                                 // OSX
-                    HW_MEMSIZE
-    #elif defined(HW_PHYSMEM64)                                             // NetBSD, OpenBSD.
-                    HW_PHYSMEM64
-    #endif
-                };
+                // Unix : Prefer sysctl() over sysconf() except sysctl() with HW_REALMEM and HW_PHYSMEM which are not
+                // always reliable
+#    if defined(CTL_HW) && (defined(HW_MEMSIZE) || defined(HW_PHYSMEM64))
+                int mib[2]
+                    = { CTL_HW,
+#        if defined(HW_MEMSIZE) // OSX
+                        HW_MEMSIZE
+#        elif defined(HW_PHYSMEM64) // NetBSD, OpenBSD.
+                        HW_PHYSMEM64
+#        endif
+                      };
                 std::uint64_t size(0);
                 std::size_t sizeLen{sizeof(size)};
                 if(sysctl(mib, 2, &size, &sizeLen, nullptr, 0) < 0)
@@ -167,41 +165,44 @@ namespace alpaka
                 }
                 return static_cast<std::size_t>(size);
 
-#elif defined(_SC_AIX_REALMEM)                                          // AIX.
+#    elif defined(_SC_AIX_REALMEM) // AIX.
                 return static_cast<std::size_t>(sysconf(_SC_AIX_REALMEM)) * static_cast<std::size_t>(1024);
 
-#elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGESIZE)                  // Linux, FreeBSD, OpenBSD, Solaris.
-                return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES)) * static_cast<std::size_t>(sysconf(_SC_PAGESIZE));
+#    elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGESIZE) // Linux, FreeBSD, OpenBSD, Solaris.
+                return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES))
+                    * static_cast<std::size_t>(sysconf(_SC_PAGESIZE));
 
-#elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGE_SIZE)                 // Legacy.
-                return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES)) * static_cast<std::size_t>(sysconf(_SC_PAGE_SIZE));
+#    elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGE_SIZE) // Legacy.
+                return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES))
+                    * static_cast<std::size_t>(sysconf(_SC_PAGE_SIZE));
 
-#elif defined(CTL_HW) && (defined(HW_PHYSMEM) || defined(HW_REALMEM))   // FreeBSD, DragonFly BSD, NetBSD, OpenBSD, and OSX.
-                int mib[2] = {CTL_HW,
-    #if defined(HW_REALMEM)                                                 // FreeBSD.
-                    HW_REALMEM;
-    #elif defined(HW_PYSMEM)                                                // Others.
-                    HW_PHYSMEM;
-    #endif
-                };
-                std::uint32_t size(0);
-                std::size_t const sizeLen{sizeof(size)};
-                if(sysctl(mib, 2, &size, &sizeLen, nullptr, 0) < 0)
-                {
-                    throw std::logic_error("getTotalGlobalMemSizeBytes failed calling sysctl!");
-                }
-                return static_cast<std::size_t>(size);
-#endif
+#    elif defined(CTL_HW)                                                                                             \
+        && (defined(HW_PHYSMEM) || defined(HW_REALMEM)) // FreeBSD, DragonFly BSD, NetBSD, OpenBSD, and OSX.
+                int mib[2]
+                    = { CTL_HW,
+#        if defined(HW_REALMEM) // FreeBSD.
+                        HW_REALMEM;
+#        elif defined(HW_PYSMEM) // Others.
+                        HW_PHYSMEM;
+#        endif
+            };
+            std::uint32_t size(0);
+            std::size_t const sizeLen{sizeof(size)};
+            if(sysctl(mib, 2, &size, &sizeLen, nullptr, 0) < 0)
+            {
+                throw std::logic_error("getTotalGlobalMemSizeBytes failed calling sysctl!");
+            }
+            return static_cast<std::size_t>(size);
+#    endif
 
 #else
-#error "getTotalGlobalMemSizeBytes not implemented for this system!"
+#    error "getTotalGlobalMemSizeBytes not implemented for this system!"
 #endif
-            }
+            } // namespace detail
             //-----------------------------------------------------------------------------
             //! \return The free number of bytes of global memory.
             //! \throws std::logic_error if not implemented on the system and std::runtime_error on other errors.
-            inline auto getFreeGlobalMemSizeBytes()
-            -> std::size_t
+            inline auto getFreeGlobalMemSizeBytes() -> std::size_t
             {
 #if BOOST_OS_WINDOWS
                 MEMORYSTATUSEX status;
@@ -250,9 +251,9 @@ namespace alpaka
                 }
                 return static_cast<std::size_t>(free_pages) * static_cast<std::size_t>(page_size);
 #else
-#error "getFreeGlobalMemSizeBytes not implemented for this system!"
+#    error "getFreeGlobalMemSizeBytes not implemented for this system!"
 #endif
             }
-        }
-    }
-}
+        } // namespace detail
+    } // namespace cpu
+} // namespace alpaka

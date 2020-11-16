@@ -31,23 +31,18 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library abs trait specialization.
-            template<
-                typename TArg>
+            template<typename TArg>
             struct Abs<
                 AbsStdLib,
                 TArg,
-                std::enable_if_t<
-                    std::is_arithmetic<TArg>::value
-                    && std::is_signed<TArg>::value>>
+                std::enable_if_t<std::is_arithmetic<TArg>::value && std::is_signed<TArg>::value>>
             {
-                ALPAKA_FN_HOST static auto abs(
-                    AbsStdLib const & abs_ctx,
-                    TArg const & arg)
+                ALPAKA_FN_HOST static auto abs(AbsStdLib const& abs_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(abs_ctx);
                     return std::abs(arg);
                 }
             };
-        }
-    }
-}
+        } // namespace traits
+    } // namespace math
+} // namespace alpaka

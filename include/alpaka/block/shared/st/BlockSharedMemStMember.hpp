@@ -29,49 +29,52 @@ namespace alpaka
         public:
             //-----------------------------------------------------------------------------
 #ifndef NDEBUG
-            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t capacity) :
-                m_mem(mem),
-                m_capacity(static_cast<std::uint32_t>(capacity))
+            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t capacity)
+                : m_mem(mem)
+                , m_capacity(static_cast<std::uint32_t>(capacity))
             {
-#ifdef ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
-                ALPAKA_ASSERT( ( m_mem == nullptr ) == ( m_capacity == 0u ) );
-#endif
+#    ifdef ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
+                ALPAKA_ASSERT((m_mem == nullptr) == (m_capacity == 0u));
+#    endif
             }
 #else
-            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t) : m_mem(mem) {}
+            BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t) : m_mem(mem)
+            {
+            }
 #endif
             //-----------------------------------------------------------------------------
-            BlockSharedMemStMemberImpl(BlockSharedMemStMemberImpl const &) = delete;
+            BlockSharedMemStMemberImpl(BlockSharedMemStMemberImpl const&) = delete;
             //-----------------------------------------------------------------------------
-            BlockSharedMemStMemberImpl(BlockSharedMemStMemberImpl &&) = delete;
+            BlockSharedMemStMemberImpl(BlockSharedMemStMemberImpl&&) = delete;
             //-----------------------------------------------------------------------------
-            auto operator=(BlockSharedMemStMemberImpl const &) -> BlockSharedMemStMemberImpl & = delete;
+            auto operator=(BlockSharedMemStMemberImpl const&) -> BlockSharedMemStMemberImpl& = delete;
             //-----------------------------------------------------------------------------
-            auto operator=(BlockSharedMemStMemberImpl &&) -> BlockSharedMemStMemberImpl & = delete;
+            auto operator=(BlockSharedMemStMemberImpl&&) -> BlockSharedMemStMemberImpl& = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~BlockSharedMemStMemberImpl() = default;
 
-            template <typename T>
+            template<typename T>
             void alloc() const
             {
                 m_allocdBytes = allocPitch<T>();
                 m_allocdBytes += static_cast<std::uint32_t>(sizeof(T));
-#if (defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (! defined NDEBUG)
+#if(defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (!defined NDEBUG)
                 ALPAKA_ASSERT(m_allocdBytes <= m_capacity);
 #endif
             }
 
 #if BOOST_COMP_GNUC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored                                                                                    \
+        "-Wcast-align" // "cast from 'unsigned char*' to 'unsigned int*' increases required alignment of target type"
 #endif
-            template <typename T>
+            template<typename T>
             T& getLatestVar() const
             {
-                return *reinterpret_cast<T*>(&m_mem[m_allocdBytes-sizeof(T)]);
+                return *reinterpret_cast<T*>(&m_mem[m_allocdBytes - sizeof(T)]);
             }
 #if BOOST_COMP_GNUC
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
 
             void free() const
@@ -92,20 +95,19 @@ namespace alpaka
                 static_assert(
                     core::vectorization::defaultAlignment >= alignof(T),
                     "Unable to get block shared static memory for types with alignment higher than defaultAlignment!");
-                constexpr std::uint32_t align = static_cast<std::uint32_t>(
-                    std::max(TDataAlignBytes, alignof(T)));
-                return (m_allocdBytes/align + (m_allocdBytes%align>0u))*align;
+                constexpr std::uint32_t align = static_cast<std::uint32_t>(std::max(TDataAlignBytes, alignof(T)));
+                return (m_allocdBytes / align + (m_allocdBytes % align > 0u)) * align;
             }
         };
-    }
+    } // namespace detail
     //#############################################################################
     //! Static block shared memory provider using a pointer to
     //! externally allocated fixed-size memory, likely provided by
     //! BlockSharedMemDynMember.
     template<std::size_t TDataAlignBytes = core::vectorization::defaultAlignment>
-    class BlockSharedMemStMember :
-        public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>,
-        public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
+    class BlockSharedMemStMember
+        : public detail::BlockSharedMemStMemberImpl<TDataAlignBytes>
+        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStMember<TDataAlignBytes>>
     {
     public:
         using detail::BlockSharedMemStMemberImpl<TDataAlignBytes>::BlockSharedMemStMemberImpl;
@@ -114,37 +116,25 @@ namespace alpaka
     namespace traits
     {
         //#############################################################################
-        template<
-            typename T,
-            std::size_t TDataAlignBytes,
-            std::size_t TuniqueId>
-        struct AllocVar<
-            T,
-            TuniqueId,
-            BlockSharedMemStMember<TDataAlignBytes>>
+        template<typename T, std::size_t TDataAlignBytes, std::size_t TuniqueId>
+        struct AllocVar<T, TuniqueId, BlockSharedMemStMember<TDataAlignBytes>>
         {
             //-----------------------------------------------------------------------------
-            static auto allocVar(
-                BlockSharedMemStMember<TDataAlignBytes> const &smem)
-            -> T &
+            static auto allocVar(BlockSharedMemStMember<TDataAlignBytes> const& smem) -> T&
             {
                 smem.template alloc<T>();
                 return smem.template getLatestVar<T>();
             }
         };
         //#############################################################################
-        template<
-            std::size_t TDataAlignBytes>
-        struct FreeMem<
-            BlockSharedMemStMember<TDataAlignBytes>>
+        template<std::size_t TDataAlignBytes>
+        struct FreeMem<BlockSharedMemStMember<TDataAlignBytes>>
         {
             //-----------------------------------------------------------------------------
-            static auto freeMem(
-                BlockSharedMemStMember<TDataAlignBytes> const &mem)
-            -> void
+            static auto freeMem(BlockSharedMemStMember<TDataAlignBytes> const& mem) -> void
             {
                 mem.free();
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

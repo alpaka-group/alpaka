@@ -22,6 +22,6 @@ namespace alpaka
         //#############################################################################
         //! The caller is NOT waiting until the enqueued task is finished
         struct NonBlocking;
-    }
+    } // namespace property
     using namespace property;
-}
+} // namespace alpaka

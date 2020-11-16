@@ -11,13 +11,13 @@
 
 #ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
 
-#if _OPENMP < 201307
-    #error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
-#endif
+#    if _OPENMP < 201307
+#        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+#    endif
 
-#include <alpaka/dev/DevOmp5.hpp>
+#    include <alpaka/dev/DevOmp5.hpp>
 
-#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
+#    include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
 
 namespace alpaka
 {
