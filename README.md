@@ -54,7 +54,10 @@ Accelerator Back-ends
 |Serial|n/a|Host CPU (single core)|sequential|sequential (only 1 thread per block)|
 |OpenMP 2.0+ blocks|OpenMP 2.0+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
 |OpenMP 2.0+ threads|OpenMP 2.0+|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
-|OpenMP 4.0+ (CPU)|OpenMP 4.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
+|OpenMP 5.0+ |OpenMP 5.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
+| ||GPU|parallel (undefined)|parallel (lock-step within warps)|
+|OpenACC (experimental)|OpenACC 2.0+|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
+|||GPU|parallel (undefined)|parallel (lock-step within warps)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 | Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |TBB|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
