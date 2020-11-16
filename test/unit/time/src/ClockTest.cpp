@@ -20,19 +20,13 @@ class ClockTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
-        std::uint64_t const start(
-            alpaka::clock(acc));
+        std::uint64_t const start(alpaka::clock(acc));
         ALPAKA_CHECK(*success, 0u != start);
 
-        std::uint64_t const end(
-            alpaka::clock(acc));
+        std::uint64_t const end(alpaka::clock(acc));
         ALPAKA_CHECK(*success, 0u != end);
 
         // 'end' has to be greater equal 'start'.
@@ -42,14 +36,13 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "clockIsWorking", "[timeClock]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("clockIsWorking", "[timeClock]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
     ClockTestKernel kernel;
 

@@ -16,7 +16,9 @@
 
 namespace alpaka
 {
-    struct ConceptBlockSync{};
+    struct ConceptBlockSync
+    {
+    };
 
     //-----------------------------------------------------------------------------
     //! The block synchronization traits.
@@ -24,19 +26,14 @@ namespace alpaka
     {
         //#############################################################################
         //! The block synchronization operation trait.
-        template<
-            typename TBlockSync,
-            typename TSfinae = void>
+        template<typename TBlockSync, typename TSfinae = void>
         struct SyncBlockThreads;
 
         //#############################################################################
         //! The block synchronization and predicate operation trait.
-        template<
-            typename TOp,
-            typename TBlockSync,
-            typename TSfinae = void>
+        template<typename TOp, typename TBlockSync, typename TSfinae = void>
         struct SyncBlockThreadsPredicate;
-    }
+    } // namespace traits
 
     //-----------------------------------------------------------------------------
     //! Synchronizes all threads within the current block (independently for all blocks).
@@ -44,32 +41,25 @@ namespace alpaka
     //! \tparam TBlockSync The block synchronization implementation type.
     //! \param blockSync The block synchronization implementation.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TBlockSync>
-    ALPAKA_FN_ACC auto syncBlockThreads(
-        TBlockSync const & blockSync)
-    -> void
+    template<typename TBlockSync>
+    ALPAKA_FN_ACC auto syncBlockThreads(TBlockSync const& blockSync) -> void
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptBlockSync, TBlockSync>;
-        traits::SyncBlockThreads<
-            ImplementationBase>
-        ::syncBlockThreads(
-            blockSync);
+        traits::SyncBlockThreads<ImplementationBase>::syncBlockThreads(blockSync);
     }
 
     //#############################################################################
     //! The counting function object.
     struct BlockCount
     {
-        enum { InitialValue = 0u};
+        enum
+        {
+            InitialValue = 0u
+        };
 
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T const & currentResult,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T const& currentResult, T const& value) const -> T
         {
             return currentResult + static_cast<T>(value != static_cast<T>(0));
         }
@@ -78,15 +68,14 @@ namespace alpaka
     //! The logical and function object.
     struct BlockAnd
     {
-        enum { InitialValue = 1u};
+        enum
+        {
+            InitialValue = 1u
+        };
 
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T const & currentResult,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T const& currentResult, T const& value) const -> T
         {
             return static_cast<T>(currentResult && (value != static_cast<T>(0)));
         }
@@ -95,15 +84,14 @@ namespace alpaka
     //! The logical or function object.
     struct BlockOr
     {
-        enum { InitialValue = 0u};
+        enum
+        {
+            InitialValue = 0u
+        };
 
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T const & currentResult,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T const& currentResult, T const& value) const -> T
         {
             return static_cast<T>(currentResult || (value != static_cast<T>(0)));
         }
@@ -119,21 +107,12 @@ namespace alpaka
     //! \param blockSync The block synchronization implementation.
     //! \param predicate The predicate value of the current thread.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TOp,
-        typename TBlockSync>
-    ALPAKA_FN_ACC auto syncBlockThreadsPredicate(
-        TBlockSync const & blockSync,
-        int predicate)
-    -> int
+    template<typename TOp, typename TBlockSync>
+    ALPAKA_FN_ACC auto syncBlockThreadsPredicate(TBlockSync const& blockSync, int predicate) -> int
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptBlockSync, TBlockSync>;
-        return
-            traits::SyncBlockThreadsPredicate<
-                TOp,
-                ImplementationBase>
-            ::syncBlockThreadsPredicate(
-                blockSync,
-                predicate);
+        return traits::SyncBlockThreadsPredicate<TOp, ImplementationBase>::syncBlockThreadsPredicate(
+            blockSync,
+            predicate);
     }
-}
+} // namespace alpaka

@@ -11,16 +11,16 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
-#include <alpaka/idx/Traits.hpp>
+#    include <alpaka/idx/Traits.hpp>
 
-#include <alpaka/core/Assert.hpp>
-#include <alpaka/core/Concepts.hpp>
-#include <alpaka/core/Positioning.hpp>
-#include <alpaka/core/Unused.hpp>
-#include <alpaka/vec/Vec.hpp>
+#    include <alpaka/core/Assert.hpp>
+#    include <alpaka/core/Concepts.hpp>
+#    include <alpaka/core/Positioning.hpp>
+#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/vec/Vec.hpp>
 
-#include <thread>
-#include <map>
+#    include <thread>
+#    include <map>
 
 namespace alpaka
 {
@@ -28,66 +28,53 @@ namespace alpaka
     {
         //#############################################################################
         //! The threads accelerator index provider.
-        template<
-            typename TDim,
-            typename TIdx>
+        template<typename TDim, typename TIdx>
         class IdxBtRefThreadIdMap : public concepts::Implements<ConceptIdxBt, IdxBtRefThreadIdMap<TDim, TIdx>>
         {
         public:
             using ThreadIdToIdxMap = std::map<std::thread::id, Vec<TDim, TIdx>>;
 
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST IdxBtRefThreadIdMap(
-                ThreadIdToIdxMap const & mThreadToIndices) :
-                m_threadToIndexMap(mThreadToIndices)
-            {}
+            ALPAKA_FN_HOST IdxBtRefThreadIdMap(ThreadIdToIdxMap const& mThreadToIndices)
+                : m_threadToIndexMap(mThreadToIndices)
+            {
+            }
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const &) = delete;
+            ALPAKA_FN_HOST IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST IdxBtRefThreadIdMap(IdxBtRefThreadIdMap &&) = delete;
+            ALPAKA_FN_HOST IdxBtRefThreadIdMap(IdxBtRefThreadIdMap&&) = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(IdxBtRefThreadIdMap const &) -> IdxBtRefThreadIdMap & = delete;
+            ALPAKA_FN_HOST auto operator=(IdxBtRefThreadIdMap const&) -> IdxBtRefThreadIdMap& = delete;
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(IdxBtRefThreadIdMap &&) -> IdxBtRefThreadIdMap & = delete;
+            ALPAKA_FN_HOST auto operator=(IdxBtRefThreadIdMap&&) -> IdxBtRefThreadIdMap& = delete;
             //-----------------------------------------------------------------------------
             /*virtual*/ ~IdxBtRefThreadIdMap() = default;
 
         public:
-            ThreadIdToIdxMap const & m_threadToIndexMap;   //!< The mapping of thread id's to thread indices.
+            ThreadIdToIdxMap const& m_threadToIndexMap; //!< The mapping of thread id's to thread indices.
         };
-    }
+    } // namespace bt
 
     namespace traits
     {
         //#############################################################################
         //! The CPU threads accelerator index dimension get trait specialization.
-        template<
-            typename TDim,
-            typename TIdx>
-        struct DimType<
-            bt::IdxBtRefThreadIdMap<TDim, TIdx>>
+        template<typename TDim, typename TIdx>
+        struct DimType<bt::IdxBtRefThreadIdMap<TDim, TIdx>>
         {
             using type = TDim;
         };
 
         //#############################################################################
         //! The CPU threads accelerator block thread index get trait specialization.
-        template<
-            typename TDim,
-            typename TIdx>
-        struct GetIdx<
-            bt::IdxBtRefThreadIdMap<TDim, TIdx>,
-            origin::Block,
-            unit::Threads>
+        template<typename TDim, typename TIdx>
+        struct GetIdx<bt::IdxBtRefThreadIdMap<TDim, TIdx>, origin::Block, unit::Threads>
         {
             //-----------------------------------------------------------------------------
             //! \return The index of the current thread in the block.
-            template<
-                typename TWorkDiv>
-            ALPAKA_FN_HOST static auto getIdx(
-                bt::IdxBtRefThreadIdMap<TDim, TIdx> const & idx,
-                TWorkDiv const & workDiv)
-            -> Vec<TDim, TIdx>
+            template<typename TWorkDiv>
+            ALPAKA_FN_HOST static auto getIdx(bt::IdxBtRefThreadIdMap<TDim, TIdx> const& idx, TWorkDiv const& workDiv)
+                -> Vec<TDim, TIdx>
             {
                 alpaka::ignore_unused(workDiv);
                 auto const threadId(std::this_thread::get_id());
@@ -99,15 +86,12 @@ namespace alpaka
 
         //#############################################################################
         //! The CPU threads accelerator block thread index idx type trait specialization.
-        template<
-            typename TDim,
-            typename TIdx>
-        struct IdxType<
-            bt::IdxBtRefThreadIdMap<TDim, TIdx>>
+        template<typename TDim, typename TIdx>
+        struct IdxType<bt::IdxBtRefThreadIdMap<TDim, TIdx>>
         {
             using type = TIdx;
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif

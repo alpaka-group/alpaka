@@ -23,12 +23,8 @@ class ActivemaskSingleThreadWarpTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
         ALPAKA_CHECK(*success, warpExtent == 1);
@@ -43,13 +39,8 @@ class ActivemaskMultipleThreadWarpTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success,
-        std::uint64_t inactiveThreadIdx) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, std::uint64_t inactiveThreadIdx) const -> void
     {
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
         ALPAKA_CHECK(*success, warpExtent > 1);
@@ -58,29 +49,21 @@ public:
         auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const localThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
-        auto const threadIdxInWarp = static_cast<std::uint64_t>(
-            alpaka::mapIdx<1u>(
-                localThreadIdx,
-                blockExtent)[0]
-        );
+        auto const threadIdxInWarp = static_cast<std::uint64_t>(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
-        if (threadIdxInWarp == inactiveThreadIdx)
+        if(threadIdxInWarp == inactiveThreadIdx)
             return;
 
         auto const actual = alpaka::warp::activemask(acc);
         using Result = decltype(actual);
-        Result const allActive =
-            (Result{1} << static_cast<Result>(warpExtent)) - 1;
-        Result const expected = allActive &
-            ~(Result{1} << inactiveThreadIdx);
-        ALPAKA_CHECK(
-            *success,
-            actual == expected);
+        Result const allActive = (Result{1} << static_cast<Result>(warpExtent)) - 1;
+        Result const expected = allActive & ~(Result{1} << inactiveThreadIdx);
+        ALPAKA_CHECK(*success, actual == expected);
     }
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "activemask", "[warp]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dev = alpaka::Dev<Acc>;
@@ -90,15 +73,12 @@ TEMPLATE_LIST_TEST_CASE( "activemask", "[warp]", alpaka::test::TestAccs)
 
     Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
     auto const warpExtent = alpaka::getWarpSize(dev);
-    if (warpExtent == 1)
+    if(warpExtent == 1)
     {
         Idx const gridThreadExtentPerDim = 4;
-        alpaka::test::KernelExecutionFixture<Acc> fixture(
-            alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
+        alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(gridThreadExtentPerDim));
         ActivemaskSingleThreadWarpTestKernel kernel;
-        REQUIRE(
-            fixture(
-                kernel));
+        REQUIRE(fixture(kernel));
     }
     else
     {
@@ -112,18 +92,11 @@ TEMPLATE_LIST_TEST_CASE( "activemask", "[warp]", alpaka::test::TestAccs)
         auto blockThreadExtent = alpaka::Vec<Dim, Idx>::ones();
         blockThreadExtent[0] = static_cast<Idx>(warpExtent);
         auto const threadElementExtent = alpaka::Vec<Dim, Idx>::ones();
-        auto workDiv = typename ExecutionFixture::WorkDiv{
-            gridBlockExtent,
-            blockThreadExtent,
-            threadElementExtent};
-        auto fixture = ExecutionFixture{ workDiv };
+        auto workDiv = typename ExecutionFixture::WorkDiv{gridBlockExtent, blockThreadExtent, threadElementExtent};
+        auto fixture = ExecutionFixture{workDiv};
         ActivemaskMultipleThreadWarpTestKernel kernel;
-        for (auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent;
-            inactiveThreadIdx++)
-            REQUIRE(
-                fixture(
-                    kernel,
-                    inactiveThreadIdx));
+        for(auto inactiveThreadIdx = 0u; inactiveThreadIdx < warpExtent; inactiveThreadIdx++)
+            REQUIRE(fixture(kernel, inactiveThreadIdx));
 #endif
     }
 }

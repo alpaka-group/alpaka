@@ -20,20 +20,20 @@ namespace alpaka
     {
         //#############################################################################
         //! A std::tuple holding idx types.
-        using TestIdxs =
-            std::tuple<
-                // size_t is most probably identical to either std::uint64_t or std::uint32_t.
-                // This would lead to duplicate tests (especially test names) which is not allowed.
-                //std::size_t,
+        using TestIdxs = std::tuple<
+        // size_t is most probably identical to either std::uint64_t or std::uint32_t.
+        // This would lead to duplicate tests (especially test names) which is not allowed.
+        // std::size_t,
 #if !defined(ALPAKA_CI)
-                std::int64_t,
+            std::int64_t,
 #endif
-                std::uint64_t,
-                std::int32_t
+            std::uint64_t,
+            std::int32_t
 #if !defined(ALPAKA_CI)
-                ,std::uint32_t
+            ,
+            std::uint32_t
 #endif
-                // index type must be >=32bit
+            // index type must be >=32bit
             >;
-    }
-}
+    } // namespace test
+} // namespace alpaka

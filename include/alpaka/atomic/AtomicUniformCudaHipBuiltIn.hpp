@@ -11,22 +11,22 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#include <alpaka/core/BoostPredef.hpp>
+#    include <alpaka/core/BoostPredef.hpp>
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#endif
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#    endif
 
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-    #error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#endif
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#    endif
 
-#include <alpaka/core/Unused.hpp>
-#include <alpaka/atomic/Op.hpp>
-#include <alpaka/atomic/Traits.hpp>
-#include <alpaka/meta/DependentFalseType.hpp>
+#    include <alpaka/core/Unused.hpp>
+#    include <alpaka/atomic/Op.hpp>
+#    include <alpaka/atomic/Traits.hpp>
+#    include <alpaka/meta/DependentFalseType.hpp>
 
-#include <climits>
+#    include <climits>
 
 namespace alpaka
 {
@@ -41,13 +41,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         AtomicUniformCudaHipBuiltIn() = default;
         //-----------------------------------------------------------------------------
-        __device__ AtomicUniformCudaHipBuiltIn(AtomicUniformCudaHipBuiltIn const &) = delete;
+        __device__ AtomicUniformCudaHipBuiltIn(AtomicUniformCudaHipBuiltIn const&) = delete;
         //-----------------------------------------------------------------------------
-        __device__ AtomicUniformCudaHipBuiltIn(AtomicUniformCudaHipBuiltIn &&) = delete;
+        __device__ AtomicUniformCudaHipBuiltIn(AtomicUniformCudaHipBuiltIn&&) = delete;
         //-----------------------------------------------------------------------------
-        __device__ auto operator=(AtomicUniformCudaHipBuiltIn const &) -> AtomicUniformCudaHipBuiltIn & = delete;
+        __device__ auto operator=(AtomicUniformCudaHipBuiltIn const&) -> AtomicUniformCudaHipBuiltIn& = delete;
         //-----------------------------------------------------------------------------
-        __device__ auto operator=(AtomicUniformCudaHipBuiltIn &&) -> AtomicUniformCudaHipBuiltIn & = delete;
+        __device__ auto operator=(AtomicUniformCudaHipBuiltIn&&) -> AtomicUniformCudaHipBuiltIn& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ~AtomicUniformCudaHipBuiltIn() = default;
     };
@@ -56,145 +56,104 @@ namespace alpaka
     {
         //#############################################################################
         //! The specializations to execute the requested atomic ops of the CUDA/HIP accelerator.
-        // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions how to implement everything with CAS
+        // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions how to implement everything with
+        // CAS
 
         //-----------------------------------------------------------------------------
         // Add.
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAdd,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicAdd(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIP accelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAdd,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicAdd(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIP accelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAdd,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicAdd(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
                 return ::atomicAdd(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
-                return ::atomicAdd(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIP accelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAdd,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& value) -> unsigned long long int
             {
                 return ::atomicAdd(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIP accelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAdd,
-            AtomicUniformCudaHipBuiltIn,
-            float,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicUniformCudaHipBuiltIn, float, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                float * const addr,
-                float const & value)
-            -> float
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, float* const addr, float const& value)
+                -> float
             {
                 return ::atomicAdd(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIP accelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAdd,
-            AtomicUniformCudaHipBuiltIn,
-            double,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAdd, AtomicUniformCudaHipBuiltIn, double, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                double * const addr,
-                double const & value)
-            -> double
+                AtomicUniformCudaHipBuiltIn const&,
+                double* const addr,
+                double const& value) -> double
             {
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(6, 0, 0)
+#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(6, 0, 0)
                 return ::atomicAdd(addr, value);
-#else
+#    else
                 // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 
-                unsigned long long int * address_as_ull(reinterpret_cast<unsigned long long int *>(addr));
+                unsigned long long int* address_as_ull(reinterpret_cast<unsigned long long int*>(addr));
                 unsigned long long int old(*address_as_ull);
                 unsigned long long int assumed;
                 do
@@ -203,12 +162,12 @@ namespace alpaka
                     old = ::atomicCAS(
                         address_as_ull,
                         assumed,
-                        static_cast<unsigned long long>(__double_as_longlong(value + __longlong_as_double(static_cast<long long>(assumed)))));
+                        static_cast<unsigned long long>(
+                            __double_as_longlong(value + __longlong_as_double(static_cast<long long>(assumed)))));
                     // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
-                }
-                while(assumed != old);
+                } while(assumed != old);
                 return __longlong_as_double(static_cast<long long>(old));
-#endif
+#    endif
             }
         };
 
@@ -217,73 +176,52 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIP accelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicSub,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicSub, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicSub(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIP accelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicSub,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicSub, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicSub(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicSub,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicSub, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
-                return ::atomicSub(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicSub(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicSub, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
-#endif
+                    "atomicOp<AtomicSub, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when "
+                    "sizeof(unsigned long int) == 4");
+#    endif
             }
         };
 
@@ -292,107 +230,81 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMin,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicMin(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMin,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicMin(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMin,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicMin(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMin(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
-                return ::atomicMin(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
-#endif
-#endif
+                    "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
+                    "3.5");
+#        endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMin,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& value) -> unsigned long long int
             {
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMin(addr, value);
-#else
+#    else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
-#endif
+                    "atomicOp<AtomicMin, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
+                    ">= 3.5");
+#    endif
             }
         };
 
@@ -401,106 +313,80 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMax,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicMax(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMax,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicMax(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMax,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicMax(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMax(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
-                return ::atomicMax(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
-#endif
-#endif
+                    "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
+                    "3.5");
+#        endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicMax,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& value) -> unsigned long long int
             {
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicMax(addr, value);
-#else
+#    else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
-#endif
+                    "atomicOp<AtomicMax, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
+                    ">= 3.5");
+#    endif
             }
         };
 
@@ -509,109 +395,73 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicExch,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicExch(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicExch,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicExch(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicExch,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicExch(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
                 return ::atomicExch(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
-                return ::atomicExch(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicExch,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& value) -> unsigned long long int
             {
                 return ::atomicExch(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicExch,
-            AtomicUniformCudaHipBuiltIn,
-            float,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicExch, AtomicUniformCudaHipBuiltIn, float, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                float * const addr,
-                float const & value)
-            -> float
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, float* const addr, float const& value)
+                -> float
             {
                 return ::atomicExch(addr, value);
             }
@@ -622,53 +472,40 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicInc,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicInc, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicInc(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicInc,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicInc, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
-                return ::atomicInc(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicInc(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicInc, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
-#endif
+                    "atomicOp<AtomicInc, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when "
+                    "sizeof(unsigned long int) == 4");
+#    endif
             }
         };
 
@@ -677,53 +514,40 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicDec,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicDec, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicDec(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicDec,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicDec, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
-                return ::atomicDec(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicDec(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicDec, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when sizeof(unsigned long int) == 4");
-#endif
+                    "atomicOp<AtomicDec, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported when "
+                    "sizeof(unsigned long int) == 4");
+#    endif
             }
         };
 
@@ -732,107 +556,81 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAnd,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicAnd(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAnd,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicAnd(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAnd,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicAnd(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicAnd(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
-                return ::atomicAnd(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
-#endif
-#endif
+                    "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
+                    "3.5");
+#        endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicAnd,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& value) -> unsigned long long int
             {
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicAnd(addr, value);
-#else
+#    else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
-#endif
+                    "atomicOp<AtomicAnd, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
+                    ">= 3.5");
+#    endif
             }
         };
 
@@ -841,107 +639,81 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicOr,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicOr(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicOr,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicOr(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicOr,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicOr(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicOr(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
-                return ::atomicOr(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
-#endif
-#endif
+                    "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
+                    "3.5");
+#        endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicOr,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& value) -> unsigned long long int
             {
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicOr(addr, value);
-#else
+#    else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
-#endif
+                    "atomicOp<AtomicOr, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
+                    ">= 3.5");
+#    endif
             }
         };
 
@@ -950,107 +722,81 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicXor,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & value)
-            -> int
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const&, int* const addr, int const& value)
+                -> int
             {
                 return ::atomicXor(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicXor,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicXor(addr, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicXor,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
+                return ::atomicXor(reinterpret_cast<unsigned int*>(addr), static_cast<unsigned int>(value));
+#    else // ULONG_MAX == ULLONG_MAX LP64
+#        if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicXor(
-                    reinterpret_cast<unsigned int *>(addr),
-                    static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
-                return ::atomicXor(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(value));
-#else
+#        else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= 3.5");
-#endif
-#endif
+                    "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long int> is only supported on sm >= "
+                    "3.5");
+#        endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicXor,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& value) -> unsigned long long int
             {
-#if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
+#    if BOOST_ARCH_PTX >= BOOST_VERSION_NUMBER(3, 5, 0)
                 return ::atomicXor(addr, value);
-#else
+#    else
                 alpaka::ignore_unused(addr);
                 alpaka::ignore_unused(value);
                 static_assert(
                     meta::DependentFalseType<THierarchy>::value,
-                    "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm >= 3.5");
-#endif
+                    "atomicOp<AtomicXor, AtomicUniformCudaHipBuiltIn, unsigned long long int> is only supported on sm "
+                    ">= 3.5");
+#    endif
             }
         };
 
@@ -1059,95 +805,71 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicCas,
-            AtomicUniformCudaHipBuiltIn,
-            int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                int * const addr,
-                int const & compare,
-                int const & value)
-            -> int
+                AtomicUniformCudaHipBuiltIn const&,
+                int* const addr,
+                int const& compare,
+                int const& value) -> int
             {
                 return ::atomicCAS(addr, compare, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicCas,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, unsigned int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned int * const addr,
-                unsigned int const & compare,
-                unsigned int const & value)
-            -> unsigned int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned int* const addr,
+                unsigned int const& compare,
+                unsigned int const& value) -> unsigned int
             {
                 return ::atomicCAS(addr, compare, value);
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicCas,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, unsigned long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             //
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long int * const addr,
-                unsigned long int const & compare,
-                unsigned long int const & value)
-            -> unsigned long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long int* const addr,
+                unsigned long int const& compare,
+                unsigned long int const& value) -> unsigned long int
             {
-#if UINT_MAX == ULONG_MAX // LLP64
+#    if UINT_MAX == ULONG_MAX // LLP64
                 return ::atomicCAS(
-                    reinterpret_cast<unsigned int *>(addr),
+                    reinterpret_cast<unsigned int*>(addr),
                     static_cast<unsigned int>(compare),
                     static_cast<unsigned int>(value));
-#else // ULONG_MAX == ULLONG_MAX LP64
+#    else // ULONG_MAX == ULLONG_MAX LP64
                 return ::atomicCAS(
-                    reinterpret_cast<unsigned long long int *>(addr),
+                    reinterpret_cast<unsigned long long int*>(addr),
                     static_cast<unsigned long long int>(compare),
                     static_cast<unsigned long long int>(value));
-#endif
+#    endif
             }
         };
         //-----------------------------------------------------------------------------
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename THierarchy>
-        struct AtomicOp<
-            AtomicCas,
-            AtomicUniformCudaHipBuiltIn,
-            unsigned long long int,
-            THierarchy>
+        template<typename THierarchy>
+        struct AtomicOp<AtomicCas, AtomicUniformCudaHipBuiltIn, unsigned long long int, THierarchy>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const &,
-                unsigned long long int * const addr,
-                unsigned long long int const & compare,
-                unsigned long long int const & value)
-            -> unsigned long long int
+                AtomicUniformCudaHipBuiltIn const&,
+                unsigned long long int* const addr,
+                unsigned long long int const& compare,
+                unsigned long long int const& value) -> unsigned long long int
             {
                 return ::atomicCAS(addr, compare, value);
             }
@@ -1155,22 +877,12 @@ namespace alpaka
 
         //#############################################################################
         //! The GPU CUDA/HIPaccelerator atomic operation.
-        template<
-            typename TOp,
-            typename T,
-            typename THierarchy>
-        struct AtomicOp<
-            TOp,
-            AtomicUniformCudaHipBuiltIn,
-            T,
-            THierarchy>
+        template<typename TOp, typename T, typename THierarchy>
+        struct AtomicOp<TOp, AtomicUniformCudaHipBuiltIn, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const & atomic,
-                T * const addr,
-                T const & value)
-            -> T
+            __device__ static auto atomicOp(AtomicUniformCudaHipBuiltIn const& atomic, T* const addr, T const& value)
+                -> T
             {
                 alpaka::ignore_unused(atomic);
                 alpaka::ignore_unused(addr);
@@ -1183,11 +895,10 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             __device__ static auto atomicOp(
-                AtomicUniformCudaHipBuiltIn const & atomic,
-                T * const addr,
-                T const & compare,
-                T const & value)
-            -> T
+                AtomicUniformCudaHipBuiltIn const& atomic,
+                T* const addr,
+                T const& compare,
+                T const& value) -> T
             {
                 alpaka::ignore_unused(atomic);
                 alpaka::ignore_unused(addr);
@@ -1200,7 +911,7 @@ namespace alpaka
                 return T();
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif

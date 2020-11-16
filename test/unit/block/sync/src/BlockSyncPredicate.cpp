@@ -20,12 +20,8 @@ class BlockSyncPredicateTestKernel
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         using Idx = alpaka::Idx<TAcc>;
 
@@ -47,7 +43,8 @@ public:
             Idx const modulus(3u);
             int const predicate(static_cast<int>(blockThreadIdx1D % modulus));
             auto const result(alpaka::syncBlockThreadsPredicate<alpaka::BlockCount>(acc, predicate));
-            auto const expectedResult(static_cast<int>(blockThreadExtent1D - ((blockThreadExtent1D + modulus - static_cast<Idx>(1u)) / modulus)));
+            auto const expectedResult(static_cast<int>(
+                blockThreadExtent1D - ((blockThreadExtent1D + modulus - static_cast<Idx>(1u)) / modulus)));
             ALPAKA_CHECK(*success, expectedResult == result);
         }
 
@@ -88,7 +85,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "synchronizePredicate", "[blockSync]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("synchronizePredicate", "[blockSync]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
@@ -98,21 +95,15 @@ TEMPLATE_LIST_TEST_CASE( "synchronizePredicate", "[blockSync]", alpaka::test::Te
 
     // 4^Dim
     {
-        alpaka::test::KernelExecutionFixture<Acc> fixture(
-            alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(4u)));
+        alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(4u)));
 
-        REQUIRE(
-            fixture(
-                kernel));
+        REQUIRE(fixture(kernel));
     }
 
     // 1^Dim
     {
-        alpaka::test::KernelExecutionFixture<Acc> fixture(
-            alpaka::Vec<Dim, Idx>::ones());
+        alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
-        REQUIRE(
-            fixture(
-                kernel));
+        REQUIRE(fixture(kernel));
     }
 }

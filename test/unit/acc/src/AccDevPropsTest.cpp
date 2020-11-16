@@ -15,7 +15,7 @@
 #include <catch2/catch.hpp>
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "getAccDevProps", "[acc]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("getAccDevProps", "[acc]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dev = alpaka::Dev<Acc>;

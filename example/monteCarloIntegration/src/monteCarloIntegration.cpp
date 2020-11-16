@@ -31,14 +31,9 @@ struct Function
     //! \param acc The accelerator to be executed on.
     //! \param x The argument.
     template<typename TAcc>
-    ALPAKA_FN_ACC
-    auto operator ()(
-        TAcc const & acc,
-        float const x) -> float
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, float const x) -> float
     {
-        return alpaka::math::sqrt(
-            acc,
-            (1.0f - x * x));
+        return alpaka::math::sqrt(acc, (1.0f - x * x));
     }
 };
 
@@ -56,27 +51,18 @@ struct Kernel
     //! \param numPoints The total number of points to be calculated.
     //! \param globalCounter The sum of all local results.
     //! \param functor The function for which the integral is to be computed.
-    template<
-        typename TAcc,
-        typename TFunctor>
-    ALPAKA_FN_ACC
-    auto operator ()(
-        TAcc const & acc,
+    template<typename TAcc, typename TFunctor>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
         size_t const numPoints,
-        uint32_t *const globalCounter,
+        uint32_t* const globalCounter,
         TFunctor functor) const -> void
     {
         // Get the global linearized thread idx.
-        auto const globalThreadIdx = alpaka::getIdx<
-            alpaka::Grid,
-            alpaka::Threads>(acc);
-        auto const globalThreadExtent = alpaka::getWorkDiv<
-            alpaka::Grid,
-            alpaka::Threads>(acc);
+        auto const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        auto const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
 
-        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(
-            globalThreadIdx,
-            globalThreadExtent)[0];
+        auto const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent)[0];
         // Setup generator and distribution.
         auto generator = alpaka::rand::generator::createDefault(
             acc,
@@ -86,17 +72,13 @@ struct Kernel
         auto dist(alpaka::rand::distribution::createUniformReal<float>(acc));
 
         uint32_t localCount = 0;
-        for(size_t i = linearizedGlobalThreadIdx;
-            i < numPoints;
-            i += globalThreadExtent.prod())
+        for(size_t i = linearizedGlobalThreadIdx; i < numPoints; i += globalThreadExtent.prod())
         {
             // Generate a point in the 2D interval.
             float x = dist(generator);
             float y = dist(generator);
             // Count every time where the point is "below" the given function.
-            if(y <= functor(
-                acc,
-                x))
+            if(y <= functor(acc, x))
             {
                 ++localCount;
             }
@@ -113,84 +95,43 @@ auto main() -> int
     // Defines and setup.
     using Dim = alpaka::DimInt<1>;
     using Idx = std::size_t;
-    using Vec = alpaka::Vec<
-        Dim,
-        Idx>;
-    using Acc = alpaka::ExampleDefaultAcc<
-        Dim,
-        Idx>;
+    using Vec = alpaka::Vec<Dim, Idx>;
+    using Acc = alpaka::ExampleDefaultAcc<Dim, Idx>;
     using Host = alpaka::DevCpu;
     auto const devAcc = alpaka::getDevByIdx<Acc>(0u);
     auto const devHost = alpaka::getDevByIdx<Host>(0u);
     using QueueProperty = alpaka::Blocking;
-    using QueueAcc = alpaka::Queue<
-        Acc,
-        QueueProperty>;
+    using QueueAcc = alpaka::Queue<Acc, QueueProperty>;
     QueueAcc queue{devAcc};
 
-    using BufHost = alpaka::Buf<
-        Host,
-        uint32_t,
-        Dim,
-        Idx>;
-    using BufAcc = alpaka::Buf<
-        Acc,
-        uint32_t,
-        Dim,
-        Idx>;
-    using WorkDiv = alpaka::WorkDivMembers<
-        Dim,
-        Idx>;
+    using BufHost = alpaka::Buf<Host, uint32_t, Dim, Idx>;
+    using BufAcc = alpaka::Buf<Acc, uint32_t, Dim, Idx>;
+    using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
     // Problem parameter.
     constexpr size_t numPoints = 100000000u;
     constexpr size_t extent = 1u;
     constexpr size_t numThreads = 100u; // Kernel will decide numCalcPerThread.
     constexpr size_t numAlpakaElementsPerThread = 1;
-    WorkDiv workdiv{
-        alpaka::getValidWorkDiv<Acc>(
-            devAcc,
-            Vec(numThreads),
-            Vec(numAlpakaElementsPerThread),
-            false,
-            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
+    WorkDiv workdiv{alpaka::getValidWorkDiv<Acc>(
+        devAcc,
+        Vec(numThreads),
+        Vec(numAlpakaElementsPerThread),
+        false,
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted)};
 
     // Setup buffer.
-    BufHost bufHost{
-        alpaka::allocBuf<
-            uint32_t,
-            Idx>(
-            devHost,
-            extent)};
-    uint32_t *const ptrBufHost{alpaka::getPtrNative(bufHost)};
-    BufAcc bufAcc{
-        alpaka::allocBuf<
-            uint32_t,
-            Idx>(
-            devAcc,
-            extent)};
-    uint32_t *const ptrBufAcc{alpaka::getPtrNative(bufAcc)};
+    BufHost bufHost{alpaka::allocBuf<uint32_t, Idx>(devHost, extent)};
+    uint32_t* const ptrBufHost{alpaka::getPtrNative(bufHost)};
+    BufAcc bufAcc{alpaka::allocBuf<uint32_t, Idx>(devAcc, extent)};
+    uint32_t* const ptrBufAcc{alpaka::getPtrNative(bufAcc)};
 
     // Initialize the global count to 0.
     ptrBufHost[0] = 0.0f;
-    alpaka::memcpy(
-        queue,
-        bufAcc,
-        bufHost,
-        extent);
+    alpaka::memcpy(queue, bufAcc, bufHost, extent);
 
     Kernel kernel;
-    alpaka::exec<Acc>(
-        queue,
-        workdiv,
-        kernel,
-        numPoints,
-        ptrBufAcc,
-        Function{});
-    alpaka::memcpy(
-        queue,
-        bufHost,
-        bufAcc,
-        extent);
+    alpaka::exec<Acc>(queue, workdiv, kernel, numPoints, ptrBufAcc, Function{});
+    alpaka::memcpy(queue, bufHost, bufAcc, extent);
     alpaka::wait(queue);
 
     // Check the result.

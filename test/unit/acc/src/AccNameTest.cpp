@@ -16,7 +16,7 @@
 #include <iostream>
 
 //-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE( "getAccName", "[acc]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("getAccName", "[acc]", alpaka::test::TestAccs)
 {
     std::cout << alpaka::getAccName<TestType>() << std::endl;
 }

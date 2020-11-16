@@ -17,10 +17,8 @@ namespace alpaka
     {
         //#############################################################################
         //! Fallback implementaion of popcount.
-        template<
-            typename TValue>
-        static auto popcountFallback(TValue value)
-        -> std::int32_t
+        template<typename TValue>
+        static auto popcountFallback(TValue value) -> std::int32_t
         {
             TValue count = 0;
             while(value != 0)
@@ -33,22 +31,20 @@ namespace alpaka
 
         //#############################################################################
         //! Fallback implementaion of ffs.
-        template<
-            typename TValue>
-        static auto ffsFallback(TValue value)
-        -> std::int32_t
+        template<typename TValue>
+        static auto ffsFallback(TValue value) -> std::int32_t
         {
-            if (value == 0)
+            if(value == 0)
                 return 0;
             std::int32_t result = 1;
-            while ((value & 1) == 0)
+            while((value & 1) == 0)
             {
                 value >>= 1;
                 result++;
             }
             return result;
         }
-    }
+    } // namespace detail
 
     //#############################################################################
     //! The Fallback intrinsic.
@@ -58,13 +54,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         IntrinsicFallback() = default;
         //-----------------------------------------------------------------------------
-        IntrinsicFallback(IntrinsicFallback const &) = delete;
+        IntrinsicFallback(IntrinsicFallback const&) = delete;
         //-----------------------------------------------------------------------------
-        IntrinsicFallback(IntrinsicFallback &&) = delete;
+        IntrinsicFallback(IntrinsicFallback&&) = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(IntrinsicFallback const &) -> IntrinsicFallback & = delete;
+        auto operator=(IntrinsicFallback const&) -> IntrinsicFallback& = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(IntrinsicFallback &&) -> IntrinsicFallback & = delete;
+        auto operator=(IntrinsicFallback&&) -> IntrinsicFallback& = delete;
         //-----------------------------------------------------------------------------
         ~IntrinsicFallback() = default;
     };
@@ -73,23 +69,16 @@ namespace alpaka
     {
         //#############################################################################
         template<>
-        struct Popcount<
-            IntrinsicFallback>
+        struct Popcount<IntrinsicFallback>
         {
             //-----------------------------------------------------------------------------
-            static auto popcount(
-                IntrinsicFallback const & /*intrinsic*/,
-                std::uint32_t value)
-            -> std::int32_t
+            static auto popcount(IntrinsicFallback const& /*intrinsic*/, std::uint32_t value) -> std::int32_t
             {
                 return alpaka::detail::popcountFallback(value);
             }
 
             //-----------------------------------------------------------------------------
-            static auto popcount(
-                IntrinsicFallback const & /*intrinsic*/,
-                std::uint64_t value)
-            -> std::int32_t
+            static auto popcount(IntrinsicFallback const& /*intrinsic*/, std::uint64_t value) -> std::int32_t
             {
                 return alpaka::detail::popcountFallback(value);
             }
@@ -97,26 +86,19 @@ namespace alpaka
 
         //#############################################################################
         template<>
-        struct Ffs<
-            IntrinsicFallback>
+        struct Ffs<IntrinsicFallback>
         {
             //-----------------------------------------------------------------------------
-            static auto ffs(
-                IntrinsicFallback const & /*intrinsic*/,
-                std::int32_t value)
-            -> std::int32_t
+            static auto ffs(IntrinsicFallback const& /*intrinsic*/, std::int32_t value) -> std::int32_t
             {
                 return alpaka::detail::ffsFallback(value);
             }
 
             //-----------------------------------------------------------------------------
-            static auto ffs(
-                IntrinsicFallback const & /*intrinsic*/,
-                std::int64_t value)
-            -> std::int32_t
+            static auto ffs(IntrinsicFallback const& /*intrinsic*/, std::int64_t value) -> std::int32_t
             {
                 return alpaka::detail::ffsFallback(value);
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

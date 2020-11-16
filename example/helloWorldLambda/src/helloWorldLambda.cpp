@@ -28,42 +28,39 @@
 //! and might be useful when it is necessary
 //! to lift an existing function into a kernel
 //! function.
-template<
-    typename TAcc>
-void ALPAKA_FN_ACC hiWorldFunction(
-    TAcc const & acc,
-    size_t const nExclamationMarks)
+template<typename TAcc>
+void ALPAKA_FN_ACC hiWorldFunction(TAcc const& acc, size_t const nExclamationMarks)
 {
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
     using Vec = alpaka::Vec<Dim, Idx>;
     using Vec1 = alpaka::Vec<alpaka::DimInt<1u>, Idx>;
 
-    Vec const globalThreadIdx    = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+    Vec const globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
     Vec const globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
-    Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx,
-                                                              globalThreadExtent);
+    Vec1 const linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
 
-    printf("[z:%u, y:%u, x:%u][linear:%u] Hi world from a function",
-           static_cast<unsigned>(globalThreadIdx[0]),
-           static_cast<unsigned>(globalThreadIdx[1]),
-           static_cast<unsigned>(globalThreadIdx[2]),
-           static_cast<unsigned>(linearizedGlobalThreadIdx[0]));
+    printf(
+        "[z:%u, y:%u, x:%u][linear:%u] Hi world from a function",
+        static_cast<unsigned>(globalThreadIdx[0]),
+        static_cast<unsigned>(globalThreadIdx[1]),
+        static_cast<unsigned>(globalThreadIdx[2]),
+        static_cast<unsigned>(linearizedGlobalThreadIdx[0]));
 
-    for(size_t i = 0; i < nExclamationMarks; ++i){
+    for(size_t i = 0; i < nExclamationMarks; ++i)
+    {
         printf("!");
     }
 
     printf("\n");
 }
 
-auto main()
--> int
+auto main() -> int
 {
 // It requires support for extended lambdas when using nvcc as CUDA compiler.
 // Requires sequential backend if CI is used
-#if (!defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__) )) && \
-    (!defined(ALPAKA_CI) || defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED))
+#if(!defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__)))                                 \
+    && (!defined(ALPAKA_CI) || defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED))
 
     // Define the index domain
     using Dim = alpaka::DimInt<3>;
@@ -125,26 +122,26 @@ auto main()
     alpaka::exec<Acc>(
         queue,
         workDiv,
-        [] ALPAKA_FN_ACC (Acc const & acc, size_t const nExclamationMarksAsArg) -> void {
-            auto globalThreadIdx    = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
+        [] ALPAKA_FN_ACC(Acc const& acc, size_t const nExclamationMarksAsArg) -> void {
+            auto globalThreadIdx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc);
             auto globalThreadExtent = alpaka::getWorkDiv<alpaka::Grid, alpaka::Threads>(acc);
             auto linearizedGlobalThreadIdx = alpaka::mapIdx<1u>(globalThreadIdx, globalThreadExtent);
 
-            printf("[z:%u, y:%u, x:%u][linear:%u] Hello world from a lambda",
-               static_cast<unsigned>(globalThreadIdx[0]),
-               static_cast<unsigned>(globalThreadIdx[1]),
-               static_cast<unsigned>(globalThreadIdx[2]),
-               static_cast<unsigned>(linearizedGlobalThreadIdx[0]));
+            printf(
+                "[z:%u, y:%u, x:%u][linear:%u] Hello world from a lambda",
+                static_cast<unsigned>(globalThreadIdx[0]),
+                static_cast<unsigned>(globalThreadIdx[1]),
+                static_cast<unsigned>(globalThreadIdx[2]),
+                static_cast<unsigned>(linearizedGlobalThreadIdx[0]));
 
-            for(size_t i = 0; i < nExclamationMarksAsArg; ++i){
+            for(size_t i = 0; i < nExclamationMarksAsArg; ++i)
+            {
                 printf("!");
             }
 
             printf("\n");
-
         },
-        nExclamationMarks
-    );
+        nExclamationMarks);
     alpaka::wait(queue);
 
     return EXIT_SUCCESS;

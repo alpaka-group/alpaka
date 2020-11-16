@@ -30,22 +30,15 @@ namespace alpaka
         {
             //#############################################################################
             //! The standard library tan trait specialization.
-            template<
-                typename TArg>
-            struct Tan<
-                TanStdLib,
-                TArg,
-                std::enable_if_t<
-                    std::is_arithmetic<TArg>::value>>
+            template<typename TArg>
+            struct Tan<TanStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
             {
-                ALPAKA_FN_HOST static auto tan(
-                    TanStdLib const & tan_ctx,
-                    TArg const & arg)
+                ALPAKA_FN_HOST static auto tan(TanStdLib const& tan_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(tan_ctx);
                     return std::tan(arg);
                 }
             };
-        }
-    }
-}
+        } // namespace traits
+    } // namespace math
+} // namespace alpaka

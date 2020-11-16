@@ -39,21 +39,15 @@ public:
     //! \param C The destination vector.
     //! \param numElements The number of elements.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc,
-        typename TElem,
-        typename TIdx>
+    template<typename TAcc, typename TElem, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        TElem const * const A,
-        TElem const * const B,
-        TElem * const C,
-        TIdx const & numElements) const
-    -> void
+        TAcc const& acc,
+        TElem const* const A,
+        TElem const* const B,
+        TElem* const C,
+        TIdx const& numElements) const -> void
     {
-        static_assert(
-            alpaka::Dim<TAcc>::value == 1,
-            "The VectorAddKernel expects 1-dimensional indices!");
+        static_assert(alpaka::Dim<TAcc>::value == 1, "The VectorAddKernel expects 1-dimensional indices!");
 
         TIdx const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
         TIdx const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
@@ -63,10 +57,10 @@ public:
         {
             // Calculate the number of elements to compute in this thread.
             // The result is uniform for all but the last thread.
-            TIdx const threadLastElemIdx(threadFirstElemIdx+threadElemExtent);
+            TIdx const threadLastElemIdx(threadFirstElemIdx + threadElemExtent);
             TIdx const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
 
-            for(TIdx i(threadFirstElemIdx); i<threadLastElemIdxClipped; ++i)
+            for(TIdx i(threadFirstElemIdx); i < threadLastElemIdxClipped; ++i)
             {
                 C[i] = A[i] + B[i];
             }
@@ -74,8 +68,7 @@ public:
     }
 };
 
-auto main()
--> int
+auto main() -> int
 {
 // Fallback for the CI with disabled sequential backend
 #if defined(ALPAKA_CI) && !defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED)
@@ -120,13 +113,12 @@ auto main()
     alpaka::Vec<Dim, Idx> const extent(numElements);
 
     // Let alpaka calculate good block and grid sizes given our full problem extent
-    alpaka::WorkDivMembers<Dim, Idx> const workDiv(
-        alpaka::getValidWorkDiv<Acc>(
-            devAcc,
-            extent,
-            elementsPerThread,
-            false,
-            alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
+    alpaka::WorkDivMembers<Dim, Idx> const workDiv(alpaka::getValidWorkDiv<Acc>(
+        devAcc,
+        extent,
+        elementsPerThread,
+        false,
+        alpaka::GridBlockExtentSubDivRestrictions::Unrestricted));
 
     // Define the buffer element type
     using Data = std::uint32_t;
@@ -142,16 +134,16 @@ auto main()
     BufHost bufHostC(alpaka::allocBuf<Data, Idx>(devHost, extent));
 
     // Initialize the host input vectors A and B
-    Data * const pBufHostA(alpaka::getPtrNative(bufHostA));
-    Data * const pBufHostB(alpaka::getPtrNative(bufHostB));
-    Data * const pBufHostC(alpaka::getPtrNative(bufHostC));
+    Data* const pBufHostA(alpaka::getPtrNative(bufHostA));
+    Data* const pBufHostB(alpaka::getPtrNative(bufHostB));
+    Data* const pBufHostC(alpaka::getPtrNative(bufHostC));
 
     // C++14 random generator for uniformly distributed numbers in {1,..,42}
     std::random_device rd{};
-    std::default_random_engine eng{ rd() };
+    std::default_random_engine eng{rd()};
     std::uniform_int_distribution<Data> dist(1, 42);
 
-    for (Idx i(0); i < numElements; ++i)
+    for(Idx i(0); i < numElements; ++i)
     {
         pBufHostA[i] = dist(eng);
         pBufHostB[i] = dist(eng);
@@ -187,7 +179,8 @@ auto main()
         alpaka::enqueue(queue, taskKernel);
         alpaka::wait(queue); // wait in case we are using an asynchronous queue to time actual kernel runtime
         const auto endT = std::chrono::high_resolution_clock::now();
-        std::cout << "Time for kernel execution: " << std::chrono::duration<double>(endT-beginT).count() << 's' << std::endl;
+        std::cout << "Time for kernel execution: " << std::chrono::duration<double>(endT - beginT).count() << 's'
+                  << std::endl;
     }
 
     // Copy back the result
@@ -196,20 +189,19 @@ auto main()
         alpaka::memcpy(queue, bufHostC, bufAccC, extent);
         alpaka::wait(queue);
         const auto endT = std::chrono::high_resolution_clock::now();
-        std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT-beginT).count() << 's' << std::endl;
+        std::cout << "Time for HtoD copy: " << std::chrono::duration<double>(endT - beginT).count() << 's'
+                  << std::endl;
     }
 
     int falseResults = 0;
     static constexpr int MAX_PRINT_FALSE_RESULTS = 20;
-    for(Idx i(0u);
-        i < numElements;
-        ++i)
+    for(Idx i(0u); i < numElements; ++i)
     {
-        Data const & val(pBufHostC[i]);
+        Data const& val(pBufHostC[i]);
         Data const correctResult(pBufHostA[i] + pBufHostB[i]);
         if(val != correctResult)
         {
-            if (falseResults < MAX_PRINT_FALSE_RESULTS)
+            if(falseResults < MAX_PRINT_FALSE_RESULTS)
                 std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
             ++falseResults;
         }
@@ -222,8 +214,9 @@ auto main()
     }
     else
     {
-        std::cout << "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS << "\n"
-            << "Execution results incorrect!" << std::endl;
+        std::cout << "Found " << falseResults << " false results, printed no more than " << MAX_PRINT_FALSE_RESULTS
+                  << "\n"
+                  << "Execution results incorrect!" << std::endl;
         return EXIT_FAILURE;
     }
 #endif

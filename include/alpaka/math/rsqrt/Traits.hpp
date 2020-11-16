@@ -18,18 +18,17 @@ namespace alpaka
 {
     namespace math
     {
-        struct ConceptMathRsqrt{};
+        struct ConceptMathRsqrt
+        {
+        };
 
         namespace traits
         {
             //#############################################################################
             //! The rsqrt trait.
-            template<
-                typename T,
-                typename TArg,
-                typename TSfinae = void>
+            template<typename T, typename TArg, typename TSfinae = void>
             struct Rsqrt;
-        }
+        } // namespace traits
 
         //-----------------------------------------------------------------------------
         //! Computes the rsqrt.
@@ -43,21 +42,11 @@ namespace alpaka
         //! \param rsqrt_ctx The object specializing Rsqrt.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T,
-            typename TArg>
-        ALPAKA_FN_HOST_ACC auto rsqrt(
-            T const & rsqrt_ctx,
-            TArg const & arg)
+        template<typename T, typename TArg>
+        ALPAKA_FN_HOST_ACC auto rsqrt(T const& rsqrt_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathRsqrt, T>;
-            return
-                traits::Rsqrt<
-                    ImplementationBase,
-                    TArg>
-                ::rsqrt(
-                    rsqrt_ctx,
-                    arg);
+            return traits::Rsqrt<ImplementationBase, TArg>::rsqrt(rsqrt_ctx, arg);
         }
-    }
-}
+    } // namespace math
+} // namespace alpaka

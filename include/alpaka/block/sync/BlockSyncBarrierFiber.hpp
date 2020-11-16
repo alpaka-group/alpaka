@@ -11,40 +11,39 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
-#include <alpaka/block/sync/Traits.hpp>
+#    include <alpaka/block/sync/Traits.hpp>
 
-#include <alpaka/core/Fibers.hpp>
+#    include <alpaka/core/Fibers.hpp>
 
-#include <alpaka/core/Common.hpp>
+#    include <alpaka/core/Common.hpp>
 
-#include <mutex>
-#include <map>
+#    include <mutex>
+#    include <map>
 
 namespace alpaka
 {
     //#############################################################################
     //! The thread id map barrier block synchronization.
-    template<
-        typename TIdx>
+    template<typename TIdx>
     class BlockSyncBarrierFiber : public concepts::Implements<ConceptBlockSync, BlockSyncBarrierFiber<TIdx>>
     {
     public:
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierFiber(
-            TIdx const & blockThreadCount) :
-                m_barrier(static_cast<std::size_t>(blockThreadCount)),
-                m_threadCount(blockThreadCount),
-                m_curThreadCount(static_cast<TIdx>(0u)),
-                m_generation(static_cast<TIdx>(0u))
-        {}
+        ALPAKA_FN_HOST BlockSyncBarrierFiber(TIdx const& blockThreadCount)
+            : m_barrier(static_cast<std::size_t>(blockThreadCount))
+            , m_threadCount(blockThreadCount)
+            , m_curThreadCount(static_cast<TIdx>(0u))
+            , m_generation(static_cast<TIdx>(0u))
+        {
+        }
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierFiber(BlockSyncBarrierFiber const &) = delete;
+        ALPAKA_FN_HOST BlockSyncBarrierFiber(BlockSyncBarrierFiber const&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST BlockSyncBarrierFiber(BlockSyncBarrierFiber &&) = delete;
+        ALPAKA_FN_HOST BlockSyncBarrierFiber(BlockSyncBarrierFiber&&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierFiber const &) -> BlockSyncBarrierFiber & = delete;
+        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierFiber const&) -> BlockSyncBarrierFiber& = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierFiber &&) -> BlockSyncBarrierFiber & = delete;
+        ALPAKA_FN_HOST auto operator=(BlockSyncBarrierFiber&&) -> BlockSyncBarrierFiber& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ~BlockSyncBarrierFiber() = default;
 
@@ -59,34 +58,25 @@ namespace alpaka
     namespace traits
     {
         //#############################################################################
-        template<
-            typename TIdx>
-        struct SyncBlockThreads<
-            BlockSyncBarrierFiber<TIdx>>
+        template<typename TIdx>
+        struct SyncBlockThreads<BlockSyncBarrierFiber<TIdx>>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto syncBlockThreads(
-                BlockSyncBarrierFiber<TIdx> const & blockSync)
-            -> void
+            ALPAKA_FN_HOST static auto syncBlockThreads(BlockSyncBarrierFiber<TIdx> const& blockSync) -> void
             {
                 blockSync.m_barrier.wait();
             }
         };
 
         //#############################################################################
-        template<
-            typename TOp,
-            typename TIdx>
-        struct SyncBlockThreadsPredicate<
-            TOp,
-            BlockSyncBarrierFiber<TIdx>>
+        template<typename TOp, typename TIdx>
+        struct SyncBlockThreadsPredicate<TOp, BlockSyncBarrierFiber<TIdx>>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
-                BlockSyncBarrierFiber<TIdx> const & blockSync,
-                int predicate)
-            -> int
+                BlockSyncBarrierFiber<TIdx> const& blockSync,
+                int predicate) -> int
             {
                 if(blockSync.m_curThreadCount == blockSync.m_threadCount)
                 {
@@ -114,7 +104,7 @@ namespace alpaka
                 return blockSync.m_result[generationMod2];
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif

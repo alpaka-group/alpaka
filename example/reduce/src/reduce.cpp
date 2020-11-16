@@ -23,8 +23,8 @@
 
 // It requires support for extended lambdas when using nvcc as CUDA compiler.
 // Requires sequential backend if CI is used
-#if (!defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__) )) && \
-    (!defined(ALPAKA_CI) || defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED))
+#if(!defined(__NVCC__) || (defined(__NVCC__) && defined(__CUDACC_EXTENDED_LAMBDA__)))                                 \
+    && (!defined(ALPAKA_CI) || defined(ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED))
 
 // use defines of a specific accelerator from alpakaConfig.hpp
 // that are defined in alpakaConfig.hpp
@@ -57,39 +57,36 @@ using MaxBlockSize = Accelerator::MaxBlockSize;
 //!
 //! Returns true if the reduction was correct and false otherwise.
 template<typename T, typename DevHost, typename DevAcc, typename TFunc>
-T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf<DevHost, T, Dim, Idx> hostMemory, TFunc func)
+T reduce(
+    DevHost devHost,
+    DevAcc devAcc,
+    QueueAcc queue,
+    uint64_t n,
+    alpaka::Buf<DevHost, T, Dim, Idx> hostMemory,
+    TFunc func)
 {
     static constexpr uint64_t blockSize = getMaxBlockSize<Accelerator, 256>();
 
     // calculate optimal block size (8 times the MP count proved to be
     // relatively near to peak performance in benchmarks)
-    uint32_t blockCount = static_cast<uint32_t>(
-        alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount *
-        8);
-    uint32_t maxBlockCount = static_cast<uint32_t>(
-        (((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
+    uint32_t blockCount = static_cast<uint32_t>(alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount * 8);
+    uint32_t maxBlockCount = static_cast<uint32_t>((((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
 
-    if (blockCount > maxBlockCount)
+    if(blockCount > maxBlockCount)
         blockCount = maxBlockCount;
 
-    alpaka::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory =
-        alpaka::allocBuf<T, Idx>(devAcc, n);
+    alpaka::Buf<DevAcc, T, Dim, Extent> sourceDeviceMemory = alpaka::allocBuf<T, Idx>(devAcc, n);
 
-    alpaka::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory =
-        alpaka::allocBuf<T, Idx>(
-            devAcc, static_cast<Extent>(blockCount));
+    alpaka::Buf<DevAcc, T, Dim, Extent> destinationDeviceMemory
+        = alpaka::allocBuf<T, Idx>(devAcc, static_cast<Extent>(blockCount));
 
     // copy the data to the GPU
     alpaka::memcpy(queue, sourceDeviceMemory, hostMemory, n);
 
     // create kernels with their workdivs
     ReduceKernel<blockSize, T, TFunc> kernel1, kernel2;
-    WorkDiv workDiv1{ static_cast<Extent>(blockCount),
-                      static_cast<Extent>(blockSize),
-                      static_cast<Extent>(1) };
-    WorkDiv workDiv2{ static_cast<Extent>(1),
-                      static_cast<Extent>(blockSize),
-                      static_cast<Extent>(1) };
+    WorkDiv workDiv1{static_cast<Extent>(blockCount), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
+    WorkDiv workDiv2{static_cast<Extent>(1), static_cast<Extent>(blockSize), static_cast<Extent>(1)};
 
     // create main reduction kernel execution task
     auto const taskKernelReduceMain(alpaka::createTaskKernel<Acc>(
@@ -115,9 +112,8 @@ T reduce(DevHost devHost, DevAcc devAcc, QueueAcc queue, uint64_t n, alpaka::Buf
 
     //  download result from GPU
     T resultGpuHost;
-    auto resultGpuDevice =
-        alpaka::ViewPlainPtr<DevHost, T, Dim, Idx>(
-            &resultGpuHost, devHost, static_cast<Extent>(blockSize));
+    auto resultGpuDevice
+        = alpaka::ViewPlainPtr<DevHost, T, Dim, Idx>(&resultGpuHost, devHost, static_cast<Extent>(blockSize));
 
     alpaka::memcpy(queue, resultGpuDevice, destinationDeviceMemory, 1);
 
@@ -139,22 +135,19 @@ int main()
 
     // calculate optimal block size (8 times the MP count proved to be
     // relatively near to peak performance in benchmarks)
-    uint32_t blockCount = static_cast<uint32_t>(
-        alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount *
-        8);
-    uint32_t maxBlockCount = static_cast<uint32_t>(
-        (((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
+    uint32_t blockCount = static_cast<uint32_t>(alpaka::getAccDevProps<Acc>(devAcc).m_multiProcessorCount * 8);
+    uint32_t maxBlockCount = static_cast<uint32_t>((((n + 1) / 2) - 1) / blockSize + 1); // ceil(ceil(n/2.0)/blockSize)
 
-    if (blockCount > maxBlockCount)
+    if(blockCount > maxBlockCount)
         blockCount = maxBlockCount;
 
     // allocate memory
     auto hostMemory = alpaka::allocBuf<T, Idx>(devHost, n);
 
-    T *nativeHostMemory = alpaka::getPtrNative(hostMemory);
+    T* nativeHostMemory = alpaka::getPtrNative(hostMemory);
 
     // fill array with data
-    for (uint64_t i = 0; i < n; i++)
+    for(uint64_t i = 0; i < n; i++)
         nativeHostMemory[i] = static_cast<T>(i + 1);
 
     // define the reduction function
@@ -166,10 +159,9 @@ int main()
 
     // check result
     T expectedResult = static_cast<T>(n / 2 * (n + 1));
-    if (result != expectedResult)
+    if(result != expectedResult)
     {
-        std::cerr << "Results don't match: " << result << " != " << expectedResult
-                  << "\n";
+        std::cerr << "Results don't match: " << result << " != " << expectedResult << "\n";
         return EXIT_FAILURE;
     }
 
@@ -180,7 +172,8 @@ int main()
 
 #else
 
-int main() {
+int main()
+{
     return EXIT_SUCCESS;
 }
 

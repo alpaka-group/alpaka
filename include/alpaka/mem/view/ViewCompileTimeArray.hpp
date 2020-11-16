@@ -187,4 +187,4 @@ namespace alpaka
             using type = std::size_t;
         };
     }*/
-}
+} // namespace alpaka

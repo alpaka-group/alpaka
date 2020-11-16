@@ -23,23 +23,19 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
-#if BOOST_COMP_GNUC 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
+            auto& ref(*addr);
+#if BOOST_COMP_GNUC
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wconversion"
 #endif
             ref += value;
             return old;
 #if BOOST_COMP_GNUC
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
         }
     };
@@ -50,22 +46,18 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
 #if BOOST_COMP_GNUC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wconversion"
 #endif
             ref -= value;
 #if BOOST_COMP_GNUC
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
             return old;
         }
@@ -77,15 +69,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref = std::min(ref, value);
             return old;
         }
@@ -97,15 +85,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref = std::max(ref, value);
             return old;
         }
@@ -117,15 +101,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref = value;
             return old;
         }
@@ -139,15 +119,11 @@ namespace alpaka
         //!
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref = ((old >= value) ? 0 : static_cast<T>(old + 1));
             return old;
         }
@@ -161,15 +137,11 @@ namespace alpaka
         //!
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref = (((old == 0) || (old > value)) ? value : static_cast<T>(old - 1));
             return old;
         }
@@ -181,15 +153,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref &= value;
             return old;
         }
@@ -201,15 +169,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref |= value;
             return old;
         }
@@ -221,15 +185,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * const addr,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* const addr, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
             ref ^= value;
             return old;
         }
@@ -241,28 +201,23 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T>
-        ALPAKA_FN_HOST_ACC auto operator()(
-            T * addr,
-            T const & compare,
-            T const & value) const
-        -> T
+        template<typename T>
+        ALPAKA_FN_HOST_ACC auto operator()(T* addr, T const& compare, T const& value) const -> T
         {
             auto const old(*addr);
-            auto & ref(*addr);
+            auto& ref(*addr);
 
 // gcc-7.4.0 assumes for an optimization that a signed overflow does not occur here.
 // That's fine, so ignore that warning.
 #if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 4, 0))
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wstrict-overflow"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wstrict-overflow"
 #endif
             ref = ((old == compare) ? value : old);
 #if BOOST_COMP_GNUC && (BOOST_COMP_GNUC == BOOST_VERSION_NUMBER(7, 4, 0))
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
             return old;
         }
     };
-}
+} // namespace alpaka

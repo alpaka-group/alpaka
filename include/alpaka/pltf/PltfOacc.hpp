@@ -11,24 +11,22 @@
 
 #ifdef ALPAKA_ACC_ANY_BT_OACC_ENABLED
 
-#if _OPENACC < 201306
-    #error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
-#endif
+#    if _OPENACC < 201306
+#        error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
+#    endif
 
-#include <alpaka/pltf/Traits.hpp>
-#include <alpaka/dev/DevOacc.hpp>
-#include <alpaka/core/Concepts.hpp>
+#    include <alpaka/pltf/Traits.hpp>
+#    include <alpaka/dev/DevOacc.hpp>
+#    include <alpaka/core/Concepts.hpp>
 
-#include <sstream>
-#include <vector>
+#    include <sstream>
+#    include <vector>
 
 namespace alpaka
 {
-
     //#############################################################################
     //! The OpenACC device platform.
-    class PltfOacc :
-        public concepts::Implements<ConceptPltf, PltfOacc>
+    class PltfOacc : public concepts::Implements<ConceptPltf, PltfOacc>
     {
     public:
         //-----------------------------------------------------------------------------
@@ -40,8 +38,7 @@ namespace alpaka
         //#############################################################################
         //! The OpenACC device device type trait specialization.
         template<>
-        struct DevType<
-            PltfOacc>
+        struct DevType<PltfOacc>
         {
             using type = DevOacc;
         };
@@ -49,12 +46,10 @@ namespace alpaka
         //#############################################################################
         //! The OpenACC platform device count get trait specialization.
         template<>
-        struct GetDevCount<
-            PltfOacc>
+        struct GetDevCount<PltfOacc>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto getDevCount()
-            -> std::size_t
+            ALPAKA_FN_HOST static auto getDevCount() -> std::size_t
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -65,14 +60,11 @@ namespace alpaka
         //#############################################################################
         //! The OpenACC platform device get trait specialization.
         template<>
-        struct GetDevByIdx<
-            PltfOacc>
+        struct GetDevByIdx<PltfOacc>
         {
             //-----------------------------------------------------------------------------
             //! \param devIdx device id, less than GetDevCount
-            ALPAKA_FN_HOST static auto getDevByIdx(
-                std::size_t devIdx)
-            -> DevOacc
+            ALPAKA_FN_HOST static auto getDevByIdx(std::size_t devIdx) -> DevOacc
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -80,15 +72,15 @@ namespace alpaka
                 if(devIdx >= devCount)
                 {
                     std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for OpenACC device with index "
-                        << devIdx << " because there are only " << devCount << " devices!";
+                    ssErr << "Unable to return device handle for OpenACC device with index " << devIdx
+                          << " because there are only " << devCount << " devices!";
                     throw std::runtime_error(ssErr.str());
                 }
 
                 return {static_cast<int>(devIdx)};
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif

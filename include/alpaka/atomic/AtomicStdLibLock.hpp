@@ -30,18 +30,13 @@ namespace alpaka
     class AtomicStdLibLock
     {
     public:
-        template<
-            typename TAtomic,
-            typename TOp,
-            typename T,
-            typename THierarchy,
-            typename TSfinae>
+        template<typename TAtomic, typename TOp, typename T, typename THierarchy, typename TSfinae>
         friend struct traits::AtomicOp;
 
         static constexpr size_t nextPowerOf2(size_t const value, size_t const bit = 0u)
         {
-            return value <= (static_cast<size_t>(1u) << bit) ?
-                (static_cast<size_t>(1u) << bit) : nextPowerOf2(value, bit + 1u);
+            return value <= (static_cast<size_t>(1u) << bit) ? (static_cast<size_t>(1u) << bit)
+                                                             : nextPowerOf2(value, bit + 1u);
         }
 
         //-----------------------------------------------------------------------------
@@ -50,9 +45,9 @@ namespace alpaka
         // This is no perfect hash, there will be collisions if the size of pointer type
         // is not a power of two.
         template<typename TPtr>
-        static size_t hash(TPtr const * const ptr)
+        static size_t hash(TPtr const* const ptr)
         {
-            size_t const ptrAddr = reinterpret_cast< size_t >( ptr );
+            size_t const ptrAddr = reinterpret_cast<size_t>(ptr);
             // using power of two for the next division will increase the performance
             constexpr size_t typeSizePowerOf2 = nextPowerOf2(sizeof(TPtr));
             // division removes the stride between indices
@@ -62,18 +57,18 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         AtomicStdLibLock() = default;
         //-----------------------------------------------------------------------------
-        AtomicStdLibLock(AtomicStdLibLock const &) = delete;
+        AtomicStdLibLock(AtomicStdLibLock const&) = delete;
         //-----------------------------------------------------------------------------
-        AtomicStdLibLock(AtomicStdLibLock &&) = delete;
+        AtomicStdLibLock(AtomicStdLibLock&&) = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(AtomicStdLibLock const &) -> AtomicStdLibLock & = delete;
+        auto operator=(AtomicStdLibLock const&) -> AtomicStdLibLock& = delete;
         //-----------------------------------------------------------------------------
-        auto operator=(AtomicStdLibLock &&) -> AtomicStdLibLock & = delete;
+        auto operator=(AtomicStdLibLock&&) -> AtomicStdLibLock& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ~AtomicStdLibLock() = default;
 
         template<typename TPtr>
-        std::mutex & getMutex(TPtr const * const ptr) const
+        std::mutex& getMutex(TPtr const* const ptr) const
         {
             //-----------------------------------------------------------------------------
             //! get the size of the hash table
@@ -83,14 +78,15 @@ namespace alpaka
 
             size_t const hashedAddr = hash(ptr) & (hashTableSize - 1u);
 #if BOOST_COMP_CLANG
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wexit-time-destructors"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wexit-time-destructors"
 #endif
             static std::array<
                 std::mutex,
-                hashTableSize> m_mtxAtomic; //!< The mutex protecting access for an atomic operation.
+                hashTableSize>
+                m_mtxAtomic; //!< The mutex protecting access for an atomic operation.
 #if BOOST_COMP_CLANG
-#pragma clang diagnostic pop
+#    pragma clang diagnostic pop
 #endif
             return m_mtxAtomic[hashedAddr];
         }
@@ -100,38 +96,28 @@ namespace alpaka
     {
         //#############################################################################
         //! The CPU threads accelerator atomic operation.
-        template<
-            typename TOp,
-            typename T,
-            typename THierarchy,
-            size_t THashTableSize>
-        struct AtomicOp<
-            TOp,
-            AtomicStdLibLock<THashTableSize>,
-            T,
-            THierarchy>
+        template<typename TOp, typename T, typename THierarchy, size_t THashTableSize>
+        struct AtomicOp<TOp, AtomicStdLibLock<THashTableSize>, T, THierarchy>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto atomicOp(
-                AtomicStdLibLock<THashTableSize> const & atomic,
-                T * const addr,
-                T const & value)
-            -> T
+                AtomicStdLibLock<THashTableSize> const& atomic,
+                T* const addr,
+                T const& value) -> T
             {
                 std::lock_guard<std::mutex> lock(atomic.getMutex(addr));
                 return TOp()(addr, value);
             }
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto atomicOp(
-                AtomicStdLibLock<THashTableSize> const & atomic,
-                T * const addr,
-                T const & compare,
-                T const & value)
-            -> T
+                AtomicStdLibLock<THashTableSize> const& atomic,
+                T* const addr,
+                T const& compare,
+                T const& value) -> T
             {
                 std::lock_guard<std::mutex> lock(atomic.getMutex(addr));
                 return TOp()(addr, compare, value);
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

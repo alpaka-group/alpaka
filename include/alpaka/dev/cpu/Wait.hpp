@@ -24,18 +24,15 @@ namespace alpaka
         //! Blocks until the device has completed all preceding requested tasks.
         //! Tasks that are enqueued or queues that are created after this call is made are not waited for.
         template<>
-        struct CurrentThreadWaitFor<
-            DevCpu>
+        struct CurrentThreadWaitFor<DevCpu>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                DevCpu const & dev)
-            -> void
+            ALPAKA_FN_HOST static auto currentThreadWaitFor(DevCpu const& dev) -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 generic::currentThreadWaitForDevice(dev);
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

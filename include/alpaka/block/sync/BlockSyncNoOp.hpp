@@ -24,13 +24,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_FN_ACC BlockSyncNoOp() = default;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp const &) = delete;
+        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp const&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp &&) = delete;
+        ALPAKA_FN_ACC BlockSyncNoOp(BlockSyncNoOp&&) = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp const &) -> BlockSyncNoOp & = delete;
+        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp const&) -> BlockSyncNoOp& = delete;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp &&) -> BlockSyncNoOp & = delete;
+        ALPAKA_FN_ACC auto operator=(BlockSyncNoOp&&) -> BlockSyncNoOp& = delete;
         //-----------------------------------------------------------------------------
         /*virtual*/ ALPAKA_FN_ACC ~BlockSyncNoOp() = default;
     };
@@ -39,14 +39,11 @@ namespace alpaka
     {
         //#############################################################################
         template<>
-        struct SyncBlockThreads<
-            BlockSyncNoOp>
+        struct SyncBlockThreads<BlockSyncNoOp>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_ACC static auto syncBlockThreads(
-                BlockSyncNoOp const & blockSync)
-            -> void
+            ALPAKA_FN_ACC static auto syncBlockThreads(BlockSyncNoOp const& blockSync) -> void
             {
                 alpaka::ignore_unused(blockSync);
                 // Nothing to do.
@@ -54,22 +51,16 @@ namespace alpaka
         };
 
         //#############################################################################
-        template<
-            typename TOp>
-        struct SyncBlockThreadsPredicate<
-            TOp,
-            BlockSyncNoOp>
+        template<typename TOp>
+        struct SyncBlockThreadsPredicate<TOp, BlockSyncNoOp>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(
-                BlockSyncNoOp const & blockSync,
-                int predicate)
-            -> int
+            ALPAKA_FN_ACC static auto syncBlockThreadsPredicate(BlockSyncNoOp const& blockSync, int predicate) -> int
             {
                 alpaka::ignore_unused(blockSync);
                 return predicate;
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka

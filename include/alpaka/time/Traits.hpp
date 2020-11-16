@@ -16,7 +16,9 @@
 
 namespace alpaka
 {
-    struct ConceptTime{};
+    struct ConceptTime
+    {
+    };
 
     //-----------------------------------------------------------------------------
     //! The time traits.
@@ -24,11 +26,9 @@ namespace alpaka
     {
         //#############################################################################
         //! The clock trait.
-        template<
-            typename TTime,
-            typename TSfinae = void>
+        template<typename TTime, typename TSfinae = void>
         struct Clock;
-    }
+    } // namespace traits
 
     //-----------------------------------------------------------------------------
     //! \return A counter that is increasing every clock cycle.
@@ -36,17 +36,10 @@ namespace alpaka
     //! \tparam TTime The time implementation type.
     //! \param time The time implementation.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TTime>
-    ALPAKA_FN_HOST_ACC auto clock(
-        TTime const & time)
-    -> std::uint64_t
+    template<typename TTime>
+    ALPAKA_FN_HOST_ACC auto clock(TTime const& time) -> std::uint64_t
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptTime, TTime>;
-        return
-            traits::Clock<
-                ImplementationBase>
-            ::clock(
-                time);
+        return traits::Clock<ImplementationBase>::clock(time);
     }
-}
+} // namespace alpaka

@@ -17,30 +17,25 @@
 
 //-----------------------------------------------------------------------------
 //! Native CUDA function.
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wmissing-prototypes"
-#endif
-__device__ auto userDefinedThreadFence()
--> void
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic push
+#        pragma clang diagnostic ignored "-Wmissing-prototypes"
+#    endif
+__device__ auto userDefinedThreadFence() -> void
 {
     __threadfence();
 }
-#if BOOST_COMP_CLANG
-    #pragma clang diagnostic pop
-#endif
+#    if BOOST_COMP_CLANG
+#        pragma clang diagnostic pop
+#    endif
 
 //#############################################################################
 class CudaOnlyTestKernel
 {
 public:
     //-----------------------------------------------------------------------------
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         alpaka::ignore_unused(acc);
 
@@ -61,8 +56,7 @@ TEST_CASE("cudaOnlyModeWorking", "[cudaOnly]")
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    alpaka::test::KernelExecutionFixture<TAcc> fixture(
-        alpaka::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<TAcc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
     CudaOnlyTestKernel kernel;
 

@@ -18,18 +18,17 @@ namespace alpaka
 {
     namespace math
     {
-        struct ConceptMathLog{};
+        struct ConceptMathLog
+        {
+        };
 
         namespace traits
         {
             //#############################################################################
             //! The log trait.
-            template<
-                typename T,
-                typename TArg,
-                typename TSfinae = void>
+            template<typename T, typename TArg, typename TSfinae = void>
             struct Log;
-        }
+        } // namespace traits
 
         //-----------------------------------------------------------------------------
         //! Computes the the natural (base e) logarithm of arg.
@@ -43,21 +42,11 @@ namespace alpaka
         //! \param log_ctx The object specializing Log.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T,
-            typename TArg>
-        ALPAKA_FN_HOST_ACC auto log(
-            T const & log_ctx,
-            TArg const & arg)
+        template<typename T, typename TArg>
+        ALPAKA_FN_HOST_ACC auto log(T const& log_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathLog, T>;
-            return
-                traits::Log<
-                    ImplementationBase,
-                    TArg>
-                ::log(
-                    log_ctx,
-                    arg);
+            return traits::Log<ImplementationBase, TArg>::log(log_ctx, arg);
         }
-    }
-}
+    } // namespace math
+} // namespace alpaka

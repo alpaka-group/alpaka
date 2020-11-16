@@ -18,18 +18,17 @@ namespace alpaka
 {
     namespace math
     {
-        struct ConceptMathAcos{};
+        struct ConceptMathAcos
+        {
+        };
 
         namespace traits
         {
             //#############################################################################
             //! The acos trait.
-            template<
-                typename T,
-                typename TArg,
-                typename TSfinae = void>
+            template<typename T, typename TArg, typename TSfinae = void>
             struct Acos;
-        }
+        } // namespace traits
 
         //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc cosine.
@@ -42,21 +41,11 @@ namespace alpaka
         //! \param acos_ctx The object specializing Acos.
         //! \param arg The arg.
         ALPAKA_NO_HOST_ACC_WARNING
-        template<
-            typename T,
-            typename TArg>
-        ALPAKA_FN_HOST_ACC auto acos(
-            T const & acos_ctx,
-            TArg const & arg)
+        template<typename T, typename TArg>
+        ALPAKA_FN_HOST_ACC auto acos(T const& acos_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathAcos, T>;
-            return
-                traits::Acos<
-                    ImplementationBase,
-                    TArg>
-                ::acos(
-                    acos_ctx,
-                    arg);
+            return traits::Acos<ImplementationBase, TArg>::acos(acos_ctx, arg);
         }
-    }
-}
+    } // namespace math
+} // namespace alpaka

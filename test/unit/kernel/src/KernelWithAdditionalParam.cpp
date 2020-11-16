@@ -21,13 +21,8 @@ class KernelWithAdditionalParamByValue
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const & acc,
-        bool * success,
-        std::int32_t val) const
-    -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, std::int32_t val) const -> void
     {
         alpaka::ignore_unused(acc);
 
@@ -42,8 +37,7 @@ TEMPLATE_LIST_TEST_CASE("KernelWithAdditionalParamByValue", "[kernel]", alpaka::
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
     KernelWithAdditionalParamByValue kernel;
 
@@ -93,11 +87,8 @@ class KernelWithAdditionalParamByConstRef
 public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
-    template <typename TAcc>
-    ALPAKA_FN_ACC auto operator()(
-        TAcc const &acc,
-        bool *success,
-        std::int32_t const &val) const -> void
+    template<typename TAcc>
+    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, std::int32_t const& val) const -> void
     {
         alpaka::ignore_unused(acc);
 
@@ -112,8 +103,7 @@ TEMPLATE_LIST_TEST_CASE("KernelWithAdditionalParamByConstRef", "[kernel]", alpak
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
 
     KernelWithAdditionalParamByConstRef kernel;
 

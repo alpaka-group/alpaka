@@ -41,29 +41,29 @@
 #include <alpaka/atomic/Traits.hpp>
 //-----------------------------------------------------------------------------
 // block
-    //-----------------------------------------------------------------------------
-    // shared
-        //-----------------------------------------------------------------------------
-        // dynamic
-        #include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
-        #include <alpaka/block/shared/dyn/BlockSharedMemDynAlignedAlloc.hpp>
-        #include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
-        #include <alpaka/block/shared/dyn/Traits.hpp>
-        //-----------------------------------------------------------------------------
-        // static
-        #include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
-        #include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
-        #include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
-        #include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
-        #include <alpaka/block/shared/st/Traits.hpp>
-    //-----------------------------------------------------------------------------
-    // sync
-    #include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
-    #include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
-    #include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
-    #include <alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp>
-    #include <alpaka/block/sync/BlockSyncNoOp.hpp>
-    #include <alpaka/block/sync/Traits.hpp>
+//-----------------------------------------------------------------------------
+// shared
+//-----------------------------------------------------------------------------
+// dynamic
+#include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynAlignedAlloc.hpp>
+#include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
+#include <alpaka/block/shared/dyn/Traits.hpp>
+//-----------------------------------------------------------------------------
+// static
+#include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStNoSync.hpp>
+#include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
+#include <alpaka/block/shared/st/Traits.hpp>
+//-----------------------------------------------------------------------------
+// sync
+#include <alpaka/block/sync/BlockSyncBarrierFiber.hpp>
+#include <alpaka/block/sync/BlockSyncBarrierOmp.hpp>
+#include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
+#include <alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp>
+#include <alpaka/block/sync/BlockSyncNoOp.hpp>
+#include <alpaka/block/sync/Traits.hpp>
 //-----------------------------------------------------------------------------
 // core
 #include <alpaka/core/Assert.hpp>

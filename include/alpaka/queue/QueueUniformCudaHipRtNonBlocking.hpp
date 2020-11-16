@@ -11,38 +11,38 @@
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) || defined(ALPAKA_ACC_GPU_HIP_ENABLED)
 
-#include <alpaka/core/BoostPredef.hpp>
+#    include <alpaka/core/BoostPredef.hpp>
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
-    #error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
-#endif
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && !BOOST_LANG_CUDA
+#        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!
+#    endif
 
-#if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
-    #error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
-#endif
+#    if defined(ALPAKA_ACC_GPU_HIP_ENABLED) && !BOOST_LANG_HIP
+#        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
+#    endif
 
-#include <alpaka/queue/cuda_hip/QueueUniformCudaHipRtBase.hpp>
+#    include <alpaka/queue/cuda_hip/QueueUniformCudaHipRtBase.hpp>
 
-#include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#include <alpaka/core/Concepts.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/queue/Traits.hpp>
-#include <alpaka/meta/DependentFalseType.hpp>
+#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
+#    include <alpaka/core/Concepts.hpp>
+#    include <alpaka/dev/Traits.hpp>
+#    include <alpaka/event/Traits.hpp>
+#    include <alpaka/queue/Traits.hpp>
+#    include <alpaka/meta/DependentFalseType.hpp>
 
 // Backend specific includes.
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-#include <alpaka/core/Cuda.hpp>
-#else
-#include <alpaka/core/Hip.hpp>
-#endif
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#        include <alpaka/core/Cuda.hpp>
+#    else
+#        include <alpaka/core/Hip.hpp>
+#    endif
 
-#include <stdexcept>
-#include <memory>
-#include <functional>
-#include <mutex>
-#include <condition_variable>
-#include <thread>
+#    include <stdexcept>
+#    include <memory>
+#    include <functional>
+#    include <mutex>
+#    include <condition_variable>
+#    include <thread>
 
 namespace alpaka
 {
@@ -54,27 +54,25 @@ namespace alpaka
     {
     public:
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST QueueUniformCudaHipRtNonBlocking(
-            DevUniformCudaHipRt const & dev) :
-            uniform_cuda_hip::detail::QueueUniformCudaHipRtBase(dev)
-        {}
+        ALPAKA_FN_HOST QueueUniformCudaHipRtNonBlocking(DevUniformCudaHipRt const& dev)
+            : uniform_cuda_hip::detail::QueueUniformCudaHipRtBase(dev)
+        {
+        }
         //-----------------------------------------------------------------------------
-        QueueUniformCudaHipRtNonBlocking(QueueUniformCudaHipRtNonBlocking const &) = default;
+        QueueUniformCudaHipRtNonBlocking(QueueUniformCudaHipRtNonBlocking const&) = default;
         //-----------------------------------------------------------------------------
-        QueueUniformCudaHipRtNonBlocking(QueueUniformCudaHipRtNonBlocking &&) = default;
+        QueueUniformCudaHipRtNonBlocking(QueueUniformCudaHipRtNonBlocking&&) = default;
         //-----------------------------------------------------------------------------
-        auto operator=(QueueUniformCudaHipRtNonBlocking const &) -> QueueUniformCudaHipRtNonBlocking & = default;
+        auto operator=(QueueUniformCudaHipRtNonBlocking const&) -> QueueUniformCudaHipRtNonBlocking& = default;
         //-----------------------------------------------------------------------------
-        auto operator=(QueueUniformCudaHipRtNonBlocking &&) -> QueueUniformCudaHipRtNonBlocking & = default;
+        auto operator=(QueueUniformCudaHipRtNonBlocking&&) -> QueueUniformCudaHipRtNonBlocking& = default;
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRtNonBlocking const & rhs) const
-        -> bool
+        ALPAKA_FN_HOST auto operator==(QueueUniformCudaHipRtNonBlocking const& rhs) const -> bool
         {
             return (m_spQueueImpl == rhs.m_spQueueImpl);
         }
         //-----------------------------------------------------------------------------
-        ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRtNonBlocking const & rhs) const
-        -> bool
+        ALPAKA_FN_HOST auto operator!=(QueueUniformCudaHipRtNonBlocking const& rhs) const -> bool
         {
             return !((*this) == rhs);
         }
@@ -82,19 +80,18 @@ namespace alpaka
         ~QueueUniformCudaHipRtNonBlocking() = default;
     };
 
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
     using QueueCudaRtNonBlocking = QueueUniformCudaHipRtNonBlocking;
-#else
+#    else
     using QueueHipRtNonBlocking = QueueUniformCudaHipRtNonBlocking;
-#endif
+#    endif
 
     namespace traits
     {
         //#############################################################################
         //! The CUDA/HIP RT non-blocking queue device type trait specialization.
         template<>
-        struct DevType<
-            QueueUniformCudaHipRtNonBlocking>
+        struct DevType<QueueUniformCudaHipRtNonBlocking>
         {
             using type = DevUniformCudaHipRt;
         };
@@ -102,19 +99,15 @@ namespace alpaka
         //#############################################################################
         //! The CUDA/HIP RT non-blocking queue event type trait specialization.
         template<>
-        struct EventType<
-            QueueUniformCudaHipRtNonBlocking>
+        struct EventType<QueueUniformCudaHipRtNonBlocking>
         {
             using type = EventUniformCudaHipRt;
         };
 
         //#############################################################################
         //! The CUDA/HIP RT sync queue enqueue trait specialization.
-        template<
-            typename TTask>
-        struct Enqueue<
-            QueueUniformCudaHipRtNonBlocking,
-            TTask>
+        template<typename TTask>
+        struct Enqueue<QueueUniformCudaHipRtNonBlocking, TTask>
         {
             //#############################################################################
             enum class CallbackState
@@ -133,15 +126,20 @@ namespace alpaka
             };
 
             //-----------------------------------------------------------------------------
-#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
             static void CUDART_CB
-#else
+#    else
             static void HIPRT_CB
-#endif
-            uniformCudaHipRtCallback(ALPAKA_API_PREFIX(Stream_t) /*queue*/, ALPAKA_API_PREFIX(Error_t) /*status*/, void *arg)
+#    endif
+            uniformCudaHipRtCallback(
+                ALPAKA_API_PREFIX(Stream_t) /*queue*/,
+                ALPAKA_API_PREFIX(Error_t) /*status*/,
+                void* arg)
             {
-                // explicitly copy the shared_ptr so that this method holds the state even when the executing thread has already finished.
-                const auto pCallbackSynchronizationData = reinterpret_cast<CallbackSynchronizationData*>(arg)->shared_from_this();
+                // explicitly copy the shared_ptr so that this method holds the state even when the executing thread
+                // has already finished.
+                const auto pCallbackSynchronizationData
+                    = reinterpret_cast<CallbackSynchronizationData*>(arg)->shared_from_this();
 
                 // Notify the executing thread.
                 {
@@ -154,28 +152,20 @@ namespace alpaka
                 std::unique_lock<std::mutex> lock(pCallbackSynchronizationData->m_mutex);
                 if(pCallbackSynchronizationData->state != CallbackState::finished)
                 {
-                    pCallbackSynchronizationData->m_event.wait(
-                        lock,
-                        [pCallbackSynchronizationData](){
-                            return pCallbackSynchronizationData->state == CallbackState::finished;
-                        }
-                    );
+                    pCallbackSynchronizationData->m_event.wait(lock, [pCallbackSynchronizationData]() {
+                        return pCallbackSynchronizationData->state == CallbackState::finished;
+                    });
                 }
             }
 
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto enqueue(
-                QueueUniformCudaHipRtNonBlocking & queue,
-                TTask const & task)
-            -> void
+            ALPAKA_FN_HOST static auto enqueue(QueueUniformCudaHipRtNonBlocking& queue, TTask const& task) -> void
             {
-#if BOOST_COMP_HIP
+#    if BOOST_COMP_HIP
                 // NOTE: hip callbacks are not blocking the stream.
                 // @todo remove this assert when hipStreamAddCallback is fixed
-                static_assert(
-                            meta::DependentFalseType<TTask>::value,
-                            "Callbacks are not supported for HIP-clang");
-#endif
+                static_assert(meta::DependentFalseType<TTask>::value, "Callbacks are not supported for HIP-clang");
+#    endif
 
                 auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
@@ -185,38 +175,33 @@ namespace alpaka
                     0u));
 
                 // We start a new std::thread which stores the task to be executed.
-                // This circumvents the limitation that it is not possible to call CUDA methods within the CUDA/HIP callback thread.
-                // The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
+                // This circumvents the limitation that it is not possible to call CUDA methods within the CUDA/HIP
+                // callback thread. The CUDA/HIP thread signals the std::thread when it is ready to execute the task.
                 // The CUDA/HIP thread is waiting for the std::thread to signal that it is finished executing the task
                 // before it executes the next task in the queue (CUDA/HIP stream).
-                std::thread t(
-                    [pCallbackSynchronizationData, task](){
-                        // If the callback has not yet been called, we wait for it.
+                std::thread t([pCallbackSynchronizationData, task]() {
+                    // If the callback has not yet been called, we wait for it.
+                    {
+                        std::unique_lock<std::mutex> lock(pCallbackSynchronizationData->m_mutex);
+                        if(pCallbackSynchronizationData->state != CallbackState::notified)
                         {
-                            std::unique_lock<std::mutex> lock(pCallbackSynchronizationData->m_mutex);
-                            if(pCallbackSynchronizationData->state != CallbackState::notified)
-                            {
-                                pCallbackSynchronizationData->m_event.wait(
-                                    lock,
-                                    [pCallbackSynchronizationData](){
-                                        return pCallbackSynchronizationData->state == CallbackState::notified;
-                                    }
-                                );
-                            }
-
-                            task();
-
-                            // Notify the waiting CUDA thread.
-                            pCallbackSynchronizationData->state = CallbackState::finished;
+                            pCallbackSynchronizationData->m_event.wait(lock, [pCallbackSynchronizationData]() {
+                                return pCallbackSynchronizationData->state == CallbackState::notified;
+                            });
                         }
-                        pCallbackSynchronizationData->m_event.notify_one();
+
+                        task();
+
+                        // Notify the waiting CUDA thread.
+                        pCallbackSynchronizationData->state = CallbackState::finished;
                     }
-                );
+                    pCallbackSynchronizationData->m_event.notify_one();
+                });
 
                 t.detach();
             }
         };
-    }
-}
+    } // namespace traits
+} // namespace alpaka
 
 #endif
