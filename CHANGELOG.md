@@ -40,6 +40,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - removed namespace `alpaka::block::shared::st`
 - removed namespace `alpaka::block::shared::dyn`
 - removed namespace `alpaka::block::sync`
+- renamed function `getMem` to `getDynSharedMem`
+- renamed function `getVar` to `declareSharedVar`
+- renamed function `freeMem` to `freeSharedVars`  
 - renamed functors `alpaka::block::op::LogicalAnd` et. al. to `alpaka::BlockAnd` et. al.
 - removed namespace `alpaka::block::op`
 - removed namespace `alpaka::block`

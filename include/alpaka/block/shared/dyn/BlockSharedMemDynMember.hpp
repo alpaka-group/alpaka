@@ -114,7 +114,7 @@ namespace alpaka
     {
         //#############################################################################
         template<typename T, std::size_t TStaticAllocKiB>
-        struct GetMem<T, BlockSharedMemDynMember<TStaticAllocKiB>>
+        struct GetDynSharedMem<T, BlockSharedMemDynMember<TStaticAllocKiB>>
         {
 #if BOOST_COMP_GNUC
 #    pragma GCC diagnostic push

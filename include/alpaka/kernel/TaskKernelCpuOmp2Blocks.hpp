@@ -179,7 +179,7 @@ namespace alpaka
                 boundKernelFnObj(acc);
 
                 // After a block has been processed, the shared memory has to be deleted.
-                freeMem(acc);
+                freeSharedVars(acc);
             }
         }
 

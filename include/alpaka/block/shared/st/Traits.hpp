@@ -27,40 +27,43 @@ namespace alpaka
         //#############################################################################
         //! The block shared static memory variable allocation operation trait.
         template<typename T, std::size_t TuniqueId, typename TBlockSharedMemSt, typename TSfinae = void>
-        struct AllocVar;
+        struct DeclareSharedVar;
         //#############################################################################
         //! The block shared static memory free operation trait.
         template<typename TBlockSharedMemSt, typename TSfinae = void>
-        struct FreeMem;
+        struct FreeSharedVars;
     } // namespace traits
 
     //-----------------------------------------------------------------------------
-    //! Allocates a variable in block shared static memory.
+    //! Declare a block shared variable.
     //!
-    //! The allocated variable is uninitialized and not default constructed!
+    //! The variable is uninitialized and not default constructed!
+    //! The variable can be accessed by all threads within a block.
+    //! Access to the variable is not thread safe.
     //!
     //! \tparam T The element type.
     //! \tparam TuniqueId id those is unique inside a kernel
     //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
     //! \param blockSharedMemSt The block shared allocator implementation.
+    //! \return Uninitialized variable stored in shared memory.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename T, std::size_t TuniqueId, typename TBlockSharedMemSt>
-    ALPAKA_FN_ACC auto allocVar(TBlockSharedMemSt const& blockSharedMemSt) -> T&
+    ALPAKA_FN_ACC auto declareSharedVar(TBlockSharedMemSt const& blockSharedMemSt) -> T&
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
-        return traits::AllocVar<T, TuniqueId, ImplementationBase>::allocVar(blockSharedMemSt);
+        return traits::DeclareSharedVar<T, TuniqueId, ImplementationBase>::declareVar(blockSharedMemSt);
     }
 
     //-----------------------------------------------------------------------------
-    //! Frees all block shared static memory.
+    //! Frees all memory used by block shared variables.
     //!
     //! \tparam TBlockSharedMemSt The block shared allocator implementation type.
     //! \param blockSharedMemSt The block shared allocator implementation.
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TBlockSharedMemSt>
-    ALPAKA_FN_ACC auto freeMem(TBlockSharedMemSt& blockSharedMemSt) -> void
+    ALPAKA_FN_ACC auto freeSharedVars(TBlockSharedMemSt& blockSharedMemSt) -> void
     {
         using ImplementationBase = concepts::ImplementationBase<ConceptBlockSharedSt, TBlockSharedMemSt>;
-        traits::FreeMem<ImplementationBase>::freeMem(blockSharedMemSt);
+        traits::FreeSharedVars<ImplementationBase>::freeVars(blockSharedMemSt);
     }
 } // namespace alpaka

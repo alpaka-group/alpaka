@@ -24,15 +24,15 @@ public:
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
         // Assure that the pointer is non null.
-        auto a = alpaka::getMem<std::uint32_t>(acc);
+        auto a = alpaka::getDynSharedMem<std::uint32_t>(acc);
         ALPAKA_CHECK(*success, static_cast<std::uint32_t*>(nullptr) != a);
 
         // Each call should return the same pointer ...
-        auto b = alpaka::getMem<std::uint32_t>(acc);
+        auto b = alpaka::getDynSharedMem<std::uint32_t>(acc);
         ALPAKA_CHECK(*success, a == b);
 
         // ... even for different types.
-        auto c = alpaka::getMem<float>(acc);
+        auto c = alpaka::getDynSharedMem<float>(acc);
         ALPAKA_CHECK(*success, a == reinterpret_cast<std::uint32_t*>(c));
     }
 };

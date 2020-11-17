@@ -59,7 +59,7 @@ namespace alpaka
 #endif
         //#############################################################################
         template<typename T>
-        struct GetMem<T, BlockSharedMemDynAlignedAlloc>
+        struct GetDynSharedMem<T, BlockSharedMemDynAlignedAlloc>
         {
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getMem(BlockSharedMemDynAlignedAlloc const& blockSharedMemDyn) -> T*

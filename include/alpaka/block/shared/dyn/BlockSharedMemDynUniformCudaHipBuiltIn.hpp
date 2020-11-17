@@ -53,7 +53,7 @@ namespace alpaka
     {
         //#############################################################################
         template<typename T>
-        struct GetMem<T, BlockSharedMemDynUniformCudaHipBuiltIn>
+        struct GetDynSharedMem<T, BlockSharedMemDynUniformCudaHipBuiltIn>
         {
             //-----------------------------------------------------------------------------
             __device__ static auto getMem(BlockSharedMemDynUniformCudaHipBuiltIn const&) -> T*

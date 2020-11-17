@@ -80,7 +80,7 @@ struct ReduceKernel
         TIdx const& n,
         TFunc func) const -> void
     {
-        auto& sdata(alpaka::allocVar<cheapArray<T, TBlockSize>, __COUNTER__>(acc));
+        auto& sdata(alpaka::declareSharedVar<cheapArray<T, TBlockSize>, __COUNTER__>(acc));
 
         const uint32_t blockIndex(static_cast<uint32_t>(alpaka::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0]));
         const uint32_t threadIndex(static_cast<uint32_t>(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0]));

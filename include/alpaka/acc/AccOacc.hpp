@@ -259,7 +259,7 @@ namespace alpaka
 
         //#############################################################################
         template<typename T, typename TDim, typename TIdx>
-        struct GetMem<T, AccOacc<TDim, TIdx>>
+        struct GetDynSharedMem<T, AccOacc<TDim, TIdx>>
         {
 #    if BOOST_COMP_GNUC
 #        pragma GCC diagnostic push
@@ -278,23 +278,23 @@ namespace alpaka
 
         //#############################################################################
         template<typename T, typename TDim, typename TIdx, std::size_t TuniqueId>
-        struct AllocVar<T, TuniqueId, AccOacc<TDim, TIdx>>
+        struct DeclareSharedVar<T, TuniqueId, AccOacc<TDim, TIdx>>
         {
             //-----------------------------------------------------------------------------
-            static auto allocVar(AccOacc<TDim, TIdx> const& smem) -> T&
+            static auto declareVar(AccOacc<TDim, TIdx> const& smem) -> T&
             {
-                return alpaka::allocVar<T, TuniqueId>(smem.m_blockShared);
+                return alpaka::declareSharedVar<T, TuniqueId>(smem.m_blockShared);
             }
         };
 
         //#############################################################################
         template<typename TDim, typename TIdx>
-        struct FreeMem<AccOacc<TDim, TIdx>>
+        struct FreeSharedVars<AccOacc<TDim, TIdx>>
         {
             //-----------------------------------------------------------------------------
-            static auto freeMem(AccOacc<TDim, TIdx> const& smem) -> void
+            static auto freeVars(AccOacc<TDim, TIdx> const& smem) -> void
             {
-                alpaka::freeMem(smem.m_blockShared);
+                alpaka::freeSharedVars(smem.m_blockShared);
             }
         };
 

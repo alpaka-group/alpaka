@@ -156,7 +156,7 @@ namespace alpaka
                                 },
                                 argsD);
                         }
-                        freeMem(blockShared);
+                        freeSharedVars(blockShared);
                     }
                 }
             }

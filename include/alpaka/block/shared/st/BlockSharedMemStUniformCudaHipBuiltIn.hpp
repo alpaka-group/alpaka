@@ -60,10 +60,10 @@ namespace alpaka
     {
         //#############################################################################
         template<typename T, std::size_t TuniqueId>
-        struct AllocVar<T, TuniqueId, BlockSharedMemStUniformCudaHipBuiltIn>
+        struct DeclareSharedVar<T, TuniqueId, BlockSharedMemStUniformCudaHipBuiltIn>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto allocVar(BlockSharedMemStUniformCudaHipBuiltIn const&) -> T&
+            __device__ static auto declareVar(BlockSharedMemStUniformCudaHipBuiltIn const&) -> T&
             {
                 __shared__ uint8_t shMem alignas(alignof(T))[sizeof(T)];
                 return *(reinterpret_cast<T*>(shMem));
@@ -71,10 +71,10 @@ namespace alpaka
         };
         //#############################################################################
         template<>
-        struct FreeMem<BlockSharedMemStUniformCudaHipBuiltIn>
+        struct FreeSharedVars<BlockSharedMemStUniformCudaHipBuiltIn>
         {
             //-----------------------------------------------------------------------------
-            __device__ static auto freeMem(BlockSharedMemStUniformCudaHipBuiltIn const&) -> void
+            __device__ static auto freeVars(BlockSharedMemStUniformCudaHipBuiltIn const&) -> void
             {
                 // Nothing to do. CUDA/HIP block shared memory is automatically freed when all threads left the block.
             }
