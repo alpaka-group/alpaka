@@ -16,11 +16,11 @@
 #    endif
 
 // Base classes.
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
-#    include <alpaka/idx/gb/IdxGbLinear.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
 #    include <alpaka/block/sync/BlockSyncBarrierOacc.hpp>
+#    include <alpaka/idx/gb/IdxGbLinear.hpp>
+#    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 // Specialized traits.
 #    include <alpaka/idx/Traits.hpp>

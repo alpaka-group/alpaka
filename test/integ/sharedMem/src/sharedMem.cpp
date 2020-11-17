@@ -8,7 +8,6 @@
  */
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>

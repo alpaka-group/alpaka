@@ -16,30 +16,29 @@
 #    endif
 
 // Base classes.
-#    include <alpaka/idx/bt/IdxBtLinear.hpp>
-#    include <alpaka/atomic/AtomicOaccBuiltIn.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
+#    include <alpaka/atomic/AtomicOaccBuiltIn.hpp>
+#    include <alpaka/ctx/block/CtxBlockOacc.hpp>
+#    include <alpaka/idx/bt/IdxBtLinear.hpp>
 #    include <alpaka/intrinsic/IntrinsicFallback.hpp>
 #    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
 #    include <alpaka/time/TimeStdLib.hpp>
-#    include <alpaka/ctx/block/CtxBlockOacc.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
 
 // Specialized traits.
 #    include <alpaka/acc/Traits.hpp>
-#    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>
+#    include <alpaka/kernel/Traits.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
 #    include <alpaka/core/ClipCast.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/Unused.hpp>
-#    include <alpaka/dev/DevOacc.hpp>
-
 #    include <alpaka/ctx/block/CtxBlockOacc.hpp>
+#    include <alpaka/dev/DevOacc.hpp>
 
 #    include <limits>
 #    include <typeinfo>

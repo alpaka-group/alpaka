@@ -33,12 +33,12 @@
 // Boost fiber:
 // http://www.boost.org/doc/libs/develop/libs/fiber/doc/html/index.html
 // https://github.com/boostorg/fiber
-#    include <boost/fiber/fiber.hpp>
-#    include <boost/fiber/operations.hpp>
-#    include <boost/fiber/condition_variable.hpp>
-#    include <boost/fiber/mutex.hpp>
-#    include <boost/fiber/future.hpp>
 #    include <boost/fiber/barrier.hpp>
+#    include <boost/fiber/condition_variable.hpp>
+#    include <boost/fiber/fiber.hpp>
+#    include <boost/fiber/future.hpp>
+#    include <boost/fiber/mutex.hpp>
+#    include <boost/fiber/operations.hpp>
 
 #    if BOOST_COMP_MSVC
 #        undef NOMINMAX

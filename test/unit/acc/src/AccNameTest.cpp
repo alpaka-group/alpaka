@@ -8,7 +8,6 @@
  */
 
 #include <alpaka/acc/Traits.hpp>
-
 #include <alpaka/test/acc/TestAccs.hpp>
 
 #include <catch2/catch.hpp>

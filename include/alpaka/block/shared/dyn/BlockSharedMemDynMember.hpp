@@ -13,9 +13,9 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Vectorize.hpp>
 
+#include <array>
 #include <cstdint>
 #include <type_traits>
-#include <array>
 
 #ifndef ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB
 #    define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB 30

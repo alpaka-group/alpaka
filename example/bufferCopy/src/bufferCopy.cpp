@@ -18,8 +18,8 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/example/ExampleDefaultAcc.hpp>
 
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 
 //-----------------------------------------------------------------------------
 template<size_t width>

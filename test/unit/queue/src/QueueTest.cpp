@@ -7,12 +7,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <alpaka/queue/Traits.hpp>
 #include <alpaka/meta/Concatenate.hpp>
-
-#include <alpaka/test/queue/QueueCpuOmp2Collective.hpp>
-
+#include <alpaka/queue/Traits.hpp>
 #include <alpaka/test/queue/Queue.hpp>
+#include <alpaka/test/queue/QueueCpuOmp2Collective.hpp>
 #include <alpaka/test/queue/QueueTestFixture.hpp>
 
 #include <catch2/catch.hpp>

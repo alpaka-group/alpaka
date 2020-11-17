@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/atomic/Traits.hpp>
-
 #include <alpaka/meta/InheritFromList.hpp>
 #include <alpaka/meta/Unique.hpp>
 

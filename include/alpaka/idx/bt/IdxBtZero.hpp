@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>
-
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/idx/Traits.hpp>
 #include <alpaka/vec/Vec.hpp>
 
 namespace alpaka

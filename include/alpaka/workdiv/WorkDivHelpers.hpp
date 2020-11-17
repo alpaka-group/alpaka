@@ -9,21 +9,18 @@
 
 #pragma once
 
-#include <alpaka/workdiv/WorkDivMembers.hpp>
-
-#include <alpaka/dev/Traits.hpp>
 #include <alpaka/acc/Traits.hpp>
-
-#include <alpaka/vec/Vec.hpp>
-
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/vec/Vec.hpp>
+#include <alpaka/workdiv/WorkDivMembers.hpp>
 
-#include <cmath>
 #include <algorithm>
+#include <array>
+#include <cmath>
 #include <functional>
 #include <set>
-#include <array>
 #include <type_traits>
 
 //-----------------------------------------------------------------------------

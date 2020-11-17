@@ -9,14 +9,12 @@
 
 #pragma once
 
-#include <alpaka/wait/Traits.hpp>
-
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Concepts.hpp>
+#include <alpaka/wait/Traits.hpp>
 
 #include <type_traits>
 #include <utility>
-
-#include <alpaka/core/Concepts.hpp>
 
 namespace alpaka
 {

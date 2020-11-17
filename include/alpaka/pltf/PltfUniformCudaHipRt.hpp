@@ -21,8 +21,8 @@
 #        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #    endif
 
-#    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
+#    include <alpaka/dev/Traits.hpp>
 
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)

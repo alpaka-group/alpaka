@@ -15,13 +15,13 @@
 #        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #    endif
 
-#    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/dev/DevOmp5.hpp>
 #    include <alpaka/core/Concepts.hpp>
+#    include <alpaka/dev/DevOmp5.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 
+#    include <limits>
 #    include <sstream>
 #    include <vector>
-#    include <limits>
 
 namespace alpaka
 {

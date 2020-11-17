@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/mem/view/Iterator.hpp>
 

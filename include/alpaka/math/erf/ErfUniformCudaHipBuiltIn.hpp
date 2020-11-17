@@ -37,9 +37,8 @@
 #        endif
 #    endif
 
-#    include <alpaka/math/erf/Traits.hpp>
-
 #    include <alpaka/core/Unused.hpp>
+#    include <alpaka/math/erf/Traits.hpp>
 
 #    include <type_traits>
 

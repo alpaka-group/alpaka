@@ -7,9 +7,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/test/Extent.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/mem/view/Iterator.hpp>
-#include <alpaka/test/Extent.hpp>
+
 #include <catch2/catch.hpp>
 
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)

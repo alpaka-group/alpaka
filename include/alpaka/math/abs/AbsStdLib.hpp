@@ -9,13 +9,12 @@
 
 #pragma once
 
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/math/abs/Traits.hpp>
 
-#include <alpaka/core/Unused.hpp>
-
-#include <type_traits>
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
+#include <type_traits>
 
 namespace alpaka
 {

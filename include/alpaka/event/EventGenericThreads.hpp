@@ -12,18 +12,15 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Unused.hpp>
 #include <alpaka/core/Utility.hpp>
-
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
-#include <alpaka/wait/Traits.hpp>
-#include <alpaka/dev/Traits.hpp>
-
-#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 #include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
+#include <alpaka/wait/Traits.hpp>
 
-#include <mutex>
 #include <condition_variable>
 #include <future>
+#include <mutex>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #    include <iostream>
 #endif

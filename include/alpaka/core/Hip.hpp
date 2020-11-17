@@ -18,17 +18,17 @@
 #    endif
 
 #    include <alpaka/elem/Traits.hpp>
-#    include <alpaka/offset/Traits.hpp>
 #    include <alpaka/extent/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>
-#    include <alpaka/vec/Vec.hpp>
 #    include <alpaka/meta/Metafunctions.hpp>
+#    include <alpaka/offset/Traits.hpp>
+#    include <alpaka/vec/Vec.hpp>
 
 #    include <hip/hip_runtime.h>
 
+#    include <cstddef>
 #    include <type_traits>
 #    include <utility>
-#    include <cstddef>
 
 #    if BOOST_COMP_HIP
 #        define HIPRT_CB

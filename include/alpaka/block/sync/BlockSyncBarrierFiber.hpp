@@ -12,13 +12,11 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
 #    include <alpaka/block/sync/Traits.hpp>
-
+#    include <alpaka/core/Common.hpp>
 #    include <alpaka/core/Fibers.hpp>
 
-#    include <alpaka/core/Common.hpp>
-
-#    include <mutex>
 #    include <map>
+#    include <mutex>
 
 namespace alpaka
 {

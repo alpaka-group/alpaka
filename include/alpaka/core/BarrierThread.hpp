@@ -12,11 +12,11 @@
 // Uncomment this to disable the standard spinlock behaviour of the threads
 //#define ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
 
-#include <alpaka/core/Common.hpp>
 #include <alpaka/block/sync/Traits.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
 #ifndef ALPAKA_THREAD_BARRIER_DISABLE_SPINLOCK
 #    include <atomic>
 #    include <thread>

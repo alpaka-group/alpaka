@@ -22,26 +22,26 @@
 #    endif
 
 // Base classes.
-#    include <alpaka/workdiv/WorkDivUniformCudaHipBuiltIn.hpp>
-#    include <alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp>
-#    include <alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp>
-#    include <alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
-#    include <alpaka/math/MathUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/atomic/AtomicUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/block/sync/BlockSyncUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/idx/bt/IdxBtUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/idx/gb/IdxGbUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/intrinsic/IntrinsicUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/math/MathUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/rand/RandUniformCudaHipRand.hpp>
 #    include <alpaka/time/TimeUniformCudaHipBuiltIn.hpp>
 #    include <alpaka/warp/WarpUniformCudaHipBuiltIn.hpp>
+#    include <alpaka/workdiv/WorkDivUniformCudaHipBuiltIn.hpp>
 
 // Specialized traits.
 #    include <alpaka/acc/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
+#    include <alpaka/idx/Traits.hpp>
 #    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
 #    include <alpaka/core/ClipCast.hpp>

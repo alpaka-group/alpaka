@@ -15,17 +15,15 @@
 #        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #    endif
 
-#    include <alpaka/queue/QueueOmp5Blocking.hpp>
-
+#    include <alpaka/core/Assert.hpp>
+#    include <alpaka/core/Omp5.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/dev/DevOmp5.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/extent/Traits.hpp>
 #    include <alpaka/mem/view/Traits.hpp>
-
+#    include <alpaka/queue/QueueOmp5Blocking.hpp>
 #    include <alpaka/vec/Vec.hpp>
-#    include <alpaka/core/Assert.hpp>
-#    include <alpaka/core/Omp5.hpp>
 
 #    include <set>
 #    include <tuple>

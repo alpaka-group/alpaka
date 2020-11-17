@@ -10,8 +10,8 @@
 #pragma once
 
 #include <cmath>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <limits>
 
 namespace alpaka

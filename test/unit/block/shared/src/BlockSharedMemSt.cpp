@@ -8,11 +8,10 @@
  */
 
 #include <alpaka/block/shared/st/Traits.hpp>
-
-#include <alpaka/test/acc/TestAccs.hpp>
-#include <alpaka/test/queue/Queue.hpp>
 #include <alpaka/test/Array.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 #include <catch2/catch.hpp>
 

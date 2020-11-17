@@ -7,10 +7,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <alpaka/vec/Vec.hpp>
-
-#include <alpaka/test/dim/TestDims.hpp>
 #include <alpaka/meta/ForEachType.hpp>
+#include <alpaka/test/dim/TestDims.hpp>
+#include <alpaka/vec/Vec.hpp>
 
 #include <catch2/catch.hpp>
 

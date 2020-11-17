@@ -8,17 +8,16 @@
  */
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
 #include <catch2/catch.hpp>
 
+#include <functional>
 #include <iostream>
 #include <typeinfo>
 #include <vector>
-#include <functional>
 
 //#############################################################################
 //! A matrix multiplication kernel.

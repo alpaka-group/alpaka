@@ -9,10 +9,9 @@
 
 #include <alpaka/idx/Accessors.hpp>
 #include <alpaka/idx/MapIdx.hpp>
-
 #include <alpaka/meta/ForEachType.hpp>
-#include <alpaka/test/dim/TestDims.hpp>
 #include <alpaka/test/Extent.hpp>
+#include <alpaka/test/dim/TestDims.hpp>
 
 #include <catch2/catch.hpp>
 

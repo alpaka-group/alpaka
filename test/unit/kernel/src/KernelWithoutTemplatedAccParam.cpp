@@ -8,7 +8,6 @@
  */
 
 #include <alpaka/kernel/Traits.hpp>
-
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
 #include <catch2/catch.hpp>

@@ -8,19 +8,18 @@
  */
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
 #include <catch2/catch.hpp>
 
-#include <iostream>
-#include <typeinfo>
-#include <random>
-#include <limits>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include <random>
+#include <typeinfo>
 
 //#############################################################################
 //! A vector addition kernel.

@@ -17,7 +17,9 @@
 
 #include "alpakaConfig.hpp"
 #include "kernel.hpp"
+
 #include <alpaka/alpaka.hpp>
+
 #include <cstdlib>
 #include <iostream>
 

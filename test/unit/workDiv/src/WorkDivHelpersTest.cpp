@@ -9,10 +9,9 @@
 
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/core/Unused.hpp>
-#include <alpaka/workdiv/WorkDivHelpers.hpp>
-
-#include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
+#include <alpaka/workdiv/WorkDivHelpers.hpp>
 
 #include <catch2/catch.hpp>
 

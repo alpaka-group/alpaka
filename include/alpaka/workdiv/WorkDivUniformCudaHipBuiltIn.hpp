@@ -28,11 +28,10 @@
 #        include <alpaka/core/Hip.hpp>
 #    endif
 
-#    include <alpaka/workdiv/Traits.hpp>
-#    include <alpaka/idx/Traits.hpp>
-
 #    include <alpaka/core/Unused.hpp>
+#    include <alpaka/idx/Traits.hpp>
 #    include <alpaka/vec/Vec.hpp>
+#    include <alpaka/workdiv/Traits.hpp>
 
 namespace alpaka
 {

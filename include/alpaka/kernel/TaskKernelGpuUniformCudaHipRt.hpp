@@ -25,8 +25,8 @@
 #    include <alpaka/acc/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/queue/Traits.hpp>
 
 // Backend specific includes.
@@ -41,8 +41,8 @@
 #    include <alpaka/core/Decay.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
 #    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
+#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL

@@ -9,20 +9,19 @@
 
 #pragma once
 
+#include <alpaka/core/ConcurrentExecPool.hpp>
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
-#include <alpaka/wait/Traits.hpp>
-#include <alpaka/core/Unused.hpp>
-
-#include <alpaka/core/ConcurrentExecPool.hpp>
 #include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
+#include <alpaka/wait/Traits.hpp>
 
-#include <type_traits>
-#include <thread>
-#include <mutex>
 #include <future>
 #include <memory>
+#include <mutex>
+#include <thread>
+#include <type_traits>
 
 namespace alpaka
 {

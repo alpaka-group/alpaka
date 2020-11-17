@@ -9,16 +9,14 @@
 
 #pragma once
 
-#include <alpaka/vec/Vec.hpp>
+#include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Debug.hpp>
 #include <alpaka/core/Unused.hpp>
-
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
-
-#include <alpaka/core/BoostPredef.hpp>
-#include <alpaka/core/Debug.hpp>
+#include <alpaka/vec/Vec.hpp>
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
 #    include <alpaka/workdiv/Traits.hpp>
 #endif

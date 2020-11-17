@@ -15,8 +15,8 @@
 #        error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #    endif
 
-#    include <alpaka/atomic/Traits.hpp>
 #    include <alpaka/atomic/Op.hpp>
+#    include <alpaka/atomic/Traits.hpp>
 
 namespace alpaka
 {

@@ -9,18 +9,16 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>
-#include <alpaka/dev/Traits.hpp>
-#include <alpaka/extent/Traits.hpp>
-#include <alpaka/mem/view/Traits.hpp>
-#include <alpaka/offset/Traits.hpp>
-#include <alpaka/idx/Traits.hpp>
-
-#include <alpaka/mem/view/ViewPlainPtr.hpp>
-#include <alpaka/vec/Vec.hpp>
-
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/dim/Traits.hpp>
+#include <alpaka/extent/Traits.hpp>
+#include <alpaka/idx/Traits.hpp>
+#include <alpaka/mem/view/Traits.hpp>
+#include <alpaka/mem/view/ViewPlainPtr.hpp>
+#include <alpaka/offset/Traits.hpp>
+#include <alpaka/vec/Vec.hpp>
 
 #include <type_traits>
 #include <utility>

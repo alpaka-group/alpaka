@@ -12,11 +12,10 @@
 // where the first operand evaluates to false, so we use it here:
 TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
 
-#include <alpaka/kernel/Traits.hpp>
-
-#include <alpaka/test/acc/TestAccs.hpp>
-#include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/core/BoostPredef.hpp>
+#include <alpaka/kernel/Traits.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
 
 #include <catch2/catch.hpp>
 

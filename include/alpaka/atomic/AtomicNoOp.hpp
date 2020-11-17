@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/atomic/Traits.hpp>
-
 #include <alpaka/core/Unused.hpp>
 
 namespace alpaka

@@ -11,9 +11,9 @@
 
 #include <alpaka/meta/Set.hpp>
 
+#include <cstddef>
 #include <type_traits>
 #include <utility>
-#include <cstddef>
 
 namespace alpaka
 {

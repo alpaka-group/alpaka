@@ -13,9 +13,9 @@
 #include <alpaka/core/Assert.hpp>
 #include <alpaka/core/Vectorize.hpp>
 
-#include <type_traits>
-#include <cstdint>
 #include <algorithm>
+#include <cstdint>
+#include <type_traits>
 
 namespace alpaka
 {

@@ -8,7 +8,6 @@
  */
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/KernelExecutionFixture.hpp>
 
 #include <catch2/catch.hpp>

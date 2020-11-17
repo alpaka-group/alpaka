@@ -9,9 +9,8 @@
 
 #include <alpaka/atomic/Traits.hpp>
 #include <alpaka/core/Unused.hpp>
-
-#include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
 
 #include <catch2/catch.hpp>
 

@@ -12,26 +12,26 @@
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
 
 // Base classes.
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
-#    include <alpaka/idx/gb/IdxGbRef.hpp>
-#    include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
-#    include <alpaka/atomic/AtomicStdLibLock.hpp>
 #    include <alpaka/atomic/AtomicHierarchy.hpp>
-#    include <alpaka/math/MathStdLib.hpp>
+#    include <alpaka/atomic/AtomicStdLibLock.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynAlignedAlloc.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStMasterSync.hpp>
 #    include <alpaka/block/sync/BlockSyncBarrierThread.hpp>
+#    include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
+#    include <alpaka/idx/gb/IdxGbRef.hpp>
 #    include <alpaka/intrinsic/IntrinsicCpu.hpp>
+#    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
 #    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
+#    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 // Specialized traits.
 #    include <alpaka/acc/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
+#    include <alpaka/idx/Traits.hpp>
 #    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/idx/Traits.hpp>
 
 // Implementation details.
 #    include <alpaka/core/BoostPredef.hpp>

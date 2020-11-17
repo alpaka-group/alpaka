@@ -23,8 +23,8 @@
 
 #    include <alpaka/block/shared/st/Traits.hpp>
 
-#    include <type_traits>
 #    include <cstdint>
+#    include <type_traits>
 
 namespace alpaka
 {

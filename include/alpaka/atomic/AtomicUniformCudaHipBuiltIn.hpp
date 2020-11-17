@@ -21,9 +21,9 @@
 #        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #    endif
 
-#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/atomic/Op.hpp>
 #    include <alpaka/atomic/Traits.hpp>
+#    include <alpaka/core/Unused.hpp>
 #    include <alpaka/meta/DependentFalseType.hpp>
 
 #    include <climits>

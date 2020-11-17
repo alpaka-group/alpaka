@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include <alpaka/time/Traits.hpp>
-
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/time/Traits.hpp>
 
 #include <chrono>
 

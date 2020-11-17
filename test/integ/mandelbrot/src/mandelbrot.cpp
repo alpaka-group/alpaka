@@ -8,17 +8,16 @@
  */
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/MeasureKernelRunTime.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 
 #include <catch2/catch.hpp>
 
+#include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <typeinfo>
-#include <fstream>
-#include <algorithm>
 
 //#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
 

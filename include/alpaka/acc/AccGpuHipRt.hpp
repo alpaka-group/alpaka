@@ -26,8 +26,8 @@
 // Implementation details.
 #    include <alpaka/core/ClipCast.hpp>
 #    include <alpaka/core/Concepts.hpp>
-#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #    include <alpaka/core/Hip.hpp>
+#    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 
 #    include <typeinfo>
 

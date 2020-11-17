@@ -12,27 +12,27 @@
 #ifdef ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED
 
 // Base classes.
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
-#    include <alpaka/idx/gb/IdxGbRef.hpp>
-#    include <alpaka/idx/bt/IdxBtZero.hpp>
+#    include <alpaka/atomic/AtomicHierarchy.hpp>
 #    include <alpaka/atomic/AtomicNoOp.hpp>
 #    include <alpaka/atomic/AtomicStdLibLock.hpp>
-#    include <alpaka/atomic/AtomicHierarchy.hpp>
-#    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/block/shared/dyn/BlockSharedMemDynMember.hpp>
 #    include <alpaka/block/shared/st/BlockSharedMemStMember.hpp>
 #    include <alpaka/block/sync/BlockSyncNoOp.hpp>
+#    include <alpaka/idx/bt/IdxBtZero.hpp>
+#    include <alpaka/idx/gb/IdxGbRef.hpp>
 #    include <alpaka/intrinsic/IntrinsicCpu.hpp>
+#    include <alpaka/math/MathStdLib.hpp>
 #    include <alpaka/rand/RandStdLib.hpp>
 #    include <alpaka/time/TimeStdLib.hpp>
 #    include <alpaka/warp/WarpSingleThread.hpp>
+#    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 // Specialized traits.
 #    include <alpaka/acc/Traits.hpp>
-#    include <alpaka/kernel/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>
+#    include <alpaka/kernel/Traits.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
 #    include <alpaka/core/Concepts.hpp>

@@ -9,13 +9,12 @@
 
 #pragma once
 
-#include <alpaka/mem/view/Traits.hpp>
-
-#include <alpaka/vec/Vec.hpp>
 #include <alpaka/dev/DevCpu.hpp>
-#include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/dev/DevOacc.hpp>
+#include <alpaka/dev/DevOmp5.hpp>
+#include <alpaka/dev/DevUniformCudaHipRt.hpp>
+#include <alpaka/mem/view/Traits.hpp>
+#include <alpaka/vec/Vec.hpp>
 
 #include <type_traits>
 

@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-
 #include <alpaka/core/Concepts.hpp>
 
 namespace alpaka

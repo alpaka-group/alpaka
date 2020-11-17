@@ -15,12 +15,12 @@
 
 #    include <alpaka/alpaka.hpp>
 #    include <alpaka/test/queue/Queue.hpp>
-#    include <alpaka/test/queue/QueueTestFixture.hpp>
 #    include <alpaka/test/queue/QueueCpuOmp2Collective.hpp>
-
-#    include <vector>
+#    include <alpaka/test/queue/QueueTestFixture.hpp>
 
 #    include <catch2/catch.hpp>
+
+#    include <vector>
 
 struct QueueCollectiveTestKernel
 {
