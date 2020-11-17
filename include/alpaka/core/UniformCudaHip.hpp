@@ -29,11 +29,10 @@
 #        include <alpaka/core/Hip.hpp>
 #    endif
 
-#    include <string>
 #    include <array>
-#    include <type_traits>
-#    include <string>
 #    include <stdexcept>
+#    include <string>
+#    include <type_traits>
 
 namespace alpaka
 {

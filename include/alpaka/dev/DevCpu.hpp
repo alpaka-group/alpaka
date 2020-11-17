@@ -9,26 +9,23 @@
 
 #pragma once
 
+#include <alpaka/core/Unused.hpp>
 #include <alpaka/dev/Traits.hpp>
+#include <alpaka/dev/cpu/SysInfo.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
+#include <alpaka/queue/Properties.hpp>
+#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
+#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
+#include <alpaka/queue/Traits.hpp>
+#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
-#include <alpaka/core/Unused.hpp>
-#include <alpaka/dev/cpu/SysInfo.hpp>
-
-#include <alpaka/queue/Traits.hpp>
-#include <alpaka/queue/Properties.hpp>
-
-#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
-#include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
-
-#include <map>
-#include <mutex>
-#include <memory>
-#include <vector>
 #include <algorithm>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <vector>
 
 namespace alpaka
 {

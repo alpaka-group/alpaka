@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/Check.hpp>
 #include <alpaka/test/queue/Queue.hpp>
 

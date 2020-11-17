@@ -15,19 +15,19 @@
 // std::current_exception, std::make_exception_ptr, etc. which are not declared in device code.
 // Therefore, we can not even parse those parts when compiling device code.
 //-----------------------------------------------------------------------------
-#include <alpaka/core/Common.hpp>
 #include <alpaka/core/BoostPredef.hpp>
+#include <alpaka/core/Common.hpp>
 
-#include <queue>
-#include <mutex>
-#include <stdexcept>
-#include <vector>
-#include <exception>
-#include <utility>
 #include <atomic>
+#include <exception>
 #include <functional>
 #include <memory>
+#include <mutex>
+#include <queue>
+#include <stdexcept>
 #include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace alpaka
 {

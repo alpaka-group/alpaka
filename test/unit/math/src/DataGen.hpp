@@ -11,9 +11,9 @@
 
 #include "Defines.hpp"
 
-#include <random>
-#include <limits>
 #include <cassert>
+#include <limits>
+#include <random>
 
 namespace alpaka
 {

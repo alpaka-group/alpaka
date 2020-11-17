@@ -10,13 +10,12 @@
 #pragma once
 
 #include <alpaka/alpaka.hpp>
-
 #include <alpaka/test/dim/TestDims.hpp>
 #include <alpaka/test/idx/TestIdxs.hpp>
 
+#include <iosfwd>
 #include <tuple>
 #include <type_traits>
-#include <iosfwd>
 
 // When compiling the tests with CUDA enabled (nvcc or native clang) on the CI infrastructure
 // we have to dramatically reduce the number of tested combinations.

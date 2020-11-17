@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include <alpaka/rand/Traits.hpp>
-#include <alpaka/rand/TinyMT/Engine.hpp>
-
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/rand/TinyMT/Engine.hpp>
+#include <alpaka/rand/Traits.hpp>
 
 #include <cstdint>
 #include <random>

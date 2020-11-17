@@ -19,13 +19,13 @@
 
 #    include <omp.h>
 
+#    include <cstddef>
+#    include <iostream>
+#    include <sstream>
+#    include <stdexcept>
+#    include <string>
 #    include <type_traits>
 #    include <utility>
-#    include <iostream>
-#    include <string>
-#    include <stdexcept>
-#    include <cstddef>
-#    include <sstream>
 
 namespace alpaka
 {

@@ -15,24 +15,23 @@
 #        error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
 #    endif
 
-#    include <alpaka/test/queue/Queue.hpp>
-
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
-#    include <alpaka/event/EventCpu.hpp>
-#    include <alpaka/queue/cpu/ICpuQueue.hpp>
-#    include <alpaka/queue/QueueCpuBlocking.hpp>
-#    include <alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp>
-#    include <alpaka/test/event/EventHostManualTrigger.hpp>
-
 #    include <alpaka/dev/Traits.hpp>
+#    include <alpaka/event/EventCpu.hpp>
 #    include <alpaka/event/Traits.hpp>
+#    include <alpaka/kernel/TaskKernelCpuOmp2Blocks.hpp>
+#    include <alpaka/queue/QueueCpuBlocking.hpp>
 #    include <alpaka/queue/Traits.hpp>
+#    include <alpaka/queue/cpu/ICpuQueue.hpp>
+#    include <alpaka/test/event/EventHostManualTrigger.hpp>
+#    include <alpaka/test/queue/Queue.hpp>
 #    include <alpaka/wait/Traits.hpp>
+
+#    include <omp.h>
 
 #    include <atomic>
 #    include <mutex>
-#    include <omp.h>
 
 namespace alpaka
 {

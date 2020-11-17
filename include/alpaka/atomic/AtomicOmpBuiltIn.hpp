@@ -11,8 +11,8 @@
 
 #ifdef _OPENMP
 
-#    include <alpaka/atomic/Traits.hpp>
 #    include <alpaka/atomic/Op.hpp>
+#    include <alpaka/atomic/Traits.hpp>
 
 namespace alpaka
 {

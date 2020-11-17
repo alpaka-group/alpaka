@@ -11,8 +11,8 @@
 
 #include <alpaka/alpaka.hpp>
 
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
 
 namespace alpaka
 {
@@ -364,9 +364,9 @@ namespace alpaka
 
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
 
-#    include <cuda.h>
-
 #    include <alpaka/core/BoostPredef.hpp>
+
+#    include <cuda.h>
 
 #    if !BOOST_LANG_CUDA
 #        error If ALPAKA_ACC_GPU_CUDA_ENABLED is set, the compiler has to support CUDA!

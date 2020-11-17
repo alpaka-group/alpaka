@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>
-#include <alpaka/core/Concepts.hpp>
-
-#include <alpaka/vec/Vec.hpp>
-#include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Concepts.hpp>
+#include <alpaka/core/Positioning.hpp>
+#include <alpaka/idx/Traits.hpp>
+#include <alpaka/vec/Vec.hpp>
 
 #include <type_traits>
 #include <utility>

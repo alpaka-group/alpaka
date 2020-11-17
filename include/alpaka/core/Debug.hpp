@@ -11,8 +11,8 @@
 
 #include <alpaka/core/BoostPredef.hpp>
 
-#include <string>
 #include <iostream>
+#include <string>
 
 //-----------------------------------------------------------------------------
 //! The no debug level.

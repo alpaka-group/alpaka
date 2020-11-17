@@ -13,15 +13,15 @@
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
 #include <alpaka/dev/Traits.hpp>
-#include <alpaka/kernel/Traits.hpp>
 #include <alpaka/dim/Traits.hpp>
 #include <alpaka/idx/Traits.hpp>
+#include <alpaka/kernel/Traits.hpp>
 #include <alpaka/pltf/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
 
 #include <string>
-#include <typeinfo>
 #include <type_traits>
+#include <typeinfo>
 
 namespace alpaka
 {

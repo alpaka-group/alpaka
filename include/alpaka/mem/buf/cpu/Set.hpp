@@ -13,8 +13,8 @@
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/extent/Traits.hpp>
 #include <alpaka/mem/view/Traits.hpp>
-#include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/Integral.hpp>
+#include <alpaka/meta/NdLoop.hpp>
 
 #include <cstring>
 

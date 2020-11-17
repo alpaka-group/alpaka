@@ -19,8 +19,8 @@
 #    include <alpaka/acc/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
 #    include <alpaka/acc/AccCpuOmp2Threads.hpp>
@@ -28,8 +28,8 @@
 #    include <alpaka/core/Unused.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/meta/NdLoop.hpp>
 #    include <alpaka/meta/ApplyTuple.hpp>
+#    include <alpaka/meta/NdLoop.hpp>
 #    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #    include <omp.h>

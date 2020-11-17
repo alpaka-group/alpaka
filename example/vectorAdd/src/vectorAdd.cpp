@@ -18,10 +18,10 @@
 #include <alpaka/alpaka.hpp>
 #include <alpaka/example/ExampleDefaultAcc.hpp>
 
-#include <random>
-#include <iostream>
-#include <typeinfo>
 #include <chrono>
+#include <iostream>
+#include <random>
+#include <typeinfo>
 
 //#############################################################################
 //! A vector addition kernel.

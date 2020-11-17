@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include <type_traits>
-
 #include <alpaka/meta/Metafunctions.hpp>
+
+#include <type_traits>
 
 namespace alpaka
 {

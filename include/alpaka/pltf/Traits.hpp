@@ -10,13 +10,12 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>
-
 #include <alpaka/core/Concepts.hpp>
-#include <alpaka/queue/Traits.hpp>
 #include <alpaka/dev/Traits.hpp>
+#include <alpaka/queue/Traits.hpp>
 
-#include <vector>
 #include <type_traits>
+#include <vector>
 
 namespace alpaka
 {

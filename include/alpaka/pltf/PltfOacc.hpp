@@ -15,9 +15,9 @@
 #        error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #    endif
 
-#    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/dev/DevOacc.hpp>
 #    include <alpaka/core/Concepts.hpp>
+#    include <alpaka/dev/DevOacc.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 
 #    include <sstream>
 #    include <vector>

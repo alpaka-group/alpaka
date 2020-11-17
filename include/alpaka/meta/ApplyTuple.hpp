@@ -12,9 +12,9 @@
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
 
-#include <utility>
 #include <tuple>
 #include <type_traits>
+#include <utility>
 
 namespace alpaka
 {

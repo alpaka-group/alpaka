@@ -10,11 +10,10 @@
 #pragma once
 
 #include <alpaka/atomic/Traits.hpp>
-
 #include <alpaka/core/BoostPredef.hpp>
 
-#include <mutex>
 #include <array>
+#include <mutex>
 
 namespace alpaka
 {

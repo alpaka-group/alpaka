@@ -9,13 +9,11 @@
 
 #pragma once
 
-#include <alpaka/core/Vectorize.hpp>
 #include <alpaka/core/Unused.hpp>
+#include <alpaka/core/Vectorize.hpp>
 #include <alpaka/dev/DevCpu.hpp>
-
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
-
 #include <alpaka/vec/Vec.hpp>
 
 // Backend specific includes.
@@ -26,7 +24,6 @@
 #endif
 
 #include <alpaka/mem/alloc/AllocCpuAligned.hpp>
-
 #include <alpaka/meta/DependentFalseType.hpp>
 
 #include <memory>

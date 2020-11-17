@@ -8,16 +8,15 @@
  */
 
 #include <alpaka/mem/buf/Traits.hpp>
-
-#include <alpaka/test/acc/TestAccs.hpp>
-#include <alpaka/test/queue/Queue.hpp>
-#include <alpaka/test/mem/view/ViewTest.hpp>
 #include <alpaka/test/Extent.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
+#include <alpaka/test/mem/view/ViewTest.hpp>
+#include <alpaka/test/queue/Queue.hpp>
 
 #include <catch2/catch.hpp>
 
-#include <type_traits>
 #include <numeric>
+#include <type_traits>
 
 //-----------------------------------------------------------------------------
 template<typename TAcc>

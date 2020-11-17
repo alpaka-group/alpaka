@@ -10,7 +10,6 @@
 #pragma once
 
 #include <alpaka/block/sync/Traits.hpp>
-
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Unused.hpp>
 

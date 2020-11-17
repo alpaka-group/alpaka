@@ -21,14 +21,13 @@
 #        error If ALPAKA_ACC_GPU_HIP_ENABLED is set, the compiler has to support HIP!
 #    endif
 
-#    include <alpaka/queue/cuda_hip/QueueUniformCudaHipRtBase.hpp>
-
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/event/Traits.hpp>
-#    include <alpaka/queue/Traits.hpp>
 #    include <alpaka/meta/DependentFalseType.hpp>
+#    include <alpaka/queue/Traits.hpp>
+#    include <alpaka/queue/cuda_hip/QueueUniformCudaHipRtBase.hpp>
 
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
@@ -37,11 +36,11 @@
 #        include <alpaka/core/Hip.hpp>
 #    endif
 
-#    include <stdexcept>
-#    include <memory>
-#    include <functional>
-#    include <mutex>
 #    include <condition_variable>
+#    include <functional>
+#    include <memory>
+#    include <mutex>
+#    include <stdexcept>
 #    include <thread>
 
 namespace alpaka

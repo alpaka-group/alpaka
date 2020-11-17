@@ -28,7 +28,6 @@
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/Cuda.hpp>
 #    include <alpaka/dev/DevUniformCudaHipRt.hpp>
-#    include <alpaka/core/Concepts.hpp>
 
 #    include <typeinfo>
 

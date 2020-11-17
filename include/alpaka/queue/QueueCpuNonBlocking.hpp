@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 #include <alpaka/event/EventCpu.hpp>
+#include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 
 namespace alpaka
 {

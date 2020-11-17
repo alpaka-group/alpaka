@@ -8,9 +8,8 @@
  */
 
 #include <alpaka/rand/Traits.hpp>
-
-#include <alpaka/test/acc/TestAccs.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
 
 #include <catch2/catch.hpp>
 

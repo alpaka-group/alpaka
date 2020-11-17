@@ -18,6 +18,7 @@
 #pragma once
 
 #include "iterator.hpp"
+
 #include <alpaka/alpaka.hpp>
 
 // Defines for dimensions and types.

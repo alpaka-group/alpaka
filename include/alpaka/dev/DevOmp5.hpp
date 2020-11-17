@@ -15,19 +15,16 @@
 #        error If ALPAKA_ACC_ANY_BT_OMP5_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
 #    endif
 
+#    include <alpaka/core/Omp5.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
 #    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/wait/Traits.hpp>
-
-#    include <alpaka/queue/Traits.hpp>
 #    include <alpaka/queue/Properties.hpp>
-
-#    include <alpaka/core/Omp5.hpp>
-
-#    include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
-#    include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
 #    include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
+#    include <alpaka/queue/QueueGenericThreadsNonBlocking.hpp>
+#    include <alpaka/queue/Traits.hpp>
+#    include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
+#    include <alpaka/wait/Traits.hpp>
 
 namespace alpaka
 {

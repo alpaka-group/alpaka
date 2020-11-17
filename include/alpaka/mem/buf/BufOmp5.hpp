@@ -17,12 +17,11 @@
 
 #    include <alpaka/core/Assert.hpp>
 #    include <alpaka/dev/DevOmp5.hpp>
-#    include <alpaka/queue/QueueOmp5Blocking.hpp>
-#    include <alpaka/vec/Vec.hpp>
-
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
+#    include <alpaka/queue/QueueOmp5Blocking.hpp>
+#    include <alpaka/vec/Vec.hpp>
 
 #    include <omp.h>
 

@@ -9,14 +9,13 @@
 
 #pragma once
 
-#include <alpaka/core/Vectorize.hpp>
 #include <alpaka/block/shared/dyn/Traits.hpp>
-
 #include <alpaka/core/AlignedAlloc.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Vectorize.hpp>
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace alpaka
 {

@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include <alpaka/mem/buf/Traits.hpp>
-#include <alpaka/idx/Traits.hpp>
 #include <alpaka/idx/Accessors.hpp>
 #include <alpaka/idx/MapIdx.hpp>
+#include <alpaka/idx/Traits.hpp>
+#include <alpaka/mem/buf/Traits.hpp>
 #include <alpaka/meta/Fold.hpp>
 
 namespace alpaka

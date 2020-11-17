@@ -19,8 +19,8 @@
 #    include <alpaka/acc/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
 #    include <alpaka/acc/AccOmp5.hpp>
@@ -28,17 +28,16 @@
 #    include <alpaka/dev/DevOmp5.hpp>
 #    include <alpaka/idx/MapIdx.hpp>
 #    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
-
 #    include <alpaka/meta/ApplyTuple.hpp>
+#    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #    include <omp.h>
 
+#    include <algorithm>
 #    include <functional>
 #    include <stdexcept>
 #    include <tuple>
 #    include <type_traits>
-#    include <algorithm>
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        include <iostream>
 #    endif

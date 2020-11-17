@@ -15,21 +15,18 @@
 #        error If ALPAKA_ACC_ANY_BT_OACC_ENABLED is set, the compiler has to support OpenACC 2.0 or higher!
 #    endif
 
-#    include <alpaka/dev/DevOacc.hpp>
-#    include <alpaka/kernel/TaskKernelOacc.hpp>
-#    include <alpaka/queue/QueueOaccBlocking.hpp>
-#    include <alpaka/mem/buf/SetKernel.hpp>
-
 #    include <alpaka/core/Assert.hpp>
 #    include <alpaka/core/Utility.hpp>
+#    include <alpaka/dev/DevOacc.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/extent/Traits.hpp>
+#    include <alpaka/idx/Accessors.hpp>
+#    include <alpaka/kernel/TaskKernelOacc.hpp>
+#    include <alpaka/mem/buf/SetKernel.hpp>
 #    include <alpaka/mem/view/Traits.hpp>
 #    include <alpaka/meta/Integral.hpp>
+#    include <alpaka/queue/QueueOaccBlocking.hpp>
 #    include <alpaka/vec/Vec.hpp>
-#    include <alpaka/extent/Traits.hpp>
-#    include <alpaka/core/Assert.hpp>
-#    include <alpaka/idx/Accessors.hpp>
 #    include <alpaka/workdiv/WorkDivHelpers.hpp>
 
 #    include <cstring>

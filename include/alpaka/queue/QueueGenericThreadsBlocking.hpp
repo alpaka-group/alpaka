@@ -10,17 +10,15 @@
 #pragma once
 
 #include <alpaka/core/Unused.hpp>
-
 #include <alpaka/dev/Traits.hpp>
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/queue/Traits.hpp>
+#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
 #include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/queue/cpu/IGenericThreadsQueue.hpp>
-
 #include <atomic>
-#include <mutex>
 #include <memory>
+#include <mutex>
 
 namespace alpaka
 {

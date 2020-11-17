@@ -24,10 +24,9 @@
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/mem/buf/Traits.hpp>
 #    include <alpaka/pltf/Traits.hpp>
-#    include <alpaka/wait/Traits.hpp>
-
-#    include <alpaka/queue/Traits.hpp>
 #    include <alpaka/queue/Properties.hpp>
+#    include <alpaka/queue/Traits.hpp>
+#    include <alpaka/wait/Traits.hpp>
 
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)

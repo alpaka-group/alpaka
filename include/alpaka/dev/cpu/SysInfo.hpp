@@ -21,10 +21,11 @@
 // We could use some more macros to reduce the number of sub-headers included, but this would restrict user code.
 #    include <windows.h>
 #elif BOOST_OS_UNIX || BOOST_OS_MACOS
-#    include <cstdint>
-#    include <unistd.h>
-#    include <sys/types.h>
 #    include <sys/param.h>
+#    include <sys/types.h>
+#    include <unistd.h>
+
+#    include <cstdint>
 #    if BOOST_OS_BSD || BOOST_OS_MACOS
 #        include <sys/sysctl.h>
 #    endif
@@ -34,8 +35,8 @@
 #    include <fstream>
 #endif
 
-#include <stdexcept>
 #include <cstring>
+#include <stdexcept>
 #include <string>
 
 namespace alpaka

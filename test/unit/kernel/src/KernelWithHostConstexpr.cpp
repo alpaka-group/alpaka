@@ -8,10 +8,9 @@
  */
 
 #include <alpaka/kernel/Traits.hpp>
-
-#include <alpaka/test/acc/TestAccs.hpp>
-#include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/meta/ForEachType.hpp>
+#include <alpaka/test/KernelExecutionFixture.hpp>
+#include <alpaka/test/acc/TestAccs.hpp>
 
 #include <catch2/catch.hpp>
 

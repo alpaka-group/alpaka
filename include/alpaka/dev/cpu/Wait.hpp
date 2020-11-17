@@ -11,7 +11,6 @@
 
 #include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/event/EventCpu.hpp>
-
 #include <alpaka/wait/Traits.hpp>
 
 namespace alpaka

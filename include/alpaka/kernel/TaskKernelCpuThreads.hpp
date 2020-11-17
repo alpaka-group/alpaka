@@ -15,28 +15,27 @@
 #    include <alpaka/acc/Traits.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/Traits.hpp>
-#    include <alpaka/pltf/Traits.hpp>
 #    include <alpaka/idx/Traits.hpp>
+#    include <alpaka/pltf/Traits.hpp>
 
 // Implementation details.
 #    include <alpaka/acc/AccCpuThreads.hpp>
+#    include <alpaka/core/BoostPredef.hpp>
+#    include <alpaka/core/ConcurrentExecPool.hpp>
 #    include <alpaka/core/Decay.hpp>
 #    include <alpaka/dev/DevCpu.hpp>
 #    include <alpaka/kernel/Traits.hpp>
-#    include <alpaka/workdiv/WorkDivMembers.hpp>
-
-#    include <alpaka/core/BoostPredef.hpp>
-#    include <alpaka/core/ConcurrentExecPool.hpp>
-#    include <alpaka/meta/NdLoop.hpp>
 #    include <alpaka/meta/ApplyTuple.hpp>
+#    include <alpaka/meta/NdLoop.hpp>
+#    include <alpaka/workdiv/WorkDivMembers.hpp>
 
 #    include <algorithm>
 #    include <functional>
+#    include <future>
 #    include <thread>
-#    include <vector>
 #    include <tuple>
 #    include <type_traits>
-#    include <future>
+#    include <vector>
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
 #        include <iostream>
 #    endif

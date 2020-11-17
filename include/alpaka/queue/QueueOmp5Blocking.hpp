@@ -16,7 +16,6 @@
 #    endif
 
 #    include <alpaka/dev/DevOmp5.hpp>
-
 #    include <alpaka/queue/QueueGenericThreadsBlocking.hpp>
 
 namespace alpaka

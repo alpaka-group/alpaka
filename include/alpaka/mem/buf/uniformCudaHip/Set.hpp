@@ -17,17 +17,15 @@
 #        error Compiler has to support CUDA/HIP!
 #    endif
 
-#    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
-#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
-
+#    include <alpaka/core/Assert.hpp>
 #    include <alpaka/dev/Traits.hpp>
 #    include <alpaka/dim/DimIntegralConst.hpp>
 #    include <alpaka/extent/Traits.hpp>
 #    include <alpaka/mem/view/Traits.hpp>
+#    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
+#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
 #    include <alpaka/queue/Traits.hpp>
 #    include <alpaka/wait/Traits.hpp>
-
-#    include <alpaka/core/Assert.hpp>
 
 // Backend specific includes.
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)

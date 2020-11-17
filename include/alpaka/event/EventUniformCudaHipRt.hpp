@@ -33,12 +33,12 @@
 #        include <alpaka/core/Hip.hpp>
 #    endif
 
-#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
 #    include <alpaka/queue/QueueUniformCudaHipRtBlocking.hpp>
+#    include <alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp>
 
-#    include <stdexcept>
-#    include <memory>
 #    include <functional>
+#    include <memory>
+#    include <stdexcept>
 
 namespace alpaka
 {

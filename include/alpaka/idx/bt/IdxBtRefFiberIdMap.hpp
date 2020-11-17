@@ -11,13 +11,12 @@
 
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
 
-#    include <alpaka/idx/Traits.hpp>
-
 #    include <alpaka/core/Assert.hpp>
 #    include <alpaka/core/Concepts.hpp>
 #    include <alpaka/core/Fibers.hpp>
 #    include <alpaka/core/Positioning.hpp>
 #    include <alpaka/core/Unused.hpp>
+#    include <alpaka/idx/Traits.hpp>
 #    include <alpaka/vec/Vec.hpp>
 
 #    include <map>

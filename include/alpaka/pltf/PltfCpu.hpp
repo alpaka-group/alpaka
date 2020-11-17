@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include <alpaka/pltf/Traits.hpp>
-#include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/core/Concepts.hpp>
+#include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/pltf/Traits.hpp>
 
 #include <sstream>
 #include <vector>

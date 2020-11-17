@@ -7,15 +7,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <alpaka/dev/Traits.hpp>
+#include <alpaka/example/ExampleDefaultAcc.hpp>
 #include <alpaka/idx/Accessors.hpp>
 #include <alpaka/idx/MapIdx.hpp>
-#include <alpaka/dev/Traits.hpp>
 #include <alpaka/mem/view/ViewPlainPtr.hpp>
 #include <alpaka/mem/view/ViewSubView.hpp>
-#include <alpaka/example/ExampleDefaultAcc.hpp>
-
-#include <alpaka/test/dim/TestDims.hpp>
 #include <alpaka/test/Extent.hpp>
+#include <alpaka/test/dim/TestDims.hpp>
 
 #include <catch2/catch.hpp>
 

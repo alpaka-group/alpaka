@@ -9,6 +9,10 @@
 
 #pragma once
 
+#include <alpaka/alpaka.hpp>
+
+#include <cstddef>
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
