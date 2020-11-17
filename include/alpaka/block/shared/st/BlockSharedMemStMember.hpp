@@ -117,10 +117,10 @@ namespace alpaka
     {
         //#############################################################################
         template<typename T, std::size_t TDataAlignBytes, std::size_t TuniqueId>
-        struct AllocVar<T, TuniqueId, BlockSharedMemStMember<TDataAlignBytes>>
+        struct DeclareSharedVar<T, TuniqueId, BlockSharedMemStMember<TDataAlignBytes>>
         {
             //-----------------------------------------------------------------------------
-            static auto allocVar(BlockSharedMemStMember<TDataAlignBytes> const& smem) -> T&
+            static auto declareVar(BlockSharedMemStMember<TDataAlignBytes> const& smem) -> T&
             {
                 smem.template alloc<T>();
                 return smem.template getLatestVar<T>();
@@ -128,10 +128,10 @@ namespace alpaka
         };
         //#############################################################################
         template<std::size_t TDataAlignBytes>
-        struct FreeMem<BlockSharedMemStMember<TDataAlignBytes>>
+        struct FreeSharedVars<BlockSharedMemStMember<TDataAlignBytes>>
         {
             //-----------------------------------------------------------------------------
-            static auto freeMem(BlockSharedMemStMember<TDataAlignBytes> const& mem) -> void
+            static auto freeVars(BlockSharedMemStMember<TDataAlignBytes> const& mem) -> void
             {
                 mem.free();
             }

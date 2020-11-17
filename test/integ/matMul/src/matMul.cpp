@@ -78,7 +78,7 @@ public:
         auto const& blockThreadExtentVal(blockThreadExtentX);
 
         // Shared memory used to store the current blocks of A and B.
-        auto* const pBlockSharedA(alpaka::getMem<TElem>(acc));
+        auto* const pBlockSharedA(alpaka::getDynSharedMem<TElem>(acc));
         auto* const pBlockSharedB(pBlockSharedA + blockThreadExtentX * blockThreadExtentY);
 
         auto const sharedBlockIdx1d(blockThreadIdxY * blockThreadExtentX + blockThreadIdxX);

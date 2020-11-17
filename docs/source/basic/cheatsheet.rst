@@ -234,13 +234,13 @@ Linearize multi-dimensional vectors
 Allocate static shared memory variable
   .. code-block:: c++
 
-     Type & var = block::shared::st::allocVar<Type, __COUNTER__>(acc);
+     Type & var = declareSharedVar<Type, __COUNTER__>(acc);
 
 Get dynamic shared memory pool, requires the kernel to specialize
   .. code-block:: c++
 
      traits::BlockSharedMemDynSizeBytes
-       Type * dynamicSharedMemoryPool = block::shared::dyn::getMem<Type>(acc);
+       Type * dynamicSharedMemoryPool = getDynSharedMem<Type>(acc);
 
 Synchronize threads of the same block
   .. code-block:: c++
@@ -251,8 +251,8 @@ Atomic operations
   .. code-block:: c++
 
      auto result = atomicOp<Operation>(acc,
-                                               arguments,
-                                               OperationHierarchy{});
+                                       arguments,
+                                       OperationHierarchy{});
 
   Operation (all in `op`):
      .. code-block:: c++

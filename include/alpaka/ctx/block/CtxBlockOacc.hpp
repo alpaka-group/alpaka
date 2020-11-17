@@ -223,10 +223,10 @@ namespace alpaka
 
         //#############################################################################
         template<typename T, typename TDim, typename TIdx, std::size_t TuniqueId>
-        struct AllocVar<T, TuniqueId, CtxBlockOacc<TDim, TIdx>>
+        struct DeclareSharedVar<T, TuniqueId, CtxBlockOacc<TDim, TIdx>>
         {
             //-----------------------------------------------------------------------------
-            static auto allocVar(CtxBlockOacc<TDim, TIdx> const& smem) -> T&
+            static auto declareVar(CtxBlockOacc<TDim, TIdx> const& smem) -> T&
             {
                 traits::SyncBlockThreads<CtxBlockOacc<TDim, TIdx>>::masterOpBlockThreads(smem, [&smem]() {
                     smem.template alloc<T>();
@@ -237,10 +237,10 @@ namespace alpaka
 
         //#############################################################################
         template<typename TDim, typename TIdx>
-        struct FreeMem<CtxBlockOacc<TDim, TIdx>>
+        struct FreeSharedVars<CtxBlockOacc<TDim, TIdx>>
         {
             //-----------------------------------------------------------------------------
-            static auto freeMem(CtxBlockOacc<TDim, TIdx> const&) -> void
+            static auto freeVars(CtxBlockOacc<TDim, TIdx> const&) -> void
             {
                 // Nothing to do. Block shared memory is automatically freed when all threads left the block.
             }

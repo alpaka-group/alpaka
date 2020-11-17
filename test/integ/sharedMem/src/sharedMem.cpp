@@ -20,8 +20,8 @@
 #include <vector>
 
 //#############################################################################
-//! A kernel using atomicOp, syncBlockThreads, getMem, getIdx, getWorkDiv and global memory to compute a (useless)
-//! result. \tparam TnumUselessWork The number of useless calculations done in each kernel execution.
+//! A kernel using atomicOp, syncBlockThreads, getDynSharedMem, getIdx, getWorkDiv and global memory to compute a
+//! (useless) result. \tparam TnumUselessWork The number of useless calculations done in each kernel execution.
 template<typename TnumUselessWork, typename Val>
 class SharedMemKernel
 {
@@ -39,7 +39,7 @@ public:
         Idx const blockThreadCount(alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the dynamically allocated shared memory.
-        Val* const pBlockShared(alpaka::getMem<Val>(acc));
+        Val* const pBlockShared(alpaka::getDynSharedMem<Val>(acc));
 
         // Calculate linearized index of the thread in the block.
         Idx const blockThreadIdx1d(alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);

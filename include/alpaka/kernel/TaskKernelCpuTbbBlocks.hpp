@@ -121,7 +121,7 @@ namespace alpaka
 
                 boundKernelFnObj(acc);
 
-                freeMem(acc);
+                freeSharedVars(acc);
             });
         }
 

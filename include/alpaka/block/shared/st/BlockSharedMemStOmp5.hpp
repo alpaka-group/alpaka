@@ -38,10 +38,10 @@ namespace alpaka
     {
         //#############################################################################
         template<typename T, std::size_t TuniqueId>
-        struct AllocVar<T, TuniqueId, BlockSharedMemStOmp5>
+        struct DeclareSharedVar<T, TuniqueId, BlockSharedMemStOmp5>
         {
             //-----------------------------------------------------------------------------
-            static auto allocVar(BlockSharedMemStOmp5 const& smem) -> T&
+            static auto declareVar(BlockSharedMemStOmp5 const& smem) -> T&
             {
 #    pragma omp barrier
                 smem.alloc<T>();
@@ -51,10 +51,10 @@ namespace alpaka
         };
         //#############################################################################
         template<>
-        struct FreeMem<BlockSharedMemStOmp5>
+        struct FreeSharedVars<BlockSharedMemStOmp5>
         {
             //-----------------------------------------------------------------------------
-            static auto freeMem(BlockSharedMemStOmp5 const& mem) -> void
+            static auto freeVars(BlockSharedMemStOmp5 const& mem) -> void
             {
                 mem.free();
             }

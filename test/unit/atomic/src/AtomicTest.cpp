@@ -25,7 +25,7 @@ ALPAKA_FN_ACC auto testAtomicAdd(TAcc const& acc, bool* success, T operandOrig) 
 {
     T const value = static_cast<T>(4);
     T const reference = static_cast<T>(operandOrig + value);
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicAdd>(acc, &operand, value);
@@ -47,7 +47,7 @@ ALPAKA_FN_ACC auto testAtomicSub(TAcc const& acc, bool* success, T operandOrig) 
 {
     T const value = static_cast<T>(4);
     T const reference = static_cast<T>(operandOrig - value);
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicSub>(acc, &operand, value);
@@ -69,7 +69,7 @@ ALPAKA_FN_ACC auto testAtomicMin(TAcc const& acc, bool* success, T operandOrig) 
 {
     T const value = static_cast<T>(4);
     T const reference = (operandOrig < value) ? operandOrig : value;
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicMin>(acc, &operand, value);
@@ -91,7 +91,7 @@ ALPAKA_FN_ACC auto testAtomicMax(TAcc const& acc, bool* success, T operandOrig) 
 {
     T const value = static_cast<T>(4);
     T const reference = (operandOrig > value) ? operandOrig : value;
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicMax>(acc, &operand, value);
@@ -113,7 +113,7 @@ ALPAKA_FN_ACC auto testAtomicExch(TAcc const& acc, bool* success, T operandOrig)
 {
     T const value = static_cast<T>(4);
     T const reference = value;
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicExch>(acc, &operand, value);
@@ -136,7 +136,7 @@ ALPAKA_FN_ACC auto testAtomicInc(TAcc const& acc, bool* success, T operandOrig) 
     // \TODO: Check reset to 0 at 'value'.
     T const value = static_cast<T>(42);
     T const reference = static_cast<T>(operandOrig + 1);
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicInc>(acc, &operand, value);
@@ -159,7 +159,7 @@ ALPAKA_FN_ACC auto testAtomicDec(TAcc const& acc, bool* success, T operandOrig) 
     // \TODO: Check reset to 'value' at 0.
     T const value = static_cast<T>(42);
     T const reference = static_cast<T>(operandOrig - 1);
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicDec>(acc, &operand, value);
@@ -181,7 +181,7 @@ ALPAKA_FN_ACC auto testAtomicAnd(TAcc const& acc, bool* success, T operandOrig) 
 {
     T const value = static_cast<T>(4);
     T const reference = operandOrig & value;
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicAnd>(acc, &operand, value);
@@ -203,7 +203,7 @@ ALPAKA_FN_ACC auto testAtomicOr(TAcc const& acc, bool* success, T operandOrig) -
 {
     T const value = static_cast<T>(4);
     T const reference = operandOrig | value;
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicOr>(acc, &operand, value);
@@ -225,7 +225,7 @@ ALPAKA_FN_ACC auto testAtomicXor(TAcc const& acc, bool* success, T operandOrig) 
 {
     T const value = static_cast<T>(operandOrig + static_cast<T>(4));
     T const reference = operandOrig ^ value;
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicXor>(acc, &operand, value);
@@ -246,7 +246,7 @@ template<typename TAcc, typename T>
 ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
-    auto& operand = alpaka::allocVar<T, __COUNTER__>(acc);
+    auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
 
     //-----------------------------------------------------------------------------
     // with match

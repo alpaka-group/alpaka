@@ -203,9 +203,6 @@ namespace alpaka
                         // This is done by default if the omp 'nowait' clause is missing
                         // syncBlockThreads(acc);
                     }
-
-                    // After a block has been processed, the shared memory has to be deleted.
-                    // freeMem(acc);
                 }
             }
 

@@ -53,10 +53,10 @@ namespace alpaka
 #endif
         //#############################################################################
         template<typename T, std::size_t TuniqueId>
-        struct AllocVar<T, TuniqueId, BlockSharedMemStNoSync>
+        struct DeclareSharedVar<T, TuniqueId, BlockSharedMemStNoSync>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto allocVar(BlockSharedMemStNoSync const& blockSharedMemSt) -> T&
+            ALPAKA_FN_HOST static auto declareVar(BlockSharedMemStNoSync const& blockSharedMemSt) -> T&
             {
                 constexpr std::size_t alignmentInBytes = std::max(core::vectorization::defaultAlignment, alignof(T));
 
@@ -70,10 +70,10 @@ namespace alpaka
 #endif
         //#############################################################################
         template<>
-        struct FreeMem<BlockSharedMemStNoSync>
+        struct FreeSharedVars<BlockSharedMemStNoSync>
         {
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST static auto freeMem(BlockSharedMemStNoSync const& blockSharedMemSt) -> void
+            ALPAKA_FN_HOST static auto freeVars(BlockSharedMemStNoSync const& blockSharedMemSt) -> void
             {
                 blockSharedMemSt.m_sharedAllocs.clear();
             }
