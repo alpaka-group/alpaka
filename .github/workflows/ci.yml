@@ -72,6 +72,13 @@ env:
   ALPAKA_ACC_GPU_HIP_ONLY_MODE: OFF
 
 jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: DoozyX/clang-format-lint-action@v0.11
+      with:
+        clangFormatVersion: 11
   ci:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
