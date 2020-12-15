@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['prng',['prng',['../structalpaka_1_1rand_1_1generator_1_1cpu_1_1TinyMTengine.html#a98eeb784e4f5ccf7b3d1f58def51cfeb',1,'alpaka::rand::generator::cpu::TinyMTengine']]]
+  ['guided',['Guided',['../structalpaka_1_1omp_1_1Schedule.html#a3637954e75753ae3801255ab4945f882',1,'alpaka::omp::Schedule']]]
 ];

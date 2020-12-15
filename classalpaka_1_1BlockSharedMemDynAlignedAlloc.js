@@ -6,5 +6,5 @@ var classalpaka_1_1BlockSharedMemDynAlignedAlloc =
     [ "~BlockSharedMemDynAlignedAlloc", "classalpaka_1_1BlockSharedMemDynAlignedAlloc.html#a768449de2feaccc00dc5e44a591d6e45", null ],
     [ "operator=", "classalpaka_1_1BlockSharedMemDynAlignedAlloc.html#a8b2c4639d4cacae923b94532f496a3ef", null ],
     [ "operator=", "classalpaka_1_1BlockSharedMemDynAlignedAlloc.html#adce0fe762cb2640a0849b96904c26550", null ],
-    [ "m_blockSharedMemDyn", "classalpaka_1_1BlockSharedMemDynAlignedAlloc.html#a7b181c314c1c5db3bd0daf9e6c46bd64", null ]
+    [ "m_blockSharedMemDyn", "classalpaka_1_1BlockSharedMemDynAlignedAlloc.html#ad226830fee048a645100987cda04c771", null ]
 ];

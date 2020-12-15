@@ -6,5 +6,5 @@ var classalpaka_1_1BlockSharedMemStNoSync =
     [ "~BlockSharedMemStNoSync", "classalpaka_1_1BlockSharedMemStNoSync.html#a46303f98266207abf8805726e9875842", null ],
     [ "operator=", "classalpaka_1_1BlockSharedMemStNoSync.html#a0749caf067d0718125719a434c19b0b4", null ],
     [ "operator=", "classalpaka_1_1BlockSharedMemStNoSync.html#a37ecde04a61a7359854c9df7f65ceee6", null ],
-    [ "m_sharedAllocs", "classalpaka_1_1BlockSharedMemStNoSync.html#ad249365b0f48aecb89138eb5b9ea15f9", null ]
+    [ "m_sharedAllocs", "classalpaka_1_1BlockSharedMemStNoSync.html#a49aaa395a8754e5de175e7c54ed66f66", null ]
 ];

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['alpaka_5facc_5fany_5fbt_5foacc_5fenabled',['ALPAKA_ACC_ANY_BT_OACC_ENABLED',['../AnyOacc_8hpp.html#a088303341004e7352e551482265b953a',1,'AnyOacc.hpp']]],
   ['alpaka_5facc_5fcpu_5fb_5ftbb_5ft_5fseq_5fenabled',['ALPAKA_ACC_CPU_B_TBB_T_SEQ_ENABLED',['../CpuTbbBlocks_8hpp.html#a8e980af207c9069aefb5cdcd1a6467e3',1,'CpuTbbBlocks.hpp']]],
   ['alpaka_5facc_5fgpu_5fhip_5fenabled',['ALPAKA_ACC_GPU_HIP_ENABLED',['../GpuHipRt_8hpp.html#a58e5ae79cc50973891fb1e18aba44468',1,'GpuHipRt.hpp']]],
   ['alpaka_5fapi_5fprefix',['ALPAKA_API_PREFIX',['../Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b',1,'Cuda.hpp']]],

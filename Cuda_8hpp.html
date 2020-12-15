@@ -92,18 +92,18 @@ $(document).ready(function(){initNavTree('Cuda_8hpp.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="elem_2Traits_8hpp_source.html">alpaka/elem/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="offset_2Traits_8hpp_source.html">alpaka/offset/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="extent_2Traits_8hpp_source.html">alpaka/extent/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="idx_2Traits_8hpp_source.html">alpaka/idx/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Metafunctions_8hpp_source.html">alpaka/meta/Metafunctions.hpp</a>&gt;</code><br />
-<code>#include &lt;cuda_runtime.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="offset_2Traits_8hpp_source.html">alpaka/offset/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/vec/Vec.hpp</a>&gt;</code><br />
 <code>#include &lt;cuda.h&gt;</code><br />
+<code>#include &lt;cuda_runtime.h&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
-<code>#include &lt;stdexcept&gt;</code><br />
-<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;<a class="el" href="UniformCudaHip_8hpp_source.html">alpaka/core/UniformCudaHip.hpp</a>&gt;</code><br />
 </div>
 <p><a href="Cuda_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -204,13 +204,13 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a221d7f397ce9c41696e7fcf3dbcfd95b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(name)&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(cuda,name)</td></tr>
+<tr class="memitem:a221d7f397ce9c41696e7fcf3dbcfd95b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cuda_8hpp.html#a221d7f397ce9c41696e7fcf3dbcfd95b">ALPAKA_API_PREFIX</a>(name)&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(cuda, name)</td></tr>
 <tr class="memdesc:a221d7f397ce9c41696e7fcf3dbcfd95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">prefix a name with <code>cuda</code>  <a href="#a221d7f397ce9c41696e7fcf3dbcfd95b">More...</a><br /></td></tr>
 <tr class="separator:a221d7f397ce9c41696e7fcf3dbcfd95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc18e8f6e975053f9515f8ee79340019"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019">ALPAKA_CUDA_DRV_CHECK</a>(cmd)&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ab7c0d46c5c98d6af03dd9bf203c32e48">alpaka::cuda::detail::cudaDrvCheck</a>(cmd, #cmd, __FILE__, __LINE__)</td></tr>
+<tr class="memitem:abc18e8f6e975053f9515f8ee79340019"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cuda_8hpp.html#abc18e8f6e975053f9515f8ee79340019">ALPAKA_CUDA_DRV_CHECK</a>(cmd)&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ab7c0d46c5c98d6af03dd9bf203c32e48">alpaka::cuda::detail::cudaDrvCheck</a>(cmd, #    cmd, __FILE__, __LINE__)</td></tr>
 <tr class="memdesc:abc18e8f6e975053f9515f8ee79340019"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA driver error checking with log and exception.  <a href="#abc18e8f6e975053f9515f8ee79340019">More...</a><br /></td></tr>
 <tr class="separator:abc18e8f6e975053f9515f8ee79340019"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78d586f3481be4a74b086709cb9b0ea2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cuda_8hpp.html#a78d586f3481be4a74b086709cb9b0ea2">ALPAKA_PP_CONCAT</a>(X,  Y)&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(X,Y)</td></tr>
+<tr class="memitem:a78d586f3481be4a74b086709cb9b0ea2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cuda_8hpp.html#a78d586f3481be4a74b086709cb9b0ea2">ALPAKA_PP_CONCAT</a>(X,  Y)&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(X, Y)</td></tr>
 <tr class="separator:a78d586f3481be4a74b086709cb9b0ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0378eb218e791111a37318efa75aeb05"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(X,  Y)&#160;&#160;&#160;X##Y</td></tr>
 <tr class="separator:a0378eb218e791111a37318efa75aeb05"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,14 +233,14 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">name</td><td>)</td>
-          <td>&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(cuda,name)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(cuda, name)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>prefix a name with <code>cuda</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00054">54</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00055">55</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -255,14 +255,14 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">cmd</td><td>)</td>
-          <td>&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ab7c0d46c5c98d6af03dd9bf203c32e48">alpaka::cuda::detail::cudaDrvCheck</a>(cmd, #cmd, __FILE__, __LINE__)</td>
+          <td>&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ab7c0d46c5c98d6af03dd9bf203c32e48">alpaka::cuda::detail::cudaDrvCheck</a>(cmd, #    cmd, __FILE__, __LINE__)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>CUDA driver error checking with log and exception. </p>
 
-<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00106">106</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00108">108</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -287,12 +287,12 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(X,Y)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="Cuda_8hpp.html#a0378eb218e791111a37318efa75aeb05">ALPAKA_PP_CONCAT_DO</a>(X, Y)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00052">52</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00053">53</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -322,7 +322,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00051">51</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Cuda_8hpp_source.html#l00052">52</a> of file <a class="el" href="Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -332,7 +332,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Cuda_8hpp.html">Cuda.hpp</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 11:01:54 for alpaka by
+    <li class="footer">Generated on Tue Dec 15 2020 09:11:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

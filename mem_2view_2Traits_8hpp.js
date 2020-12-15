@@ -2,7 +2,7 @@ var mem_2view_2Traits_8hpp =
 [
     [ "CreatePitchBytes", "structalpaka_1_1detail_1_1CreatePitchBytes.html", "structalpaka_1_1detail_1_1CreatePitchBytes" ],
     [ "Print", "structalpaka_1_1detail_1_1Print.html", "structalpaka_1_1detail_1_1Print" ],
-    [ "Print< DimInt< Dim< TView >::value-1u >, TView >", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value-1u_01_4_00_01TView_01_4.html", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value-1u_01_4_00_01TView_01_4" ],
+    [ "Print< DimInt< Dim< TView >::value - 1u >, TView >", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4.html", "structalpaka_1_1detail_1_1Print_3_01DimInt_3_01Dim_3_01TView_01_4_1_1value_01-_011u_01_4_00_01TView_01_4" ],
     [ "CreateStaticDevMemView", "structalpaka_1_1traits_1_1CreateStaticDevMemView.html", null ],
     [ "CreateTaskMemcpy", "structalpaka_1_1traits_1_1CreateTaskMemcpy.html", null ],
     [ "CreateTaskMemset", "structalpaka_1_1traits_1_1CreateTaskMemset.html", null ],
@@ -25,5 +25,5 @@ var mem_2view_2Traits_8hpp =
     [ "getPtrNative", "mem_2view_2Traits_8hpp.html#ab0892f9211160310c93d8ffef300d3c1", null ],
     [ "memcpy", "mem_2view_2Traits_8hpp.html#a6f69abad399915756f7b28d19f221ace", null ],
     [ "memset", "mem_2view_2Traits_8hpp.html#a7cf3fa52c3c25aa060540a33fe6e6ee7", null ],
-    [ "print", "mem_2view_2Traits_8hpp.html#ac227e64e8e9f6faf92c133dafac2ee9e", null ]
+    [ "print", "mem_2view_2Traits_8hpp.html#a39e1eba3bae715ef0ebcf3587a918e05", null ]
 ];

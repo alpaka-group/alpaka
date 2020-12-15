@@ -5,6 +5,7 @@ var dir_1143562e5ac1f1cac7683540118ef5cd =
       [ "AtomicNoOp", "classalpaka_1_1AtomicNoOp.html", "classalpaka_1_1AtomicNoOp" ],
       [ "AtomicOp< TOp, AtomicNoOp, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicNoOp_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01TOp_00_01AtomicNoOp_00_01T_00_01THierarchy_01_4" ]
     ] ],
+    [ "AtomicOaccBuiltIn.hpp", "AtomicOaccBuiltIn_8hpp.html", null ],
     [ "AtomicOmpBuiltIn.hpp", "AtomicOmpBuiltIn_8hpp.html", [
       [ "AtomicOmpBuiltIn", "classalpaka_1_1AtomicOmpBuiltIn.html", "classalpaka_1_1AtomicOmpBuiltIn" ],
       [ "AtomicOp< AtomicAdd, AtomicOmpBuiltIn, T, THierarchy >", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4.html", "structalpaka_1_1traits_1_1AtomicOp_3_01AtomicAdd_00_01AtomicOmpBuiltIn_00_01T_00_01THierarchy_01_4" ],

@@ -1,5 +1,11 @@
 var searchData=
 [
+  ['declaresharedvar',['DeclareSharedVar',['../structalpaka_1_1traits_1_1DeclareSharedVar.html',1,'alpaka::traits']]],
+  ['declaresharedvar_3c_20t_2c_20tuniqueid_2c_20blocksharedmemstmastersync_20_3e',['DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStMasterSync &gt;',['../structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html',1,'alpaka::traits']]],
+  ['declaresharedvar_3c_20t_2c_20tuniqueid_2c_20blocksharedmemstmember_3c_20tdataalignbytes_20_3e_20_3e',['DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStMember&lt; TDataAlignBytes &gt; &gt;',['../structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html',1,'alpaka::traits']]],
+  ['declaresharedvar_3c_20t_2c_20tuniqueid_2c_20blocksharedmemstnosync_20_3e',['DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStNoSync &gt;',['../structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4.html',1,'alpaka::traits']]],
+  ['declaresharedvar_3c_20t_2c_20tuniqueid_2c_20blocksharedmemstomp5_20_3e',['DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStOmp5 &gt;',['../structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html',1,'alpaka::traits']]],
+  ['declaresharedvar_3c_20t_2c_20tuniqueid_2c_20blocksharedmemstuniformcudahipbuiltin_20_3e',['DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html',1,'alpaka::traits']]],
   ['dependentfalsetype',['DependentFalseType',['../structalpaka_1_1meta_1_1DependentFalseType.html',1,'alpaka::meta']]],
   ['devcpu',['DevCpu',['../classalpaka_1_1DevCpu.html',1,'alpaka']]],
   ['devcpuimpl',['DevCpuImpl',['../classalpaka_1_1cpu_1_1detail_1_1DevCpuImpl.html',1,'alpaka::cpu::detail']]],
@@ -45,6 +51,7 @@ var searchData=
   ['dimtype_3c_20acccputhreads_3c_20tdim_2c_20tidx_20_3e_20_3e',['DimType&lt; AccCpuThreads&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1DimType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['dimtype_3c_20accgpuuniformcudahiprt_3c_20tdim_2c_20tidx_20_3e_20_3e',['DimType&lt; AccGpuUniformCudaHipRt&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1DimType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['dimtype_3c_20accomp5_3c_20tdim_2c_20tidx_20_3e_20_3e',['DimType&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1DimType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['dimtype_3c_20bt_3a_3aidxbtlinear_3c_20tdim_2c_20tidx_20_3e_20_3e',['DimType&lt; bt::IdxBtLinear&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['dimtype_3c_20bt_3a_3aidxbtomp_3c_20tdim_2c_20tidx_20_3e_20_3e',['DimType&lt; bt::IdxBtOmp&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['dimtype_3c_20bt_3a_3aidxbtreffiberidmap_3c_20tdim_2c_20tidx_20_3e_20_3e',['DimType&lt; bt::IdxBtRefFiberIdMap&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['dimtype_3c_20bt_3a_3aidxbtrefthreadidmap_3c_20tdim_2c_20tidx_20_3e_20_3e',['DimType&lt; bt::IdxBtRefThreadIdMap&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1DimType_3_01bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],

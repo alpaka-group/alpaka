@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4 =
+[
+    [ "declareVar", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStOmp5_01_4.html#a800fca43691fa02b3574de9473732cda", null ]
+];

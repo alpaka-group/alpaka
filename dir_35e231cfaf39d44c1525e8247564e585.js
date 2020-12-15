@@ -26,6 +26,8 @@ var dir_35e231cfaf39d44c1525e8247564e585 =
       [ "EventType< QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1traits_1_1EventType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1EventType_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4" ],
       [ "GetDev< QueueGenericThreadsNonBlocking< TDev > >", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4.html", "structalpaka_1_1traits_1_1GetDev_3_01QueueGenericThreadsNonBlocking_3_01TDev_01_4_01_4" ]
     ] ],
+    [ "QueueOaccBlocking.hpp", "QueueOaccBlocking_8hpp.html", null ],
+    [ "QueueOaccNonBlocking.hpp", "QueueOaccNonBlocking_8hpp.html", null ],
     [ "QueueOmp5Blocking.hpp", "QueueOmp5Blocking_8hpp.html", null ],
     [ "QueueOmp5NonBlocking.hpp", "QueueOmp5NonBlocking_8hpp.html", null ],
     [ "QueueUniformCudaHipRtBlocking.hpp", "QueueUniformCudaHipRtBlocking_8hpp.html", "QueueUniformCudaHipRtBlocking_8hpp" ],

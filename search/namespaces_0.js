@@ -16,6 +16,7 @@ var searchData=
   ['hierarchy',['hierarchy',['../namespacealpaka_1_1hierarchy.html',1,'alpaka']]],
   ['math',['math',['../namespacealpaka_1_1math.html',1,'alpaka']]],
   ['meta',['meta',['../namespacealpaka_1_1meta.html',1,'alpaka']]],
+  ['omp',['omp',['../namespacealpaka_1_1omp.html',1,'alpaka']]],
   ['omp5',['omp5',['../namespacealpaka_1_1omp5.html',1,'alpaka']]],
   ['origin',['origin',['../namespacealpaka_1_1origin.html',1,'alpaka']]],
   ['property',['property',['../namespacealpaka_1_1property.html',1,'alpaka']]],

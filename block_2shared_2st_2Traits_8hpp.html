@@ -99,11 +99,11 @@ $(document).ready(function(){initNavTree('block_2shared_2st_2Traits_8hpp.html','
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1ConceptBlockSharedSt.html">alpaka::ConceptBlockSharedSt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1AllocVar.html">alpaka::traits::AllocVar&lt; T, TuniqueId, TBlockSharedMemSt, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block shared static memory variable allocation operation trait.  <a href="structalpaka_1_1traits_1_1AllocVar.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1DeclareSharedVar.html">alpaka::traits::DeclareSharedVar&lt; T, TuniqueId, TBlockSharedMemSt, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block shared static memory variable allocation operation trait.  <a href="structalpaka_1_1traits_1_1DeclareSharedVar.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1FreeMem.html">alpaka::traits::FreeMem&lt; TBlockSharedMemSt, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block shared static memory free operation trait.  <a href="structalpaka_1_1traits_1_1FreeMem.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1FreeSharedVars.html">alpaka::traits::FreeSharedVars&lt; TBlockSharedMemSt, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block shared static memory free operation trait.  <a href="structalpaka_1_1traits_1_1FreeSharedVars.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -117,14 +117,14 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3b43295094993ff6b3cf214640dce660"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </td></tr>
-<tr class="memitem:a3b43295094993ff6b3cf214640dce660"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3b43295094993ff6b3cf214640dce660">alpaka::allocVar</a> (TBlockSharedMemSt const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
-<tr class="memdesc:a3b43295094993ff6b3cf214640dce660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a variable in block shared static memory.  <a href="namespacealpaka.html#a3b43295094993ff6b3cf214640dce660">More...</a><br /></td></tr>
-<tr class="separator:a3b43295094993ff6b3cf214640dce660"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memTemplParams" colspan="2">template&lt;typename TBlockSharedMemSt &gt; </td></tr>
-<tr class="memitem:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4ef4e22340afb29dfeffb02ae38edf16">alpaka::freeMem</a> (TBlockSharedMemSt &amp;blockSharedMemSt) -&gt; void</td></tr>
-<tr class="memdesc:a4ef4e22340afb29dfeffb02ae38edf16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all block shared static memory.  <a href="namespacealpaka.html#a4ef4e22340afb29dfeffb02ae38edf16">More...</a><br /></td></tr>
-<tr class="separator:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7b7e7f67482b39bf05230d666dc9798"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </td></tr>
+<tr class="memitem:af7b7e7f67482b39bf05230d666dc9798"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af7b7e7f67482b39bf05230d666dc9798">alpaka::declareSharedVar</a> (TBlockSharedMemSt const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
+<tr class="memdesc:af7b7e7f67482b39bf05230d666dc9798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a block shared variable.  <a href="namespacealpaka.html#af7b7e7f67482b39bf05230d666dc9798">More...</a><br /></td></tr>
+<tr class="separator:af7b7e7f67482b39bf05230d666dc9798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af573b85c5c94948f067a60c24d76065e"><td class="memTemplParams" colspan="2">template&lt;typename TBlockSharedMemSt &gt; </td></tr>
+<tr class="memitem:af573b85c5c94948f067a60c24d76065e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">alpaka::freeSharedVars</a> (TBlockSharedMemSt &amp;blockSharedMemSt) -&gt; void</td></tr>
+<tr class="memdesc:af573b85c5c94948f067a60c24d76065e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all memory used by block shared variables.  <a href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">More...</a><br /></td></tr>
+<tr class="separator:af573b85c5c94948f067a60c24d76065e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -132,7 +132,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_0864fd1327d23bd6a262ac55462cb31e.html">block</a></li><li class="navelem"><a class="el" href="dir_80053b06cd80a729c5eaac439ea18035.html">shared</a></li><li class="navelem"><a class="el" href="dir_7be937b0b17efdbd2f169f14f5c2db8e.html">st</a></li><li class="navelem"><a class="el" href="block_2shared_2st_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 11:01:54 for alpaka by
+    <li class="footer">Generated on Tue Dec 15 2020 09:11:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

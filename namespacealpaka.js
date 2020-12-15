@@ -12,6 +12,7 @@ var namespacealpaka =
     [ "hierarchy", "namespacealpaka_1_1hierarchy.html", "namespacealpaka_1_1hierarchy" ],
     [ "math", "namespacealpaka_1_1math.html", "namespacealpaka_1_1math" ],
     [ "meta", "namespacealpaka_1_1meta.html", "namespacealpaka_1_1meta" ],
+    [ "omp", "namespacealpaka_1_1omp.html", "namespacealpaka_1_1omp" ],
     [ "omp5", "namespacealpaka_1_1omp5.html", "namespacealpaka_1_1omp5" ],
     [ "rand", "namespacealpaka_1_1rand.html", "namespacealpaka_1_1rand" ],
     [ "traits", "namespacealpaka_1_1traits.html", "namespacealpaka_1_1traits" ],

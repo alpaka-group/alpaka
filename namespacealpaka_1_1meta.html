@@ -161,14 +161,14 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a604acd7bf1844fcc1ff303a5377bb2b0"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a604acd7bf1844fcc1ff303a5377bb2b0">HigherMax</a> = std::conditional_t&lt;(sizeof(T0) &gt; sizeof(T1)), T0, std::conditional_t&lt;((sizeof(T0)==sizeof(T1)) &amp;&amp;std::is_unsigned&lt; T0 &gt;::value &amp;&amp;std::is_signed&lt; T1 &gt;::value), T0, T1 &gt; &gt;</td></tr>
 <tr class="memdesc:a604acd7bf1844fcc1ff303a5377bb2b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type that has the higher max value.  <a href="#a604acd7bf1844fcc1ff303a5377bb2b0">More...</a><br /></td></tr>
 <tr class="separator:a604acd7bf1844fcc1ff303a5377bb2b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55cd8a41af4cd45a5ba13e44972911c9"><td class="memTemplParams" colspan="2">template&lt;typename T0 , typename T1 &gt; </td></tr>
-<tr class="memitem:a55cd8a41af4cd45a5ba13e44972911c9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a55cd8a41af4cd45a5ba13e44972911c9">HigherMin</a> = std::conditional_t&lt;(std::is_unsigned&lt; T0 &gt;::value==std::is_unsigned&lt; T1 &gt;::value), std::conditional_t&lt; std::is_unsigned&lt; T0 &gt;::value, std::conditional_t&lt;(sizeof(T0)&lt; sizeof(T1)), T1, T0 &gt;, std::conditional_t&lt;(sizeof(T0)&lt; sizeof(T1)), T0, T1 &gt; &gt;, std::conditional_t&lt; std::is_unsigned&lt; T0 &gt;::value, T0, T1 &gt; &gt;</td></tr>
-<tr class="memdesc:a55cd8a41af4cd45a5ba13e44972911c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type that has the higher min value. If both types have the same min value, the type with the wider range is chosen.  <a href="#a55cd8a41af4cd45a5ba13e44972911c9">More...</a><br /></td></tr>
-<tr class="separator:a55cd8a41af4cd45a5ba13e44972911c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0b71d0d4ec1145f2be4a43c4183ec33"><td class="memTemplParams" colspan="2">template&lt;typename TSuperset , typename TSubset &gt; </td></tr>
-<tr class="memitem:ad0b71d0d4ec1145f2be4a43c4183ec33"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#ad0b71d0d4ec1145f2be4a43c4183ec33">IsIntegralSuperset</a> = std::integral_constant&lt; bool, std::is_integral&lt; TSuperset &gt;::value &amp;&amp;std::is_integral&lt; TSubset &gt;::value &amp;&amp;(((std::is_unsigned&lt; TSuperset &gt;::value==std::is_unsigned&lt; TSubset &gt;::value) &amp;&amp;(sizeof(TSuperset) &gt;=sizeof(TSubset)))||((std::is_unsigned&lt; TSuperset &gt;::value !=std::is_unsigned&lt; TSubset &gt;::value) &amp;&amp;(sizeof(TSuperset) &gt; sizeof(TSubset))))&gt;</td></tr>
-<tr class="memdesc:ad0b71d0d4ec1145f2be4a43c4183ec33"><td class="mdescLeft">&#160;</td><td class="mdescRight">The trait is true if all values of TSubset are contained in TSuperset.  <a href="#ad0b71d0d4ec1145f2be4a43c4183ec33">More...</a><br /></td></tr>
-<tr class="separator:ad0b71d0d4ec1145f2be4a43c4183ec33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5968d781d8e4d60693109320f692c495"><td class="memTemplParams" colspan="2">template&lt;typename T0 , typename T1 &gt; </td></tr>
+<tr class="memitem:a5968d781d8e4d60693109320f692c495"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a5968d781d8e4d60693109320f692c495">HigherMin</a> = std::conditional_t&lt;(std::is_unsigned&lt; T0 &gt;::value==std::is_unsigned&lt; T1 &gt;::value), std::conditional_t&lt; std::is_unsigned&lt; T0 &gt;::value, std::conditional_t&lt;(sizeof(T0)&lt; sizeof(T1)), T1, T0 &gt;, std::conditional_t&lt;(sizeof(T0)&lt; sizeof(T1)), T0, T1 &gt; &gt;, std::conditional_t&lt; std::is_unsigned&lt; T0 &gt;::value, T0, T1 &gt; &gt;</td></tr>
+<tr class="memdesc:a5968d781d8e4d60693109320f692c495"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type that has the higher min value. If both types have the same min value, the type with the wider range is chosen.  <a href="#a5968d781d8e4d60693109320f692c495">More...</a><br /></td></tr>
+<tr class="separator:a5968d781d8e4d60693109320f692c495"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada4fc46bbbc6683e4fc98005049d2d00"><td class="memTemplParams" colspan="2">template&lt;typename TSuperset , typename TSubset &gt; </td></tr>
+<tr class="memitem:ada4fc46bbbc6683e4fc98005049d2d00"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#ada4fc46bbbc6683e4fc98005049d2d00">IsIntegralSuperset</a> = std::integral_constant&lt; bool, std::is_integral&lt; TSuperset &gt;::value &amp;&amp;std::is_integral&lt; TSubset &gt;::value &amp;&amp;(((std::is_unsigned&lt; TSuperset &gt;::value==std::is_unsigned&lt; TSubset &gt;::value) &amp;&amp;(sizeof(TSuperset) &gt;=sizeof(TSubset)))||((std::is_unsigned&lt; TSuperset &gt;::value !=std::is_unsigned&lt; TSubset &gt;::value) &amp;&amp;(sizeof(TSuperset) &gt; sizeof(TSubset))))&gt;</td></tr>
+<tr class="memdesc:ada4fc46bbbc6683e4fc98005049d2d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The trait is true if all values of TSubset are contained in TSuperset.  <a href="#ada4fc46bbbc6683e4fc98005049d2d00">More...</a><br /></td></tr>
+<tr class="separator:ada4fc46bbbc6683e4fc98005049d2d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7007c16b361a3bbc1184a79223d884dc"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
 <tr class="memitem:a7007c16b361a3bbc1184a79223d884dc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a7007c16b361a3bbc1184a79223d884dc">IsParameterPackSet</a> = <a class="el" href="structalpaka_1_1meta_1_1detail_1_1IsParameterPackSetImpl.html">detail::IsParameterPackSetImpl</a>&lt; Ts... &gt;</td></tr>
 <tr class="memdesc:a7007c16b361a3bbc1184a79223d884dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trait that tells if the parameter pack contains only unique (no equal) types.  <a href="#a7007c16b361a3bbc1184a79223d884dc">More...</a><br /></td></tr>
@@ -185,13 +185,13 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a269a6b2dbee02811a56f9ec47ba1915a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a269a6b2dbee02811a56f9ec47ba1915a">LowerMax</a> = std::conditional_t&lt;(sizeof(T0)&lt; sizeof(T1)), T0, std::conditional_t&lt;((sizeof(T0)==sizeof(T1)) &amp;&amp;std::is_signed&lt; T0 &gt;::value &amp;&amp;std::is_unsigned&lt; T1 &gt;::value), T0, T1 &gt; &gt;</td></tr>
 <tr class="memdesc:a269a6b2dbee02811a56f9ec47ba1915a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type that has the lower max value.  <a href="#a269a6b2dbee02811a56f9ec47ba1915a">More...</a><br /></td></tr>
 <tr class="separator:a269a6b2dbee02811a56f9ec47ba1915a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a526dd719423c1c5e9b3925313d373bf1"><td class="memTemplParams" colspan="2">template&lt;typename T0 , typename T1 &gt; </td></tr>
-<tr class="memitem:a526dd719423c1c5e9b3925313d373bf1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a526dd719423c1c5e9b3925313d373bf1">LowerMin</a> = std::conditional_t&lt;(std::is_unsigned&lt; T0 &gt;::value==std::is_unsigned&lt; T1 &gt;::value), std::conditional_t&lt;(sizeof(T0) &gt; sizeof(T1)), T0, T1 &gt;, std::conditional_t&lt; std::is_signed&lt; T0 &gt;::value, T0, T1 &gt; &gt;</td></tr>
-<tr class="memdesc:a526dd719423c1c5e9b3925313d373bf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type that has the lower min value. If both types have the same min value, the type with the wider range is chosen.  <a href="#a526dd719423c1c5e9b3925313d373bf1">More...</a><br /></td></tr>
-<tr class="separator:a526dd719423c1c5e9b3925313d373bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98ee617da8c80fac8878adf0b026a1cb"><td class="memTemplParams" colspan="2">template&lt;typename T , T Tbegin, T Tsize&gt; </td></tr>
-<tr class="memitem:a98ee617da8c80fac8878adf0b026a1cb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a98ee617da8c80fac8878adf0b026a1cb">MakeIntegerSequenceOffset</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html">detail::MakeIntegerSequenceHelper</a>&lt;(Tsize&lt; 0),(Tsize==0), T, Tbegin, std::integral_constant&lt; T, Tbegin+Tsize &gt;, std::integer_sequence&lt; T &gt; &gt;::type</td></tr>
-<tr class="separator:a98ee617da8c80fac8878adf0b026a1cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add4acf2656123dce98ff4af1f17cf058"><td class="memTemplParams" colspan="2">template&lt;typename T0 , typename T1 &gt; </td></tr>
+<tr class="memitem:add4acf2656123dce98ff4af1f17cf058"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#add4acf2656123dce98ff4af1f17cf058">LowerMin</a> = std::conditional_t&lt;(std::is_unsigned&lt; T0 &gt;::value==std::is_unsigned&lt; T1 &gt;::value), std::conditional_t&lt;(sizeof(T0) &gt; sizeof(T1)), T0, T1 &gt;, std::conditional_t&lt; std::is_signed&lt; T0 &gt;::value, T0, T1 &gt; &gt;</td></tr>
+<tr class="memdesc:add4acf2656123dce98ff4af1f17cf058"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type that has the lower min value. If both types have the same min value, the type with the wider range is chosen.  <a href="#add4acf2656123dce98ff4af1f17cf058">More...</a><br /></td></tr>
+<tr class="separator:add4acf2656123dce98ff4af1f17cf058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e231c413f4066784715ce6383c1762b"><td class="memTemplParams" colspan="2">template&lt;typename T , T Tbegin, T Tsize&gt; </td></tr>
+<tr class="memitem:a8e231c413f4066784715ce6383c1762b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b">MakeIntegerSequenceOffset</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html">detail::MakeIntegerSequenceHelper</a>&lt;(Tsize&lt; 0),(Tsize==0), T, Tbegin, std::integral_constant&lt; T, Tbegin+Tsize &gt;, std::integer_sequence&lt; T &gt; &gt;::type</td></tr>
+<tr class="separator:a8e231c413f4066784715ce6383c1762b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad80a4bac8d17c8f81148dc12b0f58ac7"><td class="memTemplParams" colspan="2">template&lt;typename B &gt; </td></tr>
 <tr class="memitem:ad80a4bac8d17c8f81148dc12b0f58ac7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#ad80a4bac8d17c8f81148dc12b0f58ac7">Negation</a> = std::integral_constant&lt; bool, !B::value &gt;</td></tr>
 <tr class="separator:ad80a4bac8d17c8f81148dc12b0f58ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +202,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a49d048c65329b66f46dca6575c3f524c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c">Unique</a> = typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1UniqueImpl.html">detail::UniqueImpl</a>&lt; TList &gt;::type</td></tr>
 <tr class="memdesc:a49d048c65329b66f46dca6575c3f524c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trait that returns a list with only unique (no equal) types (a set). Duplicates will be filtered out.  <a href="#a49d048c65329b66f46dca6575c3f524c">More...</a><br /></td></tr>
 <tr class="separator:a49d048c65329b66f46dca6575c3f524c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74d93e6a2efc8f3ac7573990155bdf2c"><td class="memTemplParams" colspan="2">template&lt;class... &gt; </td></tr>
+<tr class="memitem:a74d93e6a2efc8f3ac7573990155bdf2c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c">Void</a> = void</td></tr>
+<tr class="memdesc:a74d93e6a2efc8f3ac7573990155bdf2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mirror of C++17 std::void_t, maps a sequence of any types to type void.  <a href="#a74d93e6a2efc8f3ac7573990155bdf2c">More...</a><br /></td></tr>
+<tr class="separator:a74d93e6a2efc8f3ac7573990155bdf2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -245,7 +249,7 @@ template&lt;typename TList , template&lt; typename... &gt; class TApplicant&gt; 
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Apply_8hpp_source.html#l00040">40</a> of file <a class="el" href="Apply_8hpp_source.html">Apply.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Apply_8hpp_source.html#l00030">30</a> of file <a class="el" href="Apply_8hpp_source.html">Apply.hpp</a>.</p>
 
 </div>
 </div>
@@ -263,7 +267,7 @@ template&lt;template&lt; typename... &gt; class TList, typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CartesianProduct_8hpp_source.html#l00132">132</a> of file <a class="el" href="CartesianProduct_8hpp_source.html">CartesianProduct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CartesianProduct_8hpp_source.html#l00100">100</a> of file <a class="el" href="CartesianProduct_8hpp_source.html">CartesianProduct.hpp</a>.</p>
 
 </div>
 </div>
@@ -281,7 +285,7 @@ template&lt;typename... T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Concatenate_8hpp_source.html#l00051">51</a> of file <a class="el" href="Concatenate_8hpp_source.html">Concatenate.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Concatenate_8hpp_source.html#l00036">36</a> of file <a class="el" href="Concatenate_8hpp_source.html">Concatenate.hpp</a>.</p>
 
 </div>
 </div>
@@ -299,7 +303,7 @@ template&lt;typename... B&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00048">48</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00041">41</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
 
 </div>
 </div>
@@ -317,7 +321,7 @@ template&lt;typename TDstType , typename TIntegerSequence &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="IntegerSequence_8hpp_source.html#l00045">45</a> of file <a class="el" href="IntegerSequence_8hpp_source.html">IntegerSequence.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="IntegerSequence_8hpp_source.html#l00036">36</a> of file <a class="el" href="IntegerSequence_8hpp_source.html">IntegerSequence.hpp</a>.</p>
 
 </div>
 </div>
@@ -335,7 +339,7 @@ template&lt;typename... B&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00080">80</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00066">66</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
 
 </div>
 </div>
@@ -353,7 +357,7 @@ template&lt;typename TList , template&lt; typename &gt; class TPred&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Filter_8hpp_source.html#l00083">83</a> of file <a class="el" href="Filter_8hpp_source.html">Filter.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Filter_8hpp_source.html#l00053">53</a> of file <a class="el" href="Filter_8hpp_source.html">Filter.hpp</a>.</p>
 
 </div>
 </div>
@@ -373,12 +377,12 @@ template&lt;typename T0 , typename T1 &gt; </div>
 
 <p>The type that has the higher max value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00046">46</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00041">41</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a55cd8a41af4cd45a5ba13e44972911c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55cd8a41af4cd45a5ba13e44972911c9">&#9670;&nbsp;</a></span>HigherMin</h2>
+<a id="a5968d781d8e4d60693109320f692c495"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5968d781d8e4d60693109320f692c495">&#9670;&nbsp;</a></span>HigherMin</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -386,19 +390,19 @@ template&lt;typename T0 , typename T1 &gt; </div>
 template&lt;typename T0 , typename T1 &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#a55cd8a41af4cd45a5ba13e44972911c9">alpaka::meta::HigherMin</a> = typedef std::conditional_t&lt; (std::is_unsigned&lt;T0&gt;::value == std::is_unsigned&lt;T1&gt;::value), std::conditional_t&lt; std::is_unsigned&lt;T0&gt;::value, std::conditional_t&lt; (sizeof(T0) &lt; sizeof(T1)), T1, T0&gt;, std::conditional_t&lt; (sizeof(T0) &lt; sizeof(T1)), T0, T1&gt; &gt;, std::conditional_t&lt; std::is_unsigned&lt;T0&gt;::value, T0, T1&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#a5968d781d8e4d60693109320f692c495">alpaka::meta::HigherMin</a> = typedef std::conditional_t&lt; (std::is_unsigned&lt;T0&gt;::value == std::is_unsigned&lt;T1&gt;::value), std::conditional_t&lt; std::is_unsigned&lt;T0&gt;::value, std::conditional_t&lt;(sizeof(T0) &lt; sizeof(T1)), T1, T0&gt;, std::conditional_t&lt;(sizeof(T0) &lt; sizeof(T1)), T0, T1&gt; &gt;, std::conditional_t&lt;std::is_unsigned&lt;T0&gt;::value, T0, T1&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The type that has the higher min value. If both types have the same min value, the type with the wider range is chosen. </p>
 
-<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00083">83</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00064">64</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ad0b71d0d4ec1145f2be4a43c4183ec33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0b71d0d4ec1145f2be4a43c4183ec33">&#9670;&nbsp;</a></span>IsIntegralSuperset</h2>
+<a id="ada4fc46bbbc6683e4fc98005049d2d00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada4fc46bbbc6683e4fc98005049d2d00">&#9670;&nbsp;</a></span>IsIntegralSuperset</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,14 +410,14 @@ template&lt;typename T0 , typename T1 &gt; </div>
 template&lt;typename TSuperset , typename TSubset &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#ad0b71d0d4ec1145f2be4a43c4183ec33">alpaka::meta::IsIntegralSuperset</a> = typedef std::integral_constant&lt; bool, std::is_integral&lt;TSuperset&gt;::value &amp;&amp; std::is_integral&lt;TSubset&gt;::value &amp;&amp; ( ((std::is_unsigned&lt;TSuperset&gt;::value == std::is_unsigned&lt;TSubset&gt;::value) &amp;&amp; (sizeof(TSuperset) &gt;= sizeof(TSubset))) || ((std::is_unsigned&lt;TSuperset&gt;::value != std::is_unsigned&lt;TSubset&gt;::value) &amp;&amp; (sizeof(TSuperset) &gt; sizeof(TSubset))) )&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#ada4fc46bbbc6683e4fc98005049d2d00">alpaka::meta::IsIntegralSuperset</a> = typedef std::integral_constant&lt; bool, std::is_integral&lt;TSuperset&gt;::value &amp;&amp; std::is_integral&lt;TSubset&gt;::value &amp;&amp; ( ((std::is_unsigned&lt;TSuperset&gt;::value == std::is_unsigned&lt;TSubset&gt;::value) &amp;&amp; (sizeof(TSuperset) &gt;= sizeof(TSubset))) || ((std::is_unsigned&lt;TSuperset&gt;::value != std::is_unsigned&lt;TSubset&gt;::value) &amp;&amp; (sizeof(TSuperset) &gt; sizeof(TSubset))))&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The trait is true if all values of TSubset are contained in TSuperset. </p>
 
-<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00032">32</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00030">30</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
 
 </div>
 </div>
@@ -433,7 +437,7 @@ template&lt;typename... Ts&gt; </div>
 
 <p>Trait that tells if the parameter pack contains only unique (no equal) types. </p>
 
-<p class="definition">Definition at line <a class="el" href="meta_2Set_8hpp_source.html#l00056">56</a> of file <a class="el" href="meta_2Set_8hpp_source.html">Set.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="meta_2Set_8hpp_source.html#l00052">52</a> of file <a class="el" href="meta_2Set_8hpp_source.html">Set.hpp</a>.</p>
 
 </div>
 </div>
@@ -453,7 +457,7 @@ template&lt;typename TList &gt; </div>
 
 <p>Trait that tells if the template contains only unique (no equal) types. </p>
 
-<p class="definition">Definition at line <a class="el" href="meta_2Set_8hpp_source.html#l00078">78</a> of file <a class="el" href="meta_2Set_8hpp_source.html">Set.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="meta_2Set_8hpp_source.html#l00069">69</a> of file <a class="el" href="meta_2Set_8hpp_source.html">Set.hpp</a>.</p>
 
 </div>
 </div>
@@ -473,7 +477,7 @@ template&lt;typename TBase , typename TDerived &gt; </div>
 
 <p>The trait is true if TDerived is derived from TBase but is not TBase itself. </p>
 
-<p class="definition">Definition at line <a class="el" href="IsStrictBase_8hpp_source.html#l00027">27</a> of file <a class="el" href="IsStrictBase_8hpp_source.html">IsStrictBase.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="IsStrictBase_8hpp_source.html#l00023">23</a> of file <a class="el" href="IsStrictBase_8hpp_source.html">IsStrictBase.hpp</a>.</p>
 
 </div>
 </div>
@@ -493,12 +497,12 @@ template&lt;typename T0 , typename T1 &gt; </div>
 
 <p>The type that has the lower max value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00060">60</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00052">52</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a526dd719423c1c5e9b3925313d373bf1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a526dd719423c1c5e9b3925313d373bf1">&#9670;&nbsp;</a></span>LowerMin</h2>
+<a id="add4acf2656123dce98ff4af1f17cf058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add4acf2656123dce98ff4af1f17cf058">&#9670;&nbsp;</a></span>LowerMin</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -506,19 +510,19 @@ template&lt;typename T0 , typename T1 &gt; </div>
 template&lt;typename T0 , typename T1 &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#a526dd719423c1c5e9b3925313d373bf1">alpaka::meta::LowerMin</a> = typedef std::conditional_t&lt; (std::is_unsigned&lt;T0&gt;::value == std::is_unsigned&lt;T1&gt;::value), std::conditional_t&lt; (sizeof(T0) &gt; sizeof(T1)), T0, T1&gt;, std::conditional_t&lt; std::is_signed&lt;T0&gt;::value, T0, T1&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#add4acf2656123dce98ff4af1f17cf058">alpaka::meta::LowerMin</a> = typedef std::conditional_t&lt; (std::is_unsigned&lt;T0&gt;::value == std::is_unsigned&lt;T1&gt;::value), std::conditional_t&lt;(sizeof(T0) &gt; sizeof(T1)), T0, T1&gt;, std::conditional_t&lt;std::is_signed&lt;T0&gt;::value, T0, T1&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The type that has the lower min value. If both types have the same min value, the type with the wider range is chosen. </p>
 
-<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00100">100</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Integral_8hpp_source.html#l00073">73</a> of file <a class="el" href="Integral_8hpp_source.html">Integral.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a98ee617da8c80fac8878adf0b026a1cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98ee617da8c80fac8878adf0b026a1cb">&#9670;&nbsp;</a></span>MakeIntegerSequenceOffset</h2>
+<a id="a8e231c413f4066784715ce6383c1762b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e231c413f4066784715ce6383c1762b">&#9670;&nbsp;</a></span>MakeIntegerSequenceOffset</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -526,12 +530,12 @@ template&lt;typename T0 , typename T1 &gt; </div>
 template&lt;typename T , T Tbegin, T Tsize&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#a98ee617da8c80fac8878adf0b026a1cb">alpaka::meta::MakeIntegerSequenceOffset</a> = typedef typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html">detail::MakeIntegerSequenceHelper</a>&lt;(Tsize &lt; 0), (Tsize == 0), T, Tbegin, std::integral_constant&lt;T, Tbegin+Tsize&gt;, std::integer_sequence&lt;T&gt; &gt;::type</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#a8e231c413f4066784715ce6383c1762b">alpaka::meta::MakeIntegerSequenceOffset</a> = typedef typename <a class="el" href="structalpaka_1_1meta_1_1detail_1_1MakeIntegerSequenceHelper.html">detail::MakeIntegerSequenceHelper</a>&lt; (Tsize &lt; 0), (Tsize == 0), T, Tbegin, std::integral_constant&lt;T, Tbegin + Tsize&gt;, std::integer_sequence&lt;T&gt; &gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="IntegerSequence_8hpp_source.html#l00071">71</a> of file <a class="el" href="IntegerSequence_8hpp_source.html">IntegerSequence.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="IntegerSequence_8hpp_source.html#l00086">86</a> of file <a class="el" href="IntegerSequence_8hpp_source.html">IntegerSequence.hpp</a>.</p>
 
 </div>
 </div>
@@ -549,7 +553,7 @@ template&lt;typename B &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00086">86</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Metafunctions_8hpp_source.html#l00071">71</a> of file <a class="el" href="Metafunctions_8hpp_source.html">Metafunctions.hpp</a>.</p>
 
 </div>
 </div>
@@ -567,7 +571,7 @@ template&lt;typename Ts , template&lt; typename... &gt; class TOp&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Transform_8hpp_source.html#l00041">41</a> of file <a class="el" href="Transform_8hpp_source.html">Transform.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Transform_8hpp_source.html#l00030">30</a> of file <a class="el" href="Transform_8hpp_source.html">Transform.hpp</a>.</p>
 
 </div>
 </div>
@@ -587,7 +591,27 @@ template&lt;typename TList &gt; </div>
 
 <p>Trait that returns a list with only unique (no equal) types (a set). Duplicates will be filtered out. </p>
 
-<p class="definition">Definition at line <a class="el" href="Unique_8hpp_source.html#l00058">58</a> of file <a class="el" href="Unique_8hpp_source.html">Unique.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Unique_8hpp_source.html#l00050">50</a> of file <a class="el" href="Unique_8hpp_source.html">Unique.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a74d93e6a2efc8f3ac7573990155bdf2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74d93e6a2efc8f3ac7573990155bdf2c">&#9670;&nbsp;</a></span>Void</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c">alpaka::meta::Void</a> = typedef void</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mirror of C++17 std::void_t, maps a sequence of any types to type void. </p>
+
+<p class="definition">Definition at line <a class="el" href="Void_8hpp_source.html#l00019">19</a> of file <a class="el" href="Void_8hpp_source.html">Void.hpp</a>.</p>
 
 </div>
 </div>
@@ -620,7 +644,7 @@ template&lt;class F , class Tuple &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApplyTuple_8hpp_source.html#l00087">87</a> of file <a class="el" href="ApplyTuple_8hpp_source.html">ApplyTuple.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApplyTuple_8hpp_source.html#l00081">81</a> of file <a class="el" href="ApplyTuple_8hpp_source.html">ApplyTuple.hpp</a>.</p>
 
 </div>
 </div>
@@ -653,7 +677,7 @@ template&lt;typename TFnObj , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Fold_8hpp_source.html#l00024">24</a> of file <a class="el" href="Fold_8hpp_source.html">Fold.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Fold_8hpp_source.html#l00022">22</a> of file <a class="el" href="Fold_8hpp_source.html">Fold.hpp</a>.</p>
 
 </div>
 </div>
@@ -697,7 +721,7 @@ template&lt;typename TFnObj , typename T0 , typename T1 , typename... Ts&gt; </d
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Fold_8hpp_source.html#l00040">40</a> of file <a class="el" href="Fold_8hpp_source.html">Fold.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Fold_8hpp_source.html#l00031">31</a> of file <a class="el" href="Fold_8hpp_source.html">Fold.hpp</a>.</p>
 
 </div>
 </div>
@@ -732,7 +756,7 @@ template&lt;typename TList , typename TFnObj , typename... TArgs&gt; </div>
 
 <p>Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible. This function does not create instances of the types instead it passes the types as template parameter. </p>
 
-<p class="definition">Definition at line <a class="el" href="ForEachType_8hpp_source.html#l00084">84</a> of file <a class="el" href="ForEachType_8hpp_source.html">ForEachType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ForEachType_8hpp_source.html#l00062">62</a> of file <a class="el" href="ForEachType_8hpp_source.html">ForEachType.hpp</a>.</p>
 
 </div>
 </div>
@@ -764,7 +788,7 @@ template&lt;class F , class... ArgTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ApplyTuple_8hpp_source.html#l00064">64</a> of file <a class="el" href="ApplyTuple_8hpp_source.html">ApplyTuple.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ApplyTuple_8hpp_source.html#l00061">61</a> of file <a class="el" href="ApplyTuple_8hpp_source.html">ApplyTuple.hpp</a>.</p>
 
 </div>
 </div>
@@ -813,7 +837,7 @@ template&lt;typename TExtentVec , typename TFnObj , std::size_t... Tdims&gt; </d
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00143">143</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00107">107</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
 
 </div>
 </div>
@@ -855,7 +879,7 @@ template&lt;typename TExtentVec , typename TFnObj &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00181">181</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="NdLoop_8hpp_source.html#l00140">140</a> of file <a class="el" href="NdLoop_8hpp_source.html">NdLoop.hpp</a>.</p>
 
 </div>
 </div>
@@ -865,7 +889,7 @@ template&lt;typename TExtentVec , typename TFnObj &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1meta.html">meta</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 11:01:55 for alpaka by
+    <li class="footer">Generated on Tue Dec 15 2020 09:11:32 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

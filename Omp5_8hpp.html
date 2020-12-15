@@ -91,13 +91,13 @@ $(document).ready(function(){initNavTree('Omp5_8hpp.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;omp.h&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
-<code>#include &lt;stdexcept&gt;</code><br />
-<code>#include &lt;cstddef&gt;</code><br />
-<code>#include &lt;sstream&gt;</code><br />
 </div>
 <p><a href="Omp5_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -113,14 +113,14 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ab181927481ae66c009a90750f0884b2b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Omp5_8hpp.html#ab181927481ae66c009a90750f0884b2b">ALPAKA_OMP5_CHECK</a>(cmd)&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a>(cmd, #cmd, __FILE__, __LINE__)</td></tr>
+<tr class="memitem:ab181927481ae66c009a90750f0884b2b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Omp5_8hpp.html#ab181927481ae66c009a90750f0884b2b">ALPAKA_OMP5_CHECK</a>(cmd)&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a>(cmd, #    cmd, __FILE__, __LINE__)</td></tr>
 <tr class="memdesc:ab181927481ae66c009a90750f0884b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">OMP5 runtime error checking with log and exception.  <a href="#ab181927481ae66c009a90750f0884b2b">More...</a><br /></td></tr>
 <tr class="separator:ab181927481ae66c009a90750f0884b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7754e0883294e7b9940ce6987d2a729d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a> (int const &amp;error, char const *desc, char const *file, int const &amp;line) -&gt; void</td></tr>
-<tr class="memdesc:a7754e0883294e7b9940ce6987d2a729d"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA runtime API error checking with log and exception, ignoring specific error values.  <a href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">More...</a><br /></td></tr>
+<tr class="memdesc:a7754e0883294e7b9940ce6987d2a729d"><td class="mdescLeft">&#160;</td><td class="mdescRight">OMP5 runtime API error checking with log and exception, ignoring specific error values.  <a href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">More...</a><br /></td></tr>
 <tr class="separator:a7754e0883294e7b9940ce6987d2a729d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -135,14 +135,14 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">cmd</td><td>)</td>
-          <td>&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a>(cmd, #cmd, __FILE__, __LINE__)</td>
+          <td>&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a>(cmd, #    cmd, __FILE__, __LINE__)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>OMP5 runtime error checking with log and exception. </p>
 
-<p class="definition">Definition at line <a class="el" href="Omp5_8hpp_source.html#l00062">62</a> of file <a class="el" href="Omp5_8hpp_source.html">Omp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Omp5_8hpp_source.html#l00061">61</a> of file <a class="el" href="Omp5_8hpp_source.html">Omp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -152,7 +152,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Omp5_8hpp.html">Omp5.hpp</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 11:01:54 for alpaka by
+    <li class="footer">Generated on Tue Dec 15 2020 09:11:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

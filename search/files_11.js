@@ -9,6 +9,7 @@ var searchData=
   ['taskkernelcputbbblocks_2ehpp',['TaskKernelCpuTbbBlocks.hpp',['../TaskKernelCpuTbbBlocks_8hpp.html',1,'']]],
   ['taskkernelcputhreads_2ehpp',['TaskKernelCpuThreads.hpp',['../TaskKernelCpuThreads_8hpp.html',1,'']]],
   ['taskkernelgpuuniformcudahiprt_2ehpp',['TaskKernelGpuUniformCudaHipRt.hpp',['../TaskKernelGpuUniformCudaHipRt_8hpp.html',1,'']]],
+  ['taskkerneloacc_2ehpp',['TaskKernelOacc.hpp',['../TaskKernelOacc_8hpp.html',1,'']]],
   ['taskkernelomp5_2ehpp',['TaskKernelOmp5.hpp',['../TaskKernelOmp5_8hpp.html',1,'']]],
   ['timeomp_2ehpp',['TimeOmp.hpp',['../TimeOmp_8hpp.html',1,'']]],
   ['timestdlib_2ehpp',['TimeStdLib.hpp',['../TimeStdLib_8hpp.html',1,'']]],

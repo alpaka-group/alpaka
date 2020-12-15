@@ -1,6 +1,7 @@
 var searchData=
 [
   ['idx_3c_20tview_20_3e',['Idx&lt; TView &gt;',['../structalpaka_1_1traits_1_1detail_1_1Idx_3_01TView_01_4.html',1,'alpaka::traits::detail']]],
+  ['idxbtlinear',['IdxBtLinear',['../classalpaka_1_1bt_1_1IdxBtLinear.html',1,'alpaka::bt']]],
   ['idxbtomp',['IdxBtOmp',['../classalpaka_1_1bt_1_1IdxBtOmp.html',1,'alpaka::bt']]],
   ['idxbtreffiberidmap',['IdxBtRefFiberIdMap',['../classalpaka_1_1bt_1_1IdxBtRefFiberIdMap.html',1,'alpaka::bt']]],
   ['idxbtrefthreadidmap',['IdxBtRefThreadIdMap',['../classalpaka_1_1bt_1_1IdxBtRefThreadIdMap.html',1,'alpaka::bt']]],
@@ -17,6 +18,7 @@ var searchData=
   ['idxtype_3c_20acccputhreads_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; AccCpuThreads&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01AccCpuThreads_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20accgpuuniformcudahiprt_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; AccGpuUniformCudaHipRt&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01AccGpuUniformCudaHipRt_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20accomp5_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; AccOmp5&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01AccOmp5_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
+  ['idxtype_3c_20bt_3a_3aidxbtlinear_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; bt::IdxBtLinear&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtLinear_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20bt_3a_3aidxbtomp_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; bt::IdxBtOmp&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtOmp_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20bt_3a_3aidxbtreffiberidmap_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; bt::IdxBtRefFiberIdMap&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtRefFiberIdMap_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
   ['idxtype_3c_20bt_3a_3aidxbtrefthreadidmap_3c_20tdim_2c_20tidx_20_3e_20_3e',['IdxType&lt; bt::IdxBtRefThreadIdMap&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1traits_1_1IdxType_3_01bt_1_1IdxBtRefThreadIdMap_3_01TDim_00_01TIdx_01_4_01_4.html',1,'alpaka::traits']]],
@@ -90,6 +92,7 @@ var searchData=
   ['implements_3c_20conceptgetdev_2c_20queuegenericthreadsblocking_3c_20tdev_20_3e_20_3e',['Implements&lt; ConceptGetDev, QueueGenericThreadsBlocking&lt; TDev &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptgetdev_2c_20queuegenericthreadsnonblocking_3c_20tdev_20_3e_20_3e',['Implements&lt; ConceptGetDev, QueueGenericThreadsNonBlocking&lt; TDev &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptgetdev_2c_20queueuniformcudahiprtbase_20_3e',['Implements&lt; ConceptGetDev, QueueUniformCudaHipRtBase &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
+  ['implements_3c_20conceptidxbt_2c_20idxbtlinear_3c_20tdim_2c_20tidx_20_3e_20_3e',['Implements&lt; ConceptIdxBt, IdxBtLinear&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptidxbt_2c_20idxbtomp_3c_20tdim_2c_20tidx_20_3e_20_3e',['Implements&lt; ConceptIdxBt, IdxBtOmp&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptidxbt_2c_20idxbtreffiberidmap_3c_20tdim_2c_20tidx_20_3e_20_3e',['Implements&lt; ConceptIdxBt, IdxBtRefFiberIdMap&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],
   ['implements_3c_20conceptidxbt_2c_20idxbtrefthreadidmap_3c_20tdim_2c_20tidx_20_3e_20_3e',['Implements&lt; ConceptIdxBt, IdxBtRefThreadIdMap&lt; TDim, TIdx &gt; &gt;',['../structalpaka_1_1concepts_1_1Implements.html',1,'alpaka::concepts']]],

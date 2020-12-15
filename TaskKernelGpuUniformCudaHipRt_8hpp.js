@@ -10,5 +10,5 @@ var TaskKernelGpuUniformCudaHipRt_8hpp =
     [ "PltfType< TaskKernelGpuUniformCudaHipRt< TAcc, TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdfd923213c49744a75c9f1ef4acceaeec.html", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdfd923213c49744a75c9f1ef4acceaeec" ],
     [ "checkVecOnly3Dim", "TaskKernelGpuUniformCudaHipRt_8hpp.html#af9741bdf6dda9699e1dd8ca18d81d16a", null ],
     [ "convertVecToUniformCudaHipDim", "TaskKernelGpuUniformCudaHipRt_8hpp.html#a552124cfd6ee8654baa53bc1710c0974", null ],
-    [ "uniformCudaHipKernel", "TaskKernelGpuUniformCudaHipRt_8hpp.html#a94f1a94fcf60238ad55f243f42d46219", null ]
+    [ "uniformCudaHipKernel", "TaskKernelGpuUniformCudaHipRt_8hpp.html#a0b0f5201f3d3aba739fda9ab1c0ecf7b", null ]
 ];

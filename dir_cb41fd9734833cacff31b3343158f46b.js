@@ -2,6 +2,7 @@ var dir_cb41fd9734833cacff31b3343158f46b =
 [
     [ "EventCpu.hpp", "EventCpu_8hpp.html", "EventCpu_8hpp" ],
     [ "EventGenericThreads.hpp", "EventGenericThreads_8hpp.html", "EventGenericThreads_8hpp" ],
+    [ "EventOacc.hpp", "EventOacc_8hpp.html", null ],
     [ "EventOmp5.hpp", "EventOmp5_8hpp.html", "EventOmp5_8hpp" ],
     [ "EventUniformCudaHipRt.hpp", "EventUniformCudaHipRt_8hpp.html", [
       [ "EventUniformCudaHipRt", "classalpaka_1_1EventUniformCudaHipRt.html", "classalpaka_1_1EventUniformCudaHipRt" ],

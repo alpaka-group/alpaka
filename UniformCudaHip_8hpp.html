@@ -92,10 +92,10 @@ $(document).ready(function(){initNavTree('UniformCudaHip_8hpp.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="BoostPredef_8hpp_source.html">alpaka/core/BoostPredef.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Cuda_8hpp_source.html">alpaka/core/Cuda.hpp</a>&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="UniformCudaHip_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -155,7 +155,7 @@ Functions</h2></td></tr>
 
 <p>CUDA runtime error checking with log and exception. </p>
 
-<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00138">138</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00139">139</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
 
 </div>
 </div>
@@ -184,12 +184,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">::alpaka::uniform_cuda_hip::detail::rtCheckLastError</a>(<span class="stringliteral">&quot;&#39;&quot;</span> #cmd <span class="stringliteral">&quot;&#39; A previous API call (not this one) set the error &quot;</span>, __FILE__, __LINE__);<a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac2be95af06dba4fccfa129ea2ac239cb">\</a></div><div class="line"><a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac2be95af06dba4fccfa129ea2ac239cb">        ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore</a>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)</div><div class="ttc" id="namespacealpaka_1_1uniform__cuda__hip_1_1detail_html_ac2be95af06dba4fccfa129ea2ac239cb"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac2be95af06dba4fccfa129ea2ac239cb">alpaka::uniform_cuda_hip::detail::rtCheckIgnore</a></div><div class="ttdeci">ALPAKA_FN_HOST auto rtCheckIgnore(Error_t const &amp;error, char const *cmd, char const *file, int const &amp;line, TErrors &amp;&amp;... ignoredErrorCodes) -&gt; void</div><div class="ttdoc">CUDA/Hip runtime API error checking with log and exception, ignoring specific error values...</div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00076">UniformCudaHip.hpp:76</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1uniform__cuda__hip_1_1detail_html_a9d839d8290f20b3b3ad31cf9340f3fe7"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">alpaka::uniform_cuda_hip::detail::rtCheckLastError</a></div><div class="ttdeci">ALPAKA_FN_HOST auto rtCheckLastError(char const *desc, char const *file, int const &amp;line) -&gt; void</div><div class="ttdoc">CUDA runtime API last error checking with log and exception. </div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00102">UniformCudaHip.hpp:102</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">::alpaka::uniform_cuda_hip::detail::rtCheckLastError</a>(                                                     \</div><div class="line">                <span class="stringliteral">&quot;&#39;&quot;</span> #cmd <span class="stringliteral">&quot;&#39; A previous API call (not this one) set the error &quot;</span>,                                       \</div><div class="line">                __FILE__,                                                                                             \</div><div class="line">                __LINE__);                                                                                            <a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac2be95af06dba4fccfa129ea2ac239cb">\</a></div><div class="line"><a class="code" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac2be95af06dba4fccfa129ea2ac239cb">            ::alpaka::uniform_cuda_hip::detail::rtCheckIgnore</a>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)</div><div class="ttc" id="namespacealpaka_1_1uniform__cuda__hip_1_1detail_html_ac2be95af06dba4fccfa129ea2ac239cb"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#ac2be95af06dba4fccfa129ea2ac239cb">alpaka::uniform_cuda_hip::detail::rtCheckIgnore</a></div><div class="ttdeci">ALPAKA_FN_HOST auto rtCheckIgnore(Error_t const &amp;error, char const *cmd, char const *file, int const &amp;line, TErrors &amp;&amp;... ignoredErrorCodes) -&gt; void</div><div class="ttdoc">CUDA/Hip runtime API error checking with log and exception, ignoring specific error values...</div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00075">UniformCudaHip.hpp:75</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1uniform__cuda__hip_1_1detail_html_a9d839d8290f20b3b3ad31cf9340f3fe7"><div class="ttname"><a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a9d839d8290f20b3b3ad31cf9340f3fe7">alpaka::uniform_cuda_hip::detail::rtCheckLastError</a></div><div class="ttdeci">ALPAKA_FN_HOST auto rtCheckLastError(char const *desc, char const *file, int const &amp;line) -&gt; void</div><div class="ttdoc">CUDA runtime API last error checking with log and exception. </div><div class="ttdef"><b>Definition:</b> <a href="UniformCudaHip_8hpp_source.html#l00101">UniformCudaHip.hpp:101</a></div></div>
 </div><!-- fragment -->
 <p>CUDA runtime error checking with log and exception, ignoring specific error values. </p>
 
-<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00128">128</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UniformCudaHip_8hpp_source.html#l00126">126</a> of file <a class="el" href="UniformCudaHip_8hpp_source.html">UniformCudaHip.hpp</a>.</p>
 
 </div>
 </div>
@@ -199,7 +199,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="UniformCudaHip_8hpp.html">UniformCudaHip.hpp</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 11:01:54 for alpaka by
+    <li class="footer">Generated on Tue Dec 15 2020 09:11:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

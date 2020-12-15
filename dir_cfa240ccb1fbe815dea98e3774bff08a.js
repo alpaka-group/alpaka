@@ -22,6 +22,7 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "Fibers.hpp", "Fibers_8hpp.html", null ],
     [ "Hip.hpp", "Hip_8hpp.html", null ],
     [ "Omp5.hpp", "Omp5_8hpp.html", "Omp5_8hpp" ],
+    [ "OmpSchedule.hpp", "OmpSchedule_8hpp.html", "OmpSchedule_8hpp" ],
     [ "Positioning.hpp", "Positioning_8hpp.html", [
       [ "Blocks", "structalpaka_1_1hierarchy_1_1Blocks.html", null ],
       [ "Grids", "structalpaka_1_1hierarchy_1_1Grids.html", null ],

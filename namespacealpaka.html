@@ -126,6 +126,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1meta"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1meta.html">meta</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1omp"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1omp.html">omp</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1omp5"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1omp5.html">omp5</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1origin"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1origin.html">origin</a></td></tr>
@@ -420,17 +422,17 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a0668b792050a8ae5f1575da61ffe6217"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0668b792050a8ae5f1575da61ffe6217">Acc</a> = typename <a class="el" href="structalpaka_1_1traits_1_1AccType.html">traits::AccType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a0668b792050a8ae5f1575da61ffe6217"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator type trait alias template to remove the ::type.  <a href="#a0668b792050a8ae5f1575da61ffe6217">More...</a><br /></td></tr>
 <tr class="separator:a0668b792050a8ae5f1575da61ffe6217"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b77064eb584ddd07315001341693098"><td class="memTemplParams" colspan="2">template&lt;typename TGridAtomic , typename TBlockAtomic , typename TThreadAtomic &gt; </td></tr>
-<tr class="memitem:a2b77064eb584ddd07315001341693098"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2b77064eb584ddd07315001341693098">AtomicHierarchy</a> = <a class="el" href="classalpaka_1_1meta_1_1InheritFromList.html">alpaka::meta::InheritFromList</a>&lt; <a class="el" href="namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c">alpaka::meta::Unique</a>&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt; <a class="el" href="structalpaka_1_1ConceptAtomicGrids.html">ConceptAtomicGrids</a>, TGridAtomic &gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt; <a class="el" href="structalpaka_1_1ConceptAtomicBlocks.html">ConceptAtomicBlocks</a>, TBlockAtomic &gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt; <a class="el" href="structalpaka_1_1ConceptAtomicThreads.html">ConceptAtomicThreads</a>, TThreadAtomic &gt; &gt; &gt; &gt;</td></tr>
-<tr class="memdesc:a2b77064eb584ddd07315001341693098"><td class="mdescLeft">&#160;</td><td class="mdescRight">build a single class to inherit from different atomic implementations  <a href="#a2b77064eb584ddd07315001341693098">More...</a><br /></td></tr>
-<tr class="separator:a2b77064eb584ddd07315001341693098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe27c0dad6ddd453657dee8f0bb343ff"><td class="memTemplParams" colspan="2">template&lt;typename TGridAtomic , typename TBlockAtomic , typename TThreadAtomic &gt; </td></tr>
+<tr class="memitem:abe27c0dad6ddd453657dee8f0bb343ff"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff">AtomicHierarchy</a> = <a class="el" href="classalpaka_1_1meta_1_1InheritFromList.html">alpaka::meta::InheritFromList</a>&lt; <a class="el" href="namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c">alpaka::meta::Unique</a>&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt; <a class="el" href="structalpaka_1_1ConceptAtomicGrids.html">ConceptAtomicGrids</a>, TGridAtomic &gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt; <a class="el" href="structalpaka_1_1ConceptAtomicBlocks.html">ConceptAtomicBlocks</a>, TBlockAtomic &gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt; <a class="el" href="structalpaka_1_1ConceptAtomicThreads.html">ConceptAtomicThreads</a>, TThreadAtomic &gt; &gt;&gt; &gt;</td></tr>
+<tr class="memdesc:abe27c0dad6ddd453657dee8f0bb343ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">build a single class to inherit from different atomic implementations  <a href="#abe27c0dad6ddd453657dee8f0bb343ff">More...</a><br /></td></tr>
+<tr class="separator:abe27c0dad6ddd453657dee8f0bb343ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a802e615af70018a5f2a5d4972bc11a52"><td class="memTemplParams" colspan="2">template&lt;typename THierarchy &gt; </td></tr>
 <tr class="memitem:a802e615af70018a5f2a5d4972bc11a52"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52">AtomicHierarchyConcept</a> = typename <a class="el" href="structalpaka_1_1detail_1_1AtomicHierarchyConceptType.html">detail::AtomicHierarchyConceptType</a>&lt; THierarchy &gt;::type</td></tr>
 <tr class="separator:a802e615af70018a5f2a5d4972bc11a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47e6d2ac1ebf2fc5fd7ca79d8f65256f"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; </td></tr>
-<tr class="memitem:a47e6d2ac1ebf2fc5fd7ca79d8f65256f"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a47e6d2ac1ebf2fc5fd7ca79d8f65256f">Buf</a> = typename <a class="el" href="structalpaka_1_1traits_1_1BufType.html">traits::BufType</a>&lt; <a class="el" href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">alpaka::Dev</a>&lt; TDev &gt;, TElem, TDim, TIdx &gt;::type</td></tr>
-<tr class="memdesc:a47e6d2ac1ebf2fc5fd7ca79d8f65256f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer type trait alias template to remove the ::type.  <a href="#a47e6d2ac1ebf2fc5fd7ca79d8f65256f">More...</a><br /></td></tr>
-<tr class="separator:a47e6d2ac1ebf2fc5fd7ca79d8f65256f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00961ddf6d3f557f0adfaa9c1cf9417e"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; </td></tr>
+<tr class="memitem:a00961ddf6d3f557f0adfaa9c1cf9417e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a00961ddf6d3f557f0adfaa9c1cf9417e">Buf</a> = typename <a class="el" href="structalpaka_1_1traits_1_1BufType.html">traits::BufType</a>&lt; <a class="el" href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">alpaka::Dev</a>&lt; TDev &gt;, TElem, TDim, TIdx &gt;::type</td></tr>
+<tr class="memdesc:a00961ddf6d3f557f0adfaa9c1cf9417e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer type trait alias template to remove the ::type.  <a href="#a00961ddf6d3f557f0adfaa9c1cf9417e">More...</a><br /></td></tr>
+<tr class="separator:a00961ddf6d3f557f0adfaa9c1cf9417e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cdab91c7cbe490254da4f3562d56e71"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1cdab91c7cbe490254da4f3562d56e71"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">Dev</a> = typename <a class="el" href="structalpaka_1_1traits_1_1DevType.html">traits::DevType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a1cdab91c7cbe490254da4f3562d56e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device type trait alias template to remove the ::type.  <a href="#a1cdab91c7cbe490254da4f3562d56e71">More...</a><br /></td></tr>
@@ -456,10 +458,10 @@ Typedefs</h2></td></tr>
 <tr class="separator:acc8723b925f6ddf8b27631b71a7c22c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0173206e98595f605bffe9a6198da754"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0173206e98595f605bffe9a6198da754">EventOmp5</a> = <a class="el" href="classalpaka_1_1EventGenericThreads.html">EventGenericThreads</a>&lt; <a class="el" href="classalpaka_1_1DevOmp5.html">DevOmp5</a> &gt;</td></tr>
 <tr class="separator:a0173206e98595f605bffe9a6198da754"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a523f99728e8595fab50c09883a2f13b1"><td class="memTemplParams" colspan="2">template&lt;class TDim , class TIdx &gt; </td></tr>
-<tr class="memitem:a523f99728e8595fab50c09883a2f13b1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a523f99728e8595fab50c09883a2f13b1">ExampleDefaultAcc</a> = <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt; TDim, TIdx &gt;</td></tr>
-<tr class="memdesc:a523f99728e8595fab50c09883a2f13b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the default accelerator used by examples. From a list of all accelerators the first one which is enabled is chosen. <a class="el" href="classalpaka_1_1AccCpuSerial.html" title="The CPU serial accelerator. ">AccCpuSerial</a> is selected last.  <a href="#a523f99728e8595fab50c09883a2f13b1">More...</a><br /></td></tr>
-<tr class="separator:a523f99728e8595fab50c09883a2f13b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memTemplParams" colspan="2">template&lt;class TDim , class TIdx &gt; </td></tr>
+<tr class="memitem:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa">ExampleDefaultAcc</a> = <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt; TDim, TIdx &gt;</td></tr>
+<tr class="memdesc:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the default accelerator used by examples. From a list of all accelerators the first one which is enabled is chosen. <a class="el" href="classalpaka_1_1AccCpuSerial.html" title="The CPU serial accelerator. ">AccCpuSerial</a> is selected last.  <a href="#a8aec9660f2a0dd2e01db1edd34e4cafa">More...</a><br /></td></tr>
+<tr class="separator:a8aec9660f2a0dd2e01db1edd34e4cafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dc8244519a754f60c4c8186a26a82fc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0dc8244519a754f60c4c8186a26a82fc"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a> = typename <a class="el" href="structalpaka_1_1traits_1_1IdxType.html">traits::IdxType</a>&lt; T &gt;::type</td></tr>
 <tr class="separator:a0dc8244519a754f60c4c8186a26a82fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -503,10 +505,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a7ff762720c64dc454a53faa6622c227d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7ff762720c64dc454a53faa6622c227d">allocBuf</a> (TDev const &amp;dev, TExtent const &amp;extent=TExtent())</td></tr>
 <tr class="memdesc:a7ff762720c64dc454a53faa6622c227d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="#a7ff762720c64dc454a53faa6622c227d">More...</a><br /></td></tr>
 <tr class="separator:a7ff762720c64dc454a53faa6622c227d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b43295094993ff6b3cf214640dce660"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </td></tr>
-<tr class="memitem:a3b43295094993ff6b3cf214640dce660"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3b43295094993ff6b3cf214640dce660">allocVar</a> (TBlockSharedMemSt const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
-<tr class="memdesc:a3b43295094993ff6b3cf214640dce660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a variable in block shared static memory.  <a href="#a3b43295094993ff6b3cf214640dce660">More...</a><br /></td></tr>
-<tr class="separator:a3b43295094993ff6b3cf214640dce660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="memTemplParams" colspan="2">template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Grids&gt; </td></tr>
 <tr class="memitem:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">atomicAdd</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</td></tr>
 <tr class="memdesc:ac8d44ae90fcfe2fdb973c49542fd0db5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes an atomic add operation.  <a href="#ac8d44ae90fcfe2fdb973c49542fd0db5">More...</a><br /></td></tr>
@@ -595,6 +593,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a730e9a7d0baa70426246af2bb311417a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a730e9a7d0baa70426246af2bb311417a">createVecFromIndexedFnOffset</a> (TArgs &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a730e9a7d0baa70426246af2bb311417a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [TIdxOffset, TIdxOffset + TDim].  <a href="#a730e9a7d0baa70426246af2bb311417a">More...</a><br /></td></tr>
 <tr class="separator:a730e9a7d0baa70426246af2bb311417a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7b7e7f67482b39bf05230d666dc9798"><td class="memTemplParams" colspan="2">template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </td></tr>
+<tr class="memitem:af7b7e7f67482b39bf05230d666dc9798"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af7b7e7f67482b39bf05230d666dc9798">declareSharedVar</a> (TBlockSharedMemSt const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
+<tr class="memdesc:af7b7e7f67482b39bf05230d666dc9798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare a block shared variable.  <a href="#af7b7e7f67482b39bf05230d666dc9798">More...</a><br /></td></tr>
+<tr class="separator:af7b7e7f67482b39bf05230d666dc9798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b5f410b7b40fd9e91a9c6478e2e085"><td class="memTemplParams" colspan="2">template&lt;typename TQueue &gt; </td></tr>
 <tr class="memitem:ab2b5f410b7b40fd9e91a9c6478e2e085"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab2b5f410b7b40fd9e91a9c6478e2e085">empty</a> (TQueue const &amp;queue) -&gt; bool</td></tr>
 <tr class="memdesc:ab2b5f410b7b40fd9e91a9c6478e2e085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the queue is empty (all ops in the given queue have been completed).  <a href="#ab2b5f410b7b40fd9e91a9c6478e2e085">More...</a><br /></td></tr>
@@ -619,10 +621,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a04896bbcd53fbb9da78612f51a4e1cf4">free</a> (TAlloc const &amp;alloc, T const *const ptr) -&gt; void</td></tr>
 <tr class="memdesc:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory identified by the given pointer.  <a href="#a04896bbcd53fbb9da78612f51a4e1cf4">More...</a><br /></td></tr>
 <tr class="separator:a04896bbcd53fbb9da78612f51a4e1cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memTemplParams" colspan="2">template&lt;typename TBlockSharedMemSt &gt; </td></tr>
-<tr class="memitem:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a4ef4e22340afb29dfeffb02ae38edf16">freeMem</a> (TBlockSharedMemSt &amp;blockSharedMemSt) -&gt; void</td></tr>
-<tr class="memdesc:a4ef4e22340afb29dfeffb02ae38edf16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all block shared static memory.  <a href="#a4ef4e22340afb29dfeffb02ae38edf16">More...</a><br /></td></tr>
-<tr class="separator:a4ef4e22340afb29dfeffb02ae38edf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af573b85c5c94948f067a60c24d76065e"><td class="memTemplParams" colspan="2">template&lt;typename TBlockSharedMemSt &gt; </td></tr>
+<tr class="memitem:af573b85c5c94948f067a60c24d76065e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#af573b85c5c94948f067a60c24d76065e">freeSharedVars</a> (TBlockSharedMemSt &amp;blockSharedMemSt) -&gt; void</td></tr>
+<tr class="memdesc:af573b85c5c94948f067a60c24d76065e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all memory used by block shared variables.  <a href="#af573b85c5c94948f067a60c24d76065e">More...</a><br /></td></tr>
+<tr class="separator:af573b85c5c94948f067a60c24d76065e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev &gt; </td></tr>
 <tr class="memitem:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3fa7ad40eda1f1fc3b26d8945ff882a0">getAccDevProps</a> (TDev const &amp;dev) -&gt; <a class="el" href="structalpaka_1_1AccDevProps.html">AccDevProps</a>&lt; <a class="el" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt; TAcc &gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt;</td></tr>
 <tr class="separator:a3fa7ad40eda1f1fc3b26d8945ff882a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -644,6 +646,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a23384b2db813a3657d3278247d095ad6"><td class="memTemplParams" colspan="2">template&lt;typename TPltf &gt; </td></tr>
 <tr class="memitem:a23384b2db813a3657d3278247d095ad6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a23384b2db813a3657d3278247d095ad6">getDevs</a> () -&gt; std::vector&lt; <a class="el" href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">Dev</a>&lt; <a class="el" href="namespacealpaka.html#a50d14d58d7efe4814cbbd3dceb67d22c">Pltf</a>&lt; TPltf &gt;&gt;&gt;</td></tr>
 <tr class="separator:a23384b2db813a3657d3278247d095ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a94cfffd5d547f55d97551bc8b5c78e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TBlockSharedMemDyn &gt; </td></tr>
+<tr class="memitem:a1a94cfffd5d547f55d97551bc8b5c78e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1a94cfffd5d547f55d97551bc8b5c78e">getDynSharedMem</a> (TBlockSharedMemDyn const &amp;blockSharedMemDyn) -&gt; T *</td></tr>
+<tr class="memdesc:a1a94cfffd5d547f55d97551bc8b5c78e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get block shared dynamic memory.  <a href="#a1a94cfffd5d547f55d97551bc8b5c78e">More...</a><br /></td></tr>
+<tr class="separator:a1a94cfffd5d547f55d97551bc8b5c78e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6049156c92d1112a3e7cfb96f09b153e"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a6049156c92d1112a3e7cfb96f09b153e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a6049156c92d1112a3e7cfb96f09b153e">getFreeMemBytes</a> (TDev const &amp;dev) -&gt; std::size_t</td></tr>
 <tr class="separator:a6049156c92d1112a3e7cfb96f09b153e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -667,10 +673,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a970df5ef44782fd7ed9040897ba2f6d8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a970df5ef44782fd7ed9040897ba2f6d8">getIdxThreadFirstElem</a> (TIdxWorkDiv const &amp;idxWorkDiv) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a>&lt; TIdxWorkDiv &gt;, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TIdxWorkDiv &gt;&gt;</td></tr>
 <tr class="memdesc:a970df5ef44782fd7ed9040897ba2f6d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the first element this thread computes.  <a href="#a970df5ef44782fd7ed9040897ba2f6d8">More...</a><br /></td></tr>
 <tr class="separator:a970df5ef44782fd7ed9040897ba2f6d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a414041872995e7872e5a0c5698c15209"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TBlockSharedMemDyn &gt; </td></tr>
-<tr class="memitem:a414041872995e7872e5a0c5698c15209"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a414041872995e7872e5a0c5698c15209">getMem</a> (TBlockSharedMemDyn const &amp;blockSharedMemDyn) -&gt; T *</td></tr>
-<tr class="memdesc:a414041872995e7872e5a0c5698c15209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointr to the block shared dynamic memory.  <a href="#a414041872995e7872e5a0c5698c15209">More...</a><br /></td></tr>
-<tr class="separator:a414041872995e7872e5a0c5698c15209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69d68a30000dc80ea5a1c09139f2b789"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a69d68a30000dc80ea5a1c09139f2b789"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a69d68a30000dc80ea5a1c09139f2b789">getMemBytes</a> (TDev const &amp;dev) -&gt; std::size_t</td></tr>
 <tr class="separator:a69d68a30000dc80ea5a1c09139f2b789"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -695,6 +697,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
 <tr class="memitem:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3f52e0b422b1c94d37ce259fc671ad8e">getOffsetZ</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TOffsets &gt;</td></tr>
 <tr class="separator:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1df84a90eca656f610e1ceb0183d9ede"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a1df84a90eca656f610e1ceb0183d9ede"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1df84a90eca656f610e1ceb0183d9ede">getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; <a class="el" href="structalpaka_1_1omp_1_1Schedule.html">omp::Schedule</a></td></tr>
+<tr class="separator:a1df84a90eca656f610e1ceb0183d9ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TView &gt; </td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad6365b89c5be8dd8917954798cc7fc21">getPitchBytes</a> (TView const &amp;view) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TView &gt;</td></tr>
 <tr class="separator:ad6365b89c5be8dd8917954798cc7fc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -820,10 +825,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a93d03d799a39746ab0418ec48f73a4eb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a93d03d799a39746ab0418ec48f73a4eb">prepareForAsyncCopy</a> (TBuf &amp;buf) -&gt; void</td></tr>
 <tr class="memdesc:a93d03d799a39746ab0418ec48f73a4eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepares the buffer for non-blocking copy operations, e.g. pinning if non-blocking copy between a cpu and a cuda device is wanted.  <a href="#a93d03d799a39746ab0418ec48f73a4eb">More...</a><br /></td></tr>
 <tr class="separator:a93d03d799a39746ab0418ec48f73a4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac227e64e8e9f6faf92c133dafac2ee9e"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
-<tr class="memitem:ac227e64e8e9f6faf92c133dafac2ee9e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ac227e64e8e9f6faf92c133dafac2ee9e">print</a> (TView const &amp;view, std::ostream &amp;os, std::string const &amp;elementSeparator=&quot;, &quot;, std::string const &amp;rowSeparator=&quot;\, std::string const &amp;rowPrefix=&quot;[&quot;, std::string const &amp;rowSuffix=&quot;]&quot;) -&gt; void</td></tr>
-<tr class="memdesc:ac227e64e8e9f6faf92c133dafac2ee9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the content of the view to the given queue.  <a href="#ac227e64e8e9f6faf92c133dafac2ee9e">More...</a><br /></td></tr>
-<tr class="separator:ac227e64e8e9f6faf92c133dafac2ee9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39e1eba3bae715ef0ebcf3587a918e05"><td class="memTemplParams" colspan="2">template&lt;typename TView &gt; </td></tr>
+<tr class="memitem:a39e1eba3bae715ef0ebcf3587a918e05"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a39e1eba3bae715ef0ebcf3587a918e05">print</a> (TView const &amp;view, std::ostream &amp;os, std::string const &amp;elementSeparator=&quot;, &quot;, std::string const &amp;rowSeparator=&quot;\, std::string const  &amp;rowPrefix=&quot;[&quot;, std::string const  &amp;rowSuffix=&quot;]&quot;) -&gt; void</td></tr>
+<tr class="memdesc:a39e1eba3bae715ef0ebcf3587a918e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the content of the view to the given queue.  <a href="#a39e1eba3bae715ef0ebcf3587a918e05">More...</a><br /></td></tr>
+<tr class="separator:a39e1eba3bae715ef0ebcf3587a918e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
 <tr class="memitem:a41ac82cec34e8e887aaa4d8e4e064943"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a41ac82cec34e8e887aaa4d8e4e064943">reset</a> (TDev const &amp;dev) -&gt; void</td></tr>
 <tr class="memdesc:a41ac82cec34e8e887aaa4d8e4e064943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the device. What this method does is dependent on the accelerator.  <a href="#a41ac82cec34e8e887aaa4d8e4e064943">More...</a><br /></td></tr>
@@ -908,12 +913,12 @@ template&lt;typename T &gt; </div>
 
 <p>The accelerator type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00090">90</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00083">83</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a2b77064eb584ddd07315001341693098"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b77064eb584ddd07315001341693098">&#9670;&nbsp;</a></span>AtomicHierarchy</h2>
+<a id="abe27c0dad6ddd453657dee8f0bb343ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe27c0dad6ddd453657dee8f0bb343ff">&#9670;&nbsp;</a></span>AtomicHierarchy</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -921,14 +926,14 @@ template&lt;typename T &gt; </div>
 template&lt;typename TGridAtomic , typename TBlockAtomic , typename TThreadAtomic &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a2b77064eb584ddd07315001341693098">alpaka::AtomicHierarchy</a> = typedef <a class="el" href="classalpaka_1_1meta_1_1InheritFromList.html">alpaka::meta::InheritFromList</a>&lt; <a class="el" href="namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c">alpaka::meta::Unique</a>&lt; std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;<a class="el" href="structalpaka_1_1ConceptAtomicGrids.html">ConceptAtomicGrids</a>, TGridAtomic&gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;<a class="el" href="structalpaka_1_1ConceptAtomicBlocks.html">ConceptAtomicBlocks</a>, TBlockAtomic&gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;<a class="el" href="structalpaka_1_1ConceptAtomicThreads.html">ConceptAtomicThreads</a>, TThreadAtomic&gt; &gt; &gt; &gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#abe27c0dad6ddd453657dee8f0bb343ff">alpaka::AtomicHierarchy</a> = typedef <a class="el" href="classalpaka_1_1meta_1_1InheritFromList.html">alpaka::meta::InheritFromList</a>&lt;<a class="el" href="namespacealpaka_1_1meta.html#a49d048c65329b66f46dca6575c3f524c">alpaka::meta::Unique</a>&lt;std::tuple&lt; TGridAtomic, TBlockAtomic, TThreadAtomic, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;<a class="el" href="structalpaka_1_1ConceptAtomicGrids.html">ConceptAtomicGrids</a>, TGridAtomic&gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;<a class="el" href="structalpaka_1_1ConceptAtomicBlocks.html">ConceptAtomicBlocks</a>, TBlockAtomic&gt;, <a class="el" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;<a class="el" href="structalpaka_1_1ConceptAtomicThreads.html">ConceptAtomicThreads</a>, TThreadAtomic&gt; &gt;&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>build a single class to inherit from different atomic implementations </p>
 
-<p class="definition">Definition at line <a class="el" href="AtomicHierarchy_8hpp_source.html#l00050">50</a> of file <a class="el" href="AtomicHierarchy_8hpp_source.html">AtomicHierarchy.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="AtomicHierarchy_8hpp_source.html#l00039">39</a> of file <a class="el" href="AtomicHierarchy_8hpp_source.html">AtomicHierarchy.hpp</a>.</p>
 
 </div>
 </div>
@@ -946,12 +951,12 @@ template&lt;typename THierarchy &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00057">57</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00056">56</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a47e6d2ac1ebf2fc5fd7ca79d8f65256f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47e6d2ac1ebf2fc5fd7ca79d8f65256f">&#9670;&nbsp;</a></span>Buf</h2>
+<a id="a00961ddf6d3f557f0adfaa9c1cf9417e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00961ddf6d3f557f0adfaa9c1cf9417e">&#9670;&nbsp;</a></span>Buf</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -959,14 +964,14 @@ template&lt;typename THierarchy &gt; </div>
 template&lt;typename TDev , typename TElem , typename TDim , typename TIdx &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a47e6d2ac1ebf2fc5fd7ca79d8f65256f">alpaka::Buf</a> = typedef typename <a class="el" href="structalpaka_1_1traits_1_1BufType.html">traits::BufType</a>&lt; <a class="el" href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">alpaka::Dev</a>&lt;TDev&gt;, TElem, TDim, TIdx&gt;::type</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a00961ddf6d3f557f0adfaa9c1cf9417e">alpaka::Buf</a> = typedef typename <a class="el" href="structalpaka_1_1traits_1_1BufType.html">traits::BufType</a>&lt;<a class="el" href="namespacealpaka.html#a1cdab91c7cbe490254da4f3562d56e71">alpaka::Dev</a>&lt;TDev&gt;, TElem, TDim, TIdx&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The memory buffer type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00095">95</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00065">65</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -986,7 +991,7 @@ template&lt;typename T &gt; </div>
 
 <p>The device type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00076">76</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00060">60</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1002,7 +1007,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00092">92</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevUniformCudaHipRt_8hpp_source.html#l00088">88</a> of file <a class="el" href="DevUniformCudaHipRt_8hpp_source.html">DevUniformCudaHipRt.hpp</a>.</p>
 
 </div>
 </div>
@@ -1022,7 +1027,7 @@ template&lt;typename T &gt; </div>
 
 <p>The dimension type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="dim_2Traits_8hpp_source.html#l00030">30</a> of file <a class="el" href="dim_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dim_2Traits_8hpp_source.html#l00027">27</a> of file <a class="el" href="dim_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1040,7 +1045,7 @@ template&lt;std::size_t N&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DimIntegralConst_8hpp_source.html#l00022">22</a> of file <a class="el" href="DimIntegralConst_8hpp_source.html">DimIntegralConst.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DimIntegralConst_8hpp_source.html#l00021">21</a> of file <a class="el" href="DimIntegralConst_8hpp_source.html">DimIntegralConst.hpp</a>.</p>
 
 </div>
 </div>
@@ -1060,7 +1065,7 @@ template&lt;typename TView &gt; </div>
 
 <p>The element type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="elem_2Traits_8hpp_source.html#l00032">32</a> of file <a class="el" href="elem_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="elem_2Traits_8hpp_source.html#l00029">29</a> of file <a class="el" href="elem_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1080,7 +1085,7 @@ template&lt;typename T &gt; </div>
 
 <p>The event type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="event_2Traits_8hpp_source.html#l00041">41</a> of file <a class="el" href="event_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="event_2Traits_8hpp_source.html#l00035">35</a> of file <a class="el" href="event_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1116,8 +1121,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a523f99728e8595fab50c09883a2f13b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a523f99728e8595fab50c09883a2f13b1">&#9670;&nbsp;</a></span>ExampleDefaultAcc</h2>
+<a id="a8aec9660f2a0dd2e01db1edd34e4cafa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aec9660f2a0dd2e01db1edd34e4cafa">&#9670;&nbsp;</a></span>ExampleDefaultAcc</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1125,7 +1130,7 @@ template&lt;typename T &gt; </div>
 template&lt;class TDim , class TIdx &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka.html#a523f99728e8595fab50c09883a2f13b1">alpaka::ExampleDefaultAcc</a> = typedef <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt;TDim,TIdx&gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa">alpaka::ExampleDefaultAcc</a> = typedef <a class="el" href="classalpaka_1_1AccGpuCudaRt.html">alpaka::AccGpuCudaRt</a>&lt;TDim, TIdx&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1150,7 +1155,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idx_2Traits_8hpp_source.html#l00034">34</a> of file <a class="el" href="idx_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idx_2Traits_8hpp_source.html#l00035">35</a> of file <a class="el" href="idx_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1170,7 +1175,7 @@ template&lt;typename T &gt; </div>
 
 <p>The platform type trait alias template to remove the ::type. </p>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00065">65</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00055">55</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1202,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00100">100</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1213,7 +1218,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00295">295</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00260">260</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1229,7 +1234,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00294">294</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevCpu_8hpp_source.html#l00259">259</a> of file <a class="el" href="DevCpu_8hpp_source.html">DevCpu.hpp</a>.</p>
 
 </div>
 </div>
@@ -1245,7 +1250,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html#l00086">86</a> of file <a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html">QueueUniformCudaHipRtBlocking.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html#l00083">83</a> of file <a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html">QueueUniformCudaHipRtBlocking.hpp</a>.</p>
 
 </div>
 </div>
@@ -1261,7 +1266,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00086">86</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html#l00083">83</a> of file <a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">QueueUniformCudaHipRtNonBlocking.hpp</a>.</p>
 
 </div>
 </div>
@@ -1277,7 +1282,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00289">289</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00262">262</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -1293,7 +1298,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00288">288</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DevOmp5_8hpp_source.html#l00261">261</a> of file <a class="el" href="DevOmp5_8hpp_source.html">DevOmp5.hpp</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1333,7 @@ template&lt;typename TEnv , typename TProperty &gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00035">35</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00032">32</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -1380,47 +1385,7 @@ template&lt;typename TElem , typename TIdx , typename TExtent , typename TDev &g
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The newly allocated buffer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00112">112</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a3b43295094993ff6b3cf214640dce660"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b43295094993ff6b3cf214640dce660">&#9670;&nbsp;</a></span>allocVar()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::allocVar </td>
-          <td>(</td>
-          <td class="paramtype">TBlockSharedMemSt const &amp;&#160;</td>
-          <td class="paramname"><em>blockSharedMemSt</em></td><td>)</td>
-          <td> -&gt; T &amp;
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Allocates a variable in block shared static memory. </p>
-<p>The allocated variable is uninitialized and not default constructed!</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>The element type. </td></tr>
-    <tr><td class="paramname">TuniqueId</td><td>id those is unique inside a kernel </td></tr>
-    <tr><td class="paramname">TBlockSharedMemSt</td><td>The block shared allocator implementation type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">blockSharedMemSt</td><td>The block shared allocator implementation. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html#l00055">55</a> of file <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00078">78</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1482,7 +1447,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00160">160</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00122">122</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1544,7 +1509,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00321">321</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00255">255</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1578,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00391">391</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00313">313</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1675,7 +1640,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00298">298</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00236">236</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1737,7 +1702,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00252">252</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00198">198</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1799,7 +1764,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00275">275</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00217">217</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1861,7 +1826,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00229">229</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00179">179</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1923,7 +1888,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00206">206</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00160">160</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -1986,7 +1951,7 @@ template&lt;typename TOp , typename TAtomic , typename T , typename THierarchy  
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00089">89</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00079">79</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2056,7 +2021,7 @@ template&lt;typename TOp , typename TAtomic , typename T , typename THierarchy  
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00125">125</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00101">101</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2118,7 +2083,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00344">344</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00274">274</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2180,7 +2145,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00183">183</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00141">141</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2242,7 +2207,7 @@ template&lt;typename TAtomic , typename T , typename THierarchy  = hierarchy::Gr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00367">367</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00293">293</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2265,7 +2230,7 @@ template&lt;typename TVal , typename TVec &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The casted vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00135">135</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00095">95</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2301,7 +2266,7 @@ template&lt;typename TTime &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="time_2Traits_8hpp_source.html#l00041">41</a> of file <a class="el" href="time_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="time_2Traits_8hpp_source.html#l00040">40</a> of file <a class="el" href="time_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2334,7 +2299,7 @@ template&lt;typename TVecL , typename TVecR &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The concatenated vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00167">167</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00113">113</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2373,7 +2338,7 @@ template&lt;typename TElem , typename TDev , typename TExtent &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A view to static device memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00555">555</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00382">382</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2428,7 +2393,7 @@ template&lt;typename TAcc , typename TWorkDiv , typename TKernelFnObj , typename
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The kernel execution task. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00182">182</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00269">269</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2476,7 +2441,7 @@ template&lt;typename TExtent , typename TViewSrc , typename TViewDst &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00326">326</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00211">211</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2524,7 +2489,7 @@ template&lt;typename TExtent , typename TView &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00271">271</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00182">182</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2548,7 +2513,7 @@ template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typenam
 
 <p>Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [0, TDim]. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00067">67</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00062">62</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -2582,7 +2547,7 @@ template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typenam
 
 <p>Single value constructor helper. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00050">50</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00048">48</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -2606,7 +2571,48 @@ template&lt;typename TDim , template&lt; std::size_t &gt; class TTFnObj, typenam
 
 <p>Creator using func&lt;idx&gt;(args...) to initialize all values of the vector. The idx is in the range [TIdxOffset, TIdxOffset + TDim]. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00087">87</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00072">72</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+
+</div>
+</div>
+<a id="af7b7e7f67482b39bf05230d666dc9798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7b7e7f67482b39bf05230d666dc9798">&#9670;&nbsp;</a></span>declareSharedVar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::size_t TuniqueId, typename TBlockSharedMemSt &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::declareSharedVar </td>
+          <td>(</td>
+          <td class="paramtype">TBlockSharedMemSt const &amp;&#160;</td>
+          <td class="paramname"><em>blockSharedMemSt</em></td><td>)</td>
+          <td> -&gt; T&amp;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare a block shared variable. </p>
+<p>The variable is uninitialized and not default constructed! The variable can be accessed by all threads within a block. Access to the variable is not thread safe.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The element type. </td></tr>
+    <tr><td class="paramname">TuniqueId</td><td>id those is unique inside a kernel </td></tr>
+    <tr><td class="paramname">TBlockSharedMemSt</td><td>The block shared allocator implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSharedMemSt</td><td>The block shared allocator implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Uninitialized variable stored in shared memory. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html#l00051">51</a> of file <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2631,7 +2637,7 @@ template&lt;typename TQueue &gt; </div>
 
 <p>Tests if the queue is empty (all ops in the given queue have been completed). </p>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00079">79</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00059">59</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2667,7 +2673,7 @@ template&lt;typename TQueue , typename TTask &gt; </div>
 <p>Queues the given task in the given queue. </p>
 <p>Special Handling for events: If the event has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. </p>
 
-<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00062">62</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="queue_2Traits_8hpp_source.html#l00051">51</a> of file <a class="el" href="queue_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2729,7 +2735,7 @@ template&lt;typename TAcc , typename TQueue , typename TWorkDiv , typename TKern
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00235">235</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00308">308</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2777,7 +2783,7 @@ template&lt;typename TIntrinsic &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00095">95</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00076">76</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2825,7 +2831,7 @@ template&lt;typename TIntrinsic &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00118">118</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00091">91</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2860,12 +2866,12 @@ template&lt;typename TAlloc , typename T &gt; </div>
 
 <p>Frees the memory identified by the given pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2alloc_2Traits_8hpp_source.html#l00069">69</a> of file <a class="el" href="mem_2alloc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2alloc_2Traits_8hpp_source.html#l00051">51</a> of file <a class="el" href="mem_2alloc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a4ef4e22340afb29dfeffb02ae38edf16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ef4e22340afb29dfeffb02ae38edf16">&#9670;&nbsp;</a></span>freeMem()</h2>
+<a id="af573b85c5c94948f067a60c24d76065e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af573b85c5c94948f067a60c24d76065e">&#9670;&nbsp;</a></span>freeSharedVars()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2873,7 +2879,7 @@ template&lt;typename TAlloc , typename T &gt; </div>
 template&lt;typename TBlockSharedMemSt &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::freeMem </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::freeSharedVars </td>
           <td>(</td>
           <td class="paramtype">TBlockSharedMemSt &amp;&#160;</td>
           <td class="paramname"><em>blockSharedMemSt</em></td><td>)</td>
@@ -2883,7 +2889,7 @@ template&lt;typename TBlockSharedMemSt &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Frees all block shared static memory. </p>
+<p>Frees all memory used by block shared variables. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TBlockSharedMemSt</td><td>The block shared allocator implementation type. </td></tr>
@@ -2897,7 +2903,7 @@ template&lt;typename TBlockSharedMemSt &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html#l00077">77</a> of file <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html#l00064">64</a> of file <a class="el" href="block_2shared_2st_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2921,7 +2927,7 @@ template&lt;typename TAcc , typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The acceleration properties on the given device. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00097">97</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00088">88</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2950,7 +2956,7 @@ template&lt;typename TAcc &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00115">115</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="acc_2Traits_8hpp_source.html#l00099">99</a> of file <a class="el" href="acc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3011,7 +3017,7 @@ template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The size of the shared memory allocated for a block in bytes. The default implementation always returns zero. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00116">116</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00190">190</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3034,7 +3040,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device this object is bound to. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00086">86</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00069">69</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3057,7 +3063,7 @@ template&lt;typename TPltf &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device identified by its index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00083">83</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00068">68</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3079,7 +3085,7 @@ template&lt;typename TPltf &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device identified by its index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00071">71</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00060">60</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3102,7 +3108,47 @@ template&lt;typename TPltf &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>All the devices available on this accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00097">97</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pltf_2Traits_8hpp_source.html#l00076">76</a> of file <a class="el" href="pltf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a1a94cfffd5d547f55d97551bc8b5c78e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a94cfffd5d547f55d97551bc8b5c78e">&#9670;&nbsp;</a></span>getDynSharedMem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TBlockSharedMemDyn &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::getDynSharedMem </td>
+          <td>(</td>
+          <td class="paramtype">TBlockSharedMemDyn const &amp;&#160;</td>
+          <td class="paramname"><em>blockSharedMemDyn</em></td><td>)</td>
+          <td> -&gt; T*
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get block shared dynamic memory. </p>
+<p>The available size of the memory can be defined by specializing the trait BlockSharedMemDynSizeBytes for a kernel. The Memory can be accessed by all threads within a block. Access to the memory is not thread safe.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The element type. </td></tr>
+    <tr><td class="paramname">TBlockSharedMemDyn</td><td>The block shared dynamic memory implementation type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockSharedMemDyn</td><td>The block shared dynamic memory implementation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to pre-allocated contiguous memory. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="block_2shared_2dyn_2Traits_8hpp_source.html#l00047">47</a> of file <a class="el" href="block_2shared_2dyn_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3127,7 +3173,7 @@ template&lt;typename TDev &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The free memory on the device in Bytes.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Do not use this query if getMemBytes returned 0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00134">134</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00097">97</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3162,7 +3208,7 @@ template&lt;typename TOrigin , typename TUnit , typename TIdx , typename TWorkDi
 
 <p>Get the indices requested. </p>
 
-<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00037">37</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00030">30</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
 
 </div>
 </div>
@@ -3187,7 +3233,7 @@ template&lt;typename TOrigin , typename TUnit , typename TIdxWorkDiv &gt; </div>
 
 <p>Get the indices requested. </p>
 
-<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00058">58</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00038">38</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
 
 </div>
 </div>
@@ -3228,7 +3274,7 @@ template&lt;typename TIdxWorkDiv , typename TGridThreadIdx , typename TThreadEle
 
 <p>Get the index of the first element this thread computes. </p>
 
-<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00168">168</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00100">100</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
 
 </div>
 </div>
@@ -3263,7 +3309,7 @@ template&lt;typename TIdxWorkDiv , typename TGridThreadIdx &gt; </div>
 
 <p>Get the index of the first element this thread computes. </p>
 
-<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00184">184</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00113">113</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
 
 </div>
 </div>
@@ -3288,45 +3334,7 @@ template&lt;typename TIdxWorkDiv &gt; </div>
 
 <p>Get the index of the first element this thread computes. </p>
 
-<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00197">197</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a414041872995e7872e5a0c5698c15209"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a414041872995e7872e5a0c5698c15209">&#9670;&nbsp;</a></span>getMem()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename TBlockSharedMemDyn &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::getMem </td>
-          <td>(</td>
-          <td class="paramtype">TBlockSharedMemDyn const &amp;&#160;</td>
-          <td class="paramname"><em>blockSharedMemDyn</em></td><td>)</td>
-          <td> -&gt; T *
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the pointr to the block shared dynamic memory. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>The element type. </td></tr>
-    <tr><td class="paramname">TBlockSharedMemDyn</td><td>The block shared dynamic memory implementation type. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">blockSharedMemDyn</td><td>The block shared dynamic memory implementation. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="block_2shared_2dyn_2Traits_8hpp_source.html#l00044">44</a> of file <a class="el" href="block_2shared_2dyn_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Accessors_8hpp_source.html#l00123">123</a> of file <a class="el" href="Accessors_8hpp_source.html">Accessors.hpp</a>.</p>
 
 </div>
 </div>
@@ -3350,7 +3358,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The memory on the device in Bytes. Returns 0 if querying memory is not supported. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00117">117</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00087">87</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3374,7 +3382,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The device name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00101">101</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00078">78</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3398,7 +3406,7 @@ template&lt;std::size_t Tidx, typename TOffsets &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in the given dimension. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00059">59</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00048">48</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3428,7 +3436,7 @@ template&lt;typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00956">956</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00688">688</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -3458,7 +3466,7 @@ template&lt;typename TDim , typename TOffsets &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The offset vector but only the last N elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00973">973</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00697">697</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -3482,7 +3490,7 @@ template&lt;typename TOffsets &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in x dimension. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00075">75</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00056">56</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3506,7 +3514,7 @@ template&lt;typename TOffsets &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in y dimension. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00086">86</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00064">64</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3530,7 +3538,68 @@ template&lt;typename TOffsets &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in z dimension. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00097">97</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a1df84a90eca656f610e1ceb0183d9ede"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1df84a90eca656f610e1ceb0183d9ede">&#9670;&nbsp;</a></span>getOmpSchedule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::getOmpSchedule </td>
+          <td>(</td>
+          <td class="paramtype">TKernelFnObj const &amp;&#160;</td>
+          <td class="paramname"><em>kernelFnObj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;&#160;</td>
+          <td class="paramname"><em>blockThreadExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;&#160;</td>
+          <td class="paramname"><em>threadElemExtent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TArgs const &amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="structalpaka_1_1omp_1_1Schedule.html">omp::Schedule</a>
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TAcc</td><td>The accelerator type. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kernelFnObj</td><td>The kernel object for which the block shared memory size should be calculated. </td></tr>
+    <tr><td class="paramname">blockThreadExtent</td><td>The block thread extent. </td></tr>
+    <tr><td class="paramname">threadElemExtent</td><td>The thread element extent. </td></tr>
+    <tr><td class="paramname">args,...</td><td>The kernel invocation arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The OpenMP schedule information. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00219">219</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3554,7 +3623,7 @@ template&lt;std::size_t Tidx, typename TView &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The pitch in bytes. This is the distance in bytes between two consecutive elements in the given dimension. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00250">250</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00170">170</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3578,7 +3647,7 @@ template&lt;typename TPitch &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The pitch vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00521">521</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00364">364</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3602,7 +3671,7 @@ template&lt;typename TDim , typename TPitch &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The pitch but only the last N elements. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00536">536</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00371">371</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3629,7 +3698,7 @@ template&lt;typename TView , typename TDev &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; const *
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; const*
     </td>
         </tr>
       </table>
@@ -3645,7 +3714,7 @@ template&lt;typename TView , typename TDev &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The pointer on the device. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00207">207</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00149">149</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3672,7 +3741,7 @@ template&lt;typename TView , typename TDev &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; *
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt;*
     </td>
         </tr>
       </table>
@@ -3688,7 +3757,7 @@ template&lt;typename TView , typename TDev &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The pointer on the device. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00229">229</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00160">160</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3705,7 +3774,7 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView const &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; const *
+          <td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; const*
     </td>
         </tr>
       </table>
@@ -3720,7 +3789,7 @@ template&lt;typename TView &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The native pointer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00170">170</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00127">127</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3737,7 +3806,7 @@ template&lt;typename TView &gt; </div>
           <td>(</td>
           <td class="paramtype">TView &amp;&#160;</td>
           <td class="paramname"><em>view</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt; *
+          <td> -&gt; <a class="el" href="namespacealpaka.html#a1200cc5ec96e913adbd9832ed1bb9bf5">Elem</a>&lt;TView&gt;*
     </td>
         </tr>
       </table>
@@ -3752,7 +3821,7 @@ template&lt;typename TView &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The native pointer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00187">187</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00137">137</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3823,7 +3892,7 @@ template&lt;typename TAcc , typename TGridElemExtent , typename TThreadElemExten
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The work division. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00392">392</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00350">350</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -3847,7 +3916,7 @@ template&lt;typename TDev &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The warp size on the device in number of threads. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00149">149</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00105">105</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3872,7 +3941,7 @@ template&lt;typename TOrigin , typename TUnit , typename TWorkDiv &gt; </div>
 
 <p>Get the extent requested. </p>
 
-<p class="definition">Definition at line <a class="el" href="workdiv_2Traits_8hpp_source.html#l00047">47</a> of file <a class="el" href="workdiv_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="workdiv_2Traits_8hpp_source.html#l00041">41</a> of file <a class="el" href="workdiv_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3894,7 +3963,7 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Unused_8hpp_source.html#l00022">22</a> of file <a class="el" href="Unused_8hpp_source.html">Unused.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Unused_8hpp_source.html#l00018">18</a> of file <a class="el" href="Unused_8hpp_source.html">Unused.hpp</a>.</p>
 
 </div>
 </div>
@@ -3915,7 +3984,7 @@ template&lt;typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Unused_8hpp_source.html#l00031">31</a> of file <a class="el" href="Unused_8hpp_source.html">Unused.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Unused_8hpp_source.html#l00024">24</a> of file <a class="el" href="Unused_8hpp_source.html">Unused.hpp</a>.</p>
 
 </div>
 </div>
@@ -3940,7 +4009,7 @@ template&lt;typename TEvent &gt; </div>
 
 <p>Tests if the given event has already been completed. </p>
 
-<p class="definition">Definition at line <a class="el" href="event_2Traits_8hpp_source.html#l00047">47</a> of file <a class="el" href="event_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="event_2Traits_8hpp_source.html#l00040">40</a> of file <a class="el" href="event_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3977,7 +4046,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00213">213</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00132">132</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4014,7 +4083,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the accelerator device properties are valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00109">109</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00094">94</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -4063,7 +4132,7 @@ template&lt;typename TDim , typename TIdx , typename TWorkDiv &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the work division is valid for the given accelerator device properties. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00432">432</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00388">388</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -4110,7 +4179,7 @@ template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the work division is valid on this accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00487">487</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00434">434</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -4137,14 +4206,14 @@ template&lt;typename T , typename TAlloc &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; T *
+          <td></td><td> -&gt; T*
     </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The pointer to the allocated memory. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2alloc_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="mem_2alloc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2alloc_2Traits_8hpp_source.html#l00042">42</a> of file <a class="el" href="mem_2alloc_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4193,7 +4262,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00136">136</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00090">90</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4226,7 +4295,7 @@ template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00142">142</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00119">119</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
 
 </div>
 </div>
@@ -4259,7 +4328,7 @@ template&lt;std::size_t TidxDimOut, std::size_t TidxDimIn, typename TElem &gt; <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00276">276</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MapIdx_8hpp_source.html#l00224">224</a> of file <a class="el" href="MapIdx_8hpp_source.html">MapIdx.hpp</a>.</p>
 
 </div>
 </div>
@@ -4315,7 +4384,7 @@ template&lt;typename TExtent , typename TViewSrc , typename TViewDst , typename 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00364">364</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00237">237</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4371,7 +4440,7 @@ template&lt;typename TExtent , typename TView , typename TQueue &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00301">301</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00199">199</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4405,7 +4474,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise product of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00466">466</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00357">357</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4439,7 +4508,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise sum of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00414">414</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00327">327</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4473,7 +4542,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise difference of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00440">440</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00342">342</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4507,7 +4576,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise less than relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00492">492</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00372">372</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4534,13 +4603,13 @@ template&lt;typename TDim , typename TIdx &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; std::ostream &amp;
+          <td></td><td> -&gt; std::ostream&amp;
     </td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00103">103</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivMembers_8hpp_source.html#l00092">92</a> of file <a class="el" href="WorkDivMembers_8hpp_source.html">WorkDivMembers.hpp</a>.</p>
 
 </div>
 </div>
@@ -4567,7 +4636,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; std::ostream &amp;
+          <td></td><td> -&gt; std::ostream&amp;
     </td>
         </tr>
       </table>
@@ -4575,7 +4644,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 
 <p>Stream out operator. </p>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00588">588</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00427">427</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4609,7 +4678,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise less than or equal relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00518">518</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00388">388</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4643,7 +4712,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise greater than relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00570">570</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00419">419</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4677,7 +4746,7 @@ template&lt;typename TDim , typename TVal &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The element-wise greater than or equal relation of two vectors. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00544">544</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Vec_8hpp_source.html#l00404">404</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -4714,7 +4783,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00179">179</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00112">112</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4762,7 +4831,7 @@ template&lt;typename TIntrinsic &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00050">50</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00047">47</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4810,7 +4879,7 @@ template&lt;typename TIntrinsic &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00072">72</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="intrinsic_2Traits_8hpp_source.html#l00061">61</a> of file <a class="el" href="intrinsic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4847,12 +4916,12 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00231">231</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00143">143</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ac227e64e8e9f6faf92c133dafac2ee9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac227e64e8e9f6faf92c133dafac2ee9e">&#9670;&nbsp;</a></span>print()</h2>
+<a id="a39e1eba3bae715ef0ebcf3587a918e05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39e1eba3bae715ef0ebcf3587a918e05">&#9670;&nbsp;</a></span>print()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4906,7 +4975,7 @@ template&lt;typename TView &gt; </div>
 
 <p>Prints the content of the view to the given queue. </p>
 
-<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00473">473</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2view_2Traits_8hpp_source.html#l00326">326</a> of file <a class="el" href="mem_2view_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4931,7 +5000,7 @@ template&lt;typename TDev &gt; </div>
 
 <p>Resets the device. What this method does is dependent on the accelerator. </p>
 
-<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00165">165</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dev_2Traits_8hpp_source.html#l00114">114</a> of file <a class="el" href="dev_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4954,7 +5023,7 @@ template&lt;typename TVec &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The reverseVec vector. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00151">151</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00104">104</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -4989,7 +5058,7 @@ template&lt;std::size_t Tidx, typename TOffsets , typename TOffset &gt; </div>
 
 <p>Sets the offset in the given dimension. </p>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00111">111</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00081">81</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5024,7 +5093,7 @@ template&lt;typename TOffsets , typename TOffset &gt; </div>
 
 <p>Sets the offset in x dimension. </p>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00130">130</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00089">89</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5059,7 +5128,7 @@ template&lt;typename TOffsets , typename TOffset &gt; </div>
 
 <p>Sets the offset in y dimension. </p>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00143">143</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00097">97</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5094,7 +5163,7 @@ template&lt;typename TOffsets , typename TOffset &gt; </div>
 
 <p>Sets the offset in z dimension. </p>
 
-<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00156">156</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00105">105</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5162,7 +5231,7 @@ template&lt;typename TDim , typename TIdx &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00161">161</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00140">140</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -5192,7 +5261,7 @@ template&lt;typename TSubDim , typename TVec &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The sub-vector consisting of the first N elements of the source vector. </dd></dl>
 <p>A sequence of integers from 0 to dim-1. </p>
 
-<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00084">84</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00063">63</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5222,7 +5291,7 @@ template&lt;typename TSubDim , typename TVec &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The sub-vector consisting of the last N elements of the source vector. </dd></dl>
 <p>A sequence of integers from 0 to dim-1. </p>
 
-<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00108">108</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00078">78</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5247,7 +5316,7 @@ template&lt;typename TIndexSequence , typename TVec &gt; </div>
 <p>Builds a new vector by selecting the elements of the source vector in the given order. Repeating and swizzling elements is allowed. </p>
 <dl class="section return"><dt>Returns</dt><dd>The sub-vector consisting of the elements specified by the indices. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00067">67</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2Traits_8hpp_source.html#l00054">54</a> of file <a class="el" href="vec_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5284,7 +5353,7 @@ template&lt;typename TBlockSync &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="block_2sync_2Traits_8hpp_source.html#l00049">49</a> of file <a class="el" href="block_2sync_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="block_2sync_2Traits_8hpp_source.html#l00045">45</a> of file <a class="el" href="block_2sync_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5333,7 +5402,7 @@ template&lt;typename TOp , typename TBlockSync &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="block_2sync_2Traits_8hpp_source.html#l00125">125</a> of file <a class="el" href="block_2sync_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="block_2sync_2Traits_8hpp_source.html#l00111">111</a> of file <a class="el" href="block_2sync_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5382,7 +5451,7 @@ template&lt;typename TBuf , typename TDev &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00159">159</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00102">102</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5419,7 +5488,7 @@ template&lt;typename TBuf &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00196">196</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2buf_2Traits_8hpp_source.html#l00122">122</a> of file <a class="el" href="mem_2buf_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5444,7 +5513,7 @@ template&lt;typename TAwaited &gt; </div>
 
 <p>Waits the thread for the completion of the given awaited action to complete. </p>
 
-<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00043">43</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00039">39</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5479,7 +5548,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 
 <p>The waiter waits for the given awaited action to complete. </p>
 
-<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00059">59</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="wait_2Traits_8hpp_source.html#l00048">48</a> of file <a class="el" href="wait_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5489,7 +5558,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 11:01:54 for alpaka by
+    <li class="footer">Generated on Tue Dec 15 2020 09:11:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

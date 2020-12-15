@@ -5,6 +5,6 @@ var searchData=
   ['event',['Event',['../namespacealpaka.html#a65ba1bf072d0c072d49ad5597a4d2c24',1,'alpaka']]],
   ['eventcpu',['EventCpu',['../namespacealpaka.html#acc8723b925f6ddf8b27631b71a7c22c6',1,'alpaka']]],
   ['eventomp5',['EventOmp5',['../namespacealpaka.html#a0173206e98595f605bffe9a6198da754',1,'alpaka']]],
-  ['exampledefaultacc',['ExampleDefaultAcc',['../namespacealpaka.html#a523f99728e8595fab50c09883a2f13b1',1,'alpaka']]],
+  ['exampledefaultacc',['ExampleDefaultAcc',['../namespacealpaka.html#a8aec9660f2a0dd2e01db1edd34e4cafa',1,'alpaka']]],
   ['extentsize',['ExtentSize',['../structalpaka_1_1detail_1_1TaskCopyCpuBase.html#a4ec2f87d6a6b78f3559e24022c0578b7',1,'alpaka::detail::TaskCopyCpuBase::ExtentSize()'],['../structalpaka_1_1detail_1_1TaskSetCpuBase.html#a77dd8c0c4571bc855f48f7d5bfc3a516',1,'alpaka::detail::TaskSetCpuBase::ExtentSize()']]]
 ];

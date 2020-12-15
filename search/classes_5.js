@@ -27,10 +27,10 @@ var searchData=
   ['free',['Free',['../structalpaka_1_1traits_1_1Free.html',1,'alpaka::traits']]],
   ['free_3c_20t_2c_20alloccpualigned_3c_20talignment_20_3e_20_3e',['Free&lt; T, AllocCpuAligned&lt; TAlignment &gt; &gt;',['../structalpaka_1_1traits_1_1Free_3_01T_00_01AllocCpuAligned_3_01TAlignment_01_4_01_4.html',1,'alpaka::traits']]],
   ['free_3c_20t_2c_20alloccpunew_20_3e',['Free&lt; T, AllocCpuNew &gt;',['../structalpaka_1_1traits_1_1Free_3_01T_00_01AllocCpuNew_01_4.html',1,'alpaka::traits']]],
-  ['freemem',['FreeMem',['../structalpaka_1_1traits_1_1FreeMem.html',1,'alpaka::traits']]],
-  ['freemem_3c_20blocksharedmemstmastersync_20_3e',['FreeMem&lt; BlockSharedMemStMasterSync &gt;',['../structalpaka_1_1traits_1_1FreeMem_3_01BlockSharedMemStMasterSync_01_4.html',1,'alpaka::traits']]],
-  ['freemem_3c_20blocksharedmemstmember_3c_20tdataalignbytes_20_3e_20_3e',['FreeMem&lt; BlockSharedMemStMember&lt; TDataAlignBytes &gt; &gt;',['../structalpaka_1_1traits_1_1FreeMem_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html',1,'alpaka::traits']]],
-  ['freemem_3c_20blocksharedmemstnosync_20_3e',['FreeMem&lt; BlockSharedMemStNoSync &gt;',['../structalpaka_1_1traits_1_1FreeMem_3_01BlockSharedMemStNoSync_01_4.html',1,'alpaka::traits']]],
-  ['freemem_3c_20blocksharedmemstomp5_20_3e',['FreeMem&lt; BlockSharedMemStOmp5 &gt;',['../structalpaka_1_1traits_1_1FreeMem_3_01BlockSharedMemStOmp5_01_4.html',1,'alpaka::traits']]],
-  ['freemem_3c_20blocksharedmemstuniformcudahipbuiltin_20_3e',['FreeMem&lt; BlockSharedMemStUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1traits_1_1FreeMem_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html',1,'alpaka::traits']]]
+  ['freesharedvars',['FreeSharedVars',['../structalpaka_1_1traits_1_1FreeSharedVars.html',1,'alpaka::traits']]],
+  ['freesharedvars_3c_20blocksharedmemstmastersync_20_3e',['FreeSharedVars&lt; BlockSharedMemStMasterSync &gt;',['../structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMasterSync_01_4.html',1,'alpaka::traits']]],
+  ['freesharedvars_3c_20blocksharedmemstmember_3c_20tdataalignbytes_20_3e_20_3e',['FreeSharedVars&lt; BlockSharedMemStMember&lt; TDataAlignBytes &gt; &gt;',['../structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html',1,'alpaka::traits']]],
+  ['freesharedvars_3c_20blocksharedmemstnosync_20_3e',['FreeSharedVars&lt; BlockSharedMemStNoSync &gt;',['../structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStNoSync_01_4.html',1,'alpaka::traits']]],
+  ['freesharedvars_3c_20blocksharedmemstomp5_20_3e',['FreeSharedVars&lt; BlockSharedMemStOmp5 &gt;',['../structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStOmp5_01_4.html',1,'alpaka::traits']]],
+  ['freesharedvars_3c_20blocksharedmemstuniformcudahipbuiltin_20_3e',['FreeSharedVars&lt; BlockSharedMemStUniformCudaHipBuiltIn &gt;',['../structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html',1,'alpaka::traits']]]
 ];

@@ -93,16 +93,16 @@ $(document).ready(function(){initNavTree('TaskKernelGpuUniformCudaHipRt_8hpp.htm
 <code>#include &lt;<a class="el" href="acc_2Traits_8hpp_source.html">alpaka/acc/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dev_2Traits_8hpp_source.html">alpaka/dev/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="pltf_2Traits_8hpp_source.html">alpaka/pltf/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="idx_2Traits_8hpp_source.html">alpaka/idx/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="pltf_2Traits_8hpp_source.html">alpaka/pltf/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="queue_2Traits_8hpp_source.html">alpaka/queue/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Cuda_8hpp_source.html">alpaka/core/Cuda.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="AccGpuUniformCudaHipRt_8hpp_source.html">alpaka/acc/AccGpuUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Decay_8hpp_source.html">alpaka/core/Decay.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="DevUniformCudaHipRt_8hpp_source.html">alpaka/dev/DevUniformCudaHipRt.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="kernel_2Traits_8hpp_source.html">alpaka/kernel/Traits.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="QueueUniformCudaHipRtBlocking_8hpp_source.html">alpaka/queue/QueueUniformCudaHipRtBlocking.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="QueueUniformCudaHipRtNonBlocking_8hpp_source.html">alpaka/queue/QueueUniformCudaHipRtNonBlocking.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="WorkDivMembers_8hpp_source.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="WorkDivHelpers_8hpp_source.html">alpaka/workdiv/WorkDivHelpers.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ApplyTuple_8hpp_source.html">alpaka/meta/ApplyTuple.hpp</a>&gt;</code><br />
@@ -162,10 +162,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a552124cfd6ee8654baa53bc1710c0974"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TIdx &gt; </td></tr>
 <tr class="memitem:a552124cfd6ee8654baa53bc1710c0974"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a552124cfd6ee8654baa53bc1710c0974">alpaka::uniform_cuda_hip::detail::convertVecToUniformCudaHipDim</a> (Vec&lt; TDim, TIdx &gt; const &amp;vec) -&gt; dim3</td></tr>
 <tr class="separator:a552124cfd6ee8654baa53bc1710c0974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94f1a94fcf60238ad55f243f42d46219"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a94f1a94fcf60238ad55f243f42d46219"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a94f1a94fcf60238ad55f243f42d46219">alpaka::uniform_cuda_hip::detail::uniformCudaHipKernel</a> (Vec&lt; TDim, TIdx &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs ... args)</td></tr>
-<tr class="memdesc:a94f1a94fcf60238ad55f243f42d46219"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP kernel entry point.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a94f1a94fcf60238ad55f243f42d46219">More...</a><br /></td></tr>
-<tr class="separator:a94f1a94fcf60238ad55f243f42d46219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim , typename TIdx , typename TKernelFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a0b0f5201f3d3aba739fda9ab1c0ecf7b">alpaka::uniform_cuda_hip::detail::uniformCudaHipKernel</a> (Vec&lt; TDim, TIdx &gt; const threadElemExtent, TKernelFnObj const kernelFnObj, TArgs... args)</td></tr>
+<tr class="memdesc:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA/HIP kernel entry point.  <a href="namespacealpaka_1_1uniform__cuda__hip_1_1detail.html#a0b0f5201f3d3aba739fda9ab1c0ecf7b">More...</a><br /></td></tr>
+<tr class="separator:a0b0f5201f3d3aba739fda9ab1c0ecf7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -173,7 +173,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="TaskKernelGpuUniformCudaHipRt_8hpp.html">TaskKernelGpuUniformCudaHipRt.hpp</a></li>
-    <li class="footer">Generated on Tue Nov 10 2020 11:01:54 for alpaka by
+    <li class="footer">Generated on Tue Dec 15 2020 09:11:31 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

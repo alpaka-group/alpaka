@@ -42,6 +42,7 @@ var dir_ddf4b6b668da48004ea34c8205023599 =
       [ "PltfType< TaskKernelCpuThreads< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ]
     ] ],
     [ "TaskKernelGpuUniformCudaHipRt.hpp", "TaskKernelGpuUniformCudaHipRt_8hpp.html", "TaskKernelGpuUniformCudaHipRt_8hpp" ],
+    [ "TaskKernelOacc.hpp", "TaskKernelOacc_8hpp.html", null ],
     [ "TaskKernelOmp5.hpp", "TaskKernelOmp5_8hpp.html", [
       [ "TaskKernelOmp5", "classalpaka_1_1TaskKernelOmp5.html", "classalpaka_1_1TaskKernelOmp5" ],
       [ "AccType< TaskKernelOmp5< TDim, TIdx, TKernelFnObj, TArgs... > >", "structalpaka_1_1traits_1_1AccType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html", "structalpaka_1_1traits_1_1AccType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4" ],

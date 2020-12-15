@@ -1,6 +1,7 @@
 var dir_e9c63de0e8709741f56550be53020686 =
 [
     [ "cpu", "dir_1f935393e025ce141e1b01ab4d1e0aaf.html", "dir_1f935393e025ce141e1b01ab4d1e0aaf" ],
+    [ "oacc", "dir_6c93a0db3d8099b4c959509b1dc3473b.html", "dir_6c93a0db3d8099b4c959509b1dc3473b" ],
     [ "omp5", "dir_7f059d0868492c7d09d9464b52bc41e5.html", "dir_7f059d0868492c7d09d9464b52bc41e5" ],
     [ "uniformCudaHip", "dir_54c2063cf9a2dba4131b4727fce3a926.html", "dir_54c2063cf9a2dba4131b4727fce3a926" ],
     [ "BufCpu.hpp", "BufCpu_8hpp.html", [
@@ -26,6 +27,7 @@ var dir_e9c63de0e8709741f56550be53020686 =
       [ "Unpin< alpaka::detail::BufCpuImpl< TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1Unpin_3_01alpaka_1_1detail_1_1BufCpuImpl_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1Unpin_3_01alpaka_1_1detail_1_1BufCpuImpl_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ],
       [ "Unpin< BufCpu< TElem, TDim, TIdx > >", "structalpaka_1_1traits_1_1Unpin_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html", "structalpaka_1_1traits_1_1Unpin_3_01BufCpu_3_01TElem_00_01TDim_00_01TIdx_01_4_01_4" ]
     ] ],
+    [ "BufOacc.hpp", "BufOacc_8hpp.html", null ],
     [ "BufOmp5.hpp", "BufOmp5_8hpp.html", [
       [ "BufCpu", "classalpaka_1_1BufCpu.html", "classalpaka_1_1BufCpu" ],
       [ "BufOmp5", "classalpaka_1_1BufOmp5.html", "classalpaka_1_1BufOmp5" ],

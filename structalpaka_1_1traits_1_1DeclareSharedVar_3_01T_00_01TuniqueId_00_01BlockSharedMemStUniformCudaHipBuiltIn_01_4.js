@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4 =
+[
+    [ "declareVar", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStUniformCudaHipBuiltIn_01_4.html#abef694e01fcfc22052504b8c243cf949", null ]
+];

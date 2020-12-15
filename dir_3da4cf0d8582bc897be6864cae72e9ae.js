@@ -6,6 +6,7 @@ var dir_3da4cf0d8582bc897be6864cae72e9ae =
       [ "GetDevByIdx< PltfCpu >", "structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html", "structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4" ],
       [ "GetDevCount< PltfCpu >", "structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html", "structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4" ]
     ] ],
+    [ "PltfOacc.hpp", "PltfOacc_8hpp.html", null ],
     [ "PltfOmp5.hpp", "PltfOmp5_8hpp.html", [
       [ "PltfOmp5", "classalpaka_1_1PltfOmp5.html", "classalpaka_1_1PltfOmp5" ],
       [ "DevType< PltfOmp5 >", "structalpaka_1_1traits_1_1DevType_3_01PltfOmp5_01_4.html", "structalpaka_1_1traits_1_1DevType_3_01PltfOmp5_01_4" ],

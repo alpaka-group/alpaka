@@ -14,5 +14,5 @@ var IntegerSequence_8hpp =
     [ "IntegralValuesInRange< T, Tmin, Tmax, I, Tvals... >", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4.html", "structalpaka_1_1meta_1_1IntegralValuesInRange_3_01T_00_01Tmin_00_01Tmax_00_01I_00_01Tvals_8_8_8_01_4" ],
     [ "IntegralValuesUnique", "structalpaka_1_1meta_1_1IntegralValuesUnique.html", "structalpaka_1_1meta_1_1IntegralValuesUnique" ],
     [ "ConvertIntegerSequence", "IntegerSequence_8hpp.html#a39137cbb1dfdb86f90c978f4cc59398e", null ],
-    [ "MakeIntegerSequenceOffset", "IntegerSequence_8hpp.html#a98ee617da8c80fac8878adf0b026a1cb", null ]
+    [ "MakeIntegerSequenceOffset", "IntegerSequence_8hpp.html#a8e231c413f4066784715ce6383c1762b", null ]
 ];
