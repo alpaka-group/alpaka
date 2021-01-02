@@ -33,7 +33,7 @@ echo "################################"
 sudo -E apt-cache pkgnames intel
 echo "################################"
 
-travis_retry sudo apt-get install -y intel-oneapi-dpcpp-cpp-compiler-pro intel-oneapi-mkl-devel intel-oneapi-openmp intel-oneapi-tbb-devel
+travis_retry sudo apt-get install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mkl-devel intel-oneapi-openmp intel-oneapi-tbb-devel
 
 set +eu
 source /opt/intel/oneapi/setvars.sh
