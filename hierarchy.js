@@ -979,7 +979,7 @@ var hierarchy =
         [ "alpaka::AccCpuThreads< TDim, TIdx >", "classalpaka_1_1AccCpuThreads.html", null ]
       ] ]
     ] ],
-    [ "alpaka::concepts::Implements< ConceptBlockSharedDyn, BlockSharedMemDynMember< 30 > >", "structalpaka_1_1concepts_1_1Implements.html", [
+    [ "alpaka::concepts::Implements< ConceptBlockSharedDyn, BlockSharedMemDynMember< 47u > >", "structalpaka_1_1concepts_1_1Implements.html", [
       [ "alpaka::BlockSharedMemDynMember<>", "classalpaka_1_1BlockSharedMemDynMember.html", [
         [ "alpaka::AccCpuOmp2Blocks< TDim, TIdx >", "classalpaka_1_1AccCpuOmp2Blocks.html", null ],
         [ "alpaka::AccCpuSerial< TDim, TIdx >", "classalpaka_1_1AccCpuSerial.html", null ],
