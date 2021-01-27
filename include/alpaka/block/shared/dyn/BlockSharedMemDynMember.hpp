@@ -18,7 +18,7 @@
 #include <type_traits>
 
 #ifndef ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB
-#    define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB 30
+#    define ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB 47u
 #endif
 
 namespace alpaka
