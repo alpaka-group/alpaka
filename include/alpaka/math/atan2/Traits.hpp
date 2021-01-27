@@ -11,6 +11,7 @@
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 
@@ -27,7 +28,16 @@ namespace alpaka
             //#############################################################################
             //! The atan2 trait.
             template<typename T, typename Ty, typename Tx, typename TSfinae = void>
-            struct Atan2;
+            struct Atan2
+            {
+                ALPAKA_FN_HOST_ACC auto operator()(T const& ctx, Ty const& y, Tx const& x)
+                {
+                    alpaka::ignore_unused(ctx);
+                    // This is an ADL call. If you get a compile error here then your type is not supported by the
+                    // backend and we could not find atan2(Tx, Ty) in the namespace of your type.
+                    return atan2(y, x);
+                }
+            };
         } // namespace traits
 
         //-----------------------------------------------------------------------------
