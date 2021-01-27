@@ -36,7 +36,7 @@ namespace alpaka
                 TExp,
                 std::enable_if_t<std::is_arithmetic<TBase>::value && std::is_arithmetic<TExp>::value>>
             {
-                ALPAKA_FN_HOST static auto pow(PowStdLib const& pow_ctx, TBase const& base, TExp const& exp)
+                ALPAKA_FN_HOST auto operator()(PowStdLib const& pow_ctx, TBase const& base, TExp const& exp)
                 {
                     alpaka::ignore_unused(pow_ctx);
                     return std::pow(base, exp);

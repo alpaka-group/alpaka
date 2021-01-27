@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto trunc(T const& trunc_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathTrunc, T>;
-            return traits::Trunc<ImplementationBase, TArg>::trunc(trunc_ctx, arg);
+            return traits::Trunc<ImplementationBase, TArg>{}(trunc_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

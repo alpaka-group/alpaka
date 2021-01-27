@@ -36,7 +36,7 @@ namespace alpaka
                 Ty,
                 std::enable_if_t<std::is_arithmetic<Tx>::value && std::is_arithmetic<Ty>::value>>
             {
-                ALPAKA_FN_HOST static auto fmod(FmodStdLib const& fmod_ctx, Tx const& x, Ty const& y)
+                ALPAKA_FN_HOST auto operator()(FmodStdLib const& fmod_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(fmod_ctx);
                     return std::fmod(x, y);

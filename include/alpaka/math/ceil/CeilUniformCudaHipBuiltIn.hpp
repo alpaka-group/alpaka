@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Ceil<CeilUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto ceil(CeilUniformCudaHipBuiltIn const& ceil_ctx, TArg const& arg)
+                __device__ auto operator()(CeilUniformCudaHipBuiltIn const& ceil_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(ceil_ctx);
                     return ::ceil(arg);
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct Ceil<CeilUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto ceil(CeilUniformCudaHipBuiltIn const& ceil_ctx, float const& arg) -> float
+                __device__ auto operator()(CeilUniformCudaHipBuiltIn const& ceil_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(ceil_ctx);
                     return ::ceilf(arg);

@@ -41,7 +41,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto atan(T const& atan_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathAtan, T>;
-            return traits::Atan<ImplementationBase, TArg>::atan(atan_ctx, arg);
+            return traits::Atan<ImplementationBase, TArg>{}(atan_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

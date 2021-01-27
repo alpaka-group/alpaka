@@ -46,7 +46,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto rsqrt(T const& rsqrt_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathRsqrt, T>;
-            return traits::Rsqrt<ImplementationBase, TArg>::rsqrt(rsqrt_ctx, arg);
+            return traits::Rsqrt<ImplementationBase, TArg>{}(rsqrt_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

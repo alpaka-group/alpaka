@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto exp(T const& exp_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathExp, T>;
-            return traits::Exp<ImplementationBase, TArg>::exp(exp_ctx, arg);
+            return traits::Exp<ImplementationBase, TArg>{}(exp_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

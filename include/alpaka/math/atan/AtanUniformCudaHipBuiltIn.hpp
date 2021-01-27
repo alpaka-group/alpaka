@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Atan<AtanUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto atan(AtanUniformCudaHipBuiltIn const& atan_ctx, TArg const& arg)
+                __device__ auto operator()(AtanUniformCudaHipBuiltIn const& atan_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(atan_ctx);
                     return ::atan(arg);
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct Atan<AtanUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto atan(AtanUniformCudaHipBuiltIn const& atan_ctx, float const& arg) -> float
+                __device__ auto operator()(AtanUniformCudaHipBuiltIn const& atan_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(atan_ctx);
                     return ::atanf(arg);

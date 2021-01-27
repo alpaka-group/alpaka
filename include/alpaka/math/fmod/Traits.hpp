@@ -44,7 +44,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto fmod(T const& fmod_ctx, Tx const& x, Ty const& y)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathFmod, T>;
-            return traits::Fmod<ImplementationBase, Tx, Ty>::fmod(fmod_ctx, x, y);
+            return traits::Fmod<ImplementationBase, Tx, Ty>{}(fmod_ctx, x, y);
         }
     } // namespace math
 } // namespace alpaka

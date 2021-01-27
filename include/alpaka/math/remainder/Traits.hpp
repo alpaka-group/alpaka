@@ -44,7 +44,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto remainder(T const& remainder_ctx, Tx const& x, Ty const& y)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathRemainder, T>;
-            return traits::Remainder<ImplementationBase, Tx, Ty>::remainder(remainder_ctx, x, y);
+            return traits::Remainder<ImplementationBase, Tx, Ty>{}(remainder_ctx, x, y);
         }
     } // namespace math
 } // namespace alpaka

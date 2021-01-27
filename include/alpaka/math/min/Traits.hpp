@@ -45,7 +45,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto min(T const& min_ctx, Tx const& x, Ty const& y)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathMin, T>;
-            return traits::Min<ImplementationBase, Tx, Ty>::min(min_ctx, x, y);
+            return traits::Min<ImplementationBase, Tx, Ty>{}(min_ctx, x, y);
         }
     } // namespace math
 } // namespace alpaka

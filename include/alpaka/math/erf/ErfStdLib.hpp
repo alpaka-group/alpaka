@@ -32,7 +32,7 @@ namespace alpaka
             template<typename TArg>
             struct Erf<ErfStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
             {
-                ALPAKA_FN_HOST static auto erf(ErfStdLib const& erf_ctx, TArg const& arg)
+                ALPAKA_FN_HOST auto operator()(ErfStdLib const& erf_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(erf_ctx);
                     return std::erf(arg);

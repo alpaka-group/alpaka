@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Log<LogUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto log(LogUniformCudaHipBuiltIn const& log_ctx, TArg const& arg)
+                __device__ auto operator()(LogUniformCudaHipBuiltIn const& log_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(log_ctx);
                     return ::log(arg);
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct Log<LogUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto log(LogUniformCudaHipBuiltIn const& log_ctx, float const& arg) -> float
+                __device__ auto operator()(LogUniformCudaHipBuiltIn const& log_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(log_ctx);
                     return ::logf(arg);

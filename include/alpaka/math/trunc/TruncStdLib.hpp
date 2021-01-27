@@ -32,7 +32,7 @@ namespace alpaka
             template<typename TArg>
             struct Trunc<TruncStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
             {
-                ALPAKA_FN_HOST static auto trunc(TruncStdLib const& trunc_ctx, TArg const& arg)
+                ALPAKA_FN_HOST auto operator()(TruncStdLib const& trunc_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(trunc_ctx);
                     return std::trunc(arg);

@@ -46,7 +46,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto log(T const& log_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathLog, T>;
-            return traits::Log<ImplementationBase, TArg>::log(log_ctx, arg);
+            return traits::Log<ImplementationBase, TArg>{}(log_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

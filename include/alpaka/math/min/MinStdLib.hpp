@@ -33,7 +33,7 @@ namespace alpaka
             template<typename Tx, typename Ty>
             struct Min<MinStdLib, Tx, Ty, std::enable_if_t<std::is_integral<Tx>::value && std::is_integral<Ty>::value>>
             {
-                ALPAKA_FN_HOST static auto min(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
+                ALPAKA_FN_HOST auto operator()(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(min_ctx);
                     return std::min(x, y);
@@ -50,7 +50,7 @@ namespace alpaka
                     std::is_arithmetic<Tx>::value && std::is_arithmetic<Ty>::value
                     && !(std::is_integral<Tx>::value && std::is_integral<Ty>::value)>>
             {
-                ALPAKA_FN_HOST static auto min(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
+                ALPAKA_FN_HOST auto operator()(MinStdLib const& min_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(min_ctx);
                     return std::fmin(x, y);

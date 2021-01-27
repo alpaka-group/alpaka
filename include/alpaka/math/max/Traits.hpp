@@ -45,7 +45,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto max(T const& max_ctx, Tx const& x, Ty const& y)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathMax, T>;
-            return traits::Max<ImplementationBase, Tx, Ty>::max(max_ctx, x, y);
+            return traits::Max<ImplementationBase, Tx, Ty>{}(max_ctx, x, y);
         }
     } // namespace math
 } // namespace alpaka

@@ -62,7 +62,7 @@ namespace alpaka
                 Ty,
                 std::enable_if_t<std::is_integral<Tx>::value && std::is_integral<Ty>::value>>
             {
-                __device__ static auto max(MaxUniformCudaHipBuiltIn const& max_ctx, Tx const& x, Ty const& y)
+                __device__ auto operator()(MaxUniformCudaHipBuiltIn const& max_ctx, Tx const& x, Ty const& y)
                     -> decltype(::max(x, y))
                 {
                     alpaka::ignore_unused(max_ctx);
@@ -80,7 +80,7 @@ namespace alpaka
                     std::is_arithmetic<Tx>::value && std::is_arithmetic<Ty>::value
                     && !(std::is_integral<Tx>::value && std::is_integral<Ty>::value)>>
             {
-                __device__ static auto max(MaxUniformCudaHipBuiltIn const& max_ctx, Tx const& x, Ty const& y)
+                __device__ auto operator()(MaxUniformCudaHipBuiltIn const& max_ctx, Tx const& x, Ty const& y)
                     -> decltype(::fmax(x, y))
                 {
                     alpaka::ignore_unused(max_ctx);

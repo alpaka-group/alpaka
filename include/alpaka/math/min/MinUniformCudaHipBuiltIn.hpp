@@ -63,7 +63,7 @@ namespace alpaka
                 Ty,
                 std::enable_if_t<std::is_integral<Tx>::value && std::is_integral<Ty>::value>>
             {
-                __device__ static auto min(MinUniformCudaHipBuiltIn const& min_ctx, Tx const& x, Ty const& y)
+                __device__ auto operator()(MinUniformCudaHipBuiltIn const& min_ctx, Tx const& x, Ty const& y)
                     -> decltype(::min(x, y))
                 {
                     alpaka::ignore_unused(min_ctx);
@@ -81,7 +81,7 @@ namespace alpaka
                     std::is_arithmetic<Tx>::value && std::is_arithmetic<Ty>::value
                     && !(std::is_integral<Tx>::value && std::is_integral<Ty>::value)>>
             {
-                __device__ static auto min(MinUniformCudaHipBuiltIn const& min_ctx, Tx const& x, Ty const& y)
+                __device__ auto operator()(MinUniformCudaHipBuiltIn const& min_ctx, Tx const& x, Ty const& y)
                     -> decltype(::fmin(x, y))
                 {
                     alpaka::ignore_unused(min_ctx);

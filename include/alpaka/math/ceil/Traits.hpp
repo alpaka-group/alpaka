@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto ceil(T const& ceil_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathCeil, T>;
-            return traits::Ceil<ImplementationBase, TArg>::ceil(ceil_ctx, arg);
+            return traits::Ceil<ImplementationBase, TArg>{}(ceil_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

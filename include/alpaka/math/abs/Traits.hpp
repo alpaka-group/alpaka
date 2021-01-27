@@ -44,7 +44,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto abs(T const& abs_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathAbs, T>;
-            return traits::Abs<ImplementationBase, TArg>::abs(abs_ctx, arg);
+            return traits::Abs<ImplementationBase, TArg>{}(abs_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

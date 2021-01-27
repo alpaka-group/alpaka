@@ -36,7 +36,7 @@ namespace alpaka
                 Ty,
                 std::enable_if_t<std::is_floating_point<Tx>::value && std::is_floating_point<Ty>::value>>
             {
-                ALPAKA_FN_HOST static auto remainder(RemainderStdLib const& remainder_ctx, Tx const& x, Ty const& y)
+                ALPAKA_FN_HOST auto operator()(RemainderStdLib const& remainder_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(remainder_ctx);
                     return std::remainder(x, y);

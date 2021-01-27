@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto cos(T const& cos_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathCos, T>;
-            return traits::Cos<ImplementationBase, TArg>::cos(cos_ctx, arg);
+            return traits::Cos<ImplementationBase, TArg>{}(cos_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka
