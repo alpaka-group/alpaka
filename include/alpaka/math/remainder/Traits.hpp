@@ -11,6 +11,7 @@
 
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Concepts.hpp>
+#include <alpaka/core/Unused.hpp>
 
 #include <type_traits>
 
@@ -27,7 +28,16 @@ namespace alpaka
             //#############################################################################
             //! The remainder trait.
             template<typename T, typename Tx, typename Ty, typename TSfinae = void>
-            struct Remainder;
+            struct Remainder
+            {
+                ALPAKA_FN_HOST_ACC auto operator()(T const& ctx, Tx const& x, Ty const& y)
+                {
+                    alpaka::ignore_unused(ctx);
+                    // This is an ADL call. If you get a compile error here then your type is not supported by the
+                    // backend and we could not find remainder(Tx, Ty) in the namespace of your type.
+                    return remainder(x, y);
+                }
+            };
         } // namespace traits
 
         //-----------------------------------------------------------------------------
