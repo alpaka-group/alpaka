@@ -36,7 +36,7 @@ namespace alpaka
                 Tx,
                 std::enable_if_t<std::is_arithmetic<Ty>::value && std::is_arithmetic<Tx>::value>>
             {
-                ALPAKA_FN_HOST static auto atan2(Atan2StdLib const& abs, Ty const& y, Tx const& x)
+                ALPAKA_FN_HOST auto operator()(Atan2StdLib const& abs, Ty const& y, Tx const& x)
                 {
                     alpaka::ignore_unused(abs);
                     return std::atan2(y, x);

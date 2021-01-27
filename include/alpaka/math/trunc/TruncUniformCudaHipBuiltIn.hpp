@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Trunc<TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto trunc(TruncUniformCudaHipBuiltIn const& trunc_ctx, TArg const& arg)
+                __device__ auto operator()(TruncUniformCudaHipBuiltIn const& trunc_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(trunc_ctx);
                     return ::trunc(arg);
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct Trunc<TruncUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto trunc(TruncUniformCudaHipBuiltIn const& trunc_ctx, float const& arg) -> float
+                __device__ auto operator()(TruncUniformCudaHipBuiltIn const& trunc_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(trunc_ctx);
                     return ::truncf(arg);

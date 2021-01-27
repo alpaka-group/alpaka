@@ -48,7 +48,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto pow(T const& pow_ctx, TBase const& base, TExp const& exp)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathPow, T>;
-            return traits::Pow<ImplementationBase, TBase, TExp>::pow(pow_ctx, base, exp);
+            return traits::Pow<ImplementationBase, TBase, TExp>{}(pow_ctx, base, exp);
         }
     } // namespace math
 } // namespace alpaka

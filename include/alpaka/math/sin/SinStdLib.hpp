@@ -32,7 +32,7 @@ namespace alpaka
             template<typename TArg>
             struct Sin<SinStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
             {
-                ALPAKA_FN_HOST static auto sin(SinStdLib const& sin_ctx, TArg const& arg)
+                ALPAKA_FN_HOST auto operator()(SinStdLib const& sin_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(sin_ctx);
                     return std::sin(arg);

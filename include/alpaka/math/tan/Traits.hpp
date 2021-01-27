@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto tan(T const& tan_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathTan, T>;
-            return traits::Tan<ImplementationBase, TArg>::tan(tan_ctx, arg);
+            return traits::Tan<ImplementationBase, TArg>{}(tan_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

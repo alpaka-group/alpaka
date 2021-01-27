@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Cos<CosUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto cos(CosUniformCudaHipBuiltIn const& cos_ctx, TArg const& arg)
+                __device__ auto operator()(CosUniformCudaHipBuiltIn const& cos_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(cos_ctx);
                     return ::cos(arg);
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct Cos<CosUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto cos(CosUniformCudaHipBuiltIn const& cos_ctx, float const& arg) -> float
+                __device__ auto operator()(CosUniformCudaHipBuiltIn const& cos_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(cos_ctx);
                     return ::cosf(arg);

@@ -45,7 +45,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto acos(T const& acos_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathAcos, T>;
-            return traits::Acos<ImplementationBase, TArg>::acos(acos_ctx, arg);
+            return traits::Acos<ImplementationBase, TArg>{}(acos_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

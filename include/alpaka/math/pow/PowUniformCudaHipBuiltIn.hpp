@@ -63,7 +63,7 @@ namespace alpaka
                 TExp,
                 std::enable_if_t<std::is_floating_point<TBase>::value && std::is_floating_point<TExp>::value>>
             {
-                __device__ static auto pow(PowUniformCudaHipBuiltIn const& pow_ctx, TBase const& base, TExp const& exp)
+                __device__ auto operator()(PowUniformCudaHipBuiltIn const& pow_ctx, TBase const& base, TExp const& exp)
                 {
                     alpaka::ignore_unused(pow_ctx);
                     return ::pow(base, exp);
@@ -73,7 +73,7 @@ namespace alpaka
             template<>
             struct Pow<PowUniformCudaHipBuiltIn, float, float>
             {
-                __device__ static auto pow(
+                __device__ auto operator()(
                     PowUniformCudaHipBuiltIn const& pow_ctx,
                     float const& base,
                     float const& exp) -> float

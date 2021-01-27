@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto floor(T const& floor_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathFloor, T>;
-            return traits::Floor<ImplementationBase, TArg>::floor(floor_ctx, arg);
+            return traits::Floor<ImplementationBase, TArg>{}(floor_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

@@ -45,7 +45,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto asin(T const& asin_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathAsin, T>;
-            return traits::Asin<ImplementationBase, TArg>::asin(asin_ctx, arg);
+            return traits::Asin<ImplementationBase, TArg>{}(asin_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

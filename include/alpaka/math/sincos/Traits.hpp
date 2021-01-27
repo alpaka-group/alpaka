@@ -45,7 +45,7 @@ namespace alpaka
             -> void
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathSinCos, T>;
-            traits::SinCos<ImplementationBase, TArg>::sincos(sincos_ctx, arg, result_sin, result_cos);
+            traits::SinCos<ImplementationBase, TArg>{}(sincos_ctx, arg, result_sin, result_cos);
         }
     } // namespace math
 } // namespace alpaka

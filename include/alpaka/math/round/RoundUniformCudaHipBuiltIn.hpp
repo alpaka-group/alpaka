@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Round<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto round(RoundUniformCudaHipBuiltIn const& round_ctx, TArg const& arg)
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& round_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(round_ctx);
                     return ::round(arg);
@@ -70,8 +70,7 @@ namespace alpaka
             template<typename TArg>
             struct Lround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto lround(RoundUniformCudaHipBuiltIn const& lround_ctx, TArg const& arg)
-                    -> long int
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& lround_ctx, TArg const& arg) -> long int
                 {
                     alpaka::ignore_unused(lround_ctx);
                     return ::lround(arg);
@@ -82,8 +81,7 @@ namespace alpaka
             template<typename TArg>
             struct Llround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto llround(RoundUniformCudaHipBuiltIn const& llround_ctx, TArg const& arg)
-                    -> long int
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& llround_ctx, TArg const& arg) -> long int
                 {
                     alpaka::ignore_unused(llround_ctx);
                     return ::llround(arg);
@@ -93,7 +91,7 @@ namespace alpaka
             template<>
             struct Round<RoundUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto round(RoundUniformCudaHipBuiltIn const& round_ctx, float const& arg) -> float
+                __device__ auto operator()(RoundUniformCudaHipBuiltIn const& round_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(round_ctx);
                     return ::roundf(arg);

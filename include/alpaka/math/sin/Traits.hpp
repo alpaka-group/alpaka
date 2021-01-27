@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto sin(T const& sin_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathSin, T>;
-            return traits::Sin<ImplementationBase, TArg>::sin(sin_ctx, arg);
+            return traits::Sin<ImplementationBase, TArg>{}(sin_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka

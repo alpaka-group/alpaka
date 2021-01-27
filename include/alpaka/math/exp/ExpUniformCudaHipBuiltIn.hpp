@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Exp<ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto exp(ExpUniformCudaHipBuiltIn const& exp_ctx, TArg const& arg)
+                __device__ auto operator()(ExpUniformCudaHipBuiltIn const& exp_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(exp_ctx);
                     return ::exp(arg);
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct Exp<ExpUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto exp(ExpUniformCudaHipBuiltIn const& exp_ctx, float const& arg) -> float
+                __device__ auto operator()(ExpUniformCudaHipBuiltIn const& exp_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(exp_ctx);
                     return ::expf(arg);

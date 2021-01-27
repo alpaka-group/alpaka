@@ -63,7 +63,7 @@ namespace alpaka
                 Ty,
                 std::enable_if_t<std::is_floating_point<Tx>::value && std::is_floating_point<Ty>::value>>
             {
-                __device__ static auto fmod(FmodUniformCudaHipBuiltIn const& fmod_ctx, Tx const& x, Ty const& y)
+                __device__ auto operator()(FmodUniformCudaHipBuiltIn const& fmod_ctx, Tx const& x, Ty const& y)
                 {
                     alpaka::ignore_unused(fmod_ctx);
                     return ::fmod(x, y);
@@ -73,7 +73,7 @@ namespace alpaka
             template<>
             struct Fmod<FmodUniformCudaHipBuiltIn, float, float>
             {
-                __device__ static auto fmod(FmodUniformCudaHipBuiltIn const& fmod_ctx, float const& x, float const& y)
+                __device__ auto operator()(FmodUniformCudaHipBuiltIn const& fmod_ctx, float const& x, float const& y)
                     -> float
                 {
                     alpaka::ignore_unused(fmod_ctx);

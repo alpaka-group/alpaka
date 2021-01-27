@@ -59,7 +59,7 @@ namespace alpaka
             template<typename TArg>
             struct Sqrt<SqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
             {
-                __device__ static auto sqrt(SqrtUniformCudaHipBuiltIn const& sqrt_ctx, TArg const& arg)
+                __device__ auto operator()(SqrtUniformCudaHipBuiltIn const& sqrt_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(sqrt_ctx);
                     return ::sqrt(arg);
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct Sqrt<SqrtUniformCudaHipBuiltIn, float>
             {
-                __device__ static auto sqrt(SqrtUniformCudaHipBuiltIn const& sqrt_ctx, float const& arg) -> float
+                __device__ auto operator()(SqrtUniformCudaHipBuiltIn const& sqrt_ctx, float const& arg) -> float
                 {
                     alpaka::ignore_unused(sqrt_ctx);
                     return ::sqrtf(arg);

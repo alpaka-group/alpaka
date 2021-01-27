@@ -32,7 +32,7 @@ namespace alpaka
             template<typename TArg>
             struct Log<LogStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
             {
-                ALPAKA_FN_HOST static auto log(LogStdLib const& log_ctx, TArg const& arg)
+                ALPAKA_FN_HOST auto operator()(LogStdLib const& log_ctx, TArg const& arg)
                 {
                     alpaka::ignore_unused(log_ctx);
                     return std::log(arg);

@@ -42,7 +42,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto erf(T const& erf_ctx, TArg const& arg)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptMathErf, T>;
-            return traits::Erf<ImplementationBase, TArg>::erf(erf_ctx, arg);
+            return traits::Erf<ImplementationBase, TArg>{}(erf_ctx, arg);
         }
     } // namespace math
 } // namespace alpaka
