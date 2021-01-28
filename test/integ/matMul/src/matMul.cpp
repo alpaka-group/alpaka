@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -31,27 +31,28 @@ public:
     //! \param m The height of the A matrix.
     //! \param n The width of the A and height of the B matrix.
     //! \param k The width of the B matrix.
-    //! \param A The pointer to the matrix A data.
-    //! \param lda The pitch of the A matrix in elements.
-    //! \param B The pointer to the matrix B data.
-    //! \param ldb The pitch of the B matrix in elements.
-    //! \param C The pointer to the matrix C data.
-    //! \param ldc The pitch of the C matrix in elements.
+    //! \param A The accessor to the matrix A data.
+    //! \param B The accessor to the matrix B data.
+    //! \param C The accessor to the matrix C data.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename TElem, typename TIndex>
+    template<
+        typename TAcc,
+        typename TMemoryHandleA,
+        typename TMemoryHandleB,
+        typename TMemoryHandleC,
+        typename TElem,
+        typename TIndex>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
         TIndex const& m,
         TIndex const& n,
         TIndex const& k,
         TElem const& alpha,
-        TElem const* const A,
-        TIndex const& lda,
-        TElem const* const B,
-        TIndex const& ldb,
+        alpaka::experimental::Accessor<TMemoryHandleA, TElem, TIndex, 2, alpaka::experimental::ReadAccess> const A,
+        alpaka::experimental::Accessor<TMemoryHandleB, TElem, TIndex, 2, alpaka::experimental::ReadAccess> const B,
         TElem const& beta,
-        TElem* const C,
-        TIndex const& ldc) const -> void
+        alpaka::experimental::Accessor<TMemoryHandleC, TElem, TIndex, 2, alpaka::experimental::ReadWriteAccess> const
+            C) const -> void
     {
         static_assert(
             alpaka::Dim<TAcc>::value == 2u,
@@ -96,12 +97,12 @@ public:
             // If the element of the current thread is outside of the matrix, zero is written into the shared memory.
             // This is possible because zero is a result neutral extension of the matrices regarding the dot product.
             auto const AIdxX = k2 * blockThreadExtentX + blockThreadIdxX;
-            auto const AIdx1d = gridThreadIdxY * lda + AIdxX;
-            pBlockSharedA[sharedBlockIdx1d] = (((!insideA) || (AIdxX >= k)) ? static_cast<TElem>(0) : A[AIdx1d]);
+            pBlockSharedA[sharedBlockIdx1d]
+                = (((!insideA) || (AIdxX >= k)) ? static_cast<TElem>(0) : A(gridThreadIdxY, AIdxX));
 
             auto const BIdxY = k2 * blockThreadExtentY + blockThreadIdxY;
-            auto const BIdx1d = BIdxY * ldb + gridThreadIdxX;
-            pBlockSharedB[sharedBlockIdx1d] = (((!insideB) || (BIdxY >= k)) ? static_cast<TElem>(0) : B[BIdx1d]);
+            pBlockSharedB[sharedBlockIdx1d]
+                = (((!insideB) || (BIdxY >= k)) ? static_cast<TElem>(0) : B(BIdxY, gridThreadIdxX));
 
             // Synchronize to make sure the complete blocks are loaded before starting the computation.
             alpaka::syncBlockThreads(acc);
@@ -126,8 +127,8 @@ public:
         // results.
         if(insideC)
         {
-            auto const CIdx1d = gridThreadIdxY * ldc + gridThreadIdxX;
-            C[CIdx1d] = alpha * dotProduct + beta * C[CIdx1d];
+            auto& c = C(gridThreadIdxY, gridThreadIdxX);
+            c = alpha * dotProduct + beta * c;
         }
     }
 };
@@ -141,7 +142,13 @@ namespace alpaka
         struct BlockSharedMemDynSizeBytes<MatMulKernel, TAcc>
         {
             //! \return The size of the shared memory allocated for a block.
-            template<typename TVec, typename TIndex, typename TElem>
+            template<
+                typename TVec,
+                typename TIndex,
+                typename TElem,
+                typename TMemoryHandleA,
+                typename TMemoryHandleB,
+                typename TMemoryHandleC>
             ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                 MatMulKernel const& matMulKernel,
                 TVec const& blockThreadExtent,
@@ -150,13 +157,13 @@ namespace alpaka
                 TIndex const& n,
                 TIndex const& k,
                 TElem const& alpha,
-                TElem const* const A,
-                TIndex const& lda,
-                TElem const* const B,
-                TIndex const& ldb,
+                alpaka::experimental::
+                    Accessor<TMemoryHandleA, TElem, TIndex, 2, alpaka::experimental::ReadAccess> const A,
+                alpaka::experimental::
+                    Accessor<TMemoryHandleB, TElem, TIndex, 2, alpaka::experimental::ReadAccess> const B,
                 TElem const& beta,
-                TElem* const C,
-                TIndex const& ldc)
+                alpaka::experimental::
+                    Accessor<TMemoryHandleC, TElem, TIndex, 2, alpaka::experimental::ReadWriteAccess> const C)
             {
                 alpaka::ignore_unused(matMulKernel);
                 alpaka::ignore_unused(m);
@@ -164,12 +171,9 @@ namespace alpaka
                 alpaka::ignore_unused(k);
                 alpaka::ignore_unused(alpha);
                 alpaka::ignore_unused(A);
-                alpaka::ignore_unused(lda);
                 alpaka::ignore_unused(B);
-                alpaka::ignore_unused(ldb);
                 alpaka::ignore_unused(beta);
                 alpaka::ignore_unused(C);
-                alpaka::ignore_unused(ldc);
 
                 // Reserve the buffer for the two blocks of A and B.
                 return static_cast<std::size_t>(2u * blockThreadExtent.prod() * threadElemExtent.prod())
@@ -269,13 +273,10 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
         n,
         k,
         static_cast<Val>(1),
-        alpaka::getPtrNative(bufAAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
-        alpaka::getPtrNative(bufBAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
+        alpaka::experimental::readAccess(bufAAcc),
+        alpaka::experimental::readAccess(bufBAcc),
         static_cast<Val>(1),
-        alpaka::getPtrNative(bufCAcc),
-        static_cast<Idx>(alpaka::getPitchBytes<1u>(bufCAcc) / sizeof(Val)));
+        alpaka::experimental::access(bufCAcc));
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"
@@ -292,14 +293,17 @@ TEMPLATE_LIST_TEST_CASE("matMul", "[matMul]", TestAccs)
     auto const correctResult = static_cast<Val>(k);
 
     bool resultCorrect = true;
-    auto const pHostData = alpaka::getPtrNative(bufCHost);
-    for(Idx i(0u); i < m * n; ++i)
+    auto const hostData = alpaka::experimental::readAccess(bufCHost);
+    for(Idx row = 0u; row < m; ++row)
     {
-        auto const& val(pHostData[i]);
-        if(val != correctResult)
+        for(Idx col(0u); col < n; ++col)
         {
-            std::cerr << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
-            resultCorrect = false;
+            auto const& val(hostData(row, col));
+            if(val != correctResult)
+            {
+                std::cerr << "C[" << row << "," << col << "] == " << val << " != " << correctResult << std::endl;
+                resultCorrect = false;
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -20,8 +20,12 @@ class KernelWithHostConstexpr
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         alpaka::ignore_unused(acc);
 
@@ -32,7 +36,7 @@ public:
 
         constexpr auto max = std::numeric_limits<std::uint32_t>::max();
 
-        ALPAKA_CHECK(*success, 0 != max);
+        ALPAKA_CHECK(success[0], 0 != max);
 #if BOOST_COMP_MSVC || defined(BOOST_COMP_MSVC_EMULATED)
 #    pragma warning(pop)
 #endif

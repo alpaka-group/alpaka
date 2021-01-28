@@ -50,8 +50,11 @@ class CudaVectorArrayWrapperTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle, typename TIdx>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success)
+        const -> void
     {
         alpaka::ignore_unused(acc);
 
@@ -60,15 +63,15 @@ public:
         static_assert(T1::size == 1, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T1>::value == 1, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t1[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-        ALPAKA_CHECK(*success, equals(t1[0], T{0}));
+        ALPAKA_CHECK(success[0], equals(t1[0], T{0}));
 
         using T2 = alpaka::meta::CudaVectorArrayWrapper<T, 2>;
         T2 t2{0, 1};
         static_assert(T2::size == 2, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T2>::value == 2, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t2[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-        ALPAKA_CHECK(*success, equals(t2[0], T{0}));
-        ALPAKA_CHECK(*success, equals(t2[1], T{1}));
+        ALPAKA_CHECK(success[0], equals(t2[0], T{0}));
+        ALPAKA_CHECK(success[0], equals(t2[1], T{1}));
 
         using T3 = alpaka::meta::CudaVectorArrayWrapper<T, 3>;
         T3 t3{0, 0, 0};
@@ -76,9 +79,9 @@ public:
         static_assert(T3::size == 3, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T3>::value == 3, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t3[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-        ALPAKA_CHECK(*success, equals(t3[0], T{0}));
-        ALPAKA_CHECK(*success, equals(t3[1], T{1}));
-        ALPAKA_CHECK(*success, equals(t3[2], T{2}));
+        ALPAKA_CHECK(success[0], equals(t3[0], T{0}));
+        ALPAKA_CHECK(success[0], equals(t3[1], T{1}));
+        ALPAKA_CHECK(success[0], equals(t3[2], T{2}));
 
         using T4 = alpaka::meta::CudaVectorArrayWrapper<T, 4>;
         T4 t4{0, 0, 0, 0};
@@ -88,10 +91,10 @@ public:
         static_assert(T4::size == 4, "CudaVectorArrayWrapper in-kernel size test failed!");
         static_assert(std::tuple_size<T4>::value == 4, "CudaVectorArrayWrapper in-kernel tuple_size test failed!");
         static_assert(std::is_same<decltype(t4[0]), T&>::value, "CudaVectorArrayWrapper in-kernel type test failed!");
-        ALPAKA_CHECK(*success, equals(t4[0], T{0}));
-        ALPAKA_CHECK(*success, equals(t4[1], T{1}));
-        ALPAKA_CHECK(*success, equals(t4[2], T{2}));
-        ALPAKA_CHECK(*success, equals(t4[3], T{3}));
+        ALPAKA_CHECK(success[0], equals(t4[0], T{0}));
+        ALPAKA_CHECK(success[0], equals(t4[1], T{1}));
+        ALPAKA_CHECK(success[0], equals(t4[2], T{2}));
+        ALPAKA_CHECK(success[0], equals(t4[3], T{3}));
     }
 };
 

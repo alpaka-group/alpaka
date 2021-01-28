@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz
+/* Copyright 2019-2021 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -29,6 +29,9 @@ namespace alpaka
             using PltfAcc = alpaka::Pltf<DevAcc>;
             using QueueAcc = alpaka::test::DefaultQueue<DevAcc>;
             using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
+            using ResultBuf = alpaka::Buf<DevAcc, bool, alpaka::DimInt<1>, Idx>;
+            using ResultAccessor = decltype(alpaka::experimental::writeAccess(std::declval<ResultBuf>()));
+            using ResultMemoryHandle = alpaka::experimental::MemoryHandle<ResultAccessor>;
 
         public:
             template<typename TExtent>
@@ -62,7 +65,7 @@ namespace alpaka
                     m_queue,
                     m_workDiv,
                     kernelFnObj,
-                    alpaka::getPtrNative(bufAccResult),
+                    alpaka::experimental::writeAccess(bufAccResult),
                     std::forward<TArgs>(args)...);
 
                 // Copy the result value to the host
@@ -70,7 +73,7 @@ namespace alpaka
                 alpaka::memcpy(m_queue, bufHostResult, bufAccResult, bufAccResult);
                 alpaka::wait(m_queue);
 
-                auto const result = *alpaka::getPtrNative(bufHostResult);
+                auto const result = alpaka::experimental::readAccess(bufHostResult)[0];
 
                 return result;
             }

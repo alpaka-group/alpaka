@@ -1,4 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Sergei Bastrakov, Jakob Krude
+/* Copyright 2020-2021 Benjamin Worpitz, Sergei Bastrakov, Jakob Krude, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *
@@ -47,11 +47,12 @@ struct Kernel
     //! \param numPoints The total number of points to be calculated.
     //! \param globalCounter The sum of all local results.
     //! \param functor The function for which the integral is to be computed.
-    template<typename TAcc, typename TFunctor>
+    template<typename TAcc, typename TMemoryHandle, typename TIdx, typename TFunctor>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
         size_t const numPoints,
-        uint32_t* const globalCounter,
+        alpaka::experimental::Accessor<TMemoryHandle, uint32_t, TIdx, 1, alpaka::experimental::ReadWriteAccess>
+            globalCounter,
         TFunctor functor) const -> void
     {
         // Get the global linearized thread idx.
@@ -81,7 +82,7 @@ struct Kernel
         }
 
         // Add the local result to the sum of the other results.
-        alpaka::atomicAdd(acc, globalCounter, localCount, alpaka::hierarchy::Blocks{});
+        alpaka::atomicAdd(acc, &globalCounter[0], localCount, alpaka::hierarchy::Blocks{});
     }
 };
 
@@ -117,21 +118,19 @@ auto main() -> int
 
     // Setup buffer.
     BufHost bufHost{alpaka::allocBuf<uint32_t, Idx>(devHost, extent)};
-    uint32_t* const ptrBufHost{alpaka::getPtrNative(bufHost)};
     BufAcc bufAcc{alpaka::allocBuf<uint32_t, Idx>(devAcc, extent)};
-    uint32_t* const ptrBufAcc{alpaka::getPtrNative(bufAcc)};
 
     // Initialize the global count to 0.
-    ptrBufHost[0] = 0.0f;
+    alpaka::experimental::access(bufHost)[0] = 0.0f;
     alpaka::memcpy(queue, bufAcc, bufHost, extent);
 
     Kernel kernel;
-    alpaka::exec<Acc>(queue, workdiv, kernel, numPoints, ptrBufAcc, Function{});
+    alpaka::exec<Acc>(queue, workdiv, kernel, numPoints, alpaka::experimental::access(bufAcc), Function{});
     alpaka::memcpy(queue, bufHost, bufAcc, extent);
     alpaka::wait(queue);
 
     // Check the result.
-    uint32_t globalCount = *ptrBufHost;
+    uint32_t globalCount = alpaka::experimental::access(bufHost)[0];
 
     // Final result.
     float finalResult = globalCount / static_cast<float>(numPoints);

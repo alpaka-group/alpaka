@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -22,8 +22,12 @@ class FfsTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         TInput const inputs[]
             = {0,
@@ -42,7 +46,7 @@ public:
         {
             std::int32_t const expected = ffsNaive(input);
             std::int32_t const actual = alpaka::ffs(acc, input);
-            ALPAKA_CHECK(*success, actual == expected);
+            ALPAKA_CHECK(success[0], actual == expected);
         }
     }
 

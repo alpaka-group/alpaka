@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz
+/* Copyright 2019-2021 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -24,12 +24,16 @@ TEST_UNIT_KERNEL_KERNEL_STD_FUNCTION
 #    include <nvfunctional>
 #endif
 
-template<typename Acc>
-void ALPAKA_FN_ACC kernelFn(Acc const& acc, bool* success, std::int32_t val)
+template<typename TAcc, typename TMemoryHandle>
+void ALPAKA_FN_ACC kernelFn(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const
+        success,
+    std::int32_t val)
 {
     alpaka::ignore_unused(acc);
 
-    ALPAKA_CHECK(*success, 42 == val);
+    ALPAKA_CHECK(success[0], 42 == val);
 }
 
 // std::function and std::bind is only allowed on CPU
@@ -41,8 +45,11 @@ TEMPLATE_LIST_TEST_CASE("stdFunctionKernelIsWorking", "[kernel]", alpaka::test::
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
+    using ResultAccessor = typename alpaka::test::KernelExecutionFixture<Acc>::ResultAccessor;
+    using MemoryHandle = alpaka::experimental::MemoryHandle<ResultAccessor>;
 
-    const auto kernel = std::function<void(Acc const&, bool*, std::int32_t)>(kernelFn<Acc>);
+    const auto kernel
+        = std::function<void(Acc const&, ResultAccessor const, std::int32_t)>(kernelFn<Acc, MemoryHandle>);
     REQUIRE(fixture(kernel, 42));
 }
 
@@ -53,8 +60,9 @@ TEMPLATE_LIST_TEST_CASE("stdBindKernelIsWorking", "[kernel]", alpaka::test::Test
     using Idx = alpaka::Idx<Acc>;
 
     alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
+    using MemoryHandle = typename alpaka::test::KernelExecutionFixture<Acc>::ResultMemoryHandle;
 
-    const auto kernel = std::bind(kernelFn<Acc>, std::placeholders::_1, std::placeholders::_2, 42);
+    const auto kernel = std::bind(kernelFn<Acc, MemoryHandle>, std::placeholders::_1, std::placeholders::_2, 42);
     REQUIRE(fixture(kernel));
 }
 #endif
@@ -63,18 +71,22 @@ TEMPLATE_LIST_TEST_CASE("stdBindKernelIsWorking", "[kernel]", alpaka::test::Test
 #if 0
 //#if BOOST_LANG_CUDA
 // clang as a native CUDA compiler does not seem to support nvstd::function when ALPAKA_ACC_GPU_CUDA_ONLY_MODE is used.
-// error: reference to __device__ function 'kernelFn<alpaka::AccGpuCudaRt<std::__1::integral_constant<unsigned long, 1>, unsigned long> >' in __host__ function const auto kernel = nvstd::function<void(Acc const &, bool *, std::int32_t)>( kernelFn<Acc> );
+// error: reference to __device__ function 'kernelFn<alpaka::AccGpuCudaRt<std::__1::integral_constant<unsigned long,
+// 1>, unsigned long> >' in __host__ function const auto kernel = nvstd::function<void(Acc const &, bool *,
+// std::int32_t)>( kernelFn<Acc> );
 #    if !(defined(ALPAKA_ACC_GPU_CUDA_ONLY_MODE) && BOOST_COMP_CLANG_CUDA)
-TEMPLATE_LIST_TEST_CASE( "nvstdFunctionKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("nvstdFunctionKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {
     using Acc = TestType;
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    alpaka::test::KernelExecutionFixture<Acc> fixture(
-        alpaka::Vec<Dim, Idx>::ones());
+    alpaka::test::KernelExecutionFixture<Acc> fixture(alpaka::Vec<Dim, Idx>::ones());
+    using ResultAccessor = typename alpaka::test::KernelExecutionFixture<Acc>::ResultAccessor;
+    using MemoryHandle = alpaka::experimental::MemoryHandle<ResultAccessor>;
 
-    const auto kernel = nvstd::function<void(Acc const &, bool *, std::int32_t)>( kernelFn<Acc> );
+    const auto kernel
+        = nvstd::function<void(Acc const&, ResultAccessor const, std::int32_t)>(kernelFn<Acc, MemoryHandle>);
     REQUIRE(fixture(kernel, 42));
 }
 

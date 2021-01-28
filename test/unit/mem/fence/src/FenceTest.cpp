@@ -17,8 +17,12 @@
 class DeviceFenceTestKernel
 {
 public:
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, ALPAKA_DEVICE_VOLATILE int* vars) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success,
+        ALPAKA_DEVICE_VOLATILE int* vars) const -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u];
 
@@ -35,15 +39,19 @@ public:
         auto const a = vars[0];
 
         // If the fence is working correctly, the following case can never happen
-        ALPAKA_CHECK(*success, (a != 1 && b == 20));
+        ALPAKA_CHECK(success[0], (a != 1 && b == 20));
     }
 };
 
 class BlockFenceTestKernel
 {
 public:
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         auto const idx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u];
         auto shared = const_cast<ALPAKA_DEVICE_VOLATILE int*>(alpaka::getDynSharedMem<int>(acc));
@@ -69,7 +77,7 @@ public:
         auto const a = shared[0];
 
         // If the fence is working correctly, the following case can never happen
-        ALPAKA_CHECK(*success, (a != 1 && b == 20));
+        ALPAKA_CHECK(success[0], (a != 1 && b == 20));
     }
 };
 

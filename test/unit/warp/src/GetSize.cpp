@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *
@@ -20,11 +20,15 @@ class GetSizeTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, std::int32_t expectedWarpSize) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success,
+        std::int32_t expectedWarpSize) const -> void
     {
         std::int32_t const actualWarpSize = alpaka::warp::getSize(acc);
-        ALPAKA_CHECK(*success, actualWarpSize == expectedWarpSize);
+        ALPAKA_CHECK(success[0], actualWarpSize == expectedWarpSize);
     }
 };
 

@@ -1,4 +1,4 @@
-/* Copyright 2020-2021 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -21,12 +21,16 @@
 struct KernelWithOmpScheduleBase
 {
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         // No run-time check is performed
         alpaka::ignore_unused(acc);
-        ALPAKA_CHECK(*success, true);
+        ALPAKA_CHECK(success[0], true);
     }
 };
 

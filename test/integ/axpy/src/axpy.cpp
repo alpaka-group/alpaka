@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -30,18 +30,17 @@ public:
     //! \tparam TAcc The type of the accelerator the kernel is executed on..
     //! \tparam TElem The matrix element type.
     //! \param acc The accelerator the kernel is executed on.
-    //! \param numElements Specifies the number of elements of the vectors X and Y.
     //! \param alpha Scalar the X vector is multiplied with.
     //! \param X Vector of at least n elements.
     //! \param Y Vector of at least n elements.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename TElem, typename TIdx>
+    template<typename TAcc, typename TMemoryHandleX, typename TMemoryHandleY, typename TElem, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        TIdx const& numElements,
         TElem const& alpha,
-        TElem const* const X,
-        TElem* const Y) const -> void
+        alpaka::experimental::Accessor<TMemoryHandleX, TElem, TIdx, 1, alpaka::experimental::ReadAccess> const X,
+        alpaka::experimental::Accessor<TMemoryHandleY, TElem, TIdx, 1, alpaka::experimental::ReadWriteAccess> const Y)
+        const -> void
     {
         static_assert(alpaka::Dim<TAcc>::value == 1, "The AxpyKernel expects 1-dimensional indices!");
 
@@ -49,6 +48,7 @@ public:
         auto const threadElemExtent = alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u];
         auto const threadFirstElemIdx = gridThreadIdx * threadElemExtent;
 
+        auto const numElements = X.extents[0];
         if(threadFirstElemIdx < numElements)
         {
             // Calculate the number of elements to compute in this thread.
@@ -114,9 +114,9 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
     auto memBufHostX = alpaka::allocBuf<Val, Idx>(devHost, extent);
     auto memBufHostOrigY = alpaka::allocBuf<Val, Idx>(devHost, extent);
     auto memBufHostY = alpaka::allocBuf<Val, Idx>(devHost, extent);
-    Val* const pBufHostX = alpaka::getPtrNative(memBufHostX);
-    Val* const pBufHostOrigY = alpaka::getPtrNative(memBufHostOrigY);
-    Val* const pBufHostY = alpaka::getPtrNative(memBufHostY);
+    auto const accBufHostX = alpaka::experimental::access(memBufHostX);
+    auto const accBufHostOrigY = alpaka::experimental::access(memBufHostOrigY);
+    auto const accBufHostY = alpaka::experimental::readAccess(memBufHostY);
 
     // random generator for uniformly distributed numbers in [0,1)
     // keep in mind, this can generate different values on different platforms
@@ -128,8 +128,8 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
     // Initialize the host input vectors
     for(Idx i(0); i < numElements; ++i)
     {
-        pBufHostX[i] = dist(eng);
-        pBufHostOrigY[i] = dist(eng);
+        accBufHostX[i] = dist(eng);
+        accBufHostOrigY[i] = dist(eng);
     }
     Val const alpha(dist(eng));
 
@@ -166,10 +166,9 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        numElements,
         alpha,
-        alpaka::getPtrNative(memBufAccX),
-        alpaka::getPtrNative(memBufAccY));
+        alpaka::experimental::readAccess(memBufAccX),
+        alpaka::experimental::access(memBufAccY));
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"
@@ -184,8 +183,8 @@ TEMPLATE_LIST_TEST_CASE("axpy", "[axpy]", TestAccs)
     bool resultCorrect(true);
     for(Idx i(0u); i < numElements; ++i)
     {
-        auto const& val(pBufHostY[i]);
-        auto const correctResult = alpha * pBufHostX[i] + pBufHostOrigY[i];
+        auto const& val(accBufHostY[i]);
+        auto const correctResult = alpha * accBufHostX[i] + accBufHostOrigY[i];
         auto const relDiff = std::abs((val - correctResult) / std::min(val, correctResult));
         if(relDiff > std::numeric_limits<Val>::epsilon())
         {

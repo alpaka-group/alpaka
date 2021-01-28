@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -90,23 +90,18 @@ public:
 #endif
 
     //! \param acc The accelerator to be executed on.
-    //! \param pColors The output image.
-    //! \param numRows The number of rows in the image
-    //! \param numCols The number of columns in the image.
-    //! \param pitchBytes The pitch in bytes.
+    //! \param colors The output image.
     //! \param fMinR The left border.
     //! \param fMaxR The right border.
     //! \param fMinI The bottom border.
     //! \param fMaxI The top border.
     //! \param maxIterations The maximum number of iterations.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
+    template<typename TAcc, typename TMemoryHandle, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        std::uint32_t* const pColors,
-        std::uint32_t const& numRows,
-        std::uint32_t const& numCols,
-        std::uint32_t const& pitchBytes,
+        alpaka::experimental::Accessor<TMemoryHandle, std::uint32_t, TIdx, 2, alpaka::experimental::WriteAccess> const
+            colors,
         float const& fMinR,
         float const& fMaxR,
         float const& fMinI,
@@ -119,16 +114,15 @@ public:
         auto const& gridThreadIdxX = gridThreadIdx[1u];
         auto const& gridThreadIdxY = gridThreadIdx[0u];
 
-        if((gridThreadIdxY < numRows) && (gridThreadIdxX < numCols))
+        if((gridThreadIdxY < colors.extents[0]) && (gridThreadIdxX < colors.extents[1]))
         {
             SimpleComplex<float> c(
-                (fMinR + (static_cast<float>(gridThreadIdxX) / float(numCols - 1) * (fMaxR - fMinR))),
-                (fMinI + (static_cast<float>(gridThreadIdxY) / float(numRows - 1) * (fMaxI - fMinI))));
+                (fMinR + (static_cast<float>(gridThreadIdxX) / float(colors.extents[1] - 1) * (fMaxR - fMinR))),
+                (fMinI + (static_cast<float>(gridThreadIdxY) / float(colors.extents[0] - 1) * (fMaxI - fMinI))));
 
             auto const iterationCount = iterateMandelbrot(c, maxIterations);
 
-            auto const pColorsRow = pColors + ((gridThreadIdxY * pitchBytes) / sizeof(std::uint32_t));
-            pColorsRow[gridThreadIdxX] =
+            colors(gridThreadIdxY, gridThreadIdxX) =
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
                 iterationCountToContinousColor(iterationCount, maxIterations);
 #else
@@ -321,10 +315,7 @@ TEMPLATE_LIST_TEST_CASE("mandelbrot", "[mandelbrot]", TestAccs)
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::getPtrNative(bufColorAcc),
-        numRows,
-        numCols,
-        alpaka::getPitchBytes<1u>(bufColorAcc),
+        alpaka::experimental::writeAccess(bufColorAcc),
         fMinR,
         fMaxR,
         fMinI,

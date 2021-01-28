@@ -18,8 +18,11 @@ class FloatEqualExactTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle, typename TIdx>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success)
+        const -> void
     {
         alpaka::ignore_unused(acc);
 
@@ -29,11 +32,11 @@ public:
 
         float floatValue = -1.0f;
         testValue = alpaka::math::floatEqualExactNoWarning(floatValue, -1.0f);
-        ALPAKA_CHECK(*success, testValue);
+        ALPAKA_CHECK(success[0], testValue);
 
         double doubleValue = -1.0;
         testValue = alpaka::math::floatEqualExactNoWarning(doubleValue, -1.0);
-        ALPAKA_CHECK(*success, testValue);
+        ALPAKA_CHECK(success[0], testValue);
     }
 };
 
