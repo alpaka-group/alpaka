@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz
+/* Copyright 2019-2021 Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -30,15 +30,20 @@ public:
     //! \param A The first source vector.
     //! \param B The second source vector.
     //! \param C The destination vector.
-    //! \param numElements The number of elements.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename TElem, typename TIdx>
+    template<
+        typename TAcc,
+        typename TMemoryHandleA,
+        typename TMemoryHandleB,
+        typename TMemoryHandleC,
+        typename TElem,
+        typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        TElem const* const A,
-        TElem const* const B,
-        TElem* const C,
-        TIdx const& numElements) const -> void
+        alpaka::experimental::Accessor<TMemoryHandleA, TElem, TIdx, 1, alpaka::experimental::ReadAccess> const A,
+        alpaka::experimental::Accessor<TMemoryHandleB, TElem, TIdx, 1, alpaka::experimental::ReadAccess> const B,
+        alpaka::experimental::Accessor<TMemoryHandleC, TElem, TIdx, 1, alpaka::experimental::WriteAccess> const C)
+        const -> void
     {
         static_assert(alpaka::Dim<TAcc>::value == 1, "The VectorAddKernel expects 1-dimensional indices!");
 
@@ -46,6 +51,7 @@ public:
         auto const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
         auto const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
+        const auto numElements = C.extents[0];
         if(threadFirstElemIdx < numElements)
         {
             // Calculate the number of elements to compute in this thread.
@@ -113,8 +119,8 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     // Initialize the host input vectors
     for(Idx i(0); i < numElements; ++i)
     {
-        alpaka::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
-        alpaka::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+        alpaka::experimental::writeAccess(memBufHostA)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
+        alpaka::experimental::writeAccess(memBufHostB)[i] = static_cast<Val>(rand()) / static_cast<Val>(RAND_MAX);
     }
 
     // Allocate the buffers on the accelerator.
@@ -130,10 +136,9 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::getPtrNative(memBufAccA),
-        alpaka::getPtrNative(memBufAccB),
-        alpaka::getPtrNative(memBufAccC),
-        numElements);
+        alpaka::experimental::readAccess(memBufAccA),
+        alpaka::experimental::readAccess(memBufAccB),
+        alpaka::experimental::writeAccess(memBufAccC));
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queueAcc, taskKernel) << " ms"
@@ -144,10 +149,10 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     alpaka::wait(queueAcc);
 
     bool resultCorrect(true);
-    auto const pHostData(alpaka::getPtrNative(memBufHostC));
+    auto const hostData(alpaka::experimental::readAccess(memBufHostC));
     for(Idx i(0u); i < numElements; ++i)
     {
-        auto const& val(pHostData[i]);
+        auto const& val(hostData[i]);
         auto const correctResult(
             std::sqrt(alpaka::getPtrNative(memBufHostA)[i]) + std::sqrt(alpaka::getPtrNative(memBufHostB)[i]));
         auto const absDiff = (val - correctResult);

@@ -1,4 +1,4 @@
-/* Copyright 2019 Jonas Schenke
+/* Copyright 2019-2021 Jonas Schenke, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *
@@ -23,21 +23,24 @@
 //!
 //! \tparam T The type.
 //! \tparam TBuf The buffer type (standard is T).
-template<typename T, typename TBuf = T>
+template<typename T, typename TMemoryHandle, typename TIdx, typename TBuf = T>
 class Iterator
 {
 protected:
-    const TBuf* mData;
+    const alpaka::experimental::Accessor<TMemoryHandle, TBuf, TIdx, 1, alpaka::experimental::ReadAccess> mData;
     uint64_t mIndex;
     const uint64_t mMaximum;
 
 public:
     //! Constructor.
     //!
-    //! \param data A pointer to the data.
+    //! \param data An accessor to the data.
     //! \param index The index.
     //! \param maximum The first index outside of the iterator memory.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE Iterator(const TBuf* data, uint32_t index, uint64_t maximum)
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE Iterator(
+        alpaka::experimental::Accessor<TMemoryHandle, TBuf, TIdx, 1, alpaka::experimental::ReadAccess> data,
+        uint32_t index,
+        uint64_t maximum)
         : mData(data)
         , mIndex(index)
         , mMaximum(maximum)
@@ -112,9 +115,7 @@ public:
     }
 
     //! Returns the current element.
-    //!
-    //! Returns a reference to the current index.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator*() -> const T&
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE auto operator*() -> T
     {
         return mData[mIndex];
     }
@@ -125,20 +126,24 @@ public:
 //! \tparam TAcc The accelerator type.
 //! \tparam T The type.
 //! \tparam TBuf The buffer type (standard is T).
-template<typename TAcc, typename T, typename TBuf = T>
-class IteratorCpu : public Iterator<T, TBuf>
+template<typename TAcc, typename TMemoryHandle, typename T, typename TIdx, typename TBuf = T>
+class IteratorCpu : public Iterator<T, TMemoryHandle, TIdx, TBuf>
 {
 public:
     //! Constructor.
     //!
     //! \param acc The accelerator object.
-    //! \param data A pointer to the data.
+    //! \param data An accessor to the data.
     //! \param linearizedIndex The linearized index.
     //! \param gridSize The grid size.
     //! \param n The problem size.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE
-    IteratorCpu(const TAcc& acc, const TBuf* data, uint32_t linearizedIndex, uint32_t gridSize, uint64_t n)
-        : Iterator<T, TBuf>(
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE IteratorCpu(
+        const TAcc& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, TBuf, TIdx, 1, alpaka::experimental::ReadAccess> data,
+        uint32_t linearizedIndex,
+        uint32_t gridSize,
+        uint64_t n)
+        : Iterator<T, TMemoryHandle, TIdx, TBuf>(
             data,
             static_cast<uint32_t>((n * linearizedIndex) / alpaka::math::min(acc, static_cast<uint64_t>(gridSize), n)),
             static_cast<uint32_t>(
@@ -244,8 +249,8 @@ public:
 //! \tparam TAcc The accelerator type.
 //! \tparam T The type.
 //! \tparam TBuf The buffer type (standard is T).
-template<typename TAcc, typename T, typename TBuf = T>
-class IteratorGpu : public Iterator<T, TBuf>
+template<typename TAcc, typename TMemoryHandle, typename T, typename TIdx, typename TBuf = T>
+class IteratorGpu : public Iterator<T, TMemoryHandle, TIdx, TBuf>
 {
 private:
     const uint32_t mGridSize;
@@ -253,13 +258,17 @@ private:
 public:
     //! Constructor.
     //!
-    //! \param data A pointer to the data.
+    //! \param data An accessor to the data.
     //! \param linearizedIndex The linearized index.
     //! \param gridSize The grid size.
     //! \param n The problem size.
-    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE
-    IteratorGpu(const TAcc&, const TBuf* data, uint32_t linearizedIndex, uint32_t gridSize, uint64_t n)
-        : Iterator<T, TBuf>(data, linearizedIndex, n)
+    ALPAKA_FN_HOST_ACC ALPAKA_FN_INLINE IteratorGpu(
+        const TAcc&,
+        alpaka::experimental::Accessor<TBuf*, TBuf, TIdx, 1, alpaka::experimental::ReadAccess> data,
+        uint32_t linearizedIndex,
+        uint32_t gridSize,
+        uint64_t n)
+        : Iterator<T, TIdx, TBuf>(data, linearizedIndex, n)
         , mGridSize(gridSize)
     {
     }

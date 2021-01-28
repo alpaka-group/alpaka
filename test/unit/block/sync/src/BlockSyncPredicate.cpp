@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -17,8 +17,12 @@ class BlockSyncPredicateTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         using Idx = alpaka::Idx<TAcc>;
 
@@ -34,7 +38,7 @@ public:
             int const predicate = static_cast<int>(blockThreadIdx1D % modulus);
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockCount>(acc, predicate);
             auto const expectedResult = static_cast<int>(blockThreadExtent1D / modulus);
-            ALPAKA_CHECK(*success, expectedResult == result);
+            ALPAKA_CHECK(success[0], expectedResult == result);
         }
         {
             Idx const modulus = 3u;
@@ -42,41 +46,41 @@ public:
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockCount>(acc, predicate);
             auto const expectedResult = static_cast<int>(
                 blockThreadExtent1D - ((blockThreadExtent1D + modulus - static_cast<Idx>(1u)) / modulus));
-            ALPAKA_CHECK(*success, expectedResult == result);
+            ALPAKA_CHECK(success[0], expectedResult == result);
         }
 
         // syncBlockThreadsPredicate<alpaka::BlockAnd>
         {
             int const predicate = 1;
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockAnd>(acc, predicate);
-            ALPAKA_CHECK(*success, result == 1);
+            ALPAKA_CHECK(success[0], result == 1);
         }
         {
             int const predicate = 0;
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockAnd>(acc, predicate);
-            ALPAKA_CHECK(*success, result == 0);
+            ALPAKA_CHECK(success[0], result == 0);
         }
         {
             int const predicate = blockThreadIdx1D != 0;
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockAnd>(acc, predicate);
-            ALPAKA_CHECK(*success, result == 0);
+            ALPAKA_CHECK(success[0], result == 0);
         }
 
         // syncBlockThreadsPredicate<alpaka::BlockOr>
         {
             int const predicate = 1;
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockOr>(acc, predicate);
-            ALPAKA_CHECK(*success, result == 1);
+            ALPAKA_CHECK(success[0], result == 1);
         }
         {
             int const predicate = 0;
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockOr>(acc, predicate);
-            ALPAKA_CHECK(*success, result == 0);
+            ALPAKA_CHECK(success[0], result == 0);
         }
         {
             int const predicate = static_cast<int>(blockThreadIdx1D != 1);
             auto const result = alpaka::syncBlockThreadsPredicate<alpaka::BlockOr>(acc, predicate);
-            ALPAKA_CHECK(*success, result == 1);
+            ALPAKA_CHECK(success[0], result == 1);
         }
     }
 };

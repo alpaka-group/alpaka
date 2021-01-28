@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -16,14 +16,18 @@
 class RandTestKernel
 {
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename T_Generator>
-    ALPAKA_FN_ACC void genNumbers(TAcc const& acc, bool* success, T_Generator& gen) const
+    template<typename TAcc, typename TMemoryHandle, typename T_Generator>
+    ALPAKA_FN_ACC void genNumbers(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success,
+        T_Generator& gen) const
     {
         {
             auto dist = alpaka::rand::distribution::createNormalReal<float>(acc);
             auto const r = dist(gen);
 #if !BOOST_ARCH_PTX
-            ALPAKA_CHECK(*success, std::isfinite(r));
+            ALPAKA_CHECK(success[0], std::isfinite(r));
 #else
             alpaka::ignore_unused(r);
 #endif
@@ -33,7 +37,7 @@ class RandTestKernel
             auto dist = alpaka::rand::distribution::createNormalReal<double>(acc);
             auto const r = dist(gen);
 #if !BOOST_ARCH_PTX
-            ALPAKA_CHECK(*success, std::isfinite(r));
+            ALPAKA_CHECK(success[0], std::isfinite(r));
 #else
             alpaka::ignore_unused(r);
 #endif
@@ -41,15 +45,15 @@ class RandTestKernel
         {
             auto dist = alpaka::rand::distribution::createUniformReal<float>(acc);
             auto const r = dist(gen);
-            ALPAKA_CHECK(*success, 0.0f <= r);
-            ALPAKA_CHECK(*success, 1.0f > r);
+            ALPAKA_CHECK(success[0], 0.0f <= r);
+            ALPAKA_CHECK(success[0], 1.0f > r);
         }
 
         {
             auto dist = alpaka::rand::distribution::createUniformReal<double>(acc);
             auto const r = dist(gen);
-            ALPAKA_CHECK(*success, 0.0 <= r);
-            ALPAKA_CHECK(*success, 1.0 > r);
+            ALPAKA_CHECK(success[0], 0.0 <= r);
+            ALPAKA_CHECK(success[0], 1.0 > r);
         }
 
         {
@@ -61,8 +65,12 @@ class RandTestKernel
 
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         // default generator for accelerator
         auto genDefault = alpaka::rand::engine::createDefault(acc, 12345u, 6789u);

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -18,8 +18,11 @@
 #include <type_traits>
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicAdd(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicAdd(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     T const reference = static_cast<T>(operandOrig + value);
@@ -27,20 +30,23 @@ ALPAKA_FN_ACC auto testAtomicAdd(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicAdd>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicAdd(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicSub(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicSub(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     T const reference = static_cast<T>(operandOrig - value);
@@ -48,20 +54,23 @@ ALPAKA_FN_ACC auto testAtomicSub(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicSub>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicSub(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicMin(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicMin(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     T const reference = (operandOrig < value) ? operandOrig : value;
@@ -69,20 +78,23 @@ ALPAKA_FN_ACC auto testAtomicMin(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicMin>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicMin(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicMax(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicMax(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     T const reference = (operandOrig > value) ? operandOrig : value;
@@ -90,20 +102,23 @@ ALPAKA_FN_ACC auto testAtomicMax(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicMax>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicMax(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicExch(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicExch(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     T const reference = value;
@@ -111,20 +126,23 @@ ALPAKA_FN_ACC auto testAtomicExch(TAcc const& acc, bool* success, T operandOrig)
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicExch>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicExch(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicInc(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicInc(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     // \TODO: Check reset to 0 at 'value'.
     T const value = static_cast<T>(42);
@@ -133,20 +151,23 @@ ALPAKA_FN_ACC auto testAtomicInc(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicInc>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicInc(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicDec(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicDec(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     // \TODO: Check reset to 'value' at 0.
     T const value = static_cast<T>(42);
@@ -155,20 +176,23 @@ ALPAKA_FN_ACC auto testAtomicDec(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicDec>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicDec(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicAnd(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicAnd(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     T const reference = operandOrig & value;
@@ -176,20 +200,23 @@ ALPAKA_FN_ACC auto testAtomicAnd(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicAnd>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicAnd(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicOr(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicOr(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     T const reference = operandOrig | value;
@@ -197,20 +224,23 @@ ALPAKA_FN_ACC auto testAtomicOr(TAcc const& acc, bool* success, T operandOrig) -
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicOr>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOr(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicXor(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicXor(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(operandOrig + static_cast<T>(4));
     T const reference = operandOrig ^ value;
@@ -218,20 +248,23 @@ ALPAKA_FN_ACC auto testAtomicXor(TAcc const& acc, bool* success, T operandOrig) 
     {
         operand = operandOrig;
         T const ret = alpaka::atomicOp<alpaka::AtomicXor>(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
     {
         operand = operandOrig;
         T const ret = alpaka::atomicXor(acc, &operand, value);
-        ALPAKA_CHECK(*success, operandOrig == ret);
-        ALPAKA_CHECK(*success, operand == reference);
+        ALPAKA_CHECK(success[0], operandOrig == ret);
+        ALPAKA_CHECK(success[0], operand == reference);
     }
 }
 
 ALPAKA_NO_HOST_ACC_WARNING
-template<typename TAcc, typename T>
-ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) -> void
+template<typename TAcc, typename TMemoryHandle, typename TIdx, typename T>
+ALPAKA_FN_ACC auto testAtomicCas(
+    TAcc const& acc,
+    alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+    T operandOrig) -> void
 {
     T const value = static_cast<T>(4);
     auto& operand = alpaka::declareSharedVar<T, __COUNTER__>(acc);
@@ -243,14 +276,14 @@ ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) 
         {
             operand = operandOrig;
             T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value);
-            ALPAKA_CHECK(*success, operandOrig == ret);
-            ALPAKA_CHECK(*success, operand == reference);
+            ALPAKA_CHECK(success[0], operandOrig == ret);
+            ALPAKA_CHECK(success[0], operand == reference);
         }
         {
             operand = operandOrig;
             T const ret = alpaka::atomicCas(acc, &operand, compare, value);
-            ALPAKA_CHECK(*success, operandOrig == ret);
-            ALPAKA_CHECK(*success, operand == reference);
+            ALPAKA_CHECK(success[0], operandOrig == ret);
+            ALPAKA_CHECK(success[0], operand == reference);
         }
     }
 
@@ -261,14 +294,14 @@ ALPAKA_FN_ACC auto testAtomicCas(TAcc const& acc, bool* success, T operandOrig) 
         {
             operand = operandOrig;
             T const ret = alpaka::atomicOp<alpaka::AtomicCas>(acc, &operand, compare, value);
-            ALPAKA_CHECK(*success, operandOrig == ret);
-            ALPAKA_CHECK(*success, operand == reference);
+            ALPAKA_CHECK(success[0], operandOrig == ret);
+            ALPAKA_CHECK(success[0], operand == reference);
         }
         {
             operand = operandOrig;
             T const ret = alpaka::atomicCas(acc, &operand, compare, value);
-            ALPAKA_CHECK(*success, operandOrig == ret);
-            ALPAKA_CHECK(*success, operand == reference);
+            ALPAKA_CHECK(success[0], operandOrig == ret);
+            ALPAKA_CHECK(success[0], operand == reference);
         }
     }
 }
@@ -278,7 +311,11 @@ class AtomicTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, T operandOrig) const -> void
+    template<typename TMemoryHandle, typename TIdx>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        T operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         testAtomicSub(acc, success, operandOrig);
@@ -307,8 +344,11 @@ class AtomicTestKernel<alpaka::AccGpuUniformCudaHipRt<TDim, TIdx>, T>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuUniformCudaHipRt<TDim, TIdx> const& acc, bool* success, T operandOrig)
-        const -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuUniformCudaHipRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        T operandOrig) const -> void
     {
         alpaka::ignore_unused(acc);
         alpaka::ignore_unused(success);
@@ -323,8 +363,11 @@ class AtomicTestKernel<alpaka::AccGpuCudaRt<TDim, TIdx>, int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuCudaRt<TDim, TIdx> const& acc, bool* success, int operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuCudaRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         testAtomicSub(acc, success, operandOrig);
@@ -352,8 +395,11 @@ class AtomicTestKernel<alpaka::AccGpuCudaRt<TDim, TIdx>, unsigned int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuCudaRt<TDim, TIdx> const& acc, bool* success, unsigned int operandOrig)
-        const -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuCudaRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        unsigned int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         testAtomicSub(acc, success, operandOrig);
@@ -379,9 +425,10 @@ class AtomicTestKernel<alpaka::AccGpuCudaRt<TDim, TIdx>, unsigned long int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TMemoryHandle>
     ALPAKA_FN_ACC auto operator()(
         alpaka::AccGpuCudaRt<TDim, TIdx> const& acc,
-        bool* success,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
         unsigned long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
@@ -420,9 +467,10 @@ class AtomicTestKernel<alpaka::AccGpuCudaRt<TDim, TIdx>, unsigned long long int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TMemoryHandle>
     ALPAKA_FN_ACC auto operator()(
         alpaka::AccGpuCudaRt<TDim, TIdx> const& acc,
-        bool* success,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
         unsigned long long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
@@ -455,8 +503,11 @@ class AtomicTestKernel<alpaka::AccGpuCudaRt<TDim, TIdx>, float>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuCudaRt<TDim, TIdx> const& acc, bool* success, float operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuCudaRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        float operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         // Not supported
@@ -487,8 +538,11 @@ class AtomicTestKernel<alpaka::AccGpuCudaRt<TDim, TIdx>, double>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuCudaRt<TDim, TIdx> const& acc, bool* success, double operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuCudaRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        double operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         // Not supported
@@ -526,14 +580,17 @@ class AtomicTestKernel<
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuCudaRt<TDim, TIdx> const& acc, bool* success, T operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuCudaRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        T operandOrig) const -> void
     {
         alpaka::ignore_unused(acc);
         alpaka::ignore_unused(operandOrig);
 
         // All other types are not supported by CUDA atomic operations.
-        ALPAKA_CHECK(*success, true);
+        ALPAKA_CHECK(success[0], true);
     }
 };
 #endif
@@ -544,8 +601,11 @@ class AtomicTestKernel<alpaka::AccGpuHipRt<TDim, TIdx>, int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuHipRt<TDim, TIdx> const& acc, bool* success, int operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuHipRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         testAtomicSub(acc, success, operandOrig);
@@ -573,8 +633,11 @@ class AtomicTestKernel<alpaka::AccGpuHipRt<TDim, TIdx>, unsigned int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuHipRt<TDim, TIdx> const& acc, bool* success, unsigned int operandOrig)
-        const -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuHipRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        unsigned int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         testAtomicSub(acc, success, operandOrig);
@@ -600,9 +663,10 @@ class AtomicTestKernel<alpaka::AccGpuHipRt<TDim, TIdx>, unsigned long int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TMemoryHandle>
     ALPAKA_FN_ACC auto operator()(
         alpaka::AccGpuHipRt<TDim, TIdx> const& acc,
-        bool* success,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
         unsigned long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
@@ -641,9 +705,10 @@ class AtomicTestKernel<alpaka::AccGpuHipRt<TDim, TIdx>, unsigned long long int>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
+    template<typename TMemoryHandle>
     ALPAKA_FN_ACC auto operator()(
         alpaka::AccGpuHipRt<TDim, TIdx> const& acc,
-        bool* success,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
         unsigned long long int operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
@@ -676,8 +741,11 @@ class AtomicTestKernel<alpaka::AccGpuHipRt<TDim, TIdx>, float>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuHipRt<TDim, TIdx> const& acc, bool* success, float operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuHipRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        float operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         // Not supported
@@ -708,8 +776,11 @@ class AtomicTestKernel<alpaka::AccGpuHipRt<TDim, TIdx>, double>
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuHipRt<TDim, TIdx> const& acc, bool* success, double operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuHipRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        double operandOrig) const -> void
     {
         testAtomicAdd(acc, success, operandOrig);
         // Not supported
@@ -747,14 +818,17 @@ class AtomicTestKernel<
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_ACC auto operator()(alpaka::AccGpuHipRt<TDim, TIdx> const& acc, bool* success, T operandOrig) const
-        -> void
+    template<typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        alpaka::AccGpuHipRt<TDim, TIdx> const& acc,
+        alpaka::experimental::Accessor<TMemoryHandle, bool, TIdx, 1, alpaka::experimental::WriteAccess> const success,
+        T operandOrig) const -> void
     {
         alpaka::ignore_unused(acc);
         alpaka::ignore_unused(operandOrig);
 
         // All other types are not supported by HIP atomic operations.
-        ALPAKA_CHECK(*success, true);
+        ALPAKA_CHECK(success[0], true);
     }
 };
 #endif

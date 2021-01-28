@@ -1,5 +1,4 @@
-/* Copyright 2020 Benjamin Worpitz, Matthias Werner, Jakob Krude,
- *                Sergei Bastrakov
+/* Copyright 2020-2021 Benjamin Worpitz, Matthias Werner, Jakob Krude, Sergei Bastrakov, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *
@@ -40,19 +39,20 @@
 
 struct HeatEquationKernel
 {
-    template<typename TAcc>
+    template<typename TAcc, typename TMemoryHandle, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        double const* const uCurrBuf,
-        double* const uNextBuf,
-        uint32_t const extent,
+        alpaka::experimental::Accessor<TMemoryHandle, double, TIdx, 1, alpaka::experimental::ReadAccess> const
+            uCurrBuf,
+        alpaka::experimental::Accessor<TMemoryHandle, double, TIdx, 1, alpaka::experimental::WriteAccess> const
+            uNextBuf,
         double const dx,
         double const dt) const -> void
     {
         // Each kernel executes one element
         double const r = dt / (dx * dx);
         int idx = alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0];
-        if(idx > 0 && idx < extent - 1u)
+        if(idx > 0 && idx < uNextBuf.extents[0] - 1u)
         {
             uNextBuf[idx] = uCurrBuf[idx] * (1.0 - 2.0 * r) + uCurrBuf[idx - 1] * r + uCurrBuf[idx + 1] * r;
         }
@@ -146,9 +146,6 @@ auto main() -> int
     auto uNextBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
     auto uCurrBufAcc = BufAcc{alpaka::allocBuf<double, Idx>(devAcc, extent)};
 
-    double* pCurrAcc = alpaka::getPtrNative(uCurrBufAcc);
-    double* pNextAcc = alpaka::getPtrNative(uNextBufAcc);
-
     // Apply initial conditions for the test problem
     for(uint32_t i = 0; i < numNodesX; i++)
     {
@@ -163,15 +160,24 @@ auto main() -> int
     alpaka::memcpy(queue, uNextBufAcc, uCurrBufAcc, extent);
     alpaka::wait(queue);
 
+    auto* uCurrBufAccPtr = &uCurrBufAcc;
+    auto* uNextBufAccPtr = &uNextBufAcc;
     for(uint32_t step = 0; step < numTimeSteps; step++)
     {
         // Compute next values
-        alpaka::exec<Acc>(queue, workdiv, kernel, pCurrAcc, pNextAcc, numNodesX, dx, dt);
+        alpaka::exec<Acc>(
+            queue,
+            workdiv,
+            kernel,
+            alpaka::experimental::readAccess(*uCurrBufAccPtr),
+            alpaka::experimental::writeAccess(*uNextBufAccPtr),
+            dx,
+            dt);
 
         // We assume the boundary conditions are constant and so these values
         // do not need to be updated.
         // So we just swap next to curr (shallow copy)
-        std::swap(pCurrAcc, pNextAcc);
+        std::swap(uCurrBufAccPtr, uNextBufAccPtr);
     }
 
     // Copy device -> host

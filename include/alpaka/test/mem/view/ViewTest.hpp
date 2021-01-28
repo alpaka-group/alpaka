@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -123,10 +123,12 @@ namespace alpaka
         struct VerifyBytesSetKernel
         {
             ALPAKA_NO_HOST_ACC_WARNING
-            template<typename TAcc, typename TIter>
+            template<typename TAcc, typename TMemoryHandle, typename TIter>
             ALPAKA_FN_ACC void operator()(
                 TAcc const& acc,
-                bool* success,
+                alpaka::experimental::
+                    Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const
+                        success,
                 TIter const& begin,
                 TIter const& end,
                 std::uint8_t const& byte) const
@@ -140,7 +142,7 @@ namespace alpaka
                     auto const pBytes = reinterpret_cast<std::uint8_t const*>(&elem);
                     for(std::size_t i = 0u; i < elemSizeInByte; ++i)
                     {
-                        ALPAKA_CHECK(*success, pBytes[i] == byte);
+                        ALPAKA_CHECK(success[0], pBytes[i] == byte);
                     }
                 }
             }
@@ -166,10 +168,12 @@ namespace alpaka
         struct VerifyViewsEqualKernel
         {
             ALPAKA_NO_HOST_ACC_WARNING
-            template<typename TAcc, typename TIterA, typename TIterB>
+            template<typename TAcc, typename TMemoryHandle, typename TIterA, typename TIterB>
             ALPAKA_FN_ACC void operator()(
                 TAcc const& acc,
-                bool* success,
+                alpaka::experimental::
+                    Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const
+                        success,
                 TIterA beginA,
                 TIterA const& endA,
                 TIterB beginB) const
@@ -182,7 +186,7 @@ namespace alpaka
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wfloat-equal" // "comparing floating point with == or != is unsafe"
 #endif
-                    ALPAKA_CHECK(*success, *beginA == *beginB);
+                    ALPAKA_CHECK(success[0], *beginA == *beginB);
 #if BOOST_COMP_CLANG
 #    pragma clang diagnostic pop
 #endif

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -19,8 +19,12 @@ public:
     static const std::uint8_t gridThreadExtentPerDim = 4u;
 
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         using Idx = alpaka::Idx<TAcc>;
 
@@ -42,7 +46,7 @@ public:
         // All other threads within the block should now have written their index into the shared memory.
         for(auto i = static_cast<Idx>(0u); i < blockThreadExtent1D; ++i)
         {
-            ALPAKA_CHECK(*success, pBlockSharedArray[i] == i);
+            ALPAKA_CHECK(success[0], pBlockSharedArray[i] == i);
         }
     }
 };
@@ -56,12 +60,14 @@ namespace alpaka
         struct BlockSharedMemDynSizeBytes<BlockSyncTestKernel, TAcc>
         {
             //! \return The size of the shared memory allocated for a block.
-            template<typename TVec>
+            template<typename TVec, typename TMemoryHandle>
             ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
                 BlockSyncTestKernel const& blockSharedMemDyn,
                 TVec const& blockThreadExtent,
                 TVec const& threadElemExtent,
-                bool* success) -> std::size_t
+                alpaka::experimental::
+                    Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const
+                        success) -> std::size_t
             {
                 using Idx = alpaka::Idx<TAcc>;
 

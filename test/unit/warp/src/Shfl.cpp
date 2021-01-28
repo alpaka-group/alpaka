@@ -1,4 +1,4 @@
-/* Copyright 2021 David M. Rogers
+/* Copyright 2021 David M. Rogers, Bernhard Manfred Gruber
  *
  * This file is part of Alpaka.
  *
@@ -21,16 +21,20 @@ class ShflSingleThreadWarpTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
-        ALPAKA_CHECK(*success, warpExtent == 1);
+        ALPAKA_CHECK(success[0], warpExtent == 1);
 
-        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 12, 0) == 12);
-        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 42, -1) == 42);
+        ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, 12, 0) == 12);
+        ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, 42, -1) == 42);
         float ans = alpaka::warp::shfl(acc, 3.3f, 0);
-        ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - 3.3f) < 1e-8f);
+        ALPAKA_CHECK(success[0], alpaka::math::abs(acc, ans - 3.3f) < 1e-8f);
     }
 };
 
@@ -38,24 +42,28 @@ class ShflMultipleThreadWarpTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         auto const localThreadIdx = alpaka::getIdx<alpaka::Block, alpaka::Threads>(acc);
         auto const blockExtent = alpaka::getWorkDiv<alpaka::Block, alpaka::Threads>(acc);
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
         // Test relies on having a single warp per thread block
-        ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
+        ALPAKA_CHECK(success[0], static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
         auto const threadIdxInWarp = std::int32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
-        ALPAKA_CHECK(*success, warpExtent > 1);
+        ALPAKA_CHECK(success[0], warpExtent > 1);
 
-        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 42, 0) == 42);
-        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, 0) == 0);
-        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, 1) == 1);
+        ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, 42, 0) == 42);
+        ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, threadIdxInWarp, 0) == 0);
+        ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, threadIdxInWarp, 1) == 1);
         // Note the CUDA and HIP API-s differ on lane wrapping, but both agree it should not segfault
         // https://github.com/ROCm-Developer-Tools/HIP-CPU/issues/14
-        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 5, -1) == 5);
+        ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, 5, -1) == 5);
 
         auto const epsilon = std::numeric_limits<float>::epsilon();
 
@@ -65,10 +73,10 @@ public:
             for(int idx = 0; idx < width; idx++)
             {
                 int const off = width * (threadIdxInWarp / width);
-                ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, idx, width) == idx + off);
+                ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, threadIdxInWarp, idx, width) == idx + off);
                 float const ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx, width);
                 float const expect = 4.0f - float(idx + off);
-                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+                ALPAKA_CHECK(success[0], alpaka::math::abs(acc, ans - expect) < epsilon);
             }
         }
 
@@ -79,10 +87,10 @@ public:
 
         for(int idx = 0; idx < warpExtent / 2; idx++)
         {
-            ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, idx) == idx);
+            ALPAKA_CHECK(success[0], alpaka::warp::shfl(acc, threadIdxInWarp, idx) == idx);
             float const ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx);
             float const expect = 4.0f - float(idx);
-            ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
+            ALPAKA_CHECK(success[0], alpaka::math::abs(acc, ans - expect) < epsilon);
         }
     }
 };

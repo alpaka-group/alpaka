@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2019-2021 Benjamin Worpitz, Matthias Werner, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *
@@ -37,28 +37,30 @@ public:
     //! \param C The destination vector.
     //! \param numElements The number of elements.
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc, typename TElem, typename TIdx>
+    template<typename TAcc, typename TMemoryHandle, typename TElem, typename TIdx>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        TElem const* const A,
-        TElem const* const B,
-        TElem* const C,
-        TIdx const& numElements) const -> void
+        alpaka::experimental::Accessor<TMemoryHandle, TElem, TIdx, 1, alpaka::experimental::ReadAccess> A,
+        alpaka::experimental::Accessor<TMemoryHandle, TElem, TIdx, 1, alpaka::experimental::ReadAccess> B,
+        alpaka::experimental::Accessor<TMemoryHandle, TElem, TIdx, 1, alpaka::experimental::WriteAccess> C) const
+        -> void
     {
         static_assert(alpaka::Dim<TAcc>::value == 1, "The VectorAddKernel expects 1-dimensional indices!");
 
-        TIdx const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
-        TIdx const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
-        TIdx const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
+        using Idx = alpaka::Idx<TAcc>;
+        Idx const gridThreadIdx(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        Idx const threadElemExtent(alpaka::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
+        Idx const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
+        const auto numElements = C.extents[0];
         if(threadFirstElemIdx < numElements)
         {
             // Calculate the number of elements to compute in this thread.
             // The result is uniform for all but the last thread.
-            TIdx const threadLastElemIdx(threadFirstElemIdx + threadElemExtent);
-            TIdx const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
+            Idx const threadLastElemIdx(threadFirstElemIdx + threadElemExtent);
+            Idx const threadLastElemIdxClipped((numElements > threadLastElemIdx) ? threadLastElemIdx : numElements);
 
-            for(TIdx i(threadFirstElemIdx); i < threadLastElemIdxClipped; ++i)
+            for(Idx i(threadFirstElemIdx); i < threadLastElemIdxClipped; ++i)
             {
                 C[i] = A[i] + B[i];
             }
@@ -166,10 +168,9 @@ auto main() -> int
     auto const taskKernel = alpaka::createTaskKernel<Acc>(
         workDiv,
         kernel,
-        alpaka::getPtrNative(bufAccA),
-        alpaka::getPtrNative(bufAccB),
-        alpaka::getPtrNative(bufAccC),
-        numElements);
+        alpaka::experimental::readAccess(bufAccA),
+        alpaka::experimental::readAccess(bufAccB),
+        alpaka::experimental::writeAccess(bufAccC));
 
     // Enqueue the kernel execution task
     {

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2019-2021 Axel Huebl, Benjamin Worpitz, René Widera, Bernhard Manfred Gruber
  *
  * This file is part of alpaka.
  *
@@ -17,18 +17,22 @@ class ClockTestKernel
 {
 public:
     ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TAcc>
-    ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
+    template<typename TAcc, typename TMemoryHandle>
+    ALPAKA_FN_ACC auto operator()(
+        TAcc const& acc,
+        alpaka::experimental::
+            Accessor<TMemoryHandle, bool, alpaka::Idx<TAcc>, 1, alpaka::experimental::WriteAccess> const success) const
+        -> void
     {
         std::uint64_t const start(alpaka::clock(acc));
-        ALPAKA_CHECK(*success, 0u != start);
+        ALPAKA_CHECK(success[0], 0u != start);
 
         std::uint64_t const end(alpaka::clock(acc));
-        ALPAKA_CHECK(*success, 0u != end);
+        ALPAKA_CHECK(success[0], 0u != end);
 
         // 'end' has to be greater equal 'start'.
         // CUDA clock will never be equal for two calls, but the clock implementations for CPUs can be.
-        ALPAKA_CHECK(*success, end >= start);
+        ALPAKA_CHECK(success[0], end >= start);
     }
 };
 

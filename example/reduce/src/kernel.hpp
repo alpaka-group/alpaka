@@ -1,4 +1,4 @@
-/* Copyright 2019 Jonas Schenke
+/* Copyright 2019-2021 Jonas Schenke, Bernhard Manfred Gruber
  *
  * This file exemplifies usage of alpaka.
  *
@@ -60,19 +60,20 @@ struct ReduceKernel
     //!
     //! \tparam TAcc The accelerator environment.
     //! \tparam TElem The element type.
-    //! \tparam TIdx The index type.
+    //! \tparam TExtent The index type.
     //!
     //! \param acc The accelerator object.
     //! \param source The source memory.
     //! \param destination The destination memory.
     //! \param n The problem size.
     //! \param func The reduction function.
-    template<typename TAcc, typename TElem, typename TIdx>
+    template<typename TAcc, typename TMemoryHandle, typename TElem, typename TIdx, typename TExtent, std::size_t TDim>
     ALPAKA_FN_ACC auto operator()(
         TAcc const& acc,
-        TElem const* const source,
-        TElem* destination,
-        TIdx const& n,
+        alpaka::experimental::Accessor<TMemoryHandle, TElem, TIdx, TDim, alpaka::experimental::ReadAccess> source,
+        alpaka::experimental::Accessor<TMemoryHandle, TElem, TIdx, TDim, alpaka::experimental::WriteAccess>
+            destination,
+        TExtent const& n,
         TFunc func) const -> void
     {
         auto& sdata(alpaka::declareSharedVar<cheapArray<T, TBlockSize>, __COUNTER__>(acc));
@@ -84,7 +85,8 @@ struct ReduceKernel
         // equivalent to blockIndex * TBlockSize + threadIndex
         const uint32_t linearizedIndex(static_cast<uint32_t>(alpaka::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0]));
 
-        typename GetIterator<T, TElem, TAcc>::Iterator it(acc, source, linearizedIndex, gridDimension * TBlockSize, n);
+        typename GetIterator<T, TElem, TMemoryHandle, Idx, TAcc>::Iterator
+            it(acc, source, linearizedIndex, gridDimension * TBlockSize, n);
 
         T result = 0; // suppresses compiler warnings
 
