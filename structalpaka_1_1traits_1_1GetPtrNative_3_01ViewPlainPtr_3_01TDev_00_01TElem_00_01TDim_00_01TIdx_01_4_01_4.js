@@ -1,5 +1,5 @@
 var structalpaka_1_1traits_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4 =
 [
-    [ "getPtrNative", "structalpaka_1_1traits_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a96d629f7206e7b6e99e519d2d18a78ed", null ],
-    [ "getPtrNative", "structalpaka_1_1traits_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a7af5bae7cc9a1af358bc3a0b6749e408", null ]
+    [ "getPtrNative", "structalpaka_1_1traits_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a7af5bae7cc9a1af358bc3a0b6749e408", null ],
+    [ "getPtrNative", "structalpaka_1_1traits_1_1GetPtrNative_3_01ViewPlainPtr_3_01TDev_00_01TElem_00_01TDim_00_01TIdx_01_4_01_4.html#a96d629f7206e7b6e99e519d2d18a78ed", null ]
 ];

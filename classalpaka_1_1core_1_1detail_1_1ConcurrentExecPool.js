@@ -7,6 +7,6 @@ var classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool =
     [ "enqueueTask", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a99eb1e7c7adb78ceef844da91f5103f5", null ],
     [ "getConcurrentExecutionCount", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a839ac4be88794912a739f4bd061c2083", null ],
     [ "isIdle", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a3569557a259487b5136e46d4aee5585c", null ],
-    [ "operator=", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0", null ],
-    [ "operator=", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ad8bdb3800365bc7d98e151f748e4680e", null ]
+    [ "operator=", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#ad8bdb3800365bc7d98e151f748e4680e", null ],
+    [ "operator=", "classalpaka_1_1core_1_1detail_1_1ConcurrentExecPool.html#a377b2ed2e34a0a7b72f758fdadc83fa0", null ]
 ];

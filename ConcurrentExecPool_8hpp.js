@@ -7,5 +7,5 @@ var ConcurrentExecPool_8hpp =
     [ "TaskPkg", "classalpaka_1_1core_1_1detail_1_1TaskPkg.html", "classalpaka_1_1core_1_1detail_1_1TaskPkg" ],
     [ "TaskPkg< TPromise, TFnObj, void >", "classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html", "classalpaka_1_1core_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4" ],
     [ "ThreadSafeQueue", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue.html", "classalpaka_1_1core_1_1detail_1_1ThreadSafeQueue" ],
-    [ "invokeBothReturnFirst", "ConcurrentExecPool_8hpp.html#a9cf37165a70d8ddde06149e81cb971ba", null ]
+    [ "invokeBothReturnFirst", "ConcurrentExecPool_8hpp.html#ae1ea1d5b9fd8ccc4cb900940abcc8eec", null ]
 ];

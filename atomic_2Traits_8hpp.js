@@ -17,8 +17,8 @@ var atomic_2Traits_8hpp =
     [ "atomicInc", "atomic_2Traits_8hpp.html#a63cfc71f3e70ac355d00d5d72c22c155", null ],
     [ "atomicMax", "atomic_2Traits_8hpp.html#a7e505040bed456f94ca7d67c410b3fdb", null ],
     [ "atomicMin", "atomic_2Traits_8hpp.html#a4f18d8a56f1420bf97c3ae420c50b1ee", null ],
-    [ "atomicOp", "atomic_2Traits_8hpp.html#afc0cabb316d5524d381a35c8c67edf81", null ],
     [ "atomicOp", "atomic_2Traits_8hpp.html#a4c6a0197f66257d016d1250a05030def", null ],
+    [ "atomicOp", "atomic_2Traits_8hpp.html#afc0cabb316d5524d381a35c8c67edf81", null ],
     [ "atomicOr", "atomic_2Traits_8hpp.html#af0db95671aafbe9c7fe480f45d226041", null ],
     [ "atomicSub", "atomic_2Traits_8hpp.html#a3fd6532dee901bf4d991c2912d48b6fc", null ],
     [ "atomicXor", "atomic_2Traits_8hpp.html#a0c8304545460e9c2aedf08a91626185d", null ]

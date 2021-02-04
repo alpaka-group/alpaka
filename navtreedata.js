@@ -1,10 +1,32 @@
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this file.
+
+Copyright (C) 1997-2019 by Dimitri van Heesch
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of version 2 of the GNU General Public License as published by
+the Free Software Foundation
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+@licend  The above is the entire license notice
+for the JavaScript code in this file
+*/
 var NAVTREE =
 [
   [ "alpaka", "index.html", [
-    [ "**alpaka** - Abstraction Library for Parallel Kernel Acceleration", "index.html", null ],
+    [ "<strong>alpaka</strong> - Abstraction Library for Parallel Kernel Acceleration", "index.html", null ],
     [ "Todo List", "todo.html", null ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", "namespacemembers_dup" ],
         [ "Functions", "namespacemembers_func.html", null ],
@@ -26,8 +48,8 @@ var NAVTREE =
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
@@ -48,7 +70,7 @@ var NAVTREEINDEX =
 "classalpaka_1_1gb_1_1IdxGbLinear.html#a942848d1a5b06b5782e78318e9a9808d",
 "dir_570084d6dc638e0a415be1d37eff4e4b.html",
 "mem_2view_2Traits_8hpp.html",
-"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t7ba4f846da63b89c623621cca4a0ff0e.html",
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html",
 "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01float_01_4.html",
 "structalpaka_1_1meta_1_1detail_1_1NdLoop_3_01std_1_1index__sequence_3_01Tdim0_00_01Tdim1_00_01Tdims_8_8_8_01_4_01_4.html",
 "structalpaka_1_1traits_1_1CreateTaskKernel_3_01AccCpuFibers_3_01TDim_00_01TIdx_01_4_00_01TWorkDi72883ed3c71fb747922ee67c6ebbe109.html",

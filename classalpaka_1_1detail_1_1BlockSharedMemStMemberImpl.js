@@ -7,6 +7,6 @@ var classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl =
     [ "alloc", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#ac6a88d34277a48d2616bba727c6ea703", null ],
     [ "free", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#aa8f86a94b5fb991b0d191aa91218331f", null ],
     [ "getLatestVar", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a81a3406f84b0b21d01c62b58df466dad", null ],
-    [ "operator=", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a4db781a225d16be1e5730eb1636682cb", null ],
-    [ "operator=", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a66a1f8ed343a9b18f63f7afc53ec1421", null ]
+    [ "operator=", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a66a1f8ed343a9b18f63f7afc53ec1421", null ],
+    [ "operator=", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html#a4db781a225d16be1e5730eb1636682cb", null ]
 ];
