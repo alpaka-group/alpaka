@@ -45,8 +45,10 @@ namespace alpaka
             static auto declareVar(BlockSharedMemStOmp5 const& smem) -> T&
             {
 #    pragma omp barrier
-                smem.alloc<T>();
-#    pragma omp barrier
+#    pragma omp single
+                {
+                    smem.alloc<T>();
+                }
                 return smem.getLatestVar<T>();
             }
         };
