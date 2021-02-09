@@ -34,7 +34,7 @@ void ALPAKA_FN_ACC kernelFn(Acc const& acc, bool* success, std::int32_t val)
 }
 
 // std::function and std::bind is only allowed on CPU
-#if !BOOST_LANG_CUDA && !BOOST_LANG_HIP
+#if !BOOST_LANG_CUDA && !BOOST_LANG_HIP &&!BOOST_LANG_SYCL
 //-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("stdFunctionKernelIsWorking", "[kernel]", alpaka::test::TestAccs)
 {

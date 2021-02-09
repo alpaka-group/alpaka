@@ -886,3 +886,72 @@ namespace alpaka
     } // namespace traits
 } // namespace alpaka
 #endif
+
+#ifdef ALPAKA_ACC_SYCL_ENABLED
+namespace alpaka
+{
+    namespace test
+    {
+        template <typename TPltf>
+        class EventHostManualTriggerSycl
+        {
+        public:
+            EventHostManualTriggerSycl(DevGenericSycl<TPltf> const&)
+            {}
+
+            EventHostManualTriggerSycl(EventHostManualTriggerSycl const&) = default;
+            auto operator=(EventHostManualTriggerSycl const&) -> EventHostManualTriggerSycl& = default;
+            EventHostManualTriggerSycl(EventHostManualTriggerSycl&&) = default;
+            auto operator=(EventHostManualTriggerSycl&&) -> EventHostManualTriggerSycl& = default;
+            ~EventHostManualTriggerSycl() = default;
+
+            auto trigger()
+            {}
+        };
+
+        namespace traits
+        {
+            template <typename TPltf>
+            struct EventHostManualTriggerType<DevGenericSycl<TPltf>>
+            {
+                using type = alpaka::test::EventHostManualTriggerSycl<TPltf>;
+            };
+
+            template <typename TPltf>
+            struct IsEventHostManualTriggerSupported<DevGenericSycl<TPltf>>
+            {
+                ALPAKA_FN_HOST static auto isSupported(DevGenericSycl<TPltf> const&) -> bool
+                {
+                    return false;
+                }
+            };
+        }
+    }
+
+    namespace traits
+    {
+        template <typename TPltf>
+        struct Enqueue<QueueGenericSyclBlocking<DevGenericSycl<TPltf>>, test::EventHostManualTriggerSycl<TPltf>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(QueueGenericSyclBlocking<DevGenericSycl<TPltf>>& queue, test::EventHostManualTriggerSycl<TPltf>& event) -> void
+            {}
+        };
+
+        template <typename TPltf>
+        struct Enqueue<QueueGenericSyclNonBlocking<DevGenericSycl<TPltf>>, test::EventHostManualTriggerSycl<TPltf>>
+        {
+            ALPAKA_FN_HOST static auto enqueue(QueueGenericSyclNonBlocking<DevGenericSycl<TPltf>>& queue, test::EventHostManualTriggerSycl<TPltf>& event) -> void
+            {}
+        };
+
+        template <typename TPltf>
+        struct IsComplete<test::EventHostManualTriggerSycl<TPltf>>
+        {
+            ALPAKA_FN_HOST static auto isComplete(test::EventHostManualTriggerSycl<TPltf> const& event) -> bool
+            {
+                return true;
+            }
+        };
+    }
+}
+#endif

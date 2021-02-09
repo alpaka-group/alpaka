@@ -12,6 +12,8 @@
 
 #include <catch2/catch.hpp>
 
+#include <iostream>
+
 //-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("getWarpSize", "[dev]", alpaka::test::TestAccs)
 {

@@ -15,8 +15,13 @@
 #include <cassert>
 #include <type_traits>
 
-
-#define ALPAKA_ASSERT(EXPRESSION) assert(EXPRESSION)
+#if defined(BOOST_LANG_SYCL)
+    // using assert in OpenCL kernels forbidden
+    #define ALPAKA_ASSERT(EXPRESSION) static_cast<void>(0)
+    //FIXME: write workaround
+#else
+    #define ALPAKA_ASSERT(EXPRESSION) assert(EXPRESSION)
+#endif
 
 namespace alpaka
 {

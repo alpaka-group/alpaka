@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner
+/* Copyright 2020 Axel Huebl, Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -6,6 +6,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+// These tests use static shared memory which is not supported in SYCL.
+#ifndef ALPAKA_ACC_SYCL_ENABLED
 
 #include <alpaka/atomic/Traits.hpp>
 #include <alpaka/core/Unused.hpp>
@@ -847,3 +850,5 @@ TEMPLATE_LIST_TEST_CASE("atomicOperationsWorking", "[atomic]", TestAccs)
     // TestAtomicOperations<Acc, float>::testAtomicOperations();
     // TestAtomicOperations<Acc, double>::testAtomicOperations();
 }
+
+#endif

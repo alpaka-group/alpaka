@@ -25,14 +25,14 @@ include(${_COMMON_COMPILE_OPTIONS_FILE})
 target_compile_options(${_COMMON_TARGET_NAME} INTERFACE ${ALPAKA_DEV_COMPILE_OPTIONS})
 
 if(MSVC)
-    target_compile_options(${_COMMON_TARGET_NAME} INTERFACE "/wd4996") # This function or variable may be unsafe. Consider using <safe_version> instead.
-    target_compile_options(${_COMMON_TARGET_NAME} INTERFACE "/bigobj")
+    target_compile_options(${_COMMON_TARGET_NAME} PUBLIC "/wd4996") # This function or variable may be unsafe. Consider using <safe_version> instead.
+    target_compile_options(${_COMMON_TARGET_NAME} PUBLIC "/bigobj")
 endif()
 
 if(ALPAKA_ACC_GPU_CUDA_ENABLE OR (ALPAKA_ACC_GPU_HIP_ENABLE AND HIP_PLATFORM MATCHES "nvcc"))
     # CUDA driver API is used by EventHostManualTrigger
-    target_link_libraries(${_COMMON_TARGET_NAME} INTERFACE "${CUDA_CUDA_LIBRARY}")
-    target_compile_definitions(${_COMMON_TARGET_NAME} INTERFACE "CUDA_API_PER_THREAD_DEFAULT_STREAM")
+    target_link_libraries(${_COMMON_TARGET_NAME} PUBLIC "${CUDA_CUDA_LIBRARY}")
+    target_compile_definitions(${_COMMON_TARGET_NAME} PUBLIC "CUDA_API_PER_THREAD_DEFAULT_STREAM")
 endif()
 
 target_link_libraries(${_COMMON_TARGET_NAME} INTERFACE alpaka::alpaka)

@@ -26,8 +26,10 @@ namespace alpaka
         // The CUDA & HIP accelerators do not currently support 4D buffers and 4D acceleration.
 #if !(defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && BOOST_LANG_CUDA)
 #    if !(defined(ALPAKA_ACC_GPU_HIP_ENABLED) && BOOST_LANG_HIP)
+#       if !(defined(ALPAKA_ACC_SYCL_ENABLED) && BOOST_LANG_SYCL)
             ,
             alpaka::DimInt<4u>
+#       endif
 #    endif
 #endif
             >;

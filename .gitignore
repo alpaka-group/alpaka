@@ -17,6 +17,7 @@
 
 # VIM project files
 .vimrc
+tags
 
 # IDE & tmp build
 .idea/
@@ -25,3 +26,6 @@ cmake-build-*/
 *.kdev?
 spack-build*
 build/
+
+# Visual Studio Code
+.vscode

@@ -9,4 +9,4 @@
 
 #include <alpaka/alpaka.hpp>
 
-ALPAKA_FN_HOST_ACC auto mysqrt(double x) -> double;
+ALPAKA_FN_HOST_ACC ALPAKA_FN_EXTERN auto mysqrt(float x) -> float;

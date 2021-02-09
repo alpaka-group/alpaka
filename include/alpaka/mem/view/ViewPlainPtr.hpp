@@ -10,6 +10,7 @@
 #pragma once
 
 #include <alpaka/dev/DevCpu.hpp>
+#include <alpaka/dev/DevGenericSycl.hpp>
 #include <alpaka/dev/DevOacc.hpp>
 #include <alpaka/dev/DevOmp5.hpp>
 #include <alpaka/dev/DevUniformCudaHipRt.hpp>
@@ -268,6 +269,30 @@ namespace alpaka
         };
 #endif
 
+#ifdef ALPAKA_ACC_SYCL_ENABLED
+        //#############################################################################
+        //! The Sycl device CreateStaticDevMemView trait specialization.
+        template<typename TPltf>
+        struct CreateStaticDevMemView<DevGenericSycl<TPltf>>
+        {
+            template<typename TElem,
+                     typename TExtent>
+            static auto createStaticDevMemView(
+                    TElem * pMem,
+                    DevGenericSycl<TPltf> const & dev,
+                    TExtent const & extent)
+            {
+                return alpaka::ViewPlainPtr<
+                    DevGenericSycl<TPltf>,
+                    TElem,
+                    alpaka::Dim<TExtent>,
+                    alpaka::Idx<TExtent>>(
+                        pMem,
+                        dev,
+                        extent);
+            }
+        };
+#endif
         //#############################################################################
         //! The ViewPlainPtr offset get trait specialization.
         template<typename TIdxIntegralConst, typename TDev, typename TElem, typename TDim, typename TIdx>

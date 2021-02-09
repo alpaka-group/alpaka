@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, René Widera
+/* Copyright 2020 Axel Huebl, Benjamin Worpitz, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -6,6 +6,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+// No timing support in SYCL
+#ifndef ALPAKA_ACC_SYCL_ENABLED
 
 #include <alpaka/test/KernelExecutionFixture.hpp>
 #include <alpaka/test/acc/TestAccs.hpp>
@@ -47,3 +50,6 @@ TEMPLATE_LIST_TEST_CASE("clockIsWorking", "[timeClock]", alpaka::test::TestAccs)
 
     REQUIRE(fixture(kernel));
 }
+
+#endif
+

@@ -1,4 +1,4 @@
-/* Copyright 2019 Benjamin Worpitz, Matthias Werner
+/* Copyright 2019 Benjamin Worpitz, Matthias Werner, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -16,6 +16,26 @@
 // BOOST_PREDEF_MAKE_10_VVRRP(V)
 #if !defined(BOOST_PREDEF_MAKE_10_VVRRP)
 #    define BOOST_PREDEF_MAKE_10_VVRRP(V) BOOST_VERSION_NUMBER(((V) / 1000) % 100, ((V) / 10) % 100, (V) % 10)
+#endif
+
+//-------------------------------------SYCL------------------------------------
+// __SYCL_DEVICE_ONLY__ or __SYCL_SINGLE_SOURCE__ have to be supported by a
+// SYCL compiler during compilation.
+#if !defined(BOOST_LANG_SYCL)
+  #if defined(__SYCL_DEVICE_ONLY__)  || defined(__SYCL_SINGLE_SOURCE__)
+    #include <CL/sycl.hpp>
+    #define BOOST_LANG_SYCL BOOST_VERSION_NUMBER_AVAILABLE
+  #endif
+#endif
+
+//-------------------------------------SYCL------------------------------------
+// __SYCL_DEVICE_ONLY__ or __SYCL_SINGLE_SOURCE__ have to be supported by a
+// SYCL compiler during compilation.
+#if !defined(BOOST_LANG_SYCL)
+  #if defined(__SYCL_DEVICE_ONLY__)  || defined(__SYCL_SINGLE_SOURCE__)
+    #include <CL/sycl.hpp>
+    #define BOOST_LANG_SYCL BOOST_VERSION_NUMBER_AVAILABLE
+  #endif
 #endif
 
 //---------------------------------------HIP-----------------------------------

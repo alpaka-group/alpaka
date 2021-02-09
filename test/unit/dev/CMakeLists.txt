@@ -8,17 +8,22 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-set(_TARGET_NAME "dev")
+# SYCL doesn't know warps or similar concepts.
+if(NOT ALPAKA_ACC_SYCL_ENABLE)
 
-append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
+    set(_TARGET_NAME "dev")
 
-alpaka_add_executable(
-    ${_TARGET_NAME}
-    ${_FILES_SOURCE})
-target_link_libraries(
-    ${_TARGET_NAME}
-    PRIVATE common)
+    append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
 
-set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
+    alpaka_add_executable(
+        ${_TARGET_NAME}
+        ${_FILES_SOURCE})
+    target_link_libraries(
+        ${_TARGET_NAME}
+        PRIVATE common)
 
-add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_ALPAKA_TEST_OPTIONS})
+    set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
+
+    add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_ALPAKA_TEST_OPTIONS})
+
+endif()

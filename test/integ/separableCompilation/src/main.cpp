@@ -70,7 +70,7 @@ TEMPLATE_LIST_TEST_CASE("separableCompilation", "[separableCompilation]", TestAc
     using Acc = TestType;
     using Idx = alpaka::Idx<Acc>;
 
-    using Val = double;
+    using Val = float;
 
     using DevAcc = alpaka::Dev<Acc>;
     using PltfAcc = alpaka::Pltf<DevAcc>;

@@ -39,6 +39,30 @@
 #endif
 
 //-----------------------------------------------------------------------------
+//! All functions marked with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC that are exported to / imported from different translation units have to be attributed with
+//! ALPAKA_FN_EXTERN.
+//!
+//! Usage:
+//! ALPAKA_FN_ACC ALPAKA_FN_EXTERN auto add(std::int32_t a, std::int32_t b) -> std::int32_t;
+#ifdef ALPAKA_ACC_SYCL_ENABLED
+#   define ALPAKA_FN_EXTERN SYCL_EXTERNAL
+#else
+#   define ALPAKA_FN_EXTERN
+#endif
+
+//-----------------------------------------------------------------------------
+//! All functions marked with ALPAKA_FN_ACC or ALPAKA_FN_HOST_ACC that are exported to / imported from different translation units have to be attributed with
+//! ALPAKA_FN_EXTERN.
+//!
+//! Usage:
+//! ALPAKA_FN_ACC ALPAKA_FN_EXTERN auto add(std::int32_t a, std::int32_t b) -> std::int32_t;
+#ifdef ALPAKA_ACC_SYCL_ENABLED
+#   define ALPAKA_FN_EXTERN SYCL_EXTERNAL
+#else
+#   define ALPAKA_FN_EXTERN
+#endif
+
+//-----------------------------------------------------------------------------
 //! Disable nvcc warning:
 //! 'calling a __host__ function from __host__ __device__ function.'
 //!

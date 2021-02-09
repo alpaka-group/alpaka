@@ -25,7 +25,7 @@ using Functors
 
 using TestAccFunctorTuples = alpaka::meta::CartesianProduct<std::tuple, TestAccs, Functors>;
 
-using DataTypes = std::tuple<float, double>;
+using DataTypes = std::tuple<float>;//, double>;
 
 template<std::size_t TCapacity>
 struct TestKernel

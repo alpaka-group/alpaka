@@ -7,6 +7,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+// Global (constant) device-side variables are not allowed in SYCL
+#ifndef ALPAKA_ACC_SYCL_ENABLED
+
 #include <alpaka/core/BoostPredef.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/meta/ForEachType.hpp>
@@ -156,3 +159,5 @@ TEMPLATE_LIST_TEST_CASE("staticDeviceMemoryConstant", "[viewStaticAccMem]", Test
     }
 #endif
 }
+
+#endif

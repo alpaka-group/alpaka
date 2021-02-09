@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera
+/* Copyright 2020 Axel Huebl, Benjamin Worpitz, Matthias Werner, René Widera, Jan Stephan
  *
  * This file is part of alpaka.
  *
@@ -6,6 +6,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+// No RNG support in SYCL
+#ifndef ALPAKA_ACC_SYCL_ENABLED
 
 #include <alpaka/rand/Traits.hpp>
 #include <alpaka/test/KernelExecutionFixture.hpp>
@@ -105,3 +108,6 @@ TEMPLATE_LIST_TEST_CASE("defaultRandomGeneratorIsWorking", "[rand]", alpaka::tes
 
     REQUIRE(fixture(kernel));
 }
+
+#endif
+

@@ -1,4 +1,4 @@
-/* Copyright 2019 Axel Huebl, Benjamin Worpitz, Erik Zenker
+/* Copyright 2020 Axel Huebl, Benjamin Worpitz, Erik Zenker, Jan Stephan
  *
  * This file is part of Alpaka.
  *
@@ -6,6 +6,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+// Static shared memory is not supported in SYCL.
+#ifndef ALPAKA_ACC_SYCL_ENABLED
 
 #include <alpaka/block/shared/st/Traits.hpp>
 #include <alpaka/test/Array.hpp>
@@ -125,3 +128,5 @@ TEMPLATE_LIST_TEST_CASE("sameTypeDifferentAddress", "[blockSharedMemSt]", alpaka
 
     REQUIRE(fixture(kernel));
 }
+
+#endif

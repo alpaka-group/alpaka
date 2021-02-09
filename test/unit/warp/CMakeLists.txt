@@ -8,18 +8,24 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-set(_TARGET_NAME "warp")
+# The SYCL sub-group functionality is not yet supported by the available
+# SYCL device drivers.
+if(NOT ALPAKA_ACC_SYCL_ENABLE)
 
-append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
+    set(_TARGET_NAME "warp")
 
-alpaka_add_executable(
-    ${_TARGET_NAME}
-    ${_FILES_SOURCE})
-target_link_libraries(
-    ${_TARGET_NAME}
-    PRIVATE common)
+    append_recursive_files_add_to_src_group("src/" "src/" "cpp" _FILES_SOURCE)
 
-set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
-target_compile_definitions(${_TARGET_NAME} PRIVATE "-DTEST_UNIT_WARP")
+    alpaka_add_executable(
+        ${_TARGET_NAME}
+        ${_FILES_SOURCE})
+    target_link_libraries(
+        ${_TARGET_NAME}
+        PRIVATE common)
 
-add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_ALPAKA_TEST_OPTIONS})
+    set_target_properties(${_TARGET_NAME} PROPERTIES FOLDER "test/unit")
+    target_compile_definitions(${_TARGET_NAME} PRIVATE "-DTEST_UNIT_WARP")
+
+    add_test(NAME ${_TARGET_NAME} COMMAND ${_TARGET_NAME} ${_ALPAKA_TEST_OPTIONS})
+
+endif()
