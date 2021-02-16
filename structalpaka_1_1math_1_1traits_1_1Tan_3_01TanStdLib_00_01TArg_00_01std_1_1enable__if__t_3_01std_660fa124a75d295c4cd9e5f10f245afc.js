@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Tan_3_01TanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_660fa124a75d295c4cd9e5f10f245afc =
 [
-    [ "tan", "structalpaka_1_1math_1_1traits_1_1Tan_3_01TanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_660fa124a75d295c4cd9e5f10f245afc.html#aa36fab496221f748aee298f2e91d1a5c", null ]
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Tan_3_01TanStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_660fa124a75d295c4cd9e5f10f245afc.html#a0cc5ccb7949ffa8fffd242181a2a6e43", null ]
 ];

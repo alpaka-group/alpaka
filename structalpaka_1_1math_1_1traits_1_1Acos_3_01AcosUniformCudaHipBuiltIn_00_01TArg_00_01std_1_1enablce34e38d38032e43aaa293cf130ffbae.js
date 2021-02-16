@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablce34e38d38032e43aaa293cf130ffbae =
 [
-    [ "acos", "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablce34e38d38032e43aaa293cf130ffbae.html#a22a76fded8053f2ed7437ee4ef0f2a2a", null ]
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablce34e38d38032e43aaa293cf130ffbae.html#ad58766905d3423fab045fc186ddb97a5", null ]
 ];

@@ -1,7 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html":[3,0,0,2,1,1],
-"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html#a3f110ab539eb93fe99a35a1c64d86406":[3,0,0,2,1,1,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html":[3,0,0,2,1,2],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t8237c30adda7183862338b011af32336.html#a900abf5fc4d95ddb3beae6e3892f895d":[3,0,0,2,1,2,0],
 "structalpaka_1_1core_1_1detail_1_1AssertValueUnsigned.html":[3,0,0,2,1,3],
@@ -237,17 +235,19 @@ var NAVTREEINDEX8 =
 "structalpaka_1_1math_1_1ConceptMathTan.html":[3,0,0,10,37],
 "structalpaka_1_1math_1_1ConceptMathTrunc.html":[3,0,0,10,38],
 "structalpaka_1_1math_1_1traits_1_1Abs.html":[3,0,0,10,0,0],
+"structalpaka_1_1math_1_1traits_1_1Abs.html#ad4d1f45afc9ccc824b7923a42921248d":[3,0,0,10,0,0,0],
 "structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_d7736916c44035d3b26302de2979b1fb.html":[3,0,0,10,0,1],
-"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_d7736916c44035d3b26302de2979b1fb.html#ad4fd626813dcb7f6cb43149f2bb7bb01":[3,0,0,10,0,1,0],
+"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01std_d7736916c44035d3b26302de2979b1fb.html#a87f8d931207011e616c16498ad3a8c45":[3,0,0,10,0,1,0],
 "structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_4b1d25f4c80116a122051a53f4609bcd.html":[3,0,0,10,0,4],
-"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_4b1d25f4c80116a122051a53f4609bcd.html#a2708bac96a7c23b5a6ff3c9a0cfaeec0":[3,0,0,10,0,4,0],
+"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enable_4b1d25f4c80116a122051a53f4609bcd.html#aa9addf00e3175e9e2223f40d4479225a":[3,0,0,10,0,4,0],
 "structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01double_01_4.html":[3,0,0,10,0,2],
-"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01double_01_4.html#a202ea74fba81a5eaadf885b633e35b94":[3,0,0,10,0,2,0],
+"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01double_01_4.html#ae049b656b5275f32429f2f8768525c23":[3,0,0,10,0,2,0],
 "structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01float_01_4.html":[3,0,0,10,0,3],
-"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01float_01_4.html#ad06908c79f56b89534aaacfdd3aec1c6":[3,0,0,10,0,3,0],
+"structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsUniformCudaHipBuiltIn_00_01float_01_4.html#a7b1bb71e2472aa01fbf77e06a7332cbc":[3,0,0,10,0,3,0],
 "structalpaka_1_1math_1_1traits_1_1Acos.html":[3,0,0,10,0,5],
+"structalpaka_1_1math_1_1traits_1_1Acos.html#aac8f4f14efcf86f19537777966bd938c":[3,0,0,10,0,5,0],
 "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6.html":[3,0,0,10,0,6],
-"structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6.html#ac51dc58a1d1c694cb11898899e2c4b4a":[3,0,0,10,0,6,0],
+"structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6.html#a47231c052560f3d73228b90623b956a3":[3,0,0,10,0,6,0],
 "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablce34e38d38032e43aaa293cf130ffbae.html":[3,0,0,10,0,8],
-"structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablce34e38d38032e43aaa293cf130ffbae.html#a22a76fded8053f2ed7437ee4ef0f2a2a":[3,0,0,10,0,8,0]
+"structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosUniformCudaHipBuiltIn_00_01TArg_00_01std_1_1enablce34e38d38032e43aaa293cf130ffbae.html#ad58766905d3423fab045fc186ddb97a5":[3,0,0,10,0,8,0]
 };

@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Sqrt_3_01SqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st249cdd228f3c91bfec62c7f09cd61b6b =
 [
-    [ "sqrt", "structalpaka_1_1math_1_1traits_1_1Sqrt_3_01SqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st249cdd228f3c91bfec62c7f09cd61b6b.html#adcdc8b22dab64633bbefdb0a034b3025", null ]
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Sqrt_3_01SqrtStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st249cdd228f3c91bfec62c7f09cd61b6b.html#af26ce10826121bb61b5c82104996aa7d", null ]
 ];

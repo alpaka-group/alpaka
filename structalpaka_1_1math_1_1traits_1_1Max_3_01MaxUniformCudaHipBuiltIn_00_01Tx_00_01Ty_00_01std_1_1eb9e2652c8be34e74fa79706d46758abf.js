@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eb9e2652c8be34e74fa79706d46758abf =
 [
-    [ "max", "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eb9e2652c8be34e74fa79706d46758abf.html#af2ca9656f257db366b929edf8820e89d", null ]
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Max_3_01MaxUniformCudaHipBuiltIn_00_01Tx_00_01Ty_00_01std_1_1eb9e2652c8be34e74fa79706d46758abf.html#ad43e9777a1d77266a11924c1f37fcc67", null ]
 ];

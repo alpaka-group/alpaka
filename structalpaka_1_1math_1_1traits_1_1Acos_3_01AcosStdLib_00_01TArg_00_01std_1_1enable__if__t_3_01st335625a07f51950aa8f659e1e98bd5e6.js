@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6 =
 [
-    [ "acos", "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6.html#ac51dc58a1d1c694cb11898899e2c4b4a", null ]
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStdLib_00_01TArg_00_01std_1_1enable__if__t_3_01st335625a07f51950aa8f659e1e98bd5e6.html#a47231c052560f3d73228b90623b956a3", null ]
 ];

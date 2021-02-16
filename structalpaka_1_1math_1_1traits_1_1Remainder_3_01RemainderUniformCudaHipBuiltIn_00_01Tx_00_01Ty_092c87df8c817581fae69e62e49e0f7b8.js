@@ -1,4 +1,4 @@
 var structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderUniformCudaHipBuiltIn_00_01Tx_00_01Ty_092c87df8c817581fae69e62e49e0f7b8 =
 [
-    [ "remainder", "structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderUniformCudaHipBuiltIn_00_01Tx_00_01Ty_092c87df8c817581fae69e62e49e0f7b8.html#a0e5ba84299a6659ce52f6e79443932be", null ]
+    [ "operator()", "structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderUniformCudaHipBuiltIn_00_01Tx_00_01Ty_092c87df8c817581fae69e62e49e0f7b8.html#a04ea620e41a37ed6c16d082a92eb11cd", null ]
 ];
