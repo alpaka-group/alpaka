@@ -33,9 +33,7 @@ namespace alpaka
                 : m_mem(mem)
                 , m_capacity(static_cast<std::uint32_t>(capacity))
             {
-#    ifdef ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
-                ALPAKA_ASSERT((m_mem == nullptr) == (m_capacity == 0u));
-#    endif
+                ALPAKA_ASSERT_OFFLOAD((m_mem == nullptr) == (m_capacity == 0u));
             }
 #else
             BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t) : m_mem(mem)
@@ -58,9 +56,7 @@ namespace alpaka
             {
                 m_allocdBytes = allocPitch<T>();
                 m_allocdBytes += static_cast<std::uint32_t>(sizeof(T));
-#if(defined ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST) && (!defined NDEBUG)
-                ALPAKA_ASSERT(m_allocdBytes <= m_capacity);
-#endif
+                ALPAKA_ASSERT_OFFLOAD(m_allocdBytes <= m_capacity);
             }
 
 #if BOOST_COMP_GNUC
