@@ -34,7 +34,7 @@ struct KernelWithOmpScheduleBase
     }
 
     // Only check when the schedule feature is active
-#if defined _OPENMP && _OPENMP >= 200805 && ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
+#if defined _OPENMP && _OPENMP >= 200805 && defined ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TDim, typename TIdx>
     ALPAKA_FN_ACC auto operator()(alpaka::AccCpuOmp2Blocks<TDim, TIdx> const& acc, bool* success) const -> void
