@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"mem_2view_2Traits_8hpp.html#a077ab1ce794c066edb479ba04db6af60":[4,0,0,0,15,2,0,18],
 "mem_2view_2Traits_8hpp.html#a1a50b36a49510b2c3d5418cbc9c11f61":[4,0,0,0,15,2,0,15],
 "mem_2view_2Traits_8hpp.html#a420138ddf5280874ce5578b2ba294547":[4,0,0,0,15,2,0,19],
 "mem_2view_2Traits_8hpp.html#a629297b80753ae06be95148cff7bd807":[4,0,0,0,15,2,0,17],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "structalpaka_1_1core_1_1RoundUpToPowerOfTwo.html":[3,0,0,2,5],
 "structalpaka_1_1core_1_1align_1_1OptimalAlignment.html":[3,0,0,2,0,0],
 "structalpaka_1_1core_1_1detail_1_1AssertGreaterThan.html":[3,0,0,2,1,0],
-"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html":[3,0,0,2,1,1],
-"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html#a3f110ab539eb93fe99a35a1c64d86406":[3,0,0,2,1,1,0]
+"structalpaka_1_1core_1_1detail_1_1AssertGreaterThan_3_01TLhs_00_01TRhs_00_01std_1_1enable__if__t1e431805f85dfe7d5d37d04854e2251b.html":[3,0,0,2,1,1]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"dir_56fbaa37bfd7590916842c22f2f53177.html":[4,0,0,0,14,15],
 "dir_570084d6dc638e0a415be1d37eff4e4b.html":[4,0,0,0,14,21],
 "dir_5c66db88250596543d60aac5cf05f0a0.html":[4,0,0,0,14,19],
 "dir_6040d481ede9327b5bb8d12cdffd886b.html":[4,0,0,0,14,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "mem_2buf_2omp5_2Set_8hpp_source.html":[4,0,0,0,15,1,2,1],
 "mem_2buf_2uniformCudaHip_2Set_8hpp.html":[4,0,0,0,15,1,3,1],
 "mem_2buf_2uniformCudaHip_2Set_8hpp_source.html":[4,0,0,0,15,1,3,1],
-"mem_2view_2Traits_8hpp.html":[4,0,0,0,15,2,0],
-"mem_2view_2Traits_8hpp.html#a077ab1ce794c066edb479ba04db6af60":[4,0,0,0,15,2,0,18]
+"mem_2view_2Traits_8hpp.html":[4,0,0,0,15,2,0]
 };

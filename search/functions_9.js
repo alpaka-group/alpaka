@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['llround_3461',['llround',['../namespacealpaka_1_1math.html#a6dbd8f303dc354787697c47301eb7a1c',1,'alpaka::math']]],
-  ['log_3462',['log',['../namespacealpaka_1_1math.html#af697280cd49cb87e757965cecf5bfcb5',1,'alpaka::math']]],
-  ['lround_3463',['lround',['../namespacealpaka_1_1math.html#aab46c7252772bedb6798b33155240936',1,'alpaka::math']]]
+  ['llround_3462',['llround',['../namespacealpaka_1_1math.html#a6dbd8f303dc354787697c47301eb7a1c',1,'alpaka::math']]],
+  ['log_3463',['log',['../namespacealpaka_1_1math.html#af697280cd49cb87e757965cecf5bfcb5',1,'alpaka::math']]],
+  ['lround_3464',['lround',['../namespacealpaka_1_1math.html#aab46c7252772bedb6798b33155240936',1,'alpaka::math']]]
 ];

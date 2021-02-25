@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"UniformCudaHip_8hpp.html#a48180eda98f53c8391a17fa921d7b958":[4,0,0,0,3,17,2],
 "UniformCudaHip_8hpp.html#a9d839d8290f20b3b3ad31cf9340f3fe7":[4,0,0,0,3,17,5],
 "UniformCudaHip_8hpp.html#aad1e1de5a82a5f770453aed02324a99f":[4,0,0,0,3,17,0],
 "UniformCudaHip_8hpp.html#ac2be95af06dba4fccfa129ea2ac239cb":[4,0,0,0,3,17,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classalpaka_1_1BlockSharedMemStNoSync.html#a46303f98266207abf8805726e9875842":[3,0,0,52,3],
 "classalpaka_1_1BlockSharedMemStNoSync.html#a49aaa395a8754e5de175e7c54ed66f66":[3,0,0,52,6],
 "classalpaka_1_1BlockSharedMemStNoSync.html#a838a46e8b1cf0091cc1365cb2c5b6a76":[3,0,0,52,0],
-"classalpaka_1_1BlockSharedMemStNoSync.html#a99821a766816986bd1ef3c06fed89876":[3,0,0,52,2],
-"classalpaka_1_1BlockSharedMemStNoSync.html#ad852e6f4a7faf3f050df7b424254d91a":[3,0,0,52,1]
+"classalpaka_1_1BlockSharedMemStNoSync.html#a99821a766816986bd1ef3c06fed89876":[3,0,0,52,2]
 };

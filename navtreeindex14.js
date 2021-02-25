@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"structalpaka_1_1traits_1_1PltfType_3_01TaskKernelCpuThreads_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html#aa868ed1589e33282ac91f702592a5409":[3,0,0,15,457,0],
 "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdfd923213c49744a75c9f1ef4acceaeec.html":[3,0,0,15,458],
 "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelGpuUniformCudaHipRt_3_01TAcc_00_01TDim_00_01TIdfd923213c49744a75c9f1ef4acceaeec.html#ae3a20dd63d777a11162d7c522944a5f2":[3,0,0,15,458,0],
 "structalpaka_1_1traits_1_1PltfType_3_01TaskKernelOmp5_3_01TDim_00_01TIdx_00_01TKernelFnObj_00_01TArgs_8_8_8_01_4_01_4.html":[3,0,0,15,459],

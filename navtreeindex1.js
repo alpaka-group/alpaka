@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"EventGenericThreads_8hpp_source.html":[4,0,0,0,8,1],
 "EventOacc_8hpp.html":[4,0,0,0,8,2],
 "EventOacc_8hpp_source.html":[4,0,0,0,8,2],
 "EventOmp5_8hpp.html":[4,0,0,0,8,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "TruncUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,14,23,2],
 "UniformCudaHip_8hpp.html":[4,0,0,0,3,17],
 "UniformCudaHip_8hpp.html#a3543744ca91201d363b4c4008f9bc589":[4,0,0,0,3,17,1],
-"UniformCudaHip_8hpp.html#a4036712750530f0a63110f5bff29bb65":[4,0,0,0,3,17,3],
-"UniformCudaHip_8hpp.html#a48180eda98f53c8391a17fa921d7b958":[4,0,0,0,3,17,2]
+"UniformCudaHip_8hpp.html#a4036712750530f0a63110f5bff29bb65":[4,0,0,0,3,17,3]
 };
