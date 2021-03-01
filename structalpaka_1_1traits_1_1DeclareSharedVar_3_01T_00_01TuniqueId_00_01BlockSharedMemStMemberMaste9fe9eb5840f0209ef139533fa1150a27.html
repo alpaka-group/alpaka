@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>alpaka: alpaka::traits::GetDynSharedMem&lt; T, BlockSharedMemDynAlignedAlloc &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::traits::DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStMemberMasterSync&lt; TDataAlignBytes &gt; &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaste9fe9eb5840f0209ef139533fa1150a27.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,43 +85,43 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1GetDynShared
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4-members.html">List of all members</a>  </div>
+<a href="structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMastef07d9f0b47b6fd686c1f8223ab8753ba.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::traits::GetDynSharedMem&lt; T, BlockSharedMemDynAlignedAlloc &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::traits::DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStMemberMasterSync&lt; TDataAlignBytes &gt; &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="BlockSharedMemDynAlignedAlloc_8hpp_source.html">BlockSharedMemDynAlignedAlloc.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="BlockSharedMemStMemberMasterSync_8hpp_source.html">BlockSharedMemStMemberMasterSync.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9f9026e6ebde20c326a17ade663f6a9f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4.html#a9f9026e6ebde20c326a17ade663f6a9f">getMem</a> (<a class="el" href="classalpaka_1_1BlockSharedMemDynAlignedAlloc.html">BlockSharedMemDynAlignedAlloc</a> const &amp;blockSharedMemDyn) -&gt; T *</td></tr>
-<tr class="separator:a9f9026e6ebde20c326a17ade663f6a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f4fa9a00978572360b6e98f9a61122c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaste9fe9eb5840f0209ef139533fa1150a27.html#a6f4fa9a00978572360b6e98f9a61122c">declareVar</a> (<a class="el" href="classalpaka_1_1BlockSharedMemStMemberMasterSync.html">BlockSharedMemStMemberMasterSync</a>&lt; TDataAlignBytes &gt; const &amp;blockSharedMemSt) -&gt; T &amp;</td></tr>
+<tr class="separator:a6f4fa9a00978572360b6e98f9a61122c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename T&gt;<br />
-struct alpaka::traits::GetDynSharedMem&lt; T, BlockSharedMemDynAlignedAlloc &gt;</h3>
+<div class="textblock"><h3>template&lt;typename T, std::size_t TDataAlignBytes, std::size_t TuniqueId&gt;<br />
+struct alpaka::traits::DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStMemberMasterSync&lt; TDataAlignBytes &gt; &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynAlignedAlloc_8hpp_source.html#l00062">62</a> of file <a class="el" href="BlockSharedMemDynAlignedAlloc_8hpp_source.html">BlockSharedMemDynAlignedAlloc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemStMemberMasterSync_8hpp_source.html#l00055">55</a> of file <a class="el" href="BlockSharedMemStMemberMasterSync_8hpp_source.html">BlockSharedMemStMemberMasterSync.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9f9026e6ebde20c326a17ade663f6a9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f9026e6ebde20c326a17ade663f6a9f">&#9670;&nbsp;</a></span>getMem()</h2>
+<a id="a6f4fa9a00978572360b6e98f9a61122c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f4fa9a00978572360b6e98f9a61122c">&#9670;&nbsp;</a></span>declareVar()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;typename T , std::size_t TDataAlignBytes, std::size_t TuniqueId&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="structalpaka_1_1traits_1_1GetDynSharedMem.html">alpaka::traits::GetDynSharedMem</a>&lt; T, <a class="el" href="classalpaka_1_1BlockSharedMemDynAlignedAlloc.html">BlockSharedMemDynAlignedAlloc</a> &gt;::getMem </td>
+          <td class="memname">static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto <a class="el" href="structalpaka_1_1traits_1_1DeclareSharedVar.html">alpaka::traits::DeclareSharedVar</a>&lt; T, TuniqueId, <a class="el" href="classalpaka_1_1BlockSharedMemStMemberMasterSync.html">BlockSharedMemStMemberMasterSync</a>&lt; TDataAlignBytes &gt; &gt;::declareVar </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1BlockSharedMemDynAlignedAlloc.html">BlockSharedMemDynAlignedAlloc</a> const &amp;&#160;</td>
-          <td class="paramname"><em>blockSharedMemDyn</em></td><td>)</td>
-          <td> -&gt; T*
+          <td class="paramtype"><a class="el" href="classalpaka_1_1BlockSharedMemStMemberMasterSync.html">BlockSharedMemStMemberMasterSync</a>&lt; TDataAlignBytes &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>blockSharedMemSt</em></td><td>)</td>
+          <td> -&gt; T&amp;
             </td>
         </tr>
       </table>
@@ -132,20 +132,20 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BlockSharedMemDynAlignedAlloc_8hpp_source.html#l00065">65</a> of file <a class="el" href="BlockSharedMemDynAlignedAlloc_8hpp_source.html">BlockSharedMemDynAlignedAlloc.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BlockSharedMemStMemberMasterSync_8hpp_source.html#l00058">58</a> of file <a class="el" href="BlockSharedMemStMemberMasterSync_8hpp_source.html">BlockSharedMemStMemberMasterSync.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/runner/work/alpaka/alpaka/include/alpaka/block/shared/dyn/<a class="el" href="BlockSharedMemDynAlignedAlloc_8hpp_source.html">BlockSharedMemDynAlignedAlloc.hpp</a></li>
+<li>/home/runner/work/alpaka/alpaka/include/alpaka/block/shared/st/<a class="el" href="BlockSharedMemStMemberMasterSync_8hpp_source.html">BlockSharedMemStMemberMasterSync.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1GetDynSharedMem_3_01T_00_01BlockSharedMemDynAlignedAlloc_01_4.html">GetDynSharedMem&lt; T, BlockSharedMemDynAlignedAlloc &gt;</a></li>
-    <li class="footer">Generated on Thu Feb 25 2021 07:30:46 for alpaka by
+    <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaste9fe9eb5840f0209ef139533fa1150a27.html">DeclareSharedVar&lt; T, TuniqueId, BlockSharedMemStMemberMasterSync&lt; TDataAlignBytes &gt; &gt;</a></li>
+    <li class="footer">Generated on Mon Mar 1 2021 16:08:53 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,20 +1,15 @@
 var dir_7be937b0b17efdbd2f169f14f5c2db8e =
 [
-    [ "BlockSharedMemStMasterSync.hpp", "BlockSharedMemStMasterSync_8hpp.html", [
-      [ "BlockSharedMemStMasterSync", "classalpaka_1_1BlockSharedMemStMasterSync.html", "classalpaka_1_1BlockSharedMemStMasterSync" ],
-      [ "DeclareSharedVar< T, TuniqueId, BlockSharedMemStMasterSync >", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4.html", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMasterSync_01_4" ],
-      [ "FreeSharedVars< BlockSharedMemStMasterSync >", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMasterSync_01_4.html", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMasterSync_01_4" ]
-    ] ],
+    [ "detail", "dir_545d22f27db2615a487beca7f9179f9d.html", "dir_545d22f27db2615a487beca7f9179f9d" ],
     [ "BlockSharedMemStMember.hpp", "BlockSharedMemStMember_8hpp.html", [
       [ "BlockSharedMemStMember", "classalpaka_1_1BlockSharedMemStMember.html", null ],
-      [ "BlockSharedMemStMemberImpl", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl.html", "classalpaka_1_1detail_1_1BlockSharedMemStMemberImpl" ],
       [ "DeclareSharedVar< T, TuniqueId, BlockSharedMemStMember< TDataAlignBytes > >", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4" ],
       [ "FreeSharedVars< BlockSharedMemStMember< TDataAlignBytes > >", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4.html", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMember_3_01TDataAlignBytes_01_4_01_4" ]
     ] ],
-    [ "BlockSharedMemStNoSync.hpp", "BlockSharedMemStNoSync_8hpp.html", [
-      [ "BlockSharedMemStNoSync", "classalpaka_1_1BlockSharedMemStNoSync.html", "classalpaka_1_1BlockSharedMemStNoSync" ],
-      [ "DeclareSharedVar< T, TuniqueId, BlockSharedMemStNoSync >", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4.html", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStNoSync_01_4" ],
-      [ "FreeSharedVars< BlockSharedMemStNoSync >", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStNoSync_01_4.html", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStNoSync_01_4" ]
+    [ "BlockSharedMemStMemberMasterSync.hpp", "BlockSharedMemStMemberMasterSync_8hpp.html", [
+      [ "BlockSharedMemStMemberMasterSync", "classalpaka_1_1BlockSharedMemStMemberMasterSync.html", "classalpaka_1_1BlockSharedMemStMemberMasterSync" ],
+      [ "DeclareSharedVar< T, TuniqueId, BlockSharedMemStMemberMasterSync< TDataAlignBytes > >", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaste9fe9eb5840f0209ef139533fa1150a27.html", "structalpaka_1_1traits_1_1DeclareSharedVar_3_01T_00_01TuniqueId_00_01BlockSharedMemStMemberMaste9fe9eb5840f0209ef139533fa1150a27" ],
+      [ "FreeSharedVars< BlockSharedMemStMemberMasterSync< TDataAlignBytes > >", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMemberMasterSync_3_01TDataAlignBytes_01_4_01_4.html", "structalpaka_1_1traits_1_1FreeSharedVars_3_01BlockSharedMemStMemberMasterSync_3_01TDataAlignBytes_01_4_01_4" ]
     ] ],
     [ "BlockSharedMemStOmp5.hpp", "BlockSharedMemStOmp5_8hpp.html", [
       [ "BlockSharedMemStOmp5", "classalpaka_1_1BlockSharedMemStOmp5.html", null ],
