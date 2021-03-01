@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.6.1] - 2021-XX-XX
+### Bug Fixes:
+- CI: use ubuntu-18.04 for gcc-5 and gcc-6 builds #1252
+- fix OpenMP 5 shared memory allocation #1254
+
+### Misc
+- add ALPAKA_ASSERT_OFFLOAD Macro #1260
+
 
 ## [0.6.0] - 2021-01-20
 ### Compatibility Changes:
