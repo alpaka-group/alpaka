@@ -62,7 +62,7 @@ Accelerator Back-ends
 | Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |TBB|TBB 2.2+|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
 |CUDA|CUDA 9.0+|NVIDIA GPUs|parallel (undefined)|parallel (lock-step within warps)|
-|HIP(clang)|[HIP 3.5+](https://github.com/ROCm-Developer-Tools/HIP)|AMD GPUs |parallel (undefined)|parallel (lock-step within warps)|
+|HIP(clang)|[HIP 4.0+](https://github.com/ROCm-Developer-Tools/HIP)|AMD GPUs |parallel (undefined)|parallel (lock-step within warps)|
 
 
 Supported Compilers
@@ -81,7 +81,7 @@ This library uses C++14 (or newer when available).
 |TBB|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|
 |CUDA (nvcc)|:white_check_mark: <br/> (CUDA 9.0-11.2)|:white_check_mark: <br/> (CUDA 9.2-11.2) |:white_check_mark: <br/> (CUDA 10.1-11.2) |:white_check_mark: <br/> (CUDA 11.0-11.2)|:white_check_mark: <br/> (CUDA 11.1-CUDA 11.2)|:white_check_mark: <br/> (CUDA 9.1-11.2)|:white_check_mark: <br/> (CUDA 10.1-11.2)|:white_check_mark: <br/> (CUDA 10.1-11.2)|:white_check_mark: <br/> (CUDA 10.1-11.2)|:white_check_mark: <br/> (CUDA 10.1-11.2)|:white_check_mark: <br/> (CUDA 11.0-11.2)|:white_check_mark: <br/> (CUDA 11.2)|:x:|:white_check_mark: <br/> (CUDA 10.1-11.2)|
 |CUDA (clang) | - | - | - | - | - | - | - | :white_check_mark: <br/> (CUDA 9.0) | :white_check_mark: <br/> (CUDA 9.0-9.2) | :white_check_mark: <br/> (CUDA 9.0-10.0) | :white_check_mark: <br/> (CUDA 9.2-10.1) | :white_check_mark: <br/> (CUDA 9.2-10.1) | - | - |
-|[HIP](https://alpaka.readthedocs.io/en/latest/install/HIP.html) (clang)|:white_check_mark: |:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:| - | - |
+|[HIP-4.0.1](https://alpaka.readthedocs.io/en/latest/install/HIP.html) (clang)|:x: |:x:|:x:|:white_check_mark:|:x:|:x:|:x:|:x:|:x:|:x:|:x:|:x:| - | - |
 
 
 Other compilers or combinations marked with :x: in the table above may work but are not tested in CI and are therefore not explicitly supported.
