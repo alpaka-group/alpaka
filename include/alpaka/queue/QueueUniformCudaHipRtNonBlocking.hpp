@@ -160,12 +160,6 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(QueueUniformCudaHipRtNonBlocking& queue, TTask const& task) -> void
             {
-#    if BOOST_COMP_HIP
-                // NOTE: hip callbacks are not blocking the stream.
-                // @todo remove this assert when hipStreamAddCallback is fixed
-                static_assert(meta::DependentFalseType<TTask>::value, "Callbacks are not supported for HIP-clang");
-#    endif
-
                 auto pCallbackSynchronizationData = std::make_shared<CallbackSynchronizationData>();
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(StreamAddCallback)(
                     queue.m_spQueueImpl->m_UniformCudaHipQueue,

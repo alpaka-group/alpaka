@@ -26,13 +26,6 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE AND NOT ALPAKA_ACC_GPU_HIP_ONLY_MODE AND ALPAKA_HIP
     message(FATAL_ERROR "HIP back-end must be used together with ALPAKA_ACC_GPU_HIP_ONLY_MODE")
 endif()
 
-if(ALPAKA_ACC_GPU_HIP_ENABLE AND ALPAKA_HIP_PLATFORM MATCHES "clang")
-    message(WARNING
-        "The HIP back-end is currently experimental."
-        "alpaka HIP backend compiled with clang does not support callback functions."
-        )
-endif()
-
 option(ALPAKA_ACC_GPU_CUDA_ENABLE "Enable the CUDA GPU back-end" OFF)
 option(ALPAKA_ACC_GPU_CUDA_ONLY_MODE "Only back-ends using CUDA can be enabled in this mode (This allows to mix alpaka code with native CUDA code)." OFF)
 
@@ -550,7 +543,7 @@ endif()
 if(ALPAKA_ACC_GPU_HIP_ENABLE)
 
     if(NOT DEFINED ALPAKA_HIP_VERSION)
-        set(ALPAKA_HIP_VERSION 4.o)
+        set(ALPAKA_HIP_VERSION 4.0)
     endif()
 
     if(ALPAKA_HIP_VERSION VERSION_LESS 4.0)
