@@ -27,8 +27,7 @@ then
     # tzdata is installed by software-properties-common but it requires some special handling
     if [[ "$(cat /etc/os-release)" == *"20.04"* ]]
     then
-        export DEBIAN_FRONTEND=noninteractive
-        travis_retry sudo apt-get --quiet --allow-unauthenticated --no-install-recommends install tzdata
+        travis_retry sudo DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --allow-unauthenticated --no-install-recommends install tzdata
     fi
 
     # software-properties-common: 'add-apt-repository' and certificates for wget https download
