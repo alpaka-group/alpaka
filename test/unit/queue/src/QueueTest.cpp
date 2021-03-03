@@ -59,13 +59,11 @@ TEMPLATE_LIST_TEST_CASE("queueIsInitiallyEmpty", "[queue]", TestQueues)
     CHECK(alpaka::empty(f.m_queue));
 }
 
-#if !BOOST_COMP_HIP // HIP-clang is currently not supporting callbacks
-
 //-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("queueCallbackIsWorking", "[queue]", TestQueues)
 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
-#    if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
+#if !(BOOST_COMP_CLANG_CUDA && BOOST_ARCH_PTX)
     using DevQueue = TestType;
     using Fixture = alpaka::test::QueueTestFixture<DevQueue>;
     Fixture f;
@@ -75,7 +73,7 @@ TEMPLATE_LIST_TEST_CASE("queueCallbackIsWorking", "[queue]", TestQueues)
     alpaka::enqueue(f.m_queue, [&]() { promise.set_value(true); });
 
     LOOPED_CHECK(30, 100, promise.get_future().get());
-#    endif
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -162,5 +160,3 @@ TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQ
     firstTaskFinishedFuture.get();
     secondTaskFinishedFuture.get();
 }
-
-#endif
