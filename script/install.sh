@@ -64,5 +64,11 @@ then
     ./script/install_tbb.sh
 fi
 
+# HIP
+if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ]
+then
+    ./script/install_hip.sh
+fi
+
 ./script/install_boost.sh
 

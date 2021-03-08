@@ -84,16 +84,22 @@ fi
 # HIP
 if [ "${ALPAKA_CI_INSTALL_HIP}" == "ON" ]
 then
-: "${ALPAKA_CI_HIP_ROOT_DIR?'ALPAKA_CI_HIP_ROOT_DIR must be specified'}"
+    : "${ALPAKA_CI_HIP_ROOT_DIR?'ALPAKA_CI_HIP_ROOT_DIR must be specified'}"
 
-    # HIP
-    # HIP_PATH required by HIP tools
-    export HIP_PATH=/opt/rocm
+    # ROCM_PATH required by HIP tools
+    export ROCM_PATH=/opt/rocm
+    export HIP_PATH=/opt/rocm/hip
 
-    export PATH=${HIP_PATH}/bin:$PATH
-    export LD_LIBRARY_PATH=${HIP_PATH}/lib64:${HIP_PATH}/hiprand/lib:${LD_LIBRARY_PATH}
-    export CMAKE_PREFIX_PATH=${HIP_PATH}:${HIP_PATH}/hiprand:${CMAKE_PREFIX_PATH:-}
-    export CMAKE_MODULE_PATH=${HIP_PATH}/hip/cmake
+    export HIP_LIB_PATH=${HIP_PATH}/lib
+
+    export PATH=${ROCM_PATH}/bin:$PATH
+    export PATH=${ROCM_PATH}/llvm/bin:$PATH
+    # for better compatibility use HIP always together with the AMD clang++ compiler
+    export CXX=clang++
+    export LD_LIBRARY_PATH=${ROCM_PATH}/lib64:${ROCM_PATH}/hiprand/lib:${LD_LIBRARY_PATH}:${ROCM_PATH}/llvm/lib
+    export CMAKE_PREFIX_PATH=${ROCM_PATH}:${ROCM_PATH}/hiprand:${CMAKE_PREFIX_PATH:-}
+    export CMAKE_MODULE_PATH=${HIP_PATH}/cmake
+
     # calls nvcc or clang
     which hipcc
     hipcc --version
@@ -102,7 +108,6 @@ then
     hipconfig -v
     # print newline as previous command does not do this
     echo
-
 fi
 
 # stdlib
