@@ -23,18 +23,24 @@
 //#############################################################################
 //! Kernel to illustrate specialization for a particular accelerator
 //!
-//! It has a general operator() implementation and a specialized one for the CUDA accelerator.
-//! When running the kernel on a CUDA device, the specialized version of operator() is called.
-//! Otherwise the general version is called.
+//! It has a generic operator() implementation and an overload for the CUDA accelerator.
+//! When running the kernel on a CUDA device, the corresponding overload of operator() is called.
+//! Otherwise the generic version is called.
 //! The same technique can be applied for any function called from inside the kernel,
 //! thus allowing specialization of only relevant part of the code.
 //! It can be useful for optimization or accessing specific functionality not abstracted by alpaka.
+//!
+//! This kernel demonstrates the simplest way to achieve the effect by function overloading.
+//! Note that it does not perform specialization (in C++ template meaning) of function templates.
+//! We use the word "specialization" as it represents a case of having a special version for a particular accelerator.
+//! One could apply a similar technique by having an additional class template parametrized by the accelerator type.
+//! For such a case, both template specialization and function overloading of the methods can be employed.
 struct Kernel
 {
     //-----------------------------------------------------------------------------
     //! Implementation for the general case
     //!
-    //! It will be called when no specialization is a better fit.
+    //! It will be called when no overload is a better match.
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc) const
     {
@@ -44,15 +50,15 @@ struct Kernel
             printf("Running the general kernel implementation\n");
     }
 
-    //! Simple partial specialization for the CUDA accelerator
+    //! Simple overload to have a special version for the CUDA accelerator
     //!
     //! We have to guard it with #ifdef as the types of alpaka accelerators are only conditionally available.
-    //! Specialization for other accelerators is similar, with another template name instead of AccGpuCudaRt.
+    //! Overloading for other accelerators is similar, with another template name instead of AccGpuCudaRt.
 #ifdef ALPAKA_ACC_GPU_CUDA_ENABLED
     template<typename TDim, typename TIdx>
     ALPAKA_FN_ACC auto operator()(alpaka::AccGpuCudaRt<TDim, TIdx> const& acc) const
     {
-        // This specialization is used when the kernel is run on the CUDA accelerator.
+        // This overload is used when the kernel is run on the CUDA accelerator.
         // So inside we can use both alpaka and native CUDA directly.
         // For simplicity assume 1d thread indexing
         auto const globalThreadIdx = blockIdx.x * gridDim.x + threadIdx.x;
