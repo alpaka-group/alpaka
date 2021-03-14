@@ -98,12 +98,12 @@ namespace alpaka
             struct Shfl<WarpSingleThread>
             {
                 //-------------------------------------------------------------
-                static auto shfl(warp::WarpSingleThread const& /*warp*/, int val, int srcLane)
+                static auto shfl(warp::WarpSingleThread const& /*warp*/, int val, int /*srcLane*/)
                 {
                     return val;
                 }
                 //-------------------------------------------------------------
-                static auto shfl(warp::WarpSingleThread const& /*warp*/, float val, int srcLane)
+                static auto shfl(warp::WarpSingleThread const& /*warp*/, float val, int /*srcLane*/)
                 {
                     return val;
                 }
