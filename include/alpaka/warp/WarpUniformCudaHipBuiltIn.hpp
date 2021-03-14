@@ -145,6 +145,31 @@ namespace alpaka
 #    endif
                 }
             };
+
+            //#################################################################
+            template<>
+            struct Shfl<WarpUniformCudaHipBuiltIn>
+            {
+                //-------------------------------------------------------------
+                __device__ static auto shfl(warp::WarpUniformCudaHipBuiltIn const& warp, float val, int srcLane)
+                    -> float
+                {
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                    return __shfl_sync(activemask(warp), val, srcLane, getSize(warp));
+#    else
+                    return __shfl(val, srcLane, getSize(warp));
+#    endif
+                }
+                //-------------------------------------------------------------
+                __device__ static auto shfl(warp::WarpUniformCudaHipBuiltIn const& warp, int val, int srcLane) -> int
+                {
+#    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
+                    return __shfl_sync(activemask(warp), val, srcLane, getSize(warp));
+#    else
+                    return __shfl(val, srcLane, getSize(warp));
+#    endif
+                }
+            };
         } // namespace traits
     } // namespace warp
 } // namespace alpaka
