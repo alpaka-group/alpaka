@@ -50,6 +50,11 @@ namespace alpaka
             struct Ballot;
 
             //#############################################################################
+            //! The shfl warp swizzling trait.
+            template<typename TWarp, typename TSfinae = void>
+            struct Shfl;
+
+            //#############################################################################
             //! The active mask trait.
             template<typename TWarp, typename TSfinae = void>
             struct Activemask;
@@ -149,6 +154,33 @@ namespace alpaka
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
             return traits::Ballot<ImplementationBase>::ballot(warp, predicate);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Broadcasts data from one thread to all members of the warp.
+        //! Similar to MPI_Bcast, but using srcLane instead of root.
+        //!
+        //! \tparam TWarp The warp implementation type.
+        //! \param  warp The warp implementation.
+        //! \param  value The value to broadcast (only meaningful from threadIdx == srcLane)
+        //! \param  srcLane The source lane sending value.
+        //! \return val from the thread index srcLane.
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<typename TWarp>
+        ALPAKA_FN_ACC auto shfl(TWarp const& warp, int value, int srcLane)
+        {
+            using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+            return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! shfl for float vals
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<typename TWarp>
+        ALPAKA_FN_ACC auto shfl(TWarp const& warp, float value, int srcLane)
+        {
+            using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
+            return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane);
         }
     } // namespace warp
 } // namespace alpaka

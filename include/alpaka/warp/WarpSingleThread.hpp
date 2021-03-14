@@ -92,6 +92,22 @@ namespace alpaka
                     return predicate ? 1u : 0u;
                 }
             };
+
+            //#################################################################
+            template<>
+            struct Shfl<WarpSingleThread>
+            {
+                //-------------------------------------------------------------
+                static auto shfl(warp::WarpSingleThread const& /*warp*/, int val, int srcLane)
+                {
+                    return val;
+                }
+                //-------------------------------------------------------------
+                static auto shfl(warp::WarpSingleThread const& /*warp*/, float val, int srcLane)
+                {
+                    return val;
+                }
+            };
         } // namespace traits
     } // namespace warp
 } // namespace alpaka
