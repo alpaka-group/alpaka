@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov, David M. Rogers
  *
  * This file is part of Alpaka.
  *
@@ -98,12 +98,20 @@ namespace alpaka
             struct Shfl<WarpSingleThread>
             {
                 //-------------------------------------------------------------
-                static auto shfl(warp::WarpSingleThread const& /*warp*/, int val, int /*srcLane*/)
+                static auto shfl(
+                    warp::WarpSingleThread const& /*warp*/,
+                    std::int32_t val,
+                    std::int32_t /*srcLane*/,
+                    std::int32_t /*width*/)
                 {
                     return val;
                 }
                 //-------------------------------------------------------------
-                static auto shfl(warp::WarpSingleThread const& /*warp*/, float val, int /*srcLane*/)
+                static auto shfl(
+                    warp::WarpSingleThread const& /*warp*/,
+                    float val,
+                    std::int32_t /*srcLane*/,
+                    std::int32_t /*width*/)
                 {
                     return val;
                 }

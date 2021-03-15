@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov, David M. Rogers
  *
  * This file is part of Alpaka.
  *
@@ -157,30 +157,48 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Broadcasts data from one thread to all members of the warp.
-        //! Similar to MPI_Bcast, but using srcLane instead of root.
+        //! Exchange data between threads within a warp.
         //!
-        //! \tparam TWarp The warp implementation type.
-        //! \param  warp The warp implementation.
-        //! \param  value The value to broadcast (only meaningful from threadIdx == srcLane)
-        //! \param  srcLane The source lane sending value.
+        //! Effectively executes:
+        //!
+        //!     __shared__ int32_t values[warpsize];
+        //!     values[threadIdx.x] = value;
+        //!     __syncthreads();
+        //!     return values[(srcLane + width*floor(threadIdx.x/width))%width];
+        //!
+        //! However, it does not use shared memory.
+        //!
+        //! Notes:
+        //! * The programmer must ensure that all threads calling this
+        //!   function (and the srcLane) are executing the same line of code.
+        //!   In particular it is not portable to write if(a) {shfl} else {shfl}.
+        //!
+        //! * Commonly used with width = warpsize (the default), (returns values[srcLane])
+        //!
+        //! * Width must be a power of 2.
+        //!
+        //! \tparam TWarp   warp implementation type
+        //! \param  warp    warp implementation
+        //! \param  value   value to broadcast (only meaningful from threadIdx == srcLane)
+        //! \param  srcLane source lane sending value
+        //! \param  width   number of threads receiving a single value
         //! \return val from the thread index srcLane.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TWarp>
-        ALPAKA_FN_ACC auto shfl(TWarp const& warp, int value, int srcLane)
+        ALPAKA_FN_ACC auto shfl(TWarp const& warp, std::int32_t value, std::int32_t srcLane, std::int32_t width = 0)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-            return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane);
+            return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
         }
 
         //-----------------------------------------------------------------------------
         //! shfl for float vals
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TWarp>
-        ALPAKA_FN_ACC auto shfl(TWarp const& warp, float value, int srcLane)
+        ALPAKA_FN_ACC auto shfl(TWarp const& warp, float value, std::int32_t srcLane, std::int32_t width = 0)
         {
             using ImplementationBase = concepts::ImplementationBase<ConceptWarp, TWarp>;
-            return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane);
+            return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
         }
     } // namespace warp
 } // namespace alpaka

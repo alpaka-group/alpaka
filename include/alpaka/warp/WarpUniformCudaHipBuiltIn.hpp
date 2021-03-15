@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov, David M. Rogers
  *
  * This file is part of Alpaka.
  *
@@ -151,22 +151,29 @@ namespace alpaka
             struct Shfl<WarpUniformCudaHipBuiltIn>
             {
                 //-------------------------------------------------------------
-                __device__ static auto shfl(warp::WarpUniformCudaHipBuiltIn const& warp, float val, int srcLane)
-                    -> float
+                __device__ static auto shfl(
+                    warp::WarpUniformCudaHipBuiltIn const& warp,
+                    float val,
+                    int srcLane,
+                    std::int32_t width) -> float
                 {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return __shfl_sync(activemask(warp), val, srcLane, getSize(warp));
+                    return __shfl_sync(activemask(warp), val, srcLane, width);
 #    else
-                    return __shfl(val, srcLane, getSize(warp));
+                    return __shfl(val, srcLane, width);
 #    endif
                 }
                 //-------------------------------------------------------------
-                __device__ static auto shfl(warp::WarpUniformCudaHipBuiltIn const& warp, int val, int srcLane) -> int
+                __device__ static auto shfl(
+                    warp::WarpUniformCudaHipBuiltIn const& warp,
+                    std::int32_t val,
+                    int srcLane,
+                    std::int32_t width) -> std::int32_t
                 {
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
-                    return __shfl_sync(activemask(warp), val, srcLane, getSize(warp));
+                    return __shfl_sync(activemask(warp), val, srcLane, width);
 #    else
-                    return __shfl(val, srcLane, getSize(warp));
+                    return __shfl(val, srcLane, width);
 #    endif
                 }
             };

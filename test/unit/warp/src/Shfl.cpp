@@ -30,7 +30,7 @@ public:
 
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 12, 0) == 12);
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 42, -1) == 42);
-        // ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 3.3f, 0) == 3.3f);
+        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 3.3f, 0) == 3.3f);
     }
 };
 
@@ -55,8 +55,22 @@ public:
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 42, 0) == 42);
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, 0) == 0);
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, 1) == 1);
-        // fails -- apparently this case wraps, but should probably be undefined
-        // ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, -1) == threadIdxInWarp);
+        // Note the CUDA and HIP API-s differ on lane wrapping, but both agree it should not segfault
+        // https://github.com/ROCm-Developer-Tools/HIP-CPU/issues/14
+        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 5, -1) == 5);
+
+        // Test various widths
+        for(int width = 1; width < warpExtent; width *= 2)
+        {
+            for(int idx = 0; idx < width; idx++)
+            {
+                int off = width * (threadIdxInWarp / width);
+                ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, idx, width) == idx + off);
+                ALPAKA_CHECK(
+                    *success,
+                    alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx, width) == 4.0f - float(idx + off));
+            }
+        }
 
         // Some threads quit the kernel to test that the warp operations
         // properly operate on the active threads only
