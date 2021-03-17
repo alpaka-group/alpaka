@@ -87,6 +87,7 @@ namespace alpaka
                 }
             };
         } // namespace detail
+
         //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
         //! The loops are nested in the order given by the index_sequence with the first element being the outermost
         //! and the last index the innermost loop.
@@ -121,6 +122,7 @@ namespace alpaka
 
             detail::NdLoop<std::index_sequence<Tdims...>>::template ndLoop(idx, extent, f);
         }
+
         //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
         //! The loops are nested from index zero outmost to index (dim-1) innermost.
         //!

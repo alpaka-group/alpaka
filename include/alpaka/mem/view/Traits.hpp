@@ -112,6 +112,7 @@ namespace alpaka
     {
         return traits::GetPtrNative<TView>::getPtrNative(view);
     }
+
     //! Gets the native pointer of the memory view.
     //!
     //! \param view The memory view.
@@ -132,6 +133,7 @@ namespace alpaka
     {
         return traits::GetPtrDev<TView, TDev>::getPtrDev(view, dev);
     }
+
     //! Gets the pointer to the view on the given device.
     //!
     //! \param view The memory view.

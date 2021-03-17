@@ -68,6 +68,7 @@ namespace alpaka
     {
         return traits::BufAlloc<TElem, Dim<TExtent>, TIdx, TDev>::allocBuf(dev, extent);
     }
+
     //! Maps the buffer into the memory of the given device.
     //!
     //! \tparam TBuf The buffer type.
@@ -78,7 +79,9 @@ namespace alpaka
     ALPAKA_FN_HOST auto map(TBuf& buf, TDev const& dev) -> void
     {
         return traits::Map<TBuf, TDev>::map(buf, dev);
-    }    //! Unmaps the buffer from the memory of the given device.
+    }
+
+    //! Unmaps the buffer from the memory of the given device.
     //!
     //! \tparam TBuf The buffer type.
     //! \tparam TDev The device type.
@@ -88,7 +91,9 @@ namespace alpaka
     ALPAKA_FN_HOST auto unmap(TBuf& buf, TDev const& dev) -> void
     {
         return traits::Unmap<TBuf, TDev>::unmap(buf, dev);
-    }    //! Pins the buffer.
+    }
+
+    //! Pins the buffer.
     //!
     //! \tparam TBuf The buffer type.
     //! \param buf The buffer to pin in the device memory.
@@ -97,6 +102,7 @@ namespace alpaka
     {
         return traits::Pin<TBuf>::pin(buf);
     }
+
     //! Unpins the buffer.
     //!
     //! \tparam TBuf The buffer type.
@@ -106,6 +112,7 @@ namespace alpaka
     {
         return traits::Unpin<TBuf>::unpin(buf);
     }
+
     //! The pin state of the buffer.
     //!
     //! \tparam TBuf The buffer type.
@@ -115,6 +122,7 @@ namespace alpaka
     {
         return traits::IsPinned<TBuf>::isPinned(buf);
     }
+
     //! Prepares the buffer for non-blocking copy operations, e.g. pinning if
     //! non-blocking copy between a cpu and a cuda device is wanted
     //!

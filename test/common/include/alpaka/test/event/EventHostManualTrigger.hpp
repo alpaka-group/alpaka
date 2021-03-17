@@ -21,10 +21,9 @@ namespace alpaka
     {
         namespace traits
         {
-            //!
             template<typename TDev>
             struct EventHostManualTriggerType;
-            //!
+
             template<typename TDev>
             struct IsEventHostManualTriggerSupported;
         } // namespace traits
@@ -65,7 +64,6 @@ namespace alpaka
                     //! Move assignment operator.
                     auto operator=(EventHostManualTriggerCpuImpl&&) -> EventHostManualTriggerCpuImpl& = delete;
 
-                    //!
                     void trigger()
                     {
                         {
@@ -119,7 +117,6 @@ namespace alpaka
                 return !((*this) == rhs);
             }
 
-            //!
             void trigger()
             {
                 m_spEventImpl->trigger();
@@ -131,21 +128,18 @@ namespace alpaka
 
         namespace traits
         {
-            //!
             template<>
             struct EventHostManualTriggerType<alpaka::DevCpu>
             {
                 using type = alpaka::test::EventHostManualTriggerCpu<DevCpu>;
             };
 #ifdef ALPAKA_ACC_ANY_BT_OMP5_ENABLED
-            //!
             template<>
             struct EventHostManualTriggerType<alpaka::DevOmp5>
             {
                 using type = alpaka::test::EventHostManualTriggerCpu<alpaka::DevOmp5>;
             };
 #elif defined(ALPAKA_ACC_ANY_BT_OACC_ENABLED)
-            //!
             template<>
             struct EventHostManualTriggerType<alpaka::DevOacc>
             {
@@ -210,7 +204,6 @@ namespace alpaka
             }
         };
 
-        //!
         template<typename TDev>
         struct Enqueue<QueueGenericThreadsNonBlocking<TDev>, test::EventHostManualTriggerCpu<TDev>>
         {
@@ -256,7 +249,7 @@ namespace alpaka
 #endif
             }
         };
-        //!
+
         template<typename TDev>
         struct Enqueue<QueueGenericThreadsBlocking<TDev>, test::EventHostManualTriggerCpu<TDev>>
         {
