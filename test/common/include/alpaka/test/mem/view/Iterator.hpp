@@ -18,7 +18,6 @@ namespace alpaka
     //! The test specifics.
     namespace test
     {
-        //!
         namespace traits
         {
             // \tparam T Type to conditionally make const.
