@@ -13,13 +13,11 @@
 
 #include <catch2/catch.hpp>
 
-//#############################################################################
 class BlockSyncTestKernel
 {
 public:
     static const std::uint8_t gridThreadExtentPerDim = 4u;
 
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
@@ -53,12 +51,10 @@ namespace alpaka
 {
     namespace traits
     {
-        //#############################################################################
         //! The trait for getting the size of the block shared dynamic memory for a kernel.
         template<typename TAcc>
         struct BlockSharedMemDynSizeBytes<BlockSyncTestKernel, TAcc>
         {
-            //-----------------------------------------------------------------------------
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec>
             ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(
@@ -78,7 +74,6 @@ namespace alpaka
     } // namespace traits
 } // namespace alpaka
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("synchronize", "[blockSync]", alpaka::test::TestAccs)
 {
     using Acc = TestType;

@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library exp.
         class ExpStdLib : public concepts::Implements<ConceptMathExp, ExpStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library exp trait specialization.
             template<typename TArg>
             struct Exp<ExpStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

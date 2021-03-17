@@ -18,14 +18,12 @@
 #include <typeinfo>
 #include <vector>
 
-//#############################################################################
 //! A kernel using atomicOp, syncBlockThreads, getDynSharedMem, getIdx, getWorkDiv and global memory to compute a
 //! (useless) result. \tparam TnumUselessWork The number of useless calculations done in each kernel execution.
 template<typename TnumUselessWork, typename Val>
 class SharedMemKernel
 {
 public:
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, Val* const puiBlockRetVals) const -> void
@@ -93,12 +91,10 @@ namespace alpaka
 {
     namespace traits
     {
-        //#############################################################################
         //! The trait for getting the size of the block shared dynamic memory for a kernel.
         template<typename TnumUselessWork, typename Val, typename TAcc>
         struct BlockSharedMemDynSizeBytes<SharedMemKernel<TnumUselessWork, Val>, TAcc>
         {
-            //-----------------------------------------------------------------------------
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec, typename... TArgs>
             ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(

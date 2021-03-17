@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The sincos trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct SinCos
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the sine and cosine (measured in radians).
         //!
         //! \tparam T The type of the object specializing SinCos.

@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library log.
         class LogStdLib : public concepts::Implements<ConceptMathLog, LogStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library log trait specialization.
             template<typename TArg>
             struct Log<LogStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

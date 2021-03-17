@@ -16,11 +16,9 @@
 
 namespace alpaka
 {
-    //#############################################################################
     //! The addition function object.
     struct AtomicAdd
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -39,11 +37,9 @@ namespace alpaka
 #endif
         }
     };
-    //#############################################################################
     //! The subtraction function object.
     struct AtomicSub
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -62,11 +58,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The minimum function object.
     struct AtomicMin
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -78,11 +72,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The maximum function object.
     struct AtomicMax
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -94,11 +86,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The exchange function object.
     struct AtomicExch
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -110,11 +100,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The increment function object.
     struct AtomicInc
     {
-        //-----------------------------------------------------------------------------
         //! Increments up to value, then reset to 0.
         //!
         //! \return The old value of addr.
@@ -128,11 +116,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The decrement function object.
     struct AtomicDec
     {
-        //-----------------------------------------------------------------------------
         //! Decrement down to 0, then reset to value.
         //!
         //! \return The old value of addr.
@@ -146,11 +132,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The and function object.
     struct AtomicAnd
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -162,11 +146,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The or function object.
     struct AtomicOr
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -178,11 +160,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The exclusive or function object.
     struct AtomicXor
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>
@@ -194,11 +174,9 @@ namespace alpaka
             return old;
         }
     };
-    //#############################################################################
     //! The compare and swap function object.
     struct AtomicCas
     {
-        //-----------------------------------------------------------------------------
         //! \return The old value of addr.
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename T>

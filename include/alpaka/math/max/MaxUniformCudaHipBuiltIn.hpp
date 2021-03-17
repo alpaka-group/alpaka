@@ -45,7 +45,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA built in max.
         class MaxUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMax, MaxUniformCudaHipBuiltIn>
         {
@@ -53,7 +52,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library integral max trait specialization.
             template<typename Tx, typename Ty>
             struct Max<
@@ -69,7 +67,6 @@ namespace alpaka
                     return ::max(x, y);
                 }
             };
-            //#############################################################################
             //! The CUDA mixed integral floating point max trait specialization.
             template<typename Tx, typename Ty>
             struct Max<

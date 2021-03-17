@@ -23,11 +23,9 @@ namespace alpaka
         {
         };
 
-        //-----------------------------------------------------------------------------
         //! The math traits.
         namespace traits
         {
-            //#############################################################################
             //! The abs trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Abs
@@ -42,7 +40,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the absolute value.
         //!
         //! \tparam T The type of the object specializing Abs.

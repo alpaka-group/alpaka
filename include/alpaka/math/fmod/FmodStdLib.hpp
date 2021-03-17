@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library fmod.
         class FmodStdLib : public concepts::Implements<ConceptMathFmod, FmodStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library fmod trait specialization.
             template<typename Tx, typename Ty>
             struct Fmod<

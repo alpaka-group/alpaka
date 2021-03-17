@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library pow.
         class PowStdLib : public concepts::Implements<ConceptMathPow, PowStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library pow trait specialization.
             template<typename TBase, typename TExp>
             struct Pow<

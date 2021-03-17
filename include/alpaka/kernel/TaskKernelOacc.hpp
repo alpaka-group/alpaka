@@ -43,13 +43,11 @@
 
 namespace alpaka
 {
-    //#############################################################################
     //! The OpenACC accelerator execution task.
     template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelOacc final : public WorkDivMembers<TDim, TIdx>
     {
     public:
-        //-----------------------------------------------------------------------------
         template<typename TWorkDiv>
         ALPAKA_FN_HOST TaskKernelOacc(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
             : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
@@ -60,18 +58,12 @@ namespace alpaka
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                 "The work division and the execution task have to be of the same dimensionality!");
         }
-        //-----------------------------------------------------------------------------
         TaskKernelOacc(TaskKernelOacc const& other) = default;
-        //-----------------------------------------------------------------------------
         TaskKernelOacc(TaskKernelOacc&& other) = default;
-        //-----------------------------------------------------------------------------
         auto operator=(TaskKernelOacc const&) -> TaskKernelOacc& = default;
-        //-----------------------------------------------------------------------------
         auto operator=(TaskKernelOacc&&) -> TaskKernelOacc& = default;
-        //-----------------------------------------------------------------------------
         ~TaskKernelOacc() = default;
 
-        //-----------------------------------------------------------------------------
         //! Executes the kernel function object.
         ALPAKA_FN_HOST auto operator()(const DevOacc& dev) const -> void
         {
@@ -169,7 +161,6 @@ namespace alpaka
 
     namespace traits
     {
-        //#############################################################################
         //! The OpenACC execution task accelerator type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct AccType<TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -177,7 +168,6 @@ namespace alpaka
             using type = AccOacc<TDim, TIdx>;
         };
 
-        //#############################################################################
         //! The OpenACC execution task device type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct DevType<TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -185,7 +175,6 @@ namespace alpaka
             using type = DevOacc;
         };
 
-        //#############################################################################
         //! The OpenACC execution task dimension getter trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct DimType<TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -193,7 +182,6 @@ namespace alpaka
             using type = TDim;
         };
 
-        //#############################################################################
         //! The OpenACC execution task platform type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct PltfType<TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -201,7 +189,6 @@ namespace alpaka
             using type = PltfOacc;
         };
 
-        //#############################################################################
         //! The OpenACC execution task idx type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct IdxType<TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -229,7 +216,6 @@ namespace alpaka
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct Enqueue<QueueOaccNonBlocking, TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueOaccNonBlocking& queue,
                 TaskKernelOacc<TDim, TIdx, TKernelFnObj, TArgs...> const& task) -> void

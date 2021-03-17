@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The asin trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Asin
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc sine.
         //!
         //! The valid real argument range is [-1.0, 1.0]. For other values

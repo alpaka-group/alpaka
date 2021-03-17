@@ -17,7 +17,6 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
     //! The thread warp specifics
     namespace warp
     {
@@ -25,42 +24,34 @@ namespace alpaka
         {
         };
 
-        //-----------------------------------------------------------------------------
         //! The warp traits.
         namespace traits
         {
-            //#############################################################################
             //! The warp size trait.
             template<typename TWarp, typename TSfinae = void>
             struct GetSize;
 
-            //#############################################################################
             //! The all warp vote trait.
             template<typename TWarp, typename TSfinae = void>
             struct All;
 
-            //#############################################################################
             //! The any warp vote trait.
             template<typename TWarp, typename TSfinae = void>
             struct Any;
 
-            //#############################################################################
             //! The ballot warp vote trait.
             template<typename TWarp, typename TSfinae = void>
             struct Ballot;
 
-            //#############################################################################
             //! The shfl warp swizzling trait.
             template<typename TWarp, typename TSfinae = void>
             struct Shfl;
 
-            //#############################################################################
             //! The active mask trait.
             template<typename TWarp, typename TSfinae = void>
             struct Activemask;
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Returns warp size.
         //!
         //! \tparam TWarp The warp implementation type.
@@ -73,7 +64,6 @@ namespace alpaka
             return traits::GetSize<ImplementationBase>::getSize(warp);
         }
 
-        //-----------------------------------------------------------------------------
         //! Returns a 32- or 64-bit unsigned integer (depending on the
         //! accelerator) whose Nth bit is set if and only if the Nth thread
         //! of the warp is active.
@@ -95,7 +85,6 @@ namespace alpaka
             return traits::Activemask<ImplementationBase>::activemask(warp);
         }
 
-        //-----------------------------------------------------------------------------
         //! Evaluates predicate for all active threads of the warp and returns
         //! non-zero if and only if predicate evaluates to non-zero for all of them.
         //!
@@ -114,7 +103,6 @@ namespace alpaka
             return traits::All<ImplementationBase>::all(warp, predicate);
         }
 
-        //-----------------------------------------------------------------------------
         //! Evaluates predicate for all active threads of the warp and returns
         //! non-zero if and only if predicate evaluates to non-zero for any of them.
         //!
@@ -133,7 +121,6 @@ namespace alpaka
             return traits::Any<ImplementationBase>::any(warp, predicate);
         }
 
-        //-----------------------------------------------------------------------------
         //! Evaluates predicate for all non-exited threads in a warp and returns
         //! a 32- or 64-bit unsigned integer (depending on the accelerator)
         //! whose Nth bit is set if and only if predicate evaluates to non-zero
@@ -156,7 +143,6 @@ namespace alpaka
             return traits::Ballot<ImplementationBase>::ballot(warp, predicate);
         }
 
-        //-----------------------------------------------------------------------------
         //! Exchange data between threads within a warp.
         //!
         //! Effectively executes:
@@ -191,7 +177,6 @@ namespace alpaka
             return traits::Shfl<ImplementationBase>::shfl(warp, value, srcLane, width ? width : getSize(warp));
         }
 
-        //-----------------------------------------------------------------------------
         //! shfl for float vals
         ALPAKA_NO_HOST_ACC_WARNING
         template<typename TWarp>

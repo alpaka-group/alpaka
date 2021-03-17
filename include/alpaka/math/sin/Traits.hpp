@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The sin trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Sin
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the sine (measured in radians).
         //!
         //! \tparam T The type of the object specializing Sin.

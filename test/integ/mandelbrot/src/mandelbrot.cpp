@@ -21,43 +21,36 @@
 
 //#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
 
-//#############################################################################
 //! Complex Number.
 template<typename T>
 class SimpleComplex
 {
 public:
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC SimpleComplex(T const& a, T const& b) : r(a), i(b)
     {
     }
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_INLINE
     ALPAKA_FN_HOST_ACC auto absSq() const -> T
     {
         return r * r + i * i;
     }
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(SimpleComplex const& a) -> SimpleComplex
     {
         return SimpleComplex(r * a.r - i * a.i, i * a.r + r * a.i);
     }
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(float const& a) -> SimpleComplex
     {
         return SimpleComplex(r * a, i * a);
     }
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(SimpleComplex const& a) -> SimpleComplex
     {
         return SimpleComplex(r + a.r, i + a.i);
     }
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(float const& a) -> SimpleComplex
     {
@@ -69,13 +62,11 @@ public:
     T i;
 };
 
-//#############################################################################
 //! A Mandelbrot kernel.
 class MandelbrotKernel
 {
 public:
 #ifndef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
-    //-----------------------------------------------------------------------------
     ALPAKA_FN_HOST_ACC MandelbrotKernel()
     {
         // Banding can be prevented by a continuous color functions.
@@ -98,7 +89,6 @@ public:
     }
 #endif
 
-    //-----------------------------------------------------------------------------
     //! \param acc The accelerator to be executed on.
     //! \param pColors The output image.
     //! \param numRows The number of rows in the image
@@ -146,7 +136,6 @@ public:
 #endif
         }
     }
-    //-----------------------------------------------------------------------------
     //! \return The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value
     //! of 2.
     //!     Only does maxIterations steps and returns maxIterations if the value would be higher.
@@ -165,7 +154,6 @@ public:
         return maxIterations;
     }
 
-    //-----------------------------------------------------------------------------
     ALPAKA_FN_HOST_ACC static auto convertRgbSingleToBgra(
         std::uint32_t const& r,
         std::uint32_t const& g,
@@ -175,7 +163,6 @@ public:
     }
 
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
-    //-----------------------------------------------------------------------------
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     ALPAKA_NO_HOST_ACC_WARNING
@@ -193,7 +180,6 @@ public:
         return convertRgbSingleToBgra(r, g, b);
     }
 #else
-    //-----------------------------------------------------------------------------
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     ALPAKA_FN_ACC auto iterationCountToRepeatedColor(std::uint32_t const& iterationCount) const -> std::uint32_t
@@ -205,7 +191,6 @@ public:
 #endif
 };
 
-//-----------------------------------------------------------------------------
 //! Writes the buffer color data to a file.
 template<typename TBuf>
 auto writeTgaColorImage(std::string const& fileName, TBuf const& bufRgba) -> void

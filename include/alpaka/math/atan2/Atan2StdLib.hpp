@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library atan2.
         class Atan2StdLib : public concepts::Implements<ConceptMathAtan2, Atan2StdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library atan2 trait specialization.
             template<typename Ty, typename Tx>
             struct Atan2<

@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The pow trait.
             template<typename T, typename TBase, typename TExp, typename TSfinae = void>
             struct Pow
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the value of base raised to the power exp.
         //!
         //! Valid real arguments for base are non-negative. For other values

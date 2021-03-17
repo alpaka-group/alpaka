@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library tan.
         class TanStdLib : public concepts::Implements<ConceptMathTan, TanStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library tan trait specialization.
             template<typename TArg>
             struct Tan<TanStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

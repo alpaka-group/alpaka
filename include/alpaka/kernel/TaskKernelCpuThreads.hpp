@@ -42,24 +42,20 @@
 
 namespace alpaka
 {
-    //#############################################################################
     //! The CPU threads execution task.
     template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelCpuThreads final : public WorkDivMembers<TDim, TIdx>
     {
     private:
-        //#############################################################################
         //! The type given to the ConcurrentExecPool for yielding the current thread.
         struct ThreadPoolYield
         {
-            //-----------------------------------------------------------------------------
             //! Yields the current thread.
             ALPAKA_FN_HOST static auto yield() -> void
             {
                 std::this_thread::yield();
             }
         };
-        //#############################################################################
         // When using the thread pool the threads are yielding because this is faster.
         // Using condition variables and going to sleep is very costly for real threads.
         // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
@@ -70,7 +66,6 @@ namespace alpaka
             ThreadPoolYield>; // The type yielding the current concurrent execution.
 
     public:
-        //-----------------------------------------------------------------------------
         template<typename TWorkDiv>
         ALPAKA_FN_HOST TaskKernelCpuThreads(TWorkDiv&& workDiv, TKernelFnObj const& kernelFnObj, TArgs&&... args)
             : WorkDivMembers<TDim, TIdx>(std::forward<TWorkDiv>(workDiv))
@@ -81,18 +76,12 @@ namespace alpaka
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                 "The work division and the execution task have to be of the same dimensionality!");
         }
-        //-----------------------------------------------------------------------------
         TaskKernelCpuThreads(TaskKernelCpuThreads const&) = default;
-        //-----------------------------------------------------------------------------
         TaskKernelCpuThreads(TaskKernelCpuThreads&&) = default;
-        //-----------------------------------------------------------------------------
         auto operator=(TaskKernelCpuThreads const&) -> TaskKernelCpuThreads& = default;
-        //-----------------------------------------------------------------------------
         auto operator=(TaskKernelCpuThreads&&) -> TaskKernelCpuThreads& = default;
-        //-----------------------------------------------------------------------------
         ~TaskKernelCpuThreads() = default;
 
-        //-----------------------------------------------------------------------------
         //! Executes the kernel function object.
         ALPAKA_FN_HOST auto operator()() const -> void
         {
@@ -143,7 +132,6 @@ namespace alpaka
         }
 
     private:
-        //-----------------------------------------------------------------------------
         //! The function executed for each grid block.
         ALPAKA_FN_HOST static auto gridBlockExecHost(
             AccCpuThreads<TDim, TIdx>& acc,
@@ -183,7 +171,6 @@ namespace alpaka
             // After a block has been processed, the shared memory has to be deleted.
             freeSharedVars(acc);
         }
-        //-----------------------------------------------------------------------------
         //! The function executed for each block thread on the host.
         ALPAKA_FN_HOST static auto blockThreadExecHost(
             AccCpuThreads<TDim, TIdx>& acc,
@@ -212,7 +199,6 @@ namespace alpaka
             (void) boundBlockThreadExecAcc;
 #    endif
         }
-        //-----------------------------------------------------------------------------
         //! The thread entry point on the accelerator.
         ALPAKA_FN_HOST static auto blockThreadExecAcc(
             AccCpuThreads<TDim, TIdx>& acc,
@@ -255,7 +241,6 @@ namespace alpaka
 
     namespace traits
     {
-        //#############################################################################
         //! The CPU threads execution task accelerator type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct AccType<TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -263,7 +248,6 @@ namespace alpaka
             using type = AccCpuThreads<TDim, TIdx>;
         };
 
-        //#############################################################################
         //! The CPU threads execution task device type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct DevType<TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -271,7 +255,6 @@ namespace alpaka
             using type = DevCpu;
         };
 
-        //#############################################################################
         //! The CPU threads execution task dimension getter trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct DimType<TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -279,7 +262,6 @@ namespace alpaka
             using type = TDim;
         };
 
-        //#############################################################################
         //! The CPU threads execution task platform type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct PltfType<TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -287,7 +269,6 @@ namespace alpaka
             using type = PltfCpu;
         };
 
-        //#############################################################################
         //! The CPU threads execution task idx type trait specialization.
         template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct IdxType<TaskKernelCpuThreads<TDim, TIdx, TKernelFnObj, TArgs...>>

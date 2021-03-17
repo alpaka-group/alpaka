@@ -15,15 +15,12 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
     //! The test specifics.
     namespace test
     {
-        //-----------------------------------------------------------------------------
         //!
         namespace traits
         {
-            //#############################################################################
             // \tparam T Type to conditionally make const.
             // \tparam TSource Type to mimic the constness of.
             template<typename T, typename TSource>
@@ -35,7 +32,6 @@ namespace alpaka
 #    pragma GCC diagnostic ignored                                                                                    \
         "-Wcast-align" // "cast from 'Byte*' to 'Elem*' increases required alignment of target type"
 #endif
-            //#############################################################################
             template<typename TView, typename TSfinae = void>
             class IteratorView
             {
@@ -45,7 +41,6 @@ namespace alpaka
                 using Elem = MimicConst<alpaka::Elem<TViewDecayed>, TView>;
 
             public:
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST IteratorView(TView& view, Idx const idx)
                     : m_nativePtr(alpaka::getPtrNative(view))
                     , m_currentIdx(idx)
@@ -54,26 +49,22 @@ namespace alpaka
                 {
                 }
 
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST IteratorView(TView& view) : IteratorView(view, 0)
                 {
                 }
 
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC auto operator++() -> IteratorView&
                 {
                     ++m_currentIdx;
                     return *this;
                 }
 
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC auto operator--() -> IteratorView&
                 {
                     --m_currentIdx;
                     return *this;
                 }
 
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC auto operator++(int) -> IteratorView
                 {
                     IteratorView iterCopy = *this;
@@ -81,7 +72,6 @@ namespace alpaka
                     return iterCopy;
                 }
 
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC auto operator--(int) -> IteratorView
                 {
                     IteratorView iterCopy = *this;
@@ -89,21 +79,18 @@ namespace alpaka
                     return iterCopy;
                 }
 
-                //-----------------------------------------------------------------------------
                 template<typename TIter>
                 ALPAKA_FN_HOST_ACC auto operator==(TIter& other) const -> bool
                 {
                     return m_currentIdx == other.m_currentIdx;
                 }
 
-                //-----------------------------------------------------------------------------
                 template<typename TIter>
                 ALPAKA_FN_HOST_ACC auto operator!=(TIter& other) const -> bool
                 {
                     return m_currentIdx != other.m_currentIdx;
                 }
 
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC auto operator*() const -> Elem&
                 {
                     using Dim1 = alpaka::DimInt<1>;
@@ -149,22 +136,18 @@ namespace alpaka
 #    pragma GCC diagnostic pop
 #endif
 
-            //#############################################################################
             template<typename TView, typename TSfinae = void>
             struct Begin
             {
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto begin(TView& view) -> IteratorView<TView>
                 {
                     return IteratorView<TView>(view);
                 }
             };
 
-            //#############################################################################
             template<typename TView, typename TSfinae = void>
             struct End
             {
-                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto end(TView& view) -> IteratorView<TView>
                 {
                     auto extents = alpaka::extent::getExtentVec(view);
@@ -173,18 +156,15 @@ namespace alpaka
             };
         } // namespace traits
 
-        //#############################################################################
         template<typename TView>
         using Iterator = traits::IteratorView<TView>;
 
-        //-----------------------------------------------------------------------------
         template<typename TView>
         ALPAKA_FN_HOST auto begin(TView& view) -> Iterator<TView>
         {
             return traits::Begin<TView>::begin(view);
         }
 
-        //-----------------------------------------------------------------------------
         template<typename TView>
         ALPAKA_FN_HOST auto end(TView& view) -> Iterator<TView>
         {

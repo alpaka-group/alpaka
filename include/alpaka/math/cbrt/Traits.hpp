@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The cbrt trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Cbrt
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the cbrt.
         //!
         //! \tparam T The type of the object specializing Cbrt.

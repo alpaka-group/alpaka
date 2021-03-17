@@ -20,7 +20,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library max.
         class MaxStdLib : public concepts::Implements<ConceptMathMax, MaxStdLib>
         {
@@ -28,7 +27,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library integral max trait specialization.
             template<typename Tx, typename Ty>
             struct Max<MaxStdLib, Tx, Ty, std::enable_if_t<std::is_integral<Tx>::value && std::is_integral<Ty>::value>>
@@ -39,7 +37,6 @@ namespace alpaka
                     return std::max(x, y);
                 }
             };
-            //#############################################################################
             //! The standard library mixed integral floating point max trait specialization.
             template<typename Tx, typename Ty>
             struct Max<

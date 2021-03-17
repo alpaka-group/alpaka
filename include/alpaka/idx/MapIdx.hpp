@@ -19,16 +19,13 @@ namespace alpaka
 {
     namespace detail
     {
-        //#############################################################################
         //! Maps a linear index to a N dimensional index.
         template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TSfinae = void>
         struct MapIdx;
-        //#############################################################################
         //! Maps a N dimensional index to the same N dimensional index.
         template<std::size_t TidxDim>
         struct MapIdx<TidxDim, TidxDim>
         {
-            //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
             // \param extent Spatial size to map the index to.
@@ -44,12 +41,10 @@ namespace alpaka
                 return idx;
             }
         };
-        //#############################################################################
         //! Maps a 1 dimensional index to a N dimensional index.
         template<std::size_t TidxDimOut>
         struct MapIdx<TidxDimOut, 1u, std::enable_if_t<TidxDimOut != 1u>>
         {
-            //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
             // \param extent Spatial size to map the index to
@@ -82,12 +77,10 @@ namespace alpaka
                 return idxNd;
             }
         };
-        //#############################################################################
         //! Maps a N dimensional index to a 1 dimensional index.
         template<std::size_t TidxDimIn>
         struct MapIdx<1u, TidxDimIn, std::enable_if_t<TidxDimIn != 1u>>
         {
-            //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
             // \param extent Spatial size to map the index to.
@@ -108,7 +101,6 @@ namespace alpaka
         };
     } // namespace detail
 
-    //#############################################################################
     //! Maps a N dimensional index to a N dimensional position.
     //!
     //! \tparam TidxDimOut Dimension of the index vector to map to.
@@ -129,16 +121,13 @@ namespace alpaka
 
     namespace detail
     {
-        //#############################################################################
         //! Maps a linear index to a N dimensional index assuming a buffer wihtout padding.
         template<std::size_t TidxDimOut, std::size_t TidxDimIn, typename TSfinae = void>
         struct MapIdxPitchBytes;
-        //#############################################################################
         //! Maps a N dimensional index to the same N dimensional index assuming a buffer wihtout padding.
         template<std::size_t TidxDim>
         struct MapIdxPitchBytes<TidxDim, TidxDim>
         {
-            //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
             // \param pitch Spatial pitch (in elems) to map the index to
@@ -154,12 +143,10 @@ namespace alpaka
                 return idx;
             }
         };
-        //#############################################################################
         //! Maps a 1 dimensional index to a N dimensional index assuming a buffer wihtout padding.
         template<std::size_t TidxDimOut>
         struct MapIdxPitchBytes<TidxDimOut, 1u, typename std::enable_if<TidxDimOut != 1u>::type>
         {
-            //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
             // \param pitch Spatial pitch (in elems) to map the index to
@@ -185,12 +172,10 @@ namespace alpaka
                 return idxNd;
             }
         };
-        //#############################################################################
         //! Maps a N dimensional index to a 1 dimensional index assuming a buffer wihtout padding.
         template<std::size_t TidxDimIn>
         struct MapIdxPitchBytes<1u, TidxDimIn, typename std::enable_if<TidxDimIn != 1u>::type>
         {
-            //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param idx Idx to be mapped.
             // \param pitch Spatial pitch (in elems) to map the index to
@@ -212,7 +197,6 @@ namespace alpaka
         };
     } // namespace detail
 
-    //#############################################################################
     //! Maps a N dimensional index to a N dimensional position based on
     //! pitch in a buffer without padding or a byte buffer.
     //!

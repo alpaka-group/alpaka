@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library round.
         class RoundStdLib : public concepts::Implements<ConceptMathRound, RoundStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library round trait specialization.
             template<typename TArg>
             struct Round<RoundStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
@@ -38,7 +36,6 @@ namespace alpaka
                     return std::round(arg);
                 }
             };
-            //#############################################################################
             //! The standard library round trait specialization.
             template<typename TArg>
             struct Lround<RoundStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>
@@ -49,7 +46,6 @@ namespace alpaka
                     return std::lround(arg);
                 }
             };
-            //#############################################################################
             //! The standard library round trait specialization.
             template<typename TArg>
             struct Llround<RoundStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

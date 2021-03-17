@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The cos trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Cos
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the cosine (measured in radians).
         //!
         //! \tparam T The type of the object specializing Cos.

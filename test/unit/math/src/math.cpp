@@ -46,7 +46,6 @@ struct TestKernel
     }
 };
 
-//#############################################################################
 template<typename TAcc, typename TFunctor>
 struct TestTemplate
 {

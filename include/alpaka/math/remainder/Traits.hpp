@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The remainder trait.
             template<typename T, typename Tx, typename Ty, typename TSfinae = void>
             struct Remainder
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the IEEE remainder of the floating point division operation x/y.
         //!
         //! \tparam T The type of the object specializing Remainder.

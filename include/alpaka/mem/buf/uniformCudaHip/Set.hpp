@@ -41,12 +41,10 @@ namespace alpaka
 
     namespace detail
     {
-        //#############################################################################
         //! The CUDA/HIP memory set task base.
         template<typename TDim, typename TView, typename TExtent>
         struct TaskSetUniformCudaHipBase
         {
-            //-----------------------------------------------------------------------------
             TaskSetUniformCudaHipBase(TView& view, std::uint8_t const& byte, TExtent const& extent)
                 : m_view(view)
                 , m_byte(byte)
@@ -67,24 +65,20 @@ namespace alpaka
             std::int32_t const m_iDevice;
         };
 
-        //#############################################################################
         //! The CUDA/HIP memory set task.
         template<typename TDim, typename TView, typename TExtent>
         struct TaskSetUniformCudaHip;
 
-        //#############################################################################
         //! The 1D CUDA/HIP memory set task.
         template<typename TView, typename TExtent>
         struct TaskSetUniformCudaHip<DimInt<1>, TView, TExtent>
             : public TaskSetUniformCudaHipBase<DimInt<1>, TView, TExtent>
         {
-            //-----------------------------------------------------------------------------
             TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
                 : TaskSetUniformCudaHipBase<DimInt<1>, TView, TExtent>(view, byte, extent)
             {
             }
 
-            //-----------------------------------------------------------------------------
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
@@ -124,19 +118,16 @@ namespace alpaka
                     queue.m_spQueueImpl->m_UniformCudaHipQueue));
             }
         };
-        //#############################################################################
         //! The 2D CUDA/HIP memory set task.
         template<typename TView, typename TExtent>
         struct TaskSetUniformCudaHip<DimInt<2>, TView, TExtent>
             : public TaskSetUniformCudaHipBase<DimInt<2>, TView, TExtent>
         {
-            //-----------------------------------------------------------------------------
             TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
                 : TaskSetUniformCudaHipBase<DimInt<2>, TView, TExtent>(view, byte, extent)
             {
             }
 
-            //-----------------------------------------------------------------------------
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
@@ -183,19 +174,16 @@ namespace alpaka
                     queue.m_spQueueImpl->m_UniformCudaHipQueue));
             }
         };
-        //#############################################################################
         //! The 3D CUDA/HIP memory set task.
         template<typename TView, typename TExtent>
         struct TaskSetUniformCudaHip<DimInt<3>, TView, TExtent>
             : public TaskSetUniformCudaHipBase<DimInt<3>, TView, TExtent>
         {
-            //-----------------------------------------------------------------------------
             TaskSetUniformCudaHip(TView& view, std::uint8_t const& byte, TExtent const& extent)
                 : TaskSetUniformCudaHipBase<DimInt<3>, TView, TExtent>(view, byte, extent)
             {
             }
 
-            //-----------------------------------------------------------------------------
             template<typename TQueue>
             auto enqueue(TQueue& queue) const -> void
             {
@@ -262,12 +250,10 @@ namespace alpaka
 
     namespace traits
     {
-        //#############################################################################
         //! The CUDA device memory set trait specialization.
         template<typename TDim>
         struct CreateTaskMemset<TDim, DevUniformCudaHipRt>
         {
-            //-----------------------------------------------------------------------------
             template<typename TExtent, typename TView>
             ALPAKA_FN_HOST static auto createTaskMemset(TView& view, std::uint8_t const& byte, TExtent const& extent)
                 -> alpaka::detail::TaskSetUniformCudaHip<TDim, TView, TExtent>
@@ -276,14 +262,12 @@ namespace alpaka
             }
         };
 
-        //#############################################################################
         //! The CUDA non-blocking device queue 1D set enqueue trait specialization.
         template<typename TView, typename TExtent>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
             alpaka::detail::TaskSetUniformCudaHip<DimInt<1u>, TView, TExtent>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking& queue,
                 alpaka::detail::TaskSetUniformCudaHip<DimInt<1u>, TView, TExtent> const& task) -> void
@@ -293,14 +277,12 @@ namespace alpaka
                 task.enqueue(queue);
             }
         };
-        //#############################################################################
         //! The CUDA blocking device queue 1D set enqueue trait specialization.
         template<typename TView, typename TExtent>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
             alpaka::detail::TaskSetUniformCudaHip<DimInt<1u>, TView, TExtent>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking& queue,
                 alpaka::detail::TaskSetUniformCudaHip<DimInt<1u>, TView, TExtent> const& task) -> void
@@ -312,14 +294,12 @@ namespace alpaka
                 wait(queue);
             }
         };
-        //#############################################################################
         //! The CUDA non-blocking device queue 2D set enqueue trait specialization.
         template<typename TView, typename TExtent>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
             alpaka::detail::TaskSetUniformCudaHip<DimInt<2u>, TView, TExtent>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking& queue,
                 alpaka::detail::TaskSetUniformCudaHip<DimInt<2u>, TView, TExtent> const& task) -> void
@@ -329,14 +309,12 @@ namespace alpaka
                 task.enqueue(queue);
             }
         };
-        //#############################################################################
         //! The CUDA blocking device queue 2D set enqueue trait specialization.
         template<typename TView, typename TExtent>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
             alpaka::detail::TaskSetUniformCudaHip<DimInt<2u>, TView, TExtent>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking& queue,
                 alpaka::detail::TaskSetUniformCudaHip<DimInt<2u>, TView, TExtent> const& task) -> void
@@ -348,14 +326,12 @@ namespace alpaka
                 wait(queue);
             }
         };
-        //#############################################################################
         //! The CUDA non-blocking device queue 3D set enqueue trait specialization.
         template<typename TView, typename TExtent>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
             alpaka::detail::TaskSetUniformCudaHip<DimInt<3u>, TView, TExtent>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking& queue,
                 alpaka::detail::TaskSetUniformCudaHip<DimInt<3u>, TView, TExtent> const& task) -> void
@@ -365,14 +341,12 @@ namespace alpaka
                 task.enqueue(queue);
             }
         };
-        //#############################################################################
         //! The CUDA blocking device queue 3D set enqueue trait specialization.
         template<typename TView, typename TExtent>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
             alpaka::detail::TaskSetUniformCudaHip<DimInt<3u>, TView, TExtent>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking& queue,
                 alpaka::detail::TaskSetUniformCudaHip<DimInt<3u>, TView, TExtent> const& task) -> void

@@ -46,7 +46,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA built in remainder.
         class RemainderUniformCudaHipBuiltIn
             : public concepts::Implements<ConceptMathRemainder, RemainderUniformCudaHipBuiltIn>
@@ -55,7 +54,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The CUDA remainder trait specialization.
             template<typename Tx, typename Ty>
             struct Remainder<

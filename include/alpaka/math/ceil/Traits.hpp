@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The ceil trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Ceil
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the smallest integer value not less than arg.
         //!
         //! \tparam T The type of the object specializing Ceil.
