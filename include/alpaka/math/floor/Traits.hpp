@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The floor trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Floor
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the largest integer value not greater than arg.
         //!
         //! \tparam T The type of the object specializing Floor.

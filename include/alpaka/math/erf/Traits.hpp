@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The erf trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Erf
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the error function of arg.
         //!
         //! \tparam T The type of the object specializing Erf.

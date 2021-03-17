@@ -15,7 +15,6 @@
 
 #include <catch2/catch.hpp>
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("mapIdx", "[idx]", alpaka::test::TestDims)
 {
     using Dim = TestType;

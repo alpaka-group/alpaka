@@ -49,7 +49,6 @@ using TestQueues = alpaka::meta::Concatenate<
         CHECK(ret);                                                                                                   \
     } while(0)
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("queueIsInitiallyEmpty", "[queue]", TestQueues)
 {
     using DevQueue = TestType;
@@ -59,7 +58,6 @@ TEMPLATE_LIST_TEST_CASE("queueIsInitiallyEmpty", "[queue]", TestQueues)
     CHECK(alpaka::empty(f.m_queue));
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("queueCallbackIsWorking", "[queue]", TestQueues)
 {
 // Workaround: Clang can not support this when natively compiling device code. See ConcurrentExecPool.hpp.
@@ -76,7 +74,6 @@ TEMPLATE_LIST_TEST_CASE("queueCallbackIsWorking", "[queue]", TestQueues)
 #endif
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("queueWaitShouldWork", "[queue]", TestQueues)
 {
     using DevQueue = TestType;
@@ -93,7 +90,6 @@ TEMPLATE_LIST_TEST_CASE("queueWaitShouldWork", "[queue]", TestQueues)
     CHECK(callbackFinished.load() == true);
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE(
     "queueShouldNotBeEmptyWhenLastTaskIsStillExecutingAndIsEmptyAfterProcessingFinished",
     "[queue]",
@@ -120,7 +116,6 @@ TEMPLATE_LIST_TEST_CASE(
     LOOPED_CHECK(30, 100, alpaka::empty(f.m_queue));
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("queueShouldNotExecuteTasksInParallel", "[queue]", TestQueues)
 {
     using DevQueue = TestType;

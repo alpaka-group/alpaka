@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The fmod trait.
             template<typename T, typename Tx, typename Ty, typename TSfinae = void>
             struct Fmod
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the floating-point remainder of the division operation x/y.
         //!
         //! \tparam T The type of the object specializing Fmod.

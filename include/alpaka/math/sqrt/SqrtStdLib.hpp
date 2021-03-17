@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library sqrt.
         class SqrtStdLib : public concepts::Implements<ConceptMathSqrt, SqrtStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library sqrt trait specialization.
             template<typename TArg>
             struct Sqrt<SqrtStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

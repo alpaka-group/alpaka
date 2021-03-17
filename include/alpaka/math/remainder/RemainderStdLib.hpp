@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library remainder.
         class RemainderStdLib : public concepts::Implements<ConceptMathRemainder, RemainderStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library remainder trait specialization.
             template<typename Tx, typename Ty>
             struct Remainder<

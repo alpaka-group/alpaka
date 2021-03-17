@@ -46,7 +46,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA built in exp.
         class ExpUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathExp, ExpUniformCudaHipBuiltIn>
         {
@@ -54,7 +53,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The CUDA exp trait specialization.
             template<typename TArg>
             struct Exp<ExpUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>

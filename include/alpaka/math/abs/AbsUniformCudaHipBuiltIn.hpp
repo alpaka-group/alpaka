@@ -46,7 +46,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA built in abs.
         class AbsUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathAbs, AbsUniformCudaHipBuiltIn>
         {
@@ -54,7 +53,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The CUDA built in abs trait specialization.
             template<typename TArg>
             struct Abs<AbsUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>

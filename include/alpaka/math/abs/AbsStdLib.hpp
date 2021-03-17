@@ -20,7 +20,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library abs.
         class AbsStdLib : public concepts::Implements<ConceptMathAbs, AbsStdLib>
         {
@@ -28,7 +27,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library abs trait specialization.
             template<typename TArg>
             struct Abs<

@@ -46,7 +46,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA sqrt.
         class SqrtUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathSqrt, SqrtUniformCudaHipBuiltIn>
         {
@@ -54,7 +53,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The CUDA sqrt trait specialization.
             template<typename TArg>
             struct Sqrt<SqrtUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>

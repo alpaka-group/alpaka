@@ -30,43 +30,32 @@ namespace alpaka
 {
     namespace warp
     {
-        //#############################################################################
         //! The GPU CUDA/HIP warp.
         class WarpUniformCudaHipBuiltIn : public concepts::Implements<ConceptWarp, WarpUniformCudaHipBuiltIn>
         {
         public:
-            //-----------------------------------------------------------------------------
             WarpUniformCudaHipBuiltIn() = default;
-            //-----------------------------------------------------------------------------
             __device__ WarpUniformCudaHipBuiltIn(WarpUniformCudaHipBuiltIn const&) = delete;
-            //-----------------------------------------------------------------------------
             __device__ WarpUniformCudaHipBuiltIn(WarpUniformCudaHipBuiltIn&&) = delete;
-            //-----------------------------------------------------------------------------
             __device__ auto operator=(WarpUniformCudaHipBuiltIn const&) -> WarpUniformCudaHipBuiltIn& = delete;
-            //-----------------------------------------------------------------------------
             __device__ auto operator=(WarpUniformCudaHipBuiltIn&&) -> WarpUniformCudaHipBuiltIn& = delete;
-            //-----------------------------------------------------------------------------
             ~WarpUniformCudaHipBuiltIn() = default;
         };
 
         namespace traits
         {
-            //#############################################################################
             template<>
             struct GetSize<WarpUniformCudaHipBuiltIn>
             {
-                //-----------------------------------------------------------------------------
                 __device__ static auto getSize(warp::WarpUniformCudaHipBuiltIn const& /*warp*/) -> std::int32_t
                 {
                     return warpSize;
                 }
             };
 
-            //#############################################################################
             template<>
             struct Activemask<WarpUniformCudaHipBuiltIn>
             {
-                //-----------------------------------------------------------------------------
                 __device__ static auto activemask(warp::WarpUniformCudaHipBuiltIn const& /*warp*/)
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
                     -> std::uint32_t
@@ -90,11 +79,9 @@ namespace alpaka
                 }
             };
 
-            //#############################################################################
             template<>
             struct All<WarpUniformCudaHipBuiltIn>
             {
-                //-----------------------------------------------------------------------------
                 __device__ static auto all(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
                     -> std::int32_t
                 {
@@ -107,11 +94,9 @@ namespace alpaka
                 }
             };
 
-            //#############################################################################
             template<>
             struct Any<WarpUniformCudaHipBuiltIn>
             {
-                //-----------------------------------------------------------------------------
                 __device__ static auto any(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
                     -> std::int32_t
                 {
@@ -124,11 +109,9 @@ namespace alpaka
                 }
             };
 
-            //#############################################################################
             template<>
             struct Ballot<WarpUniformCudaHipBuiltIn>
             {
-                //-----------------------------------------------------------------------------
                 __device__ static auto ballot(warp::WarpUniformCudaHipBuiltIn const& warp, std::int32_t predicate)
                 // return type is required by the compiler
 #    if defined(ALPAKA_ACC_GPU_CUDA_ENABLED)
@@ -146,7 +129,6 @@ namespace alpaka
                 }
             };
 
-            //#################################################################
             template<>
             struct Shfl<WarpUniformCudaHipBuiltIn>
             {

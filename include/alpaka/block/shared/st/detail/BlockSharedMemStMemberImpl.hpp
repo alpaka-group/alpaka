@@ -22,7 +22,6 @@ namespace alpaka
 {
     namespace detail
     {
-        //#############################################################################
         //! Implementation of static block shared memory provider.
         //!
         //! externally allocated fixed-size memory, likely provided by BlockSharedMemDynMember.
@@ -41,7 +40,6 @@ namespace alpaka
             static constexpr uint32_t metaDataSize = sizeof(MetaData);
 
         public:
-            //-----------------------------------------------------------------------------
 #ifndef NDEBUG
             BlockSharedMemStMemberImpl(uint8_t* mem, std::size_t capacity)
                 : m_mem(mem)
@@ -54,15 +52,10 @@ namespace alpaka
             {
             }
 #endif
-            //-----------------------------------------------------------------------------
             BlockSharedMemStMemberImpl(BlockSharedMemStMemberImpl const&) = delete;
-            //-----------------------------------------------------------------------------
             BlockSharedMemStMemberImpl(BlockSharedMemStMemberImpl&&) = delete;
-            //-----------------------------------------------------------------------------
             auto operator=(BlockSharedMemStMemberImpl const&) -> BlockSharedMemStMemberImpl& = delete;
-            //-----------------------------------------------------------------------------
             auto operator=(BlockSharedMemStMemberImpl&&) -> BlockSharedMemStMemberImpl& = delete;
-            //-----------------------------------------------------------------------------
             /*virtual*/ ~BlockSharedMemStMemberImpl() = default;
 
             template<typename T>

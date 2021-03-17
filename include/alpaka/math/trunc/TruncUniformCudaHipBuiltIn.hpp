@@ -46,7 +46,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA trunc.
         class TruncUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathTrunc, TruncUniformCudaHipBuiltIn>
         {
@@ -54,7 +53,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The CUDA trunc trait specialization.
             template<typename TArg>
             struct Trunc<TruncUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>

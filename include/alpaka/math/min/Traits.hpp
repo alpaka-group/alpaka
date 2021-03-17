@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The min trait.
             template<typename T, typename Tx, typename Ty, typename TSfinae = void>
             struct Min
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Returns the smaller of two arguments.
         //! NaNs are treated as missing data (between a NaN and a numeric value, the numeric value is chosen).
         //!

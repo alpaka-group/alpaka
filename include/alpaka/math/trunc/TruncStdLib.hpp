@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library trunc.
         class TruncStdLib : public concepts::Implements<ConceptMathTrunc, TruncStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library trunc trait specialization.
             template<typename TArg>
             struct Trunc<TruncStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

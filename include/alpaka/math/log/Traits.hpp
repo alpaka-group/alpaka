@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The log trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Log
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the the natural (base e) logarithm of arg.
         //!
         //! Valid real arguments are non-negative. For other values the result

@@ -16,11 +16,9 @@
 
 #include <cstdint>
 
-//#############################################################################
 class ActivemaskSingleThreadWarpTestKernel
 {
 public:
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
@@ -32,11 +30,9 @@ public:
     }
 };
 
-//#############################################################################
 class ActivemaskMultipleThreadWarpTestKernel
 {
 public:
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success, std::uint64_t inactiveThreadIdx) const -> void
@@ -61,7 +57,6 @@ public:
     }
 };
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;

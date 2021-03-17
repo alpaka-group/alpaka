@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The tan trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Tan
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the tangent (measured in radians).
         //!
         //! \tparam T The type of the object specializing Tan.

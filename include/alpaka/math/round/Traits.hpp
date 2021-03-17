@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The round trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Round
@@ -39,7 +38,6 @@ namespace alpaka
                 }
             };
 
-            //#############################################################################
             //! The round trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Lround
@@ -53,7 +51,6 @@ namespace alpaka
                 }
             };
 
-            //#############################################################################
             //! The round trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Llround
@@ -68,7 +65,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the nearest integer value to arg (in floating-point format), rounding halfway cases away from
         //! zero, regardless of the current rounding mode.
         //!
@@ -83,7 +79,6 @@ namespace alpaka
             using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
             return traits::Round<ImplementationBase, TArg>{}(round_ctx, arg);
         }
-        //-----------------------------------------------------------------------------
         //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
         //! regardless of the current rounding mode.
         //!
@@ -98,7 +93,6 @@ namespace alpaka
             using ImplementationBase = concepts::ImplementationBase<ConceptMathRound, T>;
             return traits::Lround<ImplementationBase, TArg>{}(lround_ctx, arg);
         }
-        //-----------------------------------------------------------------------------
         //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero,
         //! regardless of the current rounding mode.
         //!

@@ -20,7 +20,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library min.
         class MinStdLib : public concepts::Implements<ConceptMathMin, MinStdLib>
         {
@@ -28,7 +27,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library integral min trait specialization.
             template<typename Tx, typename Ty>
             struct Min<MinStdLib, Tx, Ty, std::enable_if_t<std::is_integral<Tx>::value && std::is_integral<Ty>::value>>
@@ -39,7 +37,6 @@ namespace alpaka
                     return std::min(x, y);
                 }
             };
-            //#############################################################################
             //! The standard library mixed integral floating point min trait specialization.
             template<typename Tx, typename Ty>
             struct Min<

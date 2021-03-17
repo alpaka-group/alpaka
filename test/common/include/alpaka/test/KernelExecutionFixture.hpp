@@ -17,7 +17,6 @@ namespace alpaka
 {
     namespace test
     {
-        //#############################################################################
         //! The fixture for executing a kernel on a given accelerator.
         template<typename TAcc>
         class KernelExecutionFixture
@@ -32,7 +31,6 @@ namespace alpaka
             using WorkDiv = alpaka::WorkDivMembers<Dim, Idx>;
 
         public:
-            //-----------------------------------------------------------------------------
             template<typename TExtent>
             KernelExecutionFixture(TExtent const& extent)
                 : m_devHost(alpaka::getDevByIdx<PltfCpu>(0u))
@@ -46,7 +44,6 @@ namespace alpaka
                       alpaka::GridBlockExtentSubDivRestrictions::Unrestricted))
             {
             }
-            //-----------------------------------------------------------------------------
             KernelExecutionFixture(WorkDiv const& workDiv)
                 : m_devHost(alpaka::getDevByIdx<PltfCpu>(0u))
                 , m_devAcc(alpaka::getDevByIdx<PltfAcc>(0u))
@@ -54,7 +51,6 @@ namespace alpaka
                 , m_workDiv(workDiv)
             {
             }
-            //-----------------------------------------------------------------------------
             template<typename TKernelFnObj, typename... TArgs>
             auto operator()(TKernelFnObj const& kernelFnObj, TArgs&&... args) -> bool
             {

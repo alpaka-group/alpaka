@@ -17,11 +17,9 @@
 #include <cstdint>
 #include <limits>
 
-//#############################################################################
 class ShflSingleThreadWarpTestKernel
 {
 public:
-    //-------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
@@ -36,11 +34,9 @@ public:
     }
 };
 
-//#############################################################################
 class ShflMultipleThreadWarpTestKernel
 {
 public:
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
@@ -91,7 +87,6 @@ public:
     }
 };
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("shfl", "[warp]", alpaka::test::TestAccs)
 {
     using Acc = TestType;

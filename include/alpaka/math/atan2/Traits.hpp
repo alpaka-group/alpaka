@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The atan2 trait.
             template<typename T, typename Ty, typename Tx, typename TSfinae = void>
             struct Atan2
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the arc tangent of y/x using the signs of arguments to determine the correct quadrant.
         //!
         //! \tparam T The type of the object specializing Atan2.

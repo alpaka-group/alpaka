@@ -21,12 +21,10 @@
 #include <random>
 #include <typeinfo>
 
-//#############################################################################
 //! A vector addition kernel.
 class AxpyKernel
 {
 public:
-    //-----------------------------------------------------------------------------
     //! Vector addition Y = alpha * X + Y.
     //!
     //! \tparam TAcc The type of the accelerator the kernel is executed on..

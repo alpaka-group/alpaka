@@ -18,12 +18,10 @@
 #include <iostream>
 #include <typeinfo>
 
-//#############################################################################
 //! A vector addition kernel.
 class SqrtKernel
 {
 public:
-    //-----------------------------------------------------------------------------
     //! The kernel entry point.
     //!
     //! \tparam TAcc The accelerator environment to be executed on.

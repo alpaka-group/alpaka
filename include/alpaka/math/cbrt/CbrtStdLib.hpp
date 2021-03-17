@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library cbrt.
         class CbrtStdLib : public concepts::Implements<ConceptMathCbrt, CbrtStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library cbrt trait specialization.
             template<typename TArg>
             struct Cbrt<CbrtStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

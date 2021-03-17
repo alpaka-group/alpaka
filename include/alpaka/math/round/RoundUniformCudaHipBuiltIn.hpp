@@ -46,7 +46,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA round.
         class RoundUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathRound, RoundUniformCudaHipBuiltIn>
         {
@@ -54,7 +53,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The CUDA round trait specialization.
             template<typename TArg>
             struct Round<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
@@ -65,7 +63,6 @@ namespace alpaka
                     return ::round(arg);
                 }
             };
-            //#############################################################################
             //! The CUDA lround trait specialization.
             template<typename TArg>
             struct Lround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>
@@ -76,7 +73,6 @@ namespace alpaka
                     return ::lround(arg);
                 }
             };
-            //#############################################################################
             //! The CUDA llround trait specialization.
             template<typename TArg>
             struct Llround<RoundUniformCudaHipBuiltIn, TArg, std::enable_if_t<std::is_floating_point<TArg>::value>>

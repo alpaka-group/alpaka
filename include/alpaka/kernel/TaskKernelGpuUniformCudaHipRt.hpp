@@ -68,7 +68,6 @@ namespace alpaka
     {
         namespace detail
         {
-            //-----------------------------------------------------------------------------
             //! The GPU CUDA/HIP kernel entry point.
             // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
             template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
@@ -92,7 +91,6 @@ namespace alpaka
                 kernelFnObj(const_cast<TAcc const&>(acc), args...);
             }
 
-            //-----------------------------------------------------------------------------
             template<typename TDim, typename TIdx>
             ALPAKA_FN_HOST auto checkVecOnly3Dim(Vec<TDim, TIdx> const& vec) -> void
             {
@@ -106,7 +104,6 @@ namespace alpaka
                 }
             }
 
-            //-----------------------------------------------------------------------------
             template<typename TDim, typename TIdx>
             ALPAKA_FN_HOST auto convertVecToUniformCudaHipDim(Vec<TDim, TIdx> const& vec) -> dim3
             {
@@ -123,13 +120,11 @@ namespace alpaka
         } // namespace detail
     } // namespace uniform_cuda_hip
 
-    //#############################################################################
     //! The GPU CUDA/HIP accelerator execution task.
     template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
     class TaskKernelGpuUniformCudaHipRt final : public WorkDivMembers<TDim, TIdx>
     {
     public:
-        //-----------------------------------------------------------------------------
         template<typename TWorkDiv>
         ALPAKA_FN_HOST TaskKernelGpuUniformCudaHipRt(
             TWorkDiv&& workDiv,
@@ -143,15 +138,10 @@ namespace alpaka
                 Dim<std::decay_t<TWorkDiv>>::value == TDim::value,
                 "The work division and the execution task have to be of the same dimensionality!");
         }
-        //-----------------------------------------------------------------------------
         TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt const&) = default;
-        //-----------------------------------------------------------------------------
         TaskKernelGpuUniformCudaHipRt(TaskKernelGpuUniformCudaHipRt&&) = default;
-        //-----------------------------------------------------------------------------
         auto operator=(TaskKernelGpuUniformCudaHipRt const&) -> TaskKernelGpuUniformCudaHipRt& = default;
-        //-----------------------------------------------------------------------------
         auto operator=(TaskKernelGpuUniformCudaHipRt&&) -> TaskKernelGpuUniformCudaHipRt& = default;
-        //-----------------------------------------------------------------------------
         ~TaskKernelGpuUniformCudaHipRt() = default;
 
         TKernelFnObj m_kernelFnObj;
@@ -160,7 +150,6 @@ namespace alpaka
 
     namespace traits
     {
-        //#############################################################################
         //! The GPU CUDA/HIP execution task accelerator type trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct AccType<TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -168,7 +157,6 @@ namespace alpaka
             using type = AccGpuUniformCudaHipRt<TDim, TIdx>;
         };
 
-        //#############################################################################
         //! The GPU CUDA/HIP execution task device type trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct DevType<TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -176,7 +164,6 @@ namespace alpaka
             using type = DevUniformCudaHipRt;
         };
 
-        //#############################################################################
         //! The GPU CUDA/HIP execution task dimension getter trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct DimType<TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -184,7 +171,6 @@ namespace alpaka
             using type = TDim;
         };
 
-        //#############################################################################
         //! The CPU CUDA/HIP execution task platform type trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct PltfType<TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -192,7 +178,6 @@ namespace alpaka
             using type = PltfUniformCudaHipRt;
         };
 
-        //#############################################################################
         //! The GPU CUDA/HIP execution task idx type trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct IdxType<TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
@@ -200,14 +185,12 @@ namespace alpaka
             using type = TIdx;
         };
 
-        //#############################################################################
         //! The CUDA/HIP non-blocking kernel enqueue trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct Enqueue<
             QueueUniformCudaHipRtNonBlocking,
             TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtNonBlocking& queue,
                 TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const& task) -> void
@@ -324,14 +307,12 @@ namespace alpaka
 #    endif
             }
         };
-        //#############################################################################
         //! The CUDA/HIP synchronous kernel enqueue trait specialization.
         template<typename TAcc, typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
         struct Enqueue<
             QueueUniformCudaHipRtBlocking,
             TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...>>
         {
-            //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto enqueue(
                 QueueUniformCudaHipRtBlocking& queue,
                 TaskKernelGpuUniformCudaHipRt<TAcc, TDim, TIdx, TKernelFnObj, TArgs...> const& task) -> void

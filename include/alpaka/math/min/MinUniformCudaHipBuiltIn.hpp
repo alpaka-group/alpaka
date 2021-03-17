@@ -46,7 +46,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The CUDA built in min.
         class MinUniformCudaHipBuiltIn : public concepts::Implements<ConceptMathMin, MinUniformCudaHipBuiltIn>
         {
@@ -54,7 +53,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The CUDA integral min trait specialization.
             template<typename Tx, typename Ty>
             struct Min<
@@ -70,7 +68,6 @@ namespace alpaka
                     return ::min(x, y);
                 }
             };
-            //#############################################################################
             //! The standard library mixed integral floating point min trait specialization.
             template<typename Tx, typename Ty>
             struct Min<

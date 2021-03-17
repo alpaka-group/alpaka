@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The trunc trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Trunc
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the nearest integer not greater in magnitude than arg.
         //!
         //! \tparam T The type of the object specializing Trunc.

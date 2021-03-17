@@ -19,14 +19,12 @@
 #include <typeinfo>
 #include <vector>
 
-//#############################################################################
 //! A matrix multiplication kernel.
 //! Computes C + alpha*A*B + beta*C. LxM * MxN -> LxN
 //! This is an adaption of the algorithm from the CUDA developers guide.
 class MatMulKernel
 {
 public:
-    //-----------------------------------------------------------------------------
     //! \tparam TAcc The accelerator environment to be executed on.
     //! \tparam TElem The matrix element type.
     //! \param acc The accelerator to be executed on.
@@ -138,12 +136,10 @@ namespace alpaka
 {
     namespace traits
     {
-        //#############################################################################
         //! The trait for getting the size of the block shared dynamic memory for a kernel.
         template<typename TAcc>
         struct BlockSharedMemDynSizeBytes<MatMulKernel, TAcc>
         {
-            //-----------------------------------------------------------------------------
             //! \return The size of the shared memory allocated for a block.
             template<typename TVec, typename TIndex, typename TElem>
             ALPAKA_FN_HOST_ACC static auto getBlockSharedMemDynSizeBytes(

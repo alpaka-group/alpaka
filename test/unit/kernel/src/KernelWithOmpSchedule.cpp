@@ -16,14 +16,12 @@
 
 #include <cstdint>
 
-//#############################################################################
 // Schedule to be used by all kernels in this file
 static constexpr auto expectedSchedule = alpaka::omp::Schedule{alpaka::omp::Schedule::Dynamic, 10};
 
 // Base kernel, not to be used directly in unit tests
 struct KernelWithOmpScheduleBase
 {
-    //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
@@ -120,25 +118,21 @@ void test()
     REQUIRE(fixture(kernel));
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("kernelWithConstexprMemberOmpSchedule", "[kernel]", alpaka::test::TestAccs)
 {
     test<TestType, KernelWithConstexprMemberOmpSchedule>();
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("kernelWithMemberOmpSchedule", "[kernel]", alpaka::test::TestAccs)
 {
     test<TestType, KernelWithMemberOmpSchedule>();
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("kernelWithTraitOmpSchedule", "[kernel]", alpaka::test::TestAccs)
 {
     test<TestType, KernelWithTraitOmpSchedule>();
 }
 
-//-----------------------------------------------------------------------------
 TEMPLATE_LIST_TEST_CASE("kernelWithMemberAndTraitOmpSchedule", "[kernel]", alpaka::test::TestAccs)
 {
     test<TestType, KernelWithMemberAndTraitOmpSchedule>();

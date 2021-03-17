@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The acos trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Acos
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc cosine.
         //!
         //! The valid real argument range is [-1.0, 1.0]. For other values

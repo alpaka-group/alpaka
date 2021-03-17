@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The atan trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Atan
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc tangent.
         //!
         //! \tparam TArg The arg type.

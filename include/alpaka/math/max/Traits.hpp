@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The max trait.
             template<typename T, typename Tx, typename Ty, typename TSfinae = void>
             struct Max
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Returns the larger of two arguments.
         //! NaNs are treated as missing data (between a NaN and a numeric value, the numeric value is chosen).
         //!

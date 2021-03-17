@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library asin.
         class AsinStdLib : public concepts::Implements<ConceptMathAsin, AsinStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library asin trait specialization.
             template<typename TArg>
             struct Asin<AsinStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

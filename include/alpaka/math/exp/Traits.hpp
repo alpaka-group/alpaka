@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The exp trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Exp
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the e (Euler's number, 2.7182818) raised to the given power arg.
         //!
         //! \tparam T The type of the object specializing Exp.

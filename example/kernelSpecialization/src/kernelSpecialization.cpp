@@ -20,7 +20,6 @@
 
 #include <iostream>
 
-//#############################################################################
 //! Kernel to illustrate specialization for a particular accelerator
 //!
 //! It has a generic operator() implementation and an overload for the CUDA accelerator.
@@ -37,7 +36,6 @@
 //! For such a case, both template specialization and function overloading of the methods can be employed.
 struct Kernel
 {
-    //-----------------------------------------------------------------------------
     //! Implementation for the general case
     //!
     //! It will be called when no overload is a better match.

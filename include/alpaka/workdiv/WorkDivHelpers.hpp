@@ -23,11 +23,9 @@
 #include <set>
 #include <type_traits>
 
-//-----------------------------------------------------------------------------
 //! The alpaka library.
 namespace alpaka
 {
-    //#############################################################################
     //! The grid block extent subdivision restrictions.
     enum class GridBlockExtentSubDivRestrictions
     {
@@ -38,7 +36,6 @@ namespace alpaka
 
     namespace detail
     {
-        //-----------------------------------------------------------------------------
         //! \param maxDivisor The maximum divisor.
         //! \param dividend The dividend.
         //! \return The biggest number that satisfies the following conditions:
@@ -60,7 +57,6 @@ namespace alpaka
 
             return divisor;
         }
-        //-----------------------------------------------------------------------------
         //! \param val The value to find divisors of.
         //! \param maxDivisor The maximum.
         //! \return A list of all divisors less then or equal to the given maximum.
@@ -85,7 +81,6 @@ namespace alpaka
         }
     } // namespace detail
 
-    //-----------------------------------------------------------------------------
     //! \tparam TDim The dimensionality of the accelerator device properties.
     //! \tparam TIdx The idx type of the accelerator device properties.
     //! \param accDevProps The maxima for the work division.
@@ -118,7 +113,6 @@ namespace alpaka
         return true;
     }
 
-    //-----------------------------------------------------------------------------
     //! Subdivides the given grid thread extent into blocks restricted by the maxima allowed.
     //! 1. The the maxima block, thread and element extent and counts
     //! 2. The requirement of the block thread extent to divide the grid thread extent without remainder
@@ -328,7 +322,6 @@ namespace alpaka
         return WorkDivMembers<TDim, TIdx>(gridBlockExtent, blockThreadExtent, threadElemExtent);
     }
 
-    //-----------------------------------------------------------------------------
     //! \tparam TAcc The accelerator for which this work division has to be valid.
     //! \tparam TGridElemExtent The type of the grid element extent.
     //! \tparam TThreadElemExtent The type of the thread element extent.
@@ -377,7 +370,6 @@ namespace alpaka
             gridBlockExtentSubDivRestrictions);
     }
 
-    //-----------------------------------------------------------------------------
     //! \tparam TDim The dimensionality of the accelerator device properties.
     //! \tparam TIdx The idx type of the accelerator device properties.
     //! \tparam TWorkDiv The type of the work division.
@@ -425,7 +417,6 @@ namespace alpaka
 
         return true;
     }
-    //-----------------------------------------------------------------------------
     //! \tparam TAcc The accelerator to test the validity on.
     //! \param dev The device to test the work division for validity on.
     //! \param workDiv The work division to test for validity.

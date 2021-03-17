@@ -25,15 +25,12 @@
 
 #include <type_traits>
 
-//-----------------------------------------------------------------------------
 //! The alpaka accelerator library.
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
     //! The kernel traits.
     namespace traits
     {
-        //#############################################################################
         //! The kernel execution task creation trait.
         template<
             typename TAcc,
@@ -43,7 +40,6 @@ namespace alpaka
             typename TSfinae = void*/>
         struct CreateTaskKernel;
 
-        //#############################################################################
         //! The trait for getting the size of the block shared dynamic memory of a kernel.
         //!
         //! \tparam TKernelFnObj The kernel function object.
@@ -58,7 +54,6 @@ namespace alpaka
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
-            //-----------------------------------------------------------------------------
             //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
             //! \param blockThreadExtent The block thread extent.
             //! \param threadElemExtent The thread element extent.
@@ -88,7 +83,6 @@ namespace alpaka
 
         namespace detail
         {
-            //#############################################################################
             //! Functor to get OpenMP schedule defined by kernel class.
             //! When no schedule is defined, return a default one.
             template<class TKernel, class = void>
@@ -117,7 +111,6 @@ namespace alpaka
             };
         } // namespace detail
 
-        //#############################################################################
         //! The trait for getting the schedule to use when a kernel is run using
         //! the CpuOmp2Blocks accelerator.
         //!
@@ -141,7 +134,6 @@ namespace alpaka
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
-            //-----------------------------------------------------------------------------
             //! \param kernelFnObj The kernel object for which the schedule should be returned.
             //! \param blockThreadExtent The block thread extent.
             //! \param threadElemExtent The thread element extent.
@@ -174,7 +166,6 @@ namespace alpaka
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
-    //-----------------------------------------------------------------------------
     //! \tparam TAcc The accelerator type.
     //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
     //! \param blockThreadExtent The block thread extent.
@@ -205,7 +196,6 @@ namespace alpaka
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
-    //-----------------------------------------------------------------------------
     //! \tparam TAcc The accelerator type.
     //! \param kernelFnObj The kernel object for which the block shared memory size should be calculated.
     //! \param blockThreadExtent The block thread extent.
@@ -237,7 +227,6 @@ namespace alpaka
 
     namespace detail
     {
-        //#############################################################################
         //! Check that the return of TKernelFnObj is void
         template<typename TAcc, typename TSfinae = void>
         struct CheckFnReturnType
@@ -254,7 +243,6 @@ namespace alpaka
             }
         };
     } // namespace detail
-    //-----------------------------------------------------------------------------
     //! Creates a kernel execution task.
     //!
     //! \tparam TAcc The accelerator type.
@@ -293,7 +281,6 @@ namespace alpaka
 #    pragma clang diagnostic ignored                                                                                  \
         "-Wdocumentation" // clang does not support the syntax for variadic template arguments "args,..."
 #endif
-    //-----------------------------------------------------------------------------
     //! Executes the given kernel in the given queue.
     //!
     //! \tparam TAcc The accelerator type.

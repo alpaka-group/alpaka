@@ -19,7 +19,6 @@ namespace alpaka
 {
     namespace math
     {
-        //#############################################################################
         //! The standard library atan.
         class AtanStdLib : public concepts::Implements<ConceptMathAtan, AtanStdLib>
         {
@@ -27,7 +26,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The standard library atan trait specialization.
             template<typename TArg>
             struct Atan<AtanStdLib, TArg, std::enable_if_t<std::is_arithmetic<TArg>::value>>

@@ -25,7 +25,6 @@ namespace alpaka
 
         namespace traits
         {
-            //#############################################################################
             //! The rsqrt trait.
             template<typename T, typename TArg, typename TSfinae = void>
             struct Rsqrt
@@ -40,7 +39,6 @@ namespace alpaka
             };
         } // namespace traits
 
-        //-----------------------------------------------------------------------------
         //! Computes the rsqrt.
         //!
         //! Valid real arguments are positive. For other values the result
