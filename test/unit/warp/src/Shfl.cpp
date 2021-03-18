@@ -30,7 +30,8 @@ public:
 
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 12, 0) == 12);
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 42, -1) == 42);
-        ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 3.3f, 0) == 3.3f);
+        float ans = alpaka::warp::shfl(acc, 3.3f, 0);
+        ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - 3.3f) < 1e-8f);
     }
 };
 
@@ -48,7 +49,7 @@ public:
         std::int32_t const warpExtent = alpaka::warp::getSize(acc);
         // Test relies on having a single warp per thread block
         ALPAKA_CHECK(*success, static_cast<std::int32_t>(blockExtent.prod()) == warpExtent);
-        int const threadIdxInWarp = alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0];
+        auto const threadIdxInWarp = std::int32_t(alpaka::mapIdx<1u>(localThreadIdx, blockExtent)[0]);
 
         ALPAKA_CHECK(*success, warpExtent > 1);
 
@@ -66,9 +67,9 @@ public:
             {
                 int off = width * (threadIdxInWarp / width);
                 ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, idx, width) == idx + off);
-                ALPAKA_CHECK(
-                    *success,
-                    alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx, width) == 4.0f - float(idx + off));
+                float ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx, width);
+                float expect = 4.0f - float(idx + off);
+                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < 1e-8f);
             }
         }
 
@@ -80,7 +81,9 @@ public:
         for(int idx = 0; idx < warpExtent / 2; idx++)
         {
             ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, idx) == idx);
-            ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx) == 4.0f - float(idx));
+            float ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx);
+            float expect = 4.0f - float(idx);
+            ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < 1e-8f);
         }
     }
 };
