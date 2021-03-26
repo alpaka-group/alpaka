@@ -1,4 +1,4 @@
-/* Copyright 2019-2020 Benjamin Worpitz, Erik Zenker, Sergei Bastrakov
+/* Copyright 2019-2021 Benjamin Worpitz, Erik Zenker, Sergei Bastrakov
  *
  * This file exemplifies usage of alpaka.
  *
@@ -51,10 +51,14 @@ struct OpenMPScheduleDefaultKernel
 //! We inherit OpenMPScheduleDefaultKernel just to reuse its operator().
 struct OpenMPScheduleMemberKernel : public OpenMPScheduleDefaultKernel
 {
-    //! Static member to set OpenMP schedule to be used by the AccCpuOmp2Blocks accelerator.
-    //! This member is only checked for when the OmpSchedule trait is not specialized for this kernel type.
-    //! Note that constexpr is not required, however otherwise there has to be an external definition.
-    static constexpr auto ompSchedule = alpaka::omp::Schedule{alpaka::omp::Schedule::Static, 1};
+    //! These two members are only checked for when the OmpSchedule trait is not specialized for this kernel type.
+
+    //! OpenMP schedule kind to be used by the AccCpuOmp2Blocks accelerator,
+    //! has to be static and constexpr.
+    static constexpr auto ompScheduleKind = alpaka::omp::Schedule::Static;
+
+    //! Member to set OpenMP chunk size, can be non-static and non-constexpr.
+    static constexpr int ompScheduleChunkSize = 1;
 };
 
 //! Kernel that sets the schedule via trait specialization.
