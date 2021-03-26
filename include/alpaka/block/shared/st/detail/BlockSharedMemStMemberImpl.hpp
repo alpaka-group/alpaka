@@ -111,14 +111,11 @@ namespace alpaka
                     off = metaDataPtr->offset;
 
                     if(metaDataPtr->id == id)
-                        break;
+                        return reinterpret_cast<T*>(&m_mem[off - sizeof(T)]);
                 }
 
                 // Variable not found.
-                if(off >= m_allocdBytes)
-                    return nullptr;
-
-                return reinterpret_cast<T*>(&m_mem[off - sizeof(T)]);
+                return nullptr;
             }
 
             //! Get last allocated variable.
