@@ -1,4 +1,4 @@
-/* Copyright 2020 Sergei Bastrakov
+/* Copyright 2020-2021 Sergei Bastrakov
  *
  * This file is part of alpaka.
  *
@@ -17,9 +17,6 @@
 #include <cstdint>
 
 //#############################################################################
-// Schedule to be used by all kernels in this file
-static constexpr auto expectedSchedule = alpaka::omp::Schedule{alpaka::omp::Schedule::Dynamic, 10};
-
 // Base kernel, not to be used directly in unit tests
 struct KernelWithOmpScheduleBase
 {
@@ -28,43 +25,47 @@ struct KernelWithOmpScheduleBase
     template<typename TAcc>
     ALPAKA_FN_ACC auto operator()(TAcc const& acc, bool* success) const -> void
     {
-        // By default no run-time check is performed
+        // No run-time check is performed
         alpaka::ignore_unused(acc);
         ALPAKA_CHECK(*success, true);
     }
-
-    // Only check when the schedule feature is active
-#if defined _OPENMP && _OPENMP >= 200805 && defined ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<typename TDim, typename TIdx>
-    ALPAKA_FN_ACC auto operator()(alpaka::AccCpuOmp2Blocks<TDim, TIdx> const& acc, bool* success) const -> void
-    {
-        alpaka::ignore_unused(acc);
-        omp_sched_t kind;
-        int actualChunkSize = 0;
-        omp_get_schedule(&kind, &actualChunkSize);
-        auto const actualKind = static_cast<std::uint32_t>(kind);
-        bool result = (expectedSchedule.kind == actualKind) && (expectedSchedule.chunkSize == actualChunkSize);
-        ALPAKA_CHECK(*success, result);
-    }
-#endif
 };
 
-// Kernel that sets the schedule via constexpr ompSchedule.
-// Checks that this variable is only declared and not defined, It also tests that
-// alpaka never odr-uses it.
-struct KernelWithConstexprMemberOmpSchedule : KernelWithOmpScheduleBase
+// Kernel that sets the schedule kind via constexpr ompScheduleKind.
+// Checks that this variable is only declared and not defined, It also tests that alpaka never odr-uses it.
+struct KernelWithConstexprMemberOmpScheduleKind : KernelWithOmpScheduleBase
 {
-    static constexpr auto ompSchedule = expectedSchedule;
+    static constexpr auto ompScheduleKind = alpaka::omp::Schedule::Runtime;
 };
 
-// Kernel that sets the schedule via non-constexpr ompSchedule.
-struct KernelWithMemberOmpSchedule : KernelWithOmpScheduleBase
+// Kernel that sets the schedule kind via non-constexpr ompScheduleKind.
+struct KernelWithMemberOmpScheduleKind : KernelWithOmpScheduleBase
 {
-    static const alpaka::omp::Schedule ompSchedule;
+    static const alpaka::omp::Schedule::Kind ompScheduleKind;
 };
 // In this case, the member has to be defined externally
-const alpaka::omp::Schedule KernelWithMemberOmpSchedule::ompSchedule = expectedSchedule;
+const alpaka::omp::Schedule::Kind KernelWithMemberOmpScheduleKind::ompScheduleKind = alpaka::omp::Schedule::NoSchedule;
+
+// Kernel that sets the schedule chunk size via constexpr ompScheduleChunkSize.
+// Checks that this variable is only declared and not defined, It also tests that alpaka never odr-uses it.
+struct KernelWithConstexprStaticMemberOmpScheduleChunkSize : KernelWithOmpScheduleBase
+{
+    static constexpr int ompScheduleChiunkSize = 5;
+};
+
+// Kernel that sets the schedule chunk size via non-constexpr ompScheduleChunkSize.
+struct KernelWithStaticMemberOmpScheduleChunkSize : KernelWithOmpScheduleBase
+{
+    static const int ompScheduleChunkSize;
+};
+// In this case, the member has to be defined externally
+const int KernelWithStaticMemberOmpScheduleChunkSize::ompScheduleChunkSize = 2;
+
+// Kernel that sets the schedule chunk size via non-constexpr non-static ompScheduleChunkSize.
+struct KernelWithMemberOmpScheduleChunkSize : KernelWithOmpScheduleBase
+{
+    int ompScheduleChunkSize = 4;
+};
 
 // Kernel that sets the schedule via partial specialization of a trait
 struct KernelWithTraitOmpSchedule : KernelWithOmpScheduleBase
@@ -75,8 +76,7 @@ struct KernelWithTraitOmpSchedule : KernelWithOmpScheduleBase
 // In this case test that the trait is used, not the member.
 struct KernelWithMemberAndTraitOmpSchedule : KernelWithOmpScheduleBase
 {
-    // Set to be different from expected so that it this is used the test would fail
-    static constexpr auto ompSchedule = alpaka::omp::Schedule{expectedSchedule.kind, expectedSchedule.chunkSize + 1};
+    static constexpr auto ompScheduleKind = alpaka::omp::Schedule::Dynamic;
 };
 
 namespace alpaka
@@ -99,7 +99,7 @@ namespace alpaka
                 alpaka::ignore_unused(threadElemExtent);
                 alpaka::ignore_unused(args...);
 
-                return expectedSchedule;
+                return alpaka::omp::Schedule{alpaka::omp::Schedule::Guided, 2};
             }
         };
     } // namespace traits
@@ -120,16 +120,29 @@ void test()
     REQUIRE(fixture(kernel));
 }
 
-//-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE("kernelWithConstexprMemberOmpSchedule", "[kernel]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("kernelWithConstexprMemberOmpScheduleKind", "[kernel]", alpaka::test::TestAccs)
 {
-    test<TestType, KernelWithConstexprMemberOmpSchedule>();
+    test<TestType, KernelWithConstexprMemberOmpScheduleKind>();
 }
 
-//-----------------------------------------------------------------------------
-TEMPLATE_LIST_TEST_CASE("kernelWithMemberOmpSchedule", "[kernel]", alpaka::test::TestAccs)
+TEMPLATE_LIST_TEST_CASE("kernelWithMemberOmpScheduleKind", "[kernel]", alpaka::test::TestAccs)
 {
-    test<TestType, KernelWithMemberOmpSchedule>();
+    test<TestType, KernelWithMemberOmpScheduleKind>();
+}
+
+TEMPLATE_LIST_TEST_CASE("kernelWithConstexprStaticMemberOmpScheduleChunkSize", "[kernel]", alpaka::test::TestAccs)
+{
+    test<TestType, KernelWithConstexprStaticMemberOmpScheduleChunkSize>();
+}
+
+TEMPLATE_LIST_TEST_CASE("kernelWithStaticMemberOmpScheduleChunkSize", "[kernel]", alpaka::test::TestAccs)
+{
+    test<TestType, KernelWithStaticMemberOmpScheduleChunkSize>();
+}
+
+TEMPLATE_LIST_TEST_CASE("kernelWithMemberOmpScheduleChunkSize", "[kernel]", alpaka::test::TestAccs)
+{
+    test<TestType, KernelWithMemberOmpScheduleChunkSize>();
 }
 
 //-----------------------------------------------------------------------------
