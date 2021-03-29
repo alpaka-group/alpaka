@@ -14,5 +14,8 @@ var namespacealpaka_1_1warp_1_1traits =
     [ "Ballot< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1warp_1_1traits_1_1Ballot_3_01WarpUniformCudaHipBuiltIn_01_4" ],
     [ "GetSize", "structalpaka_1_1warp_1_1traits_1_1GetSize.html", null ],
     [ "GetSize< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpSingleThread_01_4.html", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpSingleThread_01_4" ],
-    [ "GetSize< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpUniformCudaHipBuiltIn_01_4" ]
+    [ "GetSize< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpUniformCudaHipBuiltIn_01_4" ],
+    [ "Shfl", "structalpaka_1_1warp_1_1traits_1_1Shfl.html", null ],
+    [ "Shfl< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpSingleThread_01_4.html", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpSingleThread_01_4" ],
+    [ "Shfl< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4" ]
 ];

@@ -134,6 +134,14 @@ Functions</h2></td></tr>
 <tr class="memitem:aa9fddbe593ae1d26989838411072a2ad"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1warp.html#aa9fddbe593ae1d26989838411072a2ad">getSize</a> (TWarp const &amp;warp) -&gt; std::int32_t</td></tr>
 <tr class="memdesc:aa9fddbe593ae1d26989838411072a2ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns warp size.  <a href="namespacealpaka_1_1warp.html#aa9fddbe593ae1d26989838411072a2ad">More...</a><br /></td></tr>
 <tr class="separator:aa9fddbe593ae1d26989838411072a2ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adce3dddd0f7a2845ad1083972499ff07"><td class="memTemplParams" colspan="2">template&lt;typename TWarp &gt; </td></tr>
+<tr class="memitem:adce3dddd0f7a2845ad1083972499ff07"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1warp.html#adce3dddd0f7a2845ad1083972499ff07">shfl</a> (TWarp const &amp;warp, float value, std::int32_t srcLane, std::int32_t width=0)</td></tr>
+<tr class="memdesc:adce3dddd0f7a2845ad1083972499ff07"><td class="mdescLeft">&#160;</td><td class="mdescRight">shfl for float vals  <a href="namespacealpaka_1_1warp.html#adce3dddd0f7a2845ad1083972499ff07">More...</a><br /></td></tr>
+<tr class="separator:adce3dddd0f7a2845ad1083972499ff07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8954fa269b9d459ea0f404e2e0cc41e9"><td class="memTemplParams" colspan="2">template&lt;typename TWarp &gt; </td></tr>
+<tr class="memitem:a8954fa269b9d459ea0f404e2e0cc41e9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1warp.html#a8954fa269b9d459ea0f404e2e0cc41e9">shfl</a> (TWarp const &amp;warp, std::int32_t value, std::int32_t srcLane, std::int32_t width=0)</td></tr>
+<tr class="memdesc:a8954fa269b9d459ea0f404e2e0cc41e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchange data between threads within a warp.  <a href="namespacealpaka_1_1warp.html#a8954fa269b9d459ea0f404e2e0cc41e9">More...</a><br /></td></tr>
+<tr class="separator:a8954fa269b9d459ea0f404e2e0cc41e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The thread warp specifics. </p>
@@ -173,7 +181,7 @@ template&lt;typename TWarp &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>32-bit or 64-bit unsigned type depending on the accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00086">86</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00091">91</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -222,7 +230,7 @@ template&lt;typename TWarp &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00106">106</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00111">111</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -271,7 +279,7 @@ template&lt;typename TWarp &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00125">125</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00130">130</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -320,7 +328,7 @@ template&lt;typename TWarp &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>32-bit or 64-bit unsigned type depending on the accelerator. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00148">148</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00153">153</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -357,7 +365,125 @@ template&lt;typename TWarp &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00065">65</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00070">70</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="adce3dddd0f7a2845ad1083972499ff07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adce3dddd0f7a2845ad1083972499ff07">&#9670;&nbsp;</a></span>shfl() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TWarp &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::warp::shfl </td>
+          <td>(</td>
+          <td class="paramtype">TWarp const &amp;&#160;</td>
+          <td class="paramname"><em>warp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::int32_t&#160;</td>
+          <td class="paramname"><em>srcLane</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::int32_t&#160;</td>
+          <td class="paramname"><em>width</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>shfl for float vals </p>
+
+<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00198">198</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a8954fa269b9d459ea0f404e2e0cc41e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8954fa269b9d459ea0f404e2e0cc41e9">&#9670;&nbsp;</a></span>shfl() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TWarp &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a">ALPAKA_FN_ACC</a> auto alpaka::warp::shfl </td>
+          <td>(</td>
+          <td class="paramtype">TWarp const &amp;&#160;</td>
+          <td class="paramname"><em>warp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::int32_t&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::int32_t&#160;</td>
+          <td class="paramname"><em>srcLane</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::int32_t&#160;</td>
+          <td class="paramname"><em>width</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Exchange data between threads within a warp. </p>
+<p>Effectively executes: </p><pre class="fragment">__shared__ int32_t values[warpsize];
+values[threadIdx.x] = value;
+__syncthreads();
+return values[(srcLane + width*floor(threadIdx.x/width))%width];
+</pre><p>However, it does not use shared memory.</p>
+<p>Notes:</p><ul>
+<li>The programmer must ensure that all threads calling this function (and the srcLane) are executing the same line of code. In particular it is not portable to write if(a) {shfl} else {shfl}.</li>
+<li>Commonly used with width = warpsize (the default), (returns values[srcLane])</li>
+<li>Width must be a power of 2.</li>
+</ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TWarp</td><td>warp implementation type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">warp</td><td>warp implementation </td></tr>
+    <tr><td class="paramname">value</td><td>value to broadcast (only meaningful from threadIdx == srcLane) </td></tr>
+    <tr><td class="paramname">srcLane</td><td>source lane sending value </td></tr>
+    <tr><td class="paramname">width</td><td>number of threads receiving a single value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>val from the thread index srcLane. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="warp_2Traits_8hpp_source.html#l00188">188</a> of file <a class="el" href="warp_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -367,7 +493,7 @@ template&lt;typename TWarp &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1warp.html">warp</a></li>
-    <li class="footer">Generated on Mon Mar 29 2021 10:17:11 for alpaka by
+    <li class="footer">Generated on Mon Mar 29 2021 19:51:15 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

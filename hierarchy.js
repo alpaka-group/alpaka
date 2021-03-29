@@ -937,6 +937,9 @@ var hierarchy =
     [ "alpaka::warp::traits::GetSize< TWarp, TSfinae >", "structalpaka_1_1warp_1_1traits_1_1GetSize.html", null ],
     [ "alpaka::warp::traits::GetSize< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpSingleThread_01_4.html", null ],
     [ "alpaka::warp::traits::GetSize< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1traits_1_1GetSize_3_01WarpUniformCudaHipBuiltIn_01_4.html", null ],
+    [ "alpaka::warp::traits::Shfl< TWarp, TSfinae >", "structalpaka_1_1warp_1_1traits_1_1Shfl.html", null ],
+    [ "alpaka::warp::traits::Shfl< WarpSingleThread >", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpSingleThread_01_4.html", null ],
+    [ "alpaka::warp::traits::Shfl< WarpUniformCudaHipBuiltIn >", "structalpaka_1_1warp_1_1traits_1_1Shfl_3_01WarpUniformCudaHipBuiltIn_01_4.html", null ],
     [ "B1", null, [
       [ "alpaka::meta::detail::ConjunctionImpl< B1 >", "structalpaka_1_1meta_1_1detail_1_1ConjunctionImpl_3_01B1_01_4.html", null ],
       [ "alpaka::meta::detail::DisjunctionImpl< B1 >", "structalpaka_1_1meta_1_1detail_1_1DisjunctionImpl_3_01B1_01_4.html", null ]
