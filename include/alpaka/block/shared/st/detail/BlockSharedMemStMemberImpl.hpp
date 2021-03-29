@@ -132,7 +132,7 @@ namespace alpaka
 
             //! Byte offset to the end of the memory chunk
             //!
-            //! Calculate bytes required to store a type with a aligned starting offset.
+            //! Calculate bytes required to store a type with a aligned starting address in m_mem.
             //! Start offset to the origin of the user data chunk can be calculated with `result - sizeof(T)`.
             //! The padding is always before the origin of the user data chunk and can be zero byte.
             //!
@@ -142,11 +142,10 @@ namespace alpaka
             template<typename T>
             std::uint32_t varChunkEnd(uint32_t byteOffset) const
             {
-                static_assert(
-                    core::vectorization::defaultAlignment >= alignof(T),
-                    "Unable to get block shared static memory for types with alignment higher than defaultAlignment!");
-                constexpr std::uint32_t align = static_cast<std::uint32_t>(std::max(TMinDataAlignBytes, alignof(T)));
-                return (byteOffset / align + (byteOffset % align > 0u)) * align + static_cast<uint32_t>(sizeof(T));
+                size_t const ptr = reinterpret_cast<size_t>(m_mem + byteOffset);
+                constexpr size_t align = std::max(TMinDataAlignBytes, alignof(T));
+                size_t const newPtrAdress = ((ptr + align - 1u) / align) * align + sizeof(T);
+                return static_cast<uint32_t>(newPtrAdress - reinterpret_cast<size_t>(m_mem));
             }
 
             //! Offset in bytes relative to m_mem to next free data area.
