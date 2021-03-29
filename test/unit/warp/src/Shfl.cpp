@@ -15,6 +15,7 @@
 #include <catch2/catch.hpp>
 
 #include <cstdint>
+#include <limits>
 
 //#############################################################################
 class ShflSingleThreadWarpTestKernel
@@ -60,16 +61,18 @@ public:
         // https://github.com/ROCm-Developer-Tools/HIP-CPU/issues/14
         ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, 5, -1) == 5);
 
+        auto const epsilon = std::numeric_limits<float>::epsilon();
+
         // Test various widths
         for(int width = 1; width < warpExtent; width *= 2)
         {
             for(int idx = 0; idx < width; idx++)
             {
-                int off = width * (threadIdxInWarp / width);
+                int const off = width * (threadIdxInWarp / width);
                 ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, idx, width) == idx + off);
-                float ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx, width);
-                float expect = 4.0f - float(idx + off);
-                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < 1e-8f);
+                float const ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx, width);
+                float const expect = 4.0f - float(idx + off);
+                ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
             }
         }
 
@@ -81,9 +84,9 @@ public:
         for(int idx = 0; idx < warpExtent / 2; idx++)
         {
             ALPAKA_CHECK(*success, alpaka::warp::shfl(acc, threadIdxInWarp, idx) == idx);
-            float ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx);
-            float expect = 4.0f - float(idx);
-            ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < 1e-8f);
+            float const ans = alpaka::warp::shfl(acc, 4.0f - float(threadIdxInWarp), idx);
+            float const expect = 4.0f - float(idx);
+            ALPAKA_CHECK(*success, alpaka::math::abs(acc, ans - expect) < epsilon);
         }
     }
 };
