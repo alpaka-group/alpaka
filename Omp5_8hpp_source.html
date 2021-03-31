@@ -121,47 +121,45 @@ $(document).ready(function(){initNavTree('Omp5_8hpp_source.html',''); initResiza
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp5.html">   32</a></span>&#160;    <span class="keyword">namespace </span>omp5</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp5_1_1detail.html">   34</a></span>&#160;        <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">            //! OMP5 runtime API error checking with log and exception, ignoring specific error values</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">   38</a></span>&#160;<span class="comment"></span>            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">omp5Check</a>(<span class="keywordtype">int</span> <span class="keyword">const</span>&amp; error, <span class="keywordtype">char</span> <span class="keyword">const</span>* desc, <span class="keywordtype">char</span> <span class="keyword">const</span>* file, <span class="keywordtype">int</span> <span class="keyword">const</span>&amp; line)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keywordflow">if</span>(error != 0)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                    std::ostringstream os;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    os &lt;&lt; std::string(file) &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; std::to_string(line) &lt;&lt; <span class="stringliteral">&quot;) &quot;</span> &lt;&lt; std::string(desc) &lt;&lt; <span class="stringliteral">&quot; : &#39;&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                       &lt;&lt; error &lt;&lt; <span class="stringliteral">&quot;&#39;: &#39;&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;TODO&quot;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;&#39;!&quot;</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    std::cerr &lt;&lt; os.str() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#    endif</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    <a class="code" href="Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03">ALPAKA_DEBUG_BREAK</a>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    <span class="keywordflow">throw</span> std::runtime_error(os.str());</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        } <span class="comment">// namespace detail</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    } <span class="comment">// namespace omp5</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;} <span class="comment">// namespace alpaka</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">//! OMP5 runtime error checking with log and exception.</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="Omp5_8hpp.html#ab181927481ae66c009a90750f0884b2b">   61</a></span>&#160;<span class="comment"></span><span class="preprocessor">#    define ALPAKA_OMP5_CHECK(cmd) ::alpaka::omp5::detail::omp5Check(cmd, #    cmd, __FILE__, __LINE__)</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {<span class="comment"></span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">            //! OMP5 runtime API error checking with log and exception, ignoring specific error values</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">   37</a></span>&#160;<span class="comment"></span>            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">inline</span> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">omp5Check</a>(<span class="keywordtype">int</span> <span class="keyword">const</span>&amp; error, <span class="keywordtype">char</span> <span class="keyword">const</span>* desc, <span class="keywordtype">char</span> <span class="keyword">const</span>* file, <span class="keywordtype">int</span> <span class="keyword">const</span>&amp; line)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <span class="keywordflow">if</span>(error != 0)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    std::ostringstream os;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                    os &lt;&lt; std::string(file) &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; std::to_string(line) &lt;&lt; <span class="stringliteral">&quot;) &quot;</span> &lt;&lt; std::string(desc) &lt;&lt; <span class="stringliteral">&quot; : &#39;&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                       &lt;&lt; error &lt;&lt; <span class="stringliteral">&quot;&#39;: &#39;&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;TODO&quot;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                       &lt;&lt; <span class="stringliteral">&quot;&#39;!&quot;</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#    if ALPAKA_DEBUG &gt;= ALPAKA_DEBUG_MINIMAL</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    std::cerr &lt;&lt; os.str() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#    endif</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    <a class="code" href="Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03">ALPAKA_DEBUG_BREAK</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    <span class="keywordflow">throw</span> std::runtime_error(os.str());</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        } <span class="comment">// namespace detail</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    } <span class="comment">// namespace omp5</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//! OMP5 runtime error checking with log and exception.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="Omp5_8hpp.html#ab181927481ae66c009a90750f0884b2b">   59</a></span>&#160;<span class="comment"></span><span class="preprocessor">#    define ALPAKA_OMP5_CHECK(cmd) ::alpaka::omp5::detail::omp5Check(cmd, #    cmd, __FILE__, __LINE__)</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aDebug_8hpp_html_ac3248b76e967a40d459bf83b17de9b03"><div class="ttname"><a href="Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03">ALPAKA_DEBUG_BREAK</a></div><div class="ttdeci">#define ALPAKA_DEBUG_BREAK</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00100">Debug.hpp:100</a></div></div>
+<div class="ttc" id="aDebug_8hpp_html_ac3248b76e967a40d459bf83b17de9b03"><div class="ttname"><a href="Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03">ALPAKA_DEBUG_BREAK</a></div><div class="ttdeci">#define ALPAKA_DEBUG_BREAK</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00086">Debug.hpp:86</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00038">Common.hpp:38</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1omp5_1_1detail_html_a7754e0883294e7b9940ce6987d2a729d"><div class="ttname"><a href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a></div><div class="ttdeci">ALPAKA_FN_HOST auto omp5Check(int const &amp;error, char const *desc, char const *file, int const &amp;line) -&gt; void</div><div class="ttdoc">OMP5 runtime API error checking with log and exception, ignoring specific error values.</div><div class="ttdef"><b>Definition:</b> <a href="Omp5_8hpp_source.html#l00038">Omp5.hpp:38</a></div></div>
+<div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1omp5_1_1detail_html_a7754e0883294e7b9940ce6987d2a729d"><div class="ttname"><a href="namespacealpaka_1_1omp5_1_1detail.html#a7754e0883294e7b9940ce6987d2a729d">alpaka::omp5::detail::omp5Check</a></div><div class="ttdeci">ALPAKA_FN_HOST auto omp5Check(int const &amp;error, char const *desc, char const *file, int const &amp;line) -&gt; void</div><div class="ttdoc">OMP5 runtime API error checking with log and exception, ignoring specific error values.</div><div class="ttdef"><b>Definition:</b> <a href="Omp5_8hpp_source.html#l00037">Omp5.hpp:37</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Omp5_8hpp.html">Omp5.hpp</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 11:12:14 for alpaka by
+    <li class="footer">Generated on Wed Mar 31 2021 10:05:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

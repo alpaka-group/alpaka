@@ -143,306 +143,291 @@ $(document).ready(function(){initNavTree('atomic_2Traits_8hpp_source.html',''); 
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> THierarchy&gt;</div>
 <div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52">   56</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52">AtomicHierarchyConcept</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1detail_1_1AtomicHierarchyConceptType.html">detail::AtomicHierarchyConceptType&lt;THierarchy&gt;::type</a>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">    //! The atomic operation traits.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">        //! The atomic operation trait.</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp, <span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1AtomicOp.html">   65</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1AtomicOp.html">AtomicOp</a>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">    //! Executes the given operation atomically.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">    //! \tparam TOp The operation type.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp, <span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">   79</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a>(</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        THierarchy <span class="keyword">const</span>&amp; = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <span class="keyword">typename</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;AtomicHierarchyConcept&lt;THierarchy&gt;</a>, TAtomic&gt;;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">traits::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, value);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">    //! Executes the given operation atomically.</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">    //! \tparam TOp The operation type.</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">    //! \param compare The comparison value used in the atomic operation.</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp, <span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">  101</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a>(</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        T <span class="keyword">const</span>&amp; compare,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        THierarchy <span class="keyword">const</span>&amp; = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    {</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <span class="keyword">typename</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;AtomicHierarchyConcept&lt;THierarchy&gt;</a>, TAtomic&gt;;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">traits::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, compare, value);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">    //! Executes an atomic add operation.</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">  122</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">atomicAdd</a>(</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicAdd&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">    //! Executes an atomic sub operation.</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a3fd6532dee901bf4d991c2912d48b6fc">  141</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a3fd6532dee901bf4d991c2912d48b6fc">atomicSub</a>(</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicSub&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">    //! Executes an atomic min operation.</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a4f18d8a56f1420bf97c3ae420c50b1ee">  160</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a4f18d8a56f1420bf97c3ae420c50b1ee">atomicMin</a>(</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    {</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicMin&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    //! Executes an atomic max operation.</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a7e505040bed456f94ca7d67c410b3fdb">  179</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a7e505040bed456f94ca7d67c410b3fdb">atomicMax</a>(</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    {</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicMax&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    }</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment">    //! Executes an atomic exchange operation.</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">  198</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">atomicExch</a>(</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicExch&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    }</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">    //! Executes an atomic increment operation.</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a63cfc71f3e70ac355d00d5d72c22c155">  217</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a63cfc71f3e70ac355d00d5d72c22c155">atomicInc</a>(</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    {</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicInc&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">    //! Executes an atomic decrement operation.</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">  236</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">atomicDec</a>(</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    {</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicDec&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    }</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">    //! Executes an atomic and operation.</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00255"></a><span class="lineno"><a class="line" href="namespacealpaka.html#afcb672dfb9494d1e3907cc68ac9f6bdc">  255</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afcb672dfb9494d1e3907cc68ac9f6bdc">atomicAnd</a>(</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    {</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicAnd&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    }</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">    //! Executes an atomic or operation.</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041">  274</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041">atomicOr</a>(</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    {</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicOr&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    }</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">    //! Executes an atomic xor operation.</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00293"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a0c8304545460e9c2aedf08a91626185d">  293</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a0c8304545460e9c2aedf08a91626185d">atomicXor</a>(</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    {</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicXor&gt;(atomic, addr, value, hier);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    }</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">    //! Executes an atomic compare-and-swap operation.</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">    //! \param compare The comparison value used in the atomic operation.</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
-<div class="line"><a name="l00313"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676">  313</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676">atomicCas</a>(</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        T* <span class="keyword">const</span> addr,</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        T <span class="keyword">const</span>&amp; compare,</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    {</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicCas&gt;(atomic, addr, compare, value, hier);</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    }</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">    //! The atomic operation traits.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">        //! The atomic operation trait.</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp, <span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1AtomicOp.html">   63</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1AtomicOp.html">AtomicOp</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">    //! Executes the given operation atomically.</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">    //! \tparam TOp The operation type.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp, <span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">   76</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a>(</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        THierarchy <span class="keyword">const</span>&amp; = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <span class="keyword">typename</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;AtomicHierarchyConcept&lt;THierarchy&gt;</a>, TAtomic&gt;;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">traits::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, value);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">    //! Executes the given operation atomically.</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">    //! \tparam TOp The operation type.</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">    //! \param compare The comparison value used in the atomic operation.</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOp, <span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">   97</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">atomicOp</a>(</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        T <span class="keyword">const</span>&amp; compare,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        THierarchy <span class="keyword">const</span>&amp; = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">ImplementationBase</a> = <span class="keyword">typename</span> <a class="code" href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">concepts::ImplementationBase&lt;AtomicHierarchyConcept&lt;THierarchy&gt;</a>, TAtomic&gt;;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">traits::AtomicOp&lt;TOp, ImplementationBase, T, THierarchy&gt;::atomicOp</a>(atomic, addr, compare, value);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">    //! Executes an atomic add operation.</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">  117</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">atomicAdd</a>(</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicAdd&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">    //! Executes an atomic sub operation.</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a3fd6532dee901bf4d991c2912d48b6fc">  135</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a3fd6532dee901bf4d991c2912d48b6fc">atomicSub</a>(</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    {</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicSub&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">    //! Executes an atomic min operation.</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a4f18d8a56f1420bf97c3ae420c50b1ee">  153</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a4f18d8a56f1420bf97c3ae420c50b1ee">atomicMin</a>(</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicMin&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">    //! Executes an atomic max operation.</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a7e505040bed456f94ca7d67c410b3fdb">  171</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a7e505040bed456f94ca7d67c410b3fdb">atomicMax</a>(</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicMax&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">    //! Executes an atomic exchange operation.</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">  189</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">atomicExch</a>(</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    {</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicExch&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    }</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">    //! Executes an atomic increment operation.</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a63cfc71f3e70ac355d00d5d72c22c155">  207</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a63cfc71f3e70ac355d00d5d72c22c155">atomicInc</a>(</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicInc&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    }</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">    //! Executes an atomic decrement operation.</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">  225</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">atomicDec</a>(</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicDec&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    }</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">    //! Executes an atomic and operation.</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00243"></a><span class="lineno"><a class="line" href="namespacealpaka.html#afcb672dfb9494d1e3907cc68ac9f6bdc">  243</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#afcb672dfb9494d1e3907cc68ac9f6bdc">atomicAnd</a>(</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    {</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicAnd&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    }</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">    //! Executes an atomic or operation.</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041">  261</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041">atomicOr</a>(</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    {</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicOr&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    }</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">    //! Executes an atomic xor operation.</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00279"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a0c8304545460e9c2aedf08a91626185d">  279</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a0c8304545460e9c2aedf08a91626185d">atomicXor</a>(</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    {</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicXor&gt;(atomic, addr, value, hier);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    }</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">    //! Executes an atomic compare-and-swap operation.</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">    //! \tparam TAtomic The atomic implementation type.</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">    //! \tparam T The value type.</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">    //! \param atomic The atomic implementation.</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">    //! \param addr The value to change atomically.</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">    //! \param compare The comparison value used in the atomic operation.</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">    //! \param value The value used in the atomic operation.</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment"></span>    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> TAtomic, <span class="keyword">typename</span> T, <span class="keyword">typename</span> THierarchy = hierarchy::Gr<span class="keywordtype">id</span>s&gt;</div>
+<div class="line"><a name="l00298"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676">  298</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676">atomicCas</a>(</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        TAtomic <span class="keyword">const</span>&amp; atomic,</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        T* <span class="keyword">const</span> addr,</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        T <span class="keyword">const</span>&amp; compare,</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        T <span class="keyword">const</span>&amp; value,</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        THierarchy <span class="keyword">const</span>&amp; hier = THierarchy()) -&gt; T</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    {</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="keywordflow">return</span> atomicOp&lt;AtomicCas&gt;(atomic, addr, compare, value, hier);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    }</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="anamespacealpaka_html_a87ead6541b9d6971fdbdc2d2e38e9676"><div class="ttname"><a href="namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676">alpaka::atomicCas</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicCas(TAtomic const &amp;atomic, T *const addr, T const &amp;compare, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic compare-and-swap operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00313">Traits.hpp:313</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_aa8d02f0c4379afabdb7f4ee2e8f7954c"><div class="ttname"><a href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div><div class="ttdeci">#define ALPAKA_NO_HOST_ACC_WARNING</div><div class="ttdoc">Disable nvcc warning: 'calling a host function from host device function.'.</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00058">Common.hpp:58</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_af0db95671aafbe9c7fe480f45d226041"><div class="ttname"><a href="namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041">alpaka::atomicOr</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOr(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic or operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00274">Traits.hpp:274</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a87ead6541b9d6971fdbdc2d2e38e9676"><div class="ttname"><a href="namespacealpaka.html#a87ead6541b9d6971fdbdc2d2e38e9676">alpaka::atomicCas</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicCas(TAtomic const &amp;atomic, T *const addr, T const &amp;compare, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic compare-and-swap operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00298">Traits.hpp:298</a></div></div>
+<div class="ttc" id="aCommon_8hpp_html_aa8d02f0c4379afabdb7f4ee2e8f7954c"><div class="ttname"><a href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div><div class="ttdeci">#define ALPAKA_NO_HOST_ACC_WARNING</div><div class="ttdoc">Disable nvcc warning: 'calling a host function from host device function.' Usage: ALPAKA_NO_HOST_ACC_...</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00054">Common.hpp:54</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_af0db95671aafbe9c7fe480f45d226041"><div class="ttname"><a href="namespacealpaka.html#af0db95671aafbe9c7fe480f45d226041">alpaka::atomicOr</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOr(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic or operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00261">Traits.hpp:261</a></div></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_afc0cabb316d5524d381a35c8c67edf81"><div class="ttname"><a href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00079">Traits.hpp:79</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_afc0cabb316d5524d381a35c8c67edf81"><div class="ttname"><a href="namespacealpaka.html#afc0cabb316d5524d381a35c8c67edf81">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00076">Traits.hpp:76</a></div></div>
 <div class="ttc" id="aCommon_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_1_1concepts_html_a2246e15a1ea76fcf04ee357e03aad4d8"><div class="ttname"><a href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">alpaka::concepts::ImplementationBase</a></div><div class="ttdeci">typename detail::ImplementationBaseType&lt; TConcept, TDerived &gt;::type ImplementationBase</div><div class="ttdoc">Returns the type that implements the given concept in the inheritance hierarchy.</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00079">Concepts.hpp:79</a></div></div>
+<div class="ttc" id="anamespacealpaka_1_1concepts_html_a2246e15a1ea76fcf04ee357e03aad4d8"><div class="ttname"><a href="namespacealpaka_1_1concepts.html#a2246e15a1ea76fcf04ee357e03aad4d8">alpaka::concepts::ImplementationBase</a></div><div class="ttdeci">typename detail::ImplementationBaseType&lt; TConcept, TDerived &gt;::type ImplementationBase</div><div class="ttdoc">Returns the type that implements the given concept in the inheritance hierarchy.</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00073">Concepts.hpp:73</a></div></div>
 <div class="ttc" id="astructalpaka_1_1detail_1_1AtomicHierarchyConceptType_html"><div class="ttname"><a href="structalpaka_1_1detail_1_1AtomicHierarchyConceptType.html">alpaka::detail::AtomicHierarchyConceptType</a></div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00034">Traits.hpp:34</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1AtomicOp_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1AtomicOp.html">alpaka::traits::AtomicOp</a></div><div class="ttdoc">The atomic operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00065">Traits.hpp:65</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a148285a6d01c5470b8a96a3c2987dc26"><div class="ttname"><a href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">alpaka::atomicExch</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicExch(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic exchange operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00198">Traits.hpp:198</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1AtomicOp_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1AtomicOp.html">alpaka::traits::AtomicOp</a></div><div class="ttdoc">The atomic operation trait.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00063">Traits.hpp:63</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a148285a6d01c5470b8a96a3c2987dc26"><div class="ttname"><a href="namespacealpaka.html#a148285a6d01c5470b8a96a3c2987dc26">alpaka::atomicExch</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicExch(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic exchange operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00189">Traits.hpp:189</a></div></div>
 <div class="ttc" id="anamespacealpaka_html_a802e615af70018a5f2a5d4972bc11a52"><div class="ttname"><a href="namespacealpaka.html#a802e615af70018a5f2a5d4972bc11a52">alpaka::AtomicHierarchyConcept</a></div><div class="ttdeci">typename detail::AtomicHierarchyConceptType&lt; THierarchy &gt;::type AtomicHierarchyConcept</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00056">Traits.hpp:56</a></div></div>
 <div class="ttc" id="astructalpaka_1_1ConceptAtomicThreads_html"><div class="ttname"><a href="structalpaka_1_1ConceptAtomicThreads.html">alpaka::ConceptAtomicThreads</a></div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00027">Traits.hpp:27</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a63cfc71f3e70ac355d00d5d72c22c155"><div class="ttname"><a href="namespacealpaka.html#a63cfc71f3e70ac355d00d5d72c22c155">alpaka::atomicInc</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicInc(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic increment operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00217">Traits.hpp:217</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a4c6a0197f66257d016d1250a05030def"><div class="ttname"><a href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;compare, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00101">Traits.hpp:101</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a63cfc71f3e70ac355d00d5d72c22c155"><div class="ttname"><a href="namespacealpaka.html#a63cfc71f3e70ac355d00d5d72c22c155">alpaka::atomicInc</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicInc(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic increment operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00207">Traits.hpp:207</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a4c6a0197f66257d016d1250a05030def"><div class="ttname"><a href="namespacealpaka.html#a4c6a0197f66257d016d1250a05030def">alpaka::atomicOp</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicOp(TAtomic const &amp;atomic, T *const addr, T const &amp;compare, T const &amp;value, THierarchy const &amp;=THierarchy()) -&gt; T</div><div class="ttdoc">Executes the given operation atomically.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00097">Traits.hpp:97</a></div></div>
 <div class="ttc" id="aPositioning_8hpp_html"><div class="ttname"><a href="Positioning_8hpp.html">Positioning.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a7e505040bed456f94ca7d67c410b3fdb"><div class="ttname"><a href="namespacealpaka.html#a7e505040bed456f94ca7d67c410b3fdb">alpaka::atomicMax</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicMax(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic max operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00179">Traits.hpp:179</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a4f18d8a56f1420bf97c3ae420c50b1ee"><div class="ttname"><a href="namespacealpaka.html#a4f18d8a56f1420bf97c3ae420c50b1ee">alpaka::atomicMin</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicMin(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic min operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00160">Traits.hpp:160</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a7e505040bed456f94ca7d67c410b3fdb"><div class="ttname"><a href="namespacealpaka.html#a7e505040bed456f94ca7d67c410b3fdb">alpaka::atomicMax</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicMax(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic max operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00171">Traits.hpp:171</a></div></div>
+<div class="ttc" id="aCommon_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00036">Common.hpp:36</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a4f18d8a56f1420bf97c3ae420c50b1ee"><div class="ttname"><a href="namespacealpaka.html#a4f18d8a56f1420bf97c3ae420c50b1ee">alpaka::atomicMin</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicMin(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic min operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00153">Traits.hpp:153</a></div></div>
 <div class="ttc" id="astructalpaka_1_1ConceptAtomicGrids_html"><div class="ttname"><a href="structalpaka_1_1ConceptAtomicGrids.html">alpaka::ConceptAtomicGrids</a></div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00021">Traits.hpp:21</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a0c8304545460e9c2aedf08a91626185d"><div class="ttname"><a href="namespacealpaka.html#a0c8304545460e9c2aedf08a91626185d">alpaka::atomicXor</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicXor(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic xor operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00293">Traits.hpp:293</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_ac8d44ae90fcfe2fdb973c49542fd0db5"><div class="ttname"><a href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">alpaka::atomicAdd</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicAdd(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic add operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00122">Traits.hpp:122</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a0c8304545460e9c2aedf08a91626185d"><div class="ttname"><a href="namespacealpaka.html#a0c8304545460e9c2aedf08a91626185d">alpaka::atomicXor</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicXor(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic xor operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00279">Traits.hpp:279</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_ac8d44ae90fcfe2fdb973c49542fd0db5"><div class="ttname"><a href="namespacealpaka.html#ac8d44ae90fcfe2fdb973c49542fd0db5">alpaka::atomicAdd</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicAdd(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic add operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00117">Traits.hpp:117</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <div class="ttc" id="aOp_8hpp_html"><div class="ttname"><a href="Op_8hpp.html">Op.hpp</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_afcb672dfb9494d1e3907cc68ac9f6bdc"><div class="ttname"><a href="namespacealpaka.html#afcb672dfb9494d1e3907cc68ac9f6bdc">alpaka::atomicAnd</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicAnd(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic and operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00255">Traits.hpp:255</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a3fd6532dee901bf4d991c2912d48b6fc"><div class="ttname"><a href="namespacealpaka.html#a3fd6532dee901bf4d991c2912d48b6fc">alpaka::atomicSub</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicSub(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic sub operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00141">Traits.hpp:141</a></div></div>
-<div class="ttc" id="anamespacealpaka_html_a7d18cb6aa5ffef8f6326ec2d9ac6eb12"><div class="ttname"><a href="namespacealpaka.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">alpaka::atomicDec</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicDec(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic decrement operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00236">Traits.hpp:236</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_afcb672dfb9494d1e3907cc68ac9f6bdc"><div class="ttname"><a href="namespacealpaka.html#afcb672dfb9494d1e3907cc68ac9f6bdc">alpaka::atomicAnd</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicAnd(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic and operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00243">Traits.hpp:243</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a3fd6532dee901bf4d991c2912d48b6fc"><div class="ttname"><a href="namespacealpaka.html#a3fd6532dee901bf4d991c2912d48b6fc">alpaka::atomicSub</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicSub(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic sub operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00135">Traits.hpp:135</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_a7d18cb6aa5ffef8f6326ec2d9ac6eb12"><div class="ttname"><a href="namespacealpaka.html#a7d18cb6aa5ffef8f6326ec2d9ac6eb12">alpaka::atomicDec</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto atomicDec(TAtomic const &amp;atomic, T *const addr, T const &amp;value, THierarchy const &amp;hier=THierarchy()) -&gt; T</div><div class="ttdoc">Executes an atomic decrement operation.</div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00225">Traits.hpp:225</a></div></div>
 <div class="ttc" id="astructalpaka_1_1ConceptAtomicBlocks_html"><div class="ttname"><a href="structalpaka_1_1ConceptAtomicBlocks.html">alpaka::ConceptAtomicBlocks</a></div><div class="ttdef"><b>Definition:</b> <a href="atomic_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_1143562e5ac1f1cac7683540118ef5cd.html">atomic</a></li><li class="navelem"><a class="el" href="atomic_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 11:12:14 for alpaka by
+    <li class="footer">Generated on Wed Mar 31 2021 10:05:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

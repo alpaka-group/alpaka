@@ -134,7 +134,7 @@ Static Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Representation of OpenMP schedule information: kind and chunk size. This class can be used regardless of whether OpenMP is enabled. </p>
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00028">28</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00027">27</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4cd063ed1cad579e8bc77df0286dba61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4cd063ed1cad579e8bc77df0286dba61">&#9670;&nbsp;</a></span>Schedule()</h2>
@@ -172,7 +172,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>The provided value myKind has to be supported by the underlying OpenMP implementation. It does not have to be one of the constants defined above. A default-constructed schedule does not affect internal control variables of OpenMP. The constructor is constexpr to simplify creation of static constexpr ompSchedule in user code. </p>
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00056">56</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00055">55</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -197,7 +197,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00036">36</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00035">35</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -215,7 +215,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Chunk size. Same as in OpenMP, value 0 corresponds to default chunk size. Using int and not a fixed-width type to match OpenMP API. </p>
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00050">50</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00049">49</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -239,7 +239,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00034">34</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00033">33</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -263,7 +263,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00035">35</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00034">34</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -282,7 +282,7 @@ Static Public Attributes</h2></td></tr>
 <p><a class="el" href="structalpaka_1_1omp_1_1Schedule.html" title="Representation of OpenMP schedule information: kind and chunk size. This class can be used regardless...">Schedule</a> kind. </p>
 <p>We cannot simply use type omp_sched_t since this struct is agnostic of OpenMP. We also cannot create an own mirror enum, since OpenMP implementations are allowed to extend the range of values beyond the standard ones defined above. So we have to accept and store any uint32_t value, and for non-standard values a user has to ensure the underlying implementation supports it. </p>
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00046">46</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00045">45</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -308,7 +308,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Each schedule value can be combined with monotonic using + or |. </p>
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00038">38</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00037">37</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -334,7 +334,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Special schedule setting which does not change the internal control variables of OpenMP. </p>
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00031">31</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00030">30</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Integers corresponding to the mandatory OpenMP omp_sched_t enum values as of version 5.0. </p>
 
-<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00033">33</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="OmpSchedule_8hpp_source.html#l00032">32</a> of file <a class="el" href="OmpSchedule_8hpp_source.html">OmpSchedule.hpp</a>.</p>
 
 </div>
 </div>
@@ -373,7 +373,7 @@ Static Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1omp.html">omp</a></li><li class="navelem"><a class="el" href="structalpaka_1_1omp_1_1Schedule.html">Schedule</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 11:12:16 for alpaka by
+    <li class="footer">Generated on Wed Mar 31 2021 10:05:14 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

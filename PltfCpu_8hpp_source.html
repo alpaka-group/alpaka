@@ -106,86 +106,79 @@ $(document).ready(function(){initNavTree('PltfCpu_8hpp_source.html',''); initRes
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">    //! The CPU device platform.</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classalpaka_1_1PltfCpu.html">   23</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptPltf, PltfCpu&gt;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="code" href="classalpaka_1_1PltfCpu.html#ae09bf7e685fb48b9c26a09c020df9cdf">PltfCpu</a>() = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    };</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">        //! The CPU device device type trait specialization.</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1DevType_3_01PltfCpu_01_4.html">   35</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1DevType.html">DevType</a>&lt;<a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>&gt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1DevType_3_01PltfCpu_01_4.html#a5862b97889182c45ab43b5f7cffb57f3">   37</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1DevCpu.html">type</a> = <a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        };</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">        //! The CPU platform device count get trait specialization.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html">   43</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1GetDevCount.html">GetDevCount</a>&lt;<a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html#a23987b8b5bef2d5bf7dcacec772d4dd1">   46</a></span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html#a23987b8b5bef2d5bf7dcacec772d4dd1">getDevCount</a>() -&gt; std::size_t</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        };</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">        //! The CPU platform device get trait specialization.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html">   57</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1GetDevByIdx.html">GetDevByIdx</a>&lt;<a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html#ae48ecbe92f5840cbcec0ba34f3e52731">   60</a></span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html#ae48ecbe92f5840cbcec0ba34f3e52731">getDevByIdx</a>(std::size_t <span class="keyword">const</span>&amp; devIdx) -&gt; <a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                std::size_t <span class="keyword">const</span> devCount(getDevCount&lt;PltfCpu&gt;());</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">if</span>(devIdx &gt;= devCount)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    std::stringstream ssErr;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    ssErr &lt;&lt; <span class="stringliteral">&quot;Unable to return device handle for CPU device with index &quot;</span> &lt;&lt; devIdx</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; because there are only &quot;</span> &lt;&lt; devCount &lt;&lt; <span class="stringliteral">&quot; devices!&quot;</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    <span class="keywordflow">throw</span> std::runtime_error(ssErr.str());</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        };</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">    //! The CPU device platform.</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classalpaka_1_1PltfCpu.html">   22</a></span>&#160;<span class="comment"></span>    <span class="keyword">class </span><a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a> : <span class="keyword">public</span> <a class="code" href="structalpaka_1_1concepts_1_1Implements.html">concepts::Implements</a>&lt;ConceptPltf, PltfCpu&gt;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="code" href="classalpaka_1_1PltfCpu.html#ae09bf7e685fb48b9c26a09c020df9cdf">PltfCpu</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    };</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">        //! The CPU device device type trait specialization.</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1DevType_3_01PltfCpu_01_4.html">   32</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1DevType.html">DevType</a>&lt;<a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        {</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1DevType_3_01PltfCpu_01_4.html#a5862b97889182c45ab43b5f7cffb57f3">   34</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1DevCpu.html">type</a> = <a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        };</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">        //! The CPU platform device count get trait specialization.</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html">   39</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1GetDevCount.html">GetDevCount</a>&lt;<a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>&gt;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html#a23987b8b5bef2d5bf7dcacec772d4dd1">   41</a></span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html#a23987b8b5bef2d5bf7dcacec772d4dd1">getDevCount</a>() -&gt; std::size_t</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        };</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">        //! The CPU platform device get trait specialization.</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html">   51</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1GetDevByIdx.html">GetDevByIdx</a>&lt;<a class="code" href="classalpaka_1_1PltfCpu.html">PltfCpu</a>&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html#ae48ecbe92f5840cbcec0ba34f3e52731">   53</a></span>&#160;            <a class="code" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html#ae48ecbe92f5840cbcec0ba34f3e52731">getDevByIdx</a>(std::size_t <span class="keyword">const</span>&amp; devIdx) -&gt; <a class="code" href="classalpaka_1_1DevCpu.html">DevCpu</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <a class="code" href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                std::size_t <span class="keyword">const</span> devCount(getDevCount&lt;PltfCpu&gt;());</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">if</span>(devIdx &gt;= devCount)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    std::stringstream ssErr;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    ssErr &lt;&lt; <span class="stringliteral">&quot;Unable to return device handle for CPU device with index &quot;</span> &lt;&lt; devIdx</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                          &lt;&lt; <span class="stringliteral">&quot; because there are only &quot;</span> &lt;&lt; devCount &lt;&lt; <span class="stringliteral">&quot; devices!&quot;</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keywordflow">throw</span> std::runtime_error(ssErr.str());</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        };</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructalpaka_1_1traits_1_1DevType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1DevType.html">alpaka::traits::DevType</a></div><div class="ttdoc">The device type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
-<div class="ttc" id="aDebug_8hpp_html_ac65b6c44ec8afefe76a919847dd5ccec"><div class="ttname"><a href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_FULL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00083">Debug.hpp:83</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevCount_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevCount.html">alpaka::traits::GetDevCount</a></div><div class="ttdoc">The device count get trait.</div><div class="ttdef"><b>Definition:</b> <a href="pltf_2Traits_8hpp_source.html#l00044">Traits.hpp:44</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1DevType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1DevType.html">alpaka::traits::DevType</a></div><div class="ttdoc">The device type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dev_2Traits_8hpp_source.html#l00022">Traits.hpp:22</a></div></div>
+<div class="ttc" id="aDebug_8hpp_html_ac65b6c44ec8afefe76a919847dd5ccec"><div class="ttname"><a href="Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec">ALPAKA_DEBUG_FULL_LOG_SCOPE</a></div><div class="ttdeci">#define ALPAKA_DEBUG_FULL_LOG_SCOPE</div><div class="ttdef"><b>Definition:</b> <a href="Debug_8hpp_source.html#l00070">Debug.hpp:70</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevCount_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevCount.html">alpaka::traits::GetDevCount</a></div><div class="ttdoc">The device count get trait.</div><div class="ttdef"><b>Definition:</b> <a href="pltf_2Traits_8hpp_source.html#l00041">Traits.hpp:41</a></div></div>
 <div class="ttc" id="aConcepts_8hpp_html"><div class="ttname"><a href="Concepts_8hpp.html">Concepts.hpp</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4_html_a23987b8b5bef2d5bf7dcacec772d4dd1"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html#a23987b8b5bef2d5bf7dcacec772d4dd1">alpaka::traits::GetDevCount&lt; PltfCpu &gt;::getDevCount</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getDevCount() -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="PltfCpu_8hpp_source.html#l00046">PltfCpu.hpp:46</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4_html_a23987b8b5bef2d5bf7dcacec772d4dd1"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevCount_3_01PltfCpu_01_4.html#a23987b8b5bef2d5bf7dcacec772d4dd1">alpaka::traits::GetDevCount&lt; PltfCpu &gt;::getDevCount</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getDevCount() -&gt; std::size_t</div><div class="ttdef"><b>Definition:</b> <a href="PltfCpu_8hpp_source.html#l00041">PltfCpu.hpp:41</a></div></div>
 <div class="ttc" id="aDevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
-<div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00038">Common.hpp:38</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1PltfCpu_html"><div class="ttname"><a href="classalpaka_1_1PltfCpu.html">alpaka::PltfCpu</a></div><div class="ttdoc">The CPU device platform.</div><div class="ttdef"><b>Definition:</b> <a href="PltfCpu_8hpp_source.html#l00023">PltfCpu.hpp:23</a></div></div>
-<div class="ttc" id="aclassalpaka_1_1DevCpu_html"><div class="ttname"><a href="classalpaka_1_1DevCpu.html">alpaka::DevCpu</a></div><div class="ttdoc">The CPU device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00112">DevCpu.hpp:112</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4_html_ae48ecbe92f5840cbcec0ba34f3e52731"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html#ae48ecbe92f5840cbcec0ba34f3e52731">alpaka::traits::GetDevByIdx&lt; PltfCpu &gt;::getDevByIdx</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getDevByIdx(std::size_t const &amp;devIdx) -&gt; DevCpu</div><div class="ttdef"><b>Definition:</b> <a href="PltfCpu_8hpp_source.html#l00060">PltfCpu.hpp:60</a></div></div>
+<div class="ttc" id="aCommon_8hpp_html_a30cf38ce8c63908b355f69eb893da575"><div class="ttname"><a href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a></div><div class="ttdeci">#define ALPAKA_FN_HOST</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00037">Common.hpp:37</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1PltfCpu_html"><div class="ttname"><a href="classalpaka_1_1PltfCpu.html">alpaka::PltfCpu</a></div><div class="ttdoc">The CPU device platform.</div><div class="ttdef"><b>Definition:</b> <a href="PltfCpu_8hpp_source.html#l00022">PltfCpu.hpp:22</a></div></div>
+<div class="ttc" id="aclassalpaka_1_1DevCpu_html"><div class="ttname"><a href="classalpaka_1_1DevCpu.html">alpaka::DevCpu</a></div><div class="ttdoc">The CPU device handle.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00101">DevCpu.hpp:101</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4_html_ae48ecbe92f5840cbcec0ba34f3e52731"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevByIdx_3_01PltfCpu_01_4.html#ae48ecbe92f5840cbcec0ba34f3e52731">alpaka::traits::GetDevByIdx&lt; PltfCpu &gt;::getDevByIdx</a></div><div class="ttdeci">static ALPAKA_FN_HOST auto getDevByIdx(std::size_t const &amp;devIdx) -&gt; DevCpu</div><div class="ttdef"><b>Definition:</b> <a href="PltfCpu_8hpp_source.html#l00053">PltfCpu.hpp:53</a></div></div>
 <div class="ttc" id="apltf_2Traits_8hpp_html"><div class="ttname"><a href="pltf_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="aclassalpaka_1_1PltfCpu_html_ae09bf7e685fb48b9c26a09c020df9cdf"><div class="ttname"><a href="classalpaka_1_1PltfCpu.html#ae09bf7e685fb48b9c26a09c020df9cdf">alpaka::PltfCpu::PltfCpu</a></div><div class="ttdeci">ALPAKA_FN_HOST PltfCpu()=delete</div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <div class="ttc" id="astructalpaka_1_1traits_1_1GetDevByIdx_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1GetDevByIdx.html">alpaka::traits::GetDevByIdx</a></div><div class="ttdoc">The device get trait.</div><div class="ttdef"><b>Definition:</b> <a href="DevCpu_8hpp_source.html#l00040">DevCpu.hpp:40</a></div></div>
-<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00022">Concepts.hpp:22</a></div></div>
+<div class="ttc" id="astructalpaka_1_1concepts_1_1Implements_html"><div class="ttname"><a href="structalpaka_1_1concepts_1_1Implements.html">alpaka::concepts::Implements</a></div><div class="ttdoc">Tag used in class inheritance hierarchies that describes that a specific concept (TConcept) is implem...</div><div class="ttdef"><b>Definition:</b> <a href="Concepts_8hpp_source.html#l00021">Concepts.hpp:21</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_3da4cf0d8582bc897be6864cae72e9ae.html">pltf</a></li><li class="navelem"><a class="el" href="PltfCpu_8hpp.html">PltfCpu.hpp</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 11:12:15 for alpaka by
+    <li class="footer">Generated on Wed Mar 31 2021 10:05:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

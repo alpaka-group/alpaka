@@ -99,32 +99,29 @@ $(document).ready(function(){initNavTree('dim_2Traits_8hpp_source.html',''); ini
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">    //! The dimension traits.</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">        //! The dimension getter type trait.</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1DimType.html">   21</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1DimType.html">DimType</a>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    } <span class="comment">// namespace traits</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">    //! The dimension type trait alias template to remove the ::type.</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">   27</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1traits_1_1DimType.html">traits::DimType&lt;T&gt;::type</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;} <span class="comment">// namespace alpaka</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{<span class="comment"></span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">    //! The dimension traits.</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"></span>    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {<span class="comment"></span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">        //! The dimension getter type trait.</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"></span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1DimType.html">   19</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1DimType.html">DimType</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    } <span class="comment">// namespace traits</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">    //! The dimension type trait alias template to remove the ::type.</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"></span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">   24</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">Dim</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1traits_1_1DimType.html">traits::DimType&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;} <span class="comment">// namespace alpaka</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="anamespacealpaka_html_aba87713ec0232bbf70beb24e063e32ea"><div class="ttname"><a href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">alpaka::Dim</a></div><div class="ttdeci">typename traits::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00027">Traits.hpp:27</a></div></div>
-<div class="ttc" id="astructalpaka_1_1traits_1_1DimType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1DimType.html">alpaka::traits::DimType</a></div><div class="ttdoc">The dimension getter type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00021">Traits.hpp:21</a></div></div>
+<div class="ttc" id="anamespacealpaka_html_aba87713ec0232bbf70beb24e063e32ea"><div class="ttname"><a href="namespacealpaka.html#aba87713ec0232bbf70beb24e063e32ea">alpaka::Dim</a></div><div class="ttdeci">typename traits::DimType&lt; T &gt;::type Dim</div><div class="ttdoc">The dimension type trait alias template to remove the ::type.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00024">Traits.hpp:24</a></div></div>
+<div class="ttc" id="astructalpaka_1_1traits_1_1DimType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1DimType.html">alpaka::traits::DimType</a></div><div class="ttdoc">The dimension getter type trait.</div><div class="ttdef"><b>Definition:</b> <a href="dim_2Traits_8hpp_source.html#l00019">Traits.hpp:19</a></div></div>
 <div class="ttc" id="anamespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">Suggests vectorization of the directly following loop to the compiler.</div><div class="ttdef"><b>Definition:</b> <a href="AccCpuFibers_8hpp_source.html#l00048">AccCpuFibers.hpp:48</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_b5a8ec4893e1f83a89980c2613a4602b.html">dim</a></li><li class="navelem"><a class="el" href="dim_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 11:12:14 for alpaka by
+    <li class="footer">Generated on Wed Mar 31 2021 10:05:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
