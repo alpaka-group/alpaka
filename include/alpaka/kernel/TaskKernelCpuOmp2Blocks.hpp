@@ -623,7 +623,7 @@ namespace alpaka
                         numIterations,
                         schedule);
                     break;
-#    if defined _OPENMP && _OPENMP >= 200805
+#    if _OPENMP >= 200805
                 case omp::Schedule::Auto:
                     ParallelForImpl<TKernel, omp::Schedule, omp::Schedule::Auto>{}(
                         kernel,
@@ -837,12 +837,12 @@ namespace alpaka
 
             // Body of the OpenMP parallel loop to be executed.
             // Index type is auto since we have a difference for OpenMP 2.0 and later ones
-            auto loopBody = [&](auto i) {
+            auto loopBody = [&](auto currentIndex) {
 #    if _OPENMP < 200805
-                auto const i_tidx = static_cast<TIdx>(i); // for issue #840
+                auto const i_tidx = static_cast<TIdx>(currentIndex); // for issue #840
                 auto const index = Vec<DimInt<1u>, TIdx>(i_tidx); // for issue #840
 #    else
-                auto const index = Vec<DimInt<1u>, TIdx>(i); // for issue #840
+                auto const index = Vec<DimInt<1u>, TIdx>(currentIndex); // for issue #840
 #    endif
                 acc.m_gridBlockIdx = mapIdx<TDim::value>(index, gridBlockExtent);
 
