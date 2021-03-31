@@ -86,9 +86,8 @@ namespace alpaka
             }
         };
 
-        //! The trait for getting the schedule to use when a kernel is run using the CpuOmp2Blocks accelerator.
-            //#############################################################################
         //#############################################################################
+        //! The trait for getting the schedule to use when a kernel is run using the CpuOmp2Blocks accelerator.
         //!
         //! Has no effect on other accelerators.
         //!
