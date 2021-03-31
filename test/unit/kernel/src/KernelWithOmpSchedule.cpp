@@ -48,7 +48,7 @@ const alpaka::omp::Schedule::Kind KernelWithMemberOmpScheduleKind::ompScheduleKi
 // Checks that this variable is only declared and not defined, It also tests that alpaka never odr-uses it.
 struct KernelWithConstexprStaticMemberOmpScheduleChunkSize : KernelWithOmpScheduleBase
 {
-    static constexpr int ompScheduleChiunkSize = 5;
+    static constexpr int ompScheduleChunkSize = 5;
 };
 
 // Kernel that sets the schedule chunk size via non-constexpr ompScheduleChunkSize.

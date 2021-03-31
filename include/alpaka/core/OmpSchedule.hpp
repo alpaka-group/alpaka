@@ -37,11 +37,11 @@ namespace alpaka
                 Static = 1u,
                 Dynamic = 2u,
                 Guided = 3u,
-                // Auto supported since OpenMP 3.0
+            // Auto supported since OpenMP 3.0
 #if defined _OPENMP && _OPENMP >= 200805
                 Auto = 4u,
 #endif
-                Runtime
+                Runtime = 5u
             };
 
             //! Schedule kind.
