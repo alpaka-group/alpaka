@@ -98,14 +98,25 @@ namespace alpaka
             }
         };
 
+        //! Helper trait to check if TSchedule is not a type originating from OmpSchedule trait definition
+        //!
+        //! Is well-formed for those types (not defining the trait), ill-formed otherwise.
+        //! When well-formed, result in a non-void type to not collide with void-based SFINAE also used.
+        //!
+        //! \tparam TSchedule The schedule type.
+        template<typename TSchedule>
+        using HasOmpScheduleNotDefined = std::enable_if_t<!std::is_same<TSchedule, omp::Schedule>::value, char>;
+
         //! Executor of parallel OpenMP loop with the static schedule
         //!
         //! The default implementation is for the kernels that do not set chunk size in any way.
         //!
+        //! Note: HasOmpScheduleNotDefined<TSchedule> should not be necessary, but is required by some old compilers.
+        //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
-        template<typename TKernel, typename TSchedule, typename TSfinae>
-        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Static, TSfinae>
+        template<typename TKernel, typename TSchedule>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Static, HasOmpScheduleNotDefined<TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -176,13 +187,19 @@ namespace alpaka
             }
         };
 
-        //! Helper trait to check if TKernel has an public (not necessarily static) member ompScheduleChunkSize
+        //! Helper trait to check if TKernel has not defined OmpSchedule trait and has a public (not necessarily
+        //! static) member ompScheduleChunkSize
         //!
         //! Is well-formed for those types, ill-formed otherwise.
         //!
+        //! Note: HasOmpScheduleNotDefined<TSchedule> part should not be necessary, but is required by some old
+        //! compilers.
+        //!
         //! \tparam TKernel The kernel type.
-        template<typename TKernel>
-        using HasScheduleChunkSize = meta::Void<decltype(std::declval<TKernel&>().ompScheduleChunkSize)>;
+        //! \tparam TSchedule The schedule type.
+        template<typename TKernel, typename TSchedule>
+        using HasScheduleChunkSize
+            = meta::Void<decltype(std::declval<TKernel&>().ompScheduleChunkSize), HasOmpScheduleNotDefined<TSchedule>>;
 
         //! Executor of parallel OpenMP loop with the static schedule
         //!
@@ -191,7 +208,7 @@ namespace alpaka
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Static, HasScheduleChunkSize<TKernel>>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Static, HasScheduleChunkSize<TKernel, TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -228,10 +245,11 @@ namespace alpaka
         //!
         //! The default implementation is for the kernels that do not set chunk size in any way.
         //!
+        //! Note: HasOmpScheduleNotDefined<TSchedule> should not be necessary, but is required by some old compilers.
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
-        template<typename TKernel, typename TSchedule, typename TSfinae>
-        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Dynamic, TSfinae>
+        template<typename TKernel, typename TSchedule>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Dynamic, HasOmpScheduleNotDefined<TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -309,7 +327,7 @@ namespace alpaka
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Dynamic, HasScheduleChunkSize<TKernel>>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Dynamic, HasScheduleChunkSize<TKernel, TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -346,10 +364,12 @@ namespace alpaka
         //!
         //! The default implementation is for the kernels that do not set chunk size in any way.
         //!
+        //! Note: HasOmpScheduleNotDefined<TSchedule> should not be necessary, but is required by some old compilers.
+        //!
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
-        template<typename TKernel, typename TSchedule, typename TSfinae>
-        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Guided, TSfinae>
+        template<typename TKernel, typename TSchedule>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Guided, HasOmpScheduleNotDefined<TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -427,7 +447,7 @@ namespace alpaka
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Guided, HasScheduleChunkSize<TKernel>>
+        struct ParallelForImpl<TKernel, TSchedule, omp::Schedule::Guided, HasScheduleChunkSize<TKernel, TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
@@ -647,9 +667,13 @@ namespace alpaka
         //!
         //! Is well-formed for those types, ill-formed otherwise.
         //!
+        //! Note: HasOmpScheduleNotDefined<TSchedule> part should not be necessary, but is required by some old
+        //! compilers.
+        //!
         //! \tparam TKernel The kernel type.
-        template<typename TKernel>
-        using HasScheduleKind = meta::Void<decltype(TKernel::ompScheduleKind)>;
+        //! \tparam TSchedule The schedule type.
+        template<typename TKernel, typename TSchedule>
+        using HasScheduleKind = meta::Void<decltype(TKernel::ompScheduleKind), HasOmpScheduleNotDefined<TSchedule>>;
 
         //! Executor of parallel OpenMP loop
         //!
@@ -659,7 +683,7 @@ namespace alpaka
         //! \tparam TKernel The kernel type.
         //! \tparam TSchedule The schedule type (not necessarily omp::Schedule).
         template<typename TKernel, typename TSchedule>
-        struct ParallelFor<TKernel, TSchedule, HasScheduleKind<TKernel>>
+        struct ParallelFor<TKernel, TSchedule, HasScheduleKind<TKernel, TSchedule>>
         {
             //! Run parallel OpenMP loop
             //!
