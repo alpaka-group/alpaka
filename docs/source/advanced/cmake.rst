@@ -238,6 +238,11 @@ ALPAKA_ACC_GPU_HIP_ONLY_MODE
 
      Only back-ends using HIP can be enabled in this mode.
 
+ALPAKA_HIP_FAST_MATH
+  .. code-block::
+
+     Enable fast-math.
+
 ALPAKA_HIP_PLATFORM
   .. code-block::
 
