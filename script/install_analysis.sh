@@ -28,6 +28,7 @@ then
 
 elif [ "$ALPAKA_CI_OS_NAME" = "macOS" ]
 then
+    brew upgrade -v
     #-------------------------------------------------------------------------------
     # Install sloc
     brew install sloccount
