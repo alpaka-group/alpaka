@@ -183,7 +183,11 @@ ALPAKA_CUDA_COMPILER
 ALPAKA_CUDA_FAST_MATH
   .. code-block::
 
-     Enable fast-math.
+     Enable fast-math in kernels.
+
+  .. warning::
+
+     The default value is changed to "OFF" with alpaka 0.7.0.
 
 ALPAKA_CUDA_FTZ
   .. code-block::
@@ -241,7 +245,11 @@ ALPAKA_ACC_GPU_HIP_ONLY_MODE
 ALPAKA_HIP_FAST_MATH
   .. code-block::
 
-     Enable fast-math.
+     Enable fast-math in kernels.
+
+  .. warning::
+
+     The default value is changed to "OFF" with alpaka 0.7.0.
 
 ALPAKA_HIP_PLATFORM
   .. code-block::
