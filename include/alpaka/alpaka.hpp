@@ -146,6 +146,7 @@
 #include <alpaka/meta/NdLoop.hpp>
 #include <alpaka/meta/Set.hpp>
 #include <alpaka/meta/Transform.hpp>
+#include <alpaka/meta/TypeListOps.hpp>
 #include <alpaka/meta/Void.hpp>
 // offset
 #include <alpaka/offset/Traits.hpp>
