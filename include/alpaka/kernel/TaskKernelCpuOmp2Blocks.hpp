@@ -93,7 +93,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -143,7 +145,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -182,7 +186,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -236,7 +242,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -276,7 +284,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -315,7 +325,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -355,7 +367,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -396,7 +410,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -435,7 +451,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -475,7 +493,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -507,7 +527,9 @@ namespace alpaka
 #        pragma omp for nowait schedule(auto)
                 for(TIdx i = 0; i < numIterations; ++i)
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
@@ -547,7 +569,9 @@ namespace alpaka
                 for(TIdx i = 0; i < numIterations; ++i)
 #    endif
                 {
-                    loopBody(i);
+                    // Make another lambda to work around #1288
+                    auto wrappedLoopBody = [&loopBody](auto idx) { loopBody(idx); };
+                    wrappedLoopBody(i);
                 }
             }
         };
