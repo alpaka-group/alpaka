@@ -22,38 +22,41 @@ function(alpaka_compiler_option name description default)
     endif()
 endfunction()
 
-# Add parameter to a variable or target
+# Add append compiler flags to a variable or target
 #
-# This method is automatically documenting all parameter added to the compiler into the variables
-# ALPAKA_COMPILER_OPTIONS_HOST, ALPAKA_COMPILER_OPTIONS_DEVICE, and ALPAKA_COMPILER_OPTIONS_HOST_DEVICE.
+# This method is automatically documenting all compile flags added into the variables
+# ALPAKA_COMPILER_OPTIONS_HOST, ALPAKA_COMPILER_OPTIONS_DEVICE.
 #
 # scope - which compiler is effected: DEVICE, HOST, or HOST_DEVICE
-# operation - operation used to append given parameter: set, list, or target
+# type - type of 'name': var, list, or target
+#        var: space separated list
+#        list: is semicolon separated
 # name - name of the variable or target
 # ... - parameter to appended to the variable or target 'name'
-function(alpaka_set_compiler_options scope operation name)
+function(alpaka_set_compiler_options scope type name)
     if(scope STREQUAL HOST)
         set(ALPAKA_COMPILER_OPTIONS_HOST ${ALPAKA_COMPILER_OPTIONS_HOST} ${ARGN} PARENT_SCOPE)
     elseif(scope STREQUAL DEVICE)
         set(ALPAKA_COMPILER_OPTIONS_DEVICE ${ALPAKA_COMPILER_OPTIONS_DEVICE} ${ARGN} PARENT_SCOPE)
     elseif(scope STREQUAL HOST_DEVICE)
-        set(ALPAKA_COMPILER_OPTIONS_HOST_DEVICE ${ALPAKA_COMPILER_OPTIONS_HOST_DEVICE} ${ARGN} PARENT_SCOPE)
+        set(ALPAKA_COMPILER_OPTIONS_HOST ${ALPAKA_COMPILER_OPTIONS_HOST} ${ARGN} PARENT_SCOPE)
+        set(ALPAKA_COMPILER_OPTIONS_DEVICE ${ALPAKA_COMPILER_OPTIONS_DEVICE} ${ARGN} PARENT_SCOPE)
     else()
         message(FATAL_ERROR "alpaka_set_compiler_option 'scope' unknown, value must be 'HOST', 'DEVICE', or 'HOST_DEVICE'.")
     endif()
-    if(operation STREQUAL list)
+    if(type STREQUAL "list")
         set(${name} ${${name}} ${ARGN} PARENT_SCOPE)
-    elseif(operation STREQUAL set)
+    elseif(type STREQUAL "var")
         foreach(arg IN LISTS ARGN)
             set(tmp "${tmp} ${arg}")
         endforeach()
         set(${name} "${${name}} ${tmp}" PARENT_SCOPE)
-    elseif(operation STREQUAL target)
+    elseif(type STREQUAL "target")
         foreach(arg IN LISTS ARGN)
             target_compile_options(${name} INTERFACE ${arg})
         endforeach()
     else()
-        message(FATAL_ERROR "alpaka_set_compiler_option 'operation' unknown, value must be 'list', 'set', or 'target'.")
+        message(FATAL_ERROR "alpaka_set_compiler_option 'type=${type}' unknown, value must be 'list', 'var', or 'target'.")
     endif()
 endfunction()
 
@@ -90,7 +93,7 @@ option(ALPAKA_ACC_ANY_BT_OACC_ENABLE "Enable the OpenACC block and block thread 
 
 # Unified compiler options
 alpaka_compiler_option(FAST_MATH "Enable fast-math" DEFAULT)
-alpaka_compiler_option(FTZ "Set flush to zero for GPU" DEFAULT)
+alpaka_compiler_option(FTZ "Set flush to zero" DEFAULT)
 
 if((ALPAKA_ACC_GPU_CUDA_ONLY_MODE OR ALPAKA_ACC_GPU_HIP_ONLY_MODE)
    AND
@@ -333,7 +336,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
             set_property(CACHE ALPAKA_CUDA_COMPILER PROPERTY STRINGS "nvcc;clang")
 
             alpaka_compiler_option(CUDA_SHOW_REGISTER "Show kernel registers and create device ASM" DEFAULT)
-            alpaka_compiler_option(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" OFF)
+            alpaka_compiler_option(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps 'CMakeFiles/<targetname>.dir'" DEFAULT)
             alpaka_compiler_option(CUDA_EXPT_EXTENDED_LAMBDA "Enable experimental, extended host-device lambdas in CUDA with nvcc" ON)
 
             if(ALPAKA_CUDA_COMPILER MATCHES "clang")
@@ -893,15 +896,15 @@ if((ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE) AND ALPAKA_CUDA_COM
                  TARGET alpaka
                  PROPERTY INTERFACE_COMPILE_OPTIONS)
     string(REPLACE ";" " " _ALPAKA_COMPILE_OPTIONS_STRING "${_ALPAKA_COMPILE_OPTIONS_PUBLIC}")
-    alpaka_set_compiler_options(HOST set CMAKE_CXX_FLAGS "${_ALPAKA_COMPILE_OPTIONS_STRING}")
+    alpaka_set_compiler_options(HOST var CMAKE_CXX_FLAGS "${_ALPAKA_COMPILE_OPTIONS_STRING}")
 
     # Append CMAKE_CXX_FLAGS_[Release|Debug|RelWithDebInfo] to CMAKE_CXX_FLAGS
     # because FindCUDA only propagates the latter to nvcc.
     string(TOUPPER "${CMAKE_BUILD_TYPE}" build_config)
-    alpaka_set_compiler_options(HOST set CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_${build_config}}")
+    alpaka_set_compiler_options(HOST var CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_${build_config}}")
 endif()
 
-if(ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_COMPILER_OPTIONS_HOST_DEVICE)
+if(ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_COMPILER_OPTIONS_DEVICE)
     message("")
     message("List of compiler flags added by alpaka")
     if(ALPAKA_COMPILER_OPTIONS_HOST)
@@ -911,10 +914,6 @@ if(ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_CO
     if(ALPAKA_COMPILER_OPTIONS_DEVICE)
         message("device compiler:")
         message("    ${ALPAKA_COMPILER_OPTIONS_DEVICE}")
-    endif()
-    if(ALPAKA_COMPILER_OPTIONS_HOST_DEVICE)
-        message("host and device compiler:")
-        message("    ${ALPAKA_COMPILER_OPTIONS_HOST_DEVICE}")
     endif()
     message("")
 endif()

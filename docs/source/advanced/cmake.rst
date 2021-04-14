@@ -209,7 +209,7 @@ https://developer.nvidia.com/blog/separate-compilation-linking-cuda-device-code/
 ALPAKA_CUDA_SHOW_CODELINES
   .. code-block::
 
-     Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_KEEP_FILES
+     Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_CUDA_KEEP_FILES
      is enabled source code will be inlined in ptx.
      One of the added flags is: --generate-line-info
 
@@ -256,6 +256,6 @@ ALPAKA_HIP_SHOW_REGISTER
 ALPAKA_HIP_SHOW_CODELINES
   .. code-block::
 
-     Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_KEEP_FILES
+     Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_HIP_KEEP_FILES
      is enabled source code will be inlined in ptx.
      Option is only available if ALPAKA_HIP_PLATFORM=nvcc.
