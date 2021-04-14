@@ -494,7 +494,7 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 # nvidia bug id: 2448610
                 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
                     if(CMAKE_SYSTEM_PROCESSOR STREQUAL "ppc64le")
-                        list(APPEND CUDA_NVCC_FLAGS -Dlinux)
+                        alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Dlinux)
                     endif()
                 endif()
 
@@ -503,23 +503,23 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                     alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --expt-extended-lambda)
                 endif()
                 # This is mandatory because with c++14 many standard library functions we rely on are constexpr (std::min, std::multiplies, ...)
-                list(APPEND CUDA_NVCC_FLAGS --expt-relaxed-constexpr)
+                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --expt-relaxed-constexpr)
 
                 foreach(_CUDA_ARCH_ELEM ${ALPAKA_CUDA_ARCH})
                     # set flags to create device code for the given architecture
-                    list(APPEND CUDA_NVCC_FLAGS
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS
                         --generate-code=arch=compute_${_CUDA_ARCH_ELEM},code=sm_${_CUDA_ARCH_ELEM}
                         --generate-code=arch=compute_${_CUDA_ARCH_ELEM},code=compute_${_CUDA_ARCH_ELEM}
                     )
                 endforeach()
 
-                list(APPEND CUDA_NVCC_FLAGS -std=c++${ALPAKA_CXX_STANDARD})
+                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -std=c++${ALPAKA_CXX_STANDARD})
 
                 set(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
 
                 if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
-                    list(APPEND CUDA_NVCC_FLAGS -g)
-                    list(APPEND CUDA_NVCC_FLAGS -lineinfo)
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -g)
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -lineinfo)
                 endif()
 
                 if(ALPAKA_FAST_MATH STREQUAL ON)
@@ -537,31 +537,29 @@ if(ALPAKA_ACC_GPU_CUDA_ENABLE)
                 endif()
 
                 # Always add warning/error numbers which can be used for suppressions
-                list(APPEND CUDA_NVCC_FLAGS -Xcudafe=--display_error_number)
+                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--display_error_number)
 
                 # avoids warnings on host-device signatured, default constructors/destructors
-                list(APPEND CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=esa_on_defaulted_function_ignored)
+                alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=esa_on_defaulted_function_ignored)
 
                 # avoids warnings on host-device signature of 'std::__shared_count<>'
                 if(CUDA_VERSION EQUAL 10.0)
-                    list(APPEND CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2905)
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2905)
                 elseif(CUDA_VERSION EQUAL 10.1)
-                    list(APPEND CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2912)
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2912)
                 elseif(CUDA_VERSION EQUAL 10.2)
-                    list(APPEND CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2976)
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=2976)
                 endif()
 
                 if(ALPAKA_CUDA_KEEP_FILES STREQUAL ON)
-                    #file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/nvcc_tmp")
                     alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --keep)
-                    #list(APPEND CUDA_NVCC_FLAGS --keep-dir="${PROJECT_BINARY_DIR}/nvcc_tmp")
                 endif()
 
                 option(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_CUDA_KEEP_FILES is enabled source code will be inlined in ptx." OFF)
                 if(ALPAKA_CUDA_SHOW_CODELINES)
-                    list(APPEND CUDA_NVCC_FLAGS --source-in-ptx -lineinfo)
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS --source-in-ptx -lineinfo)
                     if(NOT MSVC)
-                        list(APPEND CUDA_NVCC_FLAGS -Xcompiler=-rdynamic)
+                        alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -Xcompiler=-rdynamic)
                     endif()
                 endif()
             endif()
@@ -628,31 +626,31 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                     set(HIP_VERBOSE_BUILD ON)
                 endif()
 
-                list(APPEND HIP_NVCC_FLAGS --expt-extended-lambda)
-                list(APPEND HIP_NVCC_FLAGS --expt-relaxed-constexpr)
+                alpaka_set_compiler_options(DEVICE list HIP_NVCC_FLAGS --expt-extended-lambda)
+                alpaka_set_compiler_options(DEVICE list HIP_NVCC_FLAGS --expt-relaxed-constexpr)
                 list(APPEND _ALPAKA_HIP_LIBRARIES "cudart")
 
                 foreach(_HIP_ARCH_ELEM ${ALPAKA_HIP_ARCH})
                     # set flags to create device code for the given architecture
-                    list(APPEND CUDA_NVCC_FLAGS
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS
                         --generate-code=arch=compute_${_HIP_ARCH_ELEM},code=sm_${_HIP_ARCH_ELEM}
                         --generate-code=arch=compute_${_HIP_ARCH_ELEM},code=compute_${_HIP_ARCH_ELEM}
                     )
                 endforeach()
                 # for CUDA cmake automatically adds compiler flags as nvcc does not do this,
                 # but for HIP we have to do this here
-                list(APPEND HIP_NVCC_FLAGS -D__CUDACC__)
-                list(APPEND HIP_NVCC_FLAGS -ccbin ${CMAKE_CXX_COMPILER})
+                alpaka_set_compiler_options(DEVICE list HIP_NVCC_FLAGS -D__CUDACC__)
+                alpaka_set_compiler_options(DEVICE list HIP_NVCC_FLAGS -ccbin ${CMAKE_CXX_COMPILER})
 
                 if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
-                    list(APPEND CUDA_NVCC_FLAGS -lineinfo)
-                    list(APPEND HIP_NVCC_FLAGS -Xcompiler=-g)
+                    alpaka_set_compiler_options(DEVICE list CUDA_NVCC_FLAGS -lineinfo)
+                    alpaka_set_compiler_options(DEVICE list HIP_NVCC_FLAGS -Xcompiler=-g)
                 endif()
                 # propage host flags
                 # SET(CUDA_PROPAGATE_HOST_FLAGS ON) # does not exist in HIP, so do it manually
                 string(TOUPPER "${CMAKE_BUILD_TYPE}" build_config)
                 foreach( _flag ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${build_config}})
-                    list(APPEND HIP_NVCC_FLAGS -Xcompiler=${_flag})
+                    alpaka_set_compiler_options(DEVICE list HIP_NVCC_FLAGS -Xcompiler=${_flag})
                 endforeach()
 
                 if(ALPAKA_FAST_MATH STREQUAL ON)
@@ -670,7 +668,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 endif()
 
                 # avoids warnings on host-device signatured, default constructors/destructors
-                list(APPEND HIP_HIPCC_FLAGS -Xcudafe=--diag_suppress=esa_on_defaulted_function_ignored)
+                alpaka_set_compiler_options(DEVICE list HIP_HIPCC_FLAGS -Xcudafe=--diag_suppress=esa_on_defaulted_function_ignored)
 
                 # random numbers library ( HIP(NVCC) ) /hiprand
                 # HIP_ROOT_DIR is set by FindHIP.cmake
@@ -718,7 +716,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
 
                 foreach(_HIP_ARCH_ELEM ${ALPAKA_HIP_ARCH})
                     # set flags to create device code for the given architecture
-                    list(APPEND HIP_HIPCC_FLAGS --amdgpu-target=gfx${_HIP_ARCH_ELEM})
+                    alpaka_set_compiler_options(DEVICE list HIP_HIPCC_FLAGS --amdgpu-target=gfx${_HIP_ARCH_ELEM})
                 endforeach()
             endif()
 
@@ -733,11 +731,11 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                 MESSAGE(FATAL_ERROR "Could not find hipRAND (also searched in: HIP_ROOT_DIR=${HIP_ROOT_DIR}/hiprand).")
             endif()
 
-            list(APPEND HIP_HIPCC_FLAGS -D__HIPCC__)
-            list(APPEND HIP_HIPCC_FLAGS -std=c++${ALPAKA_CXX_STANDARD})
+            alpaka_set_compiler_options(DEVICE list HIP_HIPCC_FLAGS -D__HIPCC__)
+            alpaka_set_compiler_options(DEVICE list HIP_HIPCC_FLAGS -std=c++${ALPAKA_CXX_STANDARD})
 
             if((CMAKE_BUILD_TYPE STREQUAL "Debug") OR (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
-                list(APPEND HIP_HIPCC_FLAGS -g)
+                alpaka_set_compiler_options(DEVICE list HIP_HIPCC_FLAGS -g)
             endif()
 
             if(ALPAKA_HIP_KEEP_FILES STREQUAL ON)
@@ -823,7 +821,7 @@ if(ALPAKA_ACC_GPU_HIP_ENABLE)
                  TARGET alpaka
                  PROPERTY INTERFACE_COMPILE_DEFINITIONS)
     list_add_prefix("-D" _ALPAKA_COMPILE_DEFINITIONS_HIP)
-    list(APPEND HIP_HIPCC_FLAGS
+    alpaka_set_compiler_options(DEVICE list HIP_HIPCC_FLAGS
         ${_ALPAKA_COMPILE_DEFINITIONS_HIP}
         )
     HIP_INCLUDE_DIRECTORIES(
@@ -895,20 +893,28 @@ if((ALPAKA_ACC_GPU_CUDA_ENABLE OR ALPAKA_ACC_GPU_HIP_ENABLE) AND ALPAKA_CUDA_COM
                  TARGET alpaka
                  PROPERTY INTERFACE_COMPILE_OPTIONS)
     string(REPLACE ";" " " _ALPAKA_COMPILE_OPTIONS_STRING "${_ALPAKA_COMPILE_OPTIONS_PUBLIC}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${_ALPAKA_COMPILE_OPTIONS_STRING}")
+    alpaka_set_compiler_options(HOST set CMAKE_CXX_FLAGS "${_ALPAKA_COMPILE_OPTIONS_STRING}")
 
     # Append CMAKE_CXX_FLAGS_[Release|Debug|RelWithDebInfo] to CMAKE_CXX_FLAGS
     # because FindCUDA only propagates the latter to nvcc.
     string(TOUPPER "${CMAKE_BUILD_TYPE}" build_config)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${build_config}}")
+    alpaka_set_compiler_options(HOST set CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_${build_config}}")
 endif()
 
-message("")
-message("List of compiler flags added by alpaka")
-message("host compiler:")
-message("    ${ALPAKA_COMPILER_OPTIONS_HOST}")
-message("device compiler:")
-message("    ${ALPAKA_COMPILER_OPTIONS_DEVICE}")
-message("host and device compiler:")
-message("    ${ALPAKA_COMPILER_OPTIONS_HOST_DEVICE}")
-message("")
+if(ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_COMPILER_OPTIONS_DEVICE OR ALPAKA_COMPILER_OPTIONS_HOST_DEVICE)
+    message("")
+    message("List of compiler flags added by alpaka")
+    if(ALPAKA_COMPILER_OPTIONS_HOST)
+        message("host compiler:")
+        message("    ${ALPAKA_COMPILER_OPTIONS_HOST}")
+    endif()
+    if(ALPAKA_COMPILER_OPTIONS_DEVICE)
+        message("device compiler:")
+        message("    ${ALPAKA_COMPILER_OPTIONS_DEVICE}")
+    endif()
+    if(ALPAKA_COMPILER_OPTIONS_HOST_DEVICE)
+        message("host and device compiler:")
+        message("    ${ALPAKA_COMPILER_OPTIONS_HOST_DEVICE}")
+    endif()
+    message("")
+endif()
