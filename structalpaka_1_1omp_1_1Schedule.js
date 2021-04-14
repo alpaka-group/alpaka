@@ -1,12 +1,14 @@
 var structalpaka_1_1omp_1_1Schedule =
 [
-    [ "Schedule", "structalpaka_1_1omp_1_1Schedule.html#a4cd063ed1cad579e8bc77df0286dba61", null ],
-    [ "Auto", "structalpaka_1_1omp_1_1Schedule.html#af61125d573e76f10f2eb20bbeeaddc15", null ],
+    [ "Kind", "structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474a", [
+      [ "NoSchedule", "structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aa05fff276295ef9d3de83d932cbc38e08", null ],
+      [ "Static", "structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aabf8fdf2338221fbbb8fbe079c84d6935", null ],
+      [ "Dynamic", "structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aa054b4b95adc863a6f77433c34e3f841c", null ],
+      [ "Guided", "structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aad0bd9bc4f06fcaea08af1eae99853f75", null ],
+      [ "Auto", "structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aafa591d3c572a54a113909dc4315dce02", null ],
+      [ "Runtime", "structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aa15ec82655a976e4d6c09ebd497f2a984", null ]
+    ] ],
+    [ "Schedule", "structalpaka_1_1omp_1_1Schedule.html#aaaf6d74947072768790c258ac19b8ef6", null ],
     [ "chunkSize", "structalpaka_1_1omp_1_1Schedule.html#a050d3f2bb222571788ae0e749b8348e3", null ],
-    [ "Dynamic", "structalpaka_1_1omp_1_1Schedule.html#a7b1ee08c03c665f7b5b90cc4c5bdeac8", null ],
-    [ "Guided", "structalpaka_1_1omp_1_1Schedule.html#a43a7975040ba75c661cb7e0c59df1703", null ],
-    [ "kind", "structalpaka_1_1omp_1_1Schedule.html#afc3ad2a2b30736d95b887e63a253504d", null ],
-    [ "Monotonic", "structalpaka_1_1omp_1_1Schedule.html#a8386709ed4f28d855dee57ed78dff7f9", null ],
-    [ "NoSchedule", "structalpaka_1_1omp_1_1Schedule.html#ad796da1ad8ee52152f111337a149df9e", null ],
-    [ "Static", "structalpaka_1_1omp_1_1Schedule.html#ab41519134b0f35310a4b0cb491c141fc", null ]
+    [ "kind", "structalpaka_1_1omp_1_1Schedule.html#a9804c454062feeb123b51e3319f6e132", null ]
 ];

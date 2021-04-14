@@ -1,5 +1,9 @@
 var NAVTREEINDEX6 =
 {
+"dir_978fff6d009a0eab698f51257fa3760a.html":[4,0,0,0,5],
+"dir_97c0be6c4408e2e53475dcdb95885711.html":[4,0,0,0,14,17],
+"dir_9b06e2d5421d26ecb89f5fc8cf901459.html":[4,0,0,0,16],
+"dir_9c737d14007cafba76b1e7c7800c2a61.html":[4,0,0,0,21],
 "dir_a511303102c14abd9c84164990faeab9.html":[4,0,0,0,14,0],
 "dir_a7ea804b58dbe69fc7c600cb292cbe23.html":[4,0,0,0,22],
 "dir_aa5c7be85b62141dab4191e7fe585875.html":[4,0,0,0,15,0],
@@ -90,8 +94,8 @@ var NAVTREEINDEX6 =
 "functions_rela.html":[3,2,6],
 "functions_s.html":[3,2,0,17],
 "functions_t.html":[3,2,0,18],
-"functions_type.html":[3,2,3],
 "functions_type.html":[3,2,3,0],
+"functions_type.html":[3,2,3],
 "functions_type_d.html":[3,2,3,1],
 "functions_type_e.html":[3,2,3,2],
 "functions_type_f.html":[3,2,3,3],
@@ -125,10 +129,10 @@ var NAVTREEINDEX6 =
 "intrinsic_2Traits_8hpp.html#aac5de33521502710a7ca0a2b2cfc02e1":[4,0,0,0,12,3,5],
 "intrinsic_2Traits_8hpp_source.html":[4,0,0,0,12,3],
 "kernel_2Traits_8hpp.html":[4,0,0,0,13,9],
-"kernel_2Traits_8hpp.html#a1df84a90eca656f610e1ceb0183d9ede":[4,0,0,0,13,9,9],
-"kernel_2Traits_8hpp.html#a320a89eae40575cf2114d933faa11e5d":[4,0,0,0,13,9,8],
-"kernel_2Traits_8hpp.html#a64392e68c8cc7a290aec236751415cf3":[4,0,0,0,13,9,6],
-"kernel_2Traits_8hpp.html#aba309bace6bd6e1cf4c564bbe396a9ba":[4,0,0,0,13,9,7],
+"kernel_2Traits_8hpp.html#a0e721375d8252b7512840abaca2a8739":[4,0,0,0,13,9,7],
+"kernel_2Traits_8hpp.html#a320a89eae40575cf2114d933faa11e5d":[4,0,0,0,13,9,6],
+"kernel_2Traits_8hpp.html#a64392e68c8cc7a290aec236751415cf3":[4,0,0,0,13,9,4],
+"kernel_2Traits_8hpp.html#aba309bace6bd6e1cf4c564bbe396a9ba":[4,0,0,0,13,9,5],
 "kernel_2Traits_8hpp_source.html":[4,0,0,0,13,9],
 "math_2abs_2Traits_8hpp.html":[4,0,0,0,14,0,2],
 "math_2abs_2Traits_8hpp.html#aecff9cdf0ee64bb21206e49ec084e8d8":[4,0,0,0,14,0,2,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "meta_2Set_8hpp.html#a232409af86c4d12e27e83406c7d6f6ca":[4,0,0,0,16,15,7],
 "meta_2Set_8hpp.html#a7007c16b361a3bbc1184a79223d884dc":[4,0,0,0,16,15,6],
 "meta_2Set_8hpp_source.html":[4,0,0,0,16,15],
-"namespacealpaka.html":[3,0,0],
-"namespacealpaka.html":[2,0,0],
-"namespacealpaka_1_1bt.html":[3,0,0,0],
-"namespacealpaka_1_1bt.html":[2,0,0,0],
-"namespacealpaka_1_1concepts.html":[3,0,0,1]
+"namespacealpaka.html":[3,0,0]
 };

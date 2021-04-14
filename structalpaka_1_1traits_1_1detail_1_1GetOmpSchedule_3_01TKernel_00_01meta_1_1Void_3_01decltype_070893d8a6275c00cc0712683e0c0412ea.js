@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1detail_1_1GetOmpSchedule_3_01TKernel_00_01meta_1_1Void_3_01decltype_070893d8a6275c00cc0712683e0c0412ea =
-[
-    [ "get", "structalpaka_1_1traits_1_1detail_1_1GetOmpSchedule_3_01TKernel_00_01meta_1_1Void_3_01decltype_070893d8a6275c00cc0712683e0c0412ea.html#ab962f71c8eaea9599677e0d0e8452d1a", null ]
-];

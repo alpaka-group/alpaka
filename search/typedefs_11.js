@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['val_3820',['Val',['../classalpaka_1_1Vec.html#a8ba1d21778eba24f0ada0ec057204c8b',1,'alpaka::Vec']]],
-  ['void_3821',['Void',['../namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c',1,'alpaka::meta']]]
+  ['val_3848',['Val',['../classalpaka_1_1Vec.html#a8ba1d21778eba24f0ada0ec057204c8b',1,'alpaka::Vec']]],
+  ['void_3849',['Void',['../namespacealpaka_1_1meta.html#a74d93e6a2efc8f3ac7573990155bdf2c',1,'alpaka::meta']]]
 ];

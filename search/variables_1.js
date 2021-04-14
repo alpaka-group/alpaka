@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['chunksize_3670',['chunkSize',['../structalpaka_1_1omp_1_1Schedule.html#a050d3f2bb222571788ae0e749b8348e3',1,'alpaka::omp::Schedule']]]
+  ['defaultalignment_3701',['defaultAlignment',['../namespacealpaka_1_1core_1_1vectorization.html#a2d12f7e6f724f279a7baf91a5d3b40be',1,'alpaka::core::vectorization']]]
 ];

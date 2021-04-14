@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kind_3674',['kind',['../structalpaka_1_1omp_1_1Schedule.html#afc3ad2a2b30736d95b887e63a253504d',1,'alpaka::omp::Schedule']]]
+  ['no_5fcpuid_3768',['NO_CPUID',['../namespacealpaka_1_1cpu_1_1detail.html#a00bbec37f6a4dd972e4c008f6c0dffff',1,'alpaka::cpu::detail']]]
 ];

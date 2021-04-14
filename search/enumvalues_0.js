@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['closetoequalextent_3824',['CloseToEqualExtent',['../namespacealpaka.html#a7ddf8c34b0f9662a298069afe5494b27a9cb04f2b32708185e3d3cb6b812912ec',1,'alpaka']]]
+  ['auto_3853',['Auto',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aafa591d3c572a54a113909dc4315dce02',1,'alpaka::omp::Schedule']]]
 ];

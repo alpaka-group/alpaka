@@ -214,6 +214,10 @@ var NAVTREEINDEX1 =
 "TaskKernelCpuFibers_8hpp.html":[4,0,0,0,13,0],
 "TaskKernelCpuFibers_8hpp_source.html":[4,0,0,0,13,0],
 "TaskKernelCpuOmp2Blocks_8hpp.html":[4,0,0,0,13,1],
+"TaskKernelCpuOmp2Blocks_8hpp.html#a6e26643e9977f6c0ea1d58a17eae5f9e":[4,0,0,0,13,1,24],
+"TaskKernelCpuOmp2Blocks_8hpp.html#a93cfb90319ccb5e30631f043aff3cfdf":[4,0,0,0,13,1,25],
+"TaskKernelCpuOmp2Blocks_8hpp.html#a952ecc62656f116efadac8178b78098c":[4,0,0,0,13,1,23],
+"TaskKernelCpuOmp2Blocks_8hpp.html#aa0c7ebd393b636f8e190539f39d90c1c":[4,0,0,0,13,1,22],
 "TaskKernelCpuOmp2Blocks_8hpp_source.html":[4,0,0,0,13,1],
 "TaskKernelCpuOmp2Threads_8hpp.html":[4,0,0,0,13,2],
 "TaskKernelCpuOmp2Threads_8hpp_source.html":[4,0,0,0,13,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX1 =
 "TruncStdLib_8hpp_source.html":[4,0,0,0,14,23,1],
 "TruncUniformCudaHipBuiltIn_8hpp.html":[4,0,0,0,14,23,2],
 "TruncUniformCudaHipBuiltIn_8hpp_source.html":[4,0,0,0,14,23,2],
-"UniformCudaHip_8hpp.html":[4,0,0,0,3,17],
-"UniformCudaHip_8hpp.html#a3543744ca91201d363b4c4008f9bc589":[4,0,0,0,3,17,1],
-"UniformCudaHip_8hpp.html#a4036712750530f0a63110f5bff29bb65":[4,0,0,0,3,17,3],
-"UniformCudaHip_8hpp.html#a48180eda98f53c8391a17fa921d7b958":[4,0,0,0,3,17,2],
-"UniformCudaHip_8hpp.html#a9d839d8290f20b3b3ad31cf9340f3fe7":[4,0,0,0,3,17,5]
+"UniformCudaHip_8hpp.html":[4,0,0,0,3,17]
 };

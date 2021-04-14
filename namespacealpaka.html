@@ -692,9 +692,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
 <tr class="memitem:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a3f52e0b422b1c94d37ce259fc671ad8e">getOffsetZ</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TOffsets &gt;</td></tr>
 <tr class="separator:a3f52e0b422b1c94d37ce259fc671ad8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1df84a90eca656f610e1ceb0183d9ede"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a1df84a90eca656f610e1ceb0183d9ede"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1df84a90eca656f610e1ceb0183d9ede">getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; <a class="el" href="structalpaka_1_1omp_1_1Schedule.html">omp::Schedule</a></td></tr>
-<tr class="separator:a1df84a90eca656f610e1ceb0183d9ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e721375d8252b7512840abaca2a8739"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a0e721375d8252b7512840abaca2a8739"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0e721375d8252b7512840abaca2a8739">getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args)</td></tr>
+<tr class="separator:a0e721375d8252b7512840abaca2a8739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplParams" colspan="2">template&lt;std::size_t Tidx, typename TView &gt; </td></tr>
 <tr class="memitem:ad6365b89c5be8dd8917954798cc7fc21"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ad6365b89c5be8dd8917954798cc7fc21">getPitchBytes</a> (TView const &amp;view) -&gt; <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TView &gt;</td></tr>
 <tr class="separator:ad6365b89c5be8dd8917954798cc7fc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2388,7 +2388,7 @@ template&lt;typename TAcc , typename TWorkDiv , typename TKernelFnObj , typename
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The kernel execution task. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00257">257</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00236">236</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -2732,7 +2732,7 @@ template&lt;typename TAcc , typename TQueue , typename TWorkDiv , typename TKern
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00295">295</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00274">274</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3014,7 +3014,7 @@ template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The size of the shared memory allocated for a block in bytes. The default implementation always returns zero. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00181">181</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00159">159</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -3539,8 +3539,8 @@ template&lt;typename TOffsets &gt; </div>
 
 </div>
 </div>
-<a id="a1df84a90eca656f610e1ceb0183d9ede"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1df84a90eca656f610e1ceb0183d9ede">&#9670;&nbsp;</a></span>getOmpSchedule()</h2>
+<a id="a0e721375d8252b7512840abaca2a8739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e721375d8252b7512840abaca2a8739">&#9670;&nbsp;</a></span>getOmpSchedule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3574,8 +3574,7 @@ template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... 
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="structalpaka_1_1omp_1_1Schedule.html">omp::Schedule</a>
-    </td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3594,9 +3593,9 @@ template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... 
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The OpenMP schedule information. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The OpenMP schedule information as an <a class="el" href="structalpaka_1_1omp_1_1Schedule.html" title="Representation of OpenMP schedule information: kind and chunk size. This class can be used regardless...">alpaka::omp::Schedule</a> object if the kernel specialized the OmpSchedule trait, an object of another type if the kernel didn't specialize the trait. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00209">209</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00188">188</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -5593,7 +5592,7 @@ template&lt;typename TWaiter , typename TAwaited &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li>
-    <li class="footer">Generated on Tue Apr 13 2021 16:48:30 for alpaka by
+    <li class="footer">Generated on Wed Apr 14 2021 09:16:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

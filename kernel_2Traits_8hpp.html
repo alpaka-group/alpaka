@@ -117,12 +117,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1CreateTaskKernel.html">alpaka::traits::CreateTaskKernel&lt; TAcc, TWorkDiv, TKernelFnObj, TArgs &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The kernel execution task creation trait.  <a href="structalpaka_1_1traits_1_1CreateTaskKernel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1detail_1_1GetOmpSchedule.html">alpaka::traits::detail::GetOmpSchedule&lt; TKernel, class &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Functor to get OpenMP schedule defined by kernel class. When no schedule is defined, return a default one.  <a href="structalpaka_1_1traits_1_1detail_1_1GetOmpSchedule.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1detail_1_1GetOmpSchedule_3_01TKernel_00_01meta_1_1Void_3_01decltype_070893d8a6275c00cc0712683e0c0412ea.html">alpaka::traits::detail::GetOmpSchedule&lt; TKernel, meta::Void&lt; decltype(TKernel::ompSchedule)&gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Functor to get OpenMP schedule for kernel classes with ompSchedule static member. That member is never odr-used by alpaka.  <a href="structalpaka_1_1traits_1_1detail_1_1GetOmpSchedule_3_01TKernel_00_01meta_1_1Void_3_01decltype_070893d8a6275c00cc0712683e0c0412ea.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1OmpSchedule.html">alpaka::traits::OmpSchedule&lt; TKernelFnObj, TAcc, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The trait for getting the schedule to use when a kernel is run using the CpuOmp2Blocks accelerator.  <a href="structalpaka_1_1traits_1_1OmpSchedule.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,8 +130,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator traits. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1detail.html">alpaka::traits::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -153,9 +145,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a320a89eae40575cf2114d933faa11e5d"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
 <tr class="memitem:a320a89eae40575cf2114d933faa11e5d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a320a89eae40575cf2114d933faa11e5d">alpaka::getBlockSharedMemDynSizeBytes</a> (TKernelFnObj const &amp;kernelFnObj, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; std::size_t</td></tr>
 <tr class="separator:a320a89eae40575cf2114d933faa11e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1df84a90eca656f610e1ceb0183d9ede"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a1df84a90eca656f610e1ceb0183d9ede"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a1df84a90eca656f610e1ceb0183d9ede">alpaka::getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; omp::Schedule</td></tr>
-<tr class="separator:a1df84a90eca656f610e1ceb0183d9ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e721375d8252b7512840abaca2a8739"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TKernelFnObj , typename TDim , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a0e721375d8252b7512840abaca2a8739"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a0e721375d8252b7512840abaca2a8739">alpaka::getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, Vec&lt; TDim, Idx&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args)</td></tr>
+<tr class="separator:a0e721375d8252b7512840abaca2a8739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -163,7 +155,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_ddf4b6b668da48004ea34c8205023599.html">kernel</a></li><li class="navelem"><a class="el" href="kernel_2Traits_8hpp.html">Traits.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 13 2021 16:48:30 for alpaka by
+    <li class="footer">Generated on Wed Apr 14 2021 09:16:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

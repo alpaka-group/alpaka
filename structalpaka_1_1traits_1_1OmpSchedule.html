@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1OmpSchedule.
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structalpaka_1_1traits_1_1OmpSchedule-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -98,17 +99,18 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1OmpSchedule.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af144fe282eee6f9ccffb452ebcc282e0"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename... TArgs&gt; </td></tr>
-<tr class="memitem:af144fe282eee6f9ccffb452ebcc282e0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1OmpSchedule.html#af144fe282eee6f9ccffb452ebcc282e0">getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; <a class="el" href="structalpaka_1_1omp_1_1Schedule.html">alpaka::omp::Schedule</a></td></tr>
-<tr class="separator:af144fe282eee6f9ccffb452ebcc282e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf226928e02a09df1a1f8760f2e68afd"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename... TArgs&gt; </td></tr>
+<tr class="memitem:aaf226928e02a09df1a1f8760f2e68afd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1OmpSchedule.html#aaf226928e02a09df1a1f8760f2e68afd">getOmpSchedule</a> (TKernelFnObj const &amp;kernelFnObj, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;blockThreadExtent, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka.html#a0dc8244519a754f60c4c8186a26a82fc">Idx</a>&lt; TAcc &gt;&gt; const &amp;threadElemExtent, TArgs const &amp;... args) -&gt; TraitNotSpecialized</td></tr>
+<tr class="separator:aaf226928e02a09df1a1f8760f2e68afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TKernelFnObj, typename TAcc, typename TSfinae = void&gt;<br />
 struct alpaka::traits::OmpSchedule&lt; TKernelFnObj, TAcc, TSfinae &gt;</h3>
 
 <p>The trait for getting the schedule to use when a kernel is run using the CpuOmp2Blocks accelerator. </p>
-<p>Has no effect on other accelerators or when run using OpenMP implementation not supporting at least version 3.0.</p>
-<p>A user could either specialize this trait for their kernel, or define a public static member ompSchedule of type <a class="el" href="structalpaka_1_1omp_1_1Schedule.html" title="Representation of OpenMP schedule information: kind and chunk size. This class can be used regardless...">alpaka::omp::Schedule</a> inside it, which would be picked up by this implementation. In the latter case, alpaka never odr-uses that member.</p>
+<p>Has no effect on other accelerators.</p>
+<p>A user could either specialize this trait for their kernel, or define a public static member ompScheduleKind of type <a class="el" href="structalpaka_1_1omp_1_1Schedule.html" title="Representation of OpenMP schedule information: kind and chunk size. This class can be used regardless...">alpaka::omp::Schedule</a>, and additionally also int member ompScheduleChunkSize. In the latter case, alpaka never odr-uses these members.</p>
+<p>In case schedule kind and chunk size are compile-time constants, setting then inside kernel may benefit performance.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TKernelFnObj</td><td>The kernel function object. </td></tr>
@@ -116,12 +118,12 @@ struct alpaka::traits::OmpSchedule&lt; TKernelFnObj, TAcc, TSfinae &gt;</h3>
   </table>
   </dd>
 </dl>
-<p>The default implementation returns 0. </p>
+<p>The default implementation behaves as if the trait was not specialized. </p>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00130">130</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00100">100</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af144fe282eee6f9ccffb452ebcc282e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af144fe282eee6f9ccffb452ebcc282e0">&#9670;&nbsp;</a></span>getOmpSchedule()</h2>
+<a id="aaf226928e02a09df1a1f8760f2e68afd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf226928e02a09df1a1f8760f2e68afd">&#9670;&nbsp;</a></span>getOmpSchedule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,7 +162,7 @@ template&lt;typename TDim , typename... TArgs&gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="structalpaka_1_1omp_1_1Schedule.html">alpaka::omp::Schedule</a>
+          <td></td><td> -&gt; TraitNotSpecialized
             </td>
         </tr>
       </table>
@@ -190,9 +192,9 @@ template&lt;typename TDim , typename... TArgs&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The OpenMP schedule information. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The OpenMP schedule information as an <a class="el" href="structalpaka_1_1omp_1_1Schedule.html" title="Representation of OpenMP schedule information: kind and chunk size. This class can be used regardless...">alpaka::omp::Schedule</a> object, returning an object of any other type is treated as if the trait is not specialized. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00148">148</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="kernel_2Traits_8hpp_source.html#l00126">126</a> of file <a class="el" href="kernel_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -205,7 +207,7 @@ template&lt;typename TDim , typename... TArgs&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1OmpSchedule.html">OmpSchedule</a></li>
-    <li class="footer">Generated on Tue Apr 13 2021 16:48:32 for alpaka by
+    <li class="footer">Generated on Wed Apr 14 2021 09:16:08 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

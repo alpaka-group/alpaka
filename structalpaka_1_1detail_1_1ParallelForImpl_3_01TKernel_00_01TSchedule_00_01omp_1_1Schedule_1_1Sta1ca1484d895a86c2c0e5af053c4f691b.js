@@ -1,0 +1,4 @@
+var structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Sta1ca1484d895a86c2c0e5af053c4f691b =
+[
+    [ "operator()", "structalpaka_1_1detail_1_1ParallelForImpl_3_01TKernel_00_01TSchedule_00_01omp_1_1Schedule_1_1Sta1ca1484d895a86c2c0e5af053c4f691b.html#aaab9e736d67bf9af756c35060beb1e7e", null ]
+];

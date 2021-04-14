@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['finished_3827',['finished',['../structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtBlocking_00_01TTask_01_4.html#a11d854663c5d1a547637427e845ef217aa5d7ceb2c59b8cee46c2953fec9abc19',1,'alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtBlocking, TTask &gt;::finished()'],['../structalpaka_1_1traits_1_1Enqueue_3_01QueueUniformCudaHipRtNonBlocking_00_01TTask_01_4.html#affde2cfe568507088ecc6ae9d1907bffaa5d7ceb2c59b8cee46c2953fec9abc19',1,'alpaka::traits::Enqueue&lt; QueueUniformCudaHipRtNonBlocking, TTask &gt;::finished()']]]
+  ['dynamic_3855',['Dynamic',['../structalpaka_1_1omp_1_1Schedule.html#a8be4b9c281de164d2b135dffa55e474aa054b4b95adc863a6f77433c34e3f841c',1,'alpaka::omp::Schedule']]]
 ];

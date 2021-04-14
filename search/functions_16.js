@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zeros_3595',['zeros',['../classalpaka_1_1Vec.html#aec8462068dea615129cad235acfc6bb8',1,'alpaka::Vec']]]
+  ['zeros_3626',['zeros',['../classalpaka_1_1Vec.html#aec8462068dea615129cad235acfc6bb8',1,'alpaka::Vec']]]
 ];
