@@ -52,6 +52,19 @@ ALPAKA_USE_INTERNAL_CATCH2
 
      Use internally shipped Catch2.
 
+ALPAKA_FAST_MATH
+  .. code-block::
+
+     Enable fast-math in kernels.
+
+  .. warning::
+
+     The default value is changed to "OFF" with alpaka 0.7.0.
+
+ALPAKA_FTZ
+  .. code-block::
+
+     Set flush to zero for GPU.
 
 ALPAKA_DEBUG_OFFLOAD_ASSUME_HOST
   .. code-block::
@@ -180,42 +193,23 @@ ALPAKA_CUDA_COMPILER
 
      Set the CUDA compiler: "nvcc" or "clang".
 
-ALPAKA_CUDA_FAST_MATH
-  .. code-block::
-
-     Enable fast-math in kernels.
-
-  .. warning::
-
-     The default value is changed to "OFF" with alpaka 0.7.0.
-
-ALPAKA_CUDA_FTZ
-  .. code-block::
-
-     Set flush to zero for GPU.
-
 ALPAKA_CUDA_KEEP_FILES
   .. code-block::
 
      Keep all intermediate files that are generated during internal compilation
      steps 'CMakeFiles/<targetname>.dir'.
 
-ALPAKA_CUDA_NVCC_EXPT_EXTENDED_LAMBDA
+ALPAKA_CUDA_EXPT_EXTENDED_LAMBDA
   .. code-block::
 
      Enable experimental, extended host-device lambdas in NVCC.
-
-ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION
-  .. code-block::
-
-     Enable separable compilation in NVCC.
 
 https://developer.nvidia.com/blog/separate-compilation-linking-cuda-device-code/
 
 ALPAKA_CUDA_SHOW_CODELINES
   .. code-block::
 
-     Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_CUDA_KEEP_FILES
+     Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_KEEP_FILES
      is enabled source code will be inlined in ptx.
      One of the added flags is: --generate-line-info
 
@@ -242,15 +236,6 @@ ALPAKA_ACC_GPU_HIP_ONLY_MODE
 
      Only back-ends using HIP can be enabled in this mode.
 
-ALPAKA_HIP_FAST_MATH
-  .. code-block::
-
-     Enable fast-math in kernels.
-
-  .. warning::
-
-     The default value is changed to "OFF" with alpaka 0.7.0.
-
 ALPAKA_HIP_PLATFORM
   .. code-block::
 
@@ -261,3 +246,16 @@ ALPAKA_HIP_KEEP_FILES
 
      Keep all intermediate files that are generated during internal compilation
      steps 'CMakeFiles/<targetname>.dir'.
+
+ALPAKA_HIP_SHOW_REGISTER
+  .. code-block::
+
+     Show the number of used kernel registers during compilation and create PTX.
+     Option is only available if ALPAKA_HIP_PLATFORM=nvcc.
+
+ALPAKA_HIP_SHOW_CODELINES
+  .. code-block::
+
+     Show kernel lines in cuda-gdb and cuda-memcheck. If ALPAKA_KEEP_FILES
+     is enabled source code will be inlined in ptx.
+     Option is only available if ALPAKA_HIP_PLATFORM=nvcc.
