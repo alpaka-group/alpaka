@@ -113,8 +113,8 @@ namespace alpaka
                 }
 #    pragma acc atomic capture
                 {
-                    ++m_syncCounter[slot];
-                    sum = m_syncCounter[slot];
+                    ++m_syncCounter[slot + 1];
+                    sum = m_syncCounter[slot + 1];
                 }
                 while(sum < workerNum)
                 {
