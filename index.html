@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h1>Dependencies </h1>
 <p><a href="https://boost.org/">Boost</a> 1.65.1+ is the only mandatory external dependency. The <b>alpaka</b> library itself just requires header-only libraries. However some of the accelerator back-end implementations require different boost libraries to be built.</p>
 <p>When an accelerator back-end using <em>Boost.Fiber</em> is enabled, <code>boost-fiber</code> and all of its dependencies are required to be built in C++14 mode <code>./b2 cxxflags="-std=c++14"</code>. When <em>Boost.Fiber</em> is enabled and alpaka is built in C++17 mode with clang and libstc++, Boost &gt;= 1.67.0 is required.</p>
-<p>When an accelerator back-end using <em>CUDA</em> is enabled, version <em>9.0</em> of the <em>CUDA SDK</em> is the minimum requirement. <em>NOTE</em>: When using nvcc as <em>CUDA</em> compiler, the <em>CUDA accelerator back-end</em> can not be enabled together with the <em>Boost.Fiber accelerator back-end</em> due to bugs in the nvcc compiler. <em>NOTE</em>: When using clang as a native <em>CUDA</em> compiler, the <em>CUDA accelerator back-end</em> can not be enabled together with the <em>Boost.Fiber accelerator back-end</em> or any <em>OpenMP accelerator back-end</em> because this combination is currently unsupported. <em>NOTE</em>: Separable compilation is only supported when using nvcc, not with clang as native <em>CUDA</em> compiler. It is disabled by default and can be enabled via the CMake flag <code>ALPAKA_CUDA_NVCC_SEPARABLE_COMPILATION</code>.</p>
+<p>When an accelerator back-end using <em>CUDA</em> is enabled, version <em>9.0</em> of the <em>CUDA SDK</em> is the minimum requirement. <em>NOTE</em>: When using nvcc as <em>CUDA</em> compiler, the <em>CUDA accelerator back-end</em> can not be enabled together with the <em>Boost.Fiber accelerator back-end</em> due to bugs in the nvcc compiler. <em>NOTE</em>: When using clang as a native <em>CUDA</em> compiler, the <em>CUDA accelerator back-end</em> can not be enabled together with the <em>Boost.Fiber accelerator back-end</em> or any <em>OpenMP accelerator back-end</em> because this combination is currently unsupported. <em>NOTE</em>: Separable compilation is only supported when using nvcc, not with clang as native <em>CUDA</em> compiler. It is disabled by default and can be enabled via the CMake flag <code>CUDA_SEPARABLE_COMPILATION</code>.</p>
 <p>When an accelerator back-end using <em>OpenMP</em> is enabled, the compiler and the platform have to support the corresponding minimum <em>OpenMP</em> version.</p>
 <p>When an accelerator back-end using <em>TBB</em> is enabled, the compiler and the platform have to support the corresponding minimum <em>TBB</em> version.</p>
 <h1>Usage </h1>
@@ -302,7 +302,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Apr 14 2021 09:16:08 for alpaka by
+    <li class="footer">Generated on Thu Apr 15 2021 13:52:30 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
