@@ -225,8 +225,8 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const width(extent::getWidth(extent));
-                auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
+                auto const width = extent::getWidth(extent);
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
 
                 // Set the current device.
                 ALPAKA_UNIFORM_CUDA_HIP_RT_CHECK(ALPAKA_API_PREFIX(SetDevice)(dev.m_iDevice));
@@ -255,9 +255,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const width(extent::getWidth(extent));
-                auto const widthBytes(width * static_cast<TIdx>(sizeof(TElem)));
-                auto const height(extent::getHeight(extent));
+                auto const width = extent::getWidth(extent);
+                auto const widthBytes = width * static_cast<TIdx>(sizeof(TElem));
+                auto const height = extent::getHeight(extent);
 
 
                 void* memPtr = nullptr;
@@ -302,10 +302,10 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 ALPAKA_API_PREFIX(Extent)
-                const extentVal(ALPAKA_PP_CONCAT(make_, ALPAKA_API_PREFIX(Extent))(
+                const extentVal = ALPAKA_PP_CONCAT(make_, ALPAKA_API_PREFIX(Extent))(
                     static_cast<std::size_t>(extent::getWidth(extent) * static_cast<TIdx>(sizeof(TElem))),
                     static_cast<std::size_t>(extent::getHeight(extent)),
-                    static_cast<std::size_t>(extent::getDepth(extent))));
+                    static_cast<std::size_t>(extent::getDepth(extent)));
 
                 ALPAKA_API_PREFIX(PitchedPtr) pitchedPtrVal;
                 pitchedPtrVal.ptr = nullptr;

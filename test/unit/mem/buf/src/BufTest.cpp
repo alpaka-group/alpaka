@@ -29,13 +29,13 @@ static auto testBufferMutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>> 
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+    Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
     Queue queue(dev);
 
     // alpaka::malloc
-    auto buf(alpaka::allocBuf<Elem, Idx>(dev, extent));
+    auto buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
 
-    auto const offset(alpaka::Vec<Dim, Idx>::zeros());
+    auto const offset = alpaka::Vec<Dim, Idx>::zeros();
     alpaka::test::testViewImmutable<Elem>(buf, dev, extent, offset);
 
     alpaka::test::testViewMutable<TAcc>(queue, buf);
@@ -47,8 +47,8 @@ TEMPLATE_LIST_TEST_CASE("memBufBasicTest", "[memBuf]", alpaka::test::TestAccs)
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    auto const extent(
-        alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
+    auto const extent
+        = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
     testBufferMutable<Acc>(extent);
 }
@@ -59,7 +59,7 @@ TEMPLATE_LIST_TEST_CASE("memBufZeroSizeTest", "[memBuf]", alpaka::test::TestAccs
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    auto const extent(alpaka::Vec<Dim, Idx>::zeros());
+    auto const extent = alpaka::Vec<Dim, Idx>::zeros();
 
     testBufferMutable<Acc>(extent);
 }
@@ -75,12 +75,12 @@ static auto testBufferImmutable(alpaka::Vec<alpaka::Dim<TAcc>, alpaka::Idx<TAcc>
     using Dim = alpaka::Dim<TAcc>;
     using Idx = alpaka::Idx<TAcc>;
 
-    Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+    Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
 
     // alpaka::malloc
-    auto const buf(alpaka::allocBuf<Elem, Idx>(dev, extent));
+    auto const buf = alpaka::allocBuf<Elem, Idx>(dev, extent);
 
-    auto const offset(alpaka::Vec<Dim, Idx>::zeros());
+    auto const offset = alpaka::Vec<Dim, Idx>::zeros();
     alpaka::test::testViewImmutable<Elem>(buf, dev, extent, offset);
 }
 
@@ -90,8 +90,8 @@ TEMPLATE_LIST_TEST_CASE("memBufConstTest", "[memBuf]", alpaka::test::TestAccs)
     using Dim = alpaka::Dim<Acc>;
     using Idx = alpaka::Idx<Acc>;
 
-    auto const extent(
-        alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
+    auto const extent
+        = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
 
     testBufferImmutable<Acc>(extent);
 }

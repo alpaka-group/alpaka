@@ -18,8 +18,14 @@ TARGET_INCLUDE_DIRECTORIES(
     SYSTEM
     INTERFACE ${Boost_INCLUDE_DIRS})
 
-IF(ALPAKA_ACC_GPU_CUDA_ENABLE AND (ALPAKA_CUDA_COMPILER MATCHES "nvcc") AND (ALPAKA_CUDA_VERSION VERSION_GREATER_EQUAL 11.0))
-    LIST(APPEND CUDA_NVCC_FLAGS -Wdefault-stream-launch -Werror=default-stream-launch)
+IF(ALPAKA_ACC_GPU_CUDA_ENABLE AND ALPAKA_CUDA_COMPILER MATCHES "nvcc")
+    if(ALPAKA_CUDA_VERSION VERSION_GREATER_EQUAL 11.0)
+        LIST(APPEND CUDA_NVCC_FLAGS -Wdefault-stream-launch -Werror=default-stream-launch)
+    endif()
+    if(ALPAKA_CUDA_VERSION VERSION_GREATER_EQUAL 11.3)
+        # supress error in Catch: 'error #177-D: variable "<unnamed>::autoRegistrar1" was declared but never referenced'
+        LIST(APPEND CUDA_NVCC_FLAGS -Xcudafe=--diag_suppress=177)
+    endif()
     # export to parent scope to be visible in all test cases
     set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} PARENT_SCOPE)
 ENDIF()

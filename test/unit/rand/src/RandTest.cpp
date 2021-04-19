@@ -20,7 +20,7 @@ class RandTestKernel
     ALPAKA_FN_ACC void genNumbers(TAcc const& acc, bool* success, T_Generator& gen) const
     {
         {
-            auto dist(alpaka::rand::distribution::createNormalReal<float>(acc));
+            auto dist = alpaka::rand::distribution::createNormalReal<float>(acc);
             auto const r = dist(gen);
 #if !BOOST_ARCH_PTX
             ALPAKA_CHECK(*success, std::isfinite(r));
@@ -30,7 +30,7 @@ class RandTestKernel
         }
 
         {
-            auto dist(alpaka::rand::distribution::createNormalReal<double>(acc));
+            auto dist = alpaka::rand::distribution::createNormalReal<double>(acc);
             auto const r = dist(gen);
 #if !BOOST_ARCH_PTX
             ALPAKA_CHECK(*success, std::isfinite(r));
@@ -39,21 +39,21 @@ class RandTestKernel
 #endif
         }
         {
-            auto dist(alpaka::rand::distribution::createUniformReal<float>(acc));
+            auto dist = alpaka::rand::distribution::createUniformReal<float>(acc);
             auto const r = dist(gen);
             ALPAKA_CHECK(*success, 0.0f <= r);
             ALPAKA_CHECK(*success, 1.0f > r);
         }
 
         {
-            auto dist(alpaka::rand::distribution::createUniformReal<double>(acc));
+            auto dist = alpaka::rand::distribution::createUniformReal<double>(acc);
             auto const r = dist(gen);
             ALPAKA_CHECK(*success, 0.0 <= r);
             ALPAKA_CHECK(*success, 1.0 > r);
         }
 
         {
-            auto dist(alpaka::rand::distribution::createUniformUint<std::uint32_t>(acc));
+            auto dist = alpaka::rand::distribution::createUniformUint<std::uint32_t>(acc);
             auto const r = dist(gen);
             alpaka::ignore_unused(r);
         }

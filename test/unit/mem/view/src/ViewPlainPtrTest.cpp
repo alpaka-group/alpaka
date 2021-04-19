@@ -64,14 +64,14 @@ namespace alpaka
             using Idx = alpaka::Idx<TAcc>;
             using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-            Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+            Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
 
-            auto const extentBuf(
-                alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
-            auto buf(alpaka::allocBuf<TElem, Idx>(dev, extentBuf));
+            auto const extentBuf
+                = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
+            auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
 
-            auto const extentView(extentBuf);
-            auto const offsetView(alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
+            auto const extentView = extentBuf;
+            auto const offsetView = alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0));
             View view(
                 alpaka::getPtrNative(buf),
                 alpaka::getDev(buf),
@@ -93,12 +93,12 @@ namespace alpaka
 
             Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
 
-            auto const extentBuf(
-                alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
-            auto buf(alpaka::allocBuf<TElem, Idx>(dev, extentBuf));
+            auto const extentBuf
+                = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
+            auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
 
-            auto const extentView(extentBuf);
-            auto const offsetView(alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0)));
+            auto const extentView = extentBuf;
+            auto const offsetView = alpaka::Vec<Dim, Idx>::all(static_cast<Idx>(0));
             View const view(
                 alpaka::getPtrNative(buf),
                 alpaka::getDev(buf),
@@ -118,11 +118,11 @@ namespace alpaka
             using Idx = alpaka::Idx<TAcc>;
             using View = alpaka::ViewPlainPtr<Dev, TElem, Dim, Idx>;
 
-            Dev const dev(alpaka::getDevByIdx<Pltf>(0u));
+            Dev const dev = alpaka::getDevByIdx<Pltf>(0u);
 
-            auto const extentBuf(
-                alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>());
-            auto buf(alpaka::allocBuf<TElem, Idx>(dev, extentBuf));
+            auto const extentBuf
+                = alpaka::createVecFromIndexedFn<Dim, alpaka::test::CreateVecWithIdx<Idx>::template ForExtentBuf>();
+            auto buf = alpaka::allocBuf<TElem, Idx>(dev, extentBuf);
 
             View view(
                 alpaka::getPtrNative(buf),

@@ -55,7 +55,7 @@ namespace alpaka
             auto operator()(TKernelFnObj const& kernelFnObj, TArgs&&... args) -> bool
             {
                 // Allocate the result value
-                auto bufAccResult(alpaka::allocBuf<bool, Idx>(m_devAcc, static_cast<Idx>(1u)));
+                auto bufAccResult = alpaka::allocBuf<bool, Idx>(m_devAcc, static_cast<Idx>(1u));
                 alpaka::memset(m_queue, bufAccResult, static_cast<std::uint8_t>(true), bufAccResult);
 
                 alpaka::exec<Acc>(
@@ -66,11 +66,11 @@ namespace alpaka
                     std::forward<TArgs>(args)...);
 
                 // Copy the result value to the host
-                auto bufHostResult(alpaka::allocBuf<bool, Idx>(m_devHost, static_cast<Idx>(1u)));
+                auto bufHostResult = alpaka::allocBuf<bool, Idx>(m_devHost, static_cast<Idx>(1u));
                 alpaka::memcpy(m_queue, bufHostResult, bufAccResult, bufAccResult);
                 alpaka::wait(m_queue);
 
-                auto const result(*alpaka::getPtrNative(bufHostResult));
+                auto const result = *alpaka::getPtrNative(bufHostResult);
 
                 return result;
             }

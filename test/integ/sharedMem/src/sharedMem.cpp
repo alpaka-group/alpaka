@@ -132,7 +132,7 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
     SharedMemKernel<TnumUselessWork, Val> kernel;
 
     // Select a device to execute on.
-    auto const devAcc(alpaka::getDevByIdx<PltfAcc>(0u));
+    auto const devAcc = alpaka::getDevByIdx<PltfAcc>(0u);
 
     // Get a queue on this device.
     QueueAcc queue(devAcc);
@@ -157,11 +157,11 @@ TEMPLATE_LIST_TEST_CASE("sharedMem", "[sharedMem]", TestAccs)
 
     // Allocate accelerator buffers and copy.
     Idx const resultElemCount(gridBlocksCount);
-    auto blockRetValsAcc(alpaka::allocBuf<Val, Idx>(devAcc, resultElemCount));
+    auto blockRetValsAcc = alpaka::allocBuf<Val, Idx>(devAcc, resultElemCount);
     alpaka::memcpy(queue, blockRetValsAcc, blockRetVals, resultElemCount);
 
     // Create the kernel execution task.
-    auto const taskKernel(alpaka::createTaskKernel<Acc>(workDiv, kernel, alpaka::getPtrNative(blockRetValsAcc)));
+    auto const taskKernel = alpaka::createTaskKernel<Acc>(workDiv, kernel, alpaka::getPtrNative(blockRetValsAcc));
 
     // Profile the kernel execution.
     std::cout << "Execution time: " << alpaka::test::integ::measureTaskRunTimeMs(queue, taskKernel) << " ms"

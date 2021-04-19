@@ -63,12 +63,12 @@ namespace alpaka
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(*this));
-            auto const blockThreadExtent(getWorkDiv<Block, Threads>(*this));
-            auto const threadElemExtent(getWorkDiv<Thread, Elems>(*this));
+            auto const gridBlockExtent = getWorkDiv<Grid, Blocks>(*this);
+            auto const blockThreadExtent = getWorkDiv<Block, Threads>(*this);
+            auto const threadElemExtent = getWorkDiv<Thread, Elems>(*this);
 
             // Get the size of the block shared dynamic memory.
-            auto const blockSharedMemDynSizeBytes(meta::apply(
+            auto const blockSharedMemDynSizeBytes = meta::apply(
                 [&](ALPAKA_DECAY_T(TArgs) const&... args) {
                     return getBlockSharedMemDynSizeBytes<AccCpuSerial<TDim, TIdx>>(
                         m_kernelFnObj,
@@ -76,7 +76,7 @@ namespace alpaka
                         threadElemExtent,
                         args...);
                 },
-                m_args));
+                m_args);
 
 #    if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << __func__ << " blockSharedMemDynSizeBytes: " << blockSharedMemDynSizeBytes << " B"
@@ -84,11 +84,11 @@ namespace alpaka
 #    endif
             // Bind all arguments except the accelerator.
             // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
-            auto const boundKernelFnObj(meta::apply(
+            auto const boundKernelFnObj = meta::apply(
                 [this](ALPAKA_DECAY_T(TArgs) const&... args) {
                     return std::bind(std::ref(m_kernelFnObj), std::placeholders::_1, std::ref(args)...);
                 },
-                m_args));
+                m_args);
 
             AccCpuSerial<TDim, TIdx> acc(
                 *static_cast<WorkDivMembers<TDim, TIdx> const*>(this),

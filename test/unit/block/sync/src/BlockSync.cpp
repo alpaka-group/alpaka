@@ -40,7 +40,7 @@ public:
         alpaka::syncBlockThreads(acc);
 
         // All other threads within the block should now have written their index into the shared memory.
-        for(auto i(static_cast<Idx>(0u)); i < blockThreadExtent1D; ++i)
+        for(auto i = static_cast<Idx>(0u); i < blockThreadExtent1D; ++i)
         {
             ALPAKA_CHECK(*success, pBlockSharedArray[i] == i);
         }
